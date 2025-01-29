@@ -86,8 +86,16 @@ const Module3Quiz = () => {
   const [showExplanation, setShowExplanation] = useState(false);
   const { progress, updateProgress } = useProgress();
 
-  const moduleProgress = progress.filter(p => p.moduleId === 3);
-  const isAllTopicsCompleted = moduleProgress.length === 3 && moduleProgress.every(p => p.completed);
+  // Check if required sections are completed
+  const requiredSections = [
+    'scalability-interoperability',
+    'blockchain-types',
+    'development-platforms'
+  ];
+
+  const isAllTopicsCompleted = requiredSections.every(section =>
+    progress.some(p => p.moduleId === 3 && p.sectionId === section && p.completed)
+  );
 
   const handleAnswerSelect = (optionIndex: number) => {
     setSelectedAnswer(optionIndex);
@@ -133,7 +141,24 @@ const Module3Quiz = () => {
                   Complete All Topics First
                 </h2>
                 <p className="text-gray-600 mb-6">
-                  Please complete all topics in Module 3 before taking the quiz.
+                  Please complete all topics in Module 3 before taking the quiz:
+                  <ul className="mt-4 space-y-2">
+                    {requiredSections.map(section => {
+                      const isComplete = progress.some(
+                        p => p.moduleId === 3 && p.sectionId === section && p.completed
+                      );
+                      return (
+                        <li key={section} className="flex items-center gap-2 justify-center">
+                          <span className={isComplete ? "text-green-600" : "text-red-600"}>
+                            {isComplete ? "✓" : "×"}
+                          </span>
+                          {section.split('-').map(word => 
+                            word.charAt(0).toUpperCase() + word.slice(1)
+                          ).join(' ')}
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </p>
                 <Link href="/modules/module3">
                   <Button>Return to Module 3</Button>
