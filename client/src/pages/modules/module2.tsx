@@ -1,12 +1,12 @@
 import { Card, CardContent } from "@/components/ui/card";
 import Footer from "@/components/layout/footer";
-import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useProgress } from "@/context/progress-context";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Database, Network, Code, FileText } from "lucide-react";
 import { CheckCircle2, XCircle } from "lucide-react";
+import ModuleProgress from "@/components/modules/module-progress";
 
 const moduleTopics = [
   {
@@ -77,10 +77,7 @@ export default function Module2() {
           Module 2: Understanding Blockchain Technology
         </h1>
 
-        <div className="mb-8">
-          <Progress value={progressPercentage} className="w-full" />
-          <p className="text-sm text-muted-foreground mt-2">Progress: {Math.round(progressPercentage)}%</p>
-        </div>
+        <ModuleProgress moduleId={2} totalSections={moduleTopics.length} />
 
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsList>
