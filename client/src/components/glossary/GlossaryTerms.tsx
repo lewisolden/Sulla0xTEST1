@@ -1,69 +1,60 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, ChevronDown } from "lucide-react";
+import { Search, ChevronDown, ExternalLink } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { useQuery } from "@tanstack/react-query";
+import { Badge } from "@/components/ui/badge";
 
 interface Term {
   id: string;
   term: string;
   definition: string;
   category: string;
-  example?: string;
+  difficulty: string;
+  visualAid?: string;
+  examples: string[];
+  relatedTerms: string[];
 }
-
-const cryptoTerms: Term[] = [
-  {
-    id: "blockchain",
-    term: "Blockchain",
-    definition: "A distributed digital ledger that records transactions across a network of computers.",
-    category: "Technology",
-    example: "Bitcoin's blockchain stores all transactions ever made on its network."
-  },
-  {
-    id: "cryptocurrency",
-    term: "Cryptocurrency",
-    definition: "A digital or virtual currency that uses cryptography for security.",
-    category: "General",
-    example: "Bitcoin, Ethereum, and Litecoin are examples of cryptocurrencies."
-  },
-  {
-    id: "mining",
-    term: "Mining",
-    definition: "The process of validating and adding new transactions to a blockchain using computer power.",
-    category: "Technology",
-    example: "Bitcoin miners solve complex mathematical problems to validate transactions."
-  },
-  {
-    id: "wallet",
-    term: "Wallet",
-    definition: "A digital tool that stores cryptocurrency and allows sending and receiving of digital assets.",
-    category: "Technology",
-    example: "MetaMask is a popular Ethereum wallet."
-  },
-  {
-    id: "defi",
-    term: "DeFi (Decentralized Finance)",
-    definition: "Financial services and products built on blockchain technology without traditional intermediaries.",
-    category: "Finance",
-    example: "Uniswap is a DeFi platform for trading cryptocurrencies."
-  }
-];
 
 export default function GlossaryTerms() {
   const [searchTerm, setSearchTerm] = useState("");
   const [expandedTerm, setExpandedTerm] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | "all">("all");
+  const [selectedDifficulty, setSelectedDifficulty] = useState<string | "all">("all");
 
-  const filteredTerms = cryptoTerms.filter(term => {
+  // Fetch glossary terms from the API
+  const { data: terms = [], isLoading } = useQuery<Term[]>({
+    queryKey: ['glossary-terms'],
+    queryFn: async () => {
+      const response = await fetch('/api/glossary');
+      if (!response.ok) {
+        throw new Error('Failed to fetch glossary terms');
+      }
+      return response.json();
+    }
+  });
+
+  const filteredTerms = terms.filter(term => {
     const matchesSearch = term.term.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          term.definition.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === "all" || term.category === selectedCategory;
-    return matchesSearch && matchesCategory;
+    const matchesDifficulty = selectedDifficulty === "all" || term.difficulty === selectedDifficulty;
+    return matchesSearch && matchesCategory && matchesDifficulty;
   });
 
-  // Get unique categories using Array.from(new Set())
-  const categories = ["all", ...Array.from(new Set(cryptoTerms.map(term => term.category)))];
+  // Get unique categories and difficulties
+  const categories = ["all", ...Array.from(new Set(terms.map(term => term.category)))];
+  const difficulties = ["all", ...Array.from(new Set(terms.map(term => term.difficulty)))];
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-4xl mx-auto p-4 space-y-6">
@@ -89,6 +80,17 @@ export default function GlossaryTerms() {
             </option>
           ))}
         </select>
+        <select
+          value={selectedDifficulty}
+          onChange={(e) => setSelectedDifficulty(e.target.value)}
+          className="p-2 border rounded-md bg-background"
+        >
+          {difficulties.map(difficulty => (
+            <option key={difficulty} value={difficulty}>
+              {difficulty === "all" ? "All Levels" : difficulty}
+            </option>
+          ))}
+        </select>
       </div>
 
       <motion.div
@@ -110,7 +112,10 @@ export default function GlossaryTerms() {
               transition={{ duration: 0.2 }}
             >
               <div className="flex justify-between items-center">
-                <h3 className="text-lg font-semibold text-blue-800">{term.term}</h3>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-lg font-semibold text-blue-800">{term.term}</h3>
+                  <Badge variant="outline">{term.difficulty}</Badge>
+                </div>
                 <motion.div
                   animate={{ rotate: expandedTerm === term.id ? 180 : 0 }}
                   transition={{ duration: 0.2 }}
@@ -126,18 +131,70 @@ export default function GlossaryTerms() {
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="mt-4 space-y-3"
+                    className="mt-4 space-y-4"
                   >
                     <p className="text-gray-700">{term.definition}</p>
-                    {term.example && (
-                      <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded-md">
-                        <span className="font-medium">Example:</span> {term.example}
+
+                    {term.visualAid && (
+                      <div className="mt-4">
+                        <img 
+                          src={term.visualAid} 
+                          alt={`Visual explanation of ${term.term}`}
+                          className="rounded-lg shadow-md max-w-full h-auto"
+                        />
                       </div>
                     )}
-                    <div className="flex items-center gap-2 mt-2">
-                      <span className="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded">
+
+                    {term.examples && term.examples.length > 0 && (
+                      <div className="bg-gray-50 p-4 rounded-md">
+                        <h4 className="font-medium text-gray-900 mb-2">Examples:</h4>
+                        <ul className="list-disc pl-5 space-y-2">
+                          {term.examples.map((example, index) => (
+                            <li key={index} className="text-gray-700">{example}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+
+                    {term.relatedTerms && term.relatedTerms.length > 0 && (
+                      <div className="mt-4">
+                        <h4 className="font-medium text-gray-900 mb-2">Related Terms:</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {term.relatedTerms.map((relatedTerm, index) => (
+                            <Badge 
+                              key={index}
+                              variant="secondary"
+                              className="cursor-pointer hover:bg-gray-200"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSearchTerm(relatedTerm);
+                              }}
+                            >
+                              {relatedTerm}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="flex items-center gap-2 mt-4">
+                      <Badge variant="outline" className="bg-blue-50">
                         {term.category}
-                      </span>
+                      </Badge>
+                      {term.visualAid && (
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          className="ml-auto"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            window.open(term.visualAid, '_blank');
+                          }}
+                        >
+                          <ExternalLink className="h-4 w-4 mr-2" />
+                          View Full Image
+                        </Button>
+                      )}
                     </div>
                   </motion.div>
                 )}
