@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Database, Network, Code, FileText } from "lucide-react";
 import { CheckCircle2, XCircle } from "lucide-react";
 import ModuleProgress from "@/components/modules/module-progress";
+import BadgeShowcase from "@/components/modules/badge-showcase";
 
 const moduleTopics = [
   {
@@ -78,6 +79,7 @@ export default function Module2() {
         </h1>
 
         <ModuleProgress moduleId={2} totalSections={moduleTopics.length} />
+        <BadgeShowcase moduleId={2} />
 
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsList>
