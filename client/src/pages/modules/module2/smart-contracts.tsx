@@ -30,7 +30,39 @@ export default function SmartContractsSection() {
 
   const contentVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+    visible: { opacity: 1, y: 0 }
+  };
+
+  const listVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: { 
+      opacity: 1, 
+      x: 0,
+      transition: { duration: 0.5 }
+    }
+  };
+
+  const sectionVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.7,
+        when: "beforeChildren"
+      }
+    }
   };
 
   return (
@@ -59,196 +91,289 @@ export default function SmartContractsSection() {
 
         <motion.h1
           className="text-4xl font-bold text-blue-800 mb-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
         >
           2.4 Smart Contracts
         </motion.h1>
 
         <div className="prose lg:prose-xl text-gray-700 space-y-6">
           <motion.section
-            variants={contentVariants}
+            variants={sectionVariants}
             initial="hidden"
-            animate="visible"
+            whileInView="visible"
+            viewport={{ once: true }}
           >
             <h2 className="text-3xl font-bold text-blue-700">Introduction</h2>
-            <p>
+            <motion.p variants={contentVariants}>
               Smart contracts are self-executing contracts with the terms of the agreement 
               directly written into code. They are a key feature of many blockchain 
               platforms, enabling automated, trustless transactions and complex 
               decentralized applications.
-            </p>
+            </motion.p>
             <h3 className="text-2xl font-semibold text-blue-600 mt-4">Definition</h3>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Computer programs stored on a blockchain</li>
-              <li>Automatically execute when predetermined conditions are met</li>
-              <li>Enforce the terms of an agreement without intermediaries</li>
-            </ul>
+            <motion.ul 
+              className="list-disc pl-5 space-y-3"
+              variants={listVariants}
+            >
+              <motion.li variants={itemVariants}>Computer programs stored on a blockchain</motion.li>
+              <motion.li variants={itemVariants}>Automatically execute when predetermined conditions are met</motion.li>
+              <motion.li variants={itemVariants}>Enforce the terms of an agreement without intermediaries</motion.li>
+            </motion.ul>
           </motion.section>
 
           <motion.section
-            variants={contentVariants}
+            variants={sectionVariants}
             initial="hidden"
-            animate="visible"
+            whileInView="visible"
+            viewport={{ once: true }}
           >
             <h2 className="text-3xl font-bold text-blue-700">Key Characteristics</h2>
-            <h3 className="text-2xl font-semibold text-blue-600">1. Autonomy</h3>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Execute automatically without intervention</li>
-              <li>No need for intermediaries</li>
-            </ul>
 
-            <h3 className="text-2xl font-semibold text-blue-600 mt-4">2. Decentralisation</h3>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Exist on a distributed blockchain network</li>
-              <li>No central point of control</li>
-            </ul>
+            <motion.div variants={contentVariants}>
+              <h3 className="text-2xl font-semibold text-blue-600">1. Autonomy</h3>
+              <motion.ul 
+                className="list-disc pl-5 space-y-3"
+                variants={listVariants}
+              >
+                <motion.li variants={itemVariants}>Execute automatically without intervention</motion.li>
+                <motion.li variants={itemVariants}>No need for intermediaries</motion.li>
+              </motion.ul>
+            </motion.div>
 
-            <h3 className="text-2xl font-semibold text-blue-600 mt-4">3. Transparency</h3>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>All parties can view the contract's code</li>
-              <li>Terms are publicly visible on the blockchain</li>
-              <li>Execution results are verifiable</li>
-            </ul>
+            <motion.div variants={contentVariants}>
+              <h3 className="text-2xl font-semibold text-blue-600 mt-4">2. Decentralisation</h3>
+              <motion.ul 
+                className="list-disc pl-5 space-y-3"
+                variants={listVariants}
+              >
+                <motion.li variants={itemVariants}>Exist on a distributed blockchain network</motion.li>
+                <motion.li variants={itemVariants}>No central point of control</motion.li>
+              </motion.ul>
+            </motion.div>
 
-            <h3 className="text-2xl font-semibold text-blue-600 mt-4">4. Immutability</h3>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Once deployed, code cannot be changed</li>
-              <li>Ensures contract terms remain constant</li>
-              <li>Builds trust between parties</li>
-            </ul>
+            <motion.div variants={contentVariants}>
+              <h3 className="text-2xl font-semibold text-blue-600 mt-4">3. Transparency</h3>
+              <motion.ul 
+                className="list-disc pl-5 space-y-3"
+                variants={listVariants}
+              >
+                <motion.li variants={itemVariants}>All parties can view the contract's code</motion.li>
+                <motion.li variants={itemVariants}>Terms are publicly visible on the blockchain</motion.li>
+                <motion.li variants={itemVariants}>Execution results are verifiable</motion.li>
+              </motion.ul>
+            </motion.div>
 
-            <h3 className="text-2xl font-semibold text-blue-600 mt-4">5. Deterministic</h3>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Produce the same result for everyone who runs them</li>
-              <li>Predictable outcomes based on inputs</li>
-            </ul>
+            <motion.div variants={contentVariants}>
+              <h3 className="text-2xl font-semibold text-blue-600 mt-4">4. Immutability</h3>
+              <motion.ul 
+                className="list-disc pl-5 space-y-3"
+                variants={listVariants}
+              >
+                <motion.li variants={itemVariants}>Once deployed, code cannot be changed</motion.li>
+                <motion.li variants={itemVariants}>Ensures contract terms remain constant</motion.li>
+                <motion.li variants={itemVariants}>Builds trust between parties</motion.li>
+              </motion.ul>
+            </motion.div>
+
+            <motion.div variants={contentVariants}>
+              <h3 className="text-2xl font-semibold text-blue-600 mt-4">5. Deterministic</h3>
+              <motion.ul 
+                className="list-disc pl-5 space-y-3"
+                variants={listVariants}
+              >
+                <motion.li variants={itemVariants}>Produce the same result for everyone who runs them</motion.li>
+                <motion.li variants={itemVariants}>Predictable outcomes based on inputs</motion.li>
+              </motion.ul>
+            </motion.div>
           </motion.section>
 
           <motion.section
-            variants={contentVariants}
+            variants={sectionVariants}
             initial="hidden"
-            animate="visible"
+            whileInView="visible"
+            viewport={{ once: true }}
           >
             <h2 className="text-3xl font-bold text-blue-700">How Smart Contracts Work</h2>
-            <ol className="list-decimal pl-5 space-y-3">
-              <li>Creation: Developer writes the contract code, defining conditions and actions</li>
-              <li>Deployment: Contract is uploaded to the blockchain</li>
-              <li>Execution: Contract self-executes when predefined conditions are met</li>
-              <li>Verification: Network nodes verify the execution</li>
-              <li>Update: Results are recorded on the blockchain</li>
-            </ol>
+            <motion.ol 
+              className="list-decimal pl-5 space-y-3"
+              variants={listVariants}
+            >
+              <motion.li variants={itemVariants}>Creation: Developer writes the contract code, defining conditions and actions</motion.li>
+              <motion.li variants={itemVariants}>Deployment: Contract is uploaded to the blockchain</motion.li>
+              <motion.li variants={itemVariants}>Execution: Contract self-executes when predefined conditions are met</motion.li>
+              <motion.li variants={itemVariants}>Verification: Network nodes verify the execution</motion.li>
+              <motion.li variants={itemVariants}>Update: Results are recorded on the blockchain</motion.li>
+            </motion.ol>
           </motion.section>
 
           <motion.section
-            variants={contentVariants}
+            variants={sectionVariants}
             initial="hidden"
-            animate="visible"
+            whileInView="visible"
+            viewport={{ once: true }}
           >
             <h2 className="text-3xl font-bold text-blue-700">Advantages and Limitations</h2>
 
-            <h3 className="text-2xl font-semibold text-blue-600">Advantages</h3>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Efficiency: Automate processes, reducing time and cost</li>
-              <li>Accuracy: Eliminate errors from manual processing</li>
-              <li>Trust: Remove the need for intermediaries</li>
-              <li>Transparency: All parties can view and verify the contract</li>
-              <li>Security: Encrypted and distributed across the network</li>
-            </ul>
+            <motion.div variants={contentVariants}>
+              <h3 className="text-2xl font-semibold text-blue-600">Advantages</h3>
+              <motion.ul 
+                className="list-disc pl-5 space-y-3"
+                variants={listVariants}
+              >
+                <motion.li variants={itemVariants}>Efficiency: Automate processes, reducing time and cost</motion.li>
+                <motion.li variants={itemVariants}>Accuracy: Eliminate errors from manual processing</motion.li>
+                <motion.li variants={itemVariants}>Trust: Remove the need for intermediaries</motion.li>
+                <motion.li variants={itemVariants}>Transparency: All parties can view and verify the contract</motion.li>
+                <motion.li variants={itemVariants}>Security: Encrypted and distributed across the network</motion.li>
+              </motion.ul>
+            </motion.div>
 
-            <h3 className="text-2xl font-semibold text-blue-600 mt-4">Limitations and Challenges</h3>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Code Vulnerabilities: Bugs can lead to unintended consequences</li>
-              <li>Lack of Flexibility: Difficult to change once deployed</li>
-              <li>Legal Status: Uncertain regulatory environment in many jurisdictions</li>
-              <li>Oracle Problem: Challenge of getting reliable external data</li>
-              <li>Scalability: Limited by the underlying blockchain's capacity</li>
-            </ul>
+            <motion.div variants={contentVariants}>
+              <h3 className="text-2xl font-semibold text-blue-600 mt-4">Limitations and Challenges</h3>
+              <motion.ul 
+                className="list-disc pl-5 space-y-3"
+                variants={listVariants}
+              >
+                <motion.li variants={itemVariants}>Code Vulnerabilities: Bugs can lead to unintended consequences</motion.li>
+                <motion.li variants={itemVariants}>Lack of Flexibility: Difficult to change once deployed</motion.li>
+                <motion.li variants={itemVariants}>Legal Status: Uncertain regulatory environment in many jurisdictions</motion.li>
+                <motion.li variants={itemVariants}>Oracle Problem: Challenge of getting reliable external data</motion.li>
+                <motion.li variants={itemVariants}>Scalability: Limited by the underlying blockchain's capacity</motion.li>
+              </motion.ul>
+            </motion.div>
           </motion.section>
 
           <motion.section
-            variants={contentVariants}
+            variants={sectionVariants}
             initial="hidden"
-            animate="visible"
+            whileInView="visible"
+            viewport={{ once: true }}
           >
             <h2 className="text-3xl font-bold text-blue-700">Use Cases</h2>
 
-            <h3 className="text-2xl font-semibold text-blue-600">1. Financial Services</h3>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Automated lending and borrowing</li>
-              <li>Insurance claim processing</li>
-              <li>Decentralized exchanges</li>
-              <li>Automated market makers</li>
-            </ul>
+            <motion.div variants={contentVariants}>
+              <h3 className="text-2xl font-semibold text-blue-600">1. Financial Services</h3>
+              <motion.ul 
+                className="list-disc pl-5 space-y-3"
+                variants={listVariants}
+              >
+                <motion.li variants={itemVariants}>Automated lending and borrowing</motion.li>
+                <motion.li variants={itemVariants}>Insurance claim processing</motion.li>
+                <motion.li variants={itemVariants}>Decentralized exchanges</motion.li>
+                <motion.li variants={itemVariants}>Automated market makers</motion.li>
+              </motion.ul>
+            </motion.div>
 
-            <h3 className="text-2xl font-semibold text-blue-600 mt-4">2. Supply Chain</h3>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Automated payments upon delivery</li>
-              <li>Product tracking and verification</li>
-              <li>Supplier management</li>
-            </ul>
+            <motion.div variants={contentVariants}>
+              <h3 className="text-2xl font-semibold text-blue-600 mt-4">2. Supply Chain</h3>
+              <motion.ul 
+                className="list-disc pl-5 space-y-3"
+                variants={listVariants}
+              >
+                <motion.li variants={itemVariants}>Automated payments upon delivery</motion.li>
+                <motion.li variants={itemVariants}>Product tracking and verification</motion.li>
+                <motion.li variants={itemVariants}>Supplier management</motion.li>
+              </motion.ul>
+            </motion.div>
 
-            <h3 className="text-2xl font-semibold text-blue-600 mt-4">3. Real Estate</h3>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Property transfers</li>
-              <li>Rental agreements</li>
-              <li>Automated payments</li>
-            </ul>
+            <motion.div variants={contentVariants}>
+              <h3 className="text-2xl font-semibold text-blue-600 mt-4">3. Real Estate</h3>
+              <motion.ul 
+                className="list-disc pl-5 space-y-3"
+                variants={listVariants}
+              >
+                <motion.li variants={itemVariants}>Property transfers</motion.li>
+                <motion.li variants={itemVariants}>Rental agreements</motion.li>
+                <motion.li variants={itemVariants}>Automated payments</motion.li>
+              </motion.ul>
+            </motion.div>
 
-            <h3 className="text-2xl font-semibold text-blue-600 mt-4">4. Healthcare</h3>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Secure sharing of patient records</li>
-              <li>Automated insurance claims</li>
-            </ul>
+            <motion.div variants={contentVariants}>
+              <h3 className="text-2xl font-semibold text-blue-600 mt-4">4. Healthcare</h3>
+              <motion.ul 
+                className="list-disc pl-5 space-y-3"
+                variants={listVariants}
+              >
+                <motion.li variants={itemVariants}>Secure sharing of patient records</motion.li>
+                <motion.li variants={itemVariants}>Automated insurance claims</motion.li>
+              </motion.ul>
+            </motion.div>
 
-            <h3 className="text-2xl font-semibold text-blue-600 mt-4">5. Intellectual Property</h3>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Automated royalty payments</li>
-              <li>Proof of ownership and licensing</li>
-            </ul>
+            <motion.div variants={contentVariants}>
+              <h3 className="text-2xl font-semibold text-blue-600 mt-4">5. Intellectual Property</h3>
+              <motion.ul 
+                className="list-disc pl-5 space-y-3"
+                variants={listVariants}
+              >
+                <motion.li variants={itemVariants}>Automated royalty payments</motion.li>
+                <motion.li variants={itemVariants}>Proof of ownership and licensing</motion.li>
+              </motion.ul>
+            </motion.div>
 
-            <h3 className="text-2xl font-semibold text-blue-600 mt-4">6. Voting Systems</h3>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Transparent and tamper-resistant electronic voting</li>
-            </ul>
+            <motion.div variants={contentVariants}>
+              <h3 className="text-2xl font-semibold text-blue-600 mt-4">6. Voting Systems</h3>
+              <motion.ul 
+                className="list-disc pl-5 space-y-3"
+                variants={listVariants}
+              >
+                <motion.li variants={itemVariants}>Transparent and tamper-resistant electronic voting</motion.li>
+              </motion.ul>
+            </motion.div>
           </motion.section>
 
           <motion.section
-            variants={contentVariants}
+            variants={sectionVariants}
             initial="hidden"
-            animate="visible"
+            whileInView="visible"
+            viewport={{ once: true }}
           >
             <h2 className="text-3xl font-bold text-blue-700">Smart Contract Platforms</h2>
 
-            <h3 className="text-2xl font-semibold text-blue-600">1. Ethereum</h3>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>First and most popular smart contract platform</li>
-              <li>Uses Solidity programming language</li>
-              <li>Large developer community</li>
-            </ul>
+            <motion.div variants={contentVariants}>
+              <h3 className="text-2xl font-semibold text-blue-600">1. Ethereum</h3>
+              <motion.ul 
+                className="list-disc pl-5 space-y-3"
+                variants={listVariants}
+              >
+                <motion.li variants={itemVariants}>First and most popular smart contract platform</motion.li>
+                <motion.li variants={itemVariants}>Uses Solidity programming language</motion.li>
+                <motion.li variants={itemVariants}>Large developer community</motion.li>
+              </motion.ul>
+            </motion.div>
 
-            <h3 className="text-2xl font-semibold text-blue-600 mt-4">2. Alternative Platforms</h3>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Cardano: Academic research and peer-reviewed development</li>
-              <li>Polkadot: Enables interoperability between blockchains</li>
-              <li>Binance Smart Chain: High-performance, EVM-compatible</li>
-            </ul>
+            <motion.div variants={contentVariants}>
+              <h3 className="text-2xl font-semibold text-blue-600 mt-4">2. Alternative Platforms</h3>
+              <motion.ul 
+                className="list-disc pl-5 space-y-3"
+                variants={listVariants}
+              >
+                <motion.li variants={itemVariants}>Cardano: Academic research and peer-reviewed development</motion.li>
+                <motion.li variants={itemVariants}>Polkadot: Enables interoperability between blockchains</motion.li>
+                <motion.li variants={itemVariants}>Binance Smart Chain: High-performance, EVM-compatible</motion.li>
+              </motion.ul>
+            </motion.div>
           </motion.section>
 
           <motion.section
-            variants={contentVariants}
+            variants={sectionVariants}
             initial="hidden"
-            animate="visible"
+            whileInView="visible"
+            viewport={{ once: true }}
           >
             <h2 className="text-3xl font-bold text-blue-700">Future of Smart Contracts</h2>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Integration with artificial intelligence for complex decision-making</li>
-              <li>Improved interoperability between different blockchain networks</li>
-              <li>Development of more user-friendly interfaces</li>
-              <li>Potential for "smart legal contracts" recognized by legal systems</li>
-              <li>Enhanced security features</li>
-              <li>Wider adoption in traditional industries</li>
-            </ul>
+            <motion.ul 
+              className="list-disc pl-5 space-y-3"
+              variants={listVariants}
+            >
+              <motion.li variants={itemVariants}>Integration with artificial intelligence for complex decision-making</motion.li>
+              <motion.li variants={itemVariants}>Improved interoperability between different blockchain networks</motion.li>
+              <motion.li variants={itemVariants}>Development of more user-friendly interfaces</motion.li>
+              <motion.li variants={itemVariants}>Potential for "smart legal contracts" recognized by legal systems</motion.li>
+              <motion.li variants={itemVariants}>Enhanced security features</motion.li>
+              <motion.li variants={itemVariants}>Wider adoption in traditional industries</motion.li>
+            </motion.ul>
           </motion.section>
 
           {isFullyRead && (

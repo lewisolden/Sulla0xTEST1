@@ -30,7 +30,38 @@ export default function ConsensusMechanismsSection() {
 
   const contentVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+    visible: { opacity: 1, y: 0 }
+  };
+
+  const listVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: { 
+      opacity: 1, 
+      x: 0,
+      transition: { duration: 0.5 }
+    }
+  };
+
+  const sectionVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        when: "beforeChildren"
+      }
+    }
   };
 
   return (
@@ -59,139 +90,176 @@ export default function ConsensusMechanismsSection() {
 
         <motion.h1
           className="text-4xl font-bold text-blue-800 mb-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
         >
           2.3 Consensus Mechanisms
         </motion.h1>
 
         <div className="prose lg:prose-xl text-gray-700 space-y-6">
           <motion.section
-            variants={contentVariants}
+            variants={sectionVariants}
             initial="hidden"
-            animate="visible"
+            whileInView="visible"
+            viewport={{ once: true }}
           >
             <h2 className="text-3xl font-bold text-blue-700">Introduction</h2>
-            <p>
+            <motion.p variants={contentVariants}>
               Consensus mechanisms are crucial components of blockchain networks, ensuring 
               agreement on the state of the ledger across all participants.
-            </p>
+            </motion.p>
             <h3 className="text-2xl font-semibold text-blue-600 mt-4">What is a Consensus Mechanism?</h3>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>A method for validating transactions and creating new blocks</li>
-              <li>Ensures all nodes in the network agree on the current state</li>
-              <li>Prevents double-spending and maintains network integrity</li>
-            </ul>
+            <motion.ul 
+              className="list-disc pl-5 space-y-3"
+              variants={listVariants}
+            >
+              <motion.li variants={itemVariants}>A method for validating transactions and creating new blocks</motion.li>
+              <motion.li variants={itemVariants}>Ensures all nodes in the network agree on the current state</motion.li>
+              <motion.li variants={itemVariants}>Prevents double-spending and maintains network integrity</motion.li>
+            </motion.ul>
           </motion.section>
 
           <motion.section
-            variants={contentVariants}
+            variants={sectionVariants}
             initial="hidden"
-            animate="visible"
+            whileInView="visible"
+            viewport={{ once: true }}
           >
             <h2 className="text-3xl font-bold text-blue-700">Proof of Work (PoW)</h2>
-            <h3 className="text-2xl font-semibold text-blue-600">Definition</h3>
-            <p>
+            <motion.p variants={contentVariants}>
               A consensus mechanism that requires solving complex mathematical puzzles 
               to validate transactions and create new blocks.
-            </p>
+            </motion.p>
 
             <h3 className="text-2xl font-semibold text-blue-600 mt-4">How PoW Works</h3>
-            <ol className="list-decimal pl-5 space-y-3">
-              <li>Miners compete to solve a cryptographic puzzle</li>
-              <li>First miner to solve the puzzle gets to add the next block</li>
-              <li>Other nodes verify the solution</li>
-              <li>If valid, the new block is added to the blockchain</li>
-            </ol>
+            <motion.ol 
+              className="list-decimal pl-5 space-y-3"
+              variants={listVariants}
+            >
+              <motion.li variants={itemVariants}>Miners compete to solve a cryptographic puzzle</motion.li>
+              <motion.li variants={itemVariants}>First miner to solve the puzzle gets to add the next block</motion.li>
+              <motion.li variants={itemVariants}>Other nodes verify the solution</motion.li>
+              <motion.li variants={itemVariants}>If valid, the new block is added to the blockchain</motion.li>
+            </motion.ol>
 
             <h3 className="text-2xl font-semibold text-blue-600 mt-4">Advantages</h3>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Highly secure against attacks</li>
-              <li>Proven track record (used by Bitcoin)</li>
-            </ul>
+            <motion.ul 
+              className="list-disc pl-5 space-y-3"
+              variants={listVariants}
+            >
+              <motion.li variants={itemVariants}>Highly secure against attacks</motion.li>
+              <motion.li variants={itemVariants}>Proven track record (used by Bitcoin)</motion.li>
+            </motion.ul>
 
             <h3 className="text-2xl font-semibold text-blue-600 mt-4">Disadvantages</h3>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Energy-intensive</li>
-              <li>Potential for mining centralization</li>
-              <li>Slower transaction processing</li>
-            </ul>
+            <motion.ul 
+              className="list-disc pl-5 space-y-3"
+              variants={listVariants}
+            >
+              <motion.li variants={itemVariants}>Energy-intensive</motion.li>
+              <motion.li variants={itemVariants}>Potential for mining centralization</motion.li>
+              <motion.li variants={itemVariants}>Slower transaction processing</motion.li>
+            </motion.ul>
 
             <h3 className="text-2xl font-semibold text-blue-600 mt-4">Examples</h3>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Bitcoin</li>
-              <li>Litecoin</li>
-              <li>Dogecoin</li>
-            </ul>
+            <motion.ul 
+              className="list-disc pl-5 space-y-3"
+              variants={listVariants}
+            >
+              <motion.li variants={itemVariants}>Bitcoin</motion.li>
+              <motion.li variants={itemVariants}>Litecoin</motion.li>
+              <motion.li variants={itemVariants}>Dogecoin</motion.li>
+            </motion.ul>
           </motion.section>
 
           <motion.section
-            variants={contentVariants}
+            variants={sectionVariants}
             initial="hidden"
-            animate="visible"
+            whileInView="visible"
+            viewport={{ once: true }}
           >
             <h2 className="text-3xl font-bold text-blue-700">Proof of Stake (PoS)</h2>
-            <h3 className="text-2xl font-semibold text-blue-600">Definition</h3>
-            <p>
+            <motion.p variants={contentVariants}>
               A consensus mechanism where validators are chosen based on the amount 
               of cryptocurrency they hold and are willing to "stake".
-            </p>
+            </motion.p>
 
             <h3 className="text-2xl font-semibold text-blue-600 mt-4">How PoS Works</h3>
-            <ol className="list-decimal pl-5 space-y-3">
-              <li>Validators lock up a certain amount of cryptocurrency as stake</li>
-              <li>The protocol selects a validator to create the next block</li>
-              <li>If the validator acts honestly, they receive a reward</li>
-              <li>If they act maliciously, they may lose their stake</li>
-            </ol>
+            <motion.ol 
+              className="list-decimal pl-5 space-y-3"
+              variants={listVariants}
+            >
+              <motion.li variants={itemVariants}>Validators lock up a certain amount of cryptocurrency as stake</motion.li>
+              <motion.li variants={itemVariants}>The protocol selects a validator to create the next block</motion.li>
+              <motion.li variants={itemVariants}>If the validator acts honestly, they receive a reward</motion.li>
+              <motion.li variants={itemVariants}>If they act maliciously, they may lose their stake</motion.li>
+            </motion.ol>
 
             <h3 className="text-2xl font-semibold text-blue-600 mt-4">Advantages</h3>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>More energy-efficient than PoW</li>
-              <li>Potentially faster transaction processing</li>
-              <li>Encourages long-term holding of cryptocurrency</li>
-            </ul>
+            <motion.ul 
+              className="list-disc pl-5 space-y-3"
+              variants={listVariants}
+            >
+              <motion.li variants={itemVariants}>More energy-efficient than PoW</motion.li>
+              <motion.li variants={itemVariants}>Potentially faster transaction processing</motion.li>
+              <motion.li variants={itemVariants}>Encourages long-term holding of cryptocurrency</motion.li>
+            </motion.ul>
 
             <h3 className="text-2xl font-semibold text-blue-600 mt-4">Disadvantages</h3>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Potential for centralization (rich get richer)</li>
-              <li>Less proven than PoW</li>
-              <li>Possible security vulnerabilities</li>
-            </ul>
+            <motion.ul 
+              className="list-disc pl-5 space-y-3"
+              variants={listVariants}
+            >
+              <motion.li variants={itemVariants}>Potential for centralization (rich get richer)</motion.li>
+              <motion.li variants={itemVariants}>Less proven than PoW</motion.li>
+              <motion.li variants={itemVariants}>Possible security vulnerabilities</motion.li>
+            </motion.ul>
 
             <h3 className="text-2xl font-semibold text-blue-600 mt-4">Examples</h3>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Solana</li>
-              <li>Mina</li>
-              <li>Tezos</li>
-            </ul>
+            <motion.ul 
+              className="list-disc pl-5 space-y-3"
+              variants={listVariants}
+            >
+              <motion.li variants={itemVariants}>Solana</motion.li>
+              <motion.li variants={itemVariants}>Mina</motion.li>
+              <motion.li variants={itemVariants}>Tezos</motion.li>
+            </motion.ul>
           </motion.section>
 
           <motion.section
-            variants={contentVariants}
+            variants={sectionVariants}
             initial="hidden"
-            animate="visible"
+            whileInView="visible"
+            viewport={{ once: true }}
           >
             <h2 className="text-3xl font-bold text-blue-700">Other Consensus Mechanisms</h2>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Delegated Proof of Stake (DPoS): Stakeholders vote for delegates</li>
-              <li>Proof of Authority (PoA): Transactions validated by approved accounts</li>
-              <li>Practical Byzantine Fault Tolerance (PBFT): Nodes vote on validity</li>
-              <li>Proof of Burn (PoB): Miners burn coins to earn mining rights</li>
-            </ul>
+            <motion.ul 
+              className="list-disc pl-5 space-y-3"
+              variants={listVariants}
+            >
+              <motion.li variants={itemVariants}>Delegated Proof of Stake (DPoS): Stakeholders vote for delegates</motion.li>
+              <motion.li variants={itemVariants}>Proof of Authority (PoA): Transactions validated by approved accounts</motion.li>
+              <motion.li variants={itemVariants}>Practical Byzantine Fault Tolerance (PBFT): Nodes vote on validity</motion.li>
+              <motion.li variants={itemVariants}>Proof of Burn (PoB): Miners burn coins to earn mining rights</motion.li>
+            </motion.ul>
           </motion.section>
 
           <motion.section
-            variants={contentVariants}
+            variants={sectionVariants}
             initial="hidden"
-            animate="visible"
+            whileInView="visible"
+            viewport={{ once: true }}
           >
             <h2 className="text-3xl font-bold text-blue-700">Future of Consensus Mechanisms</h2>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Ongoing research into more efficient and secure mechanisms</li>
-              <li>Hybrid models combining different consensus mechanisms</li>
-              <li>Focus on scalability and environmental sustainability</li>
-            </ul>
+            <motion.ul 
+              className="list-disc pl-5 space-y-3"
+              variants={listVariants}
+            >
+              <motion.li variants={itemVariants}>Ongoing research into more efficient and secure mechanisms</motion.li>
+              <motion.li variants={itemVariants}>Hybrid models combining different consensus mechanisms</motion.li>
+              <motion.li variants={itemVariants}>Focus on scalability and environmental sustainability</motion.li>
+            </motion.ul>
           </motion.section>
 
           {isFullyRead && (
