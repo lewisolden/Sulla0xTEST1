@@ -167,7 +167,11 @@ export default function Module2() {
           </TabsContent>
 
           <TabsContent value="quiz">
-            <Quiz moduleId={2} />
+            <Card>
+              <CardContent>
+                <Quiz moduleId={2} />
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
 
