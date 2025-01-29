@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { ProgressProvider } from "@/context/progress-context";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
+import Curriculum from "@/pages/curriculum";
 
 // Module 1 Routes
 import Module1Landing from "@/pages/modules/module1";
@@ -43,6 +44,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/curriculum" component={Curriculum} />
 
       {/* Module 1 Routes */}
       <Route path="/modules/module1" component={Module1Landing} />
