@@ -8,17 +8,17 @@ export default function Footer() {
           <h3 className="text-2xl font-bold mb-4">Sulla</h3>
           <p>Democratizing cryptocurrency education for everyone.</p>
         </div>
-        
+
         <div>
           <h4 className="font-semibold mb-3">Quick Links</h4>
           <nav className="space-y-2">
             <Link href="/" className="block hover:text-blue-200">Home</Link>
-            <Link href="/modules/module1" className="block hover:text-blue-200">Module 1</Link>
-            <Link href="/modules/module2" className="block hover:text-blue-200">Module 2</Link>
-            <Link href="/modules/module3" className="block hover:text-blue-200">Module 3</Link>
+            <Link href="/about" className="block hover:text-blue-200">About</Link>
+            <Link href="/curriculum" className="block hover:text-blue-200">Curriculum</Link>
+            <Link href="/modules/module1" className="block hover:text-blue-200">Start Learning</Link>
           </nav>
         </div>
-        
+
         <div>
           <h4 className="font-semibold mb-3">Connect</h4>
           <div className="flex space-x-4">
