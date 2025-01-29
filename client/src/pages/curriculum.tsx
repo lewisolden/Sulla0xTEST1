@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { BookOpen, GraduationCap, Zap } from "lucide-react";
+import { BookOpen, GraduationCap, Zap, Gamepad2 } from "lucide-react";
 import { motion } from "framer-motion";
 import Footer from "@/components/layout/footer";
 
@@ -40,6 +40,18 @@ const modules = [
       "Types of Blockchains",
       "Blockchain Development Platforms",
       "Advanced Blockchain Concepts"
+    ]
+  },
+  {
+    id: 4,
+    icon: Gamepad2,
+    title: "Interactive Learning Games",
+    description: "Learn blockchain concepts through hands-on simulations and interactive games.",
+    sections: [
+      "Mining Simulator",
+      "Blockchain Explorer",
+      "Smart Contract Builder",
+      "Consensus Mechanism Demo"
     ]
   }
 ];
