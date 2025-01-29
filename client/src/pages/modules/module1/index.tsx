@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/layout/footer";
 import { Progress } from "@/components/ui/progress";
-import { BookOpen, History, Bitcoin, Coins, TrendingUp, Lock, Book } from "lucide-react";
+import { BookOpen, History, Bitcoin, Coins, TrendingUp, Lock, Book, CheckCircle2 } from "lucide-react";
 import { useProgress } from "@/context/progress-context";
 
 const module1Topics = [
@@ -144,11 +144,23 @@ export default function Module1() {
                         <li key={index} className="text-sm mb-1">{subsection}</li>
                       ))}
                     </ul>
-                    <Link href={topic.path}>
-                      <Button>
-                        {topic.completed ? "Review Topic" : "Start Topic"}
-                      </Button>
-                    </Link>
+                    <div className="flex gap-2">
+                      <Link href={topic.path}>
+                        <Button>
+                          {topic.completed ? "Review Topic" : "Start Topic"}
+                        </Button>
+                      </Link>
+                      <Link href={`${topic.path}/quiz`}>
+                        <Button 
+                          variant="secondary"
+                          disabled={!topic.completed}
+                          className="gap-2"
+                        >
+                          <CheckCircle2 className="h-4 w-4" />
+                          Topic Quiz
+                        </Button>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </CardContent>
