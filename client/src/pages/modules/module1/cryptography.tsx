@@ -1,10 +1,17 @@
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { useProgress } from "@/context/progress-context";
+import { Button } from "@/components/ui/button";
+import { Link } from "wouter";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import CryptographyQuiz from "@/components/modules/quizzes/CryptographyQuiz";
 
 export default function CryptographySection() {
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [showQuiz, setShowQuiz] = useState(false);
+  const { updateProgress } = useProgress();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,11 +28,7 @@ export default function CryptographySection() {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const updateProgress = (moduleId: number, sectionId: string, completed: boolean) => {
-    console.log(`Progress updated: Module ${moduleId}, Section ${sectionId}, Completed: ${completed}`);
-  };
+  }, [updateProgress]);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -37,6 +40,14 @@ export default function CryptographySection() {
       </div>
 
       <div className="max-w-4xl mx-auto">
+        <div className="mb-6">
+          <Link href="/modules/module1/crypto-market">
+            <Button variant="ghost" className="gap-2">
+              <ArrowLeft className="h-4 w-4" /> Back to Crypto Market Dynamics
+            </Button>
+          </Link>
+        </div>
+
         <h1 className="text-4xl font-bold text-blue-800 mb-6">
           Cryptography in Cryptocurrency
         </h1>
@@ -65,11 +76,42 @@ export default function CryptographySection() {
           </ul>
 
           {isFullyRead && (
-            <Card className="mt-8 bg-green-100 border-l-4 border-green-500 p-4">
-              <p className="text-green-700">
-                🎉 You've completed the Cryptography section!
-              </p>
-            </Card>
+            <div className="mt-8 space-y-6">
+              <Card className="bg-green-100 border-l-4 border-green-500 p-4">
+                <p className="text-green-700">
+                  🎉 You've completed the Cryptography section! You now understand the 
+                  fundamental cryptographic concepts that power cryptocurrencies.
+                </p>
+              </Card>
+
+              <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
+                <Link href="/modules/module1/crypto-market">
+                  <Button 
+                    variant="outline"
+                    size="lg"
+                    className="w-full md:w-auto"
+                  >
+                    <ArrowLeft className="mr-2 h-4 w-4" /> Previous Topic
+                  </Button>
+                </Link>
+
+                <Link href="/modules/module1/quiz">
+                  <Button 
+                    size="lg"
+                    className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
+                  >
+                    Take Module Quiz <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+              </div>
+
+              {/* {showQuiz && (
+                <div className="mt-8">
+                  <h2 className="text-2xl font-bold text-blue-800 mb-4">Topic Quiz</h2>
+                  <CryptographyQuiz />
+                </div>
+              )} */}
+            </div>
           )}
         </div>
       </div>

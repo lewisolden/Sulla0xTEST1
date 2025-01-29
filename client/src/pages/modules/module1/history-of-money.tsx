@@ -4,7 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import HistoryOfMoneyQuiz from "@/components/modules/quizzes/HistoryOfMoneyQuiz";
 
 export default function HistoryOfMoneySection() {
@@ -13,7 +13,6 @@ export default function HistoryOfMoneySection() {
   const [showQuiz, setShowQuiz] = useState(false);
   const { updateProgress } = useProgress();
 
-  // Progress tracking
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -33,7 +32,6 @@ export default function HistoryOfMoneySection() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Scroll Progress Bar */}
       <div className="fixed top-0 left-0 w-full h-1 bg-gray-300 z-50">
         <div 
           className="h-full bg-blue-600" 
@@ -42,6 +40,14 @@ export default function HistoryOfMoneySection() {
       </div>
 
       <div className="max-w-4xl mx-auto">
+        <div className="mb-6">
+          <Link href="/modules/module1/digital-currencies">
+            <Button variant="ghost" className="gap-2">
+              <ArrowLeft className="h-4 w-4" /> Back to Digital Currencies
+            </Button>
+          </Link>
+        </div>
+
         <h1 className="text-4xl font-bold text-blue-800 mb-6">
           History of Money
         </h1>
@@ -89,16 +95,16 @@ export default function HistoryOfMoneySection() {
               </p>
             </Card>
 
-            <div className="flex flex-col items-center gap-4">
-              {!showQuiz && (
+            <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
+              <Link href="/modules/module1/digital-currencies">
                 <Button 
-                  onClick={() => setShowQuiz(true)}
+                  variant="outline"
                   size="lg"
                   className="w-full md:w-auto"
                 >
-                  Take Topic Quiz
+                  <ArrowLeft className="mr-2 h-4 w-4" /> Previous Topic
                 </Button>
-              )}
+              </Link>
 
               <Link href="/modules/module1/bitcoin">
                 <Button 
