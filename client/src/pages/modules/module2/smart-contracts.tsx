@@ -5,6 +5,7 @@ import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import SmartContractFlow from "@/components/diagrams/SmartContractFlow";
 
 export default function SmartContractsSection() {
   const [isFullyRead, setIsFullyRead] = useState(false);
@@ -196,6 +197,7 @@ export default function SmartContractsSection() {
             viewport={{ once: true }}
           >
             <h2 className="text-3xl font-bold text-blue-700">How Smart Contracts Work</h2>
+            <SmartContractFlow />
             <motion.ol 
               className="list-decimal pl-5 space-y-3"
               variants={listVariants}

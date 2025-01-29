@@ -5,6 +5,7 @@ import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import ConsensusComparison from "@/components/diagrams/ConsensusComparison";
 
 export default function ConsensusMechanismsSection() {
   const [isFullyRead, setIsFullyRead] = useState(false);
@@ -118,6 +119,16 @@ export default function ConsensusMechanismsSection() {
               <motion.li variants={itemVariants}>Ensures all nodes in the network agree on the current state</motion.li>
               <motion.li variants={itemVariants}>Prevents double-spending and maintains network integrity</motion.li>
             </motion.ul>
+          </motion.section>
+
+          <motion.section
+            variants={sectionVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl font-bold text-blue-700">Comparison of Consensus Mechanisms</h2>
+            <ConsensusComparison />
           </motion.section>
 
           <motion.section
