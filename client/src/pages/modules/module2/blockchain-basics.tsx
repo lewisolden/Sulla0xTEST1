@@ -6,8 +6,6 @@ import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Quiz from "@/components/modules/quiz";
 
 export default function BlockchainBasicsSection() {
   const [isFullyRead, setIsFullyRead] = useState(false);
@@ -72,145 +70,132 @@ export default function BlockchainBasicsSection() {
           Blockchain Basics
         </motion.h1>
 
-        <Tabs defaultValue="content" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="content">Content</TabsTrigger>
-            <TabsTrigger value="quiz">Quiz</TabsTrigger>
-          </TabsList>
+        <Card>
+          <CardContent className="pt-6">
+            <div className="prose lg:prose-xl text-gray-700 space-y-6">
+              <motion.section
+                variants={contentVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <p className="lead">
+                  A blockchain is a distributed, decentralised ledger that records transactions across many computers in a way that ensures the integrity and security of the data. It's the underlying technology that powers cryptocurrencies like Bitcoin, but its potential applications extend far beyond digital currencies.
+                </p>
+              </motion.section>
 
-          <TabsContent value="content">
-            <Card>
-              <CardContent className="pt-6">
-                <div className="prose lg:prose-xl text-gray-700 space-y-6">
-                  <motion.section
-                    variants={contentVariants}
-                    initial="hidden"
-                    animate="visible"
-                  >
-                    <p className="lead">
-                      A blockchain is a distributed, decentralised ledger that records transactions across many computers in a way that ensures the integrity and security of the data. It's the underlying technology that powers cryptocurrencies like Bitcoin, but its potential applications extend far beyond digital currencies.
-                    </p>
-                  </motion.section>
+              <motion.section
+                variants={contentVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+              >
+                <h2 className="text-3xl font-bold text-blue-700 mt-8">Key Characteristics</h2>
+                <div className="mt-4 space-y-4">
+                  <div className="bg-blue-50 p-6 rounded-lg">
+                    <h3 className="text-2xl font-semibold text-blue-600 mb-4">1. Distributed Ledger</h3>
+                    <ul className="list-disc pl-5 space-y-2">
+                      <li>Data is spread across multiple nodes (computers) in the network</li>
+                      <li>Each node has a complete copy of the entire blockchain</li>
+                      <li>Changes must be validated by the network</li>
+                    </ul>
+                  </div>
 
-                  <motion.section
-                    variants={contentVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                  >
-                    <h2 className="text-3xl font-bold text-blue-700 mt-8">Key Characteristics</h2>
-                    <div className="mt-4 space-y-4">
-                      <div className="bg-blue-50 p-6 rounded-lg">
-                        <h3 className="text-2xl font-semibold text-blue-600 mb-4">1. Distributed Ledger</h3>
-                        <ul className="list-disc pl-5 space-y-2">
-                          <li>Data is spread across multiple nodes (computers) in the network</li>
-                          <li>Each node has a complete copy of the entire blockchain</li>
-                          <li>Changes must be validated by the network</li>
-                        </ul>
-                      </div>
+                  <div className="bg-green-50 p-6 rounded-lg">
+                    <h3 className="text-2xl font-semibold text-green-600 mb-4">2. Decentralisation</h3>
+                    <ul className="list-disc pl-5 space-y-2">
+                      <li>No single authority controls the blockchain</li>
+                      <li>Consensus among network participants validates transactions</li>
+                      <li>Resistant to manipulation and censorship</li>
+                    </ul>
+                  </div>
 
-                      <div className="bg-green-50 p-6 rounded-lg">
-                        <h3 className="text-2xl font-semibold text-green-600 mb-4">2. Decentralisation</h3>
-                        <ul className="list-disc pl-5 space-y-2">
-                          <li>No single authority controls the blockchain</li>
-                          <li>Consensus among network participants validates transactions</li>
-                          <li>Resistant to manipulation and censorship</li>
-                        </ul>
-                      </div>
+                  <div className="bg-purple-50 p-6 rounded-lg">
+                    <h3 className="text-2xl font-semibold text-purple-600 mb-4">3. Immutability</h3>
+                    <ul className="list-disc pl-5 space-y-2">
+                      <li>Once data is recorded, it's extremely difficult to change or delete</li>
+                      <li>Each block contains a reference to the previous block</li>
+                      <li>Creates an unbreakable chain of information</li>
+                    </ul>
+                  </div>
 
-                      <div className="bg-purple-50 p-6 rounded-lg">
-                        <h3 className="text-2xl font-semibold text-purple-600 mb-4">3. Immutability</h3>
-                        <ul className="list-disc pl-5 space-y-2">
-                          <li>Once data is recorded, it's extremely difficult to change or delete</li>
-                          <li>Each block contains a reference to the previous block</li>
-                          <li>Creates an unbreakable chain of information</li>
-                        </ul>
-                      </div>
-
-                      <div className="bg-orange-50 p-6 rounded-lg">
-                        <h3 className="text-2xl font-semibold text-orange-600 mb-4">4. Transparency</h3>
-                        <ul className="list-disc pl-5 space-y-2">
-                          <li>All transactions are visible to all participants</li>
-                          <li>Complete transaction history is maintained</li>
-                          <li>Enhances accountability and reduces fraud</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </motion.section>
-
-                  <motion.section
-                    variants={contentVariants}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true }}
-                  >
-                    <h2 className="text-3xl font-bold text-blue-700 mt-8">Basic Structure</h2>
-                    <div className="mt-4">
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <Card className="p-6">
-                          <h3 className="text-xl font-semibold mb-3">Blocks</h3>
-                          <ul className="list-disc pl-5 space-y-2">
-                            <li>Contain a list of transactions</li>
-                            <li>Include a timestamp</li>
-                            <li>Have a unique identifier (hash)</li>
-                            <li>Store reference to previous block</li>
-                          </ul>
-                        </Card>
-
-                        <Card className="p-6">
-                          <h3 className="text-xl font-semibold mb-3">Chain</h3>
-                          <ul className="list-disc pl-5 space-y-2">
-                            <li>Blocks linked in chronological order</li>
-                            <li>Each block contains previous block's hash</li>
-                            <li>Forms an immutable sequence</li>
-                          </ul>
-                        </Card>
-
-                        <Card className="p-6">
-                          <h3 className="text-xl font-semibold mb-3">Transactions</h3>
-                          <ul className="list-disc pl-5 space-y-2">
-                            <li>Represent transfer of value or data</li>
-                            <li>Must be validated by network</li>
-                            <li>Cryptographically secured</li>
-                          </ul>
-                        </Card>
-
-                        <Card className="p-6">
-                          <h3 className="text-xl font-semibold mb-3">Nodes</h3>
-                          <ul className="list-disc pl-5 space-y-2">
-                            <li>Computers in the blockchain network</li>
-                            <li>Validate transactions</li>
-                            <li>Maintain blockchain copy</li>
-                          </ul>
-                        </Card>
-                      </div>
-                    </div>
-                  </motion.section>
-
-                  {isFullyRead && (
-                    <motion.div
-                      className="mt-8 space-y-6"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.3 }}
-                    >
-                      <Card className="bg-green-100 border-l-4 border-green-500 p-4">
-                        <p className="text-green-700">
-                          🎉 Congratulations! You've completed the Blockchain Basics section.
-                          Select the Quiz tab above to test your knowledge!
-                        </p>
-                      </Card>
-                    </motion.div>
-                  )}
+                  <div className="bg-orange-50 p-6 rounded-lg">
+                    <h3 className="text-2xl font-semibold text-orange-600 mb-4">4. Transparency</h3>
+                    <ul className="list-disc pl-5 space-y-2">
+                      <li>All transactions are visible to all participants</li>
+                      <li>Complete transaction history is maintained</li>
+                      <li>Enhances accountability and reduces fraud</li>
+                    </ul>
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
+              </motion.section>
 
-          <TabsContent value="quiz">
-            <Quiz moduleId={2} />
-          </TabsContent>
-        </Tabs>
+              <motion.section
+                variants={contentVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+              >
+                <h2 className="text-3xl font-bold text-blue-700 mt-8">Basic Structure</h2>
+                <div className="mt-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <Card className="p-6">
+                      <h3 className="text-xl font-semibold mb-3">Blocks</h3>
+                      <ul className="list-disc pl-5 space-y-2">
+                        <li>Contain a list of transactions</li>
+                        <li>Include a timestamp</li>
+                        <li>Have a unique identifier (hash)</li>
+                        <li>Store reference to previous block</li>
+                      </ul>
+                    </Card>
+
+                    <Card className="p-6">
+                      <h3 className="text-xl font-semibold mb-3">Chain</h3>
+                      <ul className="list-disc pl-5 space-y-2">
+                        <li>Blocks linked in chronological order</li>
+                        <li>Each block contains previous block's hash</li>
+                        <li>Forms an immutable sequence</li>
+                      </ul>
+                    </Card>
+
+                    <Card className="p-6">
+                      <h3 className="text-xl font-semibold mb-3">Transactions</h3>
+                      <ul className="list-disc pl-5 space-y-2">
+                        <li>Represent transfer of value or data</li>
+                        <li>Must be validated by network</li>
+                        <li>Cryptographically secured</li>
+                      </ul>
+                    </Card>
+
+                    <Card className="p-6">
+                      <h3 className="text-xl font-semibold mb-3">Nodes</h3>
+                      <ul className="list-disc pl-5 space-y-2">
+                        <li>Computers in the blockchain network</li>
+                        <li>Validate transactions</li>
+                        <li>Maintain blockchain copy</li>
+                      </ul>
+                    </Card>
+                  </div>
+                </div>
+              </motion.section>
+
+              {isFullyRead && (
+                <motion.div
+                  className="mt-8 space-y-6"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <Card className="bg-green-100 border-l-4 border-green-500 p-4">
+                    <p className="text-green-700">
+                      🎉 Congratulations! You've completed the Blockchain Basics section.
+                      Return to Module 2 overview to continue your learning journey!
+                    </p>
+                  </Card>
+                </motion.div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
 
         <div className="mt-8 flex flex-col md:flex-row items-center gap-4 justify-between">
           <Link href="/modules/module2">

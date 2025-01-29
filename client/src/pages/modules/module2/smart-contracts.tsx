@@ -6,8 +6,6 @@ import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Quiz from "@/components/modules/quiz";
 
 export default function SmartContractsSection() {
   const [isFullyRead, setIsFullyRead] = useState(false);
@@ -72,13 +70,8 @@ export default function SmartContractsSection() {
           Smart Contracts
         </motion.h1>
 
-        <Tabs defaultValue="content" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="content">Content</TabsTrigger>
-            <TabsTrigger value="quiz">Quiz</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="content">
+        <Card>
+          <CardContent className="pt-6">
             <div className="prose lg:prose-xl text-gray-700 space-y-6">
               <motion.section
                 variants={contentVariants}
@@ -221,19 +214,15 @@ export default function SmartContractsSection() {
                 >
                   <Card className="bg-green-100 border-l-4 border-green-500 p-4">
                     <p className="text-green-700">
-                      🎉 Congratulations! You've completed the Smart Contracts section. 
-                      Select the Quiz tab above to test your knowledge!
+                      🎉 Congratulations! You've completed the Smart Contracts section.
+                      Return to Module 2 overview to continue your learning journey!
                     </p>
                   </Card>
                 </motion.div>
               )}
             </div>
-          </TabsContent>
-
-          <TabsContent value="quiz">
-            <Quiz moduleId={2} sectionId="smart-contracts" />
-          </TabsContent>
-        </Tabs>
+          </CardContent>
+        </Card>
 
         <div className="mt-8 flex flex-col md:flex-row items-center gap-4 justify-between">
           <Link href="/modules/module2">
