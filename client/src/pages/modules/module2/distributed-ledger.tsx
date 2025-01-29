@@ -4,13 +4,13 @@ import { Card } from "@/components/ui/card";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
 import DistributedLedgerDiagram from "@/components/diagrams/DistributedLedgerDiagram";
 
 export default function DistributedLedgerSection() {
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const { updateProgress } = useProgress();
+  const { progress, updateProgress } = useProgress();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,6 +28,11 @@ export default function DistributedLedgerSection() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [updateProgress]);
+
+  // Check if the quiz is completed
+  const isQuizCompleted = progress.some(
+    p => p.moduleId === 2 && p.sectionId === 'distributed-ledger-quiz' && p.completed
+  );
 
   const contentVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -185,14 +190,27 @@ export default function DistributedLedgerSection() {
                   </Button>
                 </Link>
 
-                <Link href="/modules/module2/consensus-mechanisms">
-                  <Button 
-                    size="lg"
-                    className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
-                  >
-                    Next Topic: Consensus Mechanisms <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
+                <div className="flex gap-4 w-full md:w-auto">
+                  <Link href={`/modules/module2/distributed-ledger/quiz`}>
+                    <Button 
+                      variant="secondary"
+                      size="lg"
+                      className="gap-2"
+                      disabled={!isFullyRead}
+                    >
+                      <CheckCircle2 className="h-4 w-4" />
+                      Topic Quiz
+                    </Button>
+                  </Link>
+                  <Link href="/modules/module2/consensus-mechanisms">
+                    <Button 
+                      size="lg"
+                      className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
+                    >
+                      Next Topic: Consensus Mechanisms <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </motion.div>
           )}
