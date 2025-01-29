@@ -2,6 +2,8 @@ import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/layout/footer";
+import { Progress } from "@/components/ui/progress";
+import { BookOpen, GraduationCap, History, Bitcoin, Coins, TrendingUp, Lock } from "lucide-react";
 
 export default function Module1Landing() {
   return (
@@ -13,148 +15,133 @@ export default function Module1Landing() {
 
         <Card className="mb-8">
           <CardContent className="p-8">
-            <h2 className="text-2xl font-bold text-blue-700 mb-4">Introduction</h2>
+            <h2 className="text-2xl font-bold text-blue-700 mb-4">Module Overview</h2>
             <div className="prose lg:prose-xl text-gray-700">
               <p>
-                Welcome to the first module of our journey into the world of cryptocurrencies 
-                and blockchain technology. In this foundational module, we'll explore the basic 
-                concepts that underpin this revolutionary technology and set the stage for the 
-                more advanced topics we'll cover later in the course.
-              </p>
-              <p>
-                We'll begin by delving into the nature of digital currencies, understanding what 
-                they are and how they differ from traditional forms of money. You'll learn about 
-                the historical context that led to the creation of cryptocurrencies, tracing the 
-                evolution of money from ancient barter systems to modern digital tokens.
-              </p>
-              <p>
-                Next, we'll focus on Bitcoin, the world's first and most famous cryptocurrency. 
-                We'll examine its creation, underlying technology, and the problems it was 
-                designed to solve. This will lead us into a broader discussion of other 
-                cryptocurrencies and tokens, giving you a comprehensive view of the current 
-                cryptocurrency landscape.
+                Welcome to Module 1! This foundational module introduces you to the world 
+                of cryptocurrencies and blockchain technology. You'll learn about the evolution 
+                of digital currencies, understand Bitcoin's revolutionary impact, and explore 
+                the broader cryptocurrency ecosystem.
               </p>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="mb-8">
-          <CardContent className="p-8">
-            <h2 className="text-2xl font-bold text-blue-700 mb-4">Learning Objectives</h2>
-            <div className="space-y-4">
-              <p className="text-gray-700">At the end of this module, you will be able to:</p>
-              <ul className="list-disc pl-6 space-y-3 text-gray-700">
-                <li>Define digital currencies and distinguish between different types (e.g., virtual currencies, cryptocurrencies, central bank digital currencies)</li>
-                <li>Trace the evolution of money from barter systems to modern digital currencies, identifying key milestones in monetary history</li>
-                <li>Explain the fundamental problem that Bitcoin was designed to solve (the double-spending problem) and describe how its blockchain technology addresses this issue</li>
-                <li>Analyze the key components of Bitcoin's architecture, including its consensus mechanism (Proof of Work), transaction model (UTXO), and monetary policy</li>
-                <li>Compare and contrast Bitcoin with major altcoins, highlighting their unique features and use cases</li>
-                <li>Differentiate between coins and tokens in the cryptocurrency ecosystem</li>
-                <li>Interpret basic market metrics such as market capitalization, trading volume, and price volatility</li>
-                <li>Apply fundamental analysis techniques to evaluate cryptocurrency projects</li>
-                <li>Describe the basic principles of cryptography underlying cryptocurrencies</li>
-                <li>Demonstrate the ability to securely set up a basic cryptocurrency wallet</li>
-              </ul>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-8">
-            <h2 className="text-2xl font-bold text-blue-700 mb-4">Module Sections</h2>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-blue-50 p-6 rounded-lg">
-                <h3 className="text-xl font-semibold text-blue-800 mb-3">
-                  1. Introduction to Digital Currencies
-                </h3>
-                <p className="text-gray-700 mb-4">
-                  Explore the basics of digital currencies and their role in the modern 
-                  financial system.
-                </p>
+        <div className="grid gap-6">
+          {/* Section 1: Digital Currencies */}
+          <Card className="transition-all hover:shadow-lg">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-full bg-blue-100">
+                  <BookOpen className="w-6 h-6 text-blue-600" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-semibold text-blue-800">1. Digital Currencies</h3>
+                  <p className="text-gray-600 mt-1">Learn about the fundamentals of digital currencies and their impact.</p>
+                </div>
                 <Link href="/modules/module1/digital-currencies">
-                  <Button variant="link" className="text-blue-600 hover:text-blue-800 p-0">
-                    Start Section →
-                  </Button>
+                  <Button>Start Learning</Button>
                 </Link>
               </div>
+            </CardContent>
+          </Card>
 
-              <div className="bg-blue-50 p-6 rounded-lg">
-                <h3 className="text-xl font-semibold text-blue-800 mb-3">
-                  2. History of Money
-                </h3>
-                <p className="text-gray-700 mb-4">
-                  Trace the evolution of money from ancient times to modern digital currencies.
-                </p>
-                <Link href="/modules/module1/history">
-                  <Button variant="link" className="text-blue-600 hover:text-blue-800 p-0">
-                    Start Section →
-                  </Button>
+          {/* Section 2: History of Money */}
+          <Card className="transition-all hover:shadow-lg">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-full bg-blue-100">
+                  <History className="w-6 h-6 text-blue-600" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-semibold text-blue-800">2. History of Money</h3>
+                  <p className="text-gray-600 mt-1">Explore the evolution from traditional to digital currencies.</p>
+                </div>
+                <Link href="/modules/module1/history-of-money">
+                  <Button>Start Learning</Button>
                 </Link>
               </div>
+            </CardContent>
+          </Card>
 
-              <div className="bg-blue-50 p-6 rounded-lg">
-                <h3 className="text-xl font-semibold text-blue-800 mb-3">
-                  3. Bitcoin: The First Cryptocurrency
-                </h3>
-                <p className="text-gray-700 mb-4">
-                  Learn about Bitcoin's creation, features, and impact on the financial world.
-                </p>
+          {/* Section 3: Bitcoin */}
+          <Card className="transition-all hover:shadow-lg">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-full bg-blue-100">
+                  <Bitcoin className="w-6 h-6 text-blue-600" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-semibold text-blue-800">3. Bitcoin</h3>
+                  <p className="text-gray-600 mt-1">Understand Bitcoin's creation, features, and significance.</p>
+                </div>
                 <Link href="/modules/module1/bitcoin">
-                  <Button variant="link" className="text-blue-600 hover:text-blue-800 p-0">
-                    Start Section →
-                  </Button>
+                  <Button>Start Learning</Button>
                 </Link>
               </div>
+            </CardContent>
+          </Card>
 
-              <div className="bg-blue-50 p-6 rounded-lg">
-                <h3 className="text-xl font-semibold text-blue-800 mb-3">
-                  4. Altcoins and Tokens
-                </h3>
-                <p className="text-gray-700 mb-4">
-                  Discover the variety of alternative cryptocurrencies and digital tokens.
-                </p>
-                <Link href="/modules/module1/altcoins">
-                  <Button variant="link" className="text-blue-600 hover:text-blue-800 p-0">
-                    Start Section →
-                  </Button>
+          {/* Section 4: Altcoins and Tokens */}
+          <Card className="transition-all hover:shadow-lg">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-full bg-blue-100">
+                  <Coins className="w-6 h-6 text-blue-600" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-semibold text-blue-800">4. Altcoins and Tokens</h3>
+                  <p className="text-gray-600 mt-1">Explore alternative cryptocurrencies and digital tokens.</p>
+                </div>
+                <Link href="/modules/module1/altcoins-tokens">
+                  <Button>Start Learning</Button>
                 </Link>
               </div>
+            </CardContent>
+          </Card>
 
-              <div className="bg-blue-50 p-6 rounded-lg">
-                <h3 className="text-xl font-semibold text-blue-800 mb-3">
-                  5. Cryptocurrency Market Dynamics
-                </h3>
-                <p className="text-gray-700 mb-4">
-                  Understand how cryptocurrency markets work and key market metrics.
-                </p>
-                <Link href="/modules/module1/market-dynamics">
-                  <Button variant="link" className="text-blue-600 hover:text-blue-800 p-0">
-                    Start Section →
-                  </Button>
+          {/* Section 5: Crypto Market */}
+          <Card className="transition-all hover:shadow-lg">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-full bg-blue-100">
+                  <TrendingUp className="w-6 h-6 text-blue-600" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-semibold text-blue-800">5. Crypto Market Dynamics</h3>
+                  <p className="text-gray-600 mt-1">Learn about cryptocurrency markets and trading basics.</p>
+                </div>
+                <Link href="/modules/module1/crypto-market">
+                  <Button>Start Learning</Button>
                 </Link>
               </div>
+            </CardContent>
+          </Card>
 
-              <div className="bg-blue-50 p-6 rounded-lg">
-                <h3 className="text-xl font-semibold text-blue-800 mb-3">
-                  6. Basic Cryptography
-                </h3>
-                <p className="text-gray-700 mb-4">
-                  Learn the fundamental cryptographic principles behind cryptocurrencies.
-                </p>
+          {/* Section 6: Cryptography */}
+          <Card className="transition-all hover:shadow-lg">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-full bg-blue-100">
+                  <Lock className="w-6 h-6 text-blue-600" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-semibold text-blue-800">6. Cryptography</h3>
+                  <p className="text-gray-600 mt-1">Understand the cryptographic principles behind cryptocurrencies.</p>
+                </div>
                 <Link href="/modules/module1/cryptography">
-                  <Button variant="link" className="text-blue-600 hover:text-blue-800 p-0">
-                    Start Section →
-                  </Button>
+                  <Button>Start Learning</Button>
                 </Link>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
 
+        {/* Module Quiz */}
         <div className="mt-8 text-center">
-          <Link href="/modules/module1/digital-currencies">
-            <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
-              Begin Module 1
+          <Link href="/modules/module1/quiz">
+            <Button size="lg" className="bg-green-600 hover:bg-green-700">
+              Take Module Quiz
             </Button>
           </Link>
         </div>
