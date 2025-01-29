@@ -1,12 +1,12 @@
 import { Link } from "wouter";
-import { BookOpen, GraduationCap, Zap, Brain, Target, Users, Code, PlayCircle, PauseCircle } from "lucide-react";
+import { BookOpen, GraduationCap, Zap, Brain, Target, Users, Code, PlayCircle, PauseCircle, X } from "lucide-react"; // Added X icon import
 import ModuleCard from "@/components/modules/module-card";
 import Footer from "@/components/layout/footer";
 import { motion } from "framer-motion";
 import { useState } from "react";
 
 export default function Home() {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -160,35 +160,53 @@ export default function Home() {
               {...fadeInUp}
               transition={{ delay: 0.2 }}
             >
-              <div className="relative aspect-video bg-gray-100 rounded-lg overflow-hidden">
+              <div className="relative aspect-video bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg overflow-hidden cursor-pointer group"
+                   onClick={() => setIsVideoModalOpen(true)}>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  {isPlaying ? (
-                    <button
-                      onClick={() => setIsPlaying(false)}
-                      className="bg-blue-600 text-white p-4 rounded-full hover:bg-blue-700 transition-colors"
-                    >
-                      <PauseCircle className="w-8 h-8" />
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => setIsPlaying(true)}
-                      className="bg-blue-600 text-white p-4 rounded-full hover:bg-blue-700 transition-colors"
-                    >
-                      <PlayCircle className="w-8 h-8" />
-                    </button>
-                  )}
+                  <img 
+                    src="/video-thumbnail.jpg" 
+                    alt="Video Preview" 
+                    className="absolute inset-0 w-full h-full object-cover opacity-80"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-30 group-hover:bg-opacity-40 transition-all duration-300"></div>
+                  <div className="relative z-10 flex flex-col items-center text-white">
+                    <PlayCircle className="w-16 h-16 mb-2 group-hover:scale-110 transition-transform duration-300" />
+                    <span className="text-lg font-medium">Watch Introduction</span>
+                  </div>
                 </div>
-                {/* This would be replaced with an actual video player component */}
-                <div className="w-full h-full bg-gradient-to-br from-blue-100 to-blue-200" />
               </div>
               <div className="mt-4 text-center">
                 <p className="text-gray-600">
-                  Click to watch a preview of our interactive learning experience
+                  Watch our comprehensive introduction to blockchain and cryptocurrency
                 </p>
               </div>
             </motion.div>
           </div>
         </div>
+
+        {/* Video Modal */}
+        {isVideoModalOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4">
+            <div className="relative w-full max-w-4xl bg-black rounded-lg overflow-hidden">
+              <button 
+                onClick={() => setIsVideoModalOpen(false)}
+                className="absolute top-4 right-4 text-white hover:text-gray-300 z-10"
+              >
+                <X className="w-6 h-6" />
+              </button>
+              <div className="relative pt-[56.25%]">
+                <iframe
+                  className="absolute inset-0 w-full h-full"
+                  src="https://www.youtube.com/embed/SSo_EIwHSd4"
+                  title="Introduction to Cryptocurrency"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            </div>
+          </div>
+        )}
       </section>
 
       {/* Modules Section */}
