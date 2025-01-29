@@ -4,13 +4,13 @@ import { Card } from "@/components/ui/card";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
 import ConsensusComparison from "@/components/diagrams/ConsensusComparison";
 
 export default function ConsensusMechanismsSection() {
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const { updateProgress } = useProgress();
+  const { progress, updateProgress } = useProgress();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,6 +28,11 @@ export default function ConsensusMechanismsSection() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [updateProgress]);
+
+  // Check if the quiz is completed
+  const isQuizCompleted = progress.some(
+    p => p.moduleId === 2 && p.sectionId === 'consensus-mechanisms-quiz' && p.completed
+  );
 
   const contentVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -293,11 +298,24 @@ export default function ConsensusMechanismsSection() {
                   </Button>
                 </Link>
 
-                <Link href="/modules/module2/smart-contracts">
-                  <Button className="w-full md:w-auto bg-blue-600 hover:bg-blue-700">
-                    Next: Smart Contracts <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
+                <div className="flex gap-4 w-full md:w-auto">
+                  <Link href={`/modules/module2/consensus-mechanisms/quiz`}>
+                    <Button 
+                      variant="secondary"
+                      size="lg"
+                      className="gap-2"
+                      disabled={!isFullyRead}
+                    >
+                      <CheckCircle2 className="h-4 w-4" />
+                      Topic Quiz
+                    </Button>
+                  </Link>
+                  <Link href="/modules/module2/smart-contracts">
+                    <Button className="w-full md:w-auto bg-blue-600 hover:bg-blue-700">
+                      Next: Smart Contracts <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </motion.div>
           )}
