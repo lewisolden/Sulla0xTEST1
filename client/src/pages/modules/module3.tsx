@@ -35,13 +35,9 @@ export default function Module3() {
             <Card>
               <CardContent className="pt-6">
                 <div className="prose max-w-none">
-                  <img 
-                    src="/attached_assets/image_1738180555744.png" 
-                    alt="Blockchain Technology Overview"
-                    className="w-full rounded-lg mb-6 object-cover max-h-[300px]"
-                  />
-
-                  <h2 className="text-2xl font-semibold mb-4">Welcome to Module 3</h2>
+                  <h2 className="text-3xl font-bold text-blue-800 mb-6 text-center">
+                    Course Overview
+                  </h2>
 
                   <div className="space-y-4 text-gray-700">
                     <p>
