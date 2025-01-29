@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/layout/footer";
 import { Progress } from "@/components/ui/progress";
-import { BookOpen, History, Bitcoin, Coins, TrendingUp, Lock, Book } from "lucide-react";
+import { BookOpen, History, Bitcoin, Coins, TrendingUp, Lock, Book, Brain } from "lucide-react";
 import { useProgress } from "@/context/progress-context";
 
 const module1Topics = [
@@ -81,14 +81,13 @@ const module1Topics = [
 
 export default function Module1() {
   const { progress } = useProgress();
-
   const moduleProgress = progress.filter(p => p.moduleId === 1);
   const completedSections = moduleProgress.filter(p => p.completed).length;
   const progressPercentage = (completedSections / module1Topics.length) * 100;
 
   const topicsWithProgress = module1Topics.map(topic => ({
     ...topic,
-    completed: moduleProgress.some(p => p.sectionId === topic.id && p.completed),
+    completed: moduleProgress.some(p => p.sectionId === topic.id && p.completed)
   }));
 
   return (
@@ -100,9 +99,24 @@ export default function Module1() {
 
         <div className="mb-8">
           <Progress value={progressPercentage} className="w-full" />
-          <p className="text-sm text-muted-foreground mt-2">
-            Progress: {Math.round(progressPercentage)}%
-          </p>
+          <p className="text-sm text-muted-foreground mt-2">Progress: {Math.round(progressPercentage)}%</p>
+        </div>
+
+        {/* Add Quiz Button at the top */}
+        <div className="mb-8 text-center">
+          <Link href="/modules/module1/quiz">
+            <Button 
+              size="lg" 
+              className="bg-green-600 hover:bg-green-700 gap-2"
+              disabled={progressPercentage < 100}
+            >
+              <Brain className="w-5 h-5" />
+              {progressPercentage < 100 
+                ? "Complete all topics to unlock Module Quiz" 
+                : "Take Module Quiz"
+              }
+            </Button>
+          </Link>
         </div>
 
         <Card className="mb-8">

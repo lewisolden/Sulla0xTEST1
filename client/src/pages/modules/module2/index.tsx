@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/layout/footer";
 import { Progress } from "@/components/ui/progress";
-import { BookOpen, Database, Network, Code } from "lucide-react";
+import { BookOpen, Database, Network, Code, Brain } from "lucide-react";
 import { useProgress } from "@/context/progress-context";
 
 const module2Topics = [
@@ -74,6 +74,22 @@ export default function Module2() {
         <h1 className="text-4xl font-bold text-blue-900 mb-6">
           Module 2: What is a Blockchain?
         </h1>
+
+        <div className="mb-8 text-center">
+          <Link href="/modules/module2/quiz">
+            <Button 
+              size="lg" 
+              className="bg-green-600 hover:bg-green-700 gap-2"
+              disabled={progressPercentage < 100}
+            >
+              <Brain className="w-5 h-5" />
+              {progressPercentage < 100 
+                ? "Complete all topics to unlock Module Quiz" 
+                : "Take Module Quiz"
+              }
+            </Button>
+          </Link>
+        </div>
 
         <div className="mb-8">
           <Progress value={progressPercentage} className="w-full" />
