@@ -1,66 +1,95 @@
-import { Link, useLocation } from "wouter";
+import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/layout/footer";
 import { Progress } from "@/components/ui/progress";
-import { BookOpen, GraduationCap, History, Bitcoin, Coins, TrendingUp, Lock } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Quiz from "@/components/modules/quiz";
+import { BookOpen, History, Bitcoin, Coins, TrendingUp, Lock } from "lucide-react";
 import { useProgress } from "@/context/progress-context";
 
-const module1Sections = [
+const module1Topics = [
   {
     id: "digital-currencies",
-    title: "Digital Currencies",
-    path: "/modules/module1/digital-currencies",
+    title: "Introduction to Digital Currencies",
     icon: BookOpen,
+    path: "/modules/module1/digital-currencies",
+    subsections: [
+      "Definition of digital currencies",
+      "Brief history and evolution of digital money",
+      "Key characteristics of cryptocurrencies"
+    ]
   },
   {
     id: "history-of-money",
-    title: "History of Money",
-    path: "/modules/module1/history-of-money",
+    title: "History and Evolution of Money",
     icon: History,
+    path: "/modules/module1/history-of-money",
+    subsections: [
+      "Traditional forms of money and their limitations",
+      "The transition from physical to digital currencies",
+      "The need for decentralized digital currencies"
+    ]
   },
   {
     id: "bitcoin",
-    title: "Bitcoin",
-    path: "/modules/module1/bitcoin",
+    title: "Bitcoin: The First Cryptocurrency",
     icon: Bitcoin,
+    path: "/modules/module1/bitcoin",
+    subsections: [
+      "Introduction to Bitcoin and its creation",
+      "Key features of Bitcoin",
+      "The Bitcoin blockchain and how it works",
+      "Mining and transaction verification"
+    ]
   },
   {
     id: "altcoins-tokens",
     title: "Altcoins and Tokens",
-    path: "/modules/module1/altcoins-tokens",
     icon: Coins,
+    path: "/modules/module1/altcoins-tokens",
+    subsections: [
+      "Definition of altcoins and their purpose",
+      "Overview of major altcoins",
+      "Introduction to tokens and their various types",
+      "Differences between coins and tokens"
+    ]
   },
   {
     id: "crypto-market",
-    title: "Crypto Market",
-    path: "/modules/module1/crypto-market",
+    title: "Cryptocurrency Market Dynamics",
     icon: TrendingUp,
+    path: "/modules/module1/crypto-market",
+    subsections: [
+      "Introduction to cryptocurrency markets",
+      "Market capitalization and trading volume",
+      "Factors influencing cryptocurrency prices",
+      "Basic trading concepts"
+    ]
   },
   {
     id: "cryptography",
-    title: "Cryptography",
-    path: "/modules/module1/cryptography",
+    title: "Basic Cryptography Concepts",
     icon: Lock,
-  },
+    path: "/modules/module1/cryptography",
+    subsections: [
+      "Introduction to cryptography in the context of cryptocurrencies",
+      "Public and private keys",
+      "Digital signatures",
+      "Hash functions and their role in blockchain"
+    ]
+  }
 ];
 
 export default function Module1() {
-  const [location] = useLocation();
-  const { progress, isLoading } = useProgress();
+  const { progress } = useProgress();
 
-  const currentSection = location.split("/").pop();
   const moduleProgress = progress.filter(p => p.moduleId === 1);
-
-  const sectionsWithProgress = module1Sections.map(section => ({
-    ...section,
-    completed: moduleProgress.some(p => p.sectionId === section.id && p.completed),
-  }));
-
   const completedSections = moduleProgress.filter(p => p.completed).length;
-  const progressPercentage = (completedSections / module1Sections.length) * 100;
+  const progressPercentage = (completedSections / module1Topics.length) * 100;
+
+  const topicsWithProgress = module1Topics.map(topic => ({
+    ...topic,
+    completed: moduleProgress.some(p => p.sectionId === topic.id && p.completed),
+  }));
 
   return (
     <div className="min-h-screen bg-background">
@@ -71,96 +100,55 @@ export default function Module1() {
 
         <div className="mb-8">
           <Progress value={progressPercentage} className="w-full" />
-          <p className="text-sm text-muted-foreground mt-2">Progress: {Math.round(progressPercentage)}%</p>
+          <p className="text-sm text-muted-foreground mt-2">
+            Progress: {Math.round(progressPercentage)}%
+          </p>
         </div>
 
-        <Tabs defaultValue="overview" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="content">Content</TabsTrigger>
-            <TabsTrigger value="quiz">Quiz</TabsTrigger>
-          </TabsList>
+        <Card className="mb-8">
+          <CardContent className="pt-6">
+            <p className="text-lg text-gray-700 mb-6">
+              This module is designed to introduce learners to the basic concepts of 
+              cryptocurrencies and their underlying technology. It's structured into 
+              six main sections that will give you a comprehensive understanding of 
+              the fundamentals.
+            </p>
+          </CardContent>
+        </Card>
 
-          <TabsContent value="overview">
-            <Card>
-              <CardContent className="pt-6">
-                <h2 className="text-2xl font-bold text-blue-700 mb-4">Introduction</h2>
-                <div className="prose lg:prose-xl text-gray-700">
-                  <p>
-                    Welcome to the first module of our journey into the world of cryptocurrencies 
-                    and blockchain technology. In this foundational module, we'll explore the basic 
-                    concepts that underpin this revolutionary technology and set the stage for the 
-                    more advanced topics we'll cover later in the course.
-                  </p>
-                  <p>
-                    We'll begin by delving into the nature of digital currencies, understanding what 
-                    they are and how they differ from traditional forms of money. You'll learn about 
-                    the historical context that led to the creation of cryptocurrencies, tracing the 
-                    evolution of money from ancient barter systems to modern digital tokens.
-                  </p>
-                  <p>
-                    Next, we'll focus on Bitcoin, the world's first and most famous cryptocurrency. 
-                    We'll examine its creation, underlying technology, and the problems it was 
-                    designed to solve. This will lead us into a broader discussion of other 
-                    cryptocurrencies and tokens, giving you a comprehensive view of the current 
-                    cryptocurrency landscape.
-                  </p>
-                </div>
-
-                <h3 className="text-xl font-bold mt-8 mb-4">Learning Objectives</h3>
-                <ul className="list-disc pl-6 space-y-2 text-gray-700">
-                  <li>Define digital currencies and distinguish between different types (e.g., virtual currencies, cryptocurrencies, central bank digital currencies)</li>
-                  <li>Trace the evolution of money from barter systems to modern digital currencies, identifying key milestones in monetary history</li>
-                  <li>Explain the fundamental problem that Bitcoin was designed to solve (the double-spending problem) and describe how its blockchain technology addresses this issue</li>
-                  <li>Analyze the key components of Bitcoin's architecture, including its consensus mechanism (Proof of Work), transaction model (UTXO), and monetary policy</li>
-                  <li>Compare and contrast Bitcoin with major altcoins, highlighting their unique features and use cases</li>
-                  <li>Differentiate between coins and tokens in the cryptocurrency ecosystem</li>
-                  <li>Interpret basic market metrics such as market capitalization, trading volume, and price volatility</li>
-                  <li>Apply fundamental analysis techniques to evaluate cryptocurrency projects</li>
-                  <li>Describe the basic principles of cryptography underlying cryptocurrencies</li>
-                  <li>Demonstrate the ability to securely set up a basic cryptocurrency wallet</li>
-                </ul>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="content">
-            <Card>
-              <CardContent className="pt-6">
-                <h2 className="text-2xl font-bold text-blue-700 mb-6">Module Sections</h2>
-                <div className="grid md:grid-cols-2 gap-6">
-                  {sectionsWithProgress.map((section) => (
-                    <div key={section.id} className="bg-blue-50 p-6 rounded-lg">
-                      <div className="flex items-center gap-3 mb-3">
-                        <div className="p-2 rounded-full bg-blue-100">
-                          <section.icon className="w-5 h-5 text-blue-600" />
-                        </div>
-                        <h3 className="text-xl font-semibold text-blue-800">
-                          {section.title}
-                          {section.completed && (
-                            <span className="text-green-600 text-sm ml-2">(Completed)</span>
-                          )}
-                        </h3>
-                      </div>
-                      <p className="text-gray-700 mb-4">
-                        {getDescription(section.id)}
-                      </p>
-                      <Link href={section.path}>
-                        <Button variant="link" className="text-blue-600 hover:text-blue-800 p-0">
-                          {section.completed ? "Review Section" : "Start Section"} →
-                        </Button>
-                      </Link>
+        <div className="grid gap-6">
+          {topicsWithProgress.map((topic) => (
+            <Card key={topic.id} className="transition-all hover:shadow-lg">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 rounded-full bg-blue-100 mt-1">
+                    <topic.icon className="w-6 h-6 text-blue-600" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <h3 className="text-xl font-semibold text-blue-800">
+                        {topic.title}
+                      </h3>
+                      {topic.completed && (
+                        <span className="text-green-600 text-sm">(Completed)</span>
+                      )}
                     </div>
-                  ))}
+                    <ul className="list-disc pl-5 text-gray-600 mb-4">
+                      {topic.subsections.map((subsection, index) => (
+                        <li key={index} className="text-sm mb-1">{subsection}</li>
+                      ))}
+                    </ul>
+                    <Link href={topic.path}>
+                      <Button>
+                        {topic.completed ? "Review Topic" : "Start Topic"}
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               </CardContent>
             </Card>
-          </TabsContent>
-
-          <TabsContent value="quiz">
-            <Quiz moduleId={1} />
-          </TabsContent>
-        </Tabs>
+          ))}
+        </div>
 
         <div className="mt-8 text-center">
           <Link href="/modules/module1/quiz">
@@ -170,7 +158,7 @@ export default function Module1() {
               disabled={progressPercentage < 100}
             >
               {progressPercentage < 100 
-                ? "Complete all sections to unlock quiz" 
+                ? "Complete all topics to unlock quiz" 
                 : "Take Module Quiz"
               }
             </Button>
@@ -180,16 +168,4 @@ export default function Module1() {
       <Footer />
     </div>
   );
-}
-
-function getDescription(sectionId: string): string {
-  const descriptions: Record<string, string> = {
-    "digital-currencies": "Explore the basics of digital currencies and their role in the modern financial system.",
-    "history-of-money": "Trace the evolution of money from ancient times to modern digital currencies.",
-    "bitcoin": "Learn about Bitcoin's creation, features, and impact on the financial world.",
-    "altcoins-tokens": "Discover the variety of alternative cryptocurrencies and digital tokens.",
-    "crypto-market": "Understand how cryptocurrency markets work and key market metrics.",
-    "cryptography": "Learn the fundamental cryptographic principles behind cryptocurrencies.",
-  };
-  return descriptions[sectionId] || "";
 }
