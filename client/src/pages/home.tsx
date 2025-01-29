@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { BookOpen, GraduationCap, Zap, Brain, Target, Users, Code, PlayCircle, PauseCircle, X, Gamepad2 } from "lucide-react"; 
+import { BookOpen, GraduationCap, Zap, Brain, Target, Trophy, Code, PlayCircle, PauseCircle, X, Gamepad2 } from "lucide-react"; 
 import ModuleCard from "@/components/modules/module-card";
 import Footer from "@/components/layout/footer";
 import { motion } from "framer-motion";
@@ -87,10 +87,10 @@ export default function Home() {
               {...fadeInUp}
               transition={{ delay: 0.3 }}
             >
-              <Target className="w-12 h-12 text-blue-600 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Practical Experience</h3>
+              <Trophy className="w-12 h-12 text-blue-600 mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Achievement Badges</h3>
               <p className="text-gray-600">
-                Interactive simulations and real-world applications
+                Earn badges and track your progress as you master blockchain concepts
               </p>
             </motion.div>
 
@@ -99,10 +99,10 @@ export default function Home() {
               {...fadeInUp}
               transition={{ delay: 0.4 }}
             >
-              <Users className="w-12 h-12 text-blue-600 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Community Driven</h3>
+              <Gamepad2 className="w-12 h-12 text-blue-600 mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Interactive Learning</h3>
               <p className="text-gray-600">
-                Learn alongside a global community of crypto enthusiasts
+                Learn through games, quizzes, and hands-on blockchain simulations
               </p>
             </motion.div>
           </div>
@@ -150,12 +150,12 @@ export default function Home() {
 
               <div className="flex items-start space-x-4">
                 <div className="bg-blue-100 p-2 rounded">
-                  <Users className="w-6 h-6 text-blue-600" />
+                  <Trophy className="w-6 h-6 text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-2">Expert Support</h3>
+                  <h3 className="text-xl font-semibold mb-2">Achievement System</h3>
                   <p className="text-gray-600">
-                    Get help from our community of blockchain experts
+                    Unlock badges and rewards as you complete modules and challenges
                   </p>
                 </div>
               </div>
