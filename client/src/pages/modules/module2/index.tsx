@@ -1,21 +1,77 @@
-import React from 'react';
 import { Link } from "wouter";
-import { Progress } from "@/components/ui/progress";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useProgress } from "@/context/progress-context";
 import Footer from "@/components/layout/footer";
-import Module2Routes from './Module2Routes';
+import { Progress } from "@/components/ui/progress";
+import { BookOpen, Database, Network, Code } from "lucide-react";
+import { useProgress } from "@/context/progress-context";
 
-const Module2 = () => {
+const module2Topics = [
+  {
+    id: "blockchain-basics",
+    title: "Blockchain Basics",
+    icon: BookOpen,
+    path: "/modules/module2/blockchain-basics",
+    subsections: [
+      "Understanding blocks and chains",
+      "Basic structure of a blockchain",
+      "Decentralization and its importance",
+      "Key features of blockchain technology"
+    ]
+  },
+  {
+    id: "distributed-ledger",
+    title: "Distributed Ledger Technology",
+    icon: Database,
+    path: "/modules/module2/distributed-ledger",
+    subsections: [
+      "What is a distributed ledger",
+      "How data is stored and shared",
+      "Network nodes and their roles",
+      "Benefits of distributed systems"
+    ]
+  },
+  {
+    id: "consensus-mechanisms",
+    title: "Consensus Mechanisms",
+    icon: Network,
+    path: "/modules/module2/consensus-mechanisms",
+    subsections: [
+      "Understanding consensus in blockchain",
+      "Proof of Work (PoW)",
+      "Proof of Stake (PoS)",
+      "Other consensus mechanisms"
+    ]
+  },
+  {
+    id: "smart-contracts",
+    title: "Smart Contracts",
+    icon: Code,
+    path: "/modules/module2/smart-contracts",
+    subsections: [
+      "Introduction to smart contracts",
+      "How smart contracts work",
+      "Use cases and applications",
+      "Smart contract platforms"
+    ]
+  }
+];
+
+export default function Module2() {
   const { progress } = useProgress();
   const moduleProgress = progress.filter(p => p.moduleId === 2);
   const completedSections = moduleProgress.filter(p => p.completed).length;
-  const progressPercentage = (completedSections / 4) * 100;
+  const progressPercentage = (completedSections / module2Topics.length) * 100;
+
+  const topicsWithProgress = module2Topics.map(topic => ({
+    ...topic,
+    completed: moduleProgress.some(p => p.sectionId === topic.id && p.completed)
+  }));
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-blue-800 mb-6">
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-4xl font-bold text-blue-900 mb-6">
           Module 2: What is a Blockchain?
         </h1>
 
@@ -26,121 +82,65 @@ const Module2 = () => {
           </p>
         </div>
 
-        <div className="bg-white shadow-lg rounded-lg p-8 mb-8">
-          <h2 className="text-2xl font-bold text-blue-700 mb-4">Introduction</h2>
-          <div className="prose lg:prose-xl text-gray-700">
-            <p className="mb-4">
-              This module introduces students to the fundamental concept of blockchain technology, 
-              which underlies cryptocurrencies and has potential applications across various industries. 
-              Blockchain represents a revolutionary approach to storing and validating data in a 
-              decentralized and secure manner.
+        <Card className="mb-8">
+          <CardContent className="pt-6">
+            <p className="text-lg text-gray-700 mb-6">
+              This module introduces you to the fundamental concepts of blockchain technology,
+              exploring its structure, key features, and various applications in the digital world.
             </p>
-            <p className="mb-4">
-              Students will learn about the basic structure of a blockchain, understanding how it 
-              functions as a distributed ledger that records transactions across many computers. 
-              The module explores the key features that make blockchain unique, such as its 
-              immutability, transparency, and resistance to tampering.
-            </p>
-            <p className="mb-4">
-              The course will cover how blocks are created, validated, and linked together to form 
-              the chain, emphasizing the role of cryptography in ensuring the security and integrity 
-              of the data. You'll also gain insights into the consensus mechanisms that allow 
-              blockchain networks to agree on the state of the ledger without central authority.
-            </p>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
-        <div className="bg-white shadow-lg rounded-lg p-8 mb-8">
-          <h2 className="text-2xl font-bold text-blue-700 mb-4">Learning Objectives</h2>
-          <div className="space-y-4">
-            <p className="text-gray-700">At the end of this module, you will be able to:</p>
-            <ul className="list-disc pl-6 space-y-3 text-gray-700">
-              <li>Define what a blockchain is and its basic structure</li>
-              <li>Explain how blocks are created and linked in a blockchain</li>
-              <li>Describe the key features of blockchain technology (e.g., immutability, transparency, decentralization)</li>
-              <li>Identify the basic components of a blockchain system</li>
-              <li>Distinguish between blockchain and traditional databases</li>
-              <li>Explain the role of cryptography in maintaining blockchain security</li>
-              <li>Recognize potential applications of blockchain technology beyond cryptocurrencies</li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="bg-white shadow-lg rounded-lg p-8">
-          <h2 className="text-2xl font-bold text-blue-700 mb-4">Module Sections</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-blue-50 p-6 rounded-lg">
-              <h3 className="text-xl font-semibold text-blue-800 mb-3">
-                1. Blockchain Basics
-              </h3>
-              <p className="text-gray-700 mb-4">
-                Understand the fundamental structure and components of blockchain technology.
-              </p>
-              <Link href="/modules/module2/blockchain-basics">
-                <Button className="text-blue-600 hover:text-blue-800 font-medium">
-                  Start Section →
-                </Button>
-              </Link>
-            </div>
-
-            <div className="bg-blue-50 p-6 rounded-lg">
-              <h3 className="text-xl font-semibold text-blue-800 mb-3">
-                2. Distributed Ledger Technology
-              </h3>
-              <p className="text-gray-700 mb-4">
-                Explore how distributed ledgers work and their role in blockchain systems.
-              </p>
-              <Link href="/modules/module2/distributed-ledger">
-                <Button className="text-blue-600 hover:text-blue-800 font-medium">
-                  Start Section →
-                </Button>
-              </Link>
-            </div>
-
-            <div className="bg-blue-50 p-6 rounded-lg">
-              <h3 className="text-xl font-semibold text-blue-800 mb-3">
-                3. Consensus Mechanisms
-              </h3>
-              <p className="text-gray-700 mb-4">
-                Learn about different consensus mechanisms like Proof of Work and Proof of Stake.
-              </p>
-              <Link href="/modules/module2/consensus-mechanisms">
-                <Button className="text-blue-600 hover:text-blue-800 font-medium">
-                  Start Section →
-                </Button>
-              </Link>
-            </div>
-
-            <div className="bg-blue-50 p-6 rounded-lg">
-              <h3 className="text-xl font-semibold text-blue-800 mb-3">
-                4. Smart Contracts
-              </h3>
-              <p className="text-gray-700 mb-4">
-                Discover how smart contracts enable automated, trustless transactions on blockchain.
-              </p>
-              <Link href="/modules/module2/smart-contracts">
-                <Button className="text-blue-600 hover:text-blue-800 font-medium">
-                  Start Section →
-                </Button>
-              </Link>
-            </div>
-          </div>
+        <div className="grid gap-6">
+          {topicsWithProgress.map((topic) => (
+            <Card key={topic.id} className="transition-all hover:shadow-lg">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-4">
+                  <div className="p-3 rounded-full bg-blue-100 mt-1">
+                    <topic.icon className="w-6 h-6 text-blue-600" />
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <h3 className="text-xl font-semibold text-blue-800">
+                        {topic.title}
+                      </h3>
+                      {topic.completed && (
+                        <span className="text-green-600 text-sm">(Completed)</span>
+                      )}
+                    </div>
+                    <ul className="list-disc pl-5 text-gray-600 mb-4">
+                      {topic.subsections.map((subsection, index) => (
+                        <li key={index} className="text-sm mb-1">{subsection}</li>
+                      ))}
+                    </ul>
+                    <Link href={topic.path}>
+                      <Button>
+                        {topic.completed ? "Review Topic" : "Start Topic"}
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
 
         <div className="mt-8 text-center">
-          <Link href="/modules/module2/blockchain-basics">
+          <Link href="/modules/module2/quiz">
             <Button 
-              className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 inline-block"
+              size="lg" 
+              className="bg-green-600 hover:bg-green-700"
+              disabled={progressPercentage < 100}
             >
-              Begin Module 2
+              {progressPercentage < 100 
+                ? "Complete all topics to unlock quiz" 
+                : "Take Module Quiz"
+              }
             </Button>
           </Link>
         </div>
-        <Module2Routes />
       </div>
       <Footer />
     </div>
   );
-};
-
-export default Module2;
+}
