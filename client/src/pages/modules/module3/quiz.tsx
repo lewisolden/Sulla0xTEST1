@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useProgress } from "@/context/progress-context";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, CheckCircle2, XCircle } from "lucide-react";
 
 const quizQuestions = [
   // Scalability & Interoperability Questions
@@ -137,32 +137,62 @@ const Module3Quiz = () => {
           <Card>
             <CardContent className="pt-6">
               <div className="text-center py-8">
-                <h2 className="text-2xl font-semibold text-gray-700 mb-4">
-                  Complete All Topics First
-                </h2>
-                <p className="text-gray-600 mb-6">
-                  Please complete all topics in Module 3 before taking the quiz:
-                </p>
-                <ul className="mt-4 space-y-2 list-none">
-                  {requiredSections.map(section => {
-                    const isComplete = progress.some(
-                      p => p.moduleId === 3 && p.sectionId === section && p.completed
-                    );
-                    return (
-                      <li key={section} className="flex items-center gap-2 justify-center">
-                        <span className={isComplete ? "text-green-600" : "text-red-600"}>
-                          {isComplete ? "✓" : "×"}
-                        </span>
-                        {section.split('-').map(word => 
-                          word.charAt(0).toUpperCase() + word.slice(1)
-                        ).join(' ')}
-                      </li>
-                    );
-                  })}
-                </ul>
-                <Link href="/modules/module3">
-                  <Button>Return to Module 3</Button>
-                </Link>
+                <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+                  <h2 className="text-xl font-semibold text-yellow-800 mb-2">
+                    ⚠️ Access Requirements
+                  </h2>
+                  <p className="text-yellow-700">
+                    You need to complete all three sections below before you can take the quiz.
+                  </p>
+                </div>
+
+                <div className="bg-white p-6 rounded-lg shadow-sm">
+                  <h3 className="text-lg font-medium text-gray-700 mb-4">Required Sections:</h3>
+                  <ul className="space-y-3">
+                    {requiredSections.map(section => {
+                      const isComplete = progress.some(
+                        p => p.moduleId === 3 && p.sectionId === section && p.completed
+                      );
+                      return (
+                        <li 
+                          key={section} 
+                          className={`flex items-center justify-between p-3 rounded-lg ${
+                            isComplete ? 'bg-green-50' : 'bg-gray-50'
+                          }`}
+                        >
+                          <span className="flex items-center gap-2">
+                            {isComplete ? (
+                              <CheckCircle2 className="h-5 w-5 text-green-500" />
+                            ) : (
+                              <XCircle className="h-5 w-5 text-gray-400" />
+                            )}
+                            <span className={`${isComplete ? 'text-green-700' : 'text-gray-600'}`}>
+                              {section.split('-').map(word => 
+                                word.charAt(0).toUpperCase() + word.slice(1)
+                              ).join(' ')}
+                            </span>
+                          </span>
+                          {!isComplete && (
+                            <Link href={`/modules/module3/${section}`}>
+                              <Button variant="outline" size="sm">
+                                Complete Section
+                              </Button>
+                            </Link>
+                          )}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+
+                <div className="mt-8">
+                  <Link href="/modules/module3">
+                    <Button variant="outline" className="gap-2">
+                      <ArrowLeft className="h-4 w-4" />
+                      Return to Module Overview
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -236,15 +266,23 @@ const Module3Quiz = () => {
         <Card className="p-8">
           <CardContent>
             {currentQuestion === 0 && (
-              <div className="mb-8 bg-blue-50 p-6 rounded-lg">
-                <h3 className="text-lg font-semibold text-blue-800 mb-2">Quiz Instructions</h3>
-                <ul className="list-disc pl-6 space-y-2 text-gray-700">
-                  <li>This quiz contains {quizQuestions.length} questions testing your knowledge of Module 3 concepts.</li>
-                  <li>You need to score at least 70% ({Math.ceil(quizQuestions.length * 0.7)} correct answers) to pass the quiz.</li>
-                  <li>Each question has one correct answer.</li>
-                  <li>You'll receive immediate feedback after each answer.</li>
-                  <li>You can retake the quiz if needed.</li>
-                </ul>
+              <div className="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-lg mb-8">
+                <h3 className="text-xl font-bold text-blue-900 mb-4">Quiz Requirements</h3>
+                <div className="space-y-4">
+                  <p className="text-blue-800 font-semibold">
+                    To pass this quiz, you need to:
+                  </p>
+                  <div className="bg-white p-4 rounded-lg">
+                    <p className="text-lg text-blue-900 font-medium">
+                      Get at least {Math.ceil(quizQuestions.length * 0.7)} out of {quizQuestions.length} questions correct (70%)
+                    </p>
+                  </div>
+                  <ul className="list-disc pl-6 space-y-2 text-blue-800">
+                    <li>You can retake the quiz as many times as needed</li>
+                    <li>You'll see immediately if each answer is correct</li>
+                    <li>Take your time - there's no time limit</li>
+                  </ul>
+                </div>
               </div>
             )}
 
