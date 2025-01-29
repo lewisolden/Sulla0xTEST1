@@ -6,11 +6,57 @@ import { useProgress } from "@/context/progress-context";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
+import { Scale, Network, Code } from "lucide-react";
+
+const moduleTopics = [
+  {
+    id: "scalability-interoperability",
+    title: "3.1 Blockchain Scalability and Interoperability",
+    path: "/modules/module3/scalability-interoperability",
+    icon: Scale,
+    subsections: [
+      "The Scalability Trilemma",
+      "Scalability Challenges and Solutions",
+      "Blockchain Interoperability",
+      "Cross-Chain Communication"
+    ]
+  },
+  {
+    id: "blockchain-types",
+    title: "3.2 Different Types of Blockchains",
+    path: "/modules/module3/blockchain-types",
+    icon: Network,
+    subsections: [
+      "Public Blockchains",
+      "Private Blockchains",
+      "Consortium Blockchains",
+      "Comparison of Blockchain Types"
+    ]
+  },
+  {
+    id: "development-platforms",
+    title: "3.3 Blockchain Development Platforms",
+    path: "/modules/module3/development-platforms",
+    icon: Code,
+    subsections: [
+      "Ethereum Platform",
+      "Solana Platform",
+      "Cardano Platform",
+      "Platform Comparison"
+    ]
+  }
+];
 
 export default function Module3() {
   const { progress } = useProgress();
   const moduleProgress = progress.filter(p => p.moduleId === 3);
-  const progressPercentage = 0; // Will be implemented when topics are added
+  const completedSections = moduleProgress.filter(p => p.completed).length;
+  const progressPercentage = (completedSections / moduleTopics.length) * 100;
+
+  const topicsWithProgress = moduleTopics.map(topic => ({
+    ...topic,
+    completed: moduleProgress.some(p => p.sectionId === topic.id && p.completed)
+  }));
 
   return (
     <div className="min-h-screen bg-background">
@@ -21,7 +67,7 @@ export default function Module3() {
 
         <div className="mb-8">
           <Progress value={progressPercentage} className="w-full" />
-          <p className="text-sm text-muted-foreground mt-2">Progress: {progressPercentage}%</p>
+          <p className="text-sm text-muted-foreground mt-2">Progress: {Math.round(progressPercentage)}%</p>
         </div>
 
         <Tabs defaultValue="overview" className="space-y-4">
@@ -76,7 +122,7 @@ export default function Module3() {
                   </ul>
 
                   <div className="mt-8 flex justify-center">
-                    <Link href="/modules/module3/blockchain-architecture">
+                    <Link href="/modules/module3/scalability-interoperability">
                       <Button 
                         size="lg"
                         className="bg-blue-600 hover:bg-blue-700"
@@ -91,14 +137,39 @@ export default function Module3() {
           </TabsContent>
 
           <TabsContent value="content">
-            <Card>
-              <CardContent className="pt-6">
-                <h2 className="text-2xl font-semibold mb-4">Module Content</h2>
-                <p className="text-muted-foreground mb-6">
-                  The content for this module is being prepared. Check back soon for detailed lessons on advanced blockchain technology concepts.
-                </p>
-              </CardContent>
-            </Card>
+            <div className="grid gap-6">
+              {topicsWithProgress.map((topic) => (
+                <Card key={topic.id} className="transition-all hover:shadow-lg">
+                  <CardContent className="p-6">
+                    <div className="flex items-start gap-4">
+                      <div className="p-3 rounded-full bg-blue-100 mt-1">
+                        <topic.icon className="w-6 h-6 text-blue-600" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <h3 className="text-xl font-semibold text-blue-800">
+                            {topic.title}
+                          </h3>
+                          {topic.completed && (
+                            <span className="text-green-600 text-sm">(Completed)</span>
+                          )}
+                        </div>
+                        <ul className="list-disc pl-5 text-gray-600 mb-4">
+                          {topic.subsections.map((subsection, index) => (
+                            <li key={index} className="text-sm mb-2">{subsection}</li>
+                          ))}
+                        </ul>
+                        <Link href={topic.path}>
+                          <Button>
+                            {topic.completed ? "Review Topic" : "Start Topic"}
+                          </Button>
+                        </Link>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </TabsContent>
 
           <TabsContent value="quiz">

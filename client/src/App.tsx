@@ -24,7 +24,13 @@ import ConsensusMechanismsSection from "@/pages/modules/module2/consensus-mechan
 import SmartContractsSection from "@/pages/modules/module2/smart-contracts";
 import Module2Quiz from "@/pages/modules/module2/quiz";
 
+// Module 3 Routes
 import Module3 from "@/pages/modules/module3";
+import ScalabilitySection from "@/pages/modules/module3/scalability-interoperability";
+import BlockchainTypesSection from "@/pages/modules/module3/blockchain-types";
+import DevelopmentPlatformsSection from "@/pages/modules/module3/development-platforms";
+import Module3Quiz from "@/pages/modules/module3/quiz";
+
 import Navigation from "@/components/layout/navigation";
 import TradingSimulator from "@/pages/trading-simulator";
 import GlossaryPage from "@/pages/glossary";
@@ -52,7 +58,13 @@ function Router() {
       <Route path="/modules/module2/smart-contracts" component={SmartContractsSection} />
       <Route path="/modules/module2/quiz" component={Module2Quiz} />
 
+      {/* Module 3 Routes */}
       <Route path="/modules/module3" component={Module3} />
+      <Route path="/modules/module3/scalability-interoperability" component={ScalabilitySection} />
+      <Route path="/modules/module3/blockchain-types" component={BlockchainTypesSection} />
+      <Route path="/modules/module3/development-platforms" component={DevelopmentPlatformsSection} />
+      <Route path="/modules/module3/quiz" component={Module3Quiz} />
+
       <Route path="/trading-simulator" component={TradingSimulator} />
       <Route path="/glossary" component={GlossaryPage} />
       <Route component={NotFound} />
