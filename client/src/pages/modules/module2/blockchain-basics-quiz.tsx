@@ -143,7 +143,7 @@ const BlockchainBasicsQuiz = () => {
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
                   <Link href="/modules/module2/blockchain-basics">
-                    <Button 
+                    <Button
                       variant="outline"
                       size="lg"
                       className="w-full sm:w-auto"
@@ -151,7 +151,7 @@ const BlockchainBasicsQuiz = () => {
                       <ArrowLeft className="mr-2 h-4 w-4" /> Back to Content
                     </Button>
                   </Link>
-                  <Button 
+                  <Button
                     onClick={restartQuiz}
                     className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700"
                   >
@@ -169,6 +169,18 @@ const BlockchainBasicsQuiz = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-6"
+        >
+          <Link href="/modules/module2/blockchain-basics">
+            <Button variant="ghost" className="gap-2">
+              <ArrowLeft className="h-4 w-4" /> Back to Blockchain Basics
+            </Button>
+          </Link>
+        </motion.div>
+
         <Card className="p-8">
           <CardContent>
             {currentQuestion === 0 && (
@@ -215,12 +227,12 @@ const BlockchainBasicsQuiz = () => {
                     onClick={() => handleAnswerSelect(index)}
                     className={`
                       w-full p-4 rounded-lg text-left transition-all duration-300
-                      ${selectedAnswer === null 
-                        ? 'bg-gray-100 hover:bg-blue-100' 
-                        : index === quizQuestions[currentQuestion].correctAnswer 
-                          ? 'bg-green-200' 
-                          : selectedAnswer === index 
-                            ? 'bg-red-200' 
+                      ${selectedAnswer === null
+                        ? 'bg-gray-100 hover:bg-blue-100'
+                        : index === quizQuestions[currentQuestion].correctAnswer
+                          ? 'bg-green-200'
+                          : selectedAnswer === index
+                            ? 'bg-red-200'
                             : 'bg-gray-100'}
                     `}
                     disabled={selectedAnswer !== null}
@@ -233,13 +245,13 @@ const BlockchainBasicsQuiz = () => {
               {showExplanation && (
                 <div className={`
                   mt-8 p-6 rounded-lg
-                  ${selectedAnswer === quizQuestions[currentQuestion].correctAnswer 
-                    ? 'bg-green-100 border-l-4 border-green-500' 
+                  ${selectedAnswer === quizQuestions[currentQuestion].correctAnswer
+                    ? 'bg-green-100 border-l-4 border-green-500'
                     : 'bg-red-100 border-l-4 border-red-500'}
                 `}>
                   <h3 className="font-bold mb-2">
-                    {selectedAnswer === quizQuestions[currentQuestion].correctAnswer 
-                      ? '✅ Correct!' 
+                    {selectedAnswer === quizQuestions[currentQuestion].correctAnswer
+                      ? '✅ Correct!'
                       : '❌ Incorrect'}
                   </h3>
                   <p className="text-gray-700">
@@ -254,8 +266,8 @@ const BlockchainBasicsQuiz = () => {
                   className="mt-8 w-full bg-blue-600 hover:bg-blue-700"
                   size="lg"
                 >
-                  {currentQuestion < quizQuestions.length - 1 
-                    ? 'Next Question' 
+                  {currentQuestion < quizQuestions.length - 1
+                    ? 'Next Question'
                     : 'Finish Quiz'}
                 </Button>
               )}
