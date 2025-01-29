@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
+import { useProgress } from "@/context/progress-context";
 
 const quizQuestions = [
   {
@@ -67,11 +68,7 @@ const DigitalCurrenciesQuiz = () => {
   const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
-
-  const updateProgress = (moduleId: number, sectionId: string, completed: boolean) => {
-    // In a real implementation, this would update progress tracking
-    console.log(`Progress updated: Module ${moduleId}, Section ${sectionId}, Completed: ${completed}`);
-  };
+  const { updateProgress } = useProgress();
 
   const handleAnswerSelect = (optionIndex: number) => {
     setSelectedAnswer(optionIndex);
@@ -80,7 +77,7 @@ const DigitalCurrenciesQuiz = () => {
 
   const moveToNextQuestion = () => {
     const isCorrect = selectedAnswer === quizQuestions[currentQuestion].correctAnswer;
-    
+
     if (isCorrect) {
       setScore(prev => prev + 1);
     }
@@ -92,7 +89,7 @@ const DigitalCurrenciesQuiz = () => {
     } else {
       setShowResult(true);
       const passThreshold = quizQuestions.length * 0.6;
-      updateProgress(1, 'digital-currencies', score >= passThreshold);
+      updateProgress(1, 'digital-currencies-quiz', score >= passThreshold);
     }
   };
 
@@ -117,7 +114,7 @@ const DigitalCurrenciesQuiz = () => {
           {score >= 3 ? (
             <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-4">
               <p className="text-green-700">
-                🎉 Congratulations! You've passed the module quiz!
+                🎉 Congratulations! You've passed the Digital Currencies quiz!
               </p>
             </div>
           ) : (
@@ -129,7 +126,7 @@ const DigitalCurrenciesQuiz = () => {
           )}
           <Button 
             onClick={restartQuiz}
-            className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
+            className="bg-blue-500 hover:bg-blue-600"
           >
             Restart Quiz
           </Button>
@@ -150,7 +147,7 @@ const DigitalCurrenciesQuiz = () => {
               Question {currentQuestion + 1} of {quizQuestions.length}
             </span>
           </h2>
-          
+
           <div className="bg-blue-50 rounded-lg p-4 mb-6">
             <p className="text-lg text-gray-700">
               {currentQuizQuestion.question}
@@ -199,7 +196,7 @@ const DigitalCurrenciesQuiz = () => {
           {selectedAnswer !== null && (
             <Button
               onClick={moveToNextQuestion}
-              className="mt-6 w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600"
+              className="mt-6 w-full bg-blue-500 hover:bg-blue-600"
             >
               {currentQuestion < quizQuestions.length - 1 
                 ? 'Next Question' 
