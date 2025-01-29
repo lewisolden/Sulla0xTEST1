@@ -2,10 +2,19 @@ import React from 'react';
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { ArrowLeft, Brain } from "lucide-react";
 
 const Module2Overview = () => {
   return (
     <div className="container mx-auto px-4 py-8">
+      <div className="mb-6">
+        <Link href="/modules/module2">
+          <Button variant="ghost" className="gap-2">
+            <ArrowLeft className="h-4 w-4" /> Back to Module 2
+          </Button>
+        </Link>
+      </div>
+
       <div className="max-w-4xl mx-auto">
         <h1 className="text-4xl font-bold text-blue-800 mb-6">
           Module 2: What is a Blockchain?
@@ -55,10 +64,17 @@ const Module2Overview = () => {
           </div>
         </Card>
 
-        <div className="text-center">
+        <div className="flex flex-col space-y-4">
           <Link href="/modules/module2/blockchain-basics">
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3">
+            <Button className="w-full bg-blue-600 hover:bg-blue-700">
               Start Learning
+            </Button>
+          </Link>
+
+          <Link href="/modules/module2/overview-quiz">
+            <Button variant="outline" className="w-full gap-2">
+              <Brain className="w-5 h-5" />
+              Take Overview Quiz
             </Button>
           </Link>
         </div>
