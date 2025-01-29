@@ -1,23 +1,16 @@
-import { motion } from "framer-motion";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { Database, Network, GitFork, Code, Book, CheckCircle2 } from "lucide-react";
-import { useProgress } from "@/context/progress-context";
-import { Link } from "wouter";
-import Footer from "@/components/layout/footer";
 import React from 'react';
-
+import { Link } from "wouter";
+import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
+import { useProgress } from "@/context/progress-context";
+import Footer from "@/components/layout/footer";
+import Module2Routes from './Module2Routes';
 
 const Module2 = () => {
   const { progress } = useProgress();
   const moduleProgress = progress.filter(p => p.moduleId === 2);
   const completedSections = moduleProgress.filter(p => p.completed).length;
   const progressPercentage = (completedSections / 4) * 100;
-
-  const handleNavigation = (path: string) => {
-    // Navigation is handled by wouter Link component
-  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -143,6 +136,7 @@ const Module2 = () => {
             </Button>
           </Link>
         </div>
+        <Module2Routes />
       </div>
       <Footer />
     </div>
