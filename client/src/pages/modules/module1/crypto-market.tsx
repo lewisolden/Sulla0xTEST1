@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { ArrowLeft, ArrowRight, Brain } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import CryptoMarketQuiz from "@/components/modules/quizzes/CryptoMarketQuiz";
 import MarketMetricsDiagram from "@/components/diagrams/MarketMetricsDiagram";
 import MarketBehaviorDiagram from "@/components/diagrams/MarketBehaviorDiagram";
@@ -151,42 +151,54 @@ export default function CryptoMarketSection() {
           >
             <Card className="bg-green-100 border-l-4 border-green-500 p-4">
               <p className="text-green-700">
-                🎉 You've completed the Cryptocurrency Market Dynamics section! Ready to test your knowledge?
+                🎉 You've completed the Cryptocurrency Market Dynamics section! You now understand 
+                how cryptocurrency markets function and the various factors that influence them.
               </p>
             </Card>
 
-            <div className="flex flex-col space-y-4">
-              <Link href="/modules/module1/crypto-market-quiz">
+            <Card className="p-6 border-blue-200 border-2">
+              <h3 className="text-xl font-bold text-blue-800 mb-4">Ready to Practice?</h3>
+              <p className="text-gray-700 mb-4">
+                Now that you understand market dynamics, try our interactive trading simulator 
+                to practice trading in a risk-free environment!
+              </p>
+              <Link href="/trading-simulator">
                 <Button 
                   size="lg"
-                  className="w-full bg-green-600 hover:bg-green-700 gap-2"
+                  className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
                 >
-                  <Brain className="w-5 h-5" />
-                  Take Topic Quiz
+                  Launch Trading Simulator
+                </Button>
+              </Link>
+            </Card>
+
+            <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
+              <Link href="/modules/module1/altcoins-tokens">
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  className="w-full md:w-auto"
+                >
+                  <ArrowLeft className="mr-2 h-4 w-4" /> Previous Topic
                 </Button>
               </Link>
 
-              <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
-                <Link href="/modules/module1/altcoins-tokens">
-                  <Button 
-                    variant="outline"
-                    size="lg"
-                    className="w-full md:w-auto"
-                  >
-                    <ArrowLeft className="mr-2 h-4 w-4" /> Previous Topic
-                  </Button>
-                </Link>
-
-                <Link href="/modules/module1/cryptography">
-                  <Button 
-                    size="lg"
-                    className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
-                  >
-                    Next Topic: Basic Cryptography <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-              </div>
+              <Link href="/modules/module1/cryptography">
+                <Button 
+                  size="lg"
+                  className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
+                >
+                  Next Topic: Basic Cryptography <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
             </div>
+
+            {showQuiz && (
+              <div className="mt-8">
+                <h2 className="text-2xl font-bold text-blue-800 mb-4">Topic Quiz</h2>
+                <CryptoMarketQuiz />
+              </div>
+            )}
           </motion.div>
         )}
       </div>

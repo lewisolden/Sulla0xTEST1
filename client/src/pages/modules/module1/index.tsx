@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/layout/footer";
 import { Progress } from "@/components/ui/progress";
-import { BookOpen, History, Bitcoin, Coins, TrendingUp, Lock, Book, Brain } from "lucide-react";
+import { BookOpen, History, Bitcoin, Coins, TrendingUp, Lock, Book } from "lucide-react";
 import { useProgress } from "@/context/progress-context";
 
 const module1Topics = [
@@ -81,13 +81,14 @@ const module1Topics = [
 
 export default function Module1() {
   const { progress } = useProgress();
+
   const moduleProgress = progress.filter(p => p.moduleId === 1);
   const completedSections = moduleProgress.filter(p => p.completed).length;
   const progressPercentage = (completedSections / module1Topics.length) * 100;
 
   const topicsWithProgress = module1Topics.map(topic => ({
     ...topic,
-    completed: moduleProgress.some(p => p.sectionId === topic.id && p.completed)
+    completed: moduleProgress.some(p => p.sectionId === topic.id && p.completed),
   }));
 
   return (
@@ -99,32 +100,17 @@ export default function Module1() {
 
         <div className="mb-8">
           <Progress value={progressPercentage} className="w-full" />
-          <p className="text-sm text-muted-foreground mt-2">Progress: {Math.round(progressPercentage)}%</p>
-        </div>
-
-        {/* Add Quiz Button at the top */}
-        <div className="mb-8 text-center">
-          <Link href="/modules/module1/quiz">
-            <Button 
-              size="lg" 
-              className="bg-green-600 hover:bg-green-700 gap-2"
-              disabled={progressPercentage < 100}
-            >
-              <Brain className="w-5 h-5" />
-              {progressPercentage < 100 
-                ? "Complete all topics to unlock Module Quiz" 
-                : "Take Module Quiz"
-              }
-            </Button>
-          </Link>
+          <p className="text-sm text-muted-foreground mt-2">
+            Progress: {Math.round(progressPercentage)}%
+          </p>
         </div>
 
         <Card className="mb-8">
           <CardContent className="pt-6">
             <p className="text-lg text-gray-700 mb-6">
-              This module is designed to introduce learners to the basic concepts of
-              cryptocurrencies and their underlying technology. It's structured into
-              six main sections that will give you a comprehensive understanding of
+              This module is designed to introduce learners to the basic concepts of 
+              cryptocurrencies and their underlying technology. It's structured into 
+              six main sections that will give you a comprehensive understanding of 
               the fundamentals.
             </p>
             <Link href="/glossary">
@@ -158,18 +144,11 @@ export default function Module1() {
                         <li key={index} className="text-sm mb-1">{subsection}</li>
                       ))}
                     </ul>
-                    <div className="flex gap-4">
-                      <Link href={topic.path}>
-                        <Button>
-                          {topic.completed ? "Review Topic" : "Start Topic"}
-                        </Button>
-                      </Link>
-                      <Link href={`${topic.path}-quiz`}>
-                        <Button variant="outline">
-                          Take Quiz
-                        </Button>
-                      </Link>
-                    </div>
+                    <Link href={topic.path}>
+                      <Button>
+                        {topic.completed ? "Review Topic" : "Start Topic"}
+                      </Button>
+                    </Link>
                   </div>
                 </div>
               </CardContent>
@@ -179,13 +158,13 @@ export default function Module1() {
 
         <div className="mt-8 text-center">
           <Link href="/modules/module1/quiz">
-            <Button
-              size="lg"
+            <Button 
+              size="lg" 
               className="bg-green-600 hover:bg-green-700"
               disabled={progressPercentage < 100}
             >
-              {progressPercentage < 100
-                ? "Complete all topics to unlock quiz"
+              {progressPercentage < 100 
+                ? "Complete all topics to unlock quiz" 
                 : "Take Module Quiz"
               }
             </Button>

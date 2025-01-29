@@ -129,18 +129,22 @@ export default function Module1() {
                     cryptocurrencies possible. While we won't delve too deeply into mathematical concepts, you'll gain a solid 
                     understanding of concepts like hash functions and public key cryptography.
                   </p>
+                  <p className="text-gray-700 mb-6">
+                    By the end of this module, you'll have a strong foundation in the fundamental concepts of cryptocurrencies. 
+                    This knowledge will be crucial as we move forward to explore more complex topics in subsequent modules.
+                  </p>
 
                   <h3 className="text-xl font-semibold mt-8 mb-4">Learning Objectives</h3>
                   <ul className="list-disc pl-6 space-y-2 text-gray-700">
-                    <li>Define digital currencies and distinguish between different types</li>
-                    <li>Trace the evolution of money from barter systems to modern digital currencies</li>
-                    <li>Explain the fundamental problem that Bitcoin was designed to solve</li>
-                    <li>Analyze the key components of Bitcoin's architecture</li>
-                    <li>Compare and contrast Bitcoin with major altcoins</li>
+                    <li>Define digital currencies and distinguish between different types (e.g., virtual currencies, cryptocurrencies, central bank digital currencies)</li>
+                    <li>Trace the evolution of money from barter systems to modern digital currencies, identifying key milestones in monetary history</li>
+                    <li>Explain the fundamental problem that Bitcoin was designed to solve (the double-spending problem) and describe how its blockchain technology addresses this issue</li>
+                    <li>Analyze the key components of Bitcoin's architecture, including its consensus mechanism (Proof of Work), transaction model (UTXO), and monetary policy</li>
+                    <li>Compare and contrast Bitcoin with major altcoins, highlighting their unique features and use cases</li>
                     <li>Differentiate between coins and tokens in the cryptocurrency ecosystem</li>
-                    <li>Interpret basic market metrics</li>
-                    <li>Apply fundamental analysis techniques</li>
-                    <li>Describe the basic principles of cryptography</li>
+                    <li>Interpret basic market metrics such as market capitalization, trading volume, and price volatility</li>
+                    <li>Apply fundamental analysis techniques to evaluate cryptocurrency projects</li>
+                    <li>Describe the basic principles of cryptography underlying cryptocurrencies</li>
                     <li>Demonstrate the ability to securely set up a basic cryptocurrency wallet</li>
                   </ul>
                   <div className="mt-8 flex justify-center">
@@ -177,15 +181,10 @@ export default function Module1() {
                           <li key={index} className="text-sm mb-2">{subsection}</li>
                         ))}
                       </ul>
-                      <div className="flex gap-4">
+                      <div className="mt-4">
                         <Link href={topic.path}>
                           <Button>
                             {topic.completed ? "Review Topic" : "Start Topic"}
-                          </Button>
-                        </Link>
-                        <Link href={`${topic.path}-quiz`}>
-                          <Button variant="outline">
-                            Take Quiz
                           </Button>
                         </Link>
                       </div>
@@ -204,12 +203,12 @@ export default function Module1() {
         <div className="mt-8 text-center">
           <Link href="/modules/module1/quiz">
             <Button 
-              size="lg"
+              size="lg" 
               className="bg-green-600 hover:bg-green-700"
               disabled={progressPercentage < 100}
             >
               {progressPercentage < 100 
-                ? "Complete all topics to unlock quiz"
+                ? "Complete all topics to unlock quiz" 
                 : "Take Module Quiz"
               }
             </Button>
