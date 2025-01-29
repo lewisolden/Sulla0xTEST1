@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Quiz from "@/components/modules/quiz";
 
 export default function SmartContractsSection() {
   const [isFullyRead, setIsFullyRead] = useState(false);
@@ -70,178 +72,188 @@ export default function SmartContractsSection() {
           Smart Contracts
         </motion.h1>
 
-        <div className="prose lg:prose-xl text-gray-700 space-y-6">
-          <motion.section
-            variants={contentVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <p className="lead">
-              Smart contracts are self-executing contracts with the terms of the agreement directly 
-              written into code. They are a key feature of many blockchain platforms, enabling 
-              automated, trustless transactions and complex decentralised applications.
-            </p>
-          </motion.section>
+        <Tabs defaultValue="content" className="space-y-4">
+          <TabsList>
+            <TabsTrigger value="content">Content</TabsTrigger>
+            <TabsTrigger value="quiz">Quiz</TabsTrigger>
+          </TabsList>
 
-          <motion.section
-            variants={contentVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl font-bold text-blue-700 mt-8">Key Characteristics</h2>
-            <div className="mt-4 space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card className="p-6">
-                  <h3 className="text-xl font-semibold mb-3">Autonomy</h3>
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>Execute automatically without intervention</li>
-                    <li>No need for intermediaries</li>
-                  </ul>
-                </Card>
-
-                <Card className="p-6">
-                  <h3 className="text-xl font-semibold mb-3">Decentralisation</h3>
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>Exist on distributed blockchain network</li>
-                    <li>No central point of control</li>
-                  </ul>
-                </Card>
-
-                <Card className="p-6">
-                  <h3 className="text-xl font-semibold mb-3">Transparency</h3>
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>All parties can view the contract's code</li>
-                    <li>Execution is visible to all</li>
-                  </ul>
-                </Card>
-
-                <Card className="p-6">
-                  <h3 className="text-xl font-semibold mb-3">Immutability</h3>
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>Once deployed, code cannot be changed</li>
-                    <li>Creates trust in the system</li>
-                  </ul>
-                </Card>
-              </div>
-            </div>
-          </motion.section>
-
-          <motion.section
-            variants={contentVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl font-bold text-blue-700 mt-8">Use Cases</h2>
-            <div className="mt-4 space-y-4">
-              <div className="bg-blue-50 p-6 rounded-lg">
-                <h3 className="text-2xl font-semibold text-blue-600 mb-4">Financial Services</h3>
-                <ul className="list-disc pl-5 space-y-2">
-                  <li>Automated lending and borrowing</li>
-                  <li>Insurance claim processing</li>
-                  <li>Decentralized finance (DeFi) applications</li>
-                </ul>
-              </div>
-
-              <div className="bg-green-50 p-6 rounded-lg">
-                <h3 className="text-2xl font-semibold text-green-600 mb-4">Supply Chain</h3>
-                <ul className="list-disc pl-5 space-y-2">
-                  <li>Automated payments upon delivery</li>
-                  <li>Product tracking and verification</li>
-                  <li>Supplier management</li>
-                </ul>
-              </div>
-
-              <div className="bg-purple-50 p-6 rounded-lg">
-                <h3 className="text-2xl font-semibold text-purple-600 mb-4">Real Estate</h3>
-                <ul className="list-disc pl-5 space-y-2">
-                  <li>Automated property transfers</li>
-                  <li>Rent payments and agreements</li>
-                  <li>Property tokenization</li>
-                </ul>
-              </div>
-            </div>
-          </motion.section>
-
-          <motion.section
-            variants={contentVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl font-bold text-blue-700 mt-8">Popular Platforms</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-              <Card className="p-6">
-                <h3 className="text-xl font-semibold mb-3">Ethereum</h3>
-                <ul className="list-disc pl-5 space-y-2">
-                  <li>First and most popular platform</li>
-                  <li>Uses Solidity programming language</li>
-                </ul>
-              </Card>
-
-              <Card className="p-6">
-                <h3 className="text-xl font-semibold mb-3">Cardano</h3>
-                <ul className="list-disc pl-5 space-y-2">
-                  <li>Academic research-based approach</li>
-                  <li>Uses Haskell-based Plutus</li>
-                </ul>
-              </Card>
-
-              <Card className="p-6">
-                <h3 className="text-xl font-semibold mb-3">Polkadot</h3>
-                <ul className="list-disc pl-5 space-y-2">
-                  <li>Enables cross-chain interoperability</li>
-                  <li>Multiple language support</li>
-                </ul>
-              </Card>
-
-              <Card className="p-6">
-                <h3 className="text-xl font-semibold mb-3">Binance Smart Chain</h3>
-                <ul className="list-disc pl-5 space-y-2">
-                  <li>High performance and low cost</li>
-                  <li>EVM compatible</li>
-                </ul>
-              </Card>
-            </div>
-          </motion.section>
-
-          {isFullyRead && (
-            <motion.div
-              className="mt-8 space-y-6"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-            >
-              <Card className="bg-green-100 border-l-4 border-green-500 p-4">
-                <p className="text-green-700">
-                  🎉 Congratulations! You've completed the Smart Contracts section. 
-                  You can now take the quiz to test your knowledge!
+          <TabsContent value="content">
+            <div className="prose lg:prose-xl text-gray-700 space-y-6">
+              <motion.section
+                variants={contentVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                <p className="lead">
+                  Smart contracts are self-executing contracts with the terms of the agreement directly 
+                  written into code. They are a key feature of many blockchain platforms, enabling 
+                  automated, trustless transactions and complex decentralised applications.
                 </p>
-              </Card>
+              </motion.section>
+              <motion.section
+                variants={contentVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+              >
+                <h2 className="text-3xl font-bold text-blue-700 mt-8">Key Characteristics</h2>
+                <div className="mt-4 space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <Card className="p-6">
+                      <h3 className="text-xl font-semibold mb-3">Autonomy</h3>
+                      <ul className="list-disc pl-5 space-y-2">
+                        <li>Execute automatically without intervention</li>
+                        <li>No need for intermediaries</li>
+                      </ul>
+                    </Card>
 
-              <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
-                <Link href="/modules/module2">
-                  <Button 
-                    variant="outline"
-                    size="lg"
-                    className="w-full md:w-auto"
-                  >
-                    <ArrowLeft className="mr-2 h-4 w-4" /> Back to Module 2
-                  </Button>
-                </Link>
+                    <Card className="p-6">
+                      <h3 className="text-xl font-semibold mb-3">Decentralisation</h3>
+                      <ul className="list-disc pl-5 space-y-2">
+                        <li>Exist on distributed blockchain network</li>
+                        <li>No central point of control</li>
+                      </ul>
+                    </Card>
 
-                <Link href="/modules/module2/smart-contracts-quiz">
-                  <Button 
-                    size="lg"
-                    className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
-                  >
-                    Take Quiz <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-              </div>
-            </motion.div>
-          )}
+                    <Card className="p-6">
+                      <h3 className="text-xl font-semibold mb-3">Transparency</h3>
+                      <ul className="list-disc pl-5 space-y-2">
+                        <li>All parties can view the contract's code</li>
+                        <li>Execution is visible to all</li>
+                      </ul>
+                    </Card>
+
+                    <Card className="p-6">
+                      <h3 className="text-xl font-semibold mb-3">Immutability</h3>
+                      <ul className="list-disc pl-5 space-y-2">
+                        <li>Once deployed, code cannot be changed</li>
+                        <li>Creates trust in the system</li>
+                      </ul>
+                    </Card>
+                  </div>
+                </div>
+              </motion.section>
+              <motion.section
+                variants={contentVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+              >
+                <h2 className="text-3xl font-bold text-blue-700 mt-8">Use Cases</h2>
+                <div className="mt-4 space-y-4">
+                  <div className="bg-blue-50 p-6 rounded-lg">
+                    <h3 className="text-2xl font-semibold text-blue-600 mb-4">Financial Services</h3>
+                    <ul className="list-disc pl-5 space-y-2">
+                      <li>Automated lending and borrowing</li>
+                      <li>Insurance claim processing</li>
+                      <li>Decentralized finance (DeFi) applications</li>
+                    </ul>
+                  </div>
+
+                  <div className="bg-green-50 p-6 rounded-lg">
+                    <h3 className="text-2xl font-semibold text-green-600 mb-4">Supply Chain</h3>
+                    <ul className="list-disc pl-5 space-y-2">
+                      <li>Automated payments upon delivery</li>
+                      <li>Product tracking and verification</li>
+                      <li>Supplier management</li>
+                    </ul>
+                  </div>
+
+                  <div className="bg-purple-50 p-6 rounded-lg">
+                    <h3 className="text-2xl font-semibold text-purple-600 mb-4">Real Estate</h3>
+                    <ul className="list-disc pl-5 space-y-2">
+                      <li>Automated property transfers</li>
+                      <li>Rent payments and agreements</li>
+                      <li>Property tokenization</li>
+                    </ul>
+                  </div>
+                </div>
+              </motion.section>
+              <motion.section
+                variants={contentVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+              >
+                <h2 className="text-3xl font-bold text-blue-700 mt-8">Popular Platforms</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                  <Card className="p-6">
+                    <h3 className="text-xl font-semibold mb-3">Ethereum</h3>
+                    <ul className="list-disc pl-5 space-y-2">
+                      <li>First and most popular platform</li>
+                      <li>Uses Solidity programming language</li>
+                    </ul>
+                  </Card>
+
+                  <Card className="p-6">
+                    <h3 className="text-xl font-semibold mb-3">Cardano</h3>
+                    <ul className="list-disc pl-5 space-y-2">
+                      <li>Academic research-based approach</li>
+                      <li>Uses Haskell-based Plutus</li>
+                    </ul>
+                  </Card>
+
+                  <Card className="p-6">
+                    <h3 className="text-xl font-semibold mb-3">Polkadot</h3>
+                    <ul className="list-disc pl-5 space-y-2">
+                      <li>Enables cross-chain interoperability</li>
+                      <li>Multiple language support</li>
+                    </ul>
+                  </Card>
+
+                  <Card className="p-6">
+                    <h3 className="text-xl font-semibold mb-3">Binance Smart Chain</h3>
+                    <ul className="list-disc pl-5 space-y-2">
+                      <li>High performance and low cost</li>
+                      <li>EVM compatible</li>
+                    </ul>
+                  </Card>
+                </div>
+              </motion.section>
+
+              {isFullyRead && (
+                <motion.div
+                  className="mt-8 space-y-6"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <Card className="bg-green-100 border-l-4 border-green-500 p-4">
+                    <p className="text-green-700">
+                      🎉 Congratulations! You've completed the Smart Contracts section. 
+                      Select the Quiz tab above to test your knowledge!
+                    </p>
+                  </Card>
+                </motion.div>
+              )}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="quiz">
+            <Quiz moduleId={2} sectionId="smart-contracts" />
+          </TabsContent>
+        </Tabs>
+
+        <div className="mt-8 flex flex-col md:flex-row items-center gap-4 justify-between">
+          <Link href="/modules/module2">
+            <Button 
+              variant="outline"
+              size="lg"
+              className="w-full md:w-auto"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" /> Back to Module 2
+            </Button>
+          </Link>
+
+          <Link href="/modules/module3">
+            <Button 
+              size="lg"
+              className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
+            >
+              Continue to Module 3 <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
