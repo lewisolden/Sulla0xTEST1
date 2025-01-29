@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import Footer from "@/components/layout/footer";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Quiz from "@/components/modules/quiz";
 
 export default function Module1() {
   return (
@@ -31,7 +32,7 @@ export default function Module1() {
                   This module introduces you to the fundamental concepts of cryptocurrency,
                   including its history, basic terminology, and core principles.
                 </p>
-                
+
                 <h3 className="text-xl font-semibold mt-6 mb-3">Learning Objectives</h3>
                 <ul className="list-disc pl-6 space-y-2 text-muted-foreground">
                   <li>Understand what cryptocurrency is and its purpose</li>
@@ -66,14 +67,7 @@ export default function Module1() {
           </TabsContent>
 
           <TabsContent value="quiz">
-            <Card>
-              <CardContent className="pt-6">
-                <h2 className="text-2xl font-semibold mb-4">Knowledge Check</h2>
-                <p className="text-muted-foreground mb-6">
-                  Complete the module content to unlock the quiz and test your knowledge.
-                </p>
-              </CardContent>
-            </Card>
+            <Quiz moduleId={1} />
           </TabsContent>
         </Tabs>
       </div>
