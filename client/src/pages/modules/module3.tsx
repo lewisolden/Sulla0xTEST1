@@ -179,6 +179,17 @@ export default function Module3() {
                 <p className="text-muted-foreground mb-6">
                   Complete the module content to unlock the quiz and test your knowledge.
                 </p>
+                <Link href="/modules/module3/quiz">
+                  <Button 
+                    disabled={progressPercentage < 100}
+                    className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
+                  >
+                    {progressPercentage < 100 
+                      ? "Complete all topics to unlock quiz" 
+                      : "Start Quiz"
+                    }
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           </TabsContent>
