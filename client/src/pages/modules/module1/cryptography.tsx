@@ -37,10 +37,8 @@ export default function CryptographySection() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.5,
-      },
-    },
+      transition: { duration: 0.5 }
+    }
   };
 
   return (
@@ -76,13 +74,18 @@ export default function CryptographySection() {
         </motion.h1>
 
         <div className="prose lg:prose-xl text-gray-700 space-y-6">
-          <motion.div variants={contentVariants} initial="hidden" animate="visible">
-            <p>
-              Cryptography is the foundation of cryptocurrency security and functionality. 
-              This section explores the essential cryptographic concepts that make 
-              digital currencies possible.
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <p className="lead">
+              Cryptography forms the backbone of cryptocurrency security and functionality. 
+              Without these mathematical techniques, secure digital transactions would be 
+              impossible. Let's explore the key cryptographic concepts that make 
+              cryptocurrencies possible.
             </p>
-          </motion.div>
+          </motion.section>
 
           <motion.section
             variants={contentVariants}
@@ -92,6 +95,21 @@ export default function CryptographySection() {
           >
             <h2 className="text-3xl font-bold text-blue-700 mt-8">Public Key Cryptography</h2>
             <CryptographyDiagram />
+            <div className="mt-4 space-y-4">
+              <h3 className="text-2xl font-semibold text-blue-600">Key Components</h3>
+              <ul className="list-disc pl-5 space-y-2">
+                <li>Public Key: Shared openly, used to receive funds</li>
+                <li>Private Key: Kept secret, used to authorize transactions</li>
+                <li>Digital Signatures: Prove ownership and authorize transfers</li>
+              </ul>
+
+              <h3 className="text-2xl font-semibold text-blue-600">Applications</h3>
+              <ul className="list-disc pl-5 space-y-2">
+                <li>Transaction Authentication</li>
+                <li>Wallet Security</li>
+                <li>Message Encryption</li>
+              </ul>
+            </div>
           </motion.section>
 
           <motion.section
@@ -102,6 +120,21 @@ export default function CryptographySection() {
           >
             <h2 className="text-3xl font-bold text-blue-700 mt-8">Hash Functions</h2>
             <HashFunctionDiagram />
+            <div className="mt-4 space-y-4">
+              <h3 className="text-2xl font-semibold text-blue-600">Properties</h3>
+              <ul className="list-disc pl-5 space-y-2">
+                <li>One-way Function: Easy to compute, impossible to reverse</li>
+                <li>Deterministic: Same input always produces same output</li>
+                <li>Avalanche Effect: Small input changes create large output differences</li>
+              </ul>
+
+              <h3 className="text-2xl font-semibold text-blue-600">Uses in Cryptocurrency</h3>
+              <ul className="list-disc pl-5 space-y-2">
+                <li>Block Chain Links: Each block contains previous block's hash</li>
+                <li>Transaction IDs: Unique identifiers for transactions</li>
+                <li>Mining: Proof-of-work puzzle solving</li>
+              </ul>
+            </div>
           </motion.section>
 
           <motion.section
@@ -110,8 +143,23 @@ export default function CryptographySection() {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl font-bold text-blue-700 mt-8">Blockchain Structure</h2>
+            <h2 className="text-3xl font-bold text-blue-700 mt-8">Blockchain Security</h2>
             <BlockchainDiagram />
+            <div className="mt-4 space-y-4">
+              <h3 className="text-2xl font-semibold text-blue-600">Security Features</h3>
+              <ul className="list-disc pl-5 space-y-2">
+                <li>Immutable Records: Once written, cannot be altered</li>
+                <li>Distributed Consensus: Network agreement on transaction validity</li>
+                <li>Cryptographic Verification: Every transaction is cryptographically signed</li>
+              </ul>
+
+              <h3 className="text-2xl font-semibold text-blue-600">Advanced Concepts</h3>
+              <ul className="list-disc pl-5 space-y-2">
+                <li>Zero-Knowledge Proofs: Prove validity without revealing data</li>
+                <li>Ring Signatures: Transaction privacy in certain cryptocurrencies</li>
+                <li>Multi-signature Schemes: Require multiple approvals</li>
+              </ul>
+            </div>
           </motion.section>
 
           {isFullyRead && (
@@ -123,8 +171,9 @@ export default function CryptographySection() {
             >
               <Card className="bg-green-100 border-l-4 border-green-500 p-4">
                 <p className="text-green-700">
-                  🎉 You've completed the Cryptography section! You now understand the 
-                  fundamental cryptographic concepts that power cryptocurrencies.
+                  🎉 Congratulations! You've completed the Cryptography section. You now understand 
+                  the fundamental cryptographic concepts that power cryptocurrencies and 
+                  blockchain technology.
                 </p>
               </Card>
 
