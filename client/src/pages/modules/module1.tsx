@@ -181,10 +181,15 @@ export default function Module1() {
                           <li key={index} className="text-sm mb-2">{subsection}</li>
                         ))}
                       </ul>
-                      <div className="mt-4">
+                      <div className="flex gap-4">
                         <Link href={topic.path}>
                           <Button>
                             {topic.completed ? "Review Topic" : "Start Topic"}
+                          </Button>
+                        </Link>
+                        <Link href={`${topic.path}-quiz`}>
+                          <Button variant="outline">
+                            Take Quiz
                           </Button>
                         </Link>
                       </div>
