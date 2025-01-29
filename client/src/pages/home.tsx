@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { BookOpen, GraduationCap, Zap, Brain, Target, Users, Code, PlayCircle, PauseCircle, X } from "lucide-react"; // Added X icon import
+import { BookOpen, GraduationCap, Zap, Brain, Target, Users, Code, PlayCircle, PauseCircle, X } from "lucide-react"; 
 import ModuleCard from "@/components/modules/module-card";
 import Footer from "@/components/layout/footer";
 import { motion } from "framer-motion";
@@ -163,21 +163,16 @@ export default function Home() {
               <div className="relative aspect-video bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg overflow-hidden cursor-pointer group"
                    onClick={() => setIsVideoModalOpen(true)}>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <img 
-                    src="/video-thumbnail.jpg" 
-                    alt="Video Preview" 
-                    className="absolute inset-0 w-full h-full object-cover opacity-80"
-                  />
                   <div className="absolute inset-0 bg-black bg-opacity-30 group-hover:bg-opacity-40 transition-all duration-300"></div>
                   <div className="relative z-10 flex flex-col items-center text-white">
                     <PlayCircle className="w-16 h-16 mb-2 group-hover:scale-110 transition-transform duration-300" />
-                    <span className="text-lg font-medium">Watch Introduction</span>
+                    <span className="text-lg font-medium">Watch Course Preview</span>
                   </div>
                 </div>
               </div>
               <div className="mt-4 text-center">
                 <p className="text-gray-600">
-                  Watch our comprehensive introduction to blockchain and cryptocurrency
+                  Get started with our comprehensive blockchain education platform
                 </p>
               </div>
             </motion.div>
@@ -195,14 +190,16 @@ export default function Home() {
                 <X className="w-6 h-6" />
               </button>
               <div className="relative pt-[56.25%]">
-                <iframe
+                <video
                   className="absolute inset-0 w-full h-full"
-                  src="https://www.youtube.com/embed/SSo_EIwHSd4"
-                  title="Introduction to Cryptocurrency"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
+                  controls
+                  autoPlay
+                  preload="metadata"
+                  poster="/assets/images/video-thumbnail.jpg"
+                >
+                  <source src="/introduction.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
               </div>
             </div>
           </div>
