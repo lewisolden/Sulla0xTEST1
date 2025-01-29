@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/layout/footer";
 import { Progress } from "@/components/ui/progress";
-import { BookOpen, History, Bitcoin, Coins, TrendingUp, Lock } from "lucide-react";
+import { BookOpen, History, Bitcoin, Coins, TrendingUp, Lock, Book } from "lucide-react";
 import { useProgress } from "@/context/progress-context";
 
 const module1Topics = [
@@ -113,6 +113,12 @@ export default function Module1() {
               six main sections that will give you a comprehensive understanding of 
               the fundamentals.
             </p>
+            <Link href="/glossary">
+              <Button className="gap-2">
+                <Book className="h-4 w-4" />
+                Open Crypto Glossary
+              </Button>
+            </Link>
           </CardContent>
         </Card>
 

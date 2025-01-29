@@ -17,6 +17,7 @@ import Module2Landing from "@/pages/modules/module2";
 import Module3 from "@/pages/modules/module3";
 import Navigation from "@/components/layout/navigation";
 import TradingSimulator from "@/pages/trading-simulator";
+import GlossaryPage from "@/pages/glossary";
 
 function Router() {
   return (
@@ -36,6 +37,8 @@ function Router() {
       <Route path="/modules/module3" component={Module3} />
       {/* Trading Simulator */}
       <Route path="/trading-simulator" component={TradingSimulator} />
+      {/* Glossary */}
+      <Route path="/glossary" component={GlossaryPage} />
       <Route component={NotFound} />
     </Switch>
   );
