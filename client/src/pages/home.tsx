@@ -5,24 +5,24 @@ import Footer from "@/components/layout/footer";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100">
+    <div className="min-h-screen bg-gradient-to-br from-blue-600 to-blue-800">
       {/* Hero Section */}
       <div className="container mx-auto px-4 py-16 text-center">
-        <h1 className="text-5xl font-bold text-blue-900 mb-6">
+        <h1 className="text-5xl font-bold text-white mb-6">
           Master Cryptocurrency & Blockchain Technology
         </h1>
-        <p className="text-xl text-blue-700 mb-8 max-w-2xl mx-auto">
+        <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
           Sulla is your comprehensive learning platform designed to demystify the complex world of digital currencies and blockchain innovation.
         </p>
 
         <div className="flex justify-center space-x-4">
           <Link href="/modules/module1">
-            <button className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition duration-300 font-semibold">
+            <button className="bg-white text-blue-700 px-8 py-3 rounded-lg hover:bg-blue-50 transition duration-300 font-semibold">
               Start Learning
             </button>
           </Link>
           <Link href="#curriculum">
-            <button className="bg-white text-blue-600 px-8 py-3 rounded-lg border border-blue-600 hover:bg-blue-50 transition duration-300 font-semibold">
+            <button className="bg-transparent text-white px-8 py-3 rounded-lg border border-white hover:bg-blue-700/20 transition duration-300 font-semibold">
               View Curriculum
             </button>
           </Link>
