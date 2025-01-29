@@ -156,6 +156,22 @@ export default function CryptoMarketSection() {
               </p>
             </Card>
 
+            <Card className="p-6 border-blue-200 border-2">
+              <h3 className="text-xl font-bold text-blue-800 mb-4">Ready to Practice?</h3>
+              <p className="text-gray-700 mb-4">
+                Now that you understand market dynamics, try our interactive trading simulator 
+                to practice trading in a risk-free environment!
+              </p>
+              <Link href="/trading-simulator">
+                <Button 
+                  size="lg"
+                  className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
+                >
+                  Launch Trading Simulator
+                </Button>
+              </Link>
+            </Card>
+
             <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
               <Link href="/modules/module1/altcoins-tokens">
                 <Button 
