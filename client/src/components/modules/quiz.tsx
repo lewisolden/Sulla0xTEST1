@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import type { SelectQuiz } from "@db/schema";
 import { Progress } from "@/components/ui/progress";
+import { useToast } from "@/hooks/use-toast";
 
 interface QuizProps {
   moduleId: number;
@@ -13,35 +14,71 @@ export default function Quiz({ moduleId }: QuizProps) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [showScore, setShowScore] = useState(false);
+  const { toast } = useToast();
 
-  const { data: questions, isLoading } = useQuery<SelectQuiz[]>({
+  const { data: questions, isLoading, error } = useQuery<SelectQuiz[]>({
     queryKey: [`/api/modules/${moduleId}/quizzes`],
+    onError: () => {
+      toast({
+        title: "Error loading quiz",
+        description: "There was a problem loading the quiz questions. Please try again.",
+        variant: "destructive",
+      });
+    },
   });
 
-  const handleAnswerClick = async (answer: string) => {
-    const isCorrect = answer === questions![currentQuestion].correctAnswer;
-
-    if (isCorrect) {
-      setScore(score + 1);
-    }
-
-    const nextQuestion = currentQuestion + 1;
-    if (nextQuestion < questions!.length) {
-      setCurrentQuestion(nextQuestion);
-    } else {
-      setShowScore(true);
-    }
-  };
+  if (error) {
+    return (
+      <Card>
+        <CardContent className="pt-6">
+          <p className="text-red-500">Failed to load quiz questions. Please try again later.</p>
+        </CardContent>
+      </Card>
+    );
+  }
 
   if (isLoading || !questions) {
     return (
       <Card>
         <CardContent className="pt-6">
-          <p>Loading quiz questions...</p>
+          <div className="space-y-4">
+            <div className="h-4 bg-gray-200 rounded animate-pulse w-3/4"></div>
+            <div className="space-y-2">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="h-10 bg-gray-200 rounded animate-pulse"></div>
+              ))}
+            </div>
+          </div>
         </CardContent>
       </Card>
     );
   }
+
+  const handleAnswerClick = async (answer: string) => {
+    const isCorrect = answer === questions[currentQuestion].correctAnswer;
+
+    if (isCorrect) {
+      setScore(score + 1);
+      toast({
+        title: "Correct!",
+        description: questions[currentQuestion].explanation,
+        variant: "default",
+      });
+    } else {
+      toast({
+        title: "Incorrect",
+        description: questions[currentQuestion].explanation,
+        variant: "destructive",
+      });
+    }
+
+    const nextQuestion = currentQuestion + 1;
+    if (nextQuestion < questions.length) {
+      setCurrentQuestion(nextQuestion);
+    } else {
+      setShowScore(true);
+    }
+  };
 
   if (showScore) {
     return (
