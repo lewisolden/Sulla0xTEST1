@@ -69,57 +69,17 @@ export default function DigitalCurrenciesSection() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
-          Introduction to Digital Currencies
+          Introduction to Digital Currencies: The Dawn of a New Financial Era
         </motion.h1>
 
         <div className="prose lg:prose-xl text-gray-700 space-y-6">
-          <motion.div variants={contentVariants} initial="hidden" animate="visible">
-            <h2 className="text-3xl font-bold text-blue-700 mt-8">Money: Past to Present</h2>
-            <p>
-              Money, in its various forms, has been a cornerstone of human civilization for thousands of years. To 
-              understand the significance of modern cryptocurrencies, it's crucial to trace the evolution of money 
-              from its earliest incarnations to the digital age. This journey reveals not just changes in the form of 
-              money but also shifts in how societies have shaped and been shaped by their exchanges of value.
-            </p>
-          </motion.div>
-
           <motion.section
             variants={contentVariants}
             initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
+            animate="visible"
           >
-            <h2 className="text-3xl font-bold text-blue-700 mt-8">Barter System: The Precursor of Money</h2>
             <p>
-              Before the invention of money, people used barter systems to exchange goods and services directly. 
-              While simple in concept, barter had significant limitations:
-            </p>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Coincidence of Wants: Both parties needed to have what the other wanted</li>
-              <li>Lack of a Common Value Unit: Difficult to compare the value of different items</li>
-              <li>Indivisibility of Certain Goods: Some items couldn't be divided for smaller transactions</li>
-            </ul>
-            <p>These limitations led to the development of more standardized forms of exchange.</p>
-          </motion.section>
-
-          <motion.section
-            variants={contentVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl font-bold text-blue-700 mt-8">Commodity Money</h2>
-            <p>
-              The first forms of money were commodities—items with intrinsic value that could be used for 
-              exchange. Examples include:
-            </p>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Cowrie Shells: Used in many parts of Africa and Asia</li>
-              <li>Salt: So valuable it was used to pay Roman soldiers (origin of the word "salary")</li>
-              <li>Cattle: Used in many agricultural societies (the word "pecuniary" comes from the Latin "pecus," meaning cattle)</li>
-            </ul>
-            <p>
-              Commodity money solved some problems of barter but was often bulky and perishable.
+              Imagine a world where you can send money to anyone, anywhere, at any time, without needing a bank. A world where you have complete control over your finances, free from government interference or corporate oversight. A world where the very nature of money itself is being redefined. This isn't science fiction—it's the world of digital currencies, and it's happening right now.
             </p>
           </motion.section>
 
@@ -129,16 +89,68 @@ export default function DigitalCurrenciesSection() {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl font-bold text-blue-700 mt-8">Metallic Money</h2>
-            <p>Around 1000 BCE, metal coins began to appear:</p>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Gold, Silver, and Bronze: Durable, portable, and divisible</li>
-              <li>Lydian Lions: Coins considered the first official currency, minted in Lydia (modern-day Turkey)</li>
-              <li>Standardization: Governments began to standardize the weight and purity of metal coins</li>
-            </ul>
+            <h2 className="text-3xl font-bold text-blue-700 mt-8">The Digital Revolution of Money</h2>
             <p>
-              This marked the rise of the first global currencies, like the Roman denarius and the Byzantine 
-              solidus.
+              Just as the internet revolutionised information, digital currencies are transforming the very fabric of our financial systems. But what exactly are digital currencies? At their core, they're a new form of money designed for the digital age—intangible, yet as real and valuable as the cash in your wallet.
+            </p>
+            <p>
+              Digital currencies come in various forms, from the cryptocurrencies that make headlines to the less-known virtual currencies used in online games. But it's cryptocurrencies like Bitcoin that have truly captured the world's imagination, promising a future where financial transactions are as easy as sending an email.
+            </p>
+          </motion.section>
+
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl font-bold text-blue-700 mt-8">More Than Just Money</h2>
+            <p>
+              But digital currencies are about more than just a new way to pay for things. They represent a fundamental shift in how we think about money, value, and trust in the digital age.
+            </p>
+            <ul className="list-disc pl-5 space-y-3">
+              <li>
+                <strong>Decentralisation:</strong> Many digital currencies operate on decentralised networks, free from the control of any single entity. This means no central bank, no CEO, and no single point of failure.
+              </li>
+              <li>
+                <strong>Transparency:</strong> Transactions are often recorded on public ledgers, viewable by anyone. This level of transparency was unthinkable in traditional financial systems.
+              </li>
+              <li>
+                <strong>Programmable Money:</strong> Some digital currencies, like Ethereum, allow for "smart contracts"—self-executing agreements that can automate complex financial transactions.
+              </li>
+              <li>
+                <strong>Global Access:</strong> Digital currencies have the potential to provide financial services to the billions of people worldwide who don't have access to traditional banking.
+              </li>
+            </ul>
+          </motion.section>
+
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl font-bold text-blue-700 mt-8">Challenges and Controversies</h2>
+            <p>
+              Of course, this brave new world of digital currencies isn't without its challenges. Volatile prices, regulatory uncertainties, and concerns about illegal activities have all made headlines. Critics argue that cryptocurrencies are a bubble, a fad, or worse.
+            </p>
+            <p>
+              But supporters see these as growing pains of a technology that could be as transformative as the internet itself. They point to the underlying blockchain technology, which has applications far beyond just digital money.
+            </p>
+          </motion.section>
+
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl font-bold text-blue-700 mt-8">The Future is Digital</h2>
+            <p>
+              Whether digital currencies will replace traditional money entirely is yet to be seen. But one thing is clear: they're already changing the way we think about finance, technology, and the nature of trust in the digital age.
+            </p>
+            <p>
+              As we embark on this journey to understand digital currencies, we'll explore their history, their underlying technology, and their potential to reshape our financial future. We'll separate fact from fiction, hype from reality, and explore both the promises and pitfalls of this revolutionary technology.
             </p>
           </motion.section>
 
@@ -151,7 +163,7 @@ export default function DigitalCurrenciesSection() {
             >
               <Card className="bg-green-100 border-l-4 border-green-500 p-4">
                 <p className="text-green-700">
-                  🎉 You've completed the Introduction to Digital Currencies section!
+                  🎉 You've completed the Introduction to Digital Currencies section! You now understand the fundamental concepts and potential impact of digital currencies.
                 </p>
               </Card>
 
