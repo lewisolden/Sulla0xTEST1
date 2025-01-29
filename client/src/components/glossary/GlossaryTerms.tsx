@@ -62,7 +62,8 @@ export default function GlossaryTerms() {
     return matchesSearch && matchesCategory;
   });
 
-  const categories = ["all", ...new Set(cryptoTerms.map(term => term.category))];
+  // Get unique categories using Array.from(new Set())
+  const categories = ["all", ...Array.from(new Set(cryptoTerms.map(term => term.category)))];
 
   return (
     <div className="w-full max-w-4xl mx-auto p-4 space-y-6">
@@ -99,7 +100,7 @@ export default function GlossaryTerms() {
         {filteredTerms.map((term) => (
           <Card
             key={term.id}
-            className="overflow-hidden cursor-pointer"
+            className="overflow-hidden cursor-pointer hover:shadow-md transition-shadow"
             onClick={() => setExpandedTerm(expandedTerm === term.id ? null : term.id)}
           >
             <motion.div
