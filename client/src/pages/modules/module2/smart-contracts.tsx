@@ -4,13 +4,18 @@ import { Card } from "@/components/ui/card";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
 import SmartContractFlow from "@/components/diagrams/SmartContractFlow";
 
 export default function SmartContractsSection() {
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const { updateProgress } = useProgress();
+  const { progress, updateProgress } = useProgress();
+
+  // Add quiz completion tracking
+  const isQuizCompleted = progress.some(
+    p => p.moduleId === 2 && p.sectionId === 'smart-contracts-quiz' && p.completed
+  );
 
   useEffect(() => {
     const handleScroll = () => {
@@ -398,11 +403,25 @@ export default function SmartContractsSection() {
                   </Button>
                 </Link>
 
-                <Link href="/modules/module2/quiz">
-                  <Button className="w-full md:w-auto bg-blue-600 hover:bg-blue-700">
-                    Take Module Quiz <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
+                <div className="flex gap-4 w-full md:w-auto">
+                  <Link href="/modules/module2/smart-contracts/quiz">
+                    <Button 
+                      variant="secondary"
+                      size="lg"
+                      className="gap-2"
+                      disabled={!isFullyRead}
+                    >
+                      <CheckCircle2 className="h-4 w-4" />
+                      Topic Quiz
+                    </Button>
+                  </Link>
+
+                  <Link href="/modules/module2/quiz">
+                    <Button className="w-full md:w-auto bg-blue-600 hover:bg-blue-700">
+                      Take Module Quiz <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </motion.div>
           )}
