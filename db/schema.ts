@@ -8,6 +8,16 @@ export const users = pgTable("users", {
   password: text("password").notNull(),
 });
 
+export const moduleProgress = pgTable("module_progress", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  moduleId: integer("module_id").notNull(),
+  sectionId: text("section_id").notNull(), // e.g., 'digital-currencies', 'bitcoin'
+  completed: boolean("completed").default(false).notNull(),
+  lastAccessed: timestamp("last_accessed").defaultNow().notNull(),
+  completedAt: timestamp("completed_at"),
+});
+
 export const quizzes = pgTable("quizzes", {
   id: serial("id").primaryKey(),
   moduleId: integer("module_id").notNull(),
@@ -28,6 +38,13 @@ export const userQuizResponses = pgTable("user_quiz_responses", {
 });
 
 // Relations
+export const moduleProgressRelations = relations(moduleProgress, ({ one }) => ({
+  user: one(users, {
+    fields: [moduleProgress.userId],
+    references: [users.id],
+  }),
+}));
+
 export const quizzesRelations = relations(quizzes, ({ many }) => ({
   responses: many(userQuizResponses),
 }));
@@ -46,6 +63,8 @@ export const userQuizResponsesRelations = relations(userQuizResponses, ({ one })
 // Schemas
 export const insertUserSchema = createInsertSchema(users);
 export const selectUserSchema = createSelectSchema(users);
+export const insertModuleProgressSchema = createInsertSchema(moduleProgress);
+export const selectModuleProgressSchema = createSelectSchema(moduleProgress);
 export const insertQuizSchema = createInsertSchema(quizzes);
 export const selectQuizSchema = createSelectSchema(quizzes);
 export const insertUserQuizResponseSchema = createInsertSchema(userQuizResponses);
@@ -54,6 +73,8 @@ export const selectUserQuizResponseSchema = createSelectSchema(userQuizResponses
 // Types
 export type InsertUser = typeof users.$inferInsert;
 export type SelectUser = typeof users.$inferSelect;
+export type InsertModuleProgress = typeof moduleProgress.$inferInsert;
+export type SelectModuleProgress = typeof moduleProgress.$inferSelect;
 export type InsertQuiz = typeof quizzes.$inferInsert;
 export type SelectQuiz = typeof quizzes.$inferSelect;
 export type InsertUserQuizResponse = typeof userQuizResponses.$inferInsert;
