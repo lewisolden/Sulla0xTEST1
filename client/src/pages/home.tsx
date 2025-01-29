@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { BookOpen, GraduationCap, Zap, Brain, Target, Users, Code, PlayCircle, PauseCircle, X } from "lucide-react"; 
+import { BookOpen, GraduationCap, Zap, Brain, Target, Users, Code, PlayCircle, PauseCircle, X, Gamepad2 } from "lucide-react"; 
 import ModuleCard from "@/components/modules/module-card";
 import Footer from "@/components/layout/footer";
 import { motion } from "framer-motion";
@@ -35,7 +35,7 @@ export default function Home() {
         </motion.p>
 
         <motion.div 
-          className="flex justify-center space-x-4"
+          className="flex flex-wrap justify-center gap-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
@@ -48,6 +48,12 @@ export default function Home() {
           <Link href="/curriculum">
             <button className="bg-transparent text-white px-8 py-3 rounded-lg border border-white hover:bg-blue-700/20 transition duration-300 font-semibold">
               View Curriculum
+            </button>
+          </Link>
+          <Link href="/games">
+            <button className="bg-blue-500 text-white px-8 py-3 rounded-lg border border-blue-400 hover:bg-blue-600 transition duration-300 font-semibold flex items-center gap-2">
+              <Gamepad2 className="w-5 h-5" />
+              Play & Learn
             </button>
           </Link>
         </motion.div>
