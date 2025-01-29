@@ -1,10 +1,17 @@
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { useProgress } from "@/context/progress-context";
+import { Button } from "@/components/ui/button";
+import { Link } from "wouter";
+import { ArrowRight } from "lucide-react";
+import HistoryOfMoneyQuiz from "@/components/modules/quizzes/HistoryOfMoneyQuiz";
 
 export default function HistoryOfMoneySection() {
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [showQuiz, setShowQuiz] = useState(false);
+  const { updateProgress } = useProgress();
 
   // Progress tracking
   useEffect(() => {
@@ -22,11 +29,7 @@ export default function HistoryOfMoneySection() {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const updateProgress = (moduleId: number, sectionId: string, completed: boolean) => {
-    console.log(`Progress updated: Module ${moduleId}, Section ${sectionId}, Completed: ${completed}`);
-  };
+  }, [updateProgress]);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -52,7 +55,7 @@ export default function HistoryOfMoneySection() {
           </p>
 
           <h2 className="text-3xl font-bold text-blue-700 mt-8">Early Forms of Money</h2>
-          
+
           <ul className="list-disc pl-5 space-y-3">
             <li>Barter system and its limitations</li>
             <li>Commodity money (shells, salt, metals)</li>
@@ -75,15 +78,46 @@ export default function HistoryOfMoneySection() {
             <li>Central banking systems</li>
             <li>Fiat currency adoption</li>
           </ul>
+        </div>
 
-          {isFullyRead && (
-            <Card className="mt-8 bg-green-100 border-l-4 border-green-500 p-4">
+        {isFullyRead && (
+          <div className="mt-8 space-y-6">
+            <Card className="bg-green-100 border-l-4 border-green-500 p-4">
               <p className="text-green-700">
-                🎉 You've completed the History of Money section!
+                🎉 You've completed the History of Money section! You now understand how 
+                currency has evolved from physical to digital forms throughout history.
               </p>
             </Card>
-          )}
-        </div>
+
+            <div className="flex flex-col items-center gap-4">
+              {!showQuiz && (
+                <Button 
+                  onClick={() => setShowQuiz(true)}
+                  size="lg"
+                  className="w-full md:w-auto"
+                >
+                  Take Topic Quiz
+                </Button>
+              )}
+
+              <Link href="/modules/module1/bitcoin">
+                <Button 
+                  size="lg"
+                  className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
+                >
+                  Next Topic: Bitcoin <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+
+            {showQuiz && (
+              <div className="mt-8">
+                <h2 className="text-2xl font-bold text-blue-800 mb-4">Topic Quiz</h2>
+                <HistoryOfMoneyQuiz />
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
