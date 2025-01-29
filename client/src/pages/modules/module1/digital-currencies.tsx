@@ -2,10 +2,15 @@ import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
+import { Button } from "@/components/ui/button";
+import { Link } from "wouter";
+import { ArrowRight } from "lucide-react";
+import DigitalCurrenciesQuiz from "@/components/modules/quizzes/DigitalCurrenciesQuiz";
 
 export default function DigitalCurrenciesSection() {
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [showQuiz, setShowQuiz] = useState(false);
   const { updateProgress } = useProgress();
 
   // Progress tracking
@@ -116,17 +121,47 @@ export default function DigitalCurrenciesSection() {
             <li>Environmental impact concerns</li>
             <li>Scalability issues</li>
           </ul>
+        </div>
 
-          {isFullyRead && (
-            <Card className="mt-8 bg-green-100 border-l-4 border-green-500 p-4">
+        {isFullyRead && (
+          <div className="mt-8 space-y-6">
+            <Card className="bg-green-100 border-l-4 border-green-500 p-4">
               <p className="text-green-700">
                 🎉 You've completed the Digital Currencies section! Now you understand 
                 the fundamentals of digital currencies and their impact on the future 
                 of finance.
               </p>
             </Card>
-          )}
-        </div>
+
+            <div className="flex flex-col items-center gap-4">
+              {!showQuiz && (
+                <Button 
+                  onClick={() => setShowQuiz(true)}
+                  size="lg"
+                  className="w-full md:w-auto"
+                >
+                  Take Topic Quiz
+                </Button>
+              )}
+
+              <Link href="/modules/module1/history-of-money">
+                <Button 
+                  size="lg"
+                  className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
+                >
+                  Next Topic: History of Money <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+
+            {showQuiz && (
+              <div className="mt-8">
+                <h2 className="text-2xl font-bold text-blue-800 mb-4">Topic Quiz</h2>
+                <DigitalCurrenciesQuiz />
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
