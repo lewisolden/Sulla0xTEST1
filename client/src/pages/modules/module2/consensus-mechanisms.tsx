@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
-export default function ConsensusSection() {
+export default function ConsensusMechanismsSection() {
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const { updateProgress } = useProgress();
@@ -30,11 +30,7 @@ export default function ConsensusSection() {
 
   const contentVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5 }
-    }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
   };
 
   return (
@@ -66,7 +62,7 @@ export default function ConsensusSection() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
-          Understanding Consensus Mechanisms
+          2.3 Consensus Mechanisms
         </motion.h1>
 
         <div className="prose lg:prose-xl text-gray-700 space-y-6">
@@ -75,14 +71,57 @@ export default function ConsensusSection() {
             initial="hidden"
             animate="visible"
           >
-            <p className="lead">
-              Consensus mechanisms are crucial for maintaining agreement across a decentralized network.
-              These protocols ensure all participants agree on the current state of the blockchain
-              without requiring trust between parties.
+            <h2 className="text-3xl font-bold text-blue-700">Introduction</h2>
+            <p>
+              Consensus mechanisms are crucial components of blockchain networks, ensuring 
+              agreement on the state of the ledger across all participants. We'll focus on 
+              two primary mechanisms: Proof of Work (PoW) and Proof of Stake (PoS).
             </p>
           </motion.section>
 
-          {/* Content sections will be added here */}
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <h2 className="text-3xl font-bold text-blue-700">Proof of Work (PoW)</h2>
+            <h3 className="text-2xl font-semibold text-blue-600">How PoW Works</h3>
+            <ul className="list-disc pl-5 space-y-3">
+              <li>Miners compete to solve a cryptographic puzzle</li>
+              <li>First miner to solve the puzzle gets to add the next block</li>
+              <li>Other nodes verify the solution</li>
+              <li>If valid, the new block is added to the blockchain</li>
+            </ul>
+          </motion.section>
+
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <h2 className="text-3xl font-bold text-blue-700">Proof of Stake (PoS)</h2>
+            <h3 className="text-2xl font-semibold text-blue-600">How PoS Works</h3>
+            <ul className="list-disc pl-5 space-y-3">
+              <li>Validators lock up cryptocurrency as stake</li>
+              <li>Protocol selects validator to create next block</li>
+              <li>Honest validators receive rewards</li>
+              <li>Malicious actors may lose their stake</li>
+            </ul>
+          </motion.section>
+
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <h2 className="text-3xl font-bold text-blue-700">Comparison</h2>
+            <ul className="list-disc pl-5 space-y-3">
+              <li>Energy Consumption: PoW is high, PoS is low</li>
+              <li>Security: PoW is highly secure and proven, PoS is secure but less battle-tested</li>
+              <li>Transaction Speed: PoW is generally slower, PoS is generally faster</li>
+              <li>Entry Barrier: PoW requires expensive equipment, PoS needs token stake</li>
+            </ul>
+          </motion.section>
 
           {isFullyRead && (
             <motion.div
@@ -94,27 +133,19 @@ export default function ConsensusSection() {
               <Card className="bg-green-100 border-l-4 border-green-500 p-4">
                 <p className="text-green-700">
                   🎉 Congratulations! You've completed the Consensus Mechanisms section.
-                  You now understand how blockchain networks achieve agreement and maintain security.
                 </p>
               </Card>
 
               <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
-                <Link href="/modules/module2/blockchain-fundamentals">
-                  <Button 
-                    variant="outline"
-                    size="lg"
-                    className="w-full md:w-auto"
-                  >
-                    <ArrowLeft className="mr-2 h-4 w-4" /> Previous Topic
+                <Link href="/modules/module2/distributed-ledger">
+                  <Button variant="outline" className="w-full md:w-auto">
+                    <ArrowLeft className="mr-2 h-4 w-4" /> Previous: Distributed Ledger
                   </Button>
                 </Link>
 
-                <Link href="/modules/module2/decentralization">
-                  <Button 
-                    size="lg"
-                    className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
-                  >
-                    Next Topic: Decentralization <ArrowRight className="ml-2 h-4 w-4" />
+                <Link href="/modules/module2/smart-contracts">
+                  <Button className="w-full md:w-auto bg-blue-600 hover:bg-blue-700">
+                    Next: Smart Contracts <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
               </div>

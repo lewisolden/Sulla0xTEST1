@@ -5,55 +5,55 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useProgress } from "@/context/progress-context";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Database, Network, Code, Building } from "lucide-react";
+import { Database, Network, Code, FileText } from "lucide-react";
 
 const moduleTopics = [
   {
-    id: "blockchain-fundamentals",
-    title: "Topic 1 - Blockchain Fundamentals",
-    path: "/modules/module2/blockchain-fundamentals",
+    id: "blockchain-basics",
+    title: "2.1 What is a Blockchain?",
+    path: "/modules/module2/blockchain-basics",
     icon: Database,
     subsections: [
-      "What is a blockchain?",
-      "Block structure and chain formation",
-      "Distributed ledger technology",
-      "Types of blockchains"
+      "Key Characteristics of Blockchain",
+      "Basic Structure of a Blockchain",
+      "How Blockchain Works",
+      "Comparison with Traditional Databases"
+    ]
+  },
+  {
+    id: "distributed-ledger",
+    title: "2.2 Distributed Ledger Technology",
+    path: "/modules/module2/distributed-ledger",
+    icon: Network,
+    subsections: [
+      "Key Characteristics of DLT",
+      "Types of Distributed Ledgers",
+      "Applications of DLT",
+      "Challenges and Limitations"
     ]
   },
   {
     id: "consensus-mechanisms",
-    title: "Topic 2 - Consensus Mechanisms",
+    title: "2.3 Consensus Mechanisms",
     path: "/modules/module2/consensus-mechanisms",
-    icon: Network,
+    icon: Code,
     subsections: [
-      "Understanding consensus in blockchain",
       "Proof of Work (PoW)",
       "Proof of Stake (PoS)",
-      "Alternative consensus mechanisms"
+      "Comparison of PoW and PoS",
+      "Other Consensus Mechanisms"
     ]
   },
   {
     id: "smart-contracts",
-    title: "Topic 3 - Smart Contracts",
+    title: "2.4 Smart Contracts",
     path: "/modules/module2/smart-contracts",
-    icon: Code,
+    icon: FileText,
     subsections: [
-      "Introduction to smart contracts",
-      "Smart contract platforms",
-      "Writing and deploying contracts",
-      "Security considerations"
-    ]
-  },
-  {
-    id: "blockchain-applications",
-    title: "Topic 4 - Blockchain Applications",
-    path: "/modules/module2/blockchain-applications",
-    icon: Building,
-    subsections: [
-      "DeFi (Decentralized Finance)",
-      "NFTs and digital assets",
-      "Supply chain management",
-      "Identity management"
+      "Key Characteristics",
+      "How Smart Contracts Work",
+      "Use Cases",
+      "Best Practices"
     ]
   }
 ];
@@ -111,13 +111,13 @@ export default function Module2() {
                   <h3 className="text-xl font-semibold mt-8 mb-4">Learning Objectives</h3>
                   <ul className="list-disc pl-6 space-y-2 text-gray-700">
                     <li>Understand the fundamental structure and operation of blockchain technology</li>
-                    <li>Learn about different consensus mechanisms and their importance</li>
-                    <li>Master the concepts of smart contracts and their applications</li>
-                    <li>Explore real-world applications of blockchain technology</li>
+                    <li>Learn about distributed ledger technology and its applications</li>
+                    <li>Master different consensus mechanisms and their importance</li>
+                    <li>Explore smart contracts and their real-world applications</li>
                   </ul>
 
                   <div className="mt-8 flex justify-center">
-                    <Link href="/modules/module2/blockchain-fundamentals">
+                    <Link href="/modules/module2/blockchain-basics">
                       <Button 
                         size="lg"
                         className="bg-blue-600 hover:bg-blue-700"

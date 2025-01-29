@@ -1,0 +1,117 @@
+2.2 Distributed Ledger Technology
+ 
+Introduction
+ 
+Distributed Ledger Technology (DLT) is the broader category of decentralised databases that blockchain belongs to. It represents a paradigm shift in how data is stored, shared, and verified across a network of multiple participants.
+ 
+Definition of Distributed Ledger Technology
+ 
+• A digital system for recording the transaction of assets
+• The transaction and its details are recorded in multiple places at the same time
+• No central data store or administration functionality
+ 
+Key Characteristics of DLT
+ 
+1. Decentralisation
+   • No single point of control or failure
+   • Enhances resilience and reduces vulnerability to attacks
+ 
+2. Transparency
+   • All participants can view the ledger
+   • Increases trust and accountability
+ 
+3. Immutability
+   • Once recorded, data is difficult to alter
+   • Ensures data integrity and creates an auditable trail
+ 
+4. Consensus
+   • Network participants agree on the validity of data
+   • Various consensus mechanisms exist (e.g., Proof of Work, Proof of Stake)
+ 
+5. Distributed Storage
+   • Data is replicated across multiple nodes
+   • Improves data availability and redundancy
+ 
+Types of Distributed Ledgers
+ 
+1. Public Distributed Ledgers
+   • Open for anyone to participate
+   • Example: Bitcoin blockchain
+ 
+2. Private Distributed Ledgers
+   • Restricted to authorised participants
+   • Often used in enterprise solutions
+ 
+3. Permissioned Distributed Ledgers
+   • Participants need permission to perform certain actions
+   • Combines elements of public and private ledgers
+ 
+4. Consortium Distributed Ledgers
+   • Operated by a group of organisations
+   • Balances decentralisation with some level of central control
+ 
+DLT vs. Traditional Centralised Systems
+ 
+1. Data Storage
+   • Traditional: Centralised database
+   • DLT: Distributed across multiple nodes
+ 
+2. Trust Model
+   • Traditional: Trust in central authority
+   • DLT: Trust in the system and consensus mechanism
+ 
+3. Data Integrity
+   • Traditional: Vulnerable to single point of failure
+   • DLT: Enhanced through distribution and consensus
+ 
+4. Transparency
+   • Traditional: Often limited
+   • DLT: Typically high, with all participants seeing the same data
+ 
+5. Speed and Scalability
+   • Traditional: Often faster and more scalable
+   • DLT: Can be slower, but improving with new technologies
+ 
+Applications of DLT Beyond Blockchain
+ 
+1. Supply Chain Management
+   • Tracking goods from manufacture to sale
+   • Enhancing transparency and reducing fraud
+ 
+2. Identity Management
+   • Secure and user-controlled digital identities
+   • Reducing identity theft and enhancing privacy
+ 
+3. Voting Systems
+   • Secure and transparent electronic voting
+   • Reducing fraud and increasing voter trust
+ 
+4. Healthcare
+   • Secure sharing of patient records
+   • Enhancing interoperability between healthcare providers
+ 
+5. Real Estate
+   • Property registration and transfer
+   • Streamlining processes and reducing fraud
+ 
+Challenges and Limitations of DLT
+ 
+1. Scalability
+   • Handling large volumes of transactions
+   • Balancing decentralisation with efficiency
+ 
+2. Interoperability
+   • Enabling different DLT systems to work together
+   • Creating standards for cross-ledger communication
+ 
+3. Regulatory Compliance
+   • Adapting to existing legal frameworks
+   • Developing new regulations for DLT-based systems
+ 
+4. Energy Consumption
+   • Some consensus mechanisms (e.g., Proof of Work) are energy-intensive
+   • Developing more sustainable alternatives
+ 
+Conclusion
+ 
+Distributed Ledger Technology represents a fundamental shift in how we manage and verify data across networks. While blockchain is the most well-known application of DLT, the technology's potential extends far beyond cryptocurrencies. As DLT continues to evolve, it promises to revolutionise various industries by enhancing transparency, security, and efficiency in data management.
