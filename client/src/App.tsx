@@ -14,6 +14,11 @@ import AltcoinsTokensSection from "@/pages/modules/module1/altcoins-tokens";
 import CryptoMarketSection from "@/pages/modules/module1/crypto-market";
 import CryptographySection from "@/pages/modules/module1/cryptography";
 import Module2Landing from "@/pages/modules/module2";
+import BlockchainBasicsSection from "@/pages/modules/module2/blockchain-basics";
+import DistributedLedgerSection from "@/pages/modules/module2/distributed-ledger";
+import ConsensusMechanismsSection from "@/pages/modules/module2/consensus-mechanisms";
+import SmartContractsSection from "@/pages/modules/module2/smart-contracts";
+import Module2Quiz from "@/pages/modules/module2/quiz";
 import Module3 from "@/pages/modules/module3";
 import Navigation from "@/components/layout/navigation";
 import TradingSimulator from "@/pages/trading-simulator";
@@ -34,6 +39,11 @@ function Router() {
       <Route path="/modules/module1/cryptography" component={CryptographySection} />
       {/* Module 2 Routes */}
       <Route path="/modules/module2" component={Module2Landing} />
+      <Route path="/modules/module2/blockchain-basics" component={BlockchainBasicsSection} />
+      <Route path="/modules/module2/distributed-ledger" component={DistributedLedgerSection} />
+      <Route path="/modules/module2/consensus-mechanisms" component={ConsensusMechanismsSection} />
+      <Route path="/modules/module2/smart-contracts" component={SmartContractsSection} />
+      <Route path="/modules/module2/quiz" component={Module2Quiz} />
       <Route path="/modules/module3" component={Module3} />
       {/* Trading Simulator */}
       <Route path="/trading-simulator" component={TradingSimulator} />
