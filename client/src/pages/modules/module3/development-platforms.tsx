@@ -3,12 +3,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
 import { PlatformsDiagram } from "@/components/diagrams/PlatformsDiagram";
 import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
+import DevelopmentPlatformsQuiz from "@/components/quizzes/DevelopmentPlatformsQuiz";
 
 const DevelopmentPlatformsSection = () => {
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [showQuiz, setShowQuiz] = useState(false);
   const { updateProgress } = useProgress();
 
   useEffect(() => {
@@ -195,26 +198,49 @@ const DevelopmentPlatformsSection = () => {
           </CardContent>
         </Card>
 
-        <ModuleNavigation
-          prev={{
-            path: "/modules/module3/blockchain-types",
-            label: "Types of Blockchains"
-          }}
-          next={{
-            path: "/modules/module3/quiz",
-            label: "Take the Quiz"
-          }}
-        />
-
         {isFullyRead && (
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-8 bg-green-100 border-l-4 border-green-500 p-4"
+            className="mt-8 space-y-6"
           >
-            <p className="text-green-700">
-              🎉 Congratulations! You've completed the Blockchain Development Platforms section!
-            </p>
+            <Card className="bg-green-100 border-l-4 border-green-500 p-4">
+              <p className="text-green-700">
+                🎉 Congratulations! You've completed the Blockchain Development Platforms section!
+              </p>
+            </Card>
+
+            <div className="flex flex-col space-y-4">
+              <Button
+                onClick={() => setShowQuiz(!showQuiz)}
+                className="w-full bg-purple-600 hover:bg-purple-700"
+                size="lg"
+              >
+                {showQuiz ? "Hide Quiz" : "Take Topic Quiz"}
+              </Button>
+
+              <ModuleNavigation
+                prev={{
+                  path: "/modules/module3/blockchain-types",
+                  label: "Types of Blockchains"
+                }}
+                next={{
+                  path: "/modules/module3/quiz",
+                  label: "Module Quiz"
+                }}
+              />
+            </div>
+
+            {showQuiz && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-8"
+              >
+                <h2 className="text-2xl font-bold text-blue-800 mb-4">Topic Quiz</h2>
+                <DevelopmentPlatformsQuiz />
+              </motion.div>
+            )}
           </motion.div>
         )}
       </div>
