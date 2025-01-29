@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
 
 const SmartContractsSection = () => {
   const [isFullyRead, setIsFullyRead] = useState(false);
@@ -171,12 +173,26 @@ const SmartContractsSection = () => {
           </ul>
         </div>
 
-        {/* Completion Indicator */}
+        {/* Completion Indicator and Navigation */}
         {isFullyRead && (
-          <div className="mt-8 bg-green-100 border-l-4 border-green-500 p-4">
-            <p className="text-green-700">
-              🎉 You've completed the Smart Contracts section!
-            </p>
+          <div className="mt-8">
+            <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-4">
+              <p className="text-green-700">
+                🎉 You've completed the Smart Contracts section!
+              </p>
+            </div>
+            <div className="flex justify-between items-center">
+              <Link href="/modules/module2/quiz">
+                <Button variant="outline">
+                  Take Module 2 Quiz
+                </Button>
+              </Link>
+              <Link href="/modules/module3">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+                  Continue to Module 3
+                </Button>
+              </Link>
+            </div>
           </div>
         )}
       </div>
