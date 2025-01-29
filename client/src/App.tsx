@@ -23,6 +23,7 @@ import DistributedLedgerSection from "@/pages/modules/module2/distributed-ledger
 import ConsensusMechanismsSection from "@/pages/modules/module2/consensus-mechanisms";
 import SmartContractsSection from "@/pages/modules/module2/smart-contracts";
 import Module2Quiz from "@/pages/modules/module2/quiz";
+import BlockchainBasicsQuiz from "@/pages/modules/module2/blockchain-basics-quiz";
 
 // Module 3 Routes
 import Module3 from "@/pages/modules/module3";
@@ -53,6 +54,7 @@ function Router() {
       {/* Module 2 Routes */}
       <Route path="/modules/module2" component={Module2Landing} />
       <Route path="/modules/module2/blockchain-basics" component={BlockchainBasicsSection} />
+      <Route path="/modules/module2/blockchain-basics/quiz" component={BlockchainBasicsQuiz} />
       <Route path="/modules/module2/distributed-ledger" component={DistributedLedgerSection} />
       <Route path="/modules/module2/consensus-mechanisms" component={ConsensusMechanismsSection} />
       <Route path="/modules/module2/smart-contracts" component={SmartContractsSection} />
