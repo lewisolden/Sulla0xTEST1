@@ -6,10 +6,15 @@ export default function Navigation() {
 
   return (
     <nav className="sticky top-0 z-50 w-full bg-blue-600">
-      <div className="container flex h-14 items-center">
-        <div className="mr-4 flex">
+      <div className="container flex h-14 items-center justify-between">
+        <div className="flex items-center">
           <Link href="/" className="mr-6 flex items-center space-x-2">
             <span className="font-bold text-white">Sulla</span>
+          </Link>
+        </div>
+        <div className="flex items-center space-x-4">
+          <Link href="/curriculum">
+            <span className="text-white hover:text-blue-200 transition-colors">Course</span>
           </Link>
         </div>
       </div>
