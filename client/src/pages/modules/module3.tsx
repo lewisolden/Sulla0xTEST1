@@ -7,7 +7,6 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { Scale, Network, Code } from "lucide-react";
-import Module3Quiz from "./module3/quiz";
 
 const moduleTopics = [
   {
@@ -174,7 +173,32 @@ export default function Module3() {
           </TabsContent>
 
           <TabsContent value="quiz">
-            <Module3Quiz />
+            <Card>
+              <CardContent className="pt-6">
+                <div className="text-center py-8">
+                  <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+                    Module 3 Final Quiz
+                  </h2>
+                  <p className="text-gray-600 mb-6">
+                    {progressPercentage < 100
+                      ? "Complete all topics to unlock the final quiz."
+                      : "You've completed all topics! Take the final quiz to test your knowledge."}
+                  </p>
+                  <Link href="/modules/module3/quiz">
+                    <Button 
+                      size="lg"
+                      className="bg-green-600 hover:bg-green-700"
+                      disabled={progressPercentage < 100}
+                    >
+                      {progressPercentage < 100 
+                        ? "Complete all topics to unlock quiz" 
+                        : "Take Module Quiz"
+                      }
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
       </div>
