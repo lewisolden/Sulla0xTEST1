@@ -1,16 +1,15 @@
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import DigitalCurrenciesQuiz from "@/components/modules/quizzes/DigitalCurrenciesQuiz";
 
 export default function DigitalCurrenciesSection() {
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [showQuiz, setShowQuiz] = useState(false);
   const { updateProgress } = useProgress();
 
   useEffect(() => {
@@ -30,144 +29,155 @@ export default function DigitalCurrenciesSection() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [updateProgress]);
 
+  const contentVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+      },
+    },
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="fixed top-0 left-0 w-full h-1 bg-gray-300 z-50">
-        <div 
-          className="h-full bg-blue-600" 
-          style={{ width: `${scrollProgress}%` }}
-        />
-      </div>
+      <motion.div
+        className="fixed top-0 left-0 w-full h-1 bg-gray-300 z-50"
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: scrollProgress / 100 }}
+        style={{ transformOrigin: "left" }}
+      >
+        <div className="h-full bg-blue-600" />
+      </motion.div>
 
       <div className="max-w-4xl mx-auto">
-        <div className="mb-6">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-6"
+        >
           <Link href="/modules/module1">
             <Button variant="ghost" className="gap-2">
               <ArrowLeft className="h-4 w-4" /> Back to Module Overview
             </Button>
           </Link>
-        </div>
+        </motion.div>
 
-        <h1 className="text-4xl font-bold text-blue-800 mb-6">
-          Digital Currencies: The Future of Money
-        </h1>
+        <motion.h1
+          className="text-4xl font-bold text-blue-800 mb-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          Introduction to Digital Currencies
+        </motion.h1>
 
         <div className="prose lg:prose-xl text-gray-700 space-y-6">
-          <p className="lead">
-            Digital currencies represent a revolutionary shift in how we think about 
-            and use money. Unlike traditional physical currencies, digital currencies 
-            exist purely in electronic form and operate independently of conventional 
-            banking systems.
-          </p>
+          <motion.div variants={contentVariants} initial="hidden" animate="visible">
+            <h2 className="text-3xl font-bold text-blue-700 mt-8">Money: Past to Present</h2>
+            <p>
+              Money, in its various forms, has been a cornerstone of human civilization for thousands of years. To 
+              understand the significance of modern cryptocurrencies, it's crucial to trace the evolution of money 
+              from its earliest incarnations to the digital age. This journey reveals not just changes in the form of 
+              money but also shifts in how societies have shaped and been shaped by their exchanges of value.
+            </p>
+          </motion.div>
 
-          <h2 className="text-3xl font-bold text-blue-700 mt-8">Evolution of Digital Money</h2>
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl font-bold text-blue-700 mt-8">Barter System: The Precursor of Money</h2>
+            <p>
+              Before the invention of money, people used barter systems to exchange goods and services directly. 
+              While simple in concept, barter had significant limitations:
+            </p>
+            <ul className="list-disc pl-5 space-y-3">
+              <li>Coincidence of Wants: Both parties needed to have what the other wanted</li>
+              <li>Lack of a Common Value Unit: Difficult to compare the value of different items</li>
+              <li>Indivisibility of Certain Goods: Some items couldn't be divided for smaller transactions</li>
+            </ul>
+            <p>These limitations led to the development of more standardized forms of exchange.</p>
+          </motion.section>
 
-          <p>
-            The journey of digital currencies began with early electronic payment systems 
-            and has evolved into sophisticated blockchain-based cryptocurrencies. This 
-            evolution represents a fundamental shift in how we perceive and use money 
-            in the digital age.
-          </p>
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl font-bold text-blue-700 mt-8">Commodity Money</h2>
+            <p>
+              The first forms of money were commodities—items with intrinsic value that could be used for 
+              exchange. Examples include:
+            </p>
+            <ul className="list-disc pl-5 space-y-3">
+              <li>Cowrie Shells: Used in many parts of Africa and Asia</li>
+              <li>Salt: So valuable it was used to pay Roman soldiers (origin of the word "salary")</li>
+              <li>Cattle: Used in many agricultural societies (the word "pecuniary" comes from the Latin "pecus," meaning cattle)</li>
+            </ul>
+            <p>
+              Commodity money solved some problems of barter but was often bulky and perishable.
+            </p>
+          </motion.section>
 
-          <h3 className="text-2xl font-semibold text-blue-600 mt-6">Historical Development</h3>
-          <ul className="list-disc pl-5 space-y-3">
-            <li>Early digital payment systems (1960s-1990s)</li>
-            <li>E-gold and digital currency precursors (1990s)</li>
-            <li>PayPal and online payment revolution (2000s)</li>
-            <li>Birth of Bitcoin and cryptocurrencies (2009)</li>
-            <li>Rise of blockchain technology (2010s)</li>
-          </ul>
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl font-bold text-blue-700 mt-8">Metallic Money</h2>
+            <p>Around 1000 BCE, metal coins began to appear:</p>
+            <ul className="list-disc pl-5 space-y-3">
+              <li>Gold, Silver, and Bronze: Durable, portable, and divisible</li>
+              <li>Lydian Lions: Coins considered the first official currency, minted in Lydia (modern-day Turkey)</li>
+              <li>Standardization: Governments began to standardize the weight and purity of metal coins</li>
+            </ul>
+            <p>
+              This marked the rise of the first global currencies, like the Roman denarius and the Byzantine 
+              solidus.
+            </p>
+          </motion.section>
 
-          <h2 className="text-3xl font-bold text-blue-700 mt-8">Types of Digital Currencies</h2>
+          {isFullyRead && (
+            <motion.div
+              className="mt-8 space-y-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              <Card className="bg-green-100 border-l-4 border-green-500 p-4">
+                <p className="text-green-700">
+                  🎉 You've completed the Introduction to Digital Currencies section!
+                </p>
+              </Card>
 
-          <h3 className="text-2xl font-semibold text-blue-600 mt-6">1. Cryptocurrencies</h3>
-          <ul className="list-disc pl-5 space-y-3">
-            <li>Decentralized digital currencies</li>
-            <li>Based on blockchain technology</li>
-            <li>Examples: Bitcoin, Ethereum, Litecoin</li>
-            <li>Secured by cryptography</li>
-            <li>Operate on peer-to-peer networks</li>
-          </ul>
+              <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
+                <Link href="/modules/module1">
+                  <Button 
+                    variant="outline"
+                    size="lg"
+                    className="w-full md:w-auto"
+                  >
+                    <ArrowLeft className="mr-2 h-4 w-4" /> Back to Overview
+                  </Button>
+                </Link>
 
-          <h3 className="text-2xl font-semibold text-blue-600 mt-6">2. Central Bank Digital Currencies (CBDCs)</h3>
-          <ul className="list-disc pl-5 space-y-3">
-            <li>Digital form of national currency</li>
-            <li>Issued and regulated by central banks</li>
-            <li>Currently in development in many countries</li>
-            <li>Potential to revolutionize monetary policy</li>
-            <li>Examples of ongoing CBDC projects worldwide</li>
-          </ul>
-
-          <h3 className="text-2xl font-semibold text-blue-600 mt-6">3. Stablecoins</h3>
-          <ul className="list-disc pl-5 space-y-3">
-            <li>Cryptocurrencies pegged to stable assets</li>
-            <li>Designed to minimize price volatility</li>
-            <li>Types of collateralization</li>
-            <li>Use cases in DeFi and trading</li>
-            <li>Popular examples: USDC, USDT, DAI</li>
-          </ul>
-
-          <h2 className="text-3xl font-bold text-blue-700 mt-8">Key Features and Benefits</h2>
-
-          <h3 className="text-2xl font-semibold text-blue-600 mt-6">Advantages</h3>
-          <ul className="list-disc pl-5 space-y-3">
-            <li>Fast and efficient transactions</li>
-            <li>Lower transaction costs</li>
-            <li>24/7 operation</li>
-            <li>Borderless transactions</li>
-            <li>Enhanced security through cryptography</li>
-            <li>Financial inclusion opportunities</li>
-          </ul>
-
-          <h3 className="text-2xl font-semibold text-blue-600 mt-6">Challenges</h3>
-          <ul className="list-disc pl-5 space-y-3">
-            <li>Regulatory uncertainty</li>
-            <li>Security concerns</li>
-            <li>Technology adoption barriers</li>
-            <li>Environmental impact concerns</li>
-            <li>Scalability issues</li>
-          </ul>
-        </div>
-
-        {isFullyRead && (
-          <div className="mt-8 space-y-6">
-            <Card className="bg-green-100 border-l-4 border-green-500 p-4">
-              <p className="text-green-700">
-                🎉 You've completed the Digital Currencies section! Now you understand 
-                the fundamentals of digital currencies and their impact on the future 
-                of finance.
-              </p>
-            </Card>
-
-            <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
-              <Link href="/modules/module1">
-                <Button 
-                  variant="outline"
-                  size="lg"
-                  className="w-full md:w-auto"
-                >
-                  <ArrowLeft className="mr-2 h-4 w-4" /> Back to Overview
-                </Button>
-              </Link>
-
-              <Link href="/modules/module1/history-of-money">
-                <Button 
-                  size="lg"
-                  className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
-                >
-                  Next Topic: History of Money <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
-
-            {showQuiz && (
-              <div className="mt-8">
-                <h2 className="text-2xl font-bold text-blue-800 mb-4">Topic Quiz</h2>
-                <DigitalCurrenciesQuiz />
+                <Link href="/modules/module1/history-of-money">
+                  <Button 
+                    size="lg"
+                    className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
+                  >
+                    Next Topic: History of Money <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
               </div>
-            )}
-          </div>
-        )}
+            </motion.div>
+          )}
+        </div>
       </div>
     </div>
   );
