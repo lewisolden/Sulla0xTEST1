@@ -14,7 +14,7 @@ export default function Home() {
         <p className="text-xl text-blue-700 mb-8 max-w-2xl mx-auto">
           Sulla is your comprehensive learning platform designed to demystify the complex world of digital currencies and blockchain innovation.
         </p>
-        
+
         <div className="flex justify-center space-x-4">
           <Link href="/modules/module1">
             <button className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition duration-300 font-semibold">
@@ -33,9 +33,9 @@ export default function Home() {
       <section className="bg-white py-16" id="curriculum">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-blue-900 text-center mb-12">
-            Comprehensive Cryptocurrency Curriculum
+            Your Journey into the Future of Finance
           </h2>
-          
+
           <div className="grid md:grid-cols-3 gap-8">
             <ModuleCard
               icon={BookOpen}
