@@ -142,24 +142,24 @@ const Module3Quiz = () => {
                 </h2>
                 <p className="text-gray-600 mb-6">
                   Please complete all topics in Module 3 before taking the quiz:
-                  <ul className="mt-4 space-y-2">
-                    {requiredSections.map(section => {
-                      const isComplete = progress.some(
-                        p => p.moduleId === 3 && p.sectionId === section && p.completed
-                      );
-                      return (
-                        <li key={section} className="flex items-center gap-2 justify-center">
-                          <span className={isComplete ? "text-green-600" : "text-red-600"}>
-                            {isComplete ? "✓" : "×"}
-                          </span>
-                          {section.split('-').map(word => 
-                            word.charAt(0).toUpperCase() + word.slice(1)
-                          ).join(' ')}
-                        </li>
-                      );
-                    })}
-                  </ul>
                 </p>
+                <ul className="mt-4 space-y-2 list-none">
+                  {requiredSections.map(section => {
+                    const isComplete = progress.some(
+                      p => p.moduleId === 3 && p.sectionId === section && p.completed
+                    );
+                    return (
+                      <li key={section} className="flex items-center gap-2 justify-center">
+                        <span className={isComplete ? "text-green-600" : "text-red-600"}>
+                          {isComplete ? "✓" : "×"}
+                        </span>
+                        {section.split('-').map(word => 
+                          word.charAt(0).toUpperCase() + word.slice(1)
+                        ).join(' ')}
+                      </li>
+                    );
+                  })}
+                </ul>
                 <Link href="/modules/module3">
                   <Button>Return to Module 3</Button>
                 </Link>
@@ -235,6 +235,19 @@ const Module3Quiz = () => {
       <div className="max-w-4xl mx-auto">
         <Card className="p-8">
           <CardContent>
+            {currentQuestion === 0 && (
+              <div className="mb-8 bg-blue-50 p-6 rounded-lg">
+                <h3 className="text-lg font-semibold text-blue-800 mb-2">Quiz Instructions</h3>
+                <ul className="list-disc pl-6 space-y-2 text-gray-700">
+                  <li>This quiz contains {quizQuestions.length} questions testing your knowledge of Module 3 concepts.</li>
+                  <li>You need to score at least 70% ({Math.ceil(quizQuestions.length * 0.7)} correct answers) to pass the quiz.</li>
+                  <li>Each question has one correct answer.</li>
+                  <li>You'll receive immediate feedback after each answer.</li>
+                  <li>You can retake the quiz if needed.</li>
+                </ul>
+              </div>
+            )}
+
             <div className="mb-6">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold text-blue-800">
