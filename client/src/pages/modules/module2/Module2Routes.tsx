@@ -5,7 +5,7 @@ import BlockchainBasics from './blockchain-basics';
 import DistributedLedger from './distributed-ledger';
 import ConsensusMechanisms from './consensus-mechanisms';
 import SmartContracts from './smart-contracts';
-import SmartContractsQuiz from './smart-contracts-quiz';
+import Quiz from './quiz';
 
 const Module2Routes = () => {
   return (
@@ -15,7 +15,7 @@ const Module2Routes = () => {
       <Route path="/modules/module2/distributed-ledger" component={DistributedLedger} />
       <Route path="/modules/module2/consensus-mechanisms" component={ConsensusMechanisms} />
       <Route path="/modules/module2/smart-contracts" component={SmartContracts} />
-      <Route path="/modules/module2/smart-contracts-quiz" component={SmartContractsQuiz} />
+      <Route path="/modules/module2/quiz" component={Quiz} />
     </Switch>
   );
 };
