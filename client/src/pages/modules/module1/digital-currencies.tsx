@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { useProgress } from "@/context/progress-context";
 
 export default function DigitalCurrenciesSection() {
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const { updateProgress } = useProgress();
 
+  // Progress tracking
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -21,11 +24,7 @@ export default function DigitalCurrenciesSection() {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const updateProgress = (moduleId: number, sectionId: string, completed: boolean) => {
-    console.log(`Progress updated: Module ${moduleId}, Section ${sectionId}, Completed: ${completed}`);
-  };
+  }, [updateProgress]);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -116,31 +115,6 @@ export default function DigitalCurrenciesSection() {
             <li>Technology adoption barriers</li>
             <li>Environmental impact concerns</li>
             <li>Scalability issues</li>
-          </ul>
-
-          <h2 className="text-3xl font-bold text-blue-700 mt-8">Real-World Applications</h2>
-
-          <h3 className="text-2xl font-semibold text-blue-600 mt-6">Current Use Cases</h3>
-          <ul className="list-disc pl-5 space-y-3">
-            <li>Cross-border payments</li>
-            <li>Digital commerce</li>
-            <li>Investment and trading</li>
-            <li>Remittances</li>
-            <li>Smart contracts and DeFi</li>
-          </ul>
-
-          <h2 className="text-3xl font-bold text-blue-700 mt-8">Future Outlook</h2>
-          <p>
-            The future of digital currencies holds immense potential for transforming 
-            the global financial landscape. As technology continues to evolve and 
-            adoption increases, we can expect to see:
-          </p>
-          <ul className="list-disc pl-5 space-y-3">
-            <li>Increased mainstream adoption</li>
-            <li>Integration with traditional financial systems</li>
-            <li>New innovative applications</li>
-            <li>Enhanced regulatory frameworks</li>
-            <li>Improved technological infrastructure</li>
           </ul>
 
           {isFullyRead && (
