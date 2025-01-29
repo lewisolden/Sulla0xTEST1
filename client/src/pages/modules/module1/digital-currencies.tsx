@@ -185,7 +185,7 @@ export default function DigitalCurrenciesSection() {
 
                 <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
                   <Link href="/modules/module1">
-                    <Button
+                    <Button 
                       variant="outline"
                       size="lg"
                       className="w-full md:w-auto"
@@ -195,7 +195,7 @@ export default function DigitalCurrenciesSection() {
                   </Link>
 
                   <Link href="/modules/module1/history-of-money">
-                    <Button
+                    <Button 
                       size="lg"
                       className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
                     >
