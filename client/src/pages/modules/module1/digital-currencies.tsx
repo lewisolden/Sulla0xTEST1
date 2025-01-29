@@ -6,6 +6,8 @@ import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import DigitalRevolutionDiagram from "@/components/diagrams/DigitalRevolutionDiagram";
+import DigitalCurrencyFeatures from "@/components/diagrams/DigitalCurrencyFeatures";
 
 export default function DigitalCurrenciesSection() {
   const [isFullyRead, setIsFullyRead] = useState(false);
@@ -90,6 +92,7 @@ export default function DigitalCurrenciesSection() {
             viewport={{ once: true }}
           >
             <h2 className="text-3xl font-bold text-blue-700 mt-8">The Digital Revolution of Money</h2>
+            <DigitalRevolutionDiagram />
             <p>
               Just as the internet revolutionised information, digital currencies are transforming the very fabric of our financial systems. But what exactly are digital currencies? At their core, they're a new form of money designed for the digital age—intangible, yet as real and valuable as the cash in your wallet.
             </p>
@@ -108,6 +111,7 @@ export default function DigitalCurrenciesSection() {
             <p>
               But digital currencies are about more than just a new way to pay for things. They represent a fundamental shift in how we think about money, value, and trust in the digital age.
             </p>
+            <DigitalCurrencyFeatures />
             <ul className="list-disc pl-5 space-y-3">
               <li>
                 <strong>Decentralisation:</strong> Many digital currencies operate on decentralised networks, free from the control of any single entity. This means no central bank, no CEO, and no single point of failure.
@@ -169,7 +173,7 @@ export default function DigitalCurrenciesSection() {
 
               <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
                 <Link href="/modules/module1">
-                  <Button 
+                  <Button
                     variant="outline"
                     size="lg"
                     className="w-full md:w-auto"
@@ -179,7 +183,7 @@ export default function DigitalCurrenciesSection() {
                 </Link>
 
                 <Link href="/modules/module1/history-of-money">
-                  <Button 
+                  <Button
                     size="lg"
                     className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
                   >
