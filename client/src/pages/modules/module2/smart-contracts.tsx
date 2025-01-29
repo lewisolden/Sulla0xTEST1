@@ -78,6 +78,12 @@ export default function SmartContractsSection() {
               platforms, enabling automated, trustless transactions and complex 
               decentralized applications.
             </p>
+            <h3 className="text-2xl font-semibold text-blue-600 mt-4">Definition</h3>
+            <ul className="list-disc pl-5 space-y-3">
+              <li>Computer programs stored on a blockchain</li>
+              <li>Automatically execute when predetermined conditions are met</li>
+              <li>Enforce the terms of an agreement without intermediaries</li>
+            </ul>
           </motion.section>
 
           <motion.section
@@ -90,21 +96,32 @@ export default function SmartContractsSection() {
             <ul className="list-disc pl-5 space-y-3">
               <li>Execute automatically without intervention</li>
               <li>No need for intermediaries</li>
-              <li>Predetermined conditions trigger actions</li>
             </ul>
 
-            <h3 className="text-2xl font-semibold text-blue-600 mt-4">2. Transparency</h3>
+            <h3 className="text-2xl font-semibold text-blue-600 mt-4">2. Decentralisation</h3>
+            <ul className="list-disc pl-5 space-y-3">
+              <li>Exist on a distributed blockchain network</li>
+              <li>No central point of control</li>
+            </ul>
+
+            <h3 className="text-2xl font-semibold text-blue-600 mt-4">3. Transparency</h3>
             <ul className="list-disc pl-5 space-y-3">
               <li>All parties can view the contract's code</li>
               <li>Terms are publicly visible on the blockchain</li>
               <li>Execution results are verifiable</li>
             </ul>
 
-            <h3 className="text-2xl font-semibold text-blue-600 mt-4">3. Immutability</h3>
+            <h3 className="text-2xl font-semibold text-blue-600 mt-4">4. Immutability</h3>
             <ul className="list-disc pl-5 space-y-3">
               <li>Once deployed, code cannot be changed</li>
               <li>Ensures contract terms remain constant</li>
               <li>Builds trust between parties</li>
+            </ul>
+
+            <h3 className="text-2xl font-semibold text-blue-600 mt-4">5. Deterministic</h3>
+            <ul className="list-disc pl-5 space-y-3">
+              <li>Produce the same result for everyone who runs them</li>
+              <li>Predictable outcomes based on inputs</li>
             </ul>
           </motion.section>
 
@@ -115,11 +132,11 @@ export default function SmartContractsSection() {
           >
             <h2 className="text-3xl font-bold text-blue-700">How Smart Contracts Work</h2>
             <ol className="list-decimal pl-5 space-y-3">
-              <li>Developer writes the contract code, defining conditions and actions</li>
-              <li>Contract is uploaded to the blockchain</li>
-              <li>Contract self-executes when predefined conditions are met</li>
-              <li>Network nodes verify the execution</li>
-              <li>Results are recorded on the blockchain</li>
+              <li>Creation: Developer writes the contract code, defining conditions and actions</li>
+              <li>Deployment: Contract is uploaded to the blockchain</li>
+              <li>Execution: Contract self-executes when predefined conditions are met</li>
+              <li>Verification: Network nodes verify the execution</li>
+              <li>Update: Results are recorded on the blockchain</li>
             </ol>
           </motion.section>
 
@@ -135,15 +152,64 @@ export default function SmartContractsSection() {
               <li>Efficiency: Automate processes, reducing time and cost</li>
               <li>Accuracy: Eliminate errors from manual processing</li>
               <li>Trust: Remove the need for intermediaries</li>
+              <li>Transparency: All parties can view and verify the contract</li>
               <li>Security: Encrypted and distributed across the network</li>
             </ul>
 
-            <h3 className="text-2xl font-semibold text-blue-600 mt-4">Limitations</h3>
+            <h3 className="text-2xl font-semibold text-blue-600 mt-4">Limitations and Challenges</h3>
             <ul className="list-disc pl-5 space-y-3">
               <li>Code Vulnerabilities: Bugs can lead to unintended consequences</li>
               <li>Lack of Flexibility: Difficult to change once deployed</li>
+              <li>Legal Status: Uncertain regulatory environment in many jurisdictions</li>
               <li>Oracle Problem: Challenge of getting reliable external data</li>
               <li>Scalability: Limited by the underlying blockchain's capacity</li>
+            </ul>
+          </motion.section>
+
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <h2 className="text-3xl font-bold text-blue-700">Use Cases</h2>
+
+            <h3 className="text-2xl font-semibold text-blue-600">1. Financial Services</h3>
+            <ul className="list-disc pl-5 space-y-3">
+              <li>Automated lending and borrowing</li>
+              <li>Insurance claim processing</li>
+              <li>Decentralized exchanges</li>
+              <li>Automated market makers</li>
+            </ul>
+
+            <h3 className="text-2xl font-semibold text-blue-600 mt-4">2. Supply Chain</h3>
+            <ul className="list-disc pl-5 space-y-3">
+              <li>Automated payments upon delivery</li>
+              <li>Product tracking and verification</li>
+              <li>Supplier management</li>
+            </ul>
+
+            <h3 className="text-2xl font-semibold text-blue-600 mt-4">3. Real Estate</h3>
+            <ul className="list-disc pl-5 space-y-3">
+              <li>Property transfers</li>
+              <li>Rental agreements</li>
+              <li>Automated payments</li>
+            </ul>
+
+            <h3 className="text-2xl font-semibold text-blue-600 mt-4">4. Healthcare</h3>
+            <ul className="list-disc pl-5 space-y-3">
+              <li>Secure sharing of patient records</li>
+              <li>Automated insurance claims</li>
+            </ul>
+
+            <h3 className="text-2xl font-semibold text-blue-600 mt-4">5. Intellectual Property</h3>
+            <ul className="list-disc pl-5 space-y-3">
+              <li>Automated royalty payments</li>
+              <li>Proof of ownership and licensing</li>
+            </ul>
+
+            <h3 className="text-2xl font-semibold text-blue-600 mt-4">6. Voting Systems</h3>
+            <ul className="list-disc pl-5 space-y-3">
+              <li>Transparent and tamper-resistant electronic voting</li>
             </ul>
           </motion.section>
 
@@ -180,37 +246,10 @@ export default function SmartContractsSection() {
               <li>Improved interoperability between different blockchain networks</li>
               <li>Development of more user-friendly interfaces</li>
               <li>Potential for "smart legal contracts" recognized by legal systems</li>
+              <li>Enhanced security features</li>
+              <li>Wider adoption in traditional industries</li>
             </ul>
           </motion.section>
-
-          <motion.section
-            variants={contentVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <h2 className="text-3xl font-bold text-blue-700">Use Cases</h2>
-            <h3 className="text-2xl font-semibold text-blue-600">1. Financial Services</h3>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Automated lending and borrowing</li>
-              <li>Insurance claim processing</li>
-              <li>Decentralized exchanges</li>
-            </ul>
-
-            <h3 className="text-2xl font-semibold text-blue-600 mt-4">2. Supply Chain</h3>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Automated payments upon delivery</li>
-              <li>Product tracking and verification</li>
-              <li>Supplier management</li>
-            </ul>
-
-            <h3 className="text-2xl font-semibold text-blue-600 mt-4">3. Real Estate</h3>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>Property transfers</li>
-              <li>Rental agreements</li>
-              <li>Automated payments</li>
-            </ul>
-          </motion.section>
-
 
           {isFullyRead && (
             <motion.div

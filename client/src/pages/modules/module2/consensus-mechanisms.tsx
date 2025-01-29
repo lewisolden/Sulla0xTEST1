@@ -74,9 +74,14 @@ export default function ConsensusMechanismsSection() {
             <h2 className="text-3xl font-bold text-blue-700">Introduction</h2>
             <p>
               Consensus mechanisms are crucial components of blockchain networks, ensuring 
-              agreement on the state of the ledger across all participants. We'll focus on 
-              two primary mechanisms: Proof of Work (PoW) and Proof of Stake (PoS).
+              agreement on the state of the ledger across all participants.
             </p>
+            <h3 className="text-2xl font-semibold text-blue-600 mt-4">What is a Consensus Mechanism?</h3>
+            <ul className="list-disc pl-5 space-y-3">
+              <li>A method for validating transactions and creating new blocks</li>
+              <li>Ensures all nodes in the network agree on the current state</li>
+              <li>Prevents double-spending and maintains network integrity</li>
+            </ul>
           </motion.section>
 
           <motion.section
@@ -85,12 +90,38 @@ export default function ConsensusMechanismsSection() {
             animate="visible"
           >
             <h2 className="text-3xl font-bold text-blue-700">Proof of Work (PoW)</h2>
-            <h3 className="text-2xl font-semibold text-blue-600">How PoW Works</h3>
-            <ul className="list-disc pl-5 space-y-3">
+            <h3 className="text-2xl font-semibold text-blue-600">Definition</h3>
+            <p>
+              A consensus mechanism that requires solving complex mathematical puzzles 
+              to validate transactions and create new blocks.
+            </p>
+
+            <h3 className="text-2xl font-semibold text-blue-600 mt-4">How PoW Works</h3>
+            <ol className="list-decimal pl-5 space-y-3">
               <li>Miners compete to solve a cryptographic puzzle</li>
               <li>First miner to solve the puzzle gets to add the next block</li>
               <li>Other nodes verify the solution</li>
               <li>If valid, the new block is added to the blockchain</li>
+            </ol>
+
+            <h3 className="text-2xl font-semibold text-blue-600 mt-4">Advantages</h3>
+            <ul className="list-disc pl-5 space-y-3">
+              <li>Highly secure against attacks</li>
+              <li>Proven track record (used by Bitcoin)</li>
+            </ul>
+
+            <h3 className="text-2xl font-semibold text-blue-600 mt-4">Disadvantages</h3>
+            <ul className="list-disc pl-5 space-y-3">
+              <li>Energy-intensive</li>
+              <li>Potential for mining centralization</li>
+              <li>Slower transaction processing</li>
+            </ul>
+
+            <h3 className="text-2xl font-semibold text-blue-600 mt-4">Examples</h3>
+            <ul className="list-disc pl-5 space-y-3">
+              <li>Bitcoin</li>
+              <li>Litecoin</li>
+              <li>Dogecoin</li>
             </ul>
           </motion.section>
 
@@ -100,12 +131,39 @@ export default function ConsensusMechanismsSection() {
             animate="visible"
           >
             <h2 className="text-3xl font-bold text-blue-700">Proof of Stake (PoS)</h2>
-            <h3 className="text-2xl font-semibold text-blue-600">How PoS Works</h3>
+            <h3 className="text-2xl font-semibold text-blue-600">Definition</h3>
+            <p>
+              A consensus mechanism where validators are chosen based on the amount 
+              of cryptocurrency they hold and are willing to "stake".
+            </p>
+
+            <h3 className="text-2xl font-semibold text-blue-600 mt-4">How PoS Works</h3>
+            <ol className="list-decimal pl-5 space-y-3">
+              <li>Validators lock up a certain amount of cryptocurrency as stake</li>
+              <li>The protocol selects a validator to create the next block</li>
+              <li>If the validator acts honestly, they receive a reward</li>
+              <li>If they act maliciously, they may lose their stake</li>
+            </ol>
+
+            <h3 className="text-2xl font-semibold text-blue-600 mt-4">Advantages</h3>
             <ul className="list-disc pl-5 space-y-3">
-              <li>Validators lock up cryptocurrency as stake</li>
-              <li>Protocol selects validator to create next block</li>
-              <li>Honest validators receive rewards</li>
-              <li>Malicious actors may lose their stake</li>
+              <li>More energy-efficient than PoW</li>
+              <li>Potentially faster transaction processing</li>
+              <li>Encourages long-term holding of cryptocurrency</li>
+            </ul>
+
+            <h3 className="text-2xl font-semibold text-blue-600 mt-4">Disadvantages</h3>
+            <ul className="list-disc pl-5 space-y-3">
+              <li>Potential for centralization (rich get richer)</li>
+              <li>Less proven than PoW</li>
+              <li>Possible security vulnerabilities</li>
+            </ul>
+
+            <h3 className="text-2xl font-semibold text-blue-600 mt-4">Examples</h3>
+            <ul className="list-disc pl-5 space-y-3">
+              <li>Solana</li>
+              <li>Mina</li>
+              <li>Tezos</li>
             </ul>
           </motion.section>
 
@@ -114,12 +172,25 @@ export default function ConsensusMechanismsSection() {
             initial="hidden"
             animate="visible"
           >
-            <h2 className="text-3xl font-bold text-blue-700">Comparison</h2>
+            <h2 className="text-3xl font-bold text-blue-700">Other Consensus Mechanisms</h2>
             <ul className="list-disc pl-5 space-y-3">
-              <li>Energy Consumption: PoW is high, PoS is low</li>
-              <li>Security: PoW is highly secure and proven, PoS is secure but less battle-tested</li>
-              <li>Transaction Speed: PoW is generally slower, PoS is generally faster</li>
-              <li>Entry Barrier: PoW requires expensive equipment, PoS needs token stake</li>
+              <li>Delegated Proof of Stake (DPoS): Stakeholders vote for delegates</li>
+              <li>Proof of Authority (PoA): Transactions validated by approved accounts</li>
+              <li>Practical Byzantine Fault Tolerance (PBFT): Nodes vote on validity</li>
+              <li>Proof of Burn (PoB): Miners burn coins to earn mining rights</li>
+            </ul>
+          </motion.section>
+
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <h2 className="text-3xl font-bold text-blue-700">Future of Consensus Mechanisms</h2>
+            <ul className="list-disc pl-5 space-y-3">
+              <li>Ongoing research into more efficient and secure mechanisms</li>
+              <li>Hybrid models combining different consensus mechanisms</li>
+              <li>Focus on scalability and environmental sustainability</li>
             </ul>
           </motion.section>
 
