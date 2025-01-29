@@ -1,18 +1,15 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Brain } from "lucide-react";
 import BitcoinQuiz from "@/components/modules/quizzes/BitcoinQuiz";
-import BlockchainDiagram from "@/components/diagrams/BlockchainDiagram";
 
 export default function BitcoinSection() {
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [showQuiz, setShowQuiz] = useState(false);
   const { updateProgress } = useProgress();
 
   useEffect(() => {
@@ -236,38 +233,42 @@ export default function BitcoinSection() {
             >
               <Card className="bg-green-100 border-l-4 border-green-500 p-4">
                 <p className="text-green-700">
-                  🎉 You've completed the Bitcoin section! You now understand the fundamental 
-                  concepts behind Bitcoin, its innovations, and its impact on the financial world.
+                  🎉 You've completed the Bitcoin section! Ready to test your knowledge?
                 </p>
               </Card>
 
-              <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
-                <Link href="/modules/module1/history-of-money">
+              <div className="flex flex-col space-y-4">
+                <Link href="/modules/module1/bitcoin-quiz">
                   <Button 
-                    variant="outline"
                     size="lg"
-                    className="w-full md:w-auto"
+                    className="w-full bg-green-600 hover:bg-green-700 gap-2"
                   >
-                    <ArrowLeft className="mr-2 h-4 w-4" /> Previous Topic
+                    <Brain className="w-5 h-5" />
+                    Take Topic Quiz
                   </Button>
                 </Link>
 
-                <Link href="/modules/module1/altcoins-tokens">
-                  <Button 
-                    size="lg"
-                    className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
-                  >
-                    Next Topic: Altcoins and Tokens <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-              </div>
+                <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
+                  <Link href="/modules/module1/history-of-money">
+                    <Button 
+                      variant="outline"
+                      size="lg"
+                      className="w-full md:w-auto"
+                    >
+                      <ArrowLeft className="mr-2 h-4 w-4" /> Previous Topic
+                    </Button>
+                  </Link>
 
-              {showQuiz && (
-                <div className="mt-8">
-                  <h2 className="text-2xl font-bold text-blue-800 mb-4">Topic Quiz</h2>
-                  <BitcoinQuiz />
+                  <Link href="/modules/module1/altcoins-tokens">
+                    <Button 
+                      size="lg"
+                      className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
+                    >
+                      Next Topic: Altcoins and Tokens <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
                 </div>
-              )}
+              </div>
             </motion.div>
           )}
         </div>
