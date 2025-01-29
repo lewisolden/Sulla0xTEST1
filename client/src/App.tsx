@@ -16,6 +16,7 @@ import CryptographySection from "@/pages/modules/module1/cryptography";
 import Module2Landing from "@/pages/modules/module2";
 import Module3 from "@/pages/modules/module3";
 import Navigation from "@/components/layout/navigation";
+import TradingSimulator from "@/pages/trading-simulator";
 
 function Router() {
   return (
@@ -33,6 +34,8 @@ function Router() {
       {/* Module 2 Routes */}
       <Route path="/modules/module2" component={Module2Landing} />
       <Route path="/modules/module3" component={Module3} />
+      {/* Trading Simulator */}
+      <Route path="/trading-simulator" component={TradingSimulator} />
       <Route component={NotFound} />
     </Switch>
   );
