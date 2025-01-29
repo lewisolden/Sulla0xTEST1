@@ -1,6 +1,7 @@
 import { Gamepad2, Hash, Network, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
 import MiningGame from "@/components/games/MiningGame";
+import NetworkConsensusGame from "@/components/games/NetworkConsensusGame";
 import { Card } from "@/components/ui/card";
 import { useState } from "react";
 
@@ -11,7 +12,12 @@ const games = [
     description: "Learn how proof-of-work mining works by finding valid block hashes.",
     icon: Hash,
   },
-  // More games to be added
+  {
+    id: "consensus",
+    title: "Network Consensus",
+    description: "Validate transactions and build blocks to understand how blockchain networks reach consensus.",
+    icon: Network,
+  },
 ];
 
 export default function Games() {
@@ -68,6 +74,7 @@ export default function Games() {
             className="md:col-span-3"
           >
             {selectedGame === "mining" && <MiningGame />}
+            {selectedGame === "consensus" && <NetworkConsensusGame />}
           </motion.div>
         </div>
       </div>
