@@ -4,7 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import DigitalCurrenciesQuiz from "@/components/modules/quizzes/DigitalCurrenciesQuiz";
 
 export default function DigitalCurrenciesSection() {
@@ -13,7 +13,6 @@ export default function DigitalCurrenciesSection() {
   const [showQuiz, setShowQuiz] = useState(false);
   const { updateProgress } = useProgress();
 
-  // Progress tracking
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -33,7 +32,6 @@ export default function DigitalCurrenciesSection() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Scroll Progress Bar */}
       <div className="fixed top-0 left-0 w-full h-1 bg-gray-300 z-50">
         <div 
           className="h-full bg-blue-600" 
@@ -42,6 +40,13 @@ export default function DigitalCurrenciesSection() {
       </div>
 
       <div className="max-w-4xl mx-auto">
+        <div className="mb-6">
+          <Link href="/modules/module1">
+            <Button variant="ghost" className="gap-2">
+              <ArrowLeft className="h-4 w-4" /> Back to Module Overview
+            </Button>
+          </Link>
+        </div>
         <h1 className="text-4xl font-bold text-blue-800 mb-6">
           Digital Currencies: The Future of Money
         </h1>
