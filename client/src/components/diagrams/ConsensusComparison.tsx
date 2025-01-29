@@ -1,4 +1,3 @@
-```tsx
 import { motion } from "framer-motion";
 import { useState } from "react";
 
@@ -133,4 +132,3 @@ const ConsensusComparison = () => {
 };
 
 export default ConsensusComparison;
-```

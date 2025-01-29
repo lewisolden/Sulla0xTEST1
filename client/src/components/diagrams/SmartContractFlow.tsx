@@ -1,4 +1,3 @@
-```tsx
 import { motion } from "framer-motion";
 
 const SmartContractFlow = () => {
@@ -145,4 +144,3 @@ const SmartContractFlow = () => {
 };
 
 export default SmartContractFlow;
-```
