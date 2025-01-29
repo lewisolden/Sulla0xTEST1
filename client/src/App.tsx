@@ -6,6 +6,7 @@ import { ProgressProvider } from "@/context/progress-context";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Curriculum from "@/pages/curriculum";
+import About from "@/pages/about";
 
 // Module 1 Routes
 import Module1Landing from "@/pages/modules/module1";
@@ -45,6 +46,7 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/curriculum" component={Curriculum} />
+      <Route path="/about" component={About} />
 
       {/* Module 1 Routes */}
       <Route path="/modules/module1" component={Module1Landing} />
