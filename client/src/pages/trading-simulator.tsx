@@ -4,6 +4,8 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { Link } from "wouter";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import {
   LineChart,
   Line,
@@ -110,9 +112,26 @@ export default function TradingSimulator() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold text-blue-800 mb-6">
+      {/* Navigation */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-6"
+      >
+        <Link href="/modules/module1/crypto-market">
+          <Button variant="ghost" className="gap-2">
+            <ArrowLeft className="h-4 w-4" /> Back to Crypto Market Dynamics
+          </Button>
+        </Link>
+      </motion.div>
+
+      <motion.h1
+        className="text-4xl font-bold text-blue-800 mb-6"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+      >
         Crypto Trading Simulator
-      </h1>
+      </motion.h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Price Chart */}
@@ -131,7 +150,7 @@ export default function TradingSimulator() {
                 <YAxis />
                 <Tooltip
                   labelFormatter={(label) => new Date(label).toLocaleString()}
-                  formatter={(value) => [`$${value.toFixed(2)}`, "Price"]}
+                  formatter={(value: number) => [`$${value.toFixed(2)}`, "Price"]}
                 />
                 <Line
                   type="monotone"
@@ -226,6 +245,33 @@ export default function TradingSimulator() {
           </div>
         </Card>
       </div>
+
+      {/* Navigation Footer */}
+      <motion.div
+        className="mt-8 flex flex-col md:flex-row items-center gap-4 justify-between"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+      >
+        <Link href="/modules/module1/crypto-market">
+          <Button 
+            variant="outline"
+            size="lg"
+            className="w-full md:w-auto"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" /> Back to Market Dynamics
+          </Button>
+        </Link>
+
+        <Link href="/modules/module1/cryptography">
+          <Button 
+            size="lg"
+            className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
+          >
+            Continue to Cryptography <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+        </Link>
+      </motion.div>
     </div>
   );
 }
