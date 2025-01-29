@@ -5,6 +5,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { ProgressProvider } from "@/context/progress-context";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
+
+// Module 1 Routes
 import Module1Landing from "@/pages/modules/module1";
 import Module1Quiz from "@/pages/modules/module1/quiz";
 import DigitalCurrenciesSection from "@/pages/modules/module1/digital-currencies";
@@ -13,7 +15,17 @@ import BitcoinSection from "@/pages/modules/module1/bitcoin";
 import AltcoinsTokensSection from "@/pages/modules/module1/altcoins-tokens";
 import CryptoMarketSection from "@/pages/modules/module1/crypto-market";
 import CryptographySection from "@/pages/modules/module1/cryptography";
+
+// Module 2 Routes
 import Module2Landing from "@/pages/modules/module2";
+import BlockchainFundamentalsSection from "@/pages/modules/module2/blockchain-fundamentals";
+import ConsensusSection from "@/pages/modules/module2/consensus-mechanisms";
+import DecentralizationSection from "@/pages/modules/module2/decentralization";
+import SmartContractsSection from "@/pages/modules/module2/smart-contracts";
+import BlockchainApplicationsSection from "@/pages/modules/module2/applications";
+import FutureBlockchainSection from "@/pages/modules/module2/future";
+import Module2Quiz from "@/pages/modules/module2/quiz";
+
 import Module3 from "@/pages/modules/module3";
 import Navigation from "@/components/layout/navigation";
 import TradingSimulator from "@/pages/trading-simulator";
@@ -23,6 +35,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+
       {/* Module 1 Routes */}
       <Route path="/modules/module1" component={Module1Landing} />
       <Route path="/modules/module1/quiz" component={Module1Quiz} />
@@ -32,12 +45,19 @@ function Router() {
       <Route path="/modules/module1/altcoins-tokens" component={AltcoinsTokensSection} />
       <Route path="/modules/module1/crypto-market" component={CryptoMarketSection} />
       <Route path="/modules/module1/cryptography" component={CryptographySection} />
+
       {/* Module 2 Routes */}
       <Route path="/modules/module2" component={Module2Landing} />
+      <Route path="/modules/module2/blockchain-fundamentals" component={BlockchainFundamentalsSection} />
+      <Route path="/modules/module2/consensus-mechanisms" component={ConsensusSection} />
+      <Route path="/modules/module2/decentralization" component={DecentralizationSection} />
+      <Route path="/modules/module2/smart-contracts" component={SmartContractsSection} />
+      <Route path="/modules/module2/applications" component={BlockchainApplicationsSection} />
+      <Route path="/modules/module2/future" component={FutureBlockchainSection} />
+      <Route path="/modules/module2/quiz" component={Module2Quiz} />
+
       <Route path="/modules/module3" component={Module3} />
-      {/* Trading Simulator */}
       <Route path="/trading-simulator" component={TradingSimulator} />
-      {/* Glossary */}
       <Route path="/glossary" component={GlossaryPage} />
       <Route component={NotFound} />
     </Switch>
