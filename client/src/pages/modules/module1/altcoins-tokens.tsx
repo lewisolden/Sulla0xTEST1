@@ -4,7 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import AltcoinsTokensQuiz from "@/components/modules/quizzes/AltcoinsTokensQuiz";
 
 export default function AltcoinsTokensSection() {
@@ -40,6 +40,14 @@ export default function AltcoinsTokensSection() {
       </div>
 
       <div className="max-w-4xl mx-auto">
+        <div className="mb-6">
+          <Link href="/modules/module1/bitcoin">
+            <Button variant="ghost" className="gap-2">
+              <ArrowLeft className="h-4 w-4" /> Back to Bitcoin
+            </Button>
+          </Link>
+        </div>
+
         <h1 className="text-4xl font-bold text-blue-800 mb-6">
           Altcoins and Tokens: Beyond Bitcoin
         </h1>

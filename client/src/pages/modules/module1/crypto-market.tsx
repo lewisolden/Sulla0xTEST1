@@ -4,7 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import CryptoMarketQuiz from "@/components/modules/quizzes/CryptoMarketQuiz";
 
 export default function CryptoMarketSection() {
@@ -40,6 +40,14 @@ export default function CryptoMarketSection() {
       </div>
 
       <div className="max-w-4xl mx-auto">
+        <div className="mb-6">
+          <Link href="/modules/module1/altcoins-tokens">
+            <Button variant="ghost" className="gap-2">
+              <ArrowLeft className="h-4 w-4" /> Back to Altcoins and Tokens
+            </Button>
+          </Link>
+        </div>
+
         <h1 className="text-4xl font-bold text-blue-800 mb-6">
           Understanding Cryptocurrency Market Dynamics
         </h1>
