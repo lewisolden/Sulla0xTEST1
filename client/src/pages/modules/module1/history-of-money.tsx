@@ -135,7 +135,7 @@ export default function HistoryOfMoneySection() {
               <div className="flex flex-col space-y-4">
                 <Button
                   onClick={() => setShowQuiz(!showQuiz)}
-                  className="w-full bg-blue-600 hover:bg-blue-700"
+                  className="w-full bg-purple-600 hover:bg-purple-700"
                   size="lg"
                 >
                   {showQuiz ? "Hide Quiz" : "Take Topic Quiz"}
