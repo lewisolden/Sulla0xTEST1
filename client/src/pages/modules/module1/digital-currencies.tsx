@@ -8,10 +8,13 @@ import { Link } from "wouter";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import DigitalRevolutionDiagram from "@/components/diagrams/DigitalRevolutionDiagram";
 import DigitalCurrencyFeatures from "@/components/diagrams/DigitalCurrencyFeatures";
+import DigitalCurrenciesQuiz from "@/components/quizzes/DigitalCurrenciesQuiz"; // Import the quiz component
+
 
 export default function DigitalCurrenciesSection() {
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [showQuiz, setShowQuiz] = useState(false); // State for the quiz
   const { updateProgress } = useProgress();
 
   useEffect(() => {
@@ -171,26 +174,47 @@ export default function DigitalCurrenciesSection() {
                 </p>
               </Card>
 
-              <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
-                <Link href="/modules/module1">
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="w-full md:w-auto"
-                  >
-                    <ArrowLeft className="mr-2 h-4 w-4" /> Back to Overview
-                  </Button>
-                </Link>
+              <div className="flex flex-col space-y-4">
+                <Button
+                  onClick={() => setShowQuiz(!showQuiz)}
+                  className="w-full bg-purple-600 hover:bg-purple-700"
+                  size="lg"
+                >
+                  {showQuiz ? "Hide Quiz" : "Take Topic Quiz"}
+                </Button>
 
-                <Link href="/modules/module1/history-of-money">
-                  <Button
-                    size="lg"
-                    className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
-                  >
-                    Next Topic: History of Money <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
+                <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
+                  <Link href="/modules/module1">
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      className="w-full md:w-auto"
+                    >
+                      <ArrowLeft className="mr-2 h-4 w-4" /> Back to Overview
+                    </Button>
+                  </Link>
+
+                  <Link href="/modules/module1/history-of-money">
+                    <Button
+                      size="lg"
+                      className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
+                    >
+                      Next Topic: History of Money <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                </div>
               </div>
+
+              {showQuiz && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-8"
+                >
+                  <h2 className="text-2xl font-bold text-blue-800 mb-4">Topic Quiz</h2>
+                  <DigitalCurrenciesQuiz />
+                </motion.div>
+              )}
             </motion.div>
           )}
         </div>
