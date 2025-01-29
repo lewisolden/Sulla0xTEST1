@@ -22,6 +22,8 @@ import BlockchainBasicsSection from "@/pages/modules/module2/blockchain-basics";
 import DistributedLedgerSection from "@/pages/modules/module2/distributed-ledger";
 import ConsensusMechanismsSection from "@/pages/modules/module2/consensus-mechanisms";
 import SmartContractsSection from "@/pages/modules/module2/smart-contracts";
+import BlockchainApplicationsSection from "@/pages/modules/module2/applications";
+import FutureBlockchainSection from "@/pages/modules/module2/future";
 import Module2Quiz from "@/pages/modules/module2/quiz";
 
 import Module3 from "@/pages/modules/module3";
@@ -50,6 +52,8 @@ function Router() {
       <Route path="/modules/module2/distributed-ledger" component={DistributedLedgerSection} />
       <Route path="/modules/module2/consensus-mechanisms" component={ConsensusMechanismsSection} />
       <Route path="/modules/module2/smart-contracts" component={SmartContractsSection} />
+      <Route path="/modules/module2/applications" component={BlockchainApplicationsSection} />
+      <Route path="/modules/module2/future" component={FutureBlockchainSection} />
       <Route path="/modules/module2/quiz" component={Module2Quiz} />
 
       <Route path="/modules/module3" component={Module3} />
