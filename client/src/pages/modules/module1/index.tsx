@@ -108,9 +108,9 @@ export default function Module1() {
         <Card className="mb-8">
           <CardContent className="pt-6">
             <p className="text-lg text-gray-700 mb-6">
-              This module is designed to introduce learners to the basic concepts of 
-              cryptocurrencies and their underlying technology. It's structured into 
-              six main sections that will give you a comprehensive understanding of 
+              This module is designed to introduce learners to the basic concepts of
+              cryptocurrencies and their underlying technology. It's structured into
+              six main sections that will give you a comprehensive understanding of
               the fundamentals.
             </p>
             <Link href="/glossary">
@@ -144,11 +144,18 @@ export default function Module1() {
                         <li key={index} className="text-sm mb-1">{subsection}</li>
                       ))}
                     </ul>
-                    <Link href={topic.path}>
-                      <Button>
-                        {topic.completed ? "Review Topic" : "Start Topic"}
-                      </Button>
-                    </Link>
+                    <div className="flex gap-4">
+                      <Link href={topic.path}>
+                        <Button>
+                          {topic.completed ? "Review Topic" : "Start Topic"}
+                        </Button>
+                      </Link>
+                      <Link href={`${topic.path}-quiz`}>
+                        <Button variant="outline">
+                          Take Quiz
+                        </Button>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -158,13 +165,13 @@ export default function Module1() {
 
         <div className="mt-8 text-center">
           <Link href="/modules/module1/quiz">
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               className="bg-green-600 hover:bg-green-700"
               disabled={progressPercentage < 100}
             >
-              {progressPercentage < 100 
-                ? "Complete all topics to unlock quiz" 
+              {progressPercentage < 100
+                ? "Complete all topics to unlock quiz"
                 : "Take Module Quiz"
               }
             </Button>
