@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useProgress } from "@/context/progress-context";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Database, Network, Lock, Code, Building, Cpu } from "lucide-react";
+import { Database, Network, Code, Building } from "lucide-react";
 
 const moduleTopics = [
   {
@@ -33,20 +33,8 @@ const moduleTopics = [
     ]
   },
   {
-    id: "decentralization",
-    title: "Topic 3 - Decentralization",
-    path: "/modules/module2/decentralization",
-    icon: Lock,
-    subsections: [
-      "Principles of decentralization",
-      "Benefits and challenges",
-      "Network nodes and validators",
-      "Governance models"
-    ]
-  },
-  {
     id: "smart-contracts",
-    title: "Topic 4 - Smart Contracts",
+    title: "Topic 3 - Smart Contracts",
     path: "/modules/module2/smart-contracts",
     icon: Code,
     subsections: [
@@ -58,26 +46,14 @@ const moduleTopics = [
   },
   {
     id: "blockchain-applications",
-    title: "Topic 5 - Blockchain Applications",
-    path: "/modules/module2/applications",
+    title: "Topic 4 - Blockchain Applications",
+    path: "/modules/module2/blockchain-applications",
     icon: Building,
     subsections: [
       "DeFi (Decentralized Finance)",
       "NFTs and digital assets",
       "Supply chain management",
       "Identity management"
-    ]
-  },
-  {
-    id: "future-blockchain",
-    title: "Topic 6 - Future of Blockchain",
-    path: "/modules/module2/future",
-    icon: Cpu,
-    subsections: [
-      "Scalability solutions",
-      "Interoperability",
-      "Environmental considerations",
-      "Emerging trends"
     ]
   }
 ];
@@ -118,30 +94,26 @@ export default function Module2() {
                 <div className="prose max-w-none">
                   <h2 className="text-2xl font-semibold mb-4">Welcome to Module 2</h2>
                   <p className="text-gray-700 mb-6">
-                    Welcome to the second module of our cryptocurrency education journey. In this module, 
-                    we'll dive deep into blockchain technology, the revolutionary system that powers 
-                    cryptocurrencies and enables countless other applications.
+                    Welcome to Module 2 of our cryptocurrency education journey. This module focuses on 
+                    blockchain technology, the revolutionary system that powers cryptocurrencies and 
+                    enables countless other applications.
                   </p>
                   <p className="text-gray-700 mb-6">
-                    You'll learn about the fundamental concepts of blockchain, including how blocks are 
-                    created and chained together, the role of consensus mechanisms in maintaining network 
-                    security, and the importance of decentralization in blockchain systems.
+                    We'll explore the fundamental concepts of blockchain technology, including how blocks 
+                    are structured and chained together, consensus mechanisms that secure the network, 
+                    and smart contracts that enable automation.
                   </p>
                   <p className="text-gray-700 mb-6">
-                    We'll explore smart contracts and their potential to automate and revolutionize 
-                    various industries. You'll also discover real-world applications of blockchain 
-                    technology beyond cryptocurrencies, and get a glimpse into the future of this 
-                    transformative technology.
+                    You'll learn about practical applications of blockchain technology and discover
+                    how this technology is transforming various industries beyond cryptocurrencies.
                   </p>
 
                   <h3 className="text-xl font-semibold mt-8 mb-4">Learning Objectives</h3>
                   <ul className="list-disc pl-6 space-y-2 text-gray-700">
                     <li>Understand the fundamental structure and operation of blockchain technology</li>
-                    <li>Compare and contrast different consensus mechanisms</li>
-                    <li>Evaluate the benefits and challenges of decentralization</li>
-                    <li>Understand smart contracts and their applications</li>
-                    <li>Explore real-world use cases of blockchain technology</li>
-                    <li>Analyze future trends and developments in blockchain</li>
+                    <li>Learn about different consensus mechanisms and their importance</li>
+                    <li>Master the concepts of smart contracts and their applications</li>
+                    <li>Explore real-world applications of blockchain technology</li>
                   </ul>
 
                   <div className="mt-8 flex justify-center">
@@ -203,20 +175,21 @@ export default function Module2() {
                   Complete all topics to unlock the module quiz and test your knowledge 
                   of blockchain technology.
                 </p>
-                <Button 
-                  disabled={progressPercentage < 100}
-                  className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
-                >
-                  {progressPercentage < 100 
-                    ? "Complete all topics to unlock quiz" 
-                    : "Start Quiz"
-                  }
-                </Button>
+                <Link href="/modules/module2/quiz">
+                  <Button 
+                    disabled={progressPercentage < 100}
+                    className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
+                  >
+                    {progressPercentage < 100 
+                      ? "Complete all topics to unlock quiz" 
+                      : "Start Quiz"
+                    }
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
-
         <div className="mt-8 text-center">
           <Link href="/modules/module2/quiz">
             <Button 
