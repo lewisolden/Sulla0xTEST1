@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
 import BlockchainBasicsDiagram from "@/components/diagrams/BlockchainBasicsDiagram";
 import BlockStructureDiagram from "@/components/diagrams/BlockStructureDiagram";
 
@@ -204,18 +204,17 @@ export default function BlockchainBasicsSection() {
                 </Link>
 
                 <div className="flex gap-4 w-full md:w-auto">
-                  {!isQuizCompleted && (
-                    <Link href="/modules/module2/blockchain-basics/quiz">
-                      <Button
-                        size="lg"
-                        variant="secondary"
-                        className="w-full md:w-auto"
-                      >
-                        Take Quiz
-                      </Button>
-                    </Link>
-                  )}
-
+                  <Link href={`/modules/module2/blockchain-basics/quiz`}>
+                    <Button 
+                      variant="secondary"
+                      size="lg"
+                      className="gap-2"
+                      disabled={!isFullyRead}
+                    >
+                      <CheckCircle2 className="h-4 w-4" />
+                      Topic Quiz
+                    </Button>
+                  </Link>
                   <Link href="/modules/module2/distributed-ledger">
                     <Button 
                       size="lg"
