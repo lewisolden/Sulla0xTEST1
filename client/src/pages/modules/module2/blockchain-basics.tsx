@@ -11,7 +11,7 @@ import BlockStructureDiagram from "@/components/diagrams/BlockStructureDiagram";
 export default function BlockchainBasicsSection() {
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const { updateProgress } = useProgress();
+  const { progress, updateProgress } = useProgress();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,6 +29,11 @@ export default function BlockchainBasicsSection() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [updateProgress]);
+
+  // Check if the quiz is completed
+  const isQuizCompleted = progress.some(
+    p => p.moduleId === 2 && p.sectionId === 'blockchain-basics-quiz' && p.completed
+  );
 
   const contentVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -93,7 +98,7 @@ export default function BlockchainBasicsSection() {
             animate="visible"
           >
             <h2 className="text-2xl font-bold text-blue-800 mt-8 mb-4">Key Characteristics of Blockchain</h2>
-            
+
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <h3 className="font-semibold mb-2">1. Distributed Ledger</h3>
@@ -102,7 +107,7 @@ export default function BlockchainBasicsSection() {
                   <li>Each node has a complete copy of the entire blockchain</li>
                 </ul>
               </div>
-              
+
               <div>
                 <h3 className="font-semibold mb-2">2. Decentralisation</h3>
                 <ul className="list-disc pl-5 space-y-2">
@@ -110,7 +115,7 @@ export default function BlockchainBasicsSection() {
                   <li>Consensus among network participants validates transactions</li>
                 </ul>
               </div>
-              
+
               <div>
                 <h3 className="font-semibold mb-2">3. Immutability</h3>
                 <ul className="list-disc pl-5 space-y-2">
@@ -118,7 +123,7 @@ export default function BlockchainBasicsSection() {
                   <li>Ensures data integrity and builds trust in the system</li>
                 </ul>
               </div>
-              
+
               <div>
                 <h3 className="font-semibold mb-2">4. Transparency</h3>
                 <ul className="list-disc pl-5 space-y-2">
@@ -137,7 +142,7 @@ export default function BlockchainBasicsSection() {
             animate="visible"
           >
             <h2 className="text-2xl font-bold text-blue-800 mt-8 mb-4">Basic Structure of a Blockchain</h2>
-            
+
             <div className="space-y-6">
               <div>
                 <h3 className="font-semibold mb-2">1. Blocks</h3>
@@ -146,7 +151,7 @@ export default function BlockchainBasicsSection() {
                   <li>Include a timestamp and a unique identifier (hash)</li>
                 </ul>
               </div>
-              
+
               <div>
                 <h3 className="font-semibold mb-2">2. Chain</h3>
                 <ul className="list-disc pl-5 space-y-2">
@@ -154,7 +159,7 @@ export default function BlockchainBasicsSection() {
                   <li>Each block contains the hash of the previous block, creating a chain</li>
                 </ul>
               </div>
-              
+
               <div>
                 <h3 className="font-semibold mb-2">3. Transactions</h3>
                 <ul className="list-disc pl-5 space-y-2">
@@ -162,7 +167,7 @@ export default function BlockchainBasicsSection() {
                   <li>Must be validated by the network before being added to a block</li>
                 </ul>
               </div>
-              
+
               <div>
                 <h3 className="font-semibold mb-2">4. Nodes</h3>
                 <ul className="list-disc pl-5 space-y-2">
@@ -198,14 +203,28 @@ export default function BlockchainBasicsSection() {
                   </Button>
                 </Link>
 
-                <Link href="/modules/module2/distributed-ledger">
-                  <Button 
-                    size="lg"
-                    className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
-                  >
-                    Next Topic: Distributed Ledger Technology <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
+                <div className="flex gap-4 w-full md:w-auto">
+                  {!isQuizCompleted && (
+                    <Link href="/modules/module2/blockchain-basics/quiz">
+                      <Button
+                        size="lg"
+                        variant="secondary"
+                        className="w-full md:w-auto"
+                      >
+                        Take Quiz
+                      </Button>
+                    </Link>
+                  )}
+
+                  <Link href="/modules/module2/distributed-ledger">
+                    <Button 
+                      size="lg"
+                      className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
+                    >
+                      Next Topic: Distributed Ledger Technology <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </motion.div>
           )}
