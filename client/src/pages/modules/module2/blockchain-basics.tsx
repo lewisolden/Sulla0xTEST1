@@ -5,7 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen } from "lucide-react";
 
 export default function BlockchainBasicsSection() {
   const [isFullyRead, setIsFullyRead] = useState(false);
@@ -207,6 +207,17 @@ export default function BlockchainBasicsSection() {
               <ArrowLeft className="mr-2 h-4 w-4" /> Back to Module 2
             </Button>
           </Link>
+
+          {isFullyRead && (
+            <Link href="/modules/module2/blockchain-basics-quiz">
+              <Button
+                size="lg"
+                className="w-full md:w-auto bg-green-600 hover:bg-green-700"
+              >
+                Take Quiz <BookOpen className="ml-2 h-4 w-4" />
+              </Button>
+            </Link>
+          )}
 
           <Link href="/modules/module2/distributed-ledger">
             <Button 
