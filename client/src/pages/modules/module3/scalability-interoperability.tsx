@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { motion } from "framer-motion";
 import { ScalabilityDiagram } from "@/components/diagrams/ScalabilityDiagram";
+import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
 
 const ScalabilityInteroperabilitySection = () => {
   const [isFullyRead, setIsFullyRead] = useState(false);
@@ -183,6 +184,17 @@ const ScalabilityInteroperabilitySection = () => {
             </motion.section>
           </CardContent>
         </Card>
+
+        <ModuleNavigation
+          prev={{
+            path: "/modules/module3",
+            label: "Module 3 Overview"
+          }}
+          next={{
+            path: "/modules/module3/blockchain-types",
+            label: "Types of Blockchains"
+          }}
+        />
 
         {isFullyRead && (
           <motion.div 

@@ -4,6 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { motion } from "framer-motion";
 import { PlatformsDiagram } from "@/components/diagrams/PlatformsDiagram";
+import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
 
 const DevelopmentPlatformsSection = () => {
   const [isFullyRead, setIsFullyRead] = useState(false);
@@ -193,6 +194,17 @@ const DevelopmentPlatformsSection = () => {
             </motion.section>
           </CardContent>
         </Card>
+
+        <ModuleNavigation
+          prev={{
+            path: "/modules/module3/blockchain-types",
+            label: "Types of Blockchains"
+          }}
+          next={{
+            path: "/modules/module3/quiz",
+            label: "Take the Quiz"
+          }}
+        />
 
         {isFullyRead && (
           <motion.div 
