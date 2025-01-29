@@ -130,16 +130,16 @@ export default function AltcoinsTokensSection() {
               </p>
             </Card>
 
-            <div className="flex flex-col items-center gap-4">
-              {!showQuiz && (
+            <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
+              <Link href="/modules/module1/bitcoin">
                 <Button 
-                  onClick={() => setShowQuiz(true)}
+                  variant="outline"
                   size="lg"
                   className="w-full md:w-auto"
                 >
-                  Take Topic Quiz
+                  <ArrowLeft className="mr-2 h-4 w-4" /> Previous Topic
                 </Button>
-              )}
+              </Link>
 
               <Link href="/modules/module1/crypto-market">
                 <Button 
