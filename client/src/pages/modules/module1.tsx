@@ -147,6 +147,16 @@ export default function Module1() {
                     <li>Describe the basic principles of cryptography underlying cryptocurrencies</li>
                     <li>Demonstrate the ability to securely set up a basic cryptocurrency wallet</li>
                   </ul>
+                  <div className="mt-8 flex justify-center">
+                    <Link href="/modules/module1/digital-currencies">
+                      <Button 
+                        size="lg"
+                        className="bg-blue-600 hover:bg-blue-700"
+                      >
+                        Start First Topic
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               </CardContent>
             </Card>

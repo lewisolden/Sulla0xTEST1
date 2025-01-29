@@ -4,7 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import BitcoinQuiz from "@/components/modules/quizzes/BitcoinQuiz";
 
 export default function BitcoinSection() {
@@ -40,6 +40,14 @@ export default function BitcoinSection() {
       </div>
 
       <div className="max-w-4xl mx-auto">
+        <div className="mb-6">
+          <Link href="/modules/module1/history-of-money">
+            <Button variant="ghost" className="gap-2">
+              <ArrowLeft className="h-4 w-4" /> Back to History of Money
+            </Button>
+          </Link>
+        </div>
+
         <h1 className="text-4xl font-bold text-blue-800 mb-6">
           Bitcoin: The First Cryptocurrency
         </h1>
@@ -62,7 +70,6 @@ export default function BitcoinSection() {
           </p>
 
           <h2 className="text-3xl font-bold text-blue-700 mt-8">Key Innovations</h2>
-
           <h3 className="text-2xl font-semibold text-blue-600 mt-6">1. The Blockchain</h3>
           <ul className="list-disc pl-5 space-y-3">
             <li>Decentralized ledger technology</li>
@@ -117,16 +124,16 @@ export default function BitcoinSection() {
               </p>
             </Card>
 
-            <div className="flex flex-col items-center gap-4">
-              {!showQuiz && (
+            <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
+              <Link href="/modules/module1/history-of-money">
                 <Button 
-                  onClick={() => setShowQuiz(true)}
+                  variant="outline"
                   size="lg"
                   className="w-full md:w-auto"
                 >
-                  Take Topic Quiz
+                  <ArrowLeft className="mr-2 h-4 w-4" /> Previous Topic
                 </Button>
-              )}
+              </Link>
 
               <Link href="/modules/module1/altcoins-tokens">
                 <Button 
