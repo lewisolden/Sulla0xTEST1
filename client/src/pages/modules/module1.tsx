@@ -107,13 +107,47 @@ export default function Module1() {
           <TabsContent value="overview">
             <Card>
               <CardContent className="pt-6">
-                <h2 className="text-2xl font-semibold mb-4">Course Overview</h2>
-                <p className="text-gray-700 mb-6">
-                  This module is designed to introduce learners to the basic concepts of 
-                  cryptocurrencies and their underlying technology. It's structured into 
-                  six main sections that will give you a comprehensive understanding of 
-                  the fundamentals.
-                </p>
+                <div className="prose max-w-none">
+                  <h2 className="text-2xl font-semibold mb-4">Welcome to Module 1</h2>
+                  <p className="text-gray-700 mb-6">
+                    Welcome to the first module of our journey into the world of cryptocurrencies and blockchain technology. In 
+                    this foundational module, we'll explore the basic concepts that underpin this revolutionary technology and set 
+                    the stage for the more advanced topics we'll cover later in the course.
+                  </p>
+                  <p className="text-gray-700 mb-6">
+                    We'll begin by delving into the types of digital currencies, understanding what they are and how they differ 
+                    from traditional forms of money. You'll learn about the historical context that led to the creation of 
+                    cryptocurrencies, tracing the evolution of money from ancient barter systems to modern digital tokens.
+                  </p>
+                  <p className="text-gray-700 mb-6">
+                    We'll focus on Bitcoin, the world's first and most famous cryptocurrency. We'll examine its creation, 
+                    underlying technology, and the problems it was designed to solve. This will lead us into a broader discussion 
+                    of other cryptocurrencies and tokens, giving you a comprehensive view of the current cryptocurrency landscape.
+                  </p>
+                  <p className="text-gray-700 mb-6">
+                    Finally, we'll round off the module with an introduction to the cryptographic principles that make 
+                    cryptocurrencies possible. While we won't delve too deeply into mathematical concepts, you'll gain a solid 
+                    understanding of concepts like hash functions and public key cryptography.
+                  </p>
+                  <p className="text-gray-700 mb-6">
+                    By the end of this module, you'll have a strong foundation in the fundamental concepts of cryptocurrencies. 
+                    This knowledge will be crucial as we move forward to explore more complex topics in subsequent modules.
+                  </p>
+
+                  <h3 className="text-xl font-semibold mt-8 mb-4">Learning Objectives</h3>
+                  <ul className="list-disc pl-6 space-y-2 text-gray-700">
+                    <li>Define digital currencies and distinguish between different types (e.g., virtual currencies, cryptocurrencies, central bank digital currencies)</li>
+                    <li>Trace the evolution of money from barter systems to modern digital currencies, identifying key milestones in monetary history</li>
+                    <li>Explain the fundamental problem that Bitcoin was designed to solve (the double-spending problem) and describe how its blockchain technology addresses this issue</li>
+                    <li>Analyze the key components of Bitcoin's architecture, including its consensus mechanism (Proof of Work), transaction model (UTXO), and monetary policy</li>
+                    <li>Compare and contrast Bitcoin with major altcoins, highlighting their unique features and use cases</li>
+                    <li>Differentiate between coins and tokens in the cryptocurrency ecosystem</li>
+                    <li>Interpret basic market metrics such as market capitalization, trading volume, and price volatility</li>
+                    <li>Apply fundamental analysis techniques to evaluate cryptocurrency projects</li>
+                    <li>Describe the basic principles of cryptography underlying cryptocurrencies</li>
+                    <li>Demonstrate the ability to securely set up a basic cryptocurrency wallet</li>
+                  </ul>
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
