@@ -6,6 +6,7 @@ import { useProgress } from "@/context/progress-context";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Database, Network, Code, FileText } from "lucide-react";
+import { CheckCircle2, XCircle } from "lucide-react";
 
 const moduleTopics = [
   {
@@ -175,10 +176,41 @@ export default function Module2() {
                   Complete all topics to unlock the module quiz and test your knowledge 
                   of blockchain technology.
                 </p>
+                <div className="bg-white p-6 rounded-lg shadow-sm">
+                  <h3 className="text-lg font-medium text-gray-700 mb-4">Required Topics:</h3>
+                  <ul className="space-y-3">
+                    {topicsWithProgress.map((topic) => (
+                      <li 
+                        key={topic.id} 
+                        className={`flex items-center justify-between p-3 rounded-lg ${
+                          topic.completed ? 'bg-green-50' : 'bg-gray-50'
+                        }`}
+                      >
+                        <span className="flex items-center gap-2">
+                          {topic.completed ? (
+                            <CheckCircle2 className="h-5 w-5 text-green-500" />
+                          ) : (
+                            <XCircle className="h-5 w-5 text-gray-400" />
+                          )}
+                          <span className={`${topic.completed ? 'text-green-700' : 'text-gray-600'}`}>
+                            {topic.title}
+                          </span>
+                        </span>
+                        {!topic.completed && (
+                          <Link href={topic.path}>
+                            <Button variant="outline" size="sm">
+                              Complete Topic
+                            </Button>
+                          </Link>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
                 <Link href="/modules/module2/quiz">
                   <Button 
                     disabled={progressPercentage < 100}
-                    className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
+                    className="w-full md:w-auto bg-blue-600 hover:bg-blue-700 mt-6"
                   >
                     {progressPercentage < 100 
                       ? "Complete all topics to unlock quiz" 
