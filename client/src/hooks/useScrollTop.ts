@@ -5,9 +5,12 @@ export const useScrollTop = () => {
   const [location] = useLocation();
 
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'instant' 
+    // Force immediate scroll to top
+    window.scrollTo(0, 0);
+
+    // Backup scroll reset in case the first one gets overridden
+    requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
     });
   }, [location]);
 };
