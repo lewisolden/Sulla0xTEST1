@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { MilestoneTransition } from '@/components/modules/milestone-transition';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const DistributedLedgerSection = () => {
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [showMilestone, setShowMilestone] = useState(false);
 
   // Mock progress update function
   const updateProgress = (moduleId, sectionId, completed) => {
@@ -17,27 +20,39 @@ const DistributedLedgerSection = () => {
       const scrollPercent = (scrollTop / scrollHeight) * 100;
       setScrollProgress(scrollPercent);
 
-      if (scrollPercent > 95) {
+      if (scrollPercent > 95 && !isFullyRead) {
         setIsFullyRead(true);
+        setShowMilestone(true);
         updateProgress(2, 'distributed-ledger', true);
       }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isFullyRead]);
 
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Scroll Progress Bar */}
-      <div className="fixed top-0 left-0 w-full h-1 bg-gray-300 z-50">
-        <div 
+      <motion.div 
+        className="fixed top-0 left-0 w-full h-1 bg-gray-300 z-50"
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <motion.div 
           className="h-full bg-blue-600" 
           style={{ width: `${scrollProgress}%` }}
-        ></div>
-      </div>
+          transition={{ type: "spring", stiffness: 100 }}
+        />
+      </motion.div>
 
-      <div className="max-w-4xl mx-auto">
+      <motion.div 
+        className="max-w-4xl mx-auto"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <h1 className="text-4xl font-bold text-blue-800 mb-6">
           Distributed Ledger Technology
         </h1>
@@ -142,7 +157,7 @@ const DistributedLedgerSection = () => {
           </ul>
 
           <h2 className="text-3xl font-bold text-blue-700 mt-8">Future Outlook</h2>
-          
+
           <ul className="list-disc pl-5 space-y-3">
             <li>Integration with emerging technologies (IoT, AI)</li>
             <li>Development of industry-specific solutions</li>
@@ -153,14 +168,29 @@ const DistributedLedgerSection = () => {
         </div>
 
         {/* Completion Indicator */}
-        {isFullyRead && (
-          <div className="mt-8 bg-green-100 border-l-4 border-green-500 p-4">
-            <p className="text-green-700">
-              🎉 You've completed the Distributed Ledger Technology section!
-            </p>
-          </div>
-        )}
-      </div>
+        <AnimatePresence>
+          {isFullyRead && (
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="mt-8 bg-green-100 border-l-4 border-green-500 p-4"
+            >
+              <p className="text-green-700">
+                🎉 You've completed the Distributed Ledger Technology section!
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Milestone Transition */}
+        <MilestoneTransition
+          title="Section Complete!"
+          description="You've mastered the fundamentals of Distributed Ledger Technology"
+          isVisible={showMilestone}
+          onComplete={() => setShowMilestone(false)}
+        />
+      </motion.div>
     </div>
   );
 };
