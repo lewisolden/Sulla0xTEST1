@@ -4,10 +4,12 @@ import { Card } from "@/components/ui/card";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
+import { useScrollTop } from "@/hooks/useScrollTop";
 import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
 import ConsensusComparison from "@/components/diagrams/ConsensusComparison";
 
 export default function ConsensusMechanismsSection() {
+  useScrollTop();
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const { progress, updateProgress } = useProgress();
