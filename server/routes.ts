@@ -3,8 +3,12 @@ import { createServer, type Server } from "http";
 import { db } from "@db";
 import { quizzes, userQuizResponses } from "@db/schema";
 import { eq } from "drizzle-orm";
+import { setupAuth } from "./auth";
 
 export function registerRoutes(app: Express): Server {
+  // Set up authentication routes
+  setupAuth(app);
+
   // Get quizzes for a specific module
   app.get("/api/modules/:moduleId/quizzes", async (req, res) => {
     try {
@@ -35,10 +39,10 @@ export function registerRoutes(app: Express): Server {
 
       const isCorrect = answer === quiz.correctAnswer;
 
-      // If user is authenticated, store their response
+      // Store response if user is authenticated
       if (req.user) {
         await db.insert(userQuizResponses).values({
-          userId: (req.user as any).id,
+          userId: req.user.id,
           quizId,
           selectedAnswer: answer,
           isCorrect,
