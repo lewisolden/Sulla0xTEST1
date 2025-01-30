@@ -114,7 +114,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Interactive Features Section - Replacing Video Section */}
+      {/* Interactive Features Section */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <motion.h2 
@@ -129,23 +129,6 @@ export default function Home() {
               className="space-y-6"
               {...fadeInUp}
             >
-              <div className="flex items-start space-x-4">
-                <div className="bg-blue-100 p-2 rounded">
-                  <BookOpen className="w-6 h-6 text-blue-600" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold mb-2">Interactive Glossary</h3>
-                  <p className="text-gray-600">
-                    Explore our comprehensive glossary with visual aids and interactive examples
-                  </p>
-                  <Link href="/glossary">
-                    <button className="mt-2 text-blue-600 hover:text-blue-700 font-medium">
-                      Explore Glossary →
-                    </button>
-                  </Link>
-                </div>
-              </div>
-
               <div className="flex items-start space-x-4">
                 <div className="bg-blue-100 p-2 rounded">
                   <Target className="w-6 h-6 text-blue-600" />
@@ -168,26 +151,6 @@ export default function Home() {
                     Unlock badges and rewards as you complete modules and challenges
                   </p>
                 </div>
-              </div>
-            </motion.div>
-
-            <motion.div 
-              className="bg-white p-6 rounded-lg shadow-lg"
-              {...fadeInUp}
-              transition={{ delay: 0.2 }}
-            >
-              <div className="p-6 bg-blue-50 rounded-lg">
-                <h4 className="text-xl font-semibold mb-3">Interactive Glossary</h4>
-                <p className="text-gray-700 mb-4">
-                  Our comprehensive glossary provides clear explanations of cryptocurrency terms 
-                  and concepts, making complex topics easy to understand.
-                </p>
-                <Link href="/glossary">
-                  <Button className="w-full">
-                    <BookOpen className="w-4 h-4 mr-2" />
-                    Open Glossary
-                  </Button>
-                </Link>
               </div>
             </motion.div>
           </div>
