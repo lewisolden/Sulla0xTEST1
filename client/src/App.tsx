@@ -3,12 +3,14 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { ProgressProvider } from "@/context/progress-context";
+import { Loader2 } from "lucide-react";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Curriculum from "@/pages/curriculum";
 import About from "@/pages/about";
 import Games from "@/pages/games";
-import WalletSimulator from "@/pages/wallet-simulator";
+import AuthPage from "@/pages/auth-page";
+import { useUser } from "@/hooks/use-user";
 import Achievements from "@/pages/achievements"; // Add achievements import
 
 // Module 1 Routes
@@ -44,14 +46,28 @@ import Navigation from "@/components/layout/navigation";
 import TradingSimulator from "@/pages/trading-simulator";
 import GlossaryPage from "@/pages/glossary";
 
-function Router() {
+function ProtectedRoutes() {
+  const { user, isLoading } = useUser();
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="h-8 w-8 animate-spin text-border" />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <AuthPage />;
+  }
+
   return (
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/curriculum" component={Curriculum} />
       <Route path="/about" component={About} />
       <Route path="/games" component={Games} />
-      <Route path="/achievements" component={Achievements} /> {/* Add achievements route */}
+      <Route path="/achievements" component={Achievements} />
 
       {/* Module 1 Routes */}
       <Route path="/modules/module1" component={Module1Landing} />
@@ -95,7 +111,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ProgressProvider>
         <Navigation />
-        <Router />
+        <ProtectedRoutes />
         <Toaster />
       </ProgressProvider>
     </QueryClientProvider>
