@@ -37,21 +37,26 @@ declare global {
 
 export function setupAuth(app: Express) {
   const MemoryStore = createMemoryStore(session);
+  const isProduction = process.env.NODE_ENV === 'production';
+
   const sessionSettings: session.SessionOptions = {
-    secret: process.env.REPL_ID || "porygon-supremacy",
+    secret: process.env.SESSION_SECRET || process.env.REPL_ID || "default-secret-key",
     resave: false,
     saveUninitialized: false,
-    cookie: {},
     store: new MemoryStore({
       checkPeriod: 86400000, // prune expired entries every 24h
     }),
+    cookie: {
+      secure: isProduction, // Enable secure cookies in production
+      httpOnly: true,      // Prevent XSS
+      sameSite: 'lax',    // CSRF protection
+      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    }
   };
 
-  if (app.get("env") === "production") {
-    app.set("trust proxy", 1);
-    sessionSettings.cookie = {
-      secure: true,
-    };
+  // Trust proxy in production (required for secure cookies behind a proxy)
+  if (isProduction) {
+    app.set('trust proxy', 1);
   }
 
   app.use(session(sessionSettings));
