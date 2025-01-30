@@ -4,13 +4,13 @@ import { Card } from "@/components/ui/card";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { useScrollTop } from "@/hooks/useScrollTop";
+import { useScrollTop } from "@/hooks/useScrollTop"; // Add this import
 import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
 import BlockchainBasicsDiagram from "@/components/diagrams/BlockchainBasicsDiagram";
 import BlockStructureDiagram from "@/components/diagrams/BlockStructureDiagram";
 
 export default function BlockchainBasicsSection() {
-  useScrollTop(); // Add the scroll hook at the top level
+  useScrollTop(); // Add this hook at the top level
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const { progress, updateProgress } = useProgress();

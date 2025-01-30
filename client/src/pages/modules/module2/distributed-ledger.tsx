@@ -4,10 +4,12 @@ import { Card } from "@/components/ui/card";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
+import { useScrollTop } from "@/hooks/useScrollTop"; // Add this import
 import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
 import DistributedLedgerDiagram from "@/components/diagrams/DistributedLedgerDiagram";
 
 export default function DistributedLedgerSection() {
+  useScrollTop(); // Add this hook at the top level
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const { progress, updateProgress } = useProgress();

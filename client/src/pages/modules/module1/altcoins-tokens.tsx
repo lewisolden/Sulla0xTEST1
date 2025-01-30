@@ -6,11 +6,13 @@ import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useScrollTop } from "@/hooks/useScrollTop"; // Add this import
 import AltcoinsTokensQuiz from "@/components/quizzes/AltcoinsTokensQuiz";
 import AltcoinCategories from "@/components/diagrams/AltcoinCategories";
 import TokenTypes from "@/components/diagrams/TokenTypes";
 
 export default function AltcoinsTokensSection() {
+  useScrollTop(); // Add this hook
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showQuiz, setShowQuiz] = useState(false);
