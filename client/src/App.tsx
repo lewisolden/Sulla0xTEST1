@@ -8,6 +8,7 @@ import Home from "@/pages/home";
 import Curriculum from "@/pages/curriculum";
 import About from "@/pages/about";
 import Games from "@/pages/games";  // Add import
+import WalletSimulator from "@/pages/wallet-simulator"; //Added import
 
 // Module 1 Routes
 import Module1Landing from "@/pages/modules/module1";
@@ -79,6 +80,7 @@ function Router() {
       <Route path="/modules/module3/development-platforms" component={DevelopmentPlatformsSection} />
       <Route path="/modules/module3/quiz" component={Module3Quiz} />
 
+      <Route path="/wallet-simulator" component={WalletSimulator} />
       <Route path="/trading-simulator" component={TradingSimulator} />
       <Route path="/glossary" component={GlossaryPage} />
       <Route component={NotFound} />
