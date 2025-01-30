@@ -1,10 +1,9 @@
 import { Link } from "wouter";
-import { BookOpen, GraduationCap, Zap, Brain, Target, Trophy, Code, Gamepad2 } from "lucide-react"; 
+import { BookOpen, GraduationCap, Zap, Brain, Target, Trophy, Code, Gamepad2, Wallet } from "lucide-react"; 
 import ModuleCard from "@/components/modules/module-card";
 import Footer from "@/components/layout/footer";
 import { motion } from "framer-motion";
 
-// Assuming Button component is defined elsewhere, or needs to be added.
 const Button = ({ children, className }: { children: React.ReactNode; className?: string }) => (
   <button className={`bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 ${className || ''}`}>
     {children}
@@ -104,11 +103,16 @@ export default function Home() {
               {...fadeInUp}
               transition={{ delay: 0.4 }}
             >
-              <Gamepad2 className="w-12 h-12 text-blue-600 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Interactive Learning</h3>
+              <Wallet className="w-12 h-12 text-blue-600 mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Virtual Wallet</h3>
               <p className="text-gray-600">
-                Learn through games, quizzes, and hands-on blockchain simulations
+                Practice crypto transactions in a safe, simulated environment
               </p>
+              <Link href="/wallet-simulator">
+                <button className="mt-2 text-blue-600 hover:text-blue-700 font-medium">
+                  Try Simulator →
+                </button>
+              </Link>
             </motion.div>
           </div>
         </div>
