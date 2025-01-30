@@ -1,5 +1,6 @@
 import { createContext, useContext, ReactNode, useState, useEffect } from "react";
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
+import { useCertificateAward } from "@/hooks/use-certificate-award";
 import type { AchievementBadge } from "@/components/badges/badge";
 
 interface Progress {
@@ -63,6 +64,7 @@ const defaultBadges: AchievementBadge[] = [
 export function ProgressProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient();
   const [badges, setBadges] = useState<AchievementBadge[]>(defaultBadges);
+  const { checkModuleCompletion } = useCertificateAward();
 
   const { data: progress = [], isLoading, error } = useQuery({
     queryKey: ["progress"],
@@ -87,7 +89,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
   });
 
   useEffect(() => {
-    setBadges(prevBadges => 
+    setBadges(prevBadges =>
       prevBadges.map(badge => ({
         ...badge,
         earned: badgeProgress.earnedBadges.includes(badge.id),
@@ -137,14 +139,18 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
   const updateProgress = (moduleId: number, sectionId: string, completed: boolean) => {
     updateProgressMutation.mutate({ moduleId, sectionId, completed });
 
-    // Check for badge awards
+    // Check for badge and certificate awards
     if (completed) {
       const moduleProgress = progress.filter(p => p.moduleId === moduleId);
       const moduleTopics = moduleProgress.length;
       const completedTopics = moduleProgress.filter(p => p.completed).length + 1;
 
       if (moduleTopics === completedTopics) {
+        // Award badge
         awardBadgeMutation.mutate(`module${moduleId}_complete`);
+
+        // Check for certificate award
+        checkModuleCompletion(moduleId);
 
         // Check if all modules are completed
         const allModulesCompleted = [1, 2, 3].every(mid => {
