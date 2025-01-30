@@ -92,10 +92,15 @@ export default function Home() {
               transition={{ delay: 0.3 }}
             >
               <Trophy className="w-12 h-12 text-blue-600 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Achievement Badges</h3>
+              <h3 className="text-xl font-semibold mb-2">Achievement NFTs</h3>
               <p className="text-gray-600">
-                Earn badges and track your progress as you master blockchain concepts
+                Earn verifiable NFT certificates as you complete modules
               </p>
+              <Link href="/achievements">
+                <button className="mt-2 text-blue-600 hover:text-blue-700 font-medium">
+                  View Achievements →
+                </button>
+              </Link>
             </motion.div>
 
             <motion.div 
