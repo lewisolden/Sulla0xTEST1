@@ -1,7 +1,8 @@
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useScrollTop } from "@/hooks/useScrollTop";
 
 interface NavigationItem {
   path: string;
@@ -14,6 +15,9 @@ interface ModuleNavigationProps {
 }
 
 export const ModuleNavigation = ({ prev, next }: ModuleNavigationProps) => {
+  // Add the scroll hook
+  useScrollTop();
+
   return (
     <motion.div 
       className="flex justify-between items-center mt-8 mb-4"
