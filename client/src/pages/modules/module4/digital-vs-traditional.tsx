@@ -6,9 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
+import DigitalMoneyDiagram from "@/components/diagrams/DigitalMoneyDiagram";
 
 export default function DigitalVsTraditionalSection() {
-  useScrollTop();
+  useScrollTop(); // This hook handles scrolling to top on navigation
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const { updateProgress } = useProgress();
@@ -73,12 +74,13 @@ export default function DigitalVsTraditionalSection() {
             initial="hidden"
             animate="visible"
           >
-            <h2 className="text-3xl font-bold text-blue-700">Physical Cash vs Digital Currency</h2>
+            <h2 className="text-3xl font-bold text-blue-700">Understanding Different Forms of Money</h2>
             <p className="lead">
-              Let's explore the fundamental differences between the money in your wallet
-              and cryptocurrency, understanding how these differences impact our daily lives
-              and the future of finance.
+              Let's explore the evolution of money from physical to digital forms, and understand
+              how cryptocurrency represents the next step in this evolution.
             </p>
+
+            <DigitalMoneyDiagram />
 
             <Card className="p-6 mb-6">
               <h3 className="text-2xl font-semibold text-blue-600 mb-4">Traditional Physical Cash</h3>
@@ -163,9 +165,9 @@ export default function DigitalVsTraditionalSection() {
                     </Button>
                   </Link>
 
-                  <Link href="/modules/module4/bank-vs-crypto">
+                  <Link href="/wallet-simulator">
                     <Button className="w-full md:w-auto bg-blue-600 hover:bg-blue-700">
-                      Next Topic <ArrowRight className="ml-2 h-4 w-4" />
+                      Next Topic: Wallet Simulator <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>
                 </div>
