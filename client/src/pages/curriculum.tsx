@@ -2,6 +2,7 @@ import { Link } from "wouter";
 import { BookOpen, GraduationCap, Zap, Gamepad2 } from "lucide-react";
 import { motion } from "framer-motion";
 import Footer from "@/components/layout/footer";
+import { PersonalizedPath } from "@/components/learning/personalized-path";
 
 const modules = [
   {
@@ -65,8 +66,12 @@ export default function Curriculum() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          Complete Learning Journey
+          Your Learning Journey
         </motion.h1>
+
+        <div className="mb-12">
+          <PersonalizedPath />
+        </div>
 
         <div className="space-y-8">
           {modules.map((module) => (
