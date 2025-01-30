@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/layout/footer";
 import { Progress } from "@/components/ui/progress";
-import { Wallet, Bank, Shield, Globe, Database, CheckCircle2 } from "lucide-react";
+import { BuildingBank, Wallet, Shield, Globe, Database, CheckCircle2 } from "lucide-react";
 import { useProgress } from "@/context/progress-context";
 
 const module4Topics = [
@@ -22,7 +22,7 @@ const module4Topics = [
   {
     id: "bank-vs-crypto",
     title: "Bank Digital Money vs Cryptocurrency",
-    icon: Bank,
+    icon: BuildingBank,
     path: "/modules/module4/bank-vs-crypto",
     subsections: [
       "Traditional Banking Systems",
