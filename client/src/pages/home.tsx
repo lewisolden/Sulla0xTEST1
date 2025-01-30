@@ -1,13 +1,10 @@
 import { Link } from "wouter";
-import { BookOpen, GraduationCap, Zap, Brain, Target, Trophy, Code, PlayCircle, PauseCircle, X, Gamepad2 } from "lucide-react"; 
+import { BookOpen, GraduationCap, Zap, Brain, Target, Trophy, Code, Gamepad2 } from "lucide-react"; 
 import ModuleCard from "@/components/modules/module-card";
 import Footer from "@/components/layout/footer";
 import { motion } from "framer-motion";
-import { useState } from "react";
 
 export default function Home() {
-  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
-
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
@@ -109,14 +106,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Interactive Preview Section */}
+      {/* Interactive Features Section - Replacing Video Section */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <motion.h2 
             className="text-3xl font-bold text-blue-900 text-center mb-12"
             {...fadeInUp}
           >
-            Experience Interactive Learning
+            Interactive Learning Tools
           </motion.h2>
 
           <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -126,13 +123,18 @@ export default function Home() {
             >
               <div className="flex items-start space-x-4">
                 <div className="bg-blue-100 p-2 rounded">
-                  <Code className="w-6 h-6 text-blue-600" />
+                  <BookOpen className="w-6 h-6 text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold mb-2">Hands-on Practice</h3>
+                  <h3 className="text-xl font-semibold mb-2">Interactive Glossary</h3>
                   <p className="text-gray-600">
-                    Try our interactive coding exercises and blockchain simulations
+                    Explore our comprehensive glossary with visual aids and interactive examples
                   </p>
+                  <Link href="/glossary">
+                    <button className="mt-2 text-blue-600 hover:text-blue-700 font-medium">
+                      Explore Glossary →
+                    </button>
+                  </Link>
                 </div>
               </div>
 
@@ -166,50 +168,23 @@ export default function Home() {
               {...fadeInUp}
               transition={{ delay: 0.2 }}
             >
-              <div className="relative aspect-video bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg overflow-hidden cursor-pointer group"
-                   onClick={() => setIsVideoModalOpen(true)}>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="absolute inset-0 bg-black bg-opacity-30 group-hover:bg-opacity-40 transition-all duration-300"></div>
-                  <div className="relative z-10 flex flex-col items-center text-white">
-                    <PlayCircle className="w-16 h-16 mb-2 group-hover:scale-110 transition-transform duration-300" />
-                    <span className="text-lg font-medium">Watch Course Preview</span>
-                  </div>
+              <div className="grid gap-4">
+                <div className="p-4 bg-blue-50 rounded-lg">
+                  <h4 className="font-semibold mb-2">Visual Learning</h4>
+                  <p className="text-sm text-gray-600">Interactive diagrams and visual explanations of complex concepts</p>
                 </div>
-              </div>
-              <div className="mt-4 text-center">
-                <p className="text-gray-600">
-                  Get started with our comprehensive blockchain education platform
-                </p>
+                <div className="p-4 bg-green-50 rounded-lg">
+                  <h4 className="font-semibold mb-2">Practice Exercises</h4>
+                  <p className="text-sm text-gray-600">Hands-on exercises to reinforce your understanding</p>
+                </div>
+                <div className="p-4 bg-purple-50 rounded-lg">
+                  <h4 className="font-semibold mb-2">Related Topics</h4>
+                  <p className="text-sm text-gray-600">Discover connections between different blockchain concepts</p>
+                </div>
               </div>
             </motion.div>
           </div>
         </div>
-
-        {/* Video Modal */}
-        {isVideoModalOpen && (
-          <div className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4">
-            <div className="relative w-full max-w-4xl bg-black rounded-lg overflow-hidden">
-              <button 
-                onClick={() => setIsVideoModalOpen(false)}
-                className="absolute top-4 right-4 text-white hover:text-gray-300 z-10"
-              >
-                <X className="w-6 h-6" />
-              </button>
-              <div className="relative pt-[56.25%]">
-                <video
-                  className="absolute inset-0 w-full h-full"
-                  controls
-                  autoPlay
-                  preload="metadata"
-                  poster="/assets/images/video-thumbnail.jpg"
-                >
-                  <source src="/introduction.mp4" type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              </div>
-            </div>
-          </div>
-        )}
       </section>
 
       {/* Modules Section */}

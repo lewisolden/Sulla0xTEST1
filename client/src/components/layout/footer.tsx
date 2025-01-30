@@ -16,6 +16,7 @@ export default function Footer() {
             <Link href="/about" className="block hover:text-blue-200">About</Link>
             <Link href="/curriculum" className="block hover:text-blue-200">Curriculum</Link>
             <Link href="/games" className="block hover:text-blue-200">Interactive Games</Link>
+            <Link href="/glossary" className="block hover:text-blue-200">Crypto Glossary</Link>
             <Link href="/modules/module1" className="block hover:text-blue-200">Start Learning</Link>
           </nav>
         </div>
