@@ -6,11 +6,13 @@ import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useScrollTop } from "@/hooks/useScrollTop";
 import HistoryOfMoneyQuiz from "@/components/modules/quizzes/HistoryOfMoneyQuiz";
 import MoneyEvolutionTimeline from "@/components/diagrams/MoneyEvolutionTimeline";
 import MoneyTypeCards from "@/components/diagrams/MoneyTypeCards";
 
 export default function HistoryOfMoneySection() {
+  useScrollTop(); // Add the scroll hook at the top level
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showQuiz, setShowQuiz] = useState(false);
