@@ -52,6 +52,14 @@ const defaultBadges: AchievementBadge[] = [
     earned: false
   },
   {
+    id: 'module4_complete',
+    name: 'Digital Money Expert',
+    description: 'Completed Module 4: Understanding Digital Money',
+    icon: 'BookOpen',
+    type: 'gold',
+    earned: false
+  },
+  {
     id: 'all_modules_complete',
     name: 'Blockchain Scholar',
     description: 'Completed all modules in the course',
@@ -66,7 +74,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
   const [badges, setBadges] = useState<AchievementBadge[]>(defaultBadges);
   const { checkModuleCompletion } = useCertificateAward();
 
-  const { data: progress = [], isLoading, error } = useQuery({
+  const { data: progress = [], isLoading, error } = useQuery<Progress[]>({
     queryKey: ["progress"],
     queryFn: async () => {
       const response = await fetch("/api/progress");
@@ -77,7 +85,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     },
   });
 
-  const { data: badgeProgress = { badges: defaultBadges, earnedBadges: [] } } = useQuery({
+  const { data: badgeProgress = { badges: defaultBadges, earnedBadges: [] } } = useQuery<BadgeProgress>({
     queryKey: ["badges"],
     queryFn: async () => {
       const response = await fetch("/api/badges");
@@ -139,23 +147,22 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
   const updateProgress = (moduleId: number, sectionId: string, completed: boolean) => {
     updateProgressMutation.mutate({ moduleId, sectionId, completed });
 
-    // Check for badge and certificate awards
     if (completed) {
-      const moduleProgress = progress.filter(p => p.moduleId === moduleId);
+      const moduleProgress = progress.filter((p: Progress) => p.moduleId === moduleId);
       const moduleTopics = moduleProgress.length;
-      const completedTopics = moduleProgress.filter(p => p.completed).length + 1;
+      const completedTopics = moduleProgress.filter((p: Progress) => p.completed).length + 1;
 
       if (moduleTopics === completedTopics) {
-        // Award badge
+        // Award module completion badge
         awardBadgeMutation.mutate(`module${moduleId}_complete`);
 
         // Check for certificate award
         checkModuleCompletion(moduleId);
 
         // Check if all modules are completed
-        const allModulesCompleted = [1, 2, 3].every(mid => {
-          const modProgress = progress.filter(p => p.moduleId === mid);
-          return modProgress.every(p => p.completed || (p.moduleId === moduleId && p.sectionId === sectionId));
+        const allModulesCompleted = [1, 2, 3, 4].every(mid => {
+          const modProgress = progress.filter((p: Progress) => p.moduleId === mid);
+          return modProgress.every((p: Progress) => p.completed);
         });
 
         if (allModulesCompleted) {

@@ -10,7 +10,7 @@ const module4Topics = [
   {
     id: "digital-vs-traditional",
     title: "Digital vs Traditional Money",
-    icon: Wallet,
+    icon: BuildingBank,
     path: "/modules/module4/digital-vs-traditional",
     subsections: [
       "Physical Cash vs Digital Currency",
@@ -20,15 +20,15 @@ const module4Topics = [
     ]
   },
   {
-    id: "bank-vs-crypto",
-    title: "Bank Digital Money vs Cryptocurrency",
-    icon: BuildingBank,
-    path: "/modules/module4/bank-vs-crypto",
+    id: "wallet-simulation",
+    title: "Crypto Wallet Simulation",
+    icon: Wallet,
+    path: "/wallet-simulator",
     subsections: [
-      "Traditional Banking Systems",
-      "Cryptocurrency Innovation",
-      "Control and Access",
-      "24/7 Operations"
+      "Understanding Crypto Wallets",
+      "Creating Your First Wallet",
+      "Sending & Receiving Transactions",
+      "Security Best Practices"
     ]
   },
   {
@@ -99,8 +99,8 @@ export default function Module4() {
             <p className="text-lg text-gray-700 mb-6">
               This module explores the fundamental differences between traditional and digital money,
               focusing on how cryptocurrency is revolutionizing our understanding of value and
-              financial systems. Learn about security, control, and the innovative features that
-              make digital currencies unique.
+              financial systems. Get hands-on experience with our interactive wallet simulator and
+              learn about security, control, and the innovative features that make digital currencies unique.
             </p>
           </CardContent>
         </Card>

@@ -9,7 +9,7 @@ import Curriculum from "@/pages/curriculum";
 import About from "@/pages/about";
 import Games from "@/pages/games";
 import WalletSimulator from "@/pages/wallet-simulator";
-import Achievements from "@/pages/achievements"; // Add achievements import
+import Achievements from "@/pages/achievements";
 
 // Module 1 Routes
 import Module1Landing from "@/pages/modules/module1";
@@ -39,6 +39,10 @@ import ScalabilitySection from "@/pages/modules/module3/scalability-interoperabi
 import BlockchainTypesSection from "@/pages/modules/module3/blockchain-types";
 import DevelopmentPlatformsSection from "@/pages/modules/module3/development-platforms";
 import Module3Quiz from "@/pages/modules/module3/quiz";
+
+// Module 4 Routes
+import Module4Landing from "@/pages/modules/module4";
+import DigitalVsTraditionalSection from "@/pages/modules/module4/digital-vs-traditional";
 
 import Navigation from "@/components/layout/navigation";
 import TradingSimulator from "@/pages/trading-simulator";
@@ -81,6 +85,10 @@ function Router() {
       <Route path="/modules/module3/blockchain-types" component={BlockchainTypesSection} />
       <Route path="/modules/module3/development-platforms" component={DevelopmentPlatformsSection} />
       <Route path="/modules/module3/quiz" component={Module3Quiz} />
+
+      {/* Module 4 Routes */}
+      <Route path="/modules/module4" component={Module4Landing} />
+      <Route path="/modules/module4/digital-vs-traditional" component={DigitalVsTraditionalSection} />
 
       <Route path="/wallet-simulator" component={WalletSimulator} />
       <Route path="/trading-simulator" component={TradingSimulator} />
