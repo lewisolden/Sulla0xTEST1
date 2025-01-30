@@ -7,8 +7,9 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Curriculum from "@/pages/curriculum";
 import About from "@/pages/about";
-import Games from "@/pages/games";  // Add import
-import WalletSimulator from "@/pages/wallet-simulator"; //Added import
+import Games from "@/pages/games";
+import WalletSimulator from "@/pages/wallet-simulator";
+import Achievements from "@/pages/achievements"; // Add achievements import
 
 // Module 1 Routes
 import Module1Landing from "@/pages/modules/module1";
@@ -49,7 +50,8 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/curriculum" component={Curriculum} />
       <Route path="/about" component={About} />
-      <Route path="/games" component={Games} />  {/* Add games route */}
+      <Route path="/games" component={Games} />
+      <Route path="/achievements" component={Achievements} /> {/* Add achievements route */}
 
       {/* Module 1 Routes */}
       <Route path="/modules/module1" component={Module1Landing} />
