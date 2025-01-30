@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { BookOpen, GraduationCap, Zap, Gamepad2 } from "lucide-react";
+import { BookOpen, GraduationCap, Zap, Gamepad2, CreditCard } from "lucide-react";
 import { motion } from "framer-motion";
 import Footer from "@/components/layout/footer";
 import { PersonalizedPath } from "@/components/learning/personalized-path";
@@ -45,6 +45,19 @@ const modules = [
   },
   {
     id: 4,
+    icon: CreditCard,
+    title: "Module 4: Understanding Digital Money",
+    description: "Explore the evolution from traditional to digital money and understand how cryptocurrencies are revolutionizing finance.",
+    sections: [
+      "Digital vs Traditional Money",
+      "Bank Digital Money vs Cryptocurrency",
+      "Security & Control",
+      "Payment Systems & Financial Inclusion",
+      "Digital Scarcity & Network Architecture"
+    ]
+  },
+  {
+    id: 5,
     icon: Gamepad2,
     title: "Interactive Learning Games",
     description: "Learn blockchain concepts through hands-on simulations and interactive games.",
