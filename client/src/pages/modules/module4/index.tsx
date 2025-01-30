@@ -3,14 +3,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/layout/footer";
 import { Progress } from "@/components/ui/progress";
-import { BuildingBank, Wallet, Shield, Globe, Database, CheckCircle2 } from "lucide-react";
+import { Building, Wallet, Shield, Globe, Database, CheckCircle2 } from "lucide-react";
 import { useProgress } from "@/context/progress-context";
 
 const module4Topics = [
   {
     id: "digital-vs-traditional",
     title: "Digital vs Traditional Money",
-    icon: BuildingBank,
+    icon: Building,
     path: "/modules/module4/digital-vs-traditional",
     subsections: [
       "Physical Cash vs Digital Currency",
