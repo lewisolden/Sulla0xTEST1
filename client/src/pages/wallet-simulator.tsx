@@ -5,7 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "wouter";
-import { ArrowLeft, ArrowRight, Send, Wallet, Clock, RefreshCw } from "lucide-react";
+import { ArrowLeft, Send, Wallet, Clock, RefreshCw, HelpCircle } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface Transaction {
   id: string;
@@ -111,6 +117,24 @@ export default function WalletSimulator() {
         </Link>
       </motion.div>
 
+      {/* Welcome Card */}
+      <Card className="p-6 mb-6 border-l-4 border-blue-500">
+        <h2 className="text-2xl font-bold text-blue-800 mb-4">Welcome to the Virtual Bitcoin Wallet!</h2>
+        <p className="text-gray-600 mb-4">
+          This simulator helps you understand how cryptocurrency wallets work in a risk-free environment. 
+          Practice sending and receiving Bitcoin, manage your balance, and view transaction history.
+        </p>
+        <div className="space-y-2">
+          <p className="text-sm text-gray-600">🎯 Learning objectives:</p>
+          <ul className="list-disc pl-5 text-sm text-gray-600">
+            <li>Understand basic wallet operations</li>
+            <li>Learn about cryptocurrency addresses</li>
+            <li>Practice sending and receiving transactions</li>
+            <li>Monitor transaction history</li>
+          </ul>
+        </div>
+      </Card>
+
       <motion.h1
         className="text-4xl font-bold text-blue-800 mb-6"
         initial={{ opacity: 0 }}
@@ -126,9 +150,18 @@ export default function WalletSimulator() {
             <h2 className="text-2xl font-semibold flex items-center gap-2">
               <Wallet className="h-6 w-6" /> Wallet Overview
             </h2>
-            <Button onClick={handleReceive} className="bg-green-600 hover:bg-green-700">
-              <RefreshCw className="h-4 w-4 mr-2" /> Receive Test BTC
-            </Button>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button onClick={handleReceive} className="bg-green-600 hover:bg-green-700">
+                    <RefreshCw className="h-4 w-4 mr-2" /> Receive Test BTC
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Click to receive 0.1 test BTC to practice transactions</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
 
           <div className="grid grid-cols-2 gap-4 mb-6">
@@ -137,28 +170,65 @@ export default function WalletSimulator() {
               <div className="text-2xl font-bold">{wallet.balance.toFixed(8)} BTC</div>
             </div>
             <div>
-              <div className="text-sm text-gray-600">Wallet Address</div>
-              <div className="text-sm font-mono bg-gray-100 p-2 rounded break-all">
-                {wallet.address}
-              </div>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div>
+                      <div className="text-sm text-gray-600 flex items-center gap-1">
+                        Wallet Address <HelpCircle className="h-4 w-4" />
+                      </div>
+                      <div className="text-sm font-mono bg-gray-100 p-2 rounded break-all">
+                        {wallet.address}
+                      </div>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>A unique identifier for your wallet, similar to an email address for receiving crypto</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
           </div>
 
           <div className="space-y-4">
-            <Input
-              type="text"
-              placeholder="Recipient Address"
-              value={recipientAddress}
-              onChange={(e) => setRecipientAddress(e.target.value)}
-            />
-            <Input
-              type="number"
-              placeholder="Amount (BTC)"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              step="0.00000001"
-              min="0"
-            />
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div>
+                    <Input
+                      type="text"
+                      placeholder="Recipient Address"
+                      value={recipientAddress}
+                      onChange={(e) => setRecipientAddress(e.target.value)}
+                    />
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Enter the wallet address of the recipient</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <div>
+                    <Input
+                      type="number"
+                      placeholder="Amount (BTC)"
+                      value={amount}
+                      onChange={(e) => setAmount(e.target.value)}
+                      step="0.00000001"
+                      min="0"
+                    />
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Enter the amount of Bitcoin to send (up to 8 decimal places)</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
             <Button
               onClick={handleSend}
               className="w-full bg-blue-600 hover:bg-blue-700"
