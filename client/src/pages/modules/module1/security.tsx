@@ -107,7 +107,10 @@ export default function SecurityPage() {
                     <ArrowLeft className="ml-2 h-4 w-4 group-hover:transform group-hover:-translate-x-1 transition-transform" />
                   </Button>
                 </Link>
+              </div>
 
+              {/* Bottom navigation */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-between mt-8">
                 <Button
                   onClick={() => setShowQuiz(true)}
                   size="lg"
@@ -115,18 +118,15 @@ export default function SecurityPage() {
                 >
                   Take the Quiz
                 </Button>
-              </div>
 
-              {/* Bottom navigation */}
-              <div className="mt-12 pt-6 border-t border-gray-200">
-                <Link href="/modules/module1">
-                  <Button 
-                    variant="outline" 
-                    size="lg" 
-                    className="w-full flex items-center justify-center gap-2"
+                <Link href="/modules/module1/cryptography">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="w-full sm:w-auto group"
                   >
-                    <ArrowLeft className="h-4 w-4" />
-                    Back to Module 1 Overview
+                    Next Topic: Cryptography
+                    <ArrowRight className="ml-2 h-4 w-4 group-hover:transform group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
               </div>
@@ -150,20 +150,6 @@ export default function SecurityPage() {
                 </Button>
               </div>
               <SecurityQuiz />
-
-              {/* Bottom navigation for quiz view */}
-              <div className="mt-12 pt-6 border-t border-gray-200">
-                <Link href="/modules/module1">
-                  <Button 
-                    variant="outline" 
-                    size="lg" 
-                    className="w-full flex items-center justify-center gap-2"
-                  >
-                    <ArrowLeft className="h-4 w-4" />
-                    Back to Module 1 Overview
-                  </Button>
-                </Link>
-              </div>
             </motion.div>
           )}
         </AnimatePresence>
