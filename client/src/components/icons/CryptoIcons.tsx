@@ -189,3 +189,80 @@ export const SecurityIcon = ({ className = "", size = 24, color = "currentColor"
     </motion.svg>
   );
 };
+
+export const ShieldIcon = ({ className = "", size = 24, color = "currentColor" }: IconProps) => {
+  const shieldVariants = {
+    initial: { scale: 0.8, opacity: 0 },
+    animate: { 
+      scale: 1, 
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const lockVariants = {
+    initial: { pathLength: 0 },
+    animate: { 
+      pathLength: 1,
+      transition: {
+        duration: 0.5,
+        delay: 0.3,
+        ease: "easeInOut"
+      }
+    }
+  };
+
+  return (
+    <motion.svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      className={className}
+      initial="initial"
+      animate="animate"
+    >
+      <motion.path
+        d="M12 2L3 7v6a12 12 0 009 11.6A12 12 0 0021 13V7l-9-5z"
+        variants={shieldVariants}
+      />
+      <motion.path d="M12 10v6M9 13h6" variants={lockVariants} />
+    </motion.svg>
+  );
+};
+
+export const KeyIcon = ({ className = "", size = 24, color = "currentColor" }: IconProps) => {
+  const keyVariants = {
+    initial: { scale: 0.8, opacity: 0 },
+    animate: { 
+      scale: 1, 
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  return (
+    <motion.svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke={color}
+      className={className}
+      initial="initial"
+      animate="animate"
+    >
+      <motion.path
+        d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"
+        variants={keyVariants}
+      />
+    </motion.svg>
+  );
+};
