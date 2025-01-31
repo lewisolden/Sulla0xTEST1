@@ -6,13 +6,13 @@ import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { useScrollTop } from "@/hooks/useScrollTop"; // Add this import
+import { useScrollTop } from "@/hooks/useScrollTop";
 import DigitalRevolutionDiagram from "@/components/diagrams/DigitalRevolutionDiagram";
 import DigitalCurrencyFeatures from "@/components/diagrams/DigitalCurrencyFeatures";
 import DigitalCurrenciesQuiz from "@/components/quizzes/DigitalCurrenciesQuiz";
 
 export default function DigitalCurrenciesSection() {
-  useScrollTop(); // Add this hook
+  useScrollTop();
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showQuiz, setShowQuiz] = useState(false);
@@ -84,8 +84,12 @@ export default function DigitalCurrenciesSection() {
             initial="hidden"
             animate="visible"
           >
+            <h2 className="text-3xl font-bold text-blue-700">Understanding Traditional Money vs. Cryptocurrency</h2>
             <p>
-              Imagine a world where you can send money to anyone, anywhere, at any time, without needing a bank. A world where you have complete control over your finances, free from government interference or corporate oversight. A world where the very nature of money itself is being redefined. This isn't science fiction—it's the world of digital currencies, and it's happening right now.
+              Think about the cash in your wallet or the money in your bank account. Traditional money exists in two main forms: physical cash and digital bank balances. Physical cash offers immediate, tangible transactions but comes with limitations like physical degradation, security risks, and geographical restrictions. Digital bank money, while more convenient for many transactions, relies entirely on banks and financial institutions as intermediaries.
+            </p>
+            <p>
+              Cryptocurrency introduces a fundamentally different approach. It exists purely as digital information, but unlike the numbers in your bank account, it doesn't represent a claim on a bank or institution. Instead, cryptocurrency operates through a decentralized network of computers, using advanced cryptography to ensure security and verify transactions.
             </p>
           </motion.section>
 
@@ -95,41 +99,43 @@ export default function DigitalCurrenciesSection() {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl font-bold text-blue-700 mt-8">The Digital Revolution of Money</h2>
-            <DigitalRevolutionDiagram />
-            <p>
-              Just as the internet revolutionised information, digital currencies are transforming the very fabric of our financial systems. But what exactly are digital currencies? At their core, they're a new form of money designed for the digital age—intangible, yet as real and valuable as the cash in your wallet.
-            </p>
-            <p>
-              Digital currencies come in various forms, from the cryptocurrencies that make headlines to the less-known virtual currencies used in online games. But it's cryptocurrencies like Bitcoin that have truly captured the world's imagination, promising a future where financial transactions are as easy as sending an email.
-            </p>
-          </motion.section>
-
-          <motion.section
-            variants={contentVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl font-bold text-blue-700 mt-8">More Than Just Money</h2>
-            <p>
-              But digital currencies are about more than just a new way to pay for things. They represent a fundamental shift in how we think about money, value, and trust in the digital age.
-            </p>
-            <DigitalCurrencyFeatures />
-            <ul className="list-disc pl-5 space-y-3">
-              <li>
-                <strong>Decentralisation:</strong> Many digital currencies operate on decentralised networks, free from the control of any single entity. This means no central bank, no CEO, and no single point of failure.
-              </li>
-              <li>
-                <strong>Transparency:</strong> Transactions are often recorded on public ledgers, viewable by anyone. This level of transparency was unthinkable in traditional financial systems.
-              </li>
-              <li>
-                <strong>Programmable Money:</strong> Some digital currencies, like Ethereum, allow for "smart contracts"—self-executing agreements that can automate complex financial transactions.
-              </li>
-              <li>
-                <strong>Global Access:</strong> Digital currencies have the potential to provide financial services to the billions of people worldwide who don't have access to traditional banking.
-              </li>
+            <h2 className="text-3xl font-bold text-blue-700">The Evolution of Money</h2>
+            <p>To understand cryptocurrency's significance, consider how money has evolved:</p>
+            <ul className="list-disc pl-5 space-y-2">
+              <li>Barter systems required direct exchange of goods</li>
+              <li>Precious metals provided portable, divisible value</li>
+              <li>Paper money offered convenient value representation</li>
+              <li>Digital banking enabled electronic transfers</li>
+              <li>Cryptocurrency introduces programmable, borderless money</li>
             </ul>
+            <p>
+              Each evolution solved previous limitations while introducing new capabilities. Cryptocurrency represents the latest step in this evolution, addressing many traditional financial system limitations while introducing new considerations and risks.
+            </p>
+          </motion.section>
+
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl font-bold text-blue-700">Core Concepts and Features</h2>
+
+            <h3 className="text-2xl font-semibold text-blue-600">Decentralization: A New Paradigm</h3>
+            <p>
+              One of cryptocurrency's most revolutionary aspects is its decentralized nature. Traditional financial systems operate through centralized authorities – banks, governments, and financial institutions. These entities control money creation, verify transactions, and maintain account balances.
+            </p>
+            <p>
+              Cryptocurrency works differently. Instead of relying on central authorities, it uses a network of computers running specialized software. This network collectively maintains and verifies all transactions through a system called blockchain. Think of it as a shared digital ledger that everyone can see but no one can alter without network consensus.
+            </p>
+
+            <h3 className="text-2xl font-semibold text-blue-600">Digital Scarcity: A Breakthrough Innovation</h3>
+            <p>
+              Before cryptocurrency, creating genuine scarcity in digital assets seemed impossible. Digital files could be copied infinitely without degradation. Bitcoin solved this through its blockchain technology and precise supply controls. For example, Bitcoin has a fixed maximum supply of 21 million coins, with a predetermined release schedule that can't be altered without network consensus.
+            </p>
+            <p>
+              This digital scarcity creates value similarly to how limited resources like gold or fine art maintain value. Unlike traditional currency, which central banks can print at will, cryptocurrency supply is often mathematically guaranteed and transparent.
+            </p>
           </motion.section>
 
           <motion.section
@@ -171,7 +177,7 @@ export default function DigitalCurrenciesSection() {
             >
               <Card className="bg-green-100 border-l-4 border-green-500 p-4">
                 <p className="text-green-700">
-                  🎉 You've completed the Introduction to Digital Currencies section! You now understand the fundamental concepts and potential impact of digital currencies.
+                  🎉 Congratulations! You've completed the Introduction to Digital Currencies section. You now understand the fundamental concepts of digital currencies and their revolutionary potential.
                 </p>
               </Card>
 
@@ -195,12 +201,12 @@ export default function DigitalCurrenciesSection() {
                     </Button>
                   </Link>
 
-                  <Link href="/modules/module1/history-of-money">
+                  <Link href="/modules/module1/security">
                     <Button
                       size="lg"
                       className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
                     >
-                      Next Topic: History of Money <ArrowRight className="ml-2 h-4 w-4" />
+                      Next Topic: Understanding Security <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>
                 </div>
