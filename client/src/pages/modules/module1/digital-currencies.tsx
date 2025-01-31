@@ -58,58 +58,13 @@ export default function DigitalCurrenciesSection() {
   };
 
   const sectionVariants = {
-    hidden: { 
-      opacity: 0, 
-      y: 50,
-      transition: {
-        type: "spring",
-        stiffness: 100
-      }
-    },
+    hidden: { opacity: 0, y: 50 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        type: "spring",
-        stiffness: 50,
-        mass: 0.3,
         duration: 0.8,
         staggerChildren: 0.2
-      }
-    }
-  };
-
-  const listItemVariants = {
-    hidden: { opacity: 0, x: -20 },
-    visible: { 
-      opacity: 1, 
-      x: 0,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        mass: 0.3
-      }
-    }
-  };
-
-  const cardVariants = {
-    hidden: { scale: 0.95, opacity: 0 },
-    visible: { 
-      scale: 1, 
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        mass: 0.3
-      }
-    },
-    hover: { 
-      scale: 1.02,
-      boxShadow: "0 10px 20px rgba(0,0,0,0.1)",
-      transition: {
-        type: "spring",
-        stiffness: 400,
-        damping: 10
       }
     }
   };
@@ -126,10 +81,7 @@ export default function DigitalCurrenciesSection() {
         <motion.div
           className="fixed top-0 left-0 w-full h-1 bg-gray-300 z-50"
           initial={{ scaleX: 0 }}
-          animate={{ 
-            scaleX: scrollProgress / 100,
-            transition: { duration: 0.2 }
-          }}
+          animate={{ scaleX: scrollProgress / 100 }}
           style={{ transformOrigin: "left" }}
         >
           <div className="h-full bg-blue-600" />
@@ -139,112 +91,149 @@ export default function DigitalCurrenciesSection() {
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            whileHover={{ x: -5 }}
             className="mb-6"
           >
             <Link href="/modules/module1">
-              <Button variant="ghost" className="gap-2 group">
-                <ArrowLeft className="h-4 w-4 group-hover:transform group-hover:-translate-x-1 transition-transform" />
-                Back to Module Overview
+              <Button variant="ghost" className="gap-2">
+                <ArrowLeft className="h-4 w-4" /> Back to Module Overview
               </Button>
             </Link>
           </motion.div>
 
           <motion.h1
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ 
-              duration: 0.8,
-              type: "spring",
-              stiffness: 100 
-            }}
             className="text-4xl font-bold text-blue-800 mb-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
           >
-            Module 1: Understanding Cryptocurrency
+            Understanding Digital Currencies
           </motion.h1>
 
           <div className="prose lg:prose-xl text-gray-700 space-y-6">
-            {/* Introduction Section */}
             <motion.section
               variants={sectionVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
+              viewport={{ once: true }}
               className="mb-12"
             >
-              <h2 className="text-3xl font-bold text-blue-700">Introduction to Digital Currency</h2>
-              <motion.p 
-                variants={listItemVariants}
-                className="mt-4"
-              >
-                Digital currencies represent a revolutionary approach to money and value transfer in today's financial landscape. They challenge traditional monetary systems by introducing decentralized, cryptographically secure methods of exchange.
-              </motion.p>
+              <h2 className="text-3xl font-bold text-blue-700">Introduction</h2>
+              <p className="lead">
+                In today's rapidly evolving financial landscape, cryptocurrency represents a revolutionary 
+                approach to money and value transfer. Before diving into specific cryptocurrencies or 
+                technical details, it's essential to understand what makes digital currencies unique 
+                and how they differ from traditional money systems.
+              </p>
             </motion.section>
 
-            {/* Core Concepts Section */}
             <motion.section
               variants={sectionVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
+              viewport={{ once: true }}
               className="mb-12"
+            >
+              <h2 className="text-3xl font-bold text-blue-700">Understanding Traditional Money vs. Cryptocurrency</h2>
+              <p>
+                Think about the cash in your wallet or the money in your bank account. Traditional money 
+                exists in two main forms: physical cash and digital bank balances. While physical cash 
+                offers immediate, tangible transactions, it comes with limitations like physical degradation, 
+                security risks, and geographical restrictions. Digital bank money, while more convenient 
+                for many transactions, relies entirely on banks and financial institutions as intermediaries.
+              </p>
+              <p>
+                Cryptocurrency introduces a fundamentally different approach. It exists purely as digital 
+                information, but unlike the numbers in your bank account, it doesn't represent a claim 
+                on a bank or institution. Instead, cryptocurrency operates through a decentralized network 
+                of computers, using advanced cryptography to ensure security and verify transactions.
+              </p>
+            </motion.section>
+
+            <motion.section
+              variants={sectionVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
             >
               <h2 className="text-3xl font-bold text-blue-700">Core Concepts</h2>
 
               <motion.div 
-                variants={cardVariants}
-                whileHover="hover"
+                variants={sectionVariants}
                 className="mt-6 p-6 bg-white rounded-lg shadow-md"
               >
                 <div className="flex items-center gap-4 mb-4">
                   <DecentralizationIcon size={32} className="text-blue-600" />
-                  <h3 className="text-2xl font-semibold text-blue-600">Decentralization</h3>
+                  <h3 className="text-2xl font-semibold text-blue-600">Decentralization: A New Paradigm</h3>
                 </div>
-                <motion.p variants={listItemVariants} className="mt-4">
-                  Unlike traditional financial systems controlled by central authorities, cryptocurrencies operate through a network of computers running specialized blockchain software, ensuring transparency and removing single points of failure.
-                </motion.p>
+                <p>
+                  Unlike traditional financial systems controlled by central authorities, cryptocurrencies 
+                  operate through a network of computers running specialized blockchain software, ensuring 
+                  transparency and removing single points of failure.
+                </p>
                 <DecentralizationDiagram />
               </motion.div>
 
               <motion.div 
-                variants={cardVariants}
-                whileHover="hover"
+                variants={sectionVariants}
                 className="mt-8 p-6 bg-white rounded-lg shadow-md"
               >
                 <div className="flex items-center gap-4 mb-4">
                   <BlockchainIcon size={32} className="text-blue-600" />
                   <h3 className="text-2xl font-semibold text-blue-600">Digital Scarcity</h3>
                 </div>
-                <motion.p variants={listItemVariants} className="mt-4">
-                  Blockchain technology enables genuine digital scarcity, solving the problem of unlimited digital replication by creating verifiable, limited digital assets with intrinsic value.
-                </motion.p>
+                <p>
+                  Before cryptocurrency, creating genuine scarcity in digital assets seemed impossible. 
+                  Digital files could be copied infinitely without degradation. Bitcoin solved this 
+                  through its blockchain technology and precise supply controls.
+                </p>
                 <TransactionFlowDiagram />
               </motion.div>
             </motion.section>
 
-            {/* Security Features */}
             <motion.section
               variants={sectionVariants}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              className="mb-12"
+              viewport={{ once: true }}
             >
-              <h2 className="text-3xl font-bold text-blue-700">Security Mechanisms</h2>
+              <h2 className="text-3xl font-bold text-blue-700">Security Features</h2>
+
               <motion.div 
-                variants={cardVariants}
-                whileHover="hover"
+                variants={sectionVariants}
                 className="mt-6 p-6 bg-white rounded-lg shadow-md"
               >
                 <div className="flex items-center gap-4 mb-4">
                   <SecurityIcon size={32} className="text-blue-600" />
                   <h3 className="text-2xl font-semibold text-blue-600">Cryptographic Protection</h3>
                 </div>
+                <p>
+                  Cryptocurrency security relies on advanced cryptography, specifically public-key 
+                  cryptography. This system uses pairs of keys: a private key (like your secret password) 
+                  and a public key (like your public email address).
+                </p>
                 <DoubleSpendDiagram />
-                <motion.p variants={listItemVariants} className="mt-4">
-                  Advanced cryptographic techniques ensure that digital currency transactions are secure, irreversible, and cannot be duplicated or forged.
-                </motion.p>
+              </motion.div>
+            </motion.section>
+
+            <motion.section
+              variants={sectionVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
+              <h2 className="text-3xl font-bold text-blue-700">Practical Applications</h2>
+
+              <motion.div 
+                variants={sectionVariants}
+                className="mt-6 p-6 bg-white rounded-lg shadow-md"
+              >
+                <h3 className="text-2xl font-semibold text-blue-600">Financial Inclusion</h3>
+                <p>Cryptocurrency provides financial services access to previously underserved populations:</p>
+                <ul className="list-disc pl-5 mt-2">
+                  <li>People without bank accounts</li>
+                  <li>Residents of countries with unstable currencies</li>
+                  <li>Individuals with limited access to traditional banking</li>
+                  <li>International workers needing to send remittances</li>
+                </ul>
               </motion.div>
             </motion.section>
 
@@ -255,64 +244,42 @@ export default function DigitalCurrenciesSection() {
                 transition={{ duration: 0.5 }}
                 className="mt-8 space-y-6"
               >
-                <motion.div
-                  variants={cardVariants}
-                  initial="hidden"
-                  animate="visible"
-                  whileHover="hover"
-                >
-                  <Card className="bg-green-100 border-l-4 border-green-500 p-4">
-                    <p className="text-green-700">
-                      🎉 Congratulations! You've completed the Introduction to Digital Currencies section.
-                    </p>
-                  </Card>
-                </motion.div>
+                <Card className="bg-green-100 border-l-4 border-green-500 p-4">
+                  <p className="text-green-700">
+                    🎉 Congratulations! You've completed the Introduction to Digital Currencies section.
+                    You now understand the fundamental concepts of digital currencies and their revolutionary potential.
+                  </p>
+                </Card>
 
                 <div className="flex flex-col space-y-4">
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                  <Button
+                    onClick={() => setShowQuiz(!showQuiz)}
+                    className="w-full bg-purple-600 hover:bg-purple-700"
+                    size="lg"
                   >
-                    <Button
-                      onClick={() => setShowQuiz(!showQuiz)}
-                      className="w-full bg-purple-600 hover:bg-purple-700"
-                      size="lg"
-                    >
-                      {showQuiz ? "Hide Quiz" : "Take Topic Quiz"}
-                    </Button>
-                  </motion.div>
+                    {showQuiz ? "Hide Quiz" : "Take Topic Quiz"}
+                  </Button>
 
                   <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
-                    <motion.div
-                      whileHover={{ scale: 1.02, x: -5 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <Link href="/modules/module1">
-                        <Button
-                          variant="outline"
-                          size="lg"
-                          className="w-full md:w-auto group"
-                        >
-                          <ArrowLeft className="mr-2 h-4 w-4 group-hover:transform group-hover:-translate-x-1 transition-transform" />
-                          Back to Overview
-                        </Button>
-                      </Link>
-                    </motion.div>
+                    <Link href="/modules/module1">
+                      <Button 
+                        variant="outline"
+                        size="lg"
+                        className="w-full md:w-auto"
+                      >
+                        <ArrowLeft className="mr-2 h-4 w-4" /> Back to Overview
+                      </Button>
+                    </Link>
 
-                    <motion.div
-                      whileHover={{ scale: 1.02, x: 5 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <Link href="/modules/module1/security">
-                        <Button
-                          size="lg"
-                          className="w-full md:w-auto bg-blue-600 hover:bg-blue-700 group"
-                        >
-                          Next Topic: Understanding Security
-                          <ArrowRight className="ml-2 h-4 w-4 group-hover:transform group-hover:translate-x-1 transition-transform" />
-                        </Button>
-                      </Link>
-                    </motion.div>
+                    <Link href="/modules/module1/security">
+                      <Button 
+                        size="lg"
+                        className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
+                      >
+                        Next Topic: Understanding Security 
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </Link>
                   </div>
 
                   {showQuiz && (

@@ -5,12 +5,18 @@ export const useScrollTop = () => {
   const [location] = useLocation();
 
   useEffect(() => {
-    // Force immediate scroll to top
-    window.scrollTo(0, 0);
+    // Immediate scroll to top
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
 
-    // Backup scroll reset in case the first one gets overridden
+    // Backup scroll reset with RAF to ensure it happens after any reflows
     requestAnimationFrame(() => {
-      window.scrollTo(0, 0);
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
     });
   }, [location]);
 };
