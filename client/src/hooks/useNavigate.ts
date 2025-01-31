@@ -4,9 +4,14 @@ import { useLocation } from 'wouter';
 export const useNavigate = () => {
   const [location, setLocation] = useLocation();
 
+  // Helper function to check if a path is a module topic page
+  const isModuleTopicPage = (path: string): boolean => {
+    return path.match(/^\/modules\/module[1-4]\/(digital-currencies|security|applications|getting-started)$/) !== null;
+  };
+
   const navigate = useCallback((to: string) => {
-    // Only force scroll for digital-currencies page navigation
-    if (to === '/modules/module1/digital-currencies' || location === '/modules/module1/digital-currencies') {
+    // Force scroll for navigation involving any module topic page
+    if (isModuleTopicPage(to) || isModuleTopicPage(location)) {
       // First scroll to top
       window.scrollTo({ top: 0, behavior: 'instant' });
 
