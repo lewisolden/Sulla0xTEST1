@@ -74,31 +74,6 @@ const securityScenarios: SecurityScenario[] = [
         explanation: "Cloud storage can be compromised, making this a risky option for sensitive information."
       }
     ]
-  },
-  {
-    id: 3,
-    title: "Software Update",
-    description: "You receive a popup message while using your wallet saying 'Update required'. What's the safest action?",
-    options: [
-      {
-        id: "3a",
-        text: "Click the popup to update immediately",
-        isCorrect: false,
-        explanation: "Malicious popups can mimic software updates. Never trust unexpected update notifications."
-      },
-      {
-        id: "3b",
-        text: "Check the official website or app store for updates",
-        isCorrect: true,
-        explanation: "Correct! Always verify updates through official channels like the wallet's website or app store."
-      },
-      {
-        id: "3c",
-        text: "Ignore it and continue using the wallet",
-        isCorrect: false,
-        explanation: "While safer than clicking unknown popups, ignoring updates can leave you vulnerable to known security issues."
-      }
-    ]
   }
 ];
 

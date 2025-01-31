@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Brain, ChevronRight, Award, CheckCircle2 } from "lucide-react";
+import { Brain, ChevronRight, Award } from "lucide-react";
 
 type Assessment = {
   id: number;
@@ -136,7 +136,7 @@ export default function AssessmentCenter() {
 
   const handleAnswer = (optionId: string) => {
     if (!currentAssessment) return;
-    
+
     setAnswers(prev => ({
       ...prev,
       [currentQuestion]: optionId
@@ -160,13 +160,6 @@ export default function AssessmentCenter() {
     return (correct / currentAssessment.questions.length) * 100;
   };
 
-  const resetAssessment = () => {
-    setCurrentAssessment(null);
-    setCurrentQuestion(0);
-    setAnswers({});
-    setShowResults(false);
-  };
-
   return (
     <div className="space-y-6">
       <div className="prose max-w-none">
@@ -179,63 +172,46 @@ export default function AssessmentCenter() {
       {!currentAssessment ? (
         <div className="grid md:grid-cols-2 gap-6">
           {assessments.map((assessment) => (
-            <motion.div
-              key={assessment.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <Card className="p-6 hover:shadow-lg transition-shadow">
-                <div className="flex items-center gap-4 mb-4">
-                  <Brain className="h-8 w-8 text-blue-600" />
-                  <div>
-                    <h3 className="text-xl font-semibold">{assessment.title}</h3>
-                    <p className="text-sm text-gray-500">{assessment.questions.length} questions</p>
-                  </div>
+            <Card key={assessment.id} className="p-6 hover:shadow-lg transition-shadow">
+              <div className="flex items-center gap-4 mb-4">
+                <Brain className="h-8 w-8 text-blue-600" />
+                <div>
+                  <h3 className="text-xl font-semibold">{assessment.title}</h3>
+                  <p className="text-sm text-gray-500">{assessment.questions.length} questions</p>
                 </div>
-                <p className="text-gray-600 mb-6">{assessment.description}</p>
-                <Button onClick={() => handleStartAssessment(assessment)} className="w-full">
-                  Start Assessment
-                  <ChevronRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Card>
-            </motion.div>
+              </div>
+              <p className="text-gray-600 mb-6">{assessment.description}</p>
+              <Button onClick={() => handleStartAssessment(assessment)} className="w-full">
+                Start Assessment
+                <ChevronRight className="ml-2 h-4 w-4" />
+              </Button>
+            </Card>
           ))}
         </div>
       ) : showResults ? (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="space-y-6"
-        >
-          <Card className="p-6 text-center">
-            <Award className="h-16 w-16 mx-auto text-blue-600 mb-4" />
-            <h3 className="text-2xl font-bold mb-2">Assessment Complete!</h3>
-            <p className="text-gray-600 mb-4">
-              You scored {calculateScore()}% on {currentAssessment.title}
-            </p>
-            <Progress value={calculateScore()} className="mb-6" />
-            <Button onClick={resetAssessment} className="w-full max-w-sm">
-              Try Another Assessment
-            </Button>
-          </Card>
-        </motion.div>
+        <Card className="p-6 text-center">
+          <Award className="h-16 w-16 mx-auto text-blue-600 mb-4" />
+          <h3 className="text-2xl font-bold mb-2">Assessment Complete!</h3>
+          <p className="text-gray-600 mb-4">
+            You scored {calculateScore()}% on {currentAssessment.title}
+          </p>
+          <Progress value={calculateScore()} className="mb-6" />
+          <Button onClick={() => setCurrentAssessment(null)} className="w-full max-w-sm">
+            Try Another Assessment
+          </Button>
+        </Card>
       ) : (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="space-y-6"
-        >
+        <div className="space-y-6">
           <Progress 
             value={(currentQuestion / currentAssessment.questions.length) * 100}
             className="w-full"
           />
-          
+
           <Card className="p-6">
             <h3 className="text-xl font-semibold mb-6">
               Question {currentQuestion + 1} of {currentAssessment.questions.length}
             </h3>
-            
+
             <p className="text-lg mb-6">
               {currentAssessment.questions[currentQuestion].text}
             </p>
@@ -253,7 +229,7 @@ export default function AssessmentCenter() {
               ))}
             </div>
           </Card>
-        </motion.div>
+        </div>
       )}
     </div>
   );

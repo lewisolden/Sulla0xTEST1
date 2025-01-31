@@ -14,7 +14,7 @@ import Achievements from "@/pages/achievements";
 // Module 1 Routes
 import Module1Landing from "@/pages/modules/module1";
 import Module1Quiz from "@/pages/modules/module1/quiz";
-import Module1Exercises from "@/pages/modules/module1/exercises";
+import ModuleExercises from "@/pages/modules/module1/exercises";
 import DigitalCurrenciesSection from "@/pages/modules/module1/digital-currencies";
 import HistoryOfMoneySection from "@/pages/modules/module1/history-of-money";
 import BitcoinSection from "@/pages/modules/module1/bitcoin";
@@ -64,7 +64,7 @@ function Router() {
       {/* Module 1 Routes */}
       <Route path="/modules/module1" component={Module1Landing} />
       <Route path="/modules/module1/quiz" component={Module1Quiz} />
-      <Route path="/modules/module1/exercises" component={Module1Exercises} />
+      <Route path="/modules/module1/exercises" component={ModuleExercises} />
       <Route path="/modules/module1/digital-currencies" component={DigitalCurrenciesSection} />
       <Route path="/modules/module1/history-of-money" component={HistoryOfMoneySection} />
       <Route path="/modules/module1/bitcoin" component={BitcoinSection} />
