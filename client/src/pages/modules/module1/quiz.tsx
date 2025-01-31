@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { ArrowLeft, CheckCircle, XCircle } from "lucide-react";
 import { useProgress } from "@/context/progress-context";
@@ -33,7 +33,7 @@ const questions: Question[] = [
     question: "What is the purpose of public key cryptography in cryptocurrency systems?",
     options: [
       "To make transactions faster",
-      "To reduce transaction fees",
+      "To reduce transaction fees", 
       "To secure and verify transactions without central authority",
       "To connect to the internet"
     ],
@@ -105,7 +105,9 @@ const QuizPage = () => {
     setShowResults(true);
     const score = calculateScore();
     const passThreshold = questions.length * 0.7; // 70% to pass
-    updateProgress(1, 'module1-quiz', score >= passThreshold);
+    if (score >= passThreshold) {
+      updateProgress(1, 'module1-quiz', true);
+    }
   };
 
   const pageVariants = {
@@ -188,9 +190,9 @@ const QuizPage = () => {
           variants={pageVariants}
         >
           <div className="mb-6 flex justify-between items-center">
-            <Link href="/modules/module1/quiz">
+            <Link href="/modules/module1">
               <Button variant="ghost" className="gap-2">
-                <ArrowLeft className="h-4 w-4" /> Back
+                <ArrowLeft className="h-4 w-4" /> Back to Module Overview
               </Button>
             </Link>
           </div>
@@ -241,16 +243,16 @@ const QuizPage = () => {
                         </p>
                       </div>
                     )}
-                     <div className="mt-6 flex justify-center">
-                       <Link href="/modules/module1">
-                         <Button 
-                           size="lg"
-                           className="bg-blue-600 hover:bg-blue-700"
-                         >
-                           Return to Module Overview
-                         </Button>
-                       </Link>
-                     </div>
+                    <div className="mt-6 flex justify-center">
+                      <Link href="/modules/module1">
+                        <Button 
+                          size="lg"
+                          className="bg-blue-600 hover:bg-blue-700"
+                        >
+                          Return to Module Overview
+                        </Button>
+                      </Link>
+                    </div>
                   </motion.div>
                 )}
               </div>
