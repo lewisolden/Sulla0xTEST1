@@ -7,51 +7,10 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Dumbbell, BookOpen, Shield, Brain, Wallet } from "lucide-react";
-
-const moduleTopics = [
-  {
-    id: "digital-currencies",
-    title: "Topic 1 - Introduction to Digital Currency",
-    path: "/modules/module1/digital-currencies",
-    subsections: [
-      "Understanding Traditional Money vs. Cryptocurrency",
-      "The Evolution of Money",
-      "Core Concepts and Features"
-    ]
-  },
-  {
-    id: "security",
-    title: "Topic 2 - Understanding Cryptocurrency Security",
-    path: "/modules/module1/security",
-    subsections: [
-      "Cryptographic Foundations",
-      "The Double-Spending Solution",
-      "Risk Considerations and Management"
-    ]
-  },
-  {
-    id: "practical-applications",
-    title: "Topic 3 - Practical Applications",
-    path: "/modules/module1/applications",
-    subsections: [
-      "Financial Inclusion",
-      "Payment Efficiency",
-      "Investment Opportunities and Risks"
-    ]
-  },
-  {
-    id: "getting-started",
-    title: "Topic 4 - Getting Started Safely",
-    path: "/modules/module1/getting-started",
-    subsections: [
-      "First Steps",
-      "Security Best Practices",
-      "Hands-On Learning Activities"
-    ]
-  }
-];
+import { useScrollTop } from "@/hooks/useScrollTop";
 
 export default function Module1() {
+  useScrollTop();
   const { progress } = useProgress();
   const moduleProgress = progress.filter(p => p.moduleId === 1);
   const completedSections = moduleProgress.filter(p => p.completed).length;
