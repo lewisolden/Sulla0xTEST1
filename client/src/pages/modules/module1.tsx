@@ -6,6 +6,7 @@ import { useProgress } from "@/context/progress-context";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { Dumbbell, BookOpen, Shield, Brain, Wallet } from "lucide-react";
 
 const moduleTopics = [
   {
@@ -77,6 +78,7 @@ export default function Module1() {
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="content">Topics</TabsTrigger>
+            <TabsTrigger value="exercises">Exercises</TabsTrigger>
             <TabsTrigger value="quiz">Quiz</TabsTrigger>
           </TabsList>
 
@@ -90,11 +92,6 @@ export default function Module1() {
                     approach to money and value transfer. This module will introduce you to the fundamental 
                     concepts of cryptocurrency, helping you understand what makes digital currencies unique 
                     and how they differ from traditional money systems.
-                  </p>
-                  <p className="text-gray-700 mb-6">
-                    Through this module, you'll explore the evolution of money, understand the core concepts 
-                    of cryptocurrency, learn about security considerations, and gain practical knowledge about 
-                    getting started in the cryptocurrency space.
                   </p>
 
                   <h3 className="text-xl font-semibold mt-8 mb-4">Learning Objectives</h3>
@@ -154,6 +151,60 @@ export default function Module1() {
             </div>
           </TabsContent>
 
+          <TabsContent value="exercises">
+            <Card>
+              <CardContent className="pt-6">
+                <div className="prose max-w-none">
+                  <h2 className="text-2xl font-bold text-blue-800 mb-4">Interactive Learning Exercises</h2>
+                  <p className="text-gray-700 mb-6">
+                    Put your knowledge into practice with hands-on exercises designed to reinforce your learning:
+                  </p>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <Card className="p-4">
+                      <div className="flex items-start gap-3">
+                        <Wallet className="h-6 w-6 text-blue-600 mt-1" />
+                        <div>
+                          <h3 className="font-semibold mb-2">Wallet Simulator</h3>
+                          <p className="text-sm text-gray-600">Practice creating and managing a cryptocurrency wallet in a safe environment.</p>
+                        </div>
+                      </div>
+                    </Card>
+
+                    <Card className="p-4">
+                      <div className="flex items-start gap-3">
+                        <Shield className="h-6 w-6 text-blue-600 mt-1" />
+                        <div>
+                          <h3 className="font-semibold mb-2">Security Workshop</h3>
+                          <p className="text-sm text-gray-600">Learn to identify and protect against common security threats.</p>
+                        </div>
+                      </div>
+                    </Card>
+
+                    <Card className="p-4">
+                      <div className="flex items-start gap-3">
+                        <Brain className="h-6 w-6 text-blue-600 mt-1" />
+                        <div>
+                          <h3 className="font-semibold mb-2">Assessment Center</h3>
+                          <p className="text-sm text-gray-600">Test your understanding with interactive assessments.</p>
+                        </div>
+                      </div>
+                    </Card>
+                  </div>
+
+                  <div className="flex justify-center">
+                    <Link href="/modules/module1/exercises">
+                      <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
+                        <Dumbbell className="mr-2 h-5 w-5" />
+                        Start Exercises
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
           <TabsContent value="quiz">
             <Card>
               <CardContent className="pt-6">
@@ -183,20 +234,6 @@ export default function Module1() {
             </Card>
           </TabsContent>
         </Tabs>
-        <div className="mt-8 text-center">
-          <Link href="/modules/module1/quiz">
-            <Button 
-              size="lg" 
-              className="bg-green-600 hover:bg-green-700"
-              disabled={progressPercentage < 100}
-            >
-              {progressPercentage < 100 
-                ? "Complete all topics to unlock quiz" 
-                : "Take Module Quiz"
-              }
-            </Button>
-          </Link>
-        </div>
       </div>
       <Footer />
     </div>
