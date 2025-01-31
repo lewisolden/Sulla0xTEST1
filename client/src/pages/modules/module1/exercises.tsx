@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link } from "wouter";
-import { ArrowLeft, Wallet, Shield, Brain, Box } from "lucide-react";
+import { ArrowLeft, Wallet, Shield, Brain } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import WalletSimulator from "@/components/exercises/WalletSimulator";
 import SecurityWorkshop from "@/components/exercises/SecurityWorkshop";
@@ -14,42 +14,16 @@ export default function ModuleExercises() {
   useScrollTop();
   const [activeTab, setActiveTab] = useState("wallet");
 
-  // Animation variants
-  const pageVariants = {
-    initial: { opacity: 0, y: 20 },
-    enter: { 
-      opacity: 1, 
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: [0.6, -0.05, 0.01, 0.99]
-      }
-    },
-    exit: { 
-      opacity: 0, 
-      y: -20,
-      transition: {
-        duration: 0.3
-      }
-    }
-  };
-
   return (
     <AnimatePresence mode="wait">
       <motion.div
-        initial="initial"
-        animate="enter"
-        exit="exit"
-        variants={pageVariants}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
         className="container mx-auto px-4 py-8"
       >
         <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-            className="mb-6"
-          >
+          <motion.div className="mb-6">
             <Link href="/modules/module1">
               <Button variant="ghost" className="gap-2">
                 <ArrowLeft className="h-4 w-4" />
@@ -58,12 +32,7 @@ export default function ModuleExercises() {
             </Link>
           </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-4xl font-bold text-blue-800 mb-6"
-          >
+          <motion.h1 className="text-4xl font-bold text-blue-800 mb-6">
             Module 1: Practical Exercises
           </motion.h1>
 
