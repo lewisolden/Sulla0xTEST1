@@ -7,10 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { PracticalApplicationsDiagram } from "@/components/diagrams/PracticalApplicationsDiagram";
+import { PracticalApplicationsQuiz } from "@/components/quizzes/PracticalApplicationsQuiz";
 
 const PracticalApplicationsSection = () => {
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [showQuiz, setShowQuiz] = useState(false);
   const { updateProgress } = useProgress();
 
   useEffect(() => {
@@ -50,7 +52,7 @@ const PracticalApplicationsSection = () => {
         </div>
 
         <h1 className="text-4xl font-bold text-blue-800 mb-6">
-          Practical Applications of Cryptocurrency
+          Practical Applications of Blockchain Technology
         </h1>
 
         <Card className="mb-6">
@@ -58,7 +60,7 @@ const PracticalApplicationsSection = () => {
             <section>
               <h2 className="text-2xl font-bold text-blue-700">Overview</h2>
               <p className="text-gray-700">
-                While blockchain technology gained prominence through cryptocurrencies, its potential applications extend far beyond digital currencies. This section explores real-world applications and use cases of cryptocurrency technology.
+                While blockchain technology gained prominence through cryptocurrencies, its potential applications extend far beyond digital currencies. This section explores how blockchain is transforming various industries and creating new possibilities for business and society.
               </p>
 
               <PracticalApplicationsDiagram />
@@ -67,7 +69,7 @@ const PracticalApplicationsSection = () => {
             <section className="mt-8">
               <h2 className="text-2xl font-bold text-blue-700">Financial Inclusion</h2>
               <p className="text-gray-700">
-                One of the most significant applications of cryptocurrency is providing financial services to the unbanked and underbanked populations worldwide. Through cryptocurrency:
+                One of the most significant applications of blockchain is providing financial services to the unbanked and underbanked populations worldwide. Through blockchain:
               </p>
               <ul className="list-disc pl-5 space-y-2 text-gray-700">
                 <li>People without access to traditional banking can participate in the global economy</li>
@@ -80,7 +82,7 @@ const PracticalApplicationsSection = () => {
             <section className="mt-8">
               <h2 className="text-2xl font-bold text-blue-700">Payment Efficiency</h2>
               <p className="text-gray-700">
-                Cryptocurrencies are revolutionizing payment systems by offering:
+                Blockchain is revolutionizing payment systems by offering:
               </p>
               <ul className="list-disc pl-5 space-y-2 text-gray-700">
                 <li>Near-instant settlements</li>
@@ -94,7 +96,7 @@ const PracticalApplicationsSection = () => {
             <section className="mt-8">
               <h2 className="text-2xl font-bold text-blue-700">Investment Opportunities</h2>
               <p className="text-gray-700">
-                Cryptocurrency has created new investment possibilities:
+                Blockchain has created new investment possibilities:
               </p>
               <ul className="list-disc pl-5 space-y-2 text-gray-700">
                 <li>Digital asset trading</li>
@@ -107,27 +109,56 @@ const PracticalApplicationsSection = () => {
           </CardContent>
         </Card>
 
-        <div className="flex justify-between mt-8">
-          <Link href="/modules/module1/security">
-            <Button variant="outline" className="gap-2">
-              <ArrowLeft className="h-4 w-4" />
-              Previous Topic
-            </Button>
-          </Link>
-          <Link href="/modules/module1/getting-started">
-            <Button className="gap-2">
-              Next Topic
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </Link>
-        </div>
-
         {isFullyRead && (
-          <Card className="mt-8 bg-green-100 border-l-4 border-green-500 p-4">
-            <p className="text-green-700">
-              🎉 Congratulations! You've completed the Practical Applications section!
-            </p>
-          </Card>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-8 space-y-6"
+          >
+            <Card className="bg-green-100 border-l-4 border-green-500 p-4">
+              <p className="text-green-700">
+                🎉 Congratulations! You've completed the Practical Applications section!
+              </p>
+            </Card>
+
+            <Button
+              onClick={() => setShowQuiz(!showQuiz)}
+              className="w-full bg-purple-600 hover:bg-purple-700"
+              size="lg"
+            >
+              {showQuiz ? "Hide Quiz" : "Take Topic Quiz"}
+            </Button>
+
+            {showQuiz && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <Card className="mt-4">
+                  <CardContent className="p-6">
+                    <h2 className="text-2xl font-bold text-blue-800 mb-4">Topic Quiz</h2>
+                    <PracticalApplicationsQuiz />
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
+
+            <div className="flex justify-between mt-4">
+              <Link href="/modules/module1/security">
+                <Button variant="outline" className="gap-2">
+                  <ArrowLeft className="h-4 w-4" />
+                  Previous Topic
+                </Button>
+              </Link>
+              <Link href="/modules/module1/getting-started">
+                <Button className="gap-2">
+                  Next Topic
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+          </motion.div>
         )}
       </div>
     </div>
