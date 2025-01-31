@@ -17,13 +17,18 @@ interface ModuleNavigationProps {
 export const ModuleNavigation = ({ prev, next }: ModuleNavigationProps) => {
   const [location] = useLocation();
 
-  // Handle specific scroll behavior when navigating back from topic 2 to topic 1
+  // Handle scroll behavior for all navigation in Module 1
   useEffect(() => {
+    // Special case for topic 2 to topic 1
     if (location === '/modules/module1/digital-currencies' && prev?.path === '/modules/module1/security') {
-      window.scrollTo(0, 0);
+      window.scrollTo({ top: 0, behavior: 'instant' });
       requestAnimationFrame(() => {
-        window.scrollTo(0, 0);
+        window.scrollTo({ top: 0, behavior: 'instant' });
       });
+    }
+    // General case for all other Module 1 navigation
+    else if (location.startsWith('/modules/module1/') && (prev || next)) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [location, prev?.path]);
 
