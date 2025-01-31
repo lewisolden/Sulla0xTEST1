@@ -3,78 +3,41 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/layout/footer";
 import { Progress } from "@/components/ui/progress";
-import { BookOpen, History, Bitcoin, Coins, TrendingUp, Lock, Book, CheckCircle2 } from "lucide-react";
+import { BookOpen } from "lucide-react";
 import { useProgress } from "@/context/progress-context";
 
 const module1Topics = [
   {
-    id: "digital-currencies",
-    title: "Introduction to Digital Currencies",
+    id: "intro-digital-currency",
+    title: "Introduction to Digital Currency",
     icon: BookOpen,
     path: "/modules/module1/digital-currencies",
     subsections: [
-      "Definition of digital currencies",
-      "Brief history and evolution of digital money",
-      "Key characteristics of cryptocurrencies"
+      "Understanding Digital Currency",
+      "Traditional Money vs. Cryptocurrency",
+      "The Evolution of Money"
     ]
   },
   {
-    id: "history-of-money",
-    title: "History and Evolution of Money",
-    icon: History,
-    path: "/modules/module1/history-of-money",
+    id: "core-concepts",
+    title: "Core Concepts and Features",
+    icon: BookOpen,
+    path: "/modules/module1/core-concepts",
     subsections: [
-      "Traditional forms of money and their limitations",
-      "The transition from physical to digital currencies",
-      "The need for decentralized digital currencies"
+      "Decentralization: A New Paradigm",
+      "Digital Scarcity",
+      "Understanding Cryptocurrency Security"
     ]
   },
   {
-    id: "bitcoin",
-    title: "Bitcoin: The First Cryptocurrency",
-    icon: Bitcoin,
-    path: "/modules/module1/bitcoin",
+    id: "practical-applications",
+    title: "Practical Applications",
+    icon: BookOpen,
+    path: "/modules/module1/applications",
     subsections: [
-      "Introduction to Bitcoin and its creation",
-      "Key features of Bitcoin",
-      "The Bitcoin blockchain and how it works",
-      "Mining and transaction verification"
-    ]
-  },
-  {
-    id: "altcoins-tokens",
-    title: "Altcoins and Tokens",
-    icon: Coins,
-    path: "/modules/module1/altcoins-tokens",
-    subsections: [
-      "Definition of altcoins and their purpose",
-      "Overview of major altcoins",
-      "Introduction to tokens and their various types",
-      "Differences between coins and tokens"
-    ]
-  },
-  {
-    id: "crypto-market",
-    title: "Cryptocurrency Market Dynamics",
-    icon: TrendingUp,
-    path: "/modules/module1/crypto-market",
-    subsections: [
-      "Introduction to cryptocurrency markets",
-      "Market capitalization and trading volume",
-      "Factors influencing cryptocurrency prices",
-      "Basic trading concepts"
-    ]
-  },
-  {
-    id: "cryptography",
-    title: "Basic Cryptography Concepts",
-    icon: Lock,
-    path: "/modules/module1/cryptography",
-    subsections: [
-      "Introduction to cryptography in the context of cryptocurrencies",
-      "Public and private keys",
-      "Digital signatures",
-      "Hash functions and their role in blockchain"
+      "Financial Inclusion",
+      "Payment Efficiency",
+      "Investment Opportunities and Risks"
     ]
   }
 ];
@@ -110,12 +73,12 @@ export default function Module1() {
             <p className="text-lg text-gray-700 mb-6">
               This module is designed to introduce learners to the basic concepts of 
               cryptocurrencies and their underlying technology. It's structured into 
-              six main sections that will give you a comprehensive understanding of 
+              three main sections that will give you a comprehensive understanding of 
               the fundamentals.
             </p>
             <Link href="/glossary">
               <Button className="gap-2">
-                <Book className="h-4 w-4" />
+                <BookOpen className="h-4 w-4" />
                 Open Crypto Glossary
               </Button>
             </Link>
@@ -156,7 +119,7 @@ export default function Module1() {
                           disabled={!topic.completed}
                           className="gap-2"
                         >
-                          <CheckCircle2 className="h-4 w-4" />
+                          <BookOpen className="h-4 w-4" />
                           Topic Quiz
                         </Button>
                       </Link>
