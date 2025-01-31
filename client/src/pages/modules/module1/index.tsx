@@ -76,30 +76,50 @@ export default function Module1() {
           <p className="text-sm text-muted-foreground mt-2">Progress: {Math.round(progressPercentage)}%</p>
         </div>
 
-        <Card className="mb-8">
-          <CardContent className="pt-6">
-            <p className="text-lg text-gray-700 mb-6">
-              This module introduces you to the fundamental concepts of cryptocurrency, exploring how digital currencies 
-              differ from traditional money systems and their revolutionary potential in today's financial landscape.
-            </p>
-            <div className="flex gap-4">
-              <Link href="/glossary">
-                <Button className="gap-2">
-                  <BookOpen className="h-4 w-4" />
-                  Open Crypto Glossary
-                </Button>
-              </Link>
-              <Link href="/modules/module1/exercises">
-                <Button variant="secondary" className="gap-2">
-                  <Dumbbell className="h-4 w-4" />
-                  Practice Exercises
-                </Button>
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
-
         <div className="grid gap-6">
+          {/* Overview Card */}
+          <Card>
+            <CardContent className="p-6">
+              <p className="text-lg text-gray-700 mb-6">
+                This module introduces you to the fundamental concepts of cryptocurrency, exploring how digital currencies 
+                differ from traditional money systems and their revolutionary potential in today's financial landscape.
+              </p>
+              <div className="flex gap-4">
+                <Link href="/glossary">
+                  <Button className="gap-2">
+                    <BookOpen className="h-4 w-4" />
+                    Open Crypto Glossary
+                  </Button>
+                </Link>
+                <Link href="/modules/module1/exercises">
+                  <Button variant="secondary" className="gap-2">
+                    <Dumbbell className="h-4 w-4" />
+                    Practice Exercises
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Interactive Exercises Card */}
+          <Card className="bg-blue-50">
+            <CardContent className="p-6">
+              <h2 className="text-2xl font-semibold text-blue-800 mb-4">
+                Interactive Learning Exercises
+              </h2>
+              <p className="text-gray-700 mb-6">
+                Put your knowledge into practice with our interactive exercises. Try out a simulated wallet environment,
+                test your security knowledge, and assess your understanding through hands-on activities.
+              </p>
+              <Link href="/modules/module1/exercises">
+                <Button size="lg" className="w-full md:w-auto gap-2">
+                  <Dumbbell className="h-5 w-5" />
+                  Start Practical Exercises
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+
           {topicsWithProgress.map((topic) => (
             <Card key={topic.id} className="transition-all hover:shadow-lg">
               <CardContent className="p-6">
