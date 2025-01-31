@@ -10,6 +10,8 @@ import { useScrollTop } from "@/hooks/useScrollTop";
 import DecentralizationDiagram from "@/components/diagrams/DecentralizationDiagram";
 import DoubleSpendDiagram from "@/components/diagrams/DoubleSpendDiagram";
 import DigitalCurrenciesQuiz from "@/components/quizzes/DigitalCurrenciesQuiz";
+import { BlockchainIcon, DecentralizationIcon, WalletIcon, SecurityIcon } from "@/components/icons/CryptoIcons";
+import TransactionFlowDiagram from "@/components/diagrams/TransactionFlowDiagram";
 
 export default function DigitalCurrenciesSection() {
   useScrollTop();
@@ -247,7 +249,10 @@ export default function DigitalCurrenciesSection() {
                 whileHover="hover"
                 className="mt-6 p-6 bg-white rounded-lg shadow-md"
               >
-                <h3 className="text-2xl font-semibold text-blue-600">Decentralization: A New Paradigm</h3>
+                <div className="flex items-center gap-4 mb-4">
+                  <DecentralizationIcon size={32} className="text-blue-600" />
+                  <h3 className="text-2xl font-semibold text-blue-600">Decentralization: A New Paradigm</h3>
+                </div>
                 <motion.p variants={listItemVariants} className="mt-4">
                   One of cryptocurrency's most revolutionary aspects is its decentralized nature. Traditional financial systems operate through centralized authorities – banks, governments, and financial institutions. These entities control money creation, verify transactions, and maintain account balances.
                 </motion.p>
@@ -275,7 +280,10 @@ export default function DigitalCurrenciesSection() {
                 whileHover="hover"
                 className="mt-8 p-6 bg-white rounded-lg shadow-md"
               >
-                <h3 className="text-2xl font-semibold text-blue-600">Digital Scarcity: A Breakthrough Innovation</h3>
+                <div className="flex items-center gap-4 mb-4">
+                  <BlockchainIcon size={32} className="text-blue-600" />
+                  <h3 className="text-2xl font-semibold text-blue-600">Digital Scarcity: A Breakthrough Innovation</h3>
+                </div>
                 <motion.p variants={listItemVariants} className="mt-4">
                   Before cryptocurrency, creating genuine scarcity in digital assets seemed impossible. Digital files could be copied infinitely without degradation. Bitcoin solved this through its blockchain technology and precise supply controls. For example, Bitcoin has a fixed maximum supply of 21 million coins, with a predetermined release schedule that can't be altered without network consensus.
                 </motion.p>
@@ -283,6 +291,16 @@ export default function DigitalCurrenciesSection() {
                   This digital scarcity creates value similarly to how limited resources like gold or fine art maintain value. Unlike traditional currency, which central banks can print at will, cryptocurrency supply is often mathematically guaranteed and transparent.
                 </motion.p>
               </motion.div>
+
+              <motion.div
+                variants={cardVariants}
+                whileHover="hover"
+                className="mt-8 p-6 bg-white rounded-lg shadow-md"
+              >
+                <h3 className="text-2xl font-semibold text-blue-600 mb-4">Transaction Flow Visualization</h3>
+                <TransactionFlowDiagram />
+              </motion.div>
+
             </motion.section>
 
             {/* Understanding Cryptocurrency Security */}
@@ -300,7 +318,10 @@ export default function DigitalCurrenciesSection() {
                 whileHover="hover"
                 className="mt-6 p-6 bg-white rounded-lg shadow-md"
               >
-                <h3 className="text-2xl font-semibold text-blue-600">Cryptographic Foundations</h3>
+                <div className="flex items-center gap-4 mb-4">
+                  <SecurityIcon size={32} className="text-blue-600" />
+                  <h3 className="text-2xl font-semibold text-blue-600">Cryptographic Foundations</h3>
+                </div>
                 <motion.p variants={listItemVariants} className="mt-4">
                   Cryptocurrency security relies on advanced cryptography, specifically public-key cryptography. This system uses pairs of keys:
                 </motion.p>
@@ -422,7 +443,10 @@ export default function DigitalCurrenciesSection() {
                 whileHover="hover"
                 className="mt-6 p-6 bg-white rounded-lg shadow-md"
               >
-                <h3 className="text-2xl font-semibold text-blue-600">First Steps</h3>
+                <div className="flex items-center gap-4 mb-4">
+                  <WalletIcon size={32} className="text-blue-600" />
+                  <h3 className="text-2xl font-semibold text-blue-600">First Steps</h3>
+                </div>
                 <motion.ol variants={sectionVariants} className="list-decimal pl-5 mt-2">
                   {[
                     {
