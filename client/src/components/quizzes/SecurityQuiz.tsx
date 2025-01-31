@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
+import { useProgress } from "@/context/progress-context";
 
 interface Question {
   question: string;
@@ -71,9 +72,10 @@ const questions: Question[] = [
 export default function SecurityQuiz() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-  const [showExplanation, setShowExplanation] = useState(false);
+  const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
-  const [quizComplete, setQuizComplete] = useState(false);
+  const [showExplanation, setShowExplanation] = useState(false);
+  const { updateProgress } = useProgress();
 
   const handleAnswerSelect = (answerIndex: number) => {
     setSelectedAnswer(answerIndex);
@@ -90,7 +92,9 @@ export default function SecurityQuiz() {
       setSelectedAnswer(null);
       setShowExplanation(false);
     } else {
-      setQuizComplete(true);
+      setShowResult(true);
+      const passThreshold = questions.length * 0.7; // 70% to pass
+      updateProgress(1, 'security', score >= passThreshold);
     }
   };
 
@@ -99,12 +103,12 @@ export default function SecurityQuiz() {
     setSelectedAnswer(null);
     setShowExplanation(false);
     setScore(0);
-    setQuizComplete(false);
+    setShowResult(false);
   };
 
-  if (quizComplete) {
+  if (showResult) {
     return (
-      <Card className="p-6 bg-white shadow-lg rounded-lg">
+      <Card className="p-8">
         <h2 className="text-2xl font-bold text-blue-800 mb-4">Quiz Complete!</h2>
         <p className="text-lg mb-4">
           You scored {score} out of {questions.length}
@@ -116,8 +120,8 @@ export default function SecurityQuiz() {
             </p>
           </div>
         ) : (
-          <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-4">
-            <p className="text-yellow-700">
+          <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4">
+            <p className="text-red-700">
               Keep learning! Review the security concepts and try again.
             </p>
           </div>
@@ -130,7 +134,7 @@ export default function SecurityQuiz() {
   }
 
   return (
-    <Card className="p-6 bg-white shadow-lg rounded-lg">
+    <Card className="p-8">
       <div className="mb-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold text-blue-800">
@@ -140,7 +144,7 @@ export default function SecurityQuiz() {
             Score: {score}/{currentQuestion}
           </span>
         </div>
-        
+
         <p className="text-lg mb-4">{questions[currentQuestion].question}</p>
 
         <div className="space-y-3">
