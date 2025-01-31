@@ -272,18 +272,18 @@ export default function BitcoinSection() {
                     </Button>
                   </Link>
                 </div>
-              </div>
 
-              {showQuiz && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-8"
-                >
-                  <h2 className="text-2xl font-bold text-blue-800 mb-4">Topic Quiz</h2>
-                  <BitcoinQuiz />
-                </motion.div>
-              )}
+                {showQuiz && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mt-8"
+                  >
+                    <h2 className="text-2xl font-bold text-blue-800 mb-4">Topic Quiz</h2>
+                    <BitcoinQuiz />
+                  </motion.div>
+                )}
+              </div>
             </motion.div>
           )}
         </div>
