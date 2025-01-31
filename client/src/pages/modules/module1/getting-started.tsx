@@ -8,6 +8,7 @@ import { Link } from "wouter";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { GettingStartedQuiz } from "@/components/quizzes/GettingStartedQuiz";
 import { SecurityIcon, WalletIcon } from "@/components/icons/CryptoIcons";
+import { GettingStartedDiagram } from "@/components/diagrams/GettingStartedDiagram";
 
 const GettingStartedSection = () => {
   const [isFullyRead, setIsFullyRead] = useState(false);
@@ -65,6 +66,9 @@ const GettingStartedSection = () => {
                   Beginning your cryptocurrency journey requires careful preparation and understanding. This section will guide you through the essential first steps to ensure a safe and successful start.
                 </p>
               </div>
+
+              <GettingStartedDiagram />
+
               <div className="bg-blue-50 p-4 rounded-lg mb-6">
                 <h3 className="text-xl font-semibold text-blue-800 mb-2">Getting Started Checklist</h3>
                 <ul className="list-disc pl-5 space-y-2 text-gray-700">
