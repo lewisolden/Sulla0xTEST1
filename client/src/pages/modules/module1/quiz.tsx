@@ -187,10 +187,10 @@ const QuizPage = () => {
           exit="exit"
           variants={pageVariants}
         >
-          <div className="mb-6">
-            <Link href="/modules/module1">
+          <div className="mb-6 flex justify-between items-center">
+            <Link href="/modules/module1/quiz">
               <Button variant="ghost" className="gap-2">
-                <ArrowLeft className="h-4 w-4" /> Back to Module Overview
+                <ArrowLeft className="h-4 w-4" /> Back
               </Button>
             </Link>
           </div>
