@@ -241,13 +241,16 @@ const QuizPage = () => {
                         </p>
                       </div>
                     )}
-                    <div className="mt-6 flex justify-center">
-                      <Link href="/modules/module1">
-                        <Button size="lg">
-                          Return to Module Overview
-                        </Button>
-                      </Link>
-                    </div>
+                     <div className="mt-6 flex justify-center">
+                       <Link href="/modules/module1">
+                         <Button 
+                           size="lg"
+                           className="bg-blue-600 hover:bg-blue-700"
+                         >
+                           Return to Module Overview
+                         </Button>
+                       </Link>
+                     </div>
                   </motion.div>
                 )}
               </div>
