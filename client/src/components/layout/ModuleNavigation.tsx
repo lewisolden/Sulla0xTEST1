@@ -2,7 +2,7 @@ import { Link, useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useScrollTop } from "@/hooks/useScrollTop";
+import { useEffect } from "react";
 
 interface NavigationItem {
   path: string;
@@ -15,8 +15,17 @@ interface ModuleNavigationProps {
 }
 
 export const ModuleNavigation = ({ prev, next }: ModuleNavigationProps) => {
-  // Add the scroll hook
-  useScrollTop();
+  const [location] = useLocation();
+
+  // Handle specific scroll behavior when navigating back from topic 2 to topic 1
+  useEffect(() => {
+    if (location === '/modules/module1/digital-currencies' && prev?.path === '/modules/module1/security') {
+      window.scrollTo(0, 0);
+      requestAnimationFrame(() => {
+        window.scrollTo(0, 0);
+      });
+    }
+  }, [location, prev?.path]);
 
   return (
     <motion.div 
