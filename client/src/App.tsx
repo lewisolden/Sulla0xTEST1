@@ -21,6 +21,7 @@ import AltcoinsTokensSection from "@/pages/modules/module1/altcoins-tokens";
 import CryptoMarketSection from "@/pages/modules/module1/crypto-market";
 import CryptographySection from "@/pages/modules/module1/cryptography";
 import SecuritySection from "@/pages/modules/module1/security";
+import PracticalApplicationsSection from "@/pages/modules/module1/applications"; // Added import
 
 // Module 2 Routes
 import Module2Landing from "@/pages/modules/module2";
@@ -68,6 +69,7 @@ function Router() {
       <Route path="/modules/module1/crypto-market" component={CryptoMarketSection} />
       <Route path="/modules/module1/cryptography" component={CryptographySection} />
       <Route path="/modules/module1/security" component={SecuritySection} />
+      <Route path="/modules/module1/applications" component={PracticalApplicationsSection} />
 
       {/* Module 2 Routes */}
       <Route path="/modules/module2" component={Module2Landing} />

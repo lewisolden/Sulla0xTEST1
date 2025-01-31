@@ -8,7 +8,7 @@ import { useProgress } from "@/context/progress-context";
 
 const module1Topics = [
   {
-    id: "intro-digital-currency",
+    id: "digital-currencies",
     title: "Introduction to Digital Currency",
     icon: BookOpen,
     path: "/modules/module1/digital-currencies",
