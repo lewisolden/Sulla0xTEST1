@@ -1,16 +1,17 @@
-import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import Footer from "@/components/layout/footer";
 import { Progress } from "@/components/ui/progress";
-import { BookOpen, Dumbbell } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useProgress } from "@/context/progress-context";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+import { Dumbbell } from "lucide-react";
 
-const module1Topics = [
+const moduleTopics = [
   {
     id: "digital-currencies",
-    title: "Introduction to Digital Currency",
-    icon: BookOpen,
+    title: "Topic 1 - Introduction to Digital Currency",
     path: "/modules/module1/digital-currencies",
     subsections: [
       "Understanding Traditional Money vs. Cryptocurrency",
@@ -20,8 +21,7 @@ const module1Topics = [
   },
   {
     id: "security",
-    title: "Understanding Cryptocurrency Security",
-    icon: BookOpen,
+    title: "Topic 2 - Understanding Cryptocurrency Security",
     path: "/modules/module1/security",
     subsections: [
       "Cryptographic Foundations",
@@ -31,8 +31,7 @@ const module1Topics = [
   },
   {
     id: "practical-applications",
-    title: "Practical Applications",
-    icon: BookOpen,
+    title: "Topic 3 - Practical Applications",
     path: "/modules/module1/applications",
     subsections: [
       "Financial Inclusion",
@@ -42,13 +41,12 @@ const module1Topics = [
   },
   {
     id: "getting-started",
-    title: "Getting Started Safely",
-    icon: BookOpen,
+    title: "Topic 4 - Getting Started Safely",
     path: "/modules/module1/getting-started",
     subsections: [
       "First Steps",
       "Security Best Practices",
-      "Storage and Access Security"
+      "Hands-On Learning Activities"
     ]
   }
 ];
@@ -57,9 +55,9 @@ export default function Module1() {
   const { progress } = useProgress();
   const moduleProgress = progress.filter(p => p.moduleId === 1);
   const completedSections = moduleProgress.filter(p => p.completed).length;
-  const progressPercentage = (completedSections / module1Topics.length) * 100;
+  const progressPercentage = (completedSections / moduleTopics.length) * 100;
 
-  const topicsWithProgress = module1Topics.map(topic => ({
+  const topicsWithProgress = moduleTopics.map(topic => ({
     ...topic,
     completed: moduleProgress.some(p => p.sectionId === topic.id && p.completed)
   }));
@@ -76,109 +74,129 @@ export default function Module1() {
           <p className="text-sm text-muted-foreground mt-2">Progress: {Math.round(progressPercentage)}%</p>
         </div>
 
-        <div className="grid gap-6">
-          {/* Overview Card */}
-          <Card>
-            <CardContent className="p-6">
-              <p className="text-lg text-gray-700 mb-6">
-                This module introduces you to the fundamental concepts of cryptocurrency, exploring how digital currencies 
-                differ from traditional money systems and their revolutionary potential in today's financial landscape.
-              </p>
-              <div className="flex gap-4">
-                <Link href="/glossary">
-                  <Button className="gap-2">
-                    <BookOpen className="h-4 w-4" />
-                    Open Crypto Glossary
-                  </Button>
-                </Link>
-                <Link href="/modules/module1/exercises">
-                  <Button variant="secondary" className="gap-2">
-                    <Dumbbell className="h-4 w-4" />
-                    Practice Exercises
-                  </Button>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
+        <Tabs defaultValue="overview" className="space-y-4">
+          <TabsList>
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="content">Topics</TabsTrigger>
+            <TabsTrigger value="quiz">Quiz</TabsTrigger>
+          </TabsList>
 
-          {/* Interactive Exercises Card */}
-          <Card className="bg-blue-50">
-            <CardContent className="p-6">
-              <h2 className="text-2xl font-semibold text-blue-800 mb-4">
-                Interactive Learning Exercises
-              </h2>
-              <p className="text-gray-700 mb-6">
-                Put your knowledge into practice with our interactive exercises. Try out a simulated wallet environment,
-                test your security knowledge, and assess your understanding through hands-on activities.
-              </p>
-              <Link href="/modules/module1/exercises">
-                <Button size="lg" className="w-full md:w-auto gap-2">
-                  <Dumbbell className="h-5 w-5" />
-                  Start Practical Exercises
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
+          <TabsContent value="overview">
+            <Card>
+              <CardContent className="pt-6">
+                <div className="prose max-w-none">
+                  <h2 className="text-2xl font-semibold mb-4">Welcome to Module 1</h2>
+                  <p className="text-gray-700 mb-6">
+                    In today's rapidly evolving financial landscape, cryptocurrency represents a revolutionary 
+                    approach to money and value transfer. This module will introduce you to the fundamental 
+                    concepts of cryptocurrency, helping you understand what makes digital currencies unique 
+                    and how they differ from traditional money systems.
+                  </p>
 
-          {topicsWithProgress.map((topic) => (
-            <Card key={topic.id} className="transition-all hover:shadow-lg">
-              <CardContent className="p-6">
-                <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-full bg-blue-100 mt-1">
-                    <topic.icon className="w-6 h-6 text-blue-600" />
+                  {/* New Interactive Exercises Section */}
+                  <div className="bg-blue-50 rounded-lg p-6 mb-6">
+                    <div className="flex items-center gap-3 mb-4">
+                      <Dumbbell className="h-6 w-6 text-blue-600" />
+                      <h3 className="text-xl font-semibold text-blue-800">Interactive Exercises</h3>
+                    </div>
+                    <p className="text-gray-700 mb-4">
+                      Put your knowledge into practice with our hands-on exercises. Try out a simulated wallet,
+                      practice security measures, and test your understanding through interactive assessments.
+                    </p>
+                    <Link href="/modules/module1/exercises">
+                      <Button className="bg-blue-600 hover:bg-blue-700">
+                        <Dumbbell className="mr-2 h-4 w-4" />
+                        Start Practical Exercises
+                      </Button>
+                    </Link>
                   </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-xl font-semibold text-blue-800">
-                        {topic.title}
-                      </h3>
-                      {topic.completed && (
-                        <span className="text-green-600 text-sm">(Completed)</span>
-                      )}
-                    </div>
-                    <ul className="list-disc pl-5 text-gray-600 mb-4">
-                      {topic.subsections.map((subsection, index) => (
-                        <li key={index} className="text-sm mb-1">{subsection}</li>
-                      ))}
-                    </ul>
-                    <div className="flex gap-2">
-                      <Link href={topic.path}>
-                        <Button>
-                          {topic.completed ? "Review Topic" : "Start Topic"}
-                        </Button>
-                      </Link>
-                      <Link href={`${topic.path}/quiz`}>
-                        <Button 
-                          variant="secondary"
-                          disabled={!topic.completed}
-                          className="gap-2"
-                        >
-                          <BookOpen className="h-4 w-4" />
-                          Topic Quiz
-                        </Button>
-                      </Link>
-                    </div>
+
+                  <h3 className="text-xl font-semibold mt-8 mb-4">Learning Objectives</h3>
+                  <ul className="list-disc pl-6 space-y-2 text-gray-700">
+                    <li>Understand the fundamental differences between traditional and digital currencies</li>
+                    <li>Grasp the core concepts of cryptocurrency, including decentralization and digital scarcity</li>
+                    <li>Learn essential security principles and best practices</li>
+                    <li>Explore practical applications and use cases of cryptocurrency</li>
+                    <li>Develop skills for safe participation in the cryptocurrency ecosystem</li>
+                  </ul>
+
+                  <div className="mt-8 flex justify-center">
+                    <Link href="/modules/module1/digital-currencies">
+                      <Button 
+                        size="lg"
+                        className="bg-blue-600 hover:bg-blue-700"
+                      >
+                        Start First Topic
+                      </Button>
+                    </Link>
                   </div>
                 </div>
               </CardContent>
             </Card>
-          ))}
-        </div>
+          </TabsContent>
 
-        <div className="mt-8 text-center">
-          <Link href="/modules/module1/quiz">
-            <Button 
-              size="lg" 
-              className="bg-green-600 hover:bg-green-700"
-              disabled={progressPercentage < 100}
-            >
-              {progressPercentage < 100 
-                ? "Complete all topics to unlock quiz" 
-                : "Take Module Quiz"
-              }
-            </Button>
-          </Link>
-        </div>
+          <TabsContent value="content">
+            <div className="grid gap-6">
+              {topicsWithProgress.map((topic) => (
+                <Card key={topic.id} className="transition-all hover:shadow-lg">
+                  <CardContent className="p-6">
+                    <div className="flex flex-col">
+                      <div className="flex items-center gap-2 mb-4">
+                        <h3 className="text-xl font-semibold text-blue-800">
+                          {topic.title}
+                        </h3>
+                        {topic.completed && (
+                          <span className="text-green-600 text-sm">(Completed)</span>
+                        )}
+                      </div>
+                      <ul className="list-disc pl-5 text-gray-600 mb-4">
+                        {topic.subsections.map((subsection, index) => (
+                          <li key={index} className="text-sm mb-2">{subsection}</li>
+                        ))}
+                      </ul>
+                      <div className="mt-4">
+                        <Link href={topic.path}>
+                          <Button>
+                            {topic.completed ? "Review Topic" : "Start Topic"}
+                          </Button>
+                        </Link>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="quiz">
+            <Card>
+              <CardContent className="pt-6">
+                <div className="prose max-w-none">
+                  <h2 className="text-2xl font-semibold mb-4">Module 1 Knowledge Check</h2>
+                  <p className="text-gray-700 mb-6">
+                    Test your understanding of cryptocurrency fundamentals with our comprehensive knowledge check.
+                    This quiz covers all the key concepts from Module 1, including digital currencies, security,
+                    practical applications, and getting started safely with cryptocurrency.
+                  </p>
+                  <div className="mt-8 flex justify-center">
+                    <Link href="/modules/module1/quiz">
+                      <Button 
+                        size="lg"
+                        className="bg-green-600 hover:bg-green-700"
+                        disabled={progressPercentage < 100}
+                      >
+                        {progressPercentage < 100 
+                          ? "Complete all topics to unlock quiz" 
+                          : "Take Module Quiz"
+                        }
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
       <Footer />
     </div>
