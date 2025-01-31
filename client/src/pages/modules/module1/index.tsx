@@ -13,20 +13,20 @@ const module1Topics = [
     icon: BookOpen,
     path: "/modules/module1/digital-currencies",
     subsections: [
-      "Understanding Digital Currency",
-      "Traditional Money vs. Cryptocurrency",
-      "The Evolution of Money"
+      "Understanding Traditional Money vs. Cryptocurrency",
+      "The Evolution of Money",
+      "Core Concepts and Features"
     ]
   },
   {
-    id: "core-concepts",
-    title: "Core Concepts and Features",
+    id: "security",
+    title: "Understanding Cryptocurrency Security",
     icon: BookOpen,
-    path: "/modules/module1/core-concepts",
+    path: "/modules/module1/security",
     subsections: [
-      "Decentralization: A New Paradigm",
-      "Digital Scarcity",
-      "Understanding Cryptocurrency Security"
+      "Cryptographic Foundations",
+      "The Double-Spending Solution",
+      "Risk Considerations and Management"
     ]
   },
   {
@@ -39,42 +39,48 @@ const module1Topics = [
       "Payment Efficiency",
       "Investment Opportunities and Risks"
     ]
+  },
+  {
+    id: "getting-started",
+    title: "Getting Started Safely",
+    icon: BookOpen,
+    path: "/modules/module1/getting-started",
+    subsections: [
+      "First Steps",
+      "Security Best Practices",
+      "Storage and Access Security"
+    ]
   }
 ];
 
 export default function Module1() {
   const { progress } = useProgress();
-
   const moduleProgress = progress.filter(p => p.moduleId === 1);
   const completedSections = moduleProgress.filter(p => p.completed).length;
   const progressPercentage = (completedSections / module1Topics.length) * 100;
 
   const topicsWithProgress = module1Topics.map(topic => ({
     ...topic,
-    completed: moduleProgress.some(p => p.sectionId === topic.id && p.completed),
+    completed: moduleProgress.some(p => p.sectionId === topic.id && p.completed)
   }));
 
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-4xl font-bold text-blue-900 mb-6">
-          Module 1: Fundamentals of Cryptocurrency
+          Module 1: Understanding Cryptocurrency
         </h1>
 
         <div className="mb-8">
           <Progress value={progressPercentage} className="w-full" />
-          <p className="text-sm text-muted-foreground mt-2">
-            Progress: {Math.round(progressPercentage)}%
-          </p>
+          <p className="text-sm text-muted-foreground mt-2">Progress: {Math.round(progressPercentage)}%</p>
         </div>
 
         <Card className="mb-8">
           <CardContent className="pt-6">
             <p className="text-lg text-gray-700 mb-6">
-              This module is designed to introduce learners to the basic concepts of 
-              cryptocurrencies and their underlying technology. It's structured into 
-              three main sections that will give you a comprehensive understanding of 
-              the fundamentals.
+              This module introduces you to the fundamental concepts of cryptocurrency, exploring how digital currencies 
+              differ from traditional money systems and their revolutionary potential in today's financial landscape.
             </p>
             <Link href="/glossary">
               <Button className="gap-2">
