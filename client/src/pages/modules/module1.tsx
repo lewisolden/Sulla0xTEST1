@@ -2,10 +2,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import Footer from "@/components/layout/footer";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Quiz from "@/components/modules/quiz";
 import { useProgress } from "@/context/progress-context";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 
 const moduleTopics = [
   {
@@ -155,10 +155,34 @@ export default function Module1() {
           </TabsContent>
 
           <TabsContent value="quiz">
-            <Quiz moduleId={1} />
+            <Card>
+              <CardContent className="pt-6">
+                <div className="prose max-w-none">
+                  <h2 className="text-2xl font-semibold mb-4">Module 1 Knowledge Check</h2>
+                  <p className="text-gray-700 mb-6">
+                    Test your understanding of cryptocurrency fundamentals with our comprehensive knowledge check.
+                    This quiz covers all the key concepts from Module 1, including digital currencies, security,
+                    practical applications, and getting started safely with cryptocurrency.
+                  </p>
+                  <div className="mt-8 flex justify-center">
+                    <Link href="/modules/module1/quiz">
+                      <Button 
+                        size="lg"
+                        className="bg-green-600 hover:bg-green-700"
+                        disabled={progressPercentage < 100}
+                      >
+                        {progressPercentage < 100 
+                          ? "Complete all topics to unlock quiz" 
+                          : "Take Module Quiz"
+                        }
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
-
         <div className="mt-8 text-center">
           <Link href="/modules/module1/quiz">
             <Button 
