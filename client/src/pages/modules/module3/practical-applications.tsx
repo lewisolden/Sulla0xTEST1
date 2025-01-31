@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
 import { Database, ShoppingCart, Building2, Vote, Hospital, Plane } from "lucide-react";
+import { PracticalApplicationsDiagram } from "@/components/diagrams/PracticalApplicationsDiagram";
 
 const PracticalApplicationsSection = () => {
   const [isFullyRead, setIsFullyRead] = useState(false);
@@ -28,59 +29,6 @@ const PracticalApplicationsSection = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [updateProgress]);
-
-  const applications = [
-    {
-      icon: ShoppingCart,
-      title: "Supply Chain Management",
-      description: "Track products from origin to consumer with complete transparency and authenticity verification.",
-      examples: [
-        "IBM Food Trust - tracking food products",
-        "VeChain - luxury goods authentication",
-        "Walmart's blockchain initiative"
-      ]
-    },
-    {
-      icon: Building2,
-      title: "Real Estate",
-      description: "Tokenize property ownership, streamline transactions, and maintain transparent property records.",
-      examples: [
-        "Property title registration",
-        "Fractional ownership platforms",
-        "Smart contract-based rentals"
-      ]
-    },
-    {
-      icon: Vote,
-      title: "Voting Systems",
-      description: "Secure, transparent, and tamper-proof electronic voting platforms.",
-      examples: [
-        "Municipal voting pilots",
-        "Corporate governance",
-        "Community decision making"
-      ]
-    },
-    {
-      icon: Hospital,
-      title: "Healthcare",
-      description: "Secure medical records, clinical trials data management, and drug supply chain verification.",
-      examples: [
-        "MedRec - medical records",
-        "Clinical trial tracking",
-        "Pharmaceutical supply chain"
-      ]
-    },
-    {
-      icon: Plane,
-      title: "Travel and Tourism",
-      description: "Baggage tracking, loyalty programs, and digital identity verification.",
-      examples: [
-        "Airline loyalty programs",
-        "Hotel booking platforms",
-        "Travel insurance claims"
-      ]
-    }
-  ];
 
   return (
     <motion.div 
@@ -113,43 +61,12 @@ const PracticalApplicationsSection = () => {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.4 }}
             >
-              <h2 className="text-2xl font-bold text-blue-700">Introduction</h2>
+              <h2 className="text-2xl font-bold text-blue-700">Overview</h2>
               <p className="text-gray-700">
                 While blockchain technology gained prominence through cryptocurrencies, its potential applications extend far beyond digital currencies. This section explores how blockchain is transforming various industries and creating new possibilities for business and society.
               </p>
 
-              <div className="grid gap-6 mt-8">
-                {applications.map((app, index) => (
-                  <motion.div
-                    key={app.title}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.6 + index * 0.2 }}
-                  >
-                    <Card className="p-6">
-                      <div className="flex items-start gap-4">
-                        <div className="p-3 rounded-full bg-blue-100">
-                          <app.icon className="w-6 h-6 text-blue-600" />
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="text-xl font-semibold text-blue-700 mb-2">
-                            {app.title}
-                          </h3>
-                          <p className="text-gray-700 mb-4">{app.description}</p>
-                          <div className="bg-gray-50 p-4 rounded-lg">
-                            <h4 className="font-semibold text-blue-600 mb-2">Real-World Examples:</h4>
-                            <ul className="list-disc pl-5 space-y-1 text-gray-600">
-                              {app.examples.map((example, i) => (
-                                <li key={i}>{example}</li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
+              <PracticalApplicationsDiagram />
             </motion.section>
           </CardContent>
         </Card>
