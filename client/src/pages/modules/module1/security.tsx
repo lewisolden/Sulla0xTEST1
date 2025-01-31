@@ -27,10 +27,15 @@ export default function SecurityPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
-        <div className="mb-6">
+        <div className="flex justify-between items-center mb-6">
+          <Link href="/modules/module1">
+            <Button variant="ghost" className="gap-2">
+              <ArrowLeft className="h-4 w-4" /> Back to Module 1
+            </Button>
+          </Link>
           <Link href="/modules/module1/digital-currencies">
             <Button variant="ghost" className="gap-2">
-              <ArrowLeft className="h-4 w-4" /> Back to Digital Currencies
+              Back to Digital Currencies <ArrowRight className="h-4 w-4" />
             </Button>
           </Link>
         </div>
@@ -52,38 +57,28 @@ export default function SecurityPage() {
               <Card className="p-6">
                 <div className="flex items-center gap-4 mb-4">
                   <Shield className="w-8 h-8 text-blue-600" />
-                  <h2 className="text-2xl font-bold text-blue-700">Introduction</h2>
-                </div>
-                <p className="text-gray-700">
-                  Security is paramount in the cryptocurrency world. Understanding the fundamental
-                  security principles and best practices is crucial for anyone involved in
-                  cryptocurrency investments or transactions.
-                </p>
-              </Card>
-
-              <Card className="p-6">
-                <div className="flex items-center gap-4 mb-4">
-                  <Key className="w-8 h-8 text-blue-600" />
                   <h2 className="text-2xl font-bold text-blue-700">Key Security Concepts</h2>
                 </div>
                 <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                  <li>Private keys and their importance</li>
-                  <li>Different types of wallets (hot, cold, hardware)</li>
-                  <li>Two-factor authentication (2FA)</li>
-                  <li>Backup and recovery procedures</li>
+                  <li>Private keys and key management best practices</li>
+                  <li>Different types of cryptocurrency wallets</li>
+                  <li>Two-factor authentication (2FA) implementation</li>
+                  <li>Secure backup and recovery procedures</li>
+                  <li>Understanding wallet addresses and transactions</li>
                 </ul>
               </Card>
 
               <Card className="p-6">
                 <div className="flex items-center gap-4 mb-4">
-                  <Shield className="w-8 h-8 text-blue-600" />
-                  <h2 className="text-2xl font-bold text-blue-700">Common Security Threats</h2>
+                  <Key className="w-8 h-8 text-blue-600" />
+                  <h2 className="text-2xl font-bold text-blue-700">Security Threats & Vulnerabilities</h2>
                 </div>
                 <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                  <li>Phishing attacks and social engineering</li>
-                  <li>Malware and ransomware</li>
-                  <li>Exchange hacks and vulnerabilities</li>
-                  <li>Smart contract exploits</li>
+                  <li>Common phishing attacks and social engineering tactics</li>
+                  <li>Malware and ransomware risks specific to crypto</li>
+                  <li>Exchange vulnerabilities and hack prevention</li>
+                  <li>Smart contract security considerations</li>
+                  <li>Understanding common scam patterns</li>
                 </ul>
               </Card>
 
@@ -93,11 +88,11 @@ export default function SecurityPage() {
                   <h2 className="text-2xl font-bold text-blue-700">Best Practices</h2>
                 </div>
                 <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                  <li>Use strong, unique passwords for each service</li>
-                  <li>Enable two-factor authentication whenever possible</li>
-                  <li>Keep software and systems updated</li>
-                  <li>Regular backups of recovery phrases</li>
-                  <li>Verify transactions before sending</li>
+                  <li>Creating and managing strong passwords</li>
+                  <li>Hardware wallet usage and storage</li>
+                  <li>Regular security audits and updates</li>
+                  <li>Safe transaction verification procedures</li>
+                  <li>Offline storage strategies for large holdings</li>
                 </ul>
               </Card>
 
