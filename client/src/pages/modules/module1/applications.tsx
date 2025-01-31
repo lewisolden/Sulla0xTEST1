@@ -15,6 +15,28 @@ const PracticalApplicationsSection = () => {
   const [showQuiz, setShowQuiz] = useState(false);
   const { updateProgress } = useProgress();
 
+  // Add aggressive scroll-to-top on mount
+  useEffect(() => {
+    const forceScrollTop = () => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    };
+
+    // Initial scroll
+    forceScrollTop();
+
+    // Backup scroll after a short delay
+    setTimeout(forceScrollTop, 0);
+
+    // Final scroll after animations
+    requestAnimationFrame(() => {
+      forceScrollTop();
+      // Double check after one more frame
+      requestAnimationFrame(forceScrollTop);
+    });
+  }, []); // Empty dependency array means this runs once on mount
+
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
