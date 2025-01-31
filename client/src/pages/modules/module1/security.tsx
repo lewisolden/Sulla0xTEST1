@@ -97,6 +97,17 @@ export default function SecurityPage() {
               </Card>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-between mt-8">
+                <Link href="/modules/module1/digital-currencies">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="w-full sm:w-auto group"
+                  >
+                    Back to Topic: Introduction to Digital Currency
+                    <ArrowLeft className="ml-2 h-4 w-4 group-hover:transform group-hover:-translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
+
                 <Button
                   onClick={() => setShowQuiz(true)}
                   size="lg"
@@ -104,17 +115,6 @@ export default function SecurityPage() {
                 >
                   Take the Quiz
                 </Button>
-
-                <Link href="/modules/module1/cryptography">
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="w-full sm:w-auto group"
-                  >
-                    Next Topic: Cryptography
-                    <ArrowRight className="ml-2 h-4 w-4 group-hover:transform group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
               </div>
 
               {/* Bottom navigation */}
