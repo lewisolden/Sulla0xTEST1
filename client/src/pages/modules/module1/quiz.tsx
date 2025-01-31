@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { ArrowLeft, CheckCircle, XCircle } from "lucide-react";
 import { useProgress } from "@/context/progress-context";
+import { useScrollTop } from "@/hooks/useScrollTop";
 
 interface Question {
   id: number;
@@ -78,6 +79,7 @@ const questions: Question[] = [
 ];
 
 const QuizPage = () => {
+  useScrollTop();
   const [userAnswers, setUserAnswers] = useState<Record<number, number>>({});
   const [showResults, setShowResults] = useState(false);
   const { updateProgress } = useProgress();

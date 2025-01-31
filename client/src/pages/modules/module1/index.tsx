@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Dumbbell, BookOpen, Shield, Brain, Wallet } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
+import { moduleTopics } from "@/lib/module-data";
 
 export default function Module1() {
   useScrollTop();
