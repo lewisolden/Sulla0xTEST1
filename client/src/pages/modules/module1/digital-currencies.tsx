@@ -165,12 +165,88 @@ export default function DigitalCurrenciesSection() {
           </motion.h1>
 
           <div className="prose lg:prose-xl text-gray-700 space-y-6">
-            {/* All previous sections from the original code */}
-            {/* (Introduction, Understanding Money, Evolution of Money, etc.) */}
-            {/* Each section remains exactly the same as in the original code */}
-            
-            {/* Sections from Introduction to Conclusion */}
-            {/* (All content from lines 169-556 in the original code) */}
+            {/* Introduction Section */}
+            <motion.section
+              variants={sectionVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              className="mb-12"
+            >
+              <h2 className="text-3xl font-bold text-blue-700">Introduction to Digital Currency</h2>
+              <motion.p 
+                variants={listItemVariants}
+                className="mt-4"
+              >
+                Digital currencies represent a revolutionary approach to money and value transfer in today's financial landscape. They challenge traditional monetary systems by introducing decentralized, cryptographically secure methods of exchange.
+              </motion.p>
+            </motion.section>
+
+            {/* Core Concepts Section */}
+            <motion.section
+              variants={sectionVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              className="mb-12"
+            >
+              <h2 className="text-3xl font-bold text-blue-700">Core Concepts</h2>
+
+              <motion.div 
+                variants={cardVariants}
+                whileHover="hover"
+                className="mt-6 p-6 bg-white rounded-lg shadow-md"
+              >
+                <div className="flex items-center gap-4 mb-4">
+                  <DecentralizationIcon size={32} className="text-blue-600" />
+                  <h3 className="text-2xl font-semibold text-blue-600">Decentralization</h3>
+                </div>
+                <motion.p variants={listItemVariants} className="mt-4">
+                  Unlike traditional financial systems controlled by central authorities, cryptocurrencies operate through a network of computers running specialized blockchain software, ensuring transparency and removing single points of failure.
+                </motion.p>
+                <DecentralizationDiagram />
+              </motion.div>
+
+              <motion.div 
+                variants={cardVariants}
+                whileHover="hover"
+                className="mt-8 p-6 bg-white rounded-lg shadow-md"
+              >
+                <div className="flex items-center gap-4 mb-4">
+                  <BlockchainIcon size={32} className="text-blue-600" />
+                  <h3 className="text-2xl font-semibold text-blue-600">Digital Scarcity</h3>
+                </div>
+                <motion.p variants={listItemVariants} className="mt-4">
+                  Blockchain technology enables genuine digital scarcity, solving the problem of unlimited digital replication by creating verifiable, limited digital assets with intrinsic value.
+                </motion.p>
+                <TransactionFlowDiagram />
+              </motion.div>
+            </motion.section>
+
+            {/* Security Features */}
+            <motion.section
+              variants={sectionVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              className="mb-12"
+            >
+              <h2 className="text-3xl font-bold text-blue-700">Security Mechanisms</h2>
+              <motion.div 
+                variants={cardVariants}
+                whileHover="hover"
+                className="mt-6 p-6 bg-white rounded-lg shadow-md"
+              >
+                <div className="flex items-center gap-4 mb-4">
+                  <SecurityIcon size={32} className="text-blue-600" />
+                  <h3 className="text-2xl font-semibold text-blue-600">Cryptographic Protection</h3>
+                </div>
+                <DoubleSpendDiagram />
+                <motion.p variants={listItemVariants} className="mt-4">
+                  Advanced cryptographic techniques ensure that digital currency transactions are secure, irreversible, and cannot be duplicated or forged.
+                </motion.p>
+              </motion.div>
+            </motion.section>
 
             {isFullyRead && (
               <motion.div
@@ -187,7 +263,7 @@ export default function DigitalCurrenciesSection() {
                 >
                   <Card className="bg-green-100 border-l-4 border-green-500 p-4">
                     <p className="text-green-700">
-                      🎉 Congratulations! You've completed the Introduction to Digital Currencies section. You now understand the fundamental concepts of digital currencies and their revolutionary potential.
+                      🎉 Congratulations! You've completed the Introduction to Digital Currencies section.
                     </p>
                   </Card>
                 </motion.div>
