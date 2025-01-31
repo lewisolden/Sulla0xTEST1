@@ -121,25 +121,13 @@ const PracticalApplicationsSection = () => {
               </p>
             </Card>
 
-            <div className="flex flex-col space-y-4">
-              <Button
-                onClick={() => setShowQuiz(!showQuiz)}
-                className="w-full bg-purple-600 hover:bg-purple-700"
-                size="lg"
-              >
-                {showQuiz ? "Hide Quiz" : "Take Topic Quiz"}
-              </Button>
-
-              <Link href="/modules/module1/getting-started">
-                <Button 
-                  size="lg"
-                  className="w-full bg-blue-600 hover:bg-blue-700"
-                >
-                  Next Topic: Getting Started Safely
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
+            <Button
+              onClick={() => setShowQuiz(!showQuiz)}
+              className="w-full bg-purple-600 hover:bg-purple-700"
+              size="lg"
+            >
+              {showQuiz ? "Hide Quiz" : "Take Topic Quiz"}
+            </Button>
 
             {showQuiz && (
               <motion.div
@@ -161,6 +149,14 @@ const PracticalApplicationsSection = () => {
                 <Button variant="outline" className="gap-2">
                   <ArrowLeft className="h-4 w-4" />
                   Previous Topic
+                </Button>
+              </Link>
+              <Link href="/modules/module1/getting-started">
+                <Button 
+                  className="bg-blue-600 hover:bg-blue-700 gap-2"
+                >
+                  Next Topic: Getting Started Safely
+                  <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
             </div>
