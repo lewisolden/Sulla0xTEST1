@@ -5,13 +5,13 @@ import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
-import { Link } from "wouter";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import DecentralizationDiagram from "@/components/diagrams/DecentralizationDiagram";
 import DoubleSpendDiagram from "@/components/diagrams/DoubleSpendDiagram";
 import DigitalCurrenciesQuiz from "@/components/quizzes/DigitalCurrenciesQuiz";
 import { BlockchainIcon, DecentralizationIcon, WalletIcon, SecurityIcon } from "@/components/icons/CryptoIcons";
 import TransactionFlowDiagram from "@/components/diagrams/TransactionFlowDiagram";
+import { useNavigate } from "@/hooks/useNavigate";
 
 export default function DigitalCurrenciesSection() {
   // Force scroll to top on mount
@@ -23,6 +23,7 @@ export default function DigitalCurrenciesSection() {
     });
   }, []); // Empty dependency array means this runs once on mount
 
+  const navigate = useNavigate();
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showQuiz, setShowQuiz] = useState(false);
@@ -153,12 +154,14 @@ export default function DigitalCurrenciesSection() {
               whileHover={{ x: -5 }}
               className="mb-6"
             >
-              <Link href="/modules/module1">
-                <Button variant="ghost" className="gap-2 group">
-                  <ArrowLeft className="h-4 w-4 group-hover:transform group-hover:-translate-x-1 transition-transform" />
-                  Back to Module Overview
-                </Button>
-              </Link>
+              <Button 
+                variant="ghost" 
+                className="gap-2 group"
+                onClick={() => navigate("/modules/module1")}
+              >
+                <ArrowLeft className="h-4 w-4 group-hover:transform group-hover:-translate-x-1 transition-transform" />
+                Back to Module Overview
+              </Button>
             </motion.div>
 
             <motion.h1
@@ -603,31 +606,29 @@ export default function DigitalCurrenciesSection() {
                         whileHover={{ scale: 1.02, x: -5 }}
                         whileTap={{ scale: 0.98 }}
                       >
-                        <Link href="/modules/module1">
                           <Button
                             variant="outline"
                             size="lg"
                             className="w-full md:w-auto group"
+                            onClick={() => navigate("/modules/module1")}
                           >
                             <ArrowLeft className="mr-2 h-4 w-4 group-hover:transform group-hover:-translate-x-1 transition-transform" />
                             Back to Overview
                           </Button>
-                        </Link>
                       </motion.div>
 
                       <motion.div
                         whileHover={{ scale: 1.02, x: 5 }}
                         whileTap={{ scale: 0.98 }}
                       >
-                        <Link href="/modules/module1/security">
                           <Button
                             size="lg"
                             className="w-full md:w-auto bg-blue-600 hover:bg-blue-700 group"
+                            onClick={() => navigate("/modules/module1/security")}
                           >
                             Next Topic: Understanding Security
                             <ArrowRight className="ml-2 h-4 w-4 group-hover:transform group-hover:translate-x-1 transition-transform" />
                           </Button>
-                        </Link>
                       </motion.div>
                     </div>
                   </div>
