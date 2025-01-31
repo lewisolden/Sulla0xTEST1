@@ -610,12 +610,12 @@ export default function DigitalCurrenciesSection() {
                       whileHover={{ scale: 1.02, x: 5 }}
                       whileTap={{ scale: 0.98 }}
                     >
-                      <Link href="/modules/module1/security">
+                      <Link href="/modules/module1/cryptography">
                         <Button
                           size="lg"
                           className="w-full md:w-auto bg-blue-600 hover:bg-blue-700 group"
                         >
-                          Next Topic: Understanding Security
+                          Next Topic: Cryptography in Cryptocurrency
                           <ArrowRight className="ml-2 h-4 w-4 group-hover:transform group-hover:translate-x-1 transition-transform" />
                         </Button>
                       </Link>
