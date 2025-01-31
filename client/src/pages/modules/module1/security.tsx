@@ -5,9 +5,8 @@ import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Shield, Key, Wallet } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { SecurityIcon, WalletIcon, ShieldIcon, KeyIcon } from "@/components/icons/CryptoIcons";
 import SecurityQuiz from "@/components/quizzes/SecurityQuiz";
 
 export default function SecuritySection() {
@@ -76,7 +75,7 @@ export default function SecuritySection() {
       >
         {/* Progress Bar */}
         <motion.div
-          className="fixed top-0 left-0 w-full h-1 bg-gray-300 z-50"
+          className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50"
           initial={{ scaleX: 0 }}
           animate={{ scaleX: scrollProgress / 100 }}
           style={{ transformOrigin: "left" }}
@@ -115,7 +114,7 @@ export default function SecuritySection() {
             >
               <Card className="p-6 bg-white shadow-lg rounded-lg">
                 <div className="flex items-center gap-4 mb-4">
-                  <SecurityIcon className="w-8 h-8 text-blue-600" />
+                  <Shield className="w-8 h-8 text-blue-600" />
                   <h2 className="text-2xl font-bold text-blue-700">Introduction to Cryptocurrency Security</h2>
                 </div>
                 <p>
@@ -136,7 +135,7 @@ export default function SecuritySection() {
 
               <Card className="p-6 bg-white shadow-lg rounded-lg mt-4">
                 <div className="flex items-center gap-4 mb-4">
-                  <KeyIcon className="w-8 h-8 text-blue-600" />
+                  <Key className="w-8 h-8 text-blue-600" />
                   <h3 className="text-2xl font-semibold text-blue-600">Private Keys and Wallets</h3>
                 </div>
                 <ul className="list-disc pl-5 space-y-2">
@@ -148,7 +147,7 @@ export default function SecuritySection() {
 
               <Card className="p-6 bg-white shadow-lg rounded-lg mt-4">
                 <div className="flex items-center gap-4 mb-4">
-                  <ShieldIcon className="w-8 h-8 text-blue-600" />
+                  <Shield className="w-8 h-8 text-blue-600" />
                   <h3 className="text-2xl font-semibold text-blue-600">Common Security Threats</h3>
                 </div>
                 <ul className="list-disc pl-5 space-y-2">
@@ -170,7 +169,7 @@ export default function SecuritySection() {
 
               <Card className="p-6 bg-white shadow-lg rounded-lg mt-4">
                 <div className="flex items-center gap-4 mb-4">
-                  <WalletIcon className="w-8 h-8 text-blue-600" />
+                  <Wallet className="w-8 h-8 text-blue-600" />
                   <h3 className="text-2xl font-semibold text-blue-600">Personal Security Measures</h3>
                 </div>
                 <ul className="list-disc pl-5 space-y-2">
