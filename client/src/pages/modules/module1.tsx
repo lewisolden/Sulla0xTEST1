@@ -10,66 +10,42 @@ import { Button } from "@/components/ui/button";
 const moduleTopics = [
   {
     id: "digital-currencies",
-    title: "Topic 1 - Introduction to Digital Currencies",
+    title: "Topic 1 - Introduction to Digital Currency",
     path: "/modules/module1/digital-currencies",
     subsections: [
-      "Definition of digital currencies",
-      "Brief history and evolution of digital money",
-      "Key characteristics of cryptocurrencies"
+      "Understanding Traditional Money vs. Cryptocurrency",
+      "The Evolution of Money",
+      "Core Concepts and Features"
     ]
   },
   {
-    id: "history-of-money",
-    title: "Topic 2 - History and Evolution of Money",
-    path: "/modules/module1/history-of-money",
+    id: "security",
+    title: "Topic 2 - Understanding Cryptocurrency Security",
+    path: "/modules/module1/security",
     subsections: [
-      "Traditional forms of money and their limitations",
-      "The transition from physical to digital currencies",
-      "The need for decentralized digital currencies"
+      "Cryptographic Foundations",
+      "The Double-Spending Solution",
+      "Risk Considerations and Management"
     ]
   },
   {
-    id: "bitcoin",
-    title: "Topic 3 - Bitcoin: The First Cryptocurrency",
-    path: "/modules/module1/bitcoin",
+    id: "practical-applications",
+    title: "Topic 3 - Practical Applications",
+    path: "/modules/module1/applications",
     subsections: [
-      "Introduction to Bitcoin and its creation",
-      "Key features of Bitcoin",
-      "The Bitcoin blockchain and how it works",
-      "Mining and transaction verification"
+      "Financial Inclusion",
+      "Payment Efficiency",
+      "Investment Opportunities and Risks"
     ]
   },
   {
-    id: "altcoins-tokens",
-    title: "Topic 4 - Altcoins and Tokens",
-    path: "/modules/module1/altcoins-tokens",
+    id: "getting-started",
+    title: "Topic 4 - Getting Started Safely",
+    path: "/modules/module1/getting-started",
     subsections: [
-      "Definition of altcoins and their purpose",
-      "Overview of major altcoins (e.g., Ethereum, Litecoin)",
-      "Introduction to tokens and their various types",
-      "Differences between coins and tokens"
-    ]
-  },
-  {
-    id: "crypto-market",
-    title: "Topic 5 - Cryptocurrency Market Dynamics",
-    path: "/modules/module1/crypto-market",
-    subsections: [
-      "Introduction to cryptocurrency markets",
-      "Market capitalization and trading volume",
-      "Factors influencing cryptocurrency prices",
-      "Basic trading concepts"
-    ]
-  },
-  {
-    id: "cryptography",
-    title: "Topic 6 - Basic Cryptography Concepts",
-    path: "/modules/module1/cryptography",
-    subsections: [
-      "Introduction to cryptography in the context of cryptocurrencies",
-      "Public and private keys",
-      "Digital signatures",
-      "Hash functions and their role in blockchain"
+      "First Steps",
+      "Security Best Practices",
+      "Hands-On Learning Activities"
     ]
   }
 ];
@@ -89,7 +65,7 @@ export default function Module1() {
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-4xl font-bold text-blue-900 mb-6">
-          Module 1: Fundamentals of Cryptocurrency
+          Module 1: Understanding Cryptocurrency
         </h1>
 
         <div className="mb-8">
@@ -110,43 +86,26 @@ export default function Module1() {
                 <div className="prose max-w-none">
                   <h2 className="text-2xl font-semibold mb-4">Welcome to Module 1</h2>
                   <p className="text-gray-700 mb-6">
-                    Welcome to the first module of our journey into the world of cryptocurrencies and blockchain technology. In 
-                    this foundational module, we'll explore the basic concepts that underpin this revolutionary technology and set 
-                    the stage for the more advanced topics we'll cover later in the course.
+                    In today's rapidly evolving financial landscape, cryptocurrency represents a revolutionary 
+                    approach to money and value transfer. This module will introduce you to the fundamental 
+                    concepts of cryptocurrency, helping you understand what makes digital currencies unique 
+                    and how they differ from traditional money systems.
                   </p>
                   <p className="text-gray-700 mb-6">
-                    We'll begin by delving into the types of digital currencies, understanding what they are and how they differ 
-                    from traditional forms of money. You'll learn about the historical context that led to the creation of 
-                    cryptocurrencies, tracing the evolution of money from ancient barter systems to modern digital tokens.
-                  </p>
-                  <p className="text-gray-700 mb-6">
-                    We'll focus on Bitcoin, the world's first and most famous cryptocurrency. We'll examine its creation, 
-                    underlying technology, and the problems it was designed to solve. This will lead us into a broader discussion 
-                    of other cryptocurrencies and tokens, giving you a comprehensive view of the current cryptocurrency landscape.
-                  </p>
-                  <p className="text-gray-700 mb-6">
-                    Finally, we'll round off the module with an introduction to the cryptographic principles that make 
-                    cryptocurrencies possible. While we won't delve too deeply into mathematical concepts, you'll gain a solid 
-                    understanding of concepts like hash functions and public key cryptography.
-                  </p>
-                  <p className="text-gray-700 mb-6">
-                    By the end of this module, you'll have a strong foundation in the fundamental concepts of cryptocurrencies. 
-                    This knowledge will be crucial as we move forward to explore more complex topics in subsequent modules.
+                    Through this module, you'll explore the evolution of money, understand the core concepts 
+                    of cryptocurrency, learn about security considerations, and gain practical knowledge about 
+                    getting started in the cryptocurrency space.
                   </p>
 
                   <h3 className="text-xl font-semibold mt-8 mb-4">Learning Objectives</h3>
                   <ul className="list-disc pl-6 space-y-2 text-gray-700">
-                    <li>Define digital currencies and distinguish between different types (e.g., virtual currencies, cryptocurrencies, central bank digital currencies)</li>
-                    <li>Trace the evolution of money from barter systems to modern digital currencies, identifying key milestones in monetary history</li>
-                    <li>Explain the fundamental problem that Bitcoin was designed to solve (the double-spending problem) and describe how its blockchain technology addresses this issue</li>
-                    <li>Analyze the key components of Bitcoin's architecture, including its consensus mechanism (Proof of Work), transaction model (UTXO), and monetary policy</li>
-                    <li>Compare and contrast Bitcoin with major altcoins, highlighting their unique features and use cases</li>
-                    <li>Differentiate between coins and tokens in the cryptocurrency ecosystem</li>
-                    <li>Interpret basic market metrics such as market capitalization, trading volume, and price volatility</li>
-                    <li>Apply fundamental analysis techniques to evaluate cryptocurrency projects</li>
-                    <li>Describe the basic principles of cryptography underlying cryptocurrencies</li>
-                    <li>Demonstrate the ability to securely set up a basic cryptocurrency wallet</li>
+                    <li>Understand the fundamental differences between traditional and digital currencies</li>
+                    <li>Grasp the core concepts of cryptocurrency, including decentralization and digital scarcity</li>
+                    <li>Learn essential security principles and best practices</li>
+                    <li>Explore practical applications and use cases of cryptocurrency</li>
+                    <li>Develop skills for safe participation in the cryptocurrency ecosystem</li>
                   </ul>
+
                   <div className="mt-8 flex justify-center">
                     <Link href="/modules/module1/digital-currencies">
                       <Button 
