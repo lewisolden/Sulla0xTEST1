@@ -74,6 +74,7 @@ export default function SecuritySection() {
         variants={pageVariants}
         className="container mx-auto px-4 py-8"
       >
+        {/* Progress Bar */}
         <motion.div
           className="fixed top-0 left-0 w-full h-1 bg-gray-300 z-50"
           initial={{ scaleX: 0 }}
@@ -84,6 +85,7 @@ export default function SecuritySection() {
         </motion.div>
 
         <div className="max-w-4xl mx-auto">
+          {/* Back Navigation */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -131,7 +133,7 @@ export default function SecuritySection() {
               viewport={{ once: true }}
             >
               <h2 className="text-3xl font-bold text-blue-700 mt-8">Key Security Concepts</h2>
-              
+
               <Card className="p-6 bg-white shadow-lg rounded-lg mt-4">
                 <div className="flex items-center gap-4 mb-4">
                   <KeyIcon className="w-8 h-8 text-blue-600" />
@@ -165,7 +167,7 @@ export default function SecuritySection() {
               viewport={{ once: true }}
             >
               <h2 className="text-3xl font-bold text-blue-700 mt-8">Security Best Practices</h2>
-              
+
               <Card className="p-6 bg-white shadow-lg rounded-lg mt-4">
                 <div className="flex items-center gap-4 mb-4">
                   <WalletIcon className="w-8 h-8 text-blue-600" />
