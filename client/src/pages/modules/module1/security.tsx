@@ -101,6 +101,7 @@ export default function SecurityPage() {
                 </ul>
               </Card>
 
+              {/* Topic Navigation */}
               <div className="flex flex-col sm:flex-row gap-4 justify-between mt-8">
                 <Link href="/modules/module1/digital-currencies">
                   <Button
@@ -112,17 +113,6 @@ export default function SecurityPage() {
                     <ArrowLeft className="ml-2 h-4 w-4 group-hover:transform group-hover:-translate-x-1 transition-transform" />
                   </Button>
                 </Link>
-              </div>
-
-              {/* Bottom navigation */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-between mt-8">
-                <Button
-                  onClick={() => setShowQuiz(true)}
-                  className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700"
-                  size="lg"
-                >
-                  Take the Quiz
-                </Button>
                 <Link href="/modules/module1/cryptography">
                   <Button
                     variant="outline"
@@ -133,6 +123,17 @@ export default function SecurityPage() {
                     <ArrowRight className="ml-2 h-4 w-4 group-hover:transform group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
+              </div>
+
+              {/* Quiz Button */}
+              <div className="flex justify-center mt-8">
+                <Button
+                  onClick={() => setShowQuiz(true)}
+                  className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700"
+                  size="lg"
+                >
+                  Take the Quiz
+                </Button>
               </div>
             </motion.div>
           ) : (
