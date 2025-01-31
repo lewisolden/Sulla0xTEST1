@@ -116,6 +116,20 @@ export default function SecurityPage() {
                   </Button>
                 </Link>
               </div>
+
+              {/* Bottom navigation */}
+              <div className="mt-12 pt-6 border-t border-gray-200">
+                <Link href="/modules/module1">
+                  <Button 
+                    variant="outline" 
+                    size="lg" 
+                    className="w-full flex items-center justify-center gap-2"
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                    Back to Module 1 Overview
+                  </Button>
+                </Link>
+              </div>
             </motion.div>
           ) : (
             <motion.div
@@ -136,6 +150,20 @@ export default function SecurityPage() {
                 </Button>
               </div>
               <SecurityQuiz />
+
+              {/* Bottom navigation for quiz view */}
+              <div className="mt-12 pt-6 border-t border-gray-200">
+                <Link href="/modules/module1">
+                  <Button 
+                    variant="outline" 
+                    size="lg" 
+                    className="w-full flex items-center justify-center gap-2"
+                  >
+                    <ArrowLeft className="h-4 w-4" />
+                    Back to Module 1 Overview
+                  </Button>
+                </Link>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
