@@ -6,6 +6,8 @@ import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { ArrowLeft, ArrowRight, Shield, Key, Wallet } from "lucide-react";
 import SecurityQuiz from "@/components/quizzes/SecurityQuiz";
+import { SecurityDiagram } from "@/components/diagrams/SecurityDiagram";
+import { SecurityThreats } from "@/components/diagrams/SecurityThreats";
 
 export default function SecurityPage() {
   const [showQuiz, setShowQuiz] = useState(false);
@@ -59,34 +61,25 @@ export default function SecurityPage() {
               exit="exit"
               className="space-y-6"
             >
+              {/* Security Overview Card */}
               <Card className="p-6">
                 <div className="flex items-center gap-4 mb-4">
                   <Shield className="w-8 h-8 text-blue-600" />
                   <h2 className="text-2xl font-bold text-blue-700">Key Security Concepts</h2>
                 </div>
-                <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                  <li>Private keys and key management best practices</li>
-                  <li>Different types of cryptocurrency wallets</li>
-                  <li>Two-factor authentication (2FA) implementation</li>
-                  <li>Secure backup and recovery procedures</li>
-                  <li>Understanding wallet addresses and transactions</li>
-                </ul>
+                <SecurityDiagram />
               </Card>
 
+              {/* Security Threats Card */}
               <Card className="p-6">
                 <div className="flex items-center gap-4 mb-4">
                   <Key className="w-8 h-8 text-blue-600" />
                   <h2 className="text-2xl font-bold text-blue-700">Security Threats & Vulnerabilities</h2>
                 </div>
-                <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                  <li>Common phishing attacks and social engineering tactics</li>
-                  <li>Malware and ransomware risks specific to crypto</li>
-                  <li>Exchange vulnerabilities and hack prevention</li>
-                  <li>Smart contract security considerations</li>
-                  <li>Understanding common scam patterns</li>
-                </ul>
+                <SecurityThreats />
               </Card>
 
+              {/* Best Practices Card */}
               <Card className="p-6">
                 <div className="flex items-center gap-4 mb-4">
                   <Wallet className="w-8 h-8 text-blue-600" />
