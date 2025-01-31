@@ -6,7 +6,17 @@ export default function DecentralizationDiagram() {
 
   useEffect(() => {
     if (diagramRef.current) {
-      mermaid.init({}, diagramRef.current);
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        flowchart: {
+          htmlLabels: true,
+          curve: 'basis',
+        },
+      });
+
+      mermaid.init(undefined, diagramRef.current);
     }
   }, []);
 
@@ -22,7 +32,7 @@ export default function DecentralizationDiagram() {
           C --> F((User))
           D --> G((User))
           end
-          
+
           subgraph Cryptocurrency Network
           H((Node)) --- I((Node))
           I --- J((Node))

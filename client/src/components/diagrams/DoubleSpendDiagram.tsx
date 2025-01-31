@@ -6,7 +6,25 @@ export default function DoubleSpendDiagram() {
 
   useEffect(() => {
     if (diagramRef.current) {
-      mermaid.init({}, diagramRef.current);
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'default',
+        securityLevel: 'loose',
+        sequence: {
+          diagramMarginX: 50,
+          diagramMarginY: 10,
+          actorMargin: 50,
+          width: 150,
+          height: 65,
+          boxMargin: 10,
+          boxTextMargin: 5,
+          noteMargin: 10,
+          messageMargin: 35,
+          mirrorActors: true,
+        },
+      });
+
+      mermaid.init(undefined, diagramRef.current);
     }
   }, []);
 
