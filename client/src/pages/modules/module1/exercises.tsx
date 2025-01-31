@@ -14,6 +14,12 @@ export default function ModuleExercises() {
   useScrollTop();
   const [activeTab, setActiveTab] = useState("wallet");
 
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    // Manually trigger scroll to top on tab change
+    window.scrollTo(0, 0);
+  };
+
   return (
     <AnimatePresence mode="wait">
       <motion.div
@@ -37,7 +43,7 @@ export default function ModuleExercises() {
           </motion.h1>
 
           <Card className="p-6">
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+            <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-4">
               <TabsList className="grid grid-cols-3 gap-4 bg-muted p-2">
                 <TabsTrigger value="wallet" className="flex items-center gap-2">
                   <Wallet className="h-4 w-4" />
