@@ -34,15 +34,16 @@ const moduleTopics = [
     ]
   },
   {
-    id: "development-platforms",
-    title: "3.3 Blockchain Development Platforms",
-    path: "/modules/module3/development-platforms",
+    id: "practical-applications",
+    title: "3.3 Practical Applications",
+    path: "/modules/module3/practical-applications",
     icon: Code,
     subsections: [
-      "Ethereum Platform",
-      "Solana Platform",
-      "Cardano Platform",
-      "Platform Comparison"
+      "Supply Chain Management",
+      "Real Estate",
+      "Voting Systems",
+      "Healthcare Applications",
+      "Travel and Tourism"
     ]
   }
 ];
@@ -185,13 +186,13 @@ export default function Module3() {
                       : "You've completed all topics! Take the final quiz to test your knowledge."}
                   </p>
                   <Link href="/modules/module3/quiz">
-                    <Button 
+                    <Button
                       size="lg"
                       className="bg-green-600 hover:bg-green-700"
                       disabled={progressPercentage < 100}
                     >
-                      {progressPercentage < 100 
-                        ? "Complete all topics to unlock quiz" 
+                      {progressPercentage < 100
+                        ? "Complete all topics to unlock quiz"
                         : "Take Module Quiz"
                       }
                     </Button>
