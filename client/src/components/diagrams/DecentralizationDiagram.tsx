@@ -32,7 +32,7 @@ export default function DecentralizationDiagram() {
           C --> F((User))
           D --> G((User))
           end
-
+          
           subgraph Cryptocurrency Network
           H((Node)) --- I((Node))
           I --- J((Node))
