@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/layout/footer";
 import { Progress } from "@/components/ui/progress";
-import { BookOpen } from "lucide-react";
+import { BookOpen, Dumbbell } from "lucide-react";
 import { useProgress } from "@/context/progress-context";
 
 const module1Topics = [
@@ -82,12 +82,20 @@ export default function Module1() {
               This module introduces you to the fundamental concepts of cryptocurrency, exploring how digital currencies 
               differ from traditional money systems and their revolutionary potential in today's financial landscape.
             </p>
-            <Link href="/glossary">
-              <Button className="gap-2">
-                <BookOpen className="h-4 w-4" />
-                Open Crypto Glossary
-              </Button>
-            </Link>
+            <div className="flex gap-4">
+              <Link href="/glossary">
+                <Button className="gap-2">
+                  <BookOpen className="h-4 w-4" />
+                  Open Crypto Glossary
+                </Button>
+              </Link>
+              <Link href="/modules/module1/exercises">
+                <Button variant="secondary" className="gap-2">
+                  <Dumbbell className="h-4 w-4" />
+                  Practice Exercises
+                </Button>
+              </Link>
+            </div>
           </CardContent>
         </Card>
 
