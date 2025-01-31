@@ -5,18 +5,14 @@ export const useScrollTop = () => {
   const [location] = useLocation();
 
   useEffect(() => {
-    // Immediate scroll with no animation for instant feedback
-    window.scrollTo({
-      top: 0,
-      behavior: 'auto'
-    });
+    // Force immediate scroll to top
+    window.scrollTo(0, 0);
 
-    // Backup scroll reset with RAF to ensure it happens after any reflows
-    requestAnimationFrame(() => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'auto'
-      });
-    });
+    // Ensure scroll position is reset after any dynamic content loads
+    const timer = setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, [location]);
 };

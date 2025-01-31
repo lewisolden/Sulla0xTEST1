@@ -9,7 +9,7 @@ import { useScrollTop } from "@/hooks/useScrollTop";
 import DecentralizationDiagram from "@/components/diagrams/DecentralizationDiagram";
 import DoubleSpendDiagram from "@/components/diagrams/DoubleSpendDiagram";
 import DigitalCurrenciesQuiz from "@/components/quizzes/DigitalCurrenciesQuiz";
-import { BlockchainIcon, DecentralizationIcon, SecurityIcon } from "@/components/icons/CryptoIcons";
+import { BlockchainIcon, DecentralizationIcon, SecurityIcon, WalletIcon } from "@/components/icons/CryptoIcons";
 import TransactionFlowDiagram from "@/components/diagrams/TransactionFlowDiagram";
 
 export default function DigitalCurrenciesSection() {
@@ -99,17 +99,15 @@ export default function DigitalCurrenciesSection() {
           >
             <h2 className="text-3xl font-bold text-blue-700 mt-8">Understanding Traditional Money vs. Cryptocurrency</h2>
             <p>
-              Think about the cash in your wallet or the money in your bank account. Traditional money 
-              exists in two main forms: physical cash and digital bank balances. Physical cash offers 
-              immediate, tangible transactions but comes with limitations like physical degradation, 
-              security risks, and geographical restrictions. Digital bank money, while more convenient 
-              for many transactions, relies entirely on banks and financial institutions as intermediaries.
+              Think about the cash in your wallet or the money in your bank account. Traditional money exists in two main forms: 
+              physical cash and digital bank balances. Physical cash offers immediate, tangible transactions but comes with 
+              limitations like physical degradation, security risks, and geographical restrictions. Digital bank money, while more 
+              convenient for many transactions, relies entirely on banks and financial institutions as intermediaries.
             </p>
             <p>
-              Cryptocurrency introduces a fundamentally different approach. It exists purely as digital 
-              information, but unlike the numbers in your bank account, it doesn't represent a claim 
-              on a bank or institution. Instead, cryptocurrency operates through a decentralized network 
-              of computers, using advanced cryptography to ensure security and verify transactions.
+              Cryptocurrency introduces a fundamentally different approach. It exists purely as digital information, but unlike 
+              the numbers in your bank account, it doesn't represent a claim on a bank or institution. Instead, cryptocurrency 
+              operates through a decentralized network of computers, using advanced cryptography to ensure security and verify transactions.
             </p>
           </motion.section>
 
@@ -140,17 +138,17 @@ export default function DigitalCurrenciesSection() {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl font-bold text-blue-700 mt-8">Core Concepts and Features</h2>
+            <h2 className="text-3xl font-bold text-blue-700 mt-8">Core Concepts</h2>
 
             <div className="mt-6 p-6 bg-white rounded-lg shadow-md">
               <div className="flex items-center gap-4 mb-4">
                 <DecentralizationIcon size={32} className="text-blue-600" />
-                <h3 className="text-2xl font-semibold text-blue-600">Decentralization: A New Paradigm</h3>
+                <h3 className="text-2xl font-semibold text-blue-600">Decentralization</h3>
               </div>
               <p>
-                Unlike traditional financial systems operated through centralized authorities, cryptocurrency 
-                uses a network of computers running specialized software. This network collectively maintains 
-                and verifies all transactions through a system called blockchain.
+                One of cryptocurrency's most revolutionary aspects is its decentralized nature. Traditional 
+                financial systems operate through centralized authorities – banks, governments, and financial 
+                institutions. These entities control money creation, verify transactions, and maintain account balances.
               </p>
               <DecentralizationDiagram />
             </div>
@@ -161,9 +159,10 @@ export default function DigitalCurrenciesSection() {
                 <h3 className="text-2xl font-semibold text-blue-600">Digital Scarcity</h3>
               </div>
               <p>
-                Before cryptocurrency, creating genuine scarcity in digital assets seemed impossible. 
-                Digital files could be copied infinitely without degradation. Bitcoin solved this through 
-                its blockchain technology and precise supply controls.
+                Before cryptocurrency, creating genuine scarcity in digital assets seemed impossible. Digital files 
+                could be copied infinitely without degradation. Bitcoin solved this through its blockchain technology 
+                and precise supply controls. For example, Bitcoin has a fixed maximum supply of 21 million coins, 
+                with a predetermined release schedule that can't be altered without network consensus.
               </p>
               <TransactionFlowDiagram />
             </div>
@@ -180,7 +179,7 @@ export default function DigitalCurrenciesSection() {
             <div className="mt-6 p-6 bg-white rounded-lg shadow-md">
               <div className="flex items-center gap-4 mb-4">
                 <SecurityIcon size={32} className="text-blue-600" />
-                <h3 className="text-2xl font-semibold text-blue-600">Cryptographic Protection</h3>
+                <h3 className="text-2xl font-semibold text-blue-600">Cryptographic Foundations</h3>
               </div>
               <p>
                 Cryptocurrency security relies on advanced cryptography, specifically public-key cryptography. 
@@ -191,6 +190,64 @@ export default function DigitalCurrenciesSection() {
                 <li>A public key (like your public email address)</li>
               </ul>
               <DoubleSpendDiagram />
+            </div>
+
+            <div className="mt-8 p-6 bg-white rounded-lg shadow-md">
+              <div className="flex items-center gap-4 mb-4">
+                <WalletIcon size={32} className="text-blue-600" />
+                <h3 className="text-2xl font-semibold text-blue-600">Storage and Access Security</h3>
+              </div>
+              <h4 className="text-xl font-semibold mb-2">Hot Wallets (Online):</h4>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Mobile applications</li>
+                <li>Desktop software</li>
+                <li>Web-based services</li>
+              </ul>
+              <p className="mt-2 text-sm">Suitable for small amounts and frequent transactions</p>
+
+              <h4 className="text-xl font-semibold mt-4 mb-2">Cold Storage (Offline):</h4>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Hardware wallets</li>
+                <li>Paper wallets</li>
+                <li>Air-gapped computers</li>
+              </ul>
+              <p className="mt-2 text-sm">Recommended for larger holdings and long-term storage</p>
+            </div>
+          </motion.section>
+
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl font-bold text-blue-700 mt-8">Risk Considerations</h2>
+
+            <h3 className="text-2xl font-semibold text-blue-600 mt-6">Market Volatility</h3>
+            <ul className="list-disc pl-5 space-y-3">
+              <li>Market sentiment impacts</li>
+              <li>Regulatory news effects</li>
+              <li>Technology development influence</li>
+              <li>Market manipulation risks</li>
+            </ul>
+
+            <h3 className="text-2xl font-semibold text-blue-600 mt-6">Security Risks</h3>
+            <div className="ml-4">
+              <h4 className="text-xl font-semibold mt-4 mb-2">1. Personal Security Risks:</h4>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Private key loss or theft</li>
+                <li>Phishing attacks</li>
+                <li>Social engineering attempts</li>
+                <li>Malware threats</li>
+              </ul>
+
+              <h4 className="text-xl font-semibold mt-4 mb-2">2. Technical Risks:</h4>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Software vulnerabilities</li>
+                <li>Network attacks</li>
+                <li>Smart contract exploits</li>
+                <li>Exchange security breaches</li>
+              </ul>
             </div>
           </motion.section>
 
@@ -274,7 +331,6 @@ export default function DigitalCurrenciesSection() {
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
                     className="mt-8"
                   >
                     <h2 className="text-2xl font-bold text-blue-800 mb-4">Topic Quiz</h2>
