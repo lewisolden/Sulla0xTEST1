@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { useProgress } from "@/context/progress-context";
+import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { ArrowLeft, ArrowRight, Shield, Key, Wallet } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import SecurityQuiz from "@/components/quizzes/SecurityQuiz";
 
 export default function SecurityPage() {
@@ -40,20 +41,24 @@ export default function SecurityPage() {
           </Link>
         </div>
 
-        <AnimatePresence mode="wait">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="space-y-6"
+        >
+          <h1 className="text-4xl font-bold text-blue-800 mb-6">
+            Understanding Cryptocurrency Security
+          </h1>
+
           {!showQuiz ? (
             <motion.div
-              key="content"
               variants={contentVariants}
               initial="initial"
               animate="animate"
               exit="exit"
               className="space-y-6"
             >
-              <h1 className="text-4xl font-bold text-blue-800 mb-6">
-                Understanding Cryptocurrency Security
-              </h1>
-
               <Card className="p-6">
                 <div className="flex items-center gap-4 mb-4">
                   <Shield className="w-8 h-8 text-blue-600" />
@@ -113,12 +118,11 @@ export default function SecurityPage() {
               <div className="flex flex-col sm:flex-row gap-4 justify-between mt-8">
                 <Button
                   onClick={() => setShowQuiz(true)}
-                  size="lg"
                   className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700"
+                  size="lg"
                 >
                   Take the Quiz
                 </Button>
-
                 <Link href="/modules/module1/cryptography">
                   <Button
                     variant="outline"
@@ -133,7 +137,6 @@ export default function SecurityPage() {
             </motion.div>
           ) : (
             <motion.div
-              key="quiz"
               variants={contentVariants}
               initial="initial"
               animate="animate"
@@ -152,7 +155,7 @@ export default function SecurityPage() {
               <SecurityQuiz />
             </motion.div>
           )}
-        </AnimatePresence>
+        </motion.div>
       </div>
     </div>
   );
