@@ -7,7 +7,6 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Dumbbell, BookOpen, Shield, Brain, Wallet } from "lucide-react";
-import { useScrollTop } from "@/hooks/useScrollTop";
 
 const moduleTopics = [
   {
@@ -53,16 +52,10 @@ const moduleTopics = [
 ];
 
 export default function Module1() {
-  useScrollTop(); // Add scroll to top hook
   const { progress } = useProgress();
   const moduleProgress = progress.filter(p => p.moduleId === 1);
   const completedSections = moduleProgress.filter(p => p.completed).length;
   const progressPercentage = (completedSections / moduleTopics.length) * 100;
-
-  const handleTabChange = (value: string) => {
-    // Manually trigger scroll to top on tab change
-    window.scrollTo(0, 0);
-  };
 
   const topicsWithProgress = moduleTopics.map(topic => ({
     ...topic,
@@ -81,7 +74,7 @@ export default function Module1() {
           <p className="text-sm text-muted-foreground mt-2">Progress: {Math.round(progressPercentage)}%</p>
         </div>
 
-        <Tabs defaultValue="overview" className="space-y-4" onValueChange={handleTabChange}>
+        <Tabs defaultValue="overview" className="space-y-4">
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="content">Topics</TabsTrigger>

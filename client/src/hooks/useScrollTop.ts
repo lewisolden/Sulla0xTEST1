@@ -8,11 +8,9 @@ export const useScrollTop = () => {
     // Force immediate scroll to top
     window.scrollTo(0, 0);
 
-    // Ensure scroll position is reset after any dynamic content loads
-    const timer = setTimeout(() => {
+    // Backup scroll reset in case the first one gets overridden
+    requestAnimationFrame(() => {
       window.scrollTo(0, 0);
-    }, 100);
-
-    return () => clearTimeout(timer);
+    });
   }, [location]);
 };
