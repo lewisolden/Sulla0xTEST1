@@ -6,7 +6,7 @@ import { useProgress } from "@/context/progress-context";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Dumbbell } from "lucide-react";
+import { Dumbbell, BookOpen, Shield, Brain, Wallet } from "lucide-react";
 
 const moduleTopics = [
   {
@@ -74,6 +74,49 @@ export default function Module1() {
           <p className="text-sm text-muted-foreground mt-2">Progress: {Math.round(progressPercentage)}%</p>
         </div>
 
+        {/* New: Exercises Card at the top level */}
+        <Card className="mb-8 bg-gradient-to-r from-blue-50 to-indigo-50">
+          <CardContent className="p-6">
+            <div className="flex items-start gap-6">
+              <div className="flex-1">
+                <h2 className="text-2xl font-bold text-blue-800 mb-4">Interactive Learning Exercises</h2>
+                <p className="text-gray-700 mb-6">
+                  Practice what you learn through hands-on exercises:
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                  <div className="flex items-start gap-3">
+                    <Wallet className="h-5 w-5 text-blue-600 mt-1" />
+                    <div>
+                      <h3 className="font-semibold">Wallet Simulator</h3>
+                      <p className="text-sm text-gray-600">Practice secure wallet management</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Shield className="h-5 w-5 text-blue-600 mt-1" />
+                    <div>
+                      <h3 className="font-semibold">Security Workshop</h3>
+                      <p className="text-sm text-gray-600">Learn security best practices</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <Brain className="h-5 w-5 text-blue-600 mt-1" />
+                    <div>
+                      <h3 className="font-semibold">Assessment Center</h3>
+                      <p className="text-sm text-gray-600">Test your knowledge</p>
+                    </div>
+                  </div>
+                </div>
+                <Link href="/modules/module1/exercises">
+                  <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
+                    <Dumbbell className="mr-2 h-5 w-5" />
+                    Start Exercises
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -93,23 +136,6 @@ export default function Module1() {
                     and how they differ from traditional money systems.
                   </p>
 
-                  {/* New Interactive Exercises Section */}
-                  <div className="bg-blue-50 rounded-lg p-6 mb-6">
-                    <div className="flex items-center gap-3 mb-4">
-                      <Dumbbell className="h-6 w-6 text-blue-600" />
-                      <h3 className="text-xl font-semibold text-blue-800">Interactive Exercises</h3>
-                    </div>
-                    <p className="text-gray-700 mb-4">
-                      Put your knowledge into practice with our hands-on exercises. Try out a simulated wallet,
-                      practice security measures, and test your understanding through interactive assessments.
-                    </p>
-                    <Link href="/modules/module1/exercises">
-                      <Button className="bg-blue-600 hover:bg-blue-700">
-                        <Dumbbell className="mr-2 h-4 w-4" />
-                        Start Practical Exercises
-                      </Button>
-                    </Link>
-                  </div>
 
                   <h3 className="text-xl font-semibold mt-8 mb-4">Learning Objectives</h3>
                   <ul className="list-disc pl-6 space-y-2 text-gray-700">
