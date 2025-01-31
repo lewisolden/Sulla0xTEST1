@@ -6,7 +6,6 @@ import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import { useScrollTop } from "@/hooks/useScrollTop";
 import DecentralizationDiagram from "@/components/diagrams/DecentralizationDiagram";
 import DoubleSpendDiagram from "@/components/diagrams/DoubleSpendDiagram";
 import DigitalCurrenciesQuiz from "@/components/quizzes/DigitalCurrenciesQuiz";
@@ -14,7 +13,15 @@ import { BlockchainIcon, DecentralizationIcon, WalletIcon, SecurityIcon } from "
 import TransactionFlowDiagram from "@/components/diagrams/TransactionFlowDiagram";
 
 export default function DigitalCurrenciesSection() {
-  useScrollTop();
+  // Force scroll to top on mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    // Double-check scroll position after mount
+    requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
+    });
+  }, []); // Empty dependency array means this runs once on mount
+
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showQuiz, setShowQuiz] = useState(false);
