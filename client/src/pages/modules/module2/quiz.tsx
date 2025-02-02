@@ -8,48 +8,59 @@ import { ArrowLeft, ArrowRight, CheckCircle2, XCircle } from "lucide-react";
 
 const quizQuestions = [
   {
-    question: "What is a blockchain?",
+    question: "What is the maximum number of Bitcoins that will ever exist?",
     options: [
-      "A centralized database",
-      "A distributed, immutable ledger of transactions",
-      "A type of cryptocurrency",
-      "A computer programming language"
+      "18 million",
+      "21 million",
+      "25 million",
+      "There is no maximum"
     ],
     correctAnswer: 1,
-    explanation: "A blockchain is a distributed, immutable ledger that records transactions across a network of computers."
+    explanation: "Bitcoin's code limits the total supply to 21 million coins. This scarcity is a fundamental feature of Bitcoin's economic model."
   },
   {
-    question: "What is the main purpose of distributed ledger technology (DLT)?",
+    question: "Which of these best describes a Bitcoin wallet?",
     options: [
-      "To create cryptocurrencies",
-      "To maintain a single, centralized record",
-      "To enable decentralized, transparent record-keeping",
-      "To speed up database queries"
+      "A physical device that stores Bitcoin",
+      "A software that stores your private keys and manages transactions",
+      "An online account where you keep Bitcoin",
+      "A bank account for cryptocurrency"
+    ],
+    correctAnswer: 1,
+    explanation: "A Bitcoin wallet is software that manages your private keys and helps you interact with the Bitcoin network. It doesn't actually 'store' Bitcoins, as they exist on the blockchain."
+  },
+  {
+    question: "What happens if you lose your Bitcoin wallet's recovery phrase?",
+    options: [
+      "Contact Bitcoin support to recover it",
+      "Use your email to reset it",
+      "Your Bitcoin is permanently lost",
+      "Wait 30 days for automatic reset"
     ],
     correctAnswer: 2,
-    explanation: "DLT enables decentralized and transparent record-keeping across a network of participants."
+    explanation: "If you lose your recovery phrase, there is no way to recover your Bitcoin. There is no central authority or support team that can help - this highlights the importance of securing your recovery phrase."
   },
   {
-    question: "Which consensus mechanism does Bitcoin use?",
+    question: "What is the main advantage of a Bitcoin ETF over direct Bitcoin ownership?",
     options: [
-      "Proof of Stake",
-      "Proof of Work",
-      "Proof of Authority",
-      "Delegated Proof of Stake"
+      "Higher returns guaranteed",
+      "No transaction fees",
+      "Investment through traditional brokerage accounts",
+      "Faster transactions"
     ],
-    correctAnswer: 1,
-    explanation: "Bitcoin uses Proof of Work (PoW) as its consensus mechanism to validate transactions and create new blocks."
+    correctAnswer: 2,
+    explanation: "Bitcoin ETFs allow investors to gain Bitcoin exposure through traditional brokerage accounts without needing to manage private keys or deal with cryptocurrency exchanges."
   },
   {
-    question: "What are smart contracts?",
+    question: "Which statement about Bitcoin transactions is correct?",
     options: [
-      "Legal documents stored on blockchain",
-      "Self-executing contracts with code",
-      "Digital signatures",
-      "Cryptocurrency wallets"
+      "They can be reversed by contacting support",
+      "They are anonymous and untraceable",
+      "They are confirmed by network consensus",
+      "They are free of charge"
     ],
-    correctAnswer: 1,
-    explanation: "Smart contracts are self-executing contracts where the terms are directly written into code."
+    correctAnswer: 2,
+    explanation: "Bitcoin transactions are confirmed through network consensus (mining). Once confirmed, they cannot be reversed, and while they're public on the blockchain, they're not free (they require mining fees)."
   }
 ];
 
@@ -59,23 +70,13 @@ const Module2Quiz = () => {
   const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
-  const { progress, updateProgress } = useProgress();
-
-  // Check if required topics are completed
-  const requiredTopics = [
-    'blockchain-basics',
-    'distributed-ledger',
-    'consensus-mechanisms',
-    'smart-contracts'
-  ];
-
-  const isAllTopicsCompleted = requiredTopics.every(topic =>
-    progress.some(p => p.moduleId === 2 && p.sectionId === topic && p.completed)
-  );
+  const { updateProgress } = useProgress();
 
   const handleAnswerSelect = (optionIndex: number) => {
-    setSelectedAnswer(optionIndex);
-    setShowExplanation(true);
+    if (!showExplanation) {
+      setSelectedAnswer(optionIndex);
+      setShowExplanation(true);
+    }
   };
 
   const moveToNextQuestion = () => {
@@ -90,10 +91,9 @@ const Module2Quiz = () => {
       setShowExplanation(false);
     } else {
       setShowResult(true);
-      // Update module completion if score meets threshold
       const passThreshold = quizQuestions.length * 0.7; // 70% to pass
       if (score >= passThreshold) {
-        updateProgress(2, 'module-quiz', true);
+        updateProgress(2, 'module2-quiz', true);
       }
     }
   };
@@ -105,77 +105,6 @@ const Module2Quiz = () => {
     setScore(0);
     setShowExplanation(false);
   };
-
-  if (!isAllTopicsCompleted) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          <Card>
-            <CardContent className="pt-6">
-              <div className="text-center py-8">
-                <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
-                  <h2 className="text-xl font-semibold text-yellow-800 mb-2">
-                    ⚠️ Access Requirements
-                  </h2>
-                  <p className="text-yellow-700">
-                    You need to complete all four topics below before you can take the quiz.
-                  </p>
-                </div>
-
-                <div className="bg-white p-6 rounded-lg shadow-sm">
-                  <h3 className="text-lg font-medium text-gray-700 mb-4">Required Topics:</h3>
-                  <ul className="space-y-3">
-                    {requiredTopics.map(topic => {
-                      const isComplete = progress.some(
-                        p => p.moduleId === 2 && p.sectionId === topic && p.completed
-                      );
-                      return (
-                        <li 
-                          key={topic} 
-                          className={`flex items-center justify-between p-3 rounded-lg ${
-                            isComplete ? 'bg-green-50' : 'bg-gray-50'
-                          }`}
-                        >
-                          <span className="flex items-center gap-2">
-                            {isComplete ? (
-                              <CheckCircle2 className="h-5 w-5 text-green-500" />
-                            ) : (
-                              <XCircle className="h-5 w-5 text-gray-400" />
-                            )}
-                            <span className={`${isComplete ? 'text-green-700' : 'text-gray-600'}`}>
-                              {topic.split('-').map(word => 
-                                word.charAt(0).toUpperCase() + word.slice(1)
-                              ).join(' ')}
-                            </span>
-                          </span>
-                          {!isComplete && (
-                            <Link href={`/modules/module2/${topic}`}>
-                              <Button variant="outline" size="sm">
-                                Complete Topic
-                              </Button>
-                            </Link>
-                          )}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-
-                <div className="mt-8">
-                  <Link href="/modules/module2">
-                    <Button variant="outline" className="gap-2">
-                      <ArrowLeft className="h-4 w-4" />
-                      Return to Module Overview
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  }
 
   if (showResult) {
     const passThreshold = quizQuestions.length * 0.7;
@@ -197,10 +126,10 @@ const Module2Quiz = () => {
                 {passed ? (
                   <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-6">
                     <p className="text-green-700">
-                      🎉 Congratulations! You've passed Module 2!
+                      🎉 Congratulations! You've passed the Bitcoin Module Quiz!
                     </p>
                     <p className="text-green-600 text-sm mt-2">
-                      You've demonstrated a strong understanding of Blockchain Technology fundamentals.
+                      You've demonstrated a strong understanding of Bitcoin fundamentals.
                     </p>
                   </div>
                 ) : (
@@ -244,26 +173,13 @@ const Module2Quiz = () => {
       <div className="max-w-4xl mx-auto">
         <Card className="p-8">
           <CardContent>
-            {currentQuestion === 0 && (
-              <div className="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-lg mb-8">
-                <h3 className="text-xl font-bold text-blue-900 mb-4">Quiz Requirements</h3>
-                <div className="space-y-4">
-                  <p className="text-blue-800 font-semibold">
-                    To pass this quiz, you need to:
-                  </p>
-                  <div className="bg-white p-4 rounded-lg">
-                    <p className="text-lg text-blue-900 font-medium">
-                      Get at least {Math.ceil(quizQuestions.length * 0.7)} out of {quizQuestions.length} questions correct (70%)
-                    </p>
-                  </div>
-                  <ul className="list-disc pl-6 space-y-2 text-blue-800">
-                    <li>You can retake the quiz as many times as needed</li>
-                    <li>You'll see immediately if each answer is correct</li>
-                    <li>Take your time - there's no time limit</li>
-                  </ul>
-                </div>
-              </div>
-            )}
+            <div className="mb-6 flex justify-between items-center">
+              <Link href="/modules/module2">
+                <Button variant="ghost" className="gap-2">
+                  <ArrowLeft className="h-4 w-4" /> Back to Module Overview
+                </Button>
+              </Link>
+            </div>
 
             <div className="mb-6">
               <div className="flex justify-between items-center mb-6">
@@ -291,9 +207,9 @@ const Module2Quiz = () => {
                       ${selectedAnswer === null 
                         ? 'bg-gray-100 hover:bg-blue-100' 
                         : index === quizQuestions[currentQuestion].correctAnswer 
-                          ? 'bg-green-200' 
+                          ? 'bg-green-100 border-green-500' 
                           : selectedAnswer === index 
-                            ? 'bg-red-200' 
+                            ? 'bg-red-100 border-red-500' 
                             : 'bg-gray-100'}
                     `}
                     disabled={selectedAnswer !== null}
