@@ -37,12 +37,14 @@ import SmartContractsSection from "@/pages/modules/module3/smart-contracts";
 import InvestmentValueSection from "@/pages/modules/module3/investment-value";
 import SecurityRisksSection from "@/pages/modules/module3/security-risks";
 import Module3Quiz from "@/pages/modules/module3/quiz";
+import Module3Exercises from "@/pages/modules/module3/exercises";
 // Module 4 Routes
 import Module4Landing from "@/pages/modules/module4";
 import DigitalVsTraditionalSection from "@/pages/modules/module4/digital-vs-traditional";
 import Navigation from "@/components/layout/navigation";
 import TradingSimulator from "@/pages/trading-simulator";
 import GlossaryPage from "@/pages/glossary";
+
 function Router() {
   return (
     <Switch>
@@ -77,6 +79,7 @@ function Router() {
       <Route path="/modules/module3/smart-contracts" component={SmartContractsSection} />
       <Route path="/modules/module3/investment-value" component={InvestmentValueSection} />
       <Route path="/modules/module3/security-risks" component={SecurityRisksSection} />
+      <Route path="/modules/module3/exercises" component={Module3Exercises} />
       <Route path="/modules/module3/quiz" component={Module3Quiz} />
       {/* Module 4 Routes */}
       <Route path="/modules/module4" component={Module4Landing} />
@@ -88,6 +91,7 @@ function Router() {
     </Switch>
   );
 }
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
@@ -99,4 +103,5 @@ function App() {
     </QueryClientProvider>
   );
 }
+
 export default App;
