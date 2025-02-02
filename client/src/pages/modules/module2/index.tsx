@@ -40,8 +40,10 @@ export default function Module2() {
 
   const moduleProgress = progress.filter(p => p.moduleId === 2);
   const completedSections = moduleProgress.filter(p => p.completed).length;
-  const isModuleComplete = moduleProgress.length === sections.length && 
-    moduleProgress.every(p => p.completed);
+  const totalSections = sections.length;
+
+  // Check if all sections are completed
+  const isModuleComplete = completedSections === totalSections;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -89,9 +91,8 @@ export default function Module2() {
 
           <div className="grid gap-4">
             {sections.map((section) => {
-              const isComplete = moduleProgress.some(
-                p => p.sectionId === section.id && p.completed
-              );
+              const sectionProgress = moduleProgress.find(p => p.sectionId === section.id);
+              const isComplete = sectionProgress?.completed || false;
 
               return (
                 <Link key={section.id} href={section.href}>
@@ -121,20 +122,26 @@ export default function Module2() {
             })}
           </div>
 
-          {isModuleComplete && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="mt-8"
-            >
-              <Link href="/modules/module3">
-                <Button className="w-full md:w-auto bg-green-600 hover:bg-green-700">
-                  Continue to Module 3: Advanced Concepts
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-            </motion.div>
-          )}
+          {/* Progress summary and next module button */}
+          <div className="mt-8">
+            <Card className="bg-gray-50 p-4">
+              <div className="flex justify-between items-center">
+                <div>
+                  <p className="text-gray-600">
+                    Progress: {completedSections} of {totalSections} sections completed
+                  </p>
+                </div>
+                {isModuleComplete && (
+                  <Link href="/modules/module3">
+                    <Button className="bg-green-600 hover:bg-green-700 text-white">
+                      Continue to Module 3
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                )}
+              </div>
+            </Card>
+          </div>
         </motion.div>
       </div>
     </div>
