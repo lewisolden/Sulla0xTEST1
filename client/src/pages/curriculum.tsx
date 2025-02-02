@@ -8,64 +8,66 @@ const modules = [
   {
     id: 1,
     icon: BookOpen,
-    title: "Module 1: Fundamentals of Cryptocurrency",
-    description: "A comprehensive introduction to digital currencies, their history, and technological foundations.",
+    title: "Module 1: Understanding Cryptocurrency",
+    description: "A foundational introduction to cryptocurrency concepts, security, and practical applications.",
     sections: [
-      "Introduction to Digital Currencies",
-      "History and Evolution of Money",
-      "Bitcoin: The First Cryptocurrency",
-      "Altcoins and Tokens",
-      "Cryptocurrency Market Dynamics",
-      "Basic Cryptography Concepts"
+      "Introduction to Digital Currency",
+      "Understanding Cryptocurrency Security",
+      "Practical Applications",
+      "Getting Started Safely",
+      "Interactive Exercises",
+      "Knowledge Assessment"
     ]
   },
   {
     id: 2,
     icon: GraduationCap,
-    title: "Module 2: Understanding Blockchain",
-    description: "Deep dive into blockchain technology, its structure, and fundamental principles.",
+    title: "Module 2: Blockchain Technology",
+    description: "Deep dive into blockchain technology, smart contracts, and decentralized systems.",
     sections: [
-      "Blockchain Basics",
-      "Distributed Ledger Technology",
-      "Consensus Mechanisms",
-      "Smart Contracts"
+      "Bitcoin Fundamentals",
+      "Investment Strategies",
+      "Security and Risk Management",
+      "Practical Exercises",
+      "Module Assessment"
     ]
   },
   {
     id: 3,
     icon: Zap,
     title: "Module 3: Advanced Concepts",
-    description: "Advanced exploration of blockchain development, applications, and future trends.",
+    description: "Advanced exploration of Ethereum, smart contracts, and blockchain applications.",
     sections: [
-      "Blockchain Scalability and Interoperability",
-      "Types of Blockchains",
-      "Blockchain Development Platforms",
-      "Advanced Blockchain Concepts"
+      "Ethereum Fundamentals",
+      "Smart Contracts",
+      "Investment Value Analysis",
+      "Security Considerations",
+      "Hands-on Development"
     ]
   },
   {
     id: 4,
     icon: CreditCard,
-    title: "Module 4: Understanding Digital Money",
-    description: "Explore the evolution from traditional to digital money and understand how cryptocurrencies are revolutionizing finance.",
+    title: "Module 4: Digital Finance Evolution",
+    description: "Explore the transformation from traditional to digital finance systems.",
     sections: [
       "Digital vs Traditional Money",
-      "Bank Digital Money vs Cryptocurrency",
-      "Security & Control",
-      "Payment Systems & Financial Inclusion",
-      "Digital Scarcity & Network Architecture"
+      "Payment Systems Evolution",
+      "Financial Inclusion Impact",
+      "Future of Digital Finance",
+      "Case Studies"
     ]
   },
   {
     id: 5,
     icon: Gamepad2,
-    title: "Interactive Learning Games",
-    description: "Learn blockchain concepts through hands-on simulations and interactive games.",
+    title: "Interactive Learning Hub",
+    description: "Hands-on learning through interactive simulations and practical exercises.",
     sections: [
-      "Mining Simulator",
+      "Cryptocurrency Wallet Simulator",
+      "Trading Practice Platform",
       "Blockchain Explorer",
-      "Smart Contract Builder",
-      "Consensus Mechanism Demo"
+      "Security Practice Labs"
     ]
   }
 ];
@@ -79,7 +81,7 @@ export default function Curriculum() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          Your Learning Journey
+          Your Cryptocurrency Learning Journey
         </motion.h1>
 
         <div className="mb-12">
@@ -109,7 +111,7 @@ export default function Curriculum() {
 
                   <div className="border-t border-blue-100 pt-6">
                     <h3 className="text-xl font-semibold text-blue-800 mb-4">
-                      Module Sections
+                      Module Content
                     </h3>
                     <div className="grid md:grid-cols-2 gap-4">
                       {module.sections.map((section, index) => (
@@ -125,7 +127,7 @@ export default function Curriculum() {
                     <div className="mt-6 text-center">
                       <Link href={`/modules/module${module.id}`}>
                         <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
-                          Start Module
+                          Start Learning
                         </button>
                       </Link>
                     </div>
@@ -143,7 +145,7 @@ export default function Curriculum() {
           transition={{ delay: 0.8 }}
         >
           <p className="text-blue-800 text-xl mb-6">
-            Ready to begin your blockchain learning journey?
+            Ready to start your cryptocurrency learning journey?
           </p>
           <Link href="/modules/module1">
             <button className="bg-blue-600 text-white px-8 py-3 rounded-lg text-xl hover:bg-blue-700 transition duration-300">
