@@ -139,7 +139,7 @@ const DigitalCurrenciesQuiz = () => {
                   className="w-full bg-green-600 hover:bg-green-700"
                   size="lg"
                 >
-                  Next Topic: History of Money <ArrowRight className="ml-2 h-4 w-4" />
+                  Next Topic <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
             )}
