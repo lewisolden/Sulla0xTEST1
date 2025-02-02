@@ -11,51 +11,51 @@ import BadgeShowcase from "@/components/modules/badge-showcase";
 
 const moduleTopics = [
   {
-    id: "blockchain-basics",
-    title: "2.1 What is a Blockchain?",
-    path: "/modules/module2/blockchain-basics",
+    id: "bitcoin-fundamentals",
+    title: "2.1 Bitcoin Fundamentals",
+    path: "/modules/module2/bitcoin-fundamentals",
     icon: Database,
     subsections: [
-      "Key Characteristics of Blockchain",
-      "Basic Structure of a Blockchain",
-      "How Blockchain Works",
-      "Comparison with Traditional Databases"
+      "The Birth of Bitcoin",
+      "Historical Context and Significance",
+      "How Bitcoin Works",
+      "Key Milestones"
     ]
   },
   {
-    id: "distributed-ledger",
-    title: "2.2 Distributed Ledger Technology",
-    path: "/modules/module2/distributed-ledger",
+    id: "bitcoin-investment",
+    title: "2.2 Bitcoin as an Investment",
+    path: "/modules/module2/bitcoin-investment",
     icon: Network,
     subsections: [
-      "Key Characteristics of DLT",
-      "Types of Distributed Ledgers",
-      "Applications of DLT",
-      "Challenges and Limitations"
+      "Understanding Bitcoin's Value",
+      "Store of Value Properties",
+      "Bitcoin ETFs",
+      "Investment Strategies"
     ]
   },
   {
-    id: "consensus-mechanisms",
-    title: "2.3 Consensus Mechanisms",
-    path: "/modules/module2/consensus-mechanisms",
+    id: "security-risk",
+    title: "2.3 Security and Risk Management",
+    path: "/modules/module2/security-risk",
     icon: Code,
     subsections: [
-      "Proof of Work (PoW)",
-      "Proof of Stake (PoS)",
-      "Comparison of PoW and PoS",
-      "Other Consensus Mechanisms"
+      "Essential Security Practices",
+      "Risk Management Strategies",
+      "Common Mistakes to Avoid",
+      "Best Practices"
     ]
   },
   {
-    id: "smart-contracts",
-    title: "2.4 Smart Contracts",
-    path: "/modules/module2/smart-contracts",
+    id: "practical-exercises",
+    title: "2.4 Practical Exercises",
+    path: "/modules/module2/exercises",
     icon: FileText,
     subsections: [
-      "Key Characteristics",
-      "How Smart Contracts Work",
-      "Use Cases",
-      "Best Practices"
+      "Beginner Exercises",
+      "Advanced Exercises",
+      "Real-world Scenarios",
+      "Practice Quiz"
     ]
   }
 ];
@@ -75,7 +75,7 @@ export default function Module2() {
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-4xl font-bold text-blue-900 mb-6">
-          Module 2: Understanding Blockchain Technology
+          Module 2: Bitcoin Deep Dive
         </h1>
 
         <ModuleProgress moduleId={2} totalSections={moduleTopics.length} />
@@ -95,29 +95,28 @@ export default function Module2() {
                   <h2 className="text-2xl font-semibold mb-4">Welcome to Module 2</h2>
                   <p className="text-gray-700 mb-6">
                     Welcome to Module 2 of our cryptocurrency education journey. This module focuses on 
-                    blockchain technology, the revolutionary system that powers cryptocurrencies and 
-                    enables countless other applications.
+                    Bitcoin - the first and most influential cryptocurrency. We'll explore its history,
+                    how it works, and its role as a revolutionary form of digital money.
                   </p>
                   <p className="text-gray-700 mb-6">
-                    We'll explore the fundamental concepts of blockchain technology, including how blocks 
-                    are structured and chained together, consensus mechanisms that secure the network, 
-                    and smart contracts that enable automation.
+                    Before diving into Bitcoin's technical aspects, let's address some common concerns:
                   </p>
-                  <p className="text-gray-700 mb-6">
-                    You'll learn about practical applications of blockchain technology and discover
-                    how this technology is transforming various industries beyond cryptocurrencies.
-                  </p>
+                  <ul className="list-disc pl-6 space-y-2 text-gray-700">
+                    <li><strong>Do I need to buy a whole Bitcoin?</strong> No! Bitcoin is divisible into 100 million units called "satoshis" or "sats." You can start with as little as $10.</li>
+                    <li><strong>Is it too technical for me?</strong> While Bitcoin uses complex technology, using it is similar to mobile banking. Start with the basics, and your understanding will grow naturally.</li>
+                    <li><strong>What if I make a mistake?</strong> Start with small amounts while learning. Use test transactions and practice with minimal stakes to build confidence.</li>
+                  </ul>
 
                   <h3 className="text-xl font-semibold mt-8 mb-4">Learning Objectives</h3>
                   <ul className="list-disc pl-6 space-y-2 text-gray-700">
-                    <li>Understand the fundamental structure and operation of blockchain technology</li>
-                    <li>Learn about distributed ledger technology and its applications</li>
-                    <li>Master different consensus mechanisms and their importance</li>
-                    <li>Explore smart contracts and their real-world applications</li>
+                    <li>Understand the historical context and significance of Bitcoin</li>
+                    <li>Learn how Bitcoin works as a digital currency</li>
+                    <li>Explore investment considerations and Bitcoin ETFs</li>
+                    <li>Master security practices and risk management</li>
                   </ul>
 
                   <div className="mt-8 flex justify-center">
-                    <Link href="/modules/module2/blockchain-basics">
+                    <Link href="/modules/module2/bitcoin-fundamentals">
                       <Button 
                         size="lg"
                         className="bg-blue-600 hover:bg-blue-700"
@@ -173,7 +172,7 @@ export default function Module2() {
                 <h2 className="text-2xl font-semibold mb-4">Module Quiz</h2>
                 <p className="text-gray-700 mb-6">
                   Complete all topics to unlock the module quiz and test your knowledge 
-                  of blockchain technology.
+                  of Bitcoin concepts.
                 </p>
                 <div className="bg-white p-6 rounded-lg shadow-sm">
                   <h3 className="text-lg font-medium text-gray-700 mb-4">Required Topics:</h3>
