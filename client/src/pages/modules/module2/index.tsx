@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, BookOpen, CheckCircle2, Lock } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCircle2 } from "lucide-react";
 
 export default function Module2() {
   useScrollTop();
@@ -14,26 +14,26 @@ export default function Module2() {
   const sections = [
     {
       id: "blockchain-basics",
-      title: "2.1 Blockchain Basics",
-      description: "Learn about the fundamental structure and operation of blockchain technology.",
+      title: "2.1 What is a Blockchain?",
+      description: "Learn about blockchain's fundamental structure, characteristics, and how it compares to traditional databases.",
       href: "/modules/module2/blockchain-basics"
     },
     {
       id: "distributed-ledger",
       title: "2.2 Distributed Ledger Technology",
-      description: "Understand distributed ledger technology and its applications.",
+      description: "Explore distributed ledger technology (DLT), its types, applications, and limitations.",
       href: "/modules/module2/distributed-ledger"
     },
     {
       id: "consensus-mechanisms",
       title: "2.3 Consensus Mechanisms",
-      description: "Explore different consensus mechanisms and their importance.",
+      description: "Understand different consensus mechanisms like Proof of Work (PoW) and Proof of Stake (PoS).",
       href: "/modules/module2/consensus-mechanisms"
     },
     {
       id: "smart-contracts",
       title: "2.4 Smart Contracts",
-      description: "Master smart contracts and their real-world applications.",
+      description: "Master smart contracts, their characteristics, applications, and best practices.",
       href: "/modules/module2/smart-contracts"
     }
   ];
@@ -67,13 +67,15 @@ export default function Module2() {
               <div className="prose max-w-none">
                 <p className="text-gray-600">
                   Welcome to Module 2! In this module, you'll learn about the revolutionary 
-                  technology behind cryptocurrencies - blockchain. We'll explore:
+                  technology behind cryptocurrencies - blockchain. We'll explore its fundamental 
+                  concepts, applications, and how it's transforming various industries.
                 </p>
+                <h3 className="text-xl font-semibold mt-4 mb-2">What You'll Learn:</h3>
                 <ul className="list-disc pl-6 space-y-2 text-gray-600">
-                  <li>How blockchain works and its fundamental structure</li>
-                  <li>The power of distributed ledger technology</li>
+                  <li>The fundamental structure and characteristics of blockchain technology</li>
+                  <li>How distributed ledger technology works and its various applications</li>
                   <li>Different consensus mechanisms that secure blockchain networks</li>
-                  <li>Smart contracts and their practical applications</li>
+                  <li>Smart contracts and their real-world implementations</li>
                 </ul>
               </div>
             </CardContent>
