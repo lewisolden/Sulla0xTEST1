@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { useProgress } from "@/context/progress-context";
+import { Link } from "wouter";
 
 const quizQuestions = [
   {
@@ -124,12 +125,23 @@ const EthereumFundamentalsQuiz = () => {
               </p>
             </div>
           )}
-          <Button 
-            onClick={restartQuiz}
-            className="bg-blue-500 hover:bg-blue-600"
-          >
-            Restart Quiz
-          </Button>
+          <div className="flex flex-col gap-4 mt-6">
+            <Button 
+              onClick={restartQuiz}
+              className="bg-blue-500 hover:bg-blue-600"
+            >
+              Restart Quiz
+            </Button>
+            {score >= 3 && (
+              <Link href="/modules/module3/smart-contracts">
+                <Button 
+                  className="bg-green-600 hover:bg-green-700 w-full"
+                >
+                  Continue to Smart Contracts →
+                </Button>
+              </Link>
+            )}
+          </div>
         </Card>
       </div>
     );
