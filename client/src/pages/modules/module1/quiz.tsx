@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowLeft, CheckCircle, XCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle, XCircle } from "lucide-react";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
 
@@ -243,15 +243,28 @@ const QuizPage = () => {
                         </p>
                       </div>
                     )}
-                    <div className="mt-6 flex justify-center">
+                    <div className="mt-6 flex flex-col md:flex-row justify-center gap-4">
                       <Link href="/modules/module1">
                         <Button 
                           size="lg"
-                          className="bg-blue-600 hover:bg-blue-700"
+                          variant="outline"
+                          className="w-full md:w-auto"
                         >
+                          <ArrowLeft className="mr-2 h-4 w-4" />
                           Return to Module Overview
                         </Button>
                       </Link>
+                      {calculateScore() >= questions.length * 0.7 && (
+                        <Link href="/modules/module2">
+                          <Button 
+                            size="lg"
+                            className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
+                          >
+                            Next Module: Blockchain Technology
+                            <ArrowRight className="ml-2 h-4 w-4" />
+                          </Button>
+                        </Link>
+                      )}
                     </div>
                   </motion.div>
                 )}
