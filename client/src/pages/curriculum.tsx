@@ -4,64 +4,57 @@ import { motion } from "framer-motion";
 import Footer from "@/components/layout/footer";
 import { PersonalizedPath } from "@/components/learning/personalized-path";
 
-const modules = [
-  {
-    id: 1,
-    icon: BookOpen,
-    title: "Module 1: Understanding Cryptocurrency",
-    description: "Master the fundamentals of cryptocurrency through interactive learning and practical exercises.",
-    sections: [
-      "Introduction to Digital Currencies",
-      "Understanding Security",
-      "Practical Applications",
-      "Getting Started Safely",
-      "Module Quiz",
-      "Interactive Exercises"
-    ],
-    path: "/modules/module1"
-  },
-  {
-    id: 2,
-    icon: GraduationCap,
-    title: "Module 2: Bitcoin Fundamentals",
-    description: "Deep dive into Bitcoin, investment strategies, and security considerations.",
-    sections: [
-      "Bitcoin Fundamentals",
-      "Bitcoin Investment",
-      "Security & Risk Management",
-      "Exercises",
-      "Module Quiz"
-    ],
-    path: "/modules/module2"
-  },
-  {
-    id: 3,
-    icon: Zap,
-    title: "Module 3: Ethereum & Smart Contracts",
-    description: "Explore Ethereum, smart contracts, and their practical applications.",
-    sections: [
-      "Ethereum Fundamentals",
-      "Smart Contracts",
-      "Investment Value",
-      "Security Risks",
-      "Exercises",
-      "Quiz"
-    ],
-    path: "/modules/module3"
-  },
-  {
-    id: 4,
-    icon: CreditCard,
-    title: "Module 4: Digital vs Traditional Finance",
-    description: "Compare traditional and digital financial systems, understanding their evolution and impact.",
-    sections: [
-      "Digital vs Traditional Systems",
-      "Future of Finance",
-      "Case Studies"
-    ],
-    path: "/modules/module4"
-  }
-];
+const course = {
+  id: 1,
+  title: "Course 1: Introduction to Cryptocurrency",
+  description: "A comprehensive introduction to cryptocurrency, blockchain technology, and digital finance through interactive learning experiences.",
+  modules: [
+    {
+      id: 1,
+      icon: BookOpen,
+      title: "Module 1: Understanding Cryptocurrency",
+      description: "Master the fundamentals of cryptocurrency through interactive learning and practical exercises.",
+      sections: [
+        "Topic 1 - Introduction to Digital Currency",
+        "Topic 2 - Understanding Cryptocurrency Security",
+        "Topic 3 - Practical Applications",
+        "Topic 4 - Getting Started Safely",
+        "Interactive Exercises",
+        "Module Quiz"
+      ],
+      path: "/modules/module1"
+    },
+    {
+      id: 2,
+      icon: GraduationCap,
+      title: "Module 2: Bitcoin Fundamentals",
+      description: "Deep dive into Bitcoin, investment strategies, and security considerations.",
+      sections: [
+        "Bitcoin Fundamentals",
+        "Bitcoin Investment",
+        "Security & Risk Management",
+        "Interactive Exercises",
+        "Module Quiz"
+      ],
+      path: "/modules/module2"
+    },
+    {
+      id: 3,
+      icon: Zap,
+      title: "Module 3: Ethereum & Smart Contracts",
+      description: "Explore Ethereum, smart contracts, and their practical applications.",
+      sections: [
+        "Ethereum Fundamentals",
+        "Smart Contracts",
+        "Investment Value",
+        "Security Risks",
+        "Interactive Exercises",
+        "Module Quiz"
+      ],
+      path: "/modules/module3"
+    }
+  ]
+};
 
 const simulators = [
   {
@@ -83,19 +76,28 @@ export default function Curriculum() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 py-16">
       <div className="container mx-auto px-4 max-w-6xl">
         <motion.h1 
-          className="text-4xl font-bold text-blue-900 mb-12 text-center"
+          className="text-4xl font-bold text-blue-900 mb-6 text-center"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          Your Cryptocurrency Learning Journey
+          {course.title}
         </motion.h1>
+
+        <motion.p
+          className="text-xl text-blue-700 mb-12 text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          {course.description}
+        </motion.p>
 
         <div className="mb-12">
           <PersonalizedPath />
         </div>
 
         <div className="space-y-8">
-          {modules.map((module) => (
+          {course.modules.map((module) => (
             <motion.div 
               key={module.id} 
               className="bg-white shadow-lg rounded-lg p-8 hover:shadow-xl transition-all duration-300"
