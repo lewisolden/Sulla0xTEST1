@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
 import { Wrench, Code, BookOpen, Award } from "lucide-react";
-import Mermaid from "@/components/diagrams/Mermaid";
+import { Mermaid } from "@/components/diagrams/Mermaid";
 
 const ExercisesSection = () => {
   const [isFullyRead, setIsFullyRead] = useState(false);
