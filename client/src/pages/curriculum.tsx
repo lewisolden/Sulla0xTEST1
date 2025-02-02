@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { BookOpen, GraduationCap, Zap, Gamepad2, CreditCard } from "lucide-react";
+import { BookOpen, GraduationCap, Zap, Gamepad2, CreditCard, Dumbbell } from "lucide-react";
 import { motion } from "framer-motion";
 import Footer from "@/components/layout/footer";
 import { PersonalizedPath } from "@/components/learning/personalized-path";
@@ -151,6 +151,29 @@ export default function Curriculum() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
+        >
+          <div className="flex items-center gap-4 mb-6">
+            <Dumbbell className="h-8 w-8 text-blue-600" />
+            <h2 className="text-2xl font-semibold text-blue-800">Practical Exercises</h2>
+          </div>
+          <p className="text-blue-700 mb-6">
+            Put your knowledge into practice with our comprehensive set of interactive exercises and hands-on activities.
+          </p>
+          <div className="text-center">
+            <Link href="/modules/module1/exercises">
+              <button className="bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 transition duration-300 flex items-center gap-2 mx-auto">
+                <Dumbbell className="h-5 w-5" />
+                Start Exercises
+              </button>
+            </Link>
+          </div>
+        </motion.div>
+
+        <motion.div 
+          className="mt-12 bg-white shadow-lg rounded-lg p-8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.9 }}
         >
           <h2 className="text-2xl font-semibold text-blue-800 mb-6">Interactive Learning Tools</h2>
           <div className="grid md:grid-cols-2 gap-6">
