@@ -5,7 +5,7 @@ import { useProgress } from "@/context/progress-context";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
-import { Wrench, Code, BookOpen, Award } from "lucide-react";
+import { Wrench, Code, BookOpen, Award, Terminal } from "lucide-react";
 
 export default function ExercisesPage() {
   const [isFullyRead, setIsFullyRead] = useState(false);
@@ -49,91 +49,109 @@ export default function ExercisesPage() {
         </motion.h1>
 
         <div className="space-y-8">
-          {/* Exercise 1 */}
+          {/* Exercise 1: Wallet Setup */}
           <Card className="p-6">
             <div className="flex items-center gap-2 mb-4">
               <Wrench className="w-6 h-6 text-blue-600" />
               <h2 className="text-2xl font-bold text-blue-700">Exercise 1: Ethereum Wallet Setup and Security</h2>
             </div>
             <div className="space-y-4">
-              <h3 className="text-xl font-semibold text-blue-600">Basic Wallet Operations</h3>
+              <p className="text-gray-700">Set up and configure your Ethereum development environment:</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h4 className="font-semibold mb-2">Wallet Creation and Management</h4>
+                  <h4 className="font-semibold mb-2">Wallet Setup</h4>
                   <ul className="list-disc pl-5 space-y-2">
                     <li>Install MetaMask extension</li>
-                    <li>Create new wallet</li>
-                    <li>Secure recovery phrase</li>
+                    <li>Create a new wallet</li>
+                    <li>Securely store recovery phrase</li>
                     <li>Configure security settings</li>
                   </ul>
                 </div>
                 <div>
                   <h4 className="font-semibold mb-2">Network Configuration</h4>
                   <ul className="list-disc pl-5 space-y-2">
-                    <li>Add test networks</li>
-                    <li>Switch between networks</li>
-                    <li>Understand gas settings</li>
-                    <li>Manage network connections</li>
+                    <li>Connect to Ethereum testnet</li>
+                    <li>Request test ETH from faucet</li>
+                    <li>Configure gas settings</li>
+                    <li>Verify network connection</li>
                   </ul>
                 </div>
               </div>
             </div>
           </Card>
 
-          {/* Exercise 2 */}
+          {/* Exercise 2: Smart Contract Development */}
           <Card className="p-6">
             <div className="flex items-center gap-2 mb-4">
               <Code className="w-6 h-6 text-blue-600" />
               <h2 className="text-2xl font-bold text-blue-700">Exercise 2: Smart Contract Development</h2>
             </div>
             <div className="space-y-4">
-              <h3 className="text-xl font-semibold text-blue-600">Development Workflow</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+              <p className="text-gray-700">Learn to write and deploy smart contracts using Remix IDE:</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h4 className="font-semibold mb-2">Contract Development</h4>
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>Write simple contracts</li>
-                    <li>Test and debug</li>
-                    <li>Deploy to testnet</li>
-                    <li>Verify contracts</li>
-                  </ul>
+                  <h4 className="font-semibold mb-2">Basic Contract</h4>
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <pre className="text-sm overflow-x-auto">
+                      <code className="language-solidity">
+{`// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract BasicStorage {
+    uint256 private value;
+
+    event ValueChanged(uint256 newValue);
+
+    function setValue(uint256 _value) public {
+        value = _value;
+        emit ValueChanged(_value);
+    }
+
+    function getValue() public view returns (uint256) {
+        return value;
+    }
+}`}
+                      </code>
+                    </pre>
+                  </div>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">Smart Contract Interaction</h4>
+                  <h4 className="font-semibold mb-2">Development Steps</h4>
                   <ul className="list-disc pl-5 space-y-2">
-                    <li>Connect to contracts</li>
-                    <li>Call functions</li>
-                    <li>Handle events</li>
-                    <li>Monitor transactions</li>
+                    <li>Set up Remix IDE environment</li>
+                    <li>Write and compile the contract</li>
+                    <li>Deploy to testnet</li>
+                    <li>Interact with contract functions</li>
                   </ul>
                 </div>
               </div>
             </div>
           </Card>
 
-          {/* Project */}
+          {/* Project: DeFi Application */}
           <Card className="p-6">
             <div className="flex items-center gap-2 mb-4">
-              <BookOpen className="w-6 h-6 text-blue-600" />
+              <Terminal className="w-6 h-6 text-blue-600" />
               <h2 className="text-2xl font-bold text-blue-700">Project: Build a DeFi Application</h2>
             </div>
             <div className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+              <p className="text-gray-700">Create a decentralized application with the following features:</p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h4 className="font-semibold mb-2">Project Components</h4>
+                  <h4 className="font-semibold mb-2">Implementation Tasks</h4>
                   <ul className="list-disc pl-5 space-y-2">
-                    <li>Smart contract development</li>
-                    <li>Frontend integration</li>
-                    <li>Web3 connectivity</li>
+                    <li>Token smart contract</li>
+                    <li>Web3 integration</li>
+                    <li>Wallet connectivity</li>
                     <li>Transaction handling</li>
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">Advanced Features</h4>
+                  <h4 className="font-semibold mb-2">Security Considerations</h4>
                   <ul className="list-disc pl-5 space-y-2">
-                    <li>Token integration</li>
-                    <li>Wallet connection</li>
-                    <li>State management</li>
+                    <li>Input validation</li>
+                    <li>Access control</li>
+                    <li>Gas optimization</li>
                     <li>Error handling</li>
                   </ul>
                 </div>
@@ -152,19 +170,19 @@ export default function ExercisesPage() {
                 <div>
                   <h4 className="font-semibold mb-2">Evaluation Criteria</h4>
                   <ul className="list-disc pl-5 space-y-2">
-                    <li>Code quality</li>
-                    <li>Security practices</li>
-                    <li>Documentation</li>
-                    <li>Testing coverage</li>
+                    <li>Code quality and organization</li>
+                    <li>Security best practices</li>
+                    <li>Documentation completeness</li>
+                    <li>Test coverage</li>
                   </ul>
                 </div>
                 <div>
                   <h4 className="font-semibold mb-2">Deliverables</h4>
                   <ul className="list-disc pl-5 space-y-2">
-                    <li>Working application</li>
-                    <li>Source code</li>
-                    <li>Documentation</li>
-                    <li>Test results</li>
+                    <li>Working DeFi application</li>
+                    <li>Source code repository</li>
+                    <li>Technical documentation</li>
+                    <li>Test suite results</li>
                   </ul>
                 </div>
               </div>
