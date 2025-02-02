@@ -5,6 +5,7 @@ import { useProgress } from "@/context/progress-context";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
+import EthereumFundamentalsQuiz from "@/components/quizzes/EthereumFundamentalsQuiz";
 import mermaid from "mermaid";
 
 const MermaidDiagram = ({ chart }) => {
@@ -50,6 +51,7 @@ const MermaidDiagram = ({ chart }) => {
 const EthereumFundamentalsSection = () => {
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [showQuiz, setShowQuiz] = useState(false);
   const { updateProgress } = useProgress();
 
   useEffect(() => {
@@ -141,6 +143,26 @@ const EthereumFundamentalsSection = () => {
     C->>N: Execute Code
     N-->>C: Update State
     C-->>U: Return Result`;
+
+  const startQuiz = () => {
+    setShowQuiz(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  if (showQuiz) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <Button 
+          onClick={() => setShowQuiz(false)}
+          className="mb-6"
+          variant="outline"
+        >
+          ← Back to Content
+        </Button>
+        <EthereumFundamentalsQuiz />
+      </div>
+    );
+  }
 
   return (
     <motion.div 
@@ -260,6 +282,28 @@ const EthereumFundamentalsSection = () => {
           </div>
         </Card>
 
+        {isFullyRead && (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-8"
+          >
+            <Card className="bg-green-100 border-l-4 border-green-500 p-4">
+              <div className="flex flex-col items-center">
+                <p className="text-green-700 mb-4">
+                  🎉 Congratulations! You've completed the Ethereum Fundamentals section!
+                </p>
+                <Button
+                  onClick={startQuiz}
+                  className="bg-green-600 hover:bg-green-700 text-white"
+                >
+                  Take Section Quiz
+                </Button>
+              </div>
+            </Card>
+          </motion.div>
+        )}
+
         <ModuleNavigation
           prev={{
             path: "/modules/module3",
@@ -270,20 +314,6 @@ const EthereumFundamentalsSection = () => {
             label: "Smart Contract Development"
           }}
         />
-
-        {isFullyRead && (
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mt-8"
-          >
-            <Card className="bg-green-100 border-l-4 border-green-500 p-4">
-              <p className="text-green-700">
-                🎉 Congratulations! You've completed the Ethereum Fundamentals section!
-              </p>
-            </Card>
-          </motion.div>
-        )}
       </div>
     </motion.div>
   );
