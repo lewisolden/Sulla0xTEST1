@@ -133,11 +133,11 @@ const SmartContractsQuiz = () => {
               Restart Quiz
             </Button>
             {score >= 3 && (
-              <Link href="/modules/module3/practical-applications">
+              <Link href="/modules/module3/investment-value">
                 <Button 
                   className="bg-green-600 hover:bg-green-700 w-full"
                 >
-                  Continue to Practical Applications →
+                  Continue to Investment and Value →
                 </Button>
               </Link>
             )}
