@@ -86,6 +86,7 @@ export default function Module3() {
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="content">Topics</TabsTrigger>
+            <TabsTrigger value="exercises">Exercises</TabsTrigger>
             <TabsTrigger value="quiz">Quiz</TabsTrigger>
           </TabsList>
 
@@ -174,6 +175,41 @@ export default function Module3() {
                 </Card>
               ))}
             </div>
+          </TabsContent>
+
+          <TabsContent value="exercises">
+            <Card>
+              <CardContent className="pt-6">
+                <div className="prose max-w-none">
+                  <h2 className="text-3xl font-bold text-blue-800 mb-6 text-center">
+                    Practical Exercises
+                  </h2>
+
+                  <div className="space-y-4 text-gray-700">
+                    <p>
+                      Put your Ethereum and Smart Contract knowledge into practice with our hands-on exercises. These practical sessions will help you:
+                    </p>
+                    <ul className="list-disc pl-6 space-y-2">
+                      <li>Work with smart contracts in a safe environment</li>
+                      <li>Understand common development patterns</li>
+                      <li>Practice security best practices</li>
+                      <li>Build real-world DApps</li>
+                    </ul>
+                  </div>
+
+                  <div className="mt-8 flex justify-center">
+                    <Link href="/modules/module3/exercises">
+                      <Button
+                        size="lg"
+                        className="bg-blue-600 hover:bg-blue-700"
+                      >
+                        Start Exercises
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="quiz">
