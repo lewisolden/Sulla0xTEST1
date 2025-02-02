@@ -6,44 +6,55 @@ import { useProgress } from "@/context/progress-context";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { Scale, Network, Code } from "lucide-react";
+import { Scale, Network, Code, Shield } from "lucide-react";
 
 const moduleTopics = [
   {
-    id: "scalability-interoperability",
-    title: "3.1 Blockchain Scalability and Interoperability",
-    path: "/modules/module3/scalability-interoperability",
+    id: "ethereum-fundamentals",
+    title: "3.1 Ethereum Fundamentals",
+    path: "/modules/module3/ethereum-fundamentals",
     icon: Scale,
     subsections: [
-      "The Scalability Trilemma",
-      "Scalability Challenges and Solutions",
-      "Blockchain Interoperability",
-      "Cross-Chain Communication"
+      "Smart Contracts",
+      "The Ethereum Virtual Machine (EVM)",
+      "Decentralized Applications (dApps)",
+      "Platform Architecture"
     ]
   },
   {
-    id: "blockchain-types",
-    title: "3.2 Different Types of Blockchains",
-    path: "/modules/module3/blockchain-types",
-    icon: Network,
-    subsections: [
-      "Public Blockchains",
-      "Private Blockchains",
-      "Consortium Blockchains",
-      "Comparison of Blockchain Types"
-    ]
-  },
-  {
-    id: "practical-applications",
-    title: "3.3 Practical Applications",
-    path: "/modules/module3/practical-applications",
+    id: "smart-contracts",
+    title: "3.2 Smart Contract Development",
+    path: "/modules/module3/smart-contracts",
     icon: Code,
     subsections: [
-      "Supply Chain Management",
-      "Real Estate",
-      "Voting Systems",
-      "Healthcare Applications",
-      "Travel and Tourism"
+      "Smart Contract Basics",
+      "Development Environment",
+      "Best Practices",
+      "Common Patterns"
+    ]
+  },
+  {
+    id: "investment-value",
+    title: "3.3 Investment and Value",
+    path: "/modules/module3/investment-value",
+    icon: Network,
+    subsections: [
+      "Network Effects",
+      "Developer Ecosystem",
+      "Economic Model",
+      "Staking Economics"
+    ]
+  },
+  {
+    id: "security-risks",
+    title: "3.4 Security and Risk Management",
+    path: "/modules/module3/security-risks",
+    icon: Shield,
+    subsections: [
+      "Smart Contract Security",
+      "Technical Vulnerabilities",
+      "Economic Attack Vectors",
+      "Risk Management Practices"
     ]
   }
 ];
@@ -63,7 +74,7 @@ export default function Module3() {
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
         <h1 className="text-4xl font-bold text-blue-900 mb-6">
-          Module 3: Advanced Blockchain Technology
+          Module 3: Ethereum and Smart Contracts
         </h1>
 
         <div className="mb-8">
@@ -88,42 +99,34 @@ export default function Module3() {
 
                   <div className="space-y-4 text-gray-700">
                     <p>
-                      Welcome to Module 3, where we delve deep into the heart of blockchain technology. Having explored the fundamentals of cryptocurrencies and the basic concept of blockchain in previous modules, we now turn our attention to the intricate technical aspects that make this revolutionary technology possible.
+                      Welcome to Module 3, where we explore Ethereum and smart contracts. Unlike Bitcoin's primary focus on monetary transactions, Ethereum represents a fundamental shift in blockchain technology, serving as a global, decentralized computing platform capable of running applications and handling complex financial interactions.
                     </p>
 
                     <p>
-                      In this module, we will unpack the core components that comprise a blockchain system. We'll examine the cryptographic principles that ensure the security and integrity of the blockchain, and explore how these elements work together to create a tamper-resistant, distributed ledger. You'll gain a comprehensive understanding of different types of blockchain networks, from public to private and consortium blockchains, and learn to evaluate their strengths and weaknesses in various contexts.
+                      In this module, you'll learn about Ethereum's key innovation: programmability. While Bitcoin excels at being digital money, Ethereum acts as a complete computational platform supporting decentralized applications (dApps), smart contracts, and various digital assets.
                     </p>
 
                     <p>
-                      We'll also tackle some of the most pressing challenges facing blockchain technology today, particularly issues of scalability, and discuss potential solutions being developed. The process of mining, crucial to many blockchain networks, will be thoroughly explained, along with the concept of forking and its implications for blockchain evolution.
+                      We'll dive deep into smart contracts, the building blocks of Ethereum applications, and explore how they enable automated, trustless interactions. You'll understand the Ethereum Virtual Machine (EVM), the engine that powers all Ethereum operations, and learn about the growing ecosystem of decentralized applications.
                     </p>
 
                     <p>
-                      Beyond the technical aspects, this module will bridge theory and practice by examining real-world applications of blockchain across various industries. We'll explore how smart contracts are revolutionising automated, trustless transactions, and discuss the potential future developments in this rapidly evolving field.
-                    </p>
-
-                    <p>
-                      By the end of this module, you'll have a robust understanding of blockchain technology, equipping you with the knowledge to critically assess its applications and potential impact across different sectors. Whether you're aiming to develop blockchain solutions, integrate them into existing systems, or simply gain a deeper understanding of this transformative technology, this module will provide you with the comprehensive insights you need.
+                      The module also covers investment considerations, exploring Ethereum's value proposition, network effects, and economic model. Finally, we'll address critical security considerations and risk management practices essential for anyone working with Ethereum and smart contracts.
                     </p>
                   </div>
 
                   <h3 className="text-xl font-semibold mt-8 mb-4">Learning Objectives</h3>
                   <ul className="list-disc pl-6 space-y-2 text-gray-700">
-                    <li>Explain the core components and architecture of a blockchain system</li>
-                    <li>Analyse the role of cryptography in ensuring blockchain security and integrity</li>
-                    <li>Compare and contrast different types of blockchain networks (public, private, and consortium)</li>
-                    <li>Evaluate the scalability challenges faced by blockchain systems and potential solutions</li>
-                    <li>Describe the process of mining and its role in maintaining the blockchain</li>
-                    <li>Discuss the concept of forking in blockchain and its implications</li>
-                    <li>Examine real-world applications of blockchain technology across various industries</li>
-                    <li>Assess the advantages and limitations of blockchain technology in different use cases</li>
-                    <li>Explain the concept of smart contracts and their implementation on blockchain platforms</li>
-                    <li>Analyse the future trends and potential developments in blockchain technology</li>
+                    <li>Understand Ethereum's role as a programmable blockchain platform</li>
+                    <li>Master the fundamentals of smart contracts and their applications</li>
+                    <li>Explore the Ethereum Virtual Machine and its capabilities</li>
+                    <li>Learn about decentralized applications (dApps) and their ecosystem</li>
+                    <li>Analyze Ethereum's value proposition and investment considerations</li>
+                    <li>Understand security best practices and risk management</li>
                   </ul>
 
                   <div className="mt-8 flex justify-center">
-                    <Link href="/modules/module3/scalability-interoperability">
+                    <Link href="/modules/module3/ethereum-fundamentals">
                       <Button
                         size="lg"
                         className="bg-blue-600 hover:bg-blue-700"
