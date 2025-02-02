@@ -5,12 +5,14 @@ import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, TrendingUp, ShieldCheck, PieChart } from "lucide-react";
+import { SecurityDiagram } from "@/components/diagrams/SecurityDiagram";
 
 export default function BitcoinInvestmentSection() {
   useScrollTop();
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [selectedRisk, setSelectedRisk] = useState<string | null>(null);
   const { updateProgress } = useProgress();
 
   useEffect(() => {
@@ -34,6 +36,27 @@ export default function BitcoinInvestmentSection() {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 }
   };
+
+  const riskLevels = [
+    {
+      title: "Low Risk",
+      description: "Bitcoin ETFs and regulated investment products",
+      color: "bg-green-100 hover:bg-green-200",
+      textColor: "text-green-700"
+    },
+    {
+      title: "Medium Risk",
+      description: "Direct Bitcoin purchases through established exchanges",
+      color: "bg-yellow-100 hover:bg-yellow-200",
+      textColor: "text-yellow-700"
+    },
+    {
+      title: "High Risk",
+      description: "Trading with leverage or new crypto assets",
+      color: "bg-red-100 hover:bg-red-200",
+      textColor: "text-red-700"
+    }
+  ];
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -74,7 +97,46 @@ export default function BitcoinInvestmentSection() {
             initial="hidden"
             animate="visible"
           >
-            <h2 className="text-3xl font-bold text-blue-700">Understanding Bitcoin's Value</h2>
+            <h2 className="text-3xl font-bold text-blue-700">Investment Security</h2>
+            <SecurityDiagram />
+          </motion.section>
+
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
+            className="mt-12"
+          >
+            <h2 className="text-3xl font-bold text-blue-700">Risk Assessment</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+              {riskLevels.map((level) => (
+                <motion.div
+                  key={level.title}
+                  className={`${level.color} p-6 rounded-lg cursor-pointer`}
+                  whileHover={{ scale: 1.02 }}
+                  onClick={() => setSelectedRisk(level.title)}
+                  animate={{
+                    scale: selectedRisk === level.title ? 1.02 : 1,
+                    borderWidth: selectedRisk === level.title ? 2 : 0,
+                    borderColor: selectedRisk === level.title ? '#4F46E5' : 'transparent'
+                  }}
+                >
+                  <h3 className={`text-xl font-semibold ${level.textColor} mb-2`}>
+                    {level.title}
+                  </h3>
+                  <p className="text-gray-700">{level.description}</p>
+                </motion.div>
+              ))}
+            </div>
+          </motion.section>
+
+
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <h2 className="text-3xl font-bold text-blue-700">Bitcoin's Value</h2>
             <h3 className="text-2xl font-semibold text-blue-600">Store of Value Properties</h3>
             <p>
               Bitcoin is often called "digital gold" because it shares key characteristics:
