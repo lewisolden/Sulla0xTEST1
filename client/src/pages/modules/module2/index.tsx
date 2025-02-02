@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, BookOpen, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCircle2, ArrowRight } from "lucide-react";
 
 export default function Module2() {
   useScrollTop();
@@ -40,6 +40,8 @@ export default function Module2() {
 
   const moduleProgress = progress.filter(p => p.moduleId === 2);
   const completedSections = moduleProgress.filter(p => p.completed).length;
+  const isModuleComplete = moduleProgress.length === sections.length && 
+    moduleProgress.every(p => p.completed);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -118,6 +120,21 @@ export default function Module2() {
               );
             })}
           </div>
+
+          {isModuleComplete && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="mt-8"
+            >
+              <Link href="/modules/module3">
+                <Button className="w-full md:w-auto bg-green-600 hover:bg-green-700">
+                  Continue to Module 3: Advanced Concepts
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </motion.div>
+          )}
         </motion.div>
       </div>
     </div>
