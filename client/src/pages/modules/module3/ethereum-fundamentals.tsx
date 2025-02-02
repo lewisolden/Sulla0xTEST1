@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
@@ -7,14 +7,57 @@ import { Button } from "@/components/ui/button";
 import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
 import mermaid from "mermaid";
 
+// Mermaid diagram component
+const MermaidDiagram = ({ chart }) => {
+  const [svg, setSvg] = useState('');
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const renderDiagram = async () => {
+      try {
+        const { svg } = await mermaid.render('mermaid-diagram', chart);
+        setSvg(svg);
+      } catch (err) {
+        console.error('Failed to render mermaid diagram:', err);
+        setError('Failed to render diagram');
+      }
+    };
+
+    renderDiagram();
+  }, [chart]);
+
+  if (error) {
+    return <div className="text-red-500">{error}</div>;
+  }
+
+  return (
+    <div 
+      className="mermaid-diagram" 
+      dangerouslySetInnerHTML={{ __html: svg }} 
+    />
+  );
+};
+
 const EthereumFundamentalsSection = () => {
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const { updateProgress } = useProgress();
 
   useEffect(() => {
-    // Initialize mermaid
-    mermaid.initialize({ startOnLoad: true });
+    // Initialize mermaid with custom config
+    mermaid.initialize({ 
+      startOnLoad: true,
+      theme: 'neutral',
+      securityLevel: 'loose',
+      themeVariables: {
+        primaryColor: '#3b82f6',
+        primaryTextColor: '#1e3a8a',
+        primaryBorderColor: '#60a5fa',
+        lineColor: '#93c5fd',
+        secondaryColor: '#dbeafe',
+        tertiaryColor: '#eff6ff'
+      }
+    });
 
     const handleScroll = () => {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -49,6 +92,47 @@ const EthereumFundamentalsSection = () => {
     hidden: { opacity: 0, x: -20 },
     visible: { opacity: 1, x: 0 }
   };
+
+  // Mermaid diagram definitions
+  const comparisonDiagram = `
+    graph TD
+      subgraph Bitcoin
+      A[Transactions] --> B[Value Transfer]
+      end
+
+      subgraph Ethereum
+      C[Smart Contracts] --> D[dApps]
+      C --> E[DeFi]
+      C --> F[NFTs]
+      C --> G[DAOs]
+      end
+
+      style Bitcoin fill:#f9f9f9,stroke:#2563eb
+      style Ethereum fill:#f9f9f9,stroke:#2563eb
+      style A fill:#93c5fd
+      style B fill:#93c5fd
+      style C fill:#93c5fd
+      style D fill:#93c5fd
+      style E fill:#93c5fd
+      style F fill:#93c5fd
+      style G fill:#93c5fd
+  `;
+
+  const evmDiagram = `
+    sequenceDiagram
+      participant User
+      participant Contract
+      participant Network
+
+      User->>Contract: Interact
+      Contract->>Network: Execute Code
+      Network->>Contract: Update State
+      Contract->>User: Return Result
+
+      style User fill:#93c5fd
+      style Contract fill:#93c5fd
+      style Network fill:#93c5fd
+  `;
 
   return (
     <motion.div 
@@ -88,32 +172,9 @@ const EthereumFundamentalsSection = () => {
                 that can run applications and handle complex financial interactions.
               </p>
 
-              <div className="my-8 p-4 bg-gray-50 rounded-lg">
-                <pre className="mermaid">
-                  {`
-                    graph TD
-                      subgraph Bitcoin
-                      A[Transactions] --> B[Value Transfer]
-                      end
-
-                      subgraph Ethereum
-                      C[Smart Contracts] --> D[dApps]
-                      C --> E[DeFi]
-                      C --> F[NFTs]
-                      C --> G[DAOs]
-                      end
-
-                      style Bitcoin fill:#f9f9f9,stroke:#2563eb
-                      style Ethereum fill:#f9f9f9,stroke:#2563eb
-                      style A fill:#93c5fd
-                      style B fill:#93c5fd
-                      style C fill:#93c5fd
-                      style D fill:#93c5fd
-                      style E fill:#93c5fd
-                      style F fill:#93c5fd
-                      style G fill:#93c5fd
-                  `}
-                </pre>
+              <div className="my-8 p-4 bg-gray-50 rounded-lg shadow-inner">
+                <h3 className="text-xl font-semibold text-blue-700 mb-4">Bitcoin vs Ethereum Comparison</h3>
+                <MermaidDiagram chart={comparisonDiagram} />
               </div>
 
               <motion.div
@@ -122,7 +183,7 @@ const EthereumFundamentalsSection = () => {
               >
                 <motion.div
                   variants={itemVariants}
-                  className="bg-blue-50 p-6 rounded-lg"
+                  className="bg-blue-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                 >
                   <h4 className="font-semibold text-blue-700 mb-3">dApps</h4>
                   <p className="text-sm">Applications that run on the blockchain, ensuring continuous operation</p>
@@ -130,7 +191,7 @@ const EthereumFundamentalsSection = () => {
 
                 <motion.div
                   variants={itemVariants}
-                  className="bg-blue-50 p-6 rounded-lg"
+                  className="bg-blue-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                 >
                   <h4 className="font-semibold text-blue-700 mb-3">Smart Contracts</h4>
                   <p className="text-sm">Self-executing programs that automatically enforce agreements</p>
@@ -138,7 +199,7 @@ const EthereumFundamentalsSection = () => {
 
                 <motion.div
                   variants={itemVariants}
-                  className="bg-blue-50 p-6 rounded-lg"
+                  className="bg-blue-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                 >
                   <h4 className="font-semibold text-blue-700 mb-3">Digital Assets</h4>
                   <p className="text-sm">Create various types of tokens and digital assets</p>
@@ -153,30 +214,15 @@ const EthereumFundamentalsSection = () => {
             >
               <h2 className="text-2xl font-bold text-blue-700 mb-4">The Ethereum Virtual Machine (EVM)</h2>
 
-              <div className="my-8 p-4 bg-gray-50 rounded-lg">
-                <pre className="mermaid">
-                  {`
-                    sequenceDiagram
-                      participant User
-                      participant Contract
-                      participant Network
-
-                      User->>Contract: Interact
-                      Contract->>Network: Execute Code
-                      Network->>Contract: Update State
-                      Contract->>User: Return Result
-
-                      style User fill:#93c5fd
-                      style Contract fill:#93c5fd
-                      style Network fill:#93c5fd
-                  `}
-                </pre>
+              <div className="my-8 p-4 bg-gray-50 rounded-lg shadow-inner">
+                <h3 className="text-xl font-semibold text-blue-700 mb-4">EVM Transaction Flow</h3>
+                <MermaidDiagram chart={evmDiagram} />
               </div>
 
               <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <motion.div
                   variants={itemVariants}
-                  className="bg-white p-6 rounded-lg shadow-sm"
+                  className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                 >
                   <h4 className="font-semibold text-blue-700 mb-3">Execution Environment</h4>
                   <ul className="list-disc pl-5 space-y-2">
@@ -190,7 +236,7 @@ const EthereumFundamentalsSection = () => {
 
                 <motion.div
                   variants={itemVariants}
-                  className="bg-white p-6 rounded-lg shadow-sm"
+                  className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                 >
                   <h4 className="font-semibold text-blue-700 mb-3">Gas System</h4>
                   <ul className="list-disc pl-5 space-y-2">
