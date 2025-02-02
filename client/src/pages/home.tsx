@@ -140,6 +140,18 @@ export default function Home() {
             >
               <div className="flex items-start space-x-4">
                 <div className="bg-blue-100 p-2 rounded">
+                  <Brain className="w-6 h-6 text-blue-600" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">Interactive & Adaptive Learning</h3>
+                  <p className="text-gray-600">
+                    AI-powered learning paths that adapt to your understanding and pace
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-4">
+                <div className="bg-blue-100 p-2 rounded">
                   <Target className="w-6 h-6 text-blue-600" />
                 </div>
                 <div>
