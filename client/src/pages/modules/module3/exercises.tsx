@@ -5,7 +5,15 @@ import { useProgress } from "@/context/progress-context";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
-import { Wrench, Code, BookOpen, Award, Terminal } from "lucide-react";
+import { Wrench, Code, Award, Terminal } from "lucide-react";
+import Mermaid from "mermaid";
+
+// Initialize mermaid
+Mermaid.initialize({
+  startOnLoad: true,
+  theme: 'neutral',
+  securityLevel: 'loose',
+});
 
 export default function ExercisesPage() {
   const [isFullyRead, setIsFullyRead] = useState(false);
@@ -29,6 +37,22 @@ export default function ExercisesPage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [updateProgress]);
 
+  const contractLifecycleDiagram = `
+    graph TD
+      A[Write Contract] -->|Compile| B[Bytecode]
+      B --> C[Deploy]
+      C --> D[Contract Address]
+      D --> E[Interact]
+      E -->|Read| F[View Functions]
+      E -->|Write| G[State Changes]
+      G --> H[Emit Events]
+  `;
+
+  const containerVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="fixed top-0 left-0 w-full h-1 bg-gray-300 z-50">
@@ -50,102 +74,123 @@ export default function ExercisesPage() {
 
         <div className="space-y-8">
           {/* Exercise 1: Wallet Setup */}
-          <Card className="p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <Wrench className="w-6 h-6 text-blue-600" />
-              <h2 className="text-2xl font-bold text-blue-700">Exercise 1: Ethereum Wallet Setup and Security</h2>
-            </div>
-            <div className="space-y-4">
-              <p className="text-gray-700">Set up and configure your Ethereum development environment:</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h4 className="font-semibold mb-2">Wallet Setup</h4>
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>Install MetaMask extension</li>
-                    <li>Create a new wallet</li>
-                    <li>Securely store recovery phrase</li>
-                    <li>Configure security settings</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-2">Network Configuration</h4>
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>Connect to Ethereum testnet</li>
-                    <li>Request test ETH from faucet</li>
-                    <li>Configure gas settings</li>
-                    <li>Verify network connection</li>
-                  </ul>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <Card className="p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <Wrench className="w-6 h-6 text-blue-600" />
+                <h2 className="text-2xl font-bold text-blue-700">Exercise 1: Ethereum Wallet Setup and Security</h2>
+              </div>
+              <div className="space-y-4">
+                <p className="text-gray-700">Set up and configure your Ethereum development environment:</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
+                    <div className="bg-blue-50 p-6 rounded-lg">
+                      <h4 className="font-semibold mb-2">Wallet Setup</h4>
+                      <ul className="list-disc pl-5 space-y-2">
+                        <li>Install MetaMask extension</li>
+                        <li>Create a new wallet</li>
+                        <li>Securely store recovery phrase</li>
+                        <li>Configure security settings</li>
+                      </ul>
+                    </div>
+                  </motion.div>
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
+                    <div className="bg-blue-50 p-6 rounded-lg">
+                      <h4 className="font-semibold mb-2">Network Configuration</h4>
+                      <ul className="list-disc pl-5 space-y-2">
+                        <li>Connect to Ethereum testnet</li>
+                        <li>Request test ETH from faucet</li>
+                        <li>Configure gas settings</li>
+                        <li>Verify network connection</li>
+                      </ul>
+                    </div>
+                  </motion.div>
                 </div>
               </div>
-            </div>
-          </Card>
+            </Card>
+          </motion.div>
 
           {/* Exercise 2: Smart Contract Development */}
-          <Card className="p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <Code className="w-6 h-6 text-blue-600" />
-              <h2 className="text-2xl font-bold text-blue-700">Exercise 2: Smart Contract Development</h2>
-            </div>
-            <div className="space-y-4">
-              <p className="text-gray-700">Learn to write and deploy smart contracts using Remix IDE:</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h4 className="font-semibold mb-2">Basic Contract</h4>
-                  <div className="space-y-4">
-                    <p className="text-gray-700">
-                      Let's understand each part of this basic smart contract:
-                    </p>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <Card className="p-6">
+              <div className="flex items-center gap-2 mb-4">
+                <Code className="w-6 h-6 text-blue-600" />
+                <h2 className="text-2xl font-bold text-blue-700">Exercise 2: Smart Contract Development</h2>
+              </div>
+              <div className="space-y-6">
+                <p className="text-gray-700">
+                  Learn to write and deploy smart contracts using Remix IDE. We'll walk through each step
+                  of the development process with interactive examples.
+                </p>
 
-                    <div className="bg-gray-50 p-4 rounded-lg space-y-4">
-                      {/* License and Version */}
-                      <div>
-                        <h5 className="text-sm font-semibold text-blue-600 mb-2">1. Contract Setup</h5>
-                        <pre className="text-sm overflow-x-auto mb-2">
-                          <code className="language-solidity">
+                {/* Contract Lifecycle Diagram */}
+                <div className="bg-white p-6 rounded-lg shadow-sm">
+                  <h3 className="text-lg font-semibold mb-4">Smart Contract Lifecycle</h3>
+                  <div className="mermaid">
+                    {contractLifecycleDiagram}
+                  </div>
+                </div>
+
+                {/* Interactive Contract Code */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold">Basic Storage Contract</h3>
+
+                    <motion.div 
+                      className="bg-gray-50 p-4 rounded-lg"
+                      whileHover={{ scale: 1.01 }}
+                    >
+                      <div className="space-y-4">
+                        {/* Contract Setup */}
+                        <div>
+                          <h4 className="text-sm font-semibold text-blue-600 mb-2">1. Contract Setup</h4>
+                          <pre className="text-sm bg-gray-900 text-white p-4 rounded-md">
+                            <code>
 {`// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;`}
-                          </code>
-                        </pre>
-                        <p className="text-sm text-gray-600">
-                          The license identifier is required for all Solidity contracts.
-                          The pragma specifies which version of Solidity to use.
-                        </p>
-                      </div>
+                            </code>
+                          </pre>
+                          <p className="text-sm text-gray-600 mt-2">
+                            Every Solidity contract starts with a license identifier and version pragma.
+                          </p>
+                        </div>
 
-                      {/* Contract Declaration */}
-                      <div>
-                        <h5 className="text-sm font-semibold text-blue-600 mb-2">2. State Variable</h5>
-                        <pre className="text-sm overflow-x-auto mb-2">
-                          <code className="language-solidity">
+                        {/* State Variables */}
+                        <div>
+                          <h4 className="text-sm font-semibold text-blue-600 mb-2">2. State Variables</h4>
+                          <pre className="text-sm bg-gray-900 text-white p-4 rounded-md">
+                            <code>
 {`contract BasicStorage {
-    uint256 private value;`}
-                          </code>
-                        </pre>
-                        <p className="text-sm text-gray-600">
-                          We declare a private state variable that will store our value.
-                          The uint256 type can store numbers from 0 up to 2^256 - 1.
-                        </p>
-                      </div>
+    uint256 private value;
+    event ValueChanged(uint256 newValue);`}
+                            </code>
+                          </pre>
+                          <p className="text-sm text-gray-600 mt-2">
+                            State variables persist in contract storage. Events allow logging to the blockchain.
+                          </p>
+                        </div>
 
-                      {/* Event Declaration */}
-                      <div>
-                        <h5 className="text-sm font-semibold text-blue-600 mb-2">3. Event Definition</h5>
-                        <pre className="text-sm overflow-x-auto mb-2">
-                          <code className="language-solidity">
-{`    event ValueChanged(uint256 newValue);`}
-                          </code>
-                        </pre>
-                        <p className="text-sm text-gray-600">
-                          Events allow us to log changes to the blockchain. 
-                          Applications can listen for this event to know when the value changes.
-                        </p>
-                      </div>
-
-                      {/* Functions */}
-                      <div>
-                        <h5 className="text-sm font-semibold text-blue-600 mb-2">4. Contract Functions</h5>
-                        <pre className="text-sm overflow-x-auto mb-2">
-                          <code className="language-solidity">
+                        {/* Contract Functions */}
+                        <div>
+                          <h4 className="text-sm font-semibold text-blue-600 mb-2">3. Contract Functions</h4>
+                          <pre className="text-sm bg-gray-900 text-white p-4 rounded-md">
+                            <code>
 {`    function setValue(uint256 _value) public {
         value = _value;
         emit ValueChanged(_value);
@@ -154,38 +199,63 @@ pragma solidity ^0.8.0;`}
     function getValue() public view returns (uint256) {
         return value;
     }`}
-                          </code>
-                        </pre>
-                        <p className="text-sm text-gray-600">
-                          - setValue: A public function that updates the stored value and emits an event<br/>
-                          - getValue: A view function that returns the current value without modifying state
-                        </p>
+                            </code>
+                          </pre>
+                          <p className="text-sm text-gray-600 mt-2">
+                            Functions can modify state (setValue) or view state without modification (getValue).
+                          </p>
+                        </div>
                       </div>
+                    </motion.div>
+                  </div>
 
-                      <div className="mt-4 p-4 bg-blue-50 rounded-lg">
-                        <h5 className="text-sm font-semibold text-blue-600 mb-2">Key Learning Points:</h5>
-                        <ul className="list-disc pl-5 space-y-1 text-sm text-gray-600">
-                          <li>Understanding state variables and visibility</li>
-                          <li>Working with events for logging</li>
-                          <li>Difference between view and state-modifying functions</li>
-                          <li>Basic error handling and gas considerations</li>
-                        </ul>
-                      </div>
+                  <div className="space-y-4">
+                    <h3 className="text-lg font-semibold">Development Steps</h3>
+                    <div className="bg-blue-50 p-6 rounded-lg">
+                      <ol className="list-decimal pl-5 space-y-4">
+                        <motion.li
+                          whileHover={{ x: 5 }}
+                          className="cursor-pointer"
+                        >
+                          <h4 className="font-semibold">Set up Remix IDE</h4>
+                          <p className="text-sm text-gray-600">
+                            Access the web interface at remix.ethereum.org and create a new file.
+                          </p>
+                        </motion.li>
+                        <motion.li
+                          whileHover={{ x: 5 }}
+                          className="cursor-pointer"
+                        >
+                          <h4 className="font-semibold">Write and Compile</h4>
+                          <p className="text-sm text-gray-600">
+                            Write your contract and compile using the Solidity compiler.
+                          </p>
+                        </motion.li>
+                        <motion.li
+                          whileHover={{ x: 5 }}
+                          className="cursor-pointer"
+                        >
+                          <h4 className="font-semibold">Deploy Contract</h4>
+                          <p className="text-sm text-gray-600">
+                            Deploy to a test network using MetaMask and test ETH.
+                          </p>
+                        </motion.li>
+                        <motion.li
+                          whileHover={{ x: 5 }}
+                          className="cursor-pointer"
+                        >
+                          <h4 className="font-semibold">Interact and Test</h4>
+                          <p className="text-sm text-gray-600">
+                            Use Remix's interface to call functions and monitor events.
+                          </p>
+                        </motion.li>
+                      </ol>
                     </div>
                   </div>
                 </div>
-                <div>
-                  <h4 className="font-semibold mb-2">Development Steps</h4>
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>Set up Remix IDE environment</li>
-                    <li>Write and compile the contract</li>
-                    <li>Deploy to testnet</li>
-                    <li>Interact with contract functions</li>
-                  </ul>
-                </div>
               </div>
-            </div>
-          </Card>
+            </Card>
+          </motion.div>
 
           {/* Project: DeFi Application */}
           <Card className="p-6">
