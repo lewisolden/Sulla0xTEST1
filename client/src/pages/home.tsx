@@ -182,15 +182,24 @@ export default function Home() {
       <section className="bg-white py-16">
         <div className="container mx-auto px-4">
           <motion.h2 
-            className="text-3xl font-bold text-blue-900 text-center mb-4"
+            className="text-3xl font-bold text-blue-900 text-center mb-8"
             {...fadeInUp}
           >
-            Course 1: Introduction to Cryptocurrency
+            Your Journey into the Future of Finance
           </motion.h2>
+
+          <motion.h3 
+            className="text-2xl font-bold text-blue-800 text-center mb-4"
+            {...fadeInUp}
+            transition={{ delay: 0.1 }}
+          >
+            Course 1: Introduction to Cryptocurrency
+          </motion.h3>
+
           <motion.p
             className="text-xl text-blue-700 mb-12 text-center max-w-3xl mx-auto"
             {...fadeInUp}
-            transition={{ delay: 0.1 }}
+            transition={{ delay: 0.2 }}
           >
             A comprehensive introduction to cryptocurrency, blockchain technology, and digital finance through interactive learning experiences.
           </motion.p>
