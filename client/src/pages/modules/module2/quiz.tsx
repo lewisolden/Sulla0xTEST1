@@ -159,6 +159,16 @@ const Module2Quiz = () => {
                   >
                     Try Again
                   </Button>
+                  {passed && (
+                    <Link href="/modules/module3">
+                      <Button 
+                        size="lg"
+                        className="w-full sm:w-auto bg-green-600 hover:bg-green-700"
+                      >
+                        Module 3 <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </Link>
+                  )}
                 </div>
               </div>
             </CardContent>
