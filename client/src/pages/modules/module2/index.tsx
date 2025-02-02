@@ -13,38 +13,33 @@ export default function Module2() {
 
   const sections = [
     {
-      id: "bitcoin-fundamentals",
-      title: "2.1 Bitcoin Fundamentals",
-      description: "Learn about the birth of Bitcoin, its historical context, and how Bitcoin works.",
-      href: "/modules/module2/bitcoin-fundamentals"
+      id: "blockchain-basics",
+      title: "2.1 Blockchain Basics",
+      description: "Learn about the fundamental structure and operation of blockchain technology.",
+      href: "/modules/module2/blockchain-basics"
     },
     {
-      id: "bitcoin-investment",
-      title: "2.2 Bitcoin as an Investment",
-      description: "Understand Bitcoin's value proposition, investment considerations, and Bitcoin ETFs.",
-      href: "/modules/module2/bitcoin-investment"
+      id: "distributed-ledger",
+      title: "2.2 Distributed Ledger Technology",
+      description: "Understand distributed ledger technology and its applications.",
+      href: "/modules/module2/distributed-ledger"
     },
     {
-      id: "security-risk",
-      title: "2.3 Security and Risk Management",
-      description: "Master essential security practices and risk management strategies for Bitcoin.",
-      href: "/modules/module2/security-risk"
+      id: "consensus-mechanisms",
+      title: "2.3 Consensus Mechanisms",
+      description: "Explore different consensus mechanisms and their importance.",
+      href: "/modules/module2/consensus-mechanisms"
     },
     {
-      id: "practical-exercises",
-      title: "2.4 Practical Exercises",
-      description: "Hands-on exercises to reinforce your understanding of Bitcoin concepts.",
-      href: "/modules/module2/exercises"
-    },
-    {
-      id: "module2-quiz",
-      title: "Module 2 Quiz",
-      description: "Test your knowledge of Bitcoin fundamentals and concepts.",
-      href: "/modules/module2/quiz"
+      id: "smart-contracts",
+      title: "2.4 Smart Contracts",
+      description: "Master smart contracts and their real-world applications.",
+      href: "/modules/module2/smart-contracts"
     }
   ];
 
   const moduleProgress = progress.filter(p => p.moduleId === 2);
+  const completedSections = moduleProgress.filter(p => p.completed).length;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -65,18 +60,20 @@ export default function Module2() {
           <Card className="mb-8">
             <CardHeader>
               <CardTitle className="text-2xl font-bold text-blue-800">
-                Module 2: Bitcoin Deep Dive
+                Module 2: Understanding Blockchain Technology
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="prose max-w-none">
                 <p className="text-gray-600">
-                  Before diving into Bitcoin's technical aspects, let's address some common concerns:
+                  Welcome to Module 2! In this module, you'll learn about the revolutionary 
+                  technology behind cryptocurrencies - blockchain. We'll explore:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-gray-600">
-                  <li><strong>Do I need to buy a whole Bitcoin?</strong> No! Bitcoin is divisible into 100 million units called "satoshis" or "sats." You can start with as little as $10.</li>
-                  <li><strong>Is it too technical for me?</strong> While Bitcoin uses complex technology, using it is similar to mobile banking. Start with the basics, and your understanding will grow naturally.</li>
-                  <li><strong>What if I make a mistake?</strong> Start with small amounts while learning. Use test transactions and practice with minimal stakes to build confidence.</li>
+                  <li>How blockchain works and its fundamental structure</li>
+                  <li>The power of distributed ledger technology</li>
+                  <li>Different consensus mechanisms that secure blockchain networks</li>
+                  <li>Smart contracts and their practical applications</li>
                 </ul>
               </div>
             </CardContent>
@@ -90,7 +87,7 @@ export default function Module2() {
 
               const isLocked = section.id === "module2-quiz" && 
                 !moduleProgress.some(p => 
-                  ["bitcoin-fundamentals", "bitcoin-investment", "security-risk"].includes(p.sectionId) && 
+                  ["blockchain-basics", "distributed-ledger", "consensus-mechanisms"].includes(p.sectionId) && 
                   p.completed
                 );
 
