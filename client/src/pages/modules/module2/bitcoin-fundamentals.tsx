@@ -5,13 +5,13 @@ import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 export default function BitcoinFundamentalsSection() {
   useScrollTop();
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const { progress, updateProgress } = useProgress();
+  const { updateProgress } = useProgress();
 
   useEffect(() => {
     const handleScroll = () => {
