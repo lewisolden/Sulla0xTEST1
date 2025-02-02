@@ -5,7 +5,9 @@ import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Shield, Key, Wallet } from "lucide-react";
+import { SecurityDiagram } from "@/components/diagrams/SecurityDiagram";
+import { SecurityThreats } from "@/components/diagrams/SecurityThreats";
 
 export default function SecurityRiskSection() {
   useScrollTop();
@@ -76,33 +78,8 @@ export default function SecurityRiskSection() {
           >
             <h2 className="text-3xl font-bold text-blue-700">Essential Security Practices</h2>
             <div className="bg-blue-50 p-6 rounded-lg mb-8">
-              <h3 className="text-2xl font-semibold text-blue-600 mb-4">Beginner's Security Checklist</h3>
-              <ul className="list-none space-y-3">
-                <li className="flex items-center">
-                  <span className="mr-2">□</span>Never share your recovery phrase
-                </li>
-                <li className="flex items-center">
-                  <span className="mr-2">□</span>Start with small amounts
-                </li>
-                <li className="flex items-center">
-                  <span className="mr-2">□</span>Use reputable exchanges
-                </li>
-                <li className="flex items-center">
-                  <span className="mr-2">□</span>Keep most funds in cold storage
-                </li>
-                <li className="flex items-center">
-                  <span className="mr-2">□</span>Double-check addresses before sending
-                </li>
-                <li className="flex items-center">
-                  <span className="mr-2">□</span>Don't invest more than you can afford to lose
-                </li>
-                <li className="flex items-center">
-                  <span className="mr-2">□</span>Beware of scams
-                </li>
-                <li className="flex items-center">
-                  <span className="mr-2">□</span>Save backups in multiple safe locations
-                </li>
-              </ul>
+              <h3 className="text-2xl font-semibold text-blue-600 mb-4">Security Overview</h3>
+              <SecurityDiagram />
             </div>
           </motion.section>
 
@@ -111,18 +88,8 @@ export default function SecurityRiskSection() {
             initial="hidden"
             animate="visible"
           >
-            <h3 className="text-2xl font-semibold text-blue-600">Advanced Security Measures</h3>
-            <div className="space-y-4">
-              <div className="bg-white p-6 rounded-lg shadow-sm">
-                <h4 className="font-semibold mb-3">Storage Solutions</h4>
-                <ul className="list-disc pl-5 space-y-2">
-                  <li>Hot wallets for daily use</li>
-                  <li>Cold storage for large amounts</li>
-                  <li>Multi-signature setups</li>
-                  <li>Hardware wallet best practices</li>
-                </ul>
-              </div>
-            </div>
+            <h3 className="text-2xl font-semibold text-blue-600">Common Threats & Vulnerabilities</h3>
+            <SecurityThreats />
           </motion.section>
 
           <motion.section
@@ -132,7 +99,11 @@ export default function SecurityRiskSection() {
           >
             <h2 className="text-3xl font-bold text-blue-700">Risk Management</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-white p-6 rounded-lg shadow-sm">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="bg-white p-6 rounded-lg shadow-sm"
+              >
                 <h3 className="text-xl font-semibold text-blue-600 mb-4">Security Mistakes</h3>
                 <ul className="list-disc pl-5 space-y-2">
                   <li>Losing recovery phrases</li>
@@ -140,8 +111,12 @@ export default function SecurityRiskSection() {
                   <li>Falling for scams</li>
                   <li>Not testing recovery</li>
                 </ul>
-              </div>
-              <div className="bg-white p-6 rounded-lg shadow-sm">
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="bg-white p-6 rounded-lg shadow-sm"
+              >
                 <h3 className="text-xl font-semibold text-blue-600 mb-4">Investment Mistakes</h3>
                 <ul className="list-disc pl-5 space-y-2">
                   <li>Investing too much</li>
@@ -149,7 +124,7 @@ export default function SecurityRiskSection() {
                   <li>Poor timing decisions</li>
                   <li>Ignoring security</li>
                 </ul>
-              </div>
+              </motion.div>
             </div>
           </motion.section>
 
