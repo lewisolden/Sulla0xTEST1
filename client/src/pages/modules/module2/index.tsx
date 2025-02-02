@@ -13,28 +13,28 @@ export default function Module2() {
 
   const sections = [
     {
-      id: "blockchain-basics",
-      title: "2.1 What is a Blockchain?",
-      description: "Learn about blockchain's fundamental structure, characteristics, and how it compares to traditional databases.",
-      href: "/modules/module2/blockchain-basics"
+      id: "bitcoin-fundamentals",
+      title: "2.1 Bitcoin Fundamentals",
+      description: "Learn about the birth of Bitcoin, its historical context, and how Bitcoin works.",
+      href: "/modules/module2/bitcoin-fundamentals"
     },
     {
-      id: "distributed-ledger",
-      title: "2.2 Distributed Ledger Technology",
-      description: "Explore distributed ledger technology (DLT), its types, applications, and limitations.",
-      href: "/modules/module2/distributed-ledger"
+      id: "bitcoin-investment",
+      title: "2.2 Bitcoin as an Investment",
+      description: "Understand Bitcoin's value proposition, investment considerations, and Bitcoin ETFs.",
+      href: "/modules/module2/bitcoin-investment"
     },
     {
-      id: "consensus-mechanisms",
-      title: "2.3 Consensus Mechanisms",
-      description: "Understand different consensus mechanisms like Proof of Work (PoW) and Proof of Stake (PoS).",
-      href: "/modules/module2/consensus-mechanisms"
+      id: "security-risk",
+      title: "2.3 Security and Risk Management",
+      description: "Master essential security practices and risk management strategies for Bitcoin.",
+      href: "/modules/module2/security-risk"
     },
     {
-      id: "smart-contracts",
-      title: "2.4 Smart Contracts",
-      description: "Master smart contracts, their characteristics, applications, and best practices.",
-      href: "/modules/module2/smart-contracts"
+      id: "practical-exercises",
+      title: "2.4 Practical Exercises",
+      description: "Hands-on exercises to reinforce your understanding of Bitcoin concepts.",
+      href: "/modules/module2/exercises"
     }
   ];
 
@@ -60,22 +60,26 @@ export default function Module2() {
           <Card className="mb-8">
             <CardHeader>
               <CardTitle className="text-2xl font-bold text-blue-800">
-                Module 2: Understanding Blockchain Technology
+                Module 2: Bitcoin Deep Dive
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="prose max-w-none">
                 <p className="text-gray-600">
-                  Welcome to Module 2! In this module, you'll learn about the revolutionary 
-                  technology behind cryptocurrencies - blockchain. We'll explore its fundamental 
-                  concepts, applications, and how it's transforming various industries.
+                  Welcome to Module 2! Before diving into Bitcoin's technical aspects, let's address some common concerns:
                 </p>
+                <ul className="list-disc pl-6 space-y-2 text-gray-600">
+                  <li><strong>Do I need to buy a whole Bitcoin?</strong> No! Bitcoin is divisible into 100 million units called "satoshis" or "sats." You can start with as little as $10.</li>
+                  <li><strong>Is it too technical for me?</strong> While Bitcoin uses complex technology, using it is similar to mobile banking. Start with the basics, and your understanding will grow naturally.</li>
+                  <li><strong>What if I make a mistake?</strong> Start with small amounts while learning. Use test transactions and practice with minimal stakes to build confidence.</li>
+                </ul>
                 <h3 className="text-xl font-semibold mt-4 mb-2">What You'll Learn:</h3>
                 <ul className="list-disc pl-6 space-y-2 text-gray-600">
-                  <li>The fundamental structure and characteristics of blockchain technology</li>
-                  <li>How distributed ledger technology works and its various applications</li>
-                  <li>Different consensus mechanisms that secure blockchain networks</li>
-                  <li>Smart contracts and their real-world implementations</li>
+                  <li>The historical context and significance of Bitcoin</li>
+                  <li>How Bitcoin works as a digital currency</li>
+                  <li>Investment considerations and Bitcoin ETFs</li>
+                  <li>Security practices and risk management</li>
+                  <li>Hands-on experience through practical exercises</li>
                 </ul>
               </div>
             </CardContent>
