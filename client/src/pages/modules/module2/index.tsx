@@ -44,19 +44,19 @@ export default function Module2() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
-        <div className="mb-6">
-          <Link href="/curriculum">
-            <Button variant="ghost" className="gap-2">
-              <ArrowLeft className="h-4 w-4" /> Back to Curriculum
-            </Button>
-          </Link>
-        </div>
-
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
+          <div className="mb-6">
+            <Link href="/curriculum">
+              <Button variant="ghost" className="gap-2">
+                <ArrowLeft className="h-4 w-4" /> Back to Curriculum
+              </Button>
+            </Link>
+          </div>
+
           <Card className="mb-8">
             <CardHeader>
               <CardTitle className="text-2xl font-bold text-blue-800">
@@ -85,18 +85,10 @@ export default function Module2() {
                 p => p.sectionId === section.id && p.completed
               );
 
-              const isLocked = section.id === "module2-quiz" && 
-                !moduleProgress.some(p => 
-                  ["blockchain-basics", "distributed-ledger", "consensus-mechanisms"].includes(p.sectionId) && 
-                  p.completed
-                );
-
               return (
-                <Link key={section.id} href={!isLocked ? section.href : "#"}>
+                <Link key={section.id} href={section.href}>
                   <Card 
-                    className={`transition-all duration-300 hover:shadow-md ${
-                      isLocked ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
-                    }`}
+                    className="transition-all duration-300 hover:shadow-md cursor-pointer"
                   >
                     <CardContent className="p-6">
                       <div className="flex justify-between items-center">
@@ -109,8 +101,6 @@ export default function Module2() {
                         <div className="ml-4">
                           {isComplete ? (
                             <CheckCircle2 className="h-6 w-6 text-green-500" />
-                          ) : isLocked ? (
-                            <Lock className="h-6 w-6 text-gray-400" />
                           ) : (
                             <BookOpen className="h-6 w-6 text-blue-500" />
                           )}
