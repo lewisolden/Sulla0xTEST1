@@ -195,21 +195,16 @@ export default function Curriculum() {
           </div>
         </motion.div>
 
-        <motion.div 
-          className="text-center mt-12"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-        >
-          <p className="text-blue-800 text-xl mb-6">
-            Ready to start your cryptocurrency learning journey?
-          </p>
-          <Link href="/modules/module1">
-            <button className="bg-blue-600 text-white px-8 py-3 rounded-lg text-xl hover:bg-blue-700 transition duration-300">
-              Begin Your Learning Path
-            </button>
-          </Link>
-        </motion.div>
+        <motion.div
+            
+            transition={{ delay: 1 }}
+          >
+            <Link href="/modules/module1">
+              <button className="bg-blue-600 text-white px-8 py-3 rounded-lg text-xl hover:bg-blue-700 transition duration-300">
+                Begin Your Learning Path
+              </button>
+            </Link>
+          </motion.div>
       </div>
       <Footer />
     </div>
