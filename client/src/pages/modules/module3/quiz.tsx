@@ -7,74 +7,65 @@ import { Link } from "wouter";
 import { ArrowLeft, CheckCircle2, XCircle } from "lucide-react";
 
 const quizQuestions = [
-  // Scalability & Interoperability Questions
   {
-    question: "What is the Blockchain Scalability Trilemma?",
+    id: 1,
+    question: "What is the main feature that distinguishes Ethereum from Bitcoin?",
     options: [
-      "A trade-off between decentralization, security, and scalability",
-      "A problem with blockchain storage capacity",
-      "A conflict between miners and validators",
-      "A limitation of smart contracts"
-    ],
-    correctAnswer: 0,
-    explanation: "The Blockchain Scalability Trilemma refers to the challenge of achieving optimal levels of decentralization, security, and scalability simultaneously in blockchain systems."
-  },
-  {
-    question: "Which solution aims to improve blockchain scalability by processing transactions off the main chain?",
-    options: [
-      "Sharding",
-      "Layer 2 solutions",
-      "Proof of Stake",
-      "Increased block size"
-    ],
-    correctAnswer: 1,
-    explanation: "Layer 2 solutions improve scalability by processing transactions off the main chain while inheriting the security of the main chain."
-  },
-  // Blockchain Types Questions
-  {
-    question: "What is the main characteristic of a private blockchain?",
-    options: [
-      "Open participation for anyone",
-      "Controlled access and permissions",
-      "No consensus mechanism",
-      "Maximum transparency"
-    ],
-    correctAnswer: 1,
-    explanation: "Private blockchains are characterized by controlled access and permissions, where participation is limited to authorized entities."
-  },
-  {
-    question: "Which type of blockchain is most suitable for public cryptocurrencies?",
-    options: [
-      "Private blockchain",
-      "Consortium blockchain",
-      "Public blockchain",
-      "Hybrid blockchain"
+      "Faster transaction speeds",
+      "Lower transaction fees",
+      "Smart contract functionality",
+      "Higher total supply"
     ],
     correctAnswer: 2,
-    explanation: "Public blockchains are ideal for cryptocurrencies as they offer open participation, transparency, and decentralization."
+    explanation: "While Ethereum has several differences from Bitcoin, its key distinguishing feature is smart contract functionality, allowing for programmable, self-executing contracts and decentralized applications (dApps)."
   },
-  // Development Platforms Questions
   {
-    question: "Which blockchain platform introduced smart contracts?",
+    id: 2,
+    question: "What is 'gas' in the Ethereum network?",
     options: [
-      "Bitcoin",
-      "Ethereum",
-      "Solana",
-      "Cardano"
+      "A type of cryptocurrency",
+      "A measure of computational effort required for transactions",
+      "A network security feature",
+      "A type of smart contract"
     ],
     correctAnswer: 1,
-    explanation: "Ethereum was the first blockchain platform to introduce smart contracts, enabling programmable and autonomous transactions."
+    explanation: "Gas is a measure of computational effort required to execute operations on the Ethereum network. It helps prevent spam and allocate resources efficiently."
   },
   {
-    question: "What is a key feature of the Solana blockchain platform?",
+    id: 3,
+    question: "What is a smart contract?",
     options: [
-      "Proof of History consensus",
-      "Smart contracts in Solidity",
-      "Academic peer review",
-      "Limited transaction speed"
+      "A legal document stored on the blockchain",
+      "A self-executing program stored on the blockchain",
+      "A type of cryptocurrency wallet",
+      "A payment processing system"
     ],
-    correctAnswer: 0,
-    explanation: "Solana's Proof of History (PoH) consensus mechanism is a key innovation that enables high transaction throughput."
+    correctAnswer: 1,
+    explanation: "Smart contracts are self-executing programs stored on the blockchain that automatically execute when predetermined conditions are met, enabling trustless agreements and automation."
+  },
+  {
+    id: 4,
+    question: "What is DeFi (Decentralized Finance)?",
+    options: [
+      "A new type of bank",
+      "A cryptocurrency exchange",
+      "Financial services built on blockchain technology",
+      "A payment processing system"
+    ],
+    correctAnswer: 2,
+    explanation: "DeFi refers to financial services and products built on blockchain technology, particularly Ethereum, that operate without traditional financial intermediaries."
+  },
+  {
+    id: 5,
+    question: "Which of these is a primary risk when using smart contracts?",
+    options: [
+      "Network downtime",
+      "Code vulnerabilities",
+      "High transaction fees",
+      "Slow confirmation times"
+    ],
+    correctAnswer: 1,
+    explanation: "Code vulnerabilities in smart contracts are a primary risk as they are immutable once deployed, and any bugs or security flaws could lead to loss of funds or other issues."
   }
 ];
 
@@ -88,9 +79,10 @@ const Module3Quiz = () => {
 
   // Check if required sections are completed
   const requiredSections = [
-    'scalability-interoperability',
-    'blockchain-types',
-    'development-platforms'
+    'ethereum-fundamentals',
+    'smart-contracts',
+    'investment-value',
+    'security-risks'
   ];
 
   const isAllTopicsCompleted = requiredSections.every(section =>
@@ -142,7 +134,7 @@ const Module3Quiz = () => {
                     ⚠️ Access Requirements
                   </h2>
                   <p className="text-yellow-700">
-                    You need to complete all three sections below before you can take the quiz.
+                    You need to complete all four sections below before you can take the quiz.
                   </p>
                 </div>
 
@@ -224,7 +216,7 @@ const Module3Quiz = () => {
                       🎉 Congratulations! You've passed Module 3!
                     </p>
                     <p className="text-green-600 text-sm mt-2">
-                      You've demonstrated a strong understanding of Advanced Blockchain Technology.
+                      You've demonstrated a strong understanding of Ethereum and Smart Contracts.
                     </p>
                   </div>
                 ) : (
