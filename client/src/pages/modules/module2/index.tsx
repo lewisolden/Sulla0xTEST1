@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, BookOpen, CheckCircle2, LockClosedIcon } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCircle2, Lock } from "lucide-react";
 
 export default function Module2() {
   useScrollTop();
@@ -15,19 +15,19 @@ export default function Module2() {
     {
       id: "bitcoin-fundamentals",
       title: "2.1 Bitcoin Fundamentals",
-      description: "Learn about the birth of Bitcoin, its historical context, and key milestones.",
+      description: "Learn about the birth of Bitcoin, its historical context, and how Bitcoin works.",
       href: "/modules/module2/bitcoin-fundamentals"
     },
     {
       id: "bitcoin-investment",
       title: "2.2 Bitcoin as an Investment",
-      description: "Understand Bitcoin's value proposition and investment considerations.",
+      description: "Understand Bitcoin's value proposition, investment considerations, and Bitcoin ETFs.",
       href: "/modules/module2/bitcoin-investment"
     },
     {
       id: "security-risk",
       title: "2.3 Security and Risk Management",
-      description: "Master essential security practices and risk management strategies.",
+      description: "Master essential security practices and risk management strategies for Bitcoin.",
       href: "/modules/module2/security-risk"
     },
     {
@@ -71,7 +71,7 @@ export default function Module2() {
             <CardContent>
               <div className="prose max-w-none">
                 <p className="text-gray-600">
-                  Welcome to Module 2! Before diving into Bitcoin's technical aspects, let's address some common concerns:
+                  Before diving into Bitcoin's technical aspects, let's address some common concerns:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-gray-600">
                   <li><strong>Do I need to buy a whole Bitcoin?</strong> No! Bitcoin is divisible into 100 million units called "satoshis" or "sats." You can start with as little as $10.</li>
@@ -113,7 +113,7 @@ export default function Module2() {
                           {isComplete ? (
                             <CheckCircle2 className="h-6 w-6 text-green-500" />
                           ) : isLocked ? (
-                            <LockClosedIcon className="h-6 w-6 text-gray-400" />
+                            <Lock className="h-6 w-6 text-gray-400" />
                           ) : (
                             <BookOpen className="h-6 w-6 text-blue-500" />
                           )}
