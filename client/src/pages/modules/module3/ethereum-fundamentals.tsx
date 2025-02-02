@@ -5,6 +5,7 @@ import { useProgress } from "@/context/progress-context";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
+import mermaid from "mermaid";
 
 const EthereumFundamentalsSection = () => {
   const [isFullyRead, setIsFullyRead] = useState(false);
@@ -12,6 +13,9 @@ const EthereumFundamentalsSection = () => {
   const { updateProgress } = useProgress();
 
   useEffect(() => {
+    // Initialize mermaid
+    mermaid.initialize({ startOnLoad: true });
+
     const handleScroll = () => {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
       const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -27,6 +31,24 @@ const EthereumFundamentalsSection = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [updateProgress]);
+
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: { opacity: 1, x: 0 }
+  };
 
   return (
     <motion.div 
@@ -55,9 +77,9 @@ const EthereumFundamentalsSection = () => {
         <Card className="mb-6">
           <div className="p-6 prose max-w-none">
             <motion.section
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4 }}
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
             >
               <h2 className="text-2xl font-bold text-blue-700 mb-4">What Makes Ethereum Different?</h2>
               <p className="text-gray-700 mb-4">
@@ -66,47 +88,96 @@ const EthereumFundamentalsSection = () => {
                 that can run applications and handle complex financial interactions.
               </p>
 
-              <h3 className="text-xl font-semibold text-blue-600 mt-6 mb-4">Programmable Blockchain Platform</h3>
-              <p className="text-gray-700 mb-4">
-                Ethereum's key innovation lies in its programmability. While Bitcoin excels at being digital 
-                money, Ethereum acts as a complete computational platform:
-              </p>
+              <div className="my-8 p-4 bg-gray-50 rounded-lg">
+                <pre className="mermaid">
+                  {`
+                    graph TD
+                      subgraph Bitcoin
+                      A[Transactions] --> B[Value Transfer]
+                      end
 
-              <div className="bg-blue-50 p-6 rounded-lg mb-6">
-                <h4 className="font-semibold text-blue-700 mb-3">Key Features:</h4>
-                <ul className="list-disc pl-6 space-y-3">
-                  <li>
-                    <strong>Decentralized Applications (dApps):</strong> Applications that run on the 
-                    blockchain rather than centralized servers, ensuring continuous operation as long 
-                    as the Ethereum network exists.
-                  </li>
-                  <li>
-                    <strong>Smart Contract Capabilities:</strong> Self-executing programs that 
-                    automatically enforce agreements, enabling automated loan processing, instant 
-                    trade settlement, and more.
-                  </li>
-                  <li>
-                    <strong>Digital Asset Creation:</strong> The ability to create various types of 
-                    digital assets, including fungible tokens (ERC-20), non-fungible tokens (NFTs), 
-                    and synthetic assets.
-                  </li>
-                </ul>
+                      subgraph Ethereum
+                      C[Smart Contracts] --> D[dApps]
+                      C --> E[DeFi]
+                      C --> F[NFTs]
+                      C --> G[DAOs]
+                      end
+
+                      style Bitcoin fill:#f9f9f9,stroke:#2563eb
+                      style Ethereum fill:#f9f9f9,stroke:#2563eb
+                      style A fill:#93c5fd
+                      style B fill:#93c5fd
+                      style C fill:#93c5fd
+                      style D fill:#93c5fd
+                      style E fill:#93c5fd
+                      style F fill:#93c5fd
+                      style G fill:#93c5fd
+                  `}
+                </pre>
               </div>
+
+              <motion.div
+                variants={containerVariants}
+                className="grid grid-cols-1 md:grid-cols-3 gap-6 my-8"
+              >
+                <motion.div
+                  variants={itemVariants}
+                  className="bg-blue-50 p-6 rounded-lg"
+                >
+                  <h4 className="font-semibold text-blue-700 mb-3">dApps</h4>
+                  <p className="text-sm">Applications that run on the blockchain, ensuring continuous operation</p>
+                </motion.div>
+
+                <motion.div
+                  variants={itemVariants}
+                  className="bg-blue-50 p-6 rounded-lg"
+                >
+                  <h4 className="font-semibold text-blue-700 mb-3">Smart Contracts</h4>
+                  <p className="text-sm">Self-executing programs that automatically enforce agreements</p>
+                </motion.div>
+
+                <motion.div
+                  variants={itemVariants}
+                  className="bg-blue-50 p-6 rounded-lg"
+                >
+                  <h4 className="font-semibold text-blue-700 mb-3">Digital Assets</h4>
+                  <p className="text-sm">Create various types of tokens and digital assets</p>
+                </motion.div>
+              </motion.div>
             </motion.section>
 
             <motion.section
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.6 }}
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
             >
               <h2 className="text-2xl font-bold text-blue-700 mb-4">The Ethereum Virtual Machine (EVM)</h2>
-              <p className="text-gray-700 mb-4">
-                The Ethereum Virtual Machine is the engine that powers all Ethereum operations. Think of it 
-                as a global computer that provides:
-              </p>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div className="bg-white p-6 rounded-lg shadow-sm">
+              <div className="my-8 p-4 bg-gray-50 rounded-lg">
+                <pre className="mermaid">
+                  {`
+                    sequenceDiagram
+                      participant User
+                      participant Contract
+                      participant Network
+
+                      User->>Contract: Interact
+                      Contract->>Network: Execute Code
+                      Network->>Contract: Update State
+                      Contract->>User: Return Result
+
+                      style User fill:#93c5fd
+                      style Contract fill:#93c5fd
+                      style Network fill:#93c5fd
+                  `}
+                </pre>
+              </div>
+
+              <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <motion.div
+                  variants={itemVariants}
+                  className="bg-white p-6 rounded-lg shadow-sm"
+                >
                   <h4 className="font-semibold text-blue-700 mb-3">Execution Environment</h4>
                   <ul className="list-disc pl-5 space-y-2">
                     <li>Consistent execution across all nodes</li>
@@ -115,8 +186,12 @@ const EthereumFundamentalsSection = () => {
                     <li>Resource management</li>
                     <li>State maintenance</li>
                   </ul>
-                </div>
-                <div className="bg-white p-6 rounded-lg shadow-sm">
+                </motion.div>
+
+                <motion.div
+                  variants={itemVariants}
+                  className="bg-white p-6 rounded-lg shadow-sm"
+                >
                   <h4 className="font-semibold text-blue-700 mb-3">Gas System</h4>
                   <ul className="list-disc pl-5 space-y-2">
                     <li>Operation-specific gas costs</li>
@@ -125,8 +200,8 @@ const EthereumFundamentalsSection = () => {
                     <li>Fair resource allocation</li>
                     <li>Optimization opportunities</li>
                   </ul>
-                </div>
-              </div>
+                </motion.div>
+              </motion.div>
             </motion.section>
           </div>
         </Card>
