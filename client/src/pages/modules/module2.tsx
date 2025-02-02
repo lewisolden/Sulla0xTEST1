@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useProgress } from "@/context/progress-context";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Database, Network, Code, FileText } from "lucide-react";
+import { Database, Network, Code, FileText, ArrowRight } from "lucide-react";
 import { CheckCircle2, XCircle } from "lucide-react";
 import ModuleProgress from "@/components/modules/module-progress";
 import BadgeShowcase from "@/components/modules/badge-showcase";
@@ -65,6 +65,15 @@ export default function Module2() {
   const moduleProgress = progress.filter(p => p.moduleId === 2);
   const completedSections = moduleProgress.filter(p => p.completed).length;
   const progressPercentage = (completedSections / moduleTopics.length) * 100;
+
+  // Check if quiz is completed
+  const isQuizCompleted = moduleProgress.some(p => p.sectionId === "module2-quiz" && p.completed);
+  // Check if all topics are completed
+  const allTopicsCompleted = moduleTopics.every(topic => 
+    moduleProgress.some(p => p.sectionId === topic.id && p.completed)
+  );
+  // Module is complete when all topics and quiz are done
+  const isModuleComplete = allTopicsCompleted && isQuizCompleted;
 
   const topicsWithProgress = moduleTopics.map(topic => ({
     ...topic,
@@ -205,35 +214,38 @@ export default function Module2() {
                     ))}
                   </ul>
                 </div>
-                <Link href="/modules/module2/quiz">
-                  <Button 
-                    disabled={progressPercentage < 100}
-                    className="w-full md:w-auto bg-blue-600 hover:bg-blue-700 mt-6"
-                  >
-                    {progressPercentage < 100 
-                      ? "Complete all topics to unlock quiz" 
-                      : "Start Quiz"
-                    }
-                  </Button>
-                </Link>
+
+                <div className="mt-6 flex flex-col gap-4">
+                  <Link href="/modules/module2/quiz">
+                    <Button 
+                      disabled={progressPercentage < 100}
+                      className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
+                    >
+                      {progressPercentage < 100 
+                        ? "Complete all topics to unlock quiz" 
+                        : "Start Quiz"
+                      }
+                    </Button>
+                  </Link>
+
+                  {isModuleComplete && (
+                    <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+                      <p className="text-green-800 font-medium mb-4">
+                        🎉 Congratulations! You've completed Module 2: Bitcoin Deep Dive
+                      </p>
+                      <Link href="/modules/module3">
+                        <Button className="bg-green-600 hover:bg-green-700 w-full md:w-auto">
+                          Continue to Module 3: Advanced Concepts
+                          <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                      </Link>
+                    </div>
+                  )}
+                </div>
               </div>
             </Card>
           </TabsContent>
         </Tabs>
-        <div className="mt-8 text-center">
-          <Link href="/modules/module2/quiz">
-            <Button 
-              size="lg" 
-              className="bg-green-600 hover:bg-green-700"
-              disabled={progressPercentage < 100}
-            >
-              {progressPercentage < 100 
-                ? "Complete all topics to unlock quiz" 
-                : "Take Module Quiz"
-              }
-            </Button>
-          </Link>
-        </div>
       </div>
       <Footer />
     </div>
