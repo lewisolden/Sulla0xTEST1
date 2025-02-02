@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
 import { Shield, AlertTriangle, TrendingUp, Lock } from "lucide-react";
 import { SecurityQuiz } from "@/components/quizzes/SecurityQuiz";
+import { Link } from "wouter";
+import { ArrowRight } from "lucide-react";
 
 const SecurityRisksSection = () => {
   const [isFullyRead, setIsFullyRead] = useState(false);
@@ -168,16 +170,25 @@ const SecurityRisksSection = () => {
           >
             <Card className="bg-green-100 border-l-4 border-green-500 p-4">
               <div className="flex flex-col items-center">
-                <p className="text-green-700 mb-4">
-                  🎉 Congratulations! You've completed the Security and Risk Management section!
-                </p>
-                <Button
-                  onClick={startQuiz}
-                  className="bg-green-600 hover:bg-green-700 text-white"
-                >
-                  Take Section Quiz
-                </Button>
-              </div>
+                  <p className="text-green-700 mb-4">
+                    🎉 Congratulations! You've completed the Security and Risk Management section!
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <Button
+                      onClick={startQuiz}
+                      className="bg-green-600 hover:bg-green-700 text-white"
+                    >
+                      Take Section Quiz
+                    </Button>
+                    <Link href="/modules/module3/quiz">
+                      <Button 
+                        className="bg-blue-600 hover:bg-blue-700 text-white"
+                      >
+                        Module 3 Quiz <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
             </Card>
           </motion.div>
         )}
