@@ -27,15 +27,11 @@ import GettingStartedSection from "@/pages/modules/module1/getting-started";
 
 // Module 2 Routes
 import Module2Landing from "@/pages/modules/module2";
-import BlockchainBasicsSection from "@/pages/modules/module2/blockchain-basics";
-import DistributedLedgerSection from "@/pages/modules/module2/distributed-ledger";
-import ConsensusMechanismsSection from "@/pages/modules/module2/consensus-mechanisms";
-import SmartContractsSection from "@/pages/modules/module2/smart-contracts";
+import BitcoinFundamentalsSection from "@/pages/modules/module2/bitcoin-fundamentals";
+import BitcoinInvestmentSection from "@/pages/modules/module2/bitcoin-investment";
+import SecurityRiskSection from "@/pages/modules/module2/security-risk";
+import Module2Exercises from "@/pages/modules/module2/exercises";
 import Module2Quiz from "@/pages/modules/module2/quiz";
-import BlockchainBasicsQuiz from "@/pages/modules/module2/blockchain-basics-quiz";
-import DistributedLedgerQuiz from "@/pages/modules/module2/distributed-ledger-quiz";
-import ConsensusMechanismsQuiz from "@/pages/modules/module2/consensus-mechanisms-quiz";
-import SmartContractsQuiz from "@/pages/modules/module2/smart-contracts-quiz";
 
 // Module 3 Routes
 import Module3 from "@/pages/modules/module3";
@@ -77,14 +73,10 @@ function Router() {
 
       {/* Module 2 Routes */}
       <Route path="/modules/module2" component={Module2Landing} />
-      <Route path="/modules/module2/blockchain-basics" component={BlockchainBasicsSection} />
-      <Route path="/modules/module2/blockchain-basics/quiz" component={BlockchainBasicsQuiz} />
-      <Route path="/modules/module2/distributed-ledger" component={DistributedLedgerSection} />
-      <Route path="/modules/module2/distributed-ledger/quiz" component={DistributedLedgerQuiz} />
-      <Route path="/modules/module2/consensus-mechanisms" component={ConsensusMechanismsSection} />
-      <Route path="/modules/module2/consensus-mechanisms/quiz" component={ConsensusMechanismsQuiz} />
-      <Route path="/modules/module2/smart-contracts" component={SmartContractsSection} />
-      <Route path="/modules/module2/smart-contracts/quiz" component={SmartContractsQuiz} />
+      <Route path="/modules/module2/bitcoin-fundamentals" component={BitcoinFundamentalsSection} />
+      <Route path="/modules/module2/bitcoin-investment" component={BitcoinInvestmentSection} />
+      <Route path="/modules/module2/security-risk" component={SecurityRiskSection} />
+      <Route path="/modules/module2/exercises" component={Module2Exercises} />
       <Route path="/modules/module2/quiz" component={Module2Quiz} />
 
       {/* Module 3 Routes */}
