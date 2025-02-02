@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import Footer from "@/components/layout/footer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useProgress } from "@/context/progress-context";
@@ -90,7 +90,7 @@ export default function Module2() {
 
           <TabsContent value="overview">
             <Card>
-              <CardContent className="pt-6">
+              <div className="p-6">
                 <div className="prose max-w-none">
                   <h2 className="text-2xl font-semibold mb-4">Welcome to Module 2</h2>
                   <p className="text-gray-700 mb-6">
@@ -127,7 +127,7 @@ export default function Module2() {
                     </Link>
                   </div>
                 </div>
-              </CardContent>
+              </div>
             </Card>
           </TabsContent>
 
@@ -135,7 +135,7 @@ export default function Module2() {
             <div className="grid gap-6">
               {topicsWithProgress.map((topic) => (
                 <Card key={topic.id} className="transition-all hover:shadow-lg">
-                  <CardContent className="p-6">
+                  <div className="p-6">
                     <div className="flex items-start gap-4">
                       <div className="p-3 rounded-full bg-blue-100 mt-1">
                         <topic.icon className="w-6 h-6 text-blue-600" />
@@ -161,7 +161,7 @@ export default function Module2() {
                         </Link>
                       </div>
                     </div>
-                  </CardContent>
+                  </div>
                 </Card>
               ))}
             </div>
@@ -169,7 +169,7 @@ export default function Module2() {
 
           <TabsContent value="quiz">
             <Card>
-              <CardContent className="pt-6">
+              <div className="p-6">
                 <h2 className="text-2xl font-semibold mb-4">Module Quiz</h2>
                 <p className="text-gray-700 mb-6">
                   Complete all topics to unlock the module quiz and test your knowledge 
@@ -217,7 +217,7 @@ export default function Module2() {
                     }
                   </Button>
                 </Link>
-              </CardContent>
+              </div>
             </Card>
           </TabsContent>
         </Tabs>
