@@ -7,27 +7,36 @@ import { Button } from "@/components/ui/button";
 import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
 import mermaid from "mermaid";
 
-// Mermaid diagram component
 const MermaidDiagram = ({ chart }) => {
   const [svg, setSvg] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const renderDiagram = async () => {
       try {
-        const { svg } = await mermaid.render('mermaid-diagram', chart);
+        setLoading(true);
+        const uniqueId = `mermaid-${Math.random().toString(36).substr(2, 9)}`;
+        const { svg } = await mermaid.render(uniqueId, chart);
         setSvg(svg);
+        setError('');
       } catch (err) {
         console.error('Failed to render mermaid diagram:', err);
         setError('Failed to render diagram');
+      } finally {
+        setLoading(false);
       }
     };
 
     renderDiagram();
   }, [chart]);
 
+  if (loading) {
+    return <div className="flex justify-center p-4">Loading diagram...</div>;
+  }
+
   if (error) {
-    return <div className="text-red-500">{error}</div>;
+    return <div className="text-red-500 p-4">{error}</div>;
   }
 
   return (
@@ -44,7 +53,6 @@ const EthereumFundamentalsSection = () => {
   const { updateProgress } = useProgress();
 
   useEffect(() => {
-    // Initialize mermaid with custom config
     mermaid.initialize({ 
       startOnLoad: true,
       theme: 'neutral',
@@ -56,6 +64,17 @@ const EthereumFundamentalsSection = () => {
         lineColor: '#93c5fd',
         secondaryColor: '#dbeafe',
         tertiaryColor: '#eff6ff'
+      },
+      sequence: {
+        diagramMarginX: 50,
+        diagramMarginY: 10,
+        actorMargin: 50,
+        width: 150,
+        height: 65,
+        boxMargin: 10,
+        boxTextMargin: 5,
+        noteMargin: 10,
+        messageMargin: 35
       }
     });
 
@@ -75,7 +94,6 @@ const EthereumFundamentalsSection = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [updateProgress]);
 
-  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -93,46 +111,36 @@ const EthereumFundamentalsSection = () => {
     visible: { opacity: 1, x: 0 }
   };
 
-  // Mermaid diagram definitions
-  const comparisonDiagram = `
-    graph TD
-      subgraph Bitcoin
-      A[Transactions] --> B[Value Transfer]
-      end
+  const comparisonDiagram = `graph TD
+    subgraph Bitcoin
+    A[Transactions] --> B[Value Transfer]
+    end
 
-      subgraph Ethereum
-      C[Smart Contracts] --> D[dApps]
-      C --> E[DeFi]
-      C --> F[NFTs]
-      C --> G[DAOs]
-      end
+    subgraph Ethereum
+    C[Smart Contracts] --> D[dApps]
+    C --> E[DeFi]
+    C --> F[NFTs]
+    C --> G[DAOs]
+    end
 
-      style Bitcoin fill:#f9f9f9,stroke:#2563eb
-      style Ethereum fill:#f9f9f9,stroke:#2563eb
-      style A fill:#93c5fd
-      style B fill:#93c5fd
-      style C fill:#93c5fd
-      style D fill:#93c5fd
-      style E fill:#93c5fd
-      style F fill:#93c5fd
-      style G fill:#93c5fd
-  `;
+    style Bitcoin fill:#f9f9f9,stroke:#2563eb
+    style Ethereum fill:#f9f9f9,stroke:#2563eb
+    style A fill:#93c5fd
+    style B fill:#93c5fd
+    style C fill:#93c5fd
+    style D fill:#93c5fd
+    style E fill:#93c5fd
+    style F fill:#93c5fd
+    style G fill:#93c5fd`;
 
-  const evmDiagram = `
-    sequenceDiagram
-      participant User
-      participant Contract
-      participant Network
-
-      User->>Contract: Interact
-      Contract->>Network: Execute Code
-      Network->>Contract: Update State
-      Contract->>User: Return Result
-
-      style User fill:#93c5fd
-      style Contract fill:#93c5fd
-      style Network fill:#93c5fd
-  `;
+  const evmDiagram = `sequenceDiagram
+    participant U as User
+    participant C as Smart Contract
+    participant N as Network
+    U->>C: Submit Transaction
+    C->>N: Execute Code
+    N-->>C: Update State
+    C-->>U: Return Result`;
 
   return (
     <motion.div 
