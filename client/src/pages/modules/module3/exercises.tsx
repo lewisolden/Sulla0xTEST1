@@ -91,28 +91,87 @@ export default function ExercisesPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <h4 className="font-semibold mb-2">Basic Contract</h4>
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <pre className="text-sm overflow-x-auto">
-                      <code className="language-solidity">
+                  <div className="space-y-4">
+                    <p className="text-gray-700">
+                      Let's understand each part of this basic smart contract:
+                    </p>
+
+                    <div className="bg-gray-50 p-4 rounded-lg space-y-4">
+                      {/* License and Version */}
+                      <div>
+                        <h5 className="text-sm font-semibold text-blue-600 mb-2">1. Contract Setup</h5>
+                        <pre className="text-sm overflow-x-auto mb-2">
+                          <code className="language-solidity">
 {`// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.0;`}
+                          </code>
+                        </pre>
+                        <p className="text-sm text-gray-600">
+                          The license identifier is required for all Solidity contracts.
+                          The pragma specifies which version of Solidity to use.
+                        </p>
+                      </div>
 
-contract BasicStorage {
-    uint256 private value;
+                      {/* Contract Declaration */}
+                      <div>
+                        <h5 className="text-sm font-semibold text-blue-600 mb-2">2. State Variable</h5>
+                        <pre className="text-sm overflow-x-auto mb-2">
+                          <code className="language-solidity">
+{`contract BasicStorage {
+    uint256 private value;`}
+                          </code>
+                        </pre>
+                        <p className="text-sm text-gray-600">
+                          We declare a private state variable that will store our value.
+                          The uint256 type can store numbers from 0 up to 2^256 - 1.
+                        </p>
+                      </div>
 
-    event ValueChanged(uint256 newValue);
+                      {/* Event Declaration */}
+                      <div>
+                        <h5 className="text-sm font-semibold text-blue-600 mb-2">3. Event Definition</h5>
+                        <pre className="text-sm overflow-x-auto mb-2">
+                          <code className="language-solidity">
+{`    event ValueChanged(uint256 newValue);`}
+                          </code>
+                        </pre>
+                        <p className="text-sm text-gray-600">
+                          Events allow us to log changes to the blockchain. 
+                          Applications can listen for this event to know when the value changes.
+                        </p>
+                      </div>
 
-    function setValue(uint256 _value) public {
+                      {/* Functions */}
+                      <div>
+                        <h5 className="text-sm font-semibold text-blue-600 mb-2">4. Contract Functions</h5>
+                        <pre className="text-sm overflow-x-auto mb-2">
+                          <code className="language-solidity">
+{`    function setValue(uint256 _value) public {
         value = _value;
         emit ValueChanged(_value);
     }
 
     function getValue() public view returns (uint256) {
         return value;
-    }
-}`}
-                      </code>
-                    </pre>
+    }`}
+                          </code>
+                        </pre>
+                        <p className="text-sm text-gray-600">
+                          - setValue: A public function that updates the stored value and emits an event<br/>
+                          - getValue: A view function that returns the current value without modifying state
+                        </p>
+                      </div>
+
+                      <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+                        <h5 className="text-sm font-semibold text-blue-600 mb-2">Key Learning Points:</h5>
+                        <ul className="list-disc pl-5 space-y-1 text-sm text-gray-600">
+                          <li>Understanding state variables and visibility</li>
+                          <li>Working with events for logging</li>
+                          <li>Difference between view and state-modifying functions</li>
+                          <li>Basic error handling and gas considerations</li>
+                        </ul>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div>
