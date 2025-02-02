@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { useProgress } from "@/context/progress-context";
+import { Link } from "wouter";
+import { ArrowRight } from "lucide-react";
 
 const quizQuestions = [
   {
@@ -124,12 +126,24 @@ const DigitalCurrenciesQuiz = () => {
               </p>
             </div>
           )}
-          <Button 
-            onClick={restartQuiz}
-            className="bg-blue-500 hover:bg-blue-600"
-          >
-            Restart Quiz
-          </Button>
+          <div className="flex flex-col space-y-4">
+            <Button 
+              onClick={restartQuiz}
+              className="bg-blue-500 hover:bg-blue-600"
+            >
+              Restart Quiz
+            </Button>
+            {score >= 3 && (
+              <Link href="/modules/module1/history-of-money">
+                <Button 
+                  className="w-full bg-green-600 hover:bg-green-700"
+                  size="lg"
+                >
+                  Next Topic: History of Money <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            )}
+          </div>
         </Card>
       </div>
     );
