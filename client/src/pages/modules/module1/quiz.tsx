@@ -260,7 +260,7 @@ const QuizPage = () => {
                             size="lg"
                             className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
                           >
-                            Next Module: Blockchain Technology
+                            Module 2
                             <ArrowRight className="ml-2 h-4 w-4" />
                           </Button>
                         </Link>
