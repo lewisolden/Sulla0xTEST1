@@ -6,9 +6,9 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
 import { Wrench, Code, BookOpen, Award } from "lucide-react";
-import { Mermaid } from "@/components/diagrams/Mermaid";
 
-const ExercisesSection = () => {
+// Export the component as the default export
+export default function ExercisesSection() {
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const { updateProgress } = useProgress();
@@ -30,43 +30,6 @@ const ExercisesSection = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [updateProgress]);
 
-  const exerciseFlowDiagram = `
-sequenceDiagram
-    participant Student
-    participant IDE
-    participant TestNet
-    participant Contract
-
-    Student->>IDE: Write Contract
-    IDE->>TestNet: Deploy
-    Student->>Contract: Interact
-    Contract->>Student: Response
-    Student->>IDE: Debug
-  `;
-
-  const portfolioFlowDiagram = `
-graph TD
-    A[Portfolio Strategy] --> B[Asset Selection]
-    B --> C[Risk Assessment]
-    C --> D[Implementation]
-    D --> E[Monitoring]
-    E --> F[Adjustment]
-    F --> B
-  `;
-
-  const assessmentDiagram = `
-graph TD
-    A[Assessment Types] --> B[Technical Tests]
-    A --> C[Practical Exercises]
-    A --> D[Risk Scenarios]
-    B --> E[Theory]
-    B --> F[Application]
-    C --> G[Hands-on]
-    C --> H[Projects]
-    D --> I[Analysis]
-    D --> J[Response]
-  `;
-
   return (
     <motion.div 
       initial={{ opacity: 0 }}
@@ -78,7 +41,7 @@ graph TD
         <div 
           className="h-full bg-blue-600" 
           style={{ width: `${scrollProgress}%` }}
-        ></div>
+        />
       </div>
 
       <div className="max-w-4xl mx-auto">
@@ -127,97 +90,87 @@ graph TD
           <Card className="p-6">
             <div className="flex items-center gap-2 mb-4">
               <Code className="w-6 h-6 text-blue-600" />
-              <h2 className="text-2xl font-bold text-blue-700">Exercise 2: Smart Contract Interaction</h2>
+              <h2 className="text-2xl font-bold text-blue-700">Exercise 2: Smart Contract Development</h2>
             </div>
             <div className="space-y-4">
-              <h3 className="text-xl font-semibold text-blue-600">Contract Development Flow</h3>
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <Mermaid chart={exerciseFlowDiagram} />
-              </div>
+              <h3 className="text-xl font-semibold text-blue-600">Development Workflow</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
                 <div>
-                  <h4 className="font-semibold mb-2">Contract Deployment</h4>
+                  <h4 className="font-semibold mb-2">Contract Development</h4>
                   <ul className="list-disc pl-5 space-y-2">
-                    <li>Write simple contract</li>
-                    <li>Compile contract</li>
-                    <li>Deploy to test network</li>
-                    <li>Verify deployment</li>
+                    <li>Write simple contracts</li>
+                    <li>Test and debug</li>
+                    <li>Deploy to testnet</li>
+                    <li>Verify contracts</li>
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">DeFi Protocol Practice</h4>
+                  <h4 className="font-semibold mb-2">Smart Contract Interaction</h4>
                   <ul className="list-disc pl-5 space-y-2">
-                    <li>Connect to protocols</li>
-                    <li>Approve token spending</li>
-                    <li>Execute swaps</li>
-                    <li>Provide liquidity</li>
+                    <li>Connect to contracts</li>
+                    <li>Call functions</li>
+                    <li>Handle events</li>
+                    <li>Monitor transactions</li>
                   </ul>
                 </div>
               </div>
             </div>
           </Card>
 
-          {/* Project 1 */}
+          {/* Project */}
           <Card className="p-6">
             <div className="flex items-center gap-2 mb-4">
               <BookOpen className="w-6 h-6 text-blue-600" />
-              <h2 className="text-2xl font-bold text-blue-700">Project 1: DeFi Portfolio Management</h2>
+              <h2 className="text-2xl font-bold text-blue-700">Project: Build a DeFi Application</h2>
             </div>
             <div className="space-y-4">
-              <h3 className="text-xl font-semibold text-blue-600">Portfolio Management Flow</h3>
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <Mermaid chart={portfolioFlowDiagram} />
-              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
                 <div>
-                  <h4 className="font-semibold mb-2">Portfolio Setup</h4>
+                  <h4 className="font-semibold mb-2">Project Components</h4>
                   <ul className="list-disc pl-5 space-y-2">
-                    <li>Research protocols</li>
-                    <li>Assess risks</li>
-                    <li>Calculate potential yields</li>
-                    <li>Plan allocations</li>
+                    <li>Smart contract development</li>
+                    <li>Frontend integration</li>
+                    <li>Web3 connectivity</li>
+                    <li>Transaction handling</li>
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">Performance Tracking</h4>
+                  <h4 className="font-semibold mb-2">Advanced Features</h4>
                   <ul className="list-disc pl-5 space-y-2">
-                    <li>Track returns</li>
-                    <li>Calculate impermanent loss</li>
-                    <li>Monitor gas costs</li>
-                    <li>Assess risk metrics</li>
+                    <li>Token integration</li>
+                    <li>Wallet connection</li>
+                    <li>State management</li>
+                    <li>Error handling</li>
                   </ul>
                 </div>
               </div>
             </div>
           </Card>
 
-          {/* Assessment Framework */}
+          {/* Assessment */}
           <Card className="p-6">
             <div className="flex items-center gap-2 mb-4">
               <Award className="w-6 h-6 text-blue-600" />
-              <h2 className="text-2xl font-bold text-blue-700">Assessment Framework</h2>
+              <h2 className="text-2xl font-bold text-blue-700">Assessment</h2>
             </div>
             <div className="space-y-4">
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <Mermaid chart={assessmentDiagram} />
-              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h4 className="font-semibold mb-2">Technical Understanding</h4>
+                  <h4 className="font-semibold mb-2">Evaluation Criteria</h4>
                   <ul className="list-disc pl-5 space-y-2">
-                    <li>Multiple choice questions</li>
-                    <li>Short answer problems</li>
-                    <li>Case study analysis</li>
-                    <li>Code review exercises</li>
+                    <li>Code quality</li>
+                    <li>Security practices</li>
+                    <li>Documentation</li>
+                    <li>Testing coverage</li>
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">Risk Management</h4>
+                  <h4 className="font-semibold mb-2">Deliverables</h4>
                   <ul className="list-disc pl-5 space-y-2">
-                    <li>Scenario analysis</li>
-                    <li>Technical failures</li>
-                    <li>Security incidents</li>
-                    <li>Recovery procedures</li>
+                    <li>Working application</li>
+                    <li>Source code</li>
+                    <li>Documentation</li>
+                    <li>Test results</li>
                   </ul>
                 </div>
               </div>
@@ -252,6 +205,4 @@ graph TD
       </div>
     </motion.div>
   );
-};
-
-export default ExercisesSection;
+}
