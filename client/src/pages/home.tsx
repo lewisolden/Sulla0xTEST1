@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { BookOpen, GraduationCap, Zap, Brain, Target, Trophy, Code, Gamepad2, Wallet } from "lucide-react"; 
+import { BookOpen, GraduationCap, Zap, Brain, Target, Trophy, Code, Gamepad2, Wallet, Dumbbell } from "lucide-react";
 import ModuleCard from "@/components/modules/module-card";
 import Footer from "@/components/layout/footer";
 import { motion } from "framer-motion";
@@ -91,14 +91,14 @@ export default function Home() {
               {...fadeInUp}
               transition={{ delay: 0.3 }}
             >
-              <Trophy className="w-12 h-12 text-blue-600 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Achievement NFTs</h3>
+              <Dumbbell className="w-12 h-12 text-blue-600 mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Practical Exercises</h3>
               <p className="text-gray-600">
-                Earn verifiable NFT certificates as you complete modules
+                Hands-on learning with interactive exercises and real-world examples
               </p>
-              <Link href="/achievements">
+              <Link href="/modules/module1/exercises">
                 <button className="mt-2 text-blue-600 hover:text-blue-700 font-medium">
-                  View Achievements →
+                  Start Exercises →
                 </button>
               </Link>
             </motion.div>
@@ -108,14 +108,14 @@ export default function Home() {
               {...fadeInUp}
               transition={{ delay: 0.4 }}
             >
-              <Wallet className="w-12 h-12 text-blue-600 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Virtual Wallet</h3>
+              <Trophy className="w-12 h-12 text-blue-600 mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Achievement NFTs</h3>
               <p className="text-gray-600">
-                Practice crypto transactions in a safe, simulated environment
+                Earn verifiable NFT certificates as you complete modules
               </p>
-              <Link href="/wallet-simulator">
+              <Link href="/achievements">
                 <button className="mt-2 text-blue-600 hover:text-blue-700 font-medium">
-                  Try Simulator →
+                  View Achievements →
                 </button>
               </Link>
             </motion.div>
