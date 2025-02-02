@@ -6,6 +6,47 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
 import { Code, Shield, Workflow, GitBranch } from "lucide-react";
+import mermaid from "mermaid";
+
+const MermaidDiagram = ({ chart }) => {
+  const [svg, setSvg] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const renderDiagram = async () => {
+      try {
+        setLoading(true);
+        const uniqueId = `mermaid-${Math.random().toString(36).substr(2, 9)}`;
+        const { svg } = await mermaid.render(uniqueId, chart);
+        setSvg(svg);
+        setError('');
+      } catch (err) {
+        console.error('Failed to render mermaid diagram:', err);
+        setError('Failed to render diagram');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    renderDiagram();
+  }, [chart]);
+
+  if (loading) {
+    return <div className="flex justify-center p-4">Loading diagram...</div>;
+  }
+
+  if (error) {
+    return <div className="text-red-500 p-4">{error}</div>;
+  }
+
+  return (
+    <div 
+      className="mermaid-diagram" 
+      dangerouslySetInnerHTML={{ __html: svg }} 
+    />
+  );
+};
 
 const SmartContractsSection = () => {
   const [isFullyRead, setIsFullyRead] = useState(false);
@@ -13,6 +54,20 @@ const SmartContractsSection = () => {
   const { updateProgress } = useProgress();
 
   useEffect(() => {
+    mermaid.initialize({ 
+      startOnLoad: true,
+      theme: 'neutral',
+      securityLevel: 'loose',
+      themeVariables: {
+        primaryColor: '#3b82f6',
+        primaryTextColor: '#1e3a8a',
+        primaryBorderColor: '#60a5fa',
+        lineColor: '#93c5fd',
+        secondaryColor: '#dbeafe',
+        tertiaryColor: '#eff6ff'
+      }
+    });
+
     const handleScroll = () => {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
       const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -29,6 +84,51 @@ const SmartContractsSection = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [updateProgress]);
 
+  const containerVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: { opacity: 1, x: 0 }
+  };
+
+  const deploymentFlowDiagram = `graph LR
+    A[Write Contract] --> B[Compile]
+    B --> C[Deploy]
+    C --> D[Verify]
+    D --> E[Interact]
+
+    style A fill:#93c5fd,stroke:#2563eb
+    style B fill:#93c5fd,stroke:#2563eb
+    style C fill:#93c5fd,stroke:#2563eb
+    style D fill:#93c5fd,stroke:#2563eb
+    style E fill:#93c5fd,stroke:#2563eb`;
+
+  const contractHierarchyDiagram = `graph TD
+    A[Smart Contract] --> B[Storage]
+    A --> C[Logic]
+    A --> D[Interface]
+    B --> E[State Variables]
+    B --> F[Mappings]
+    C --> G[Functions]
+    C --> H[Modifiers]
+    D --> I[Events]
+    D --> J[External Functions]
+
+    style A fill:#93c5fd,stroke:#2563eb
+    style B fill:#bfdbfe,stroke:#2563eb
+    style C fill:#bfdbfe,stroke:#2563eb
+    style D fill:#bfdbfe,stroke:#2563eb`;
+
   return (
     <motion.div 
       initial={{ opacity: 0 }}
@@ -40,7 +140,7 @@ const SmartContractsSection = () => {
         <div 
           className="h-full bg-blue-600" 
           style={{ width: `${scrollProgress}%` }}
-        ></div>
+        />
       </div>
 
       <div className="max-w-4xl mx-auto">
@@ -56,9 +156,9 @@ const SmartContractsSection = () => {
         <Card className="mb-6">
           <div className="p-6 prose max-w-none">
             <motion.section
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.4 }}
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
             >
               <h2 className="text-2xl font-bold text-blue-700 mb-4">Understanding Smart Contracts</h2>
               <p className="text-gray-700 mb-4">
@@ -67,8 +167,16 @@ const SmartContractsSection = () => {
                 terms of an agreement without the need for intermediaries.
               </p>
 
+              <div className="my-8 p-4 bg-gray-50 rounded-lg shadow-inner">
+                <h3 className="text-xl font-semibold text-blue-700 mb-4">Smart Contract Deployment Flow</h3>
+                <MermaidDiagram chart={deploymentFlowDiagram} />
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <div className="bg-blue-50 p-6 rounded-lg">
+                <motion.div
+                  variants={itemVariants}
+                  className="bg-blue-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                >
                   <div className="flex items-center gap-2 mb-4">
                     <Code className="w-6 h-6 text-blue-600" />
                     <h3 className="text-xl font-semibold text-blue-700">Self-Executing Programs</h3>
@@ -79,9 +187,12 @@ const SmartContractsSection = () => {
                     <li>Zero downtime operation</li>
                     <li>Tamper-proof execution</li>
                   </ul>
-                </div>
+                </motion.div>
 
-                <div className="bg-blue-50 p-6 rounded-lg">
+                <motion.div
+                  variants={itemVariants}
+                  className="bg-blue-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                >
                   <div className="flex items-center gap-2 mb-4">
                     <Shield className="w-6 h-6 text-blue-600" />
                     <h3 className="text-xl font-semibold text-blue-700">Code-Based Rules</h3>
@@ -92,19 +203,28 @@ const SmartContractsSection = () => {
                     <li>Verifiable outcomes</li>
                     <li>Automated enforcement</li>
                   </ul>
-                </div>
+                </motion.div>
+              </div>
+
+              <div className="my-8 p-4 bg-gray-50 rounded-lg shadow-inner">
+                <h3 className="text-xl font-semibold text-blue-700 mb-4">Smart Contract Architecture</h3>
+                <MermaidDiagram chart={contractHierarchyDiagram} />
               </div>
             </motion.section>
 
             <motion.section
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.6 }}
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="mt-12"
             >
               <h2 className="text-2xl font-bold text-blue-700 mb-4">Real-World Applications</h2>
-              
+
               <div className="space-y-6">
-                <div className="bg-white p-6 rounded-lg shadow-sm">
+                <motion.div
+                  variants={itemVariants}
+                  className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                >
                   <h3 className="text-xl font-semibold text-blue-700 mb-4">Financial Services</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <ul className="list-disc pl-5 space-y-2">
@@ -114,9 +234,12 @@ const SmartContractsSection = () => {
                       <li>Payment systems</li>
                     </ul>
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="bg-white p-6 rounded-lg shadow-sm">
+                <motion.div
+                  variants={itemVariants}
+                  className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                >
                   <h3 className="text-xl font-semibold text-blue-700 mb-4">Digital Rights Management</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <ul className="list-disc pl-5 space-y-2">
@@ -126,9 +249,12 @@ const SmartContractsSection = () => {
                       <li>Usage tracking</li>
                     </ul>
                   </div>
-                </div>
+                </motion.div>
 
-                <div className="bg-white p-6 rounded-lg shadow-sm">
+                <motion.div
+                  variants={itemVariants}
+                  className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                >
                   <h3 className="text-xl font-semibold text-blue-700 mb-4">Supply Chain Management</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <ul className="list-disc pl-5 space-y-2">
@@ -138,7 +264,7 @@ const SmartContractsSection = () => {
                       <li>Document management</li>
                     </ul>
                   </div>
-                </div>
+                </motion.div>
               </div>
             </motion.section>
           </div>
