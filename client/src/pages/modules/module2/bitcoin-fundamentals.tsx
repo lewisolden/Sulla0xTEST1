@@ -5,7 +5,8 @@ import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, Code, Network } from "lucide-react";
+import BitcoinBasicsDiagram from "@/components/diagrams/BitcoinBasicsDiagram";
 
 export default function BitcoinFundamentalsSection() {
   useScrollTop();
@@ -69,6 +70,52 @@ export default function BitcoinFundamentalsSection() {
         </motion.h1>
 
         <div className="prose lg:prose-xl text-gray-700 space-y-6">
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <BitcoinBasicsDiagram />
+          </motion.section>
+
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
+            className="mt-12"
+          >
+            <h2 className="text-3xl font-bold text-blue-700">Core Concepts</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+              <motion.div
+                className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-lg"
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <BookOpen className="h-6 w-6 text-blue-600" />
+                  <h3 className="text-xl font-semibold text-blue-800">What is Bitcoin?</h3>
+                </div>
+                <p className="text-gray-700">
+                  Bitcoin is a decentralized digital currency that enables instant payments to anyone, anywhere in the world.
+                </p>
+              </motion.div>
+
+              <motion.div
+                className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-lg"
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <Network className="h-6 w-6 text-blue-600" />
+                  <h3 className="text-xl font-semibold text-blue-800">How it Works</h3>
+                </div>
+                <p className="text-gray-700">
+                  Bitcoin transactions are verified by network nodes through cryptography and recorded on a public ledger called a blockchain.
+                </p>
+              </motion.div>
+            </div>
+          </motion.section>
+
           <motion.section
             variants={contentVariants}
             initial="hidden"
