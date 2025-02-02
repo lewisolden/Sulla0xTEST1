@@ -182,29 +182,36 @@ export default function Home() {
       <section className="bg-white py-16">
         <div className="container mx-auto px-4">
           <motion.h2 
-            className="text-3xl font-bold text-blue-900 text-center mb-12"
+            className="text-3xl font-bold text-blue-900 text-center mb-4"
             {...fadeInUp}
           >
-            Your Journey into the Future of Finance
+            Course 1: Introduction to Cryptocurrency
           </motion.h2>
+          <motion.p
+            className="text-xl text-blue-700 mb-12 text-center max-w-3xl mx-auto"
+            {...fadeInUp}
+            transition={{ delay: 0.1 }}
+          >
+            A comprehensive introduction to cryptocurrency, blockchain technology, and digital finance through interactive learning experiences.
+          </motion.p>
 
           <div className="grid md:grid-cols-3 gap-8">
             <ModuleCard
               icon={BookOpen}
-              title="Module 1: Fundamentals of Cryptocurrency"
-              description="Dive into the world of digital currencies, exploring their history, technology, and potential."
+              title="Module 1: Understanding Cryptocurrency"
+              description="Master the fundamentals of cryptocurrency through interactive learning and practical exercises."
               link="/modules/module1"
             />
             <ModuleCard
               icon={GraduationCap}
-              title="Module 2: Understanding Blockchain"
-              description="Understand the core technology behind cryptocurrencies and its revolutionary potential."
+              title="Module 2: Bitcoin Fundamentals"
+              description="Deep dive into Bitcoin, investment strategies, and security considerations."
               link="/modules/module2"
             />
             <ModuleCard
               icon={Zap}
-              title="Module 3: Advanced Concepts"
-              description="Explore advanced blockchain concepts, platforms, and real-world applications."
+              title="Module 3: Ethereum & Smart Contracts"
+              description="Explore Ethereum, smart contracts, and their practical applications."
               link="/modules/module3"
             />
           </div>
