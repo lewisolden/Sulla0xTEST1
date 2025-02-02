@@ -5,7 +5,7 @@ import { useProgress } from "@/context/progress-context";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
-import { Code, Tool, BookOpen, Award } from "lucide-react";
+import { Wrench, Code, BookOpen, Award } from "lucide-react";
 import Mermaid from "@/components/diagrams/Mermaid";
 
 const ExercisesSection = () => {
@@ -36,7 +36,7 @@ sequenceDiagram
     participant IDE
     participant TestNet
     participant Contract
-    
+
     Student->>IDE: Write Contract
     IDE->>TestNet: Deploy
     Student->>Contract: Interact
@@ -95,7 +95,7 @@ graph TD
           {/* Exercise 1 */}
           <Card className="p-6">
             <div className="flex items-center gap-2 mb-4">
-              <Tool className="w-6 h-6 text-blue-600" />
+              <Wrench className="w-6 h-6 text-blue-600" />
               <h2 className="text-2xl font-bold text-blue-700">Exercise 1: Ethereum Wallet Setup and Security</h2>
             </div>
             <div className="space-y-4">
