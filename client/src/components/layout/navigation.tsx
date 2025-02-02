@@ -14,7 +14,7 @@ export default function Navigation() {
         </div>
         <div className="flex items-center mr-8">
           <Link href="/curriculum">
-            <span className="text-white hover:text-blue-200 transition-colors font-bold">Course</span>
+            <span className="text-white hover:text-blue-200 transition-colors font-bold">Courses</span>
           </Link>
         </div>
       </div>
