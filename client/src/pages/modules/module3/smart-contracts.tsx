@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
 import { Code, Shield, Workflow, GitBranch } from "lucide-react";
+import SmartContractsQuiz from "@/components/quizzes/SmartContractsQuiz";
 import mermaid from "mermaid";
 
 const MermaidDiagram = ({ chart }) => {
@@ -51,6 +52,7 @@ const MermaidDiagram = ({ chart }) => {
 const SmartContractsSection = () => {
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [showQuiz, setShowQuiz] = useState(false);
   const { updateProgress } = useProgress();
 
   useEffect(() => {
@@ -128,6 +130,26 @@ const SmartContractsSection = () => {
     style B fill:#bfdbfe,stroke:#2563eb
     style C fill:#bfdbfe,stroke:#2563eb
     style D fill:#bfdbfe,stroke:#2563eb`;
+
+  const startQuiz = () => {
+    setShowQuiz(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  if (showQuiz) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <Button 
+          onClick={() => setShowQuiz(false)}
+          className="mb-6"
+          variant="outline"
+        >
+          ← Back to Content
+        </Button>
+        <SmartContractsQuiz />
+      </div>
+    );
+  }
 
   return (
     <motion.div 
@@ -270,17 +292,6 @@ const SmartContractsSection = () => {
           </div>
         </Card>
 
-        <ModuleNavigation
-          prev={{
-            path: "/modules/module3/ethereum-fundamentals",
-            label: "Ethereum Fundamentals"
-          }}
-          next={{
-            path: "/modules/module3/investment-value",
-            label: "Investment and Value"
-          }}
-        />
-
         {isFullyRead && (
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -288,13 +299,32 @@ const SmartContractsSection = () => {
             className="mt-8"
           >
             <Card className="bg-green-100 border-l-4 border-green-500 p-4">
-              <p className="text-green-700">
-                🎉 Congratulations! You've completed the Smart Contract Development section!
-              </p>
+              <div className="flex flex-col items-center">
+                <p className="text-green-700 mb-4">
+                  🎉 Congratulations! You've completed the Smart Contract Development section!
+                </p>
+                <Button
+                  onClick={startQuiz}
+                  className="bg-green-600 hover:bg-green-700 text-white"
+                >
+                  Take Section Quiz
+                </Button>
+              </div>
             </Card>
           </motion.div>
         )}
       </div>
+
+      <ModuleNavigation
+        prev={{
+          path: "/modules/module3/ethereum-fundamentals",
+          label: "Ethereum Fundamentals"
+        }}
+        next={{
+          path: "/modules/module3/investment-value",
+          label: "Investment and Value"
+        }}
+      />
     </motion.div>
   );
 };
