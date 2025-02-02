@@ -85,6 +85,7 @@ export default function BitcoinFundamentalsSection() {
               <li>Public trust in financial institutions was eroding</li>
               <li>The need for financial innovation became clear</li>
             </ul>
+            <p>This environment gave birth to Bitcoin, introduced through a whitepaper by the mysterious Satoshi Nakamoto.</p>
           </motion.section>
 
           <motion.section
@@ -93,32 +94,50 @@ export default function BitcoinFundamentalsSection() {
             animate="visible"
           >
             <h3 className="text-2xl font-semibold text-blue-600">Key Historical Milestones</h3>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>
+            <div className="space-y-4">
+              <div>
                 <strong>Genesis Block (January 3, 2009)</strong>
                 <ul className="list-disc pl-5 space-y-1">
                   <li>First Bitcoin block ever mined</li>
                   <li>Contained a message about bank bailouts</li>
                   <li>Marked the start of Bitcoin's blockchain</li>
                 </ul>
-              </li>
-              <li>
+              </div>
+              <div>
                 <strong>First Transaction</strong>
                 <ul className="list-disc pl-5 space-y-1">
                   <li>Between Satoshi and Hal Finney</li>
                   <li>Proved the network could transfer value</li>
                   <li>Demonstrated peer-to-peer functionality</li>
                 </ul>
-              </li>
-              <li>
+              </div>
+              <div>
                 <strong>Pizza Purchase (May 2010)</strong>
                 <ul className="list-disc pl-5 space-y-1">
                   <li>10,000 BTC for two pizzas</li>
                   <li>First real-world transaction</li>
                   <li>Shows Bitcoin's remarkable value evolution</li>
                 </ul>
-              </li>
-            </ul>
+              </div>
+            </div>
+          </motion.section>
+
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <h2 className="text-3xl font-bold text-blue-700">How Bitcoin Works</h2>
+            <div className="bg-blue-50 rounded-lg p-6 mb-6">
+              <h3 className="text-2xl font-semibold text-blue-600 mb-4">Simple Explanation</h3>
+              <p>Think of Bitcoin as a digital ledger that:</p>
+              <ul className="list-disc pl-5 space-y-2">
+                <li>Records all transactions</li>
+                <li>Is maintained by thousands of computers</li>
+                <li>Cannot be changed once written</li>
+                <li>Is visible to everyone</li>
+              </ul>
+            </div>
           </motion.section>
 
           {isFullyRead && (
