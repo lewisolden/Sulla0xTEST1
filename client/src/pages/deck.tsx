@@ -6,134 +6,241 @@ import { ChevronLeft, ChevronRight, Download } from "lucide-react";
 
 const slides = [
   {
-    title: "Sulla Pitch Deck",
-    content: "",
+    title: "About Sulla",
+    content: "Next-Generation Crypto Education Platform",
     type: "title",
     bullets: []
   },
   {
-    title: "Introduction",
-    content: "The Problem & Solution",
+    title: "The Problem",
+    content: "Current State of Crypto Education",
     bullets: [
-      "The cryptocurrency industry is rapidly evolving, yet structured, high-quality educational resources remain fragmented, overly technical, or unreliable",
-      "Many newcomers struggle to understand the fundamentals, and experienced users lack clear pathways for advanced learning",
-      "Sulla is a next-generation crypto education platform bridging this gap with interactive, structured courses",
-      "Adaptive Learning with AI-driven personalization",
-      "Intelligent Course Recommendations via machine learning",
-      "Modular Learning covering Bitcoin, Ethereum, DeFi, Smart Contracts, Security",
-      "Interactive Experience with gamified quizzes and NFT certifications",
-      "Freemium Model with premium offerings for deeper knowledge"
+      "Fragmented and unreliable educational resources",
+      "Complex technical barriers for newcomers",
+      "Lack of structured learning paths",
+      "Limited practical experience opportunities",
+      "High risk of costly mistakes"
+    ]
+  },
+  {
+    title: "Our Solution",
+    content: "Interactive Learning Platform",
+    bullets: [
+      "Comprehensive, structured curriculum",
+      "Interactive learning modules",
+      "Hands-on practice environments",
+      "AI-driven personalization",
+      "Real-time progress tracking"
+    ]
+  },
+  {
+    title: "Key Features",
+    content: "What Makes Sulla Different",
+    bullets: [
+      "Gamified learning experience",
+      "Virtual trading simulator",
+      "Smart contract playground",
+      "NFT-based achievements",
+      "Community support system"
     ]
   },
   {
     title: "Market Opportunity",
-    content: "Why Now?",
+    content: "Growing Demand",
     bullets: [
-      "Global Crypto Adoption: Over 420 million crypto users worldwide (2024)",
-      "Institutional Interest: 80% of major banks exploring digital assets",
-      "Lack of Quality Education: Most resources too technical or outdated",
-      "Market Size: Crypto Education Market Value (2024): $1.5B+ and growing",
-      "Projected Growth: Expected to exceed $5B by 2028",
-      "Target Audience: Crypto enthusiasts, developers, traders, and fintech institutions"
+      "420M+ global crypto users",
+      "$1.5B crypto education market",
+      "80% of banks exploring crypto",
+      "Rising institutional adoption",
+      "Increasing regulatory clarity"
     ]
   },
   {
-    title: "Product Overview",
-    content: "What Makes Sulla Unique?",
+    title: "Target Audience",
+    content: "Who We Serve",
     bullets: [
-      "Comprehensive Course Library – Covers Bitcoin, Ethereum, DeFi, NFTs, DAOs, Security, Trading",
-      "Adaptive Learning & AI Personalization – Dynamic difficulty adjustment",
-      "Gamified Learning – Engaging quizzes and interactive simulations",
-      "NFT-Based Certifications – Blockchain-verified credentials",
-      "B2B Integration – White-label solutions for fintech companies"
+      "Crypto newcomers",
+      "Traditional investors",
+      "Developers",
+      "Financial institutions",
+      "Educational organizations"
     ]
   },
   {
-    title: "What's Been Built to Date?",
-    content: "First Course: Introduction to Cryptocurrency",
+    title: "Technology Stack",
+    content: "Built for Scale",
     bullets: [
-      "Understanding Cryptocurrency – Evolution of money and digital assets",
-      "Bitcoin & Ethereum Basics – Technology deep dive",
-      "Security & Risk Management – Asset protection and scam awareness",
-      "Practical Applications – Hands-on exercises",
-      "Interactive Assessments – Gamified quizzes with instant feedback"
+      "React & TypeScript frontend",
+      "Node.js backend",
+      "PostgreSQL database",
+      "Blockchain integrations",
+      "AI/ML capabilities"
     ]
   },
   {
-    title: "Go-to-Market Strategy",
-    content: "Three Phase Approach",
+    title: "Learning Modules",
+    content: "Comprehensive Curriculum",
     bullets: [
-      "Phase 1 (0-6 Months): Community Growth via Web3 social media",
-      "Interactive quizzes & NFT rewards",
-      "YouTube & influencer partnerships",
-      "SEO Strategy for organic growth",
-      "Phase 2 (6-12 Months): Pre-Monetization & User Scaling",
-      "Phase 3 (12-18 Months): Launch subscriptions ($9.99-$49.99/month)"
+      "Cryptocurrency Fundamentals",
+      "Blockchain Technology",
+      "DeFi & Smart Contracts",
+      "Trading & Investment",
+      "Security & Best Practices"
     ]
   },
   {
-    title: "Traction & Milestones",
-    content: "Growth Timeline",
+    title: "Interactive Tools",
+    content: "Practical Learning Environment",
     bullets: [
-      "0-12M: Community Growth – 100K users, 10K Discord members",
-      "12-18M: Monetization – First $500K revenue",
-      "18-24M: Institutional Adoption – 500K+ users, major partnerships",
-      "24M+: Global Expansion – 1M users, $5M+ ARR"
+      "Trading simulator",
+      "Wallet practice",
+      "Smart contract editor",
+      "Market analysis tools",
+      "Security workshops"
+    ]
+  },
+  {
+    title: "Progress Tracking",
+    content: "Measure Your Growth",
+    bullets: [
+      "Achievement system",
+      "Skill assessments",
+      "Learning analytics",
+      "Performance metrics",
+      "Completion certificates"
+    ]
+  },
+  {
+    title: "Community Features",
+    content: "Learn Together",
+    bullets: [
+      "Discussion forums",
+      "Study groups",
+      "Mentor matching",
+      "Peer reviews",
+      "Knowledge sharing"
+    ]
+  },
+  {
+    title: "B2B Solutions",
+    content: "Enterprise & Institutional",
+    bullets: [
+      "Custom learning paths",
+      "White-label platform",
+      "API integration",
+      "Analytics dashboard",
+      "Compliance training"
+    ]
+  },
+  {
+    title: "Security Focus",
+    content: "Safe Learning Environment",
+    bullets: [
+      "Best practice training",
+      "Secure testing environment",
+      "Risk management",
+      "Scam prevention",
+      "Privacy protection"
+    ]
+  },
+  {
+    title: "User Benefits",
+    content: "Why Choose Sulla",
+    bullets: [
+      "Structured learning path",
+      "Practical experience",
+      "Risk-free environment",
+      "Industry recognition",
+      "Career advancement"
+    ]
+  },
+  {
+    title: "Revenue Model",
+    content: "Sustainable Growth",
+    bullets: [
+      "Freemium model",
+      "Premium subscriptions",
+      "Enterprise licensing",
+      "B2B partnerships",
+      "Custom solutions"
+    ]
+  },
+  {
+    title: "Growth Strategy",
+    content: "Expansion Plans",
+    bullets: [
+      "Market penetration",
+      "Product development",
+      "Geographic expansion",
+      "Partnership network",
+      "Community growth"
+    ]
+  },
+  {
+    title: "Competition Analysis",
+    content: "Market Position",
+    bullets: [
+      "Comprehensive solution",
+      "Interactive approach",
+      "Enterprise focus",
+      "Technology advantage",
+      "Community strength"
+    ]
+  },
+  {
+    title: "Token Economics",
+    content: "Platform Token Utility",
+    bullets: [
+      "Learning incentives",
+      "Governance rights",
+      "Premium access",
+      "Community rewards",
+      "Ecosystem integration"
+    ]
+  },
+  {
+    title: "Financial Projections",
+    content: "5-Year Forecast",
+    bullets: [
+      "Year 1: Market entry",
+      "Year 2: Revenue growth",
+      "Year 3: Break-even",
+      "Year 4: Expansion",
+      "Year 5: Market leader"
     ]
   },
   {
     title: "Funding Requirements",
-    content: "Total Funding Needed: $650K",
+    content: "Investment Opportunity",
     bullets: [
-      "Content Expansion: $50K",
-      "Marketing & Acquisition: $50K",
-      "Business Development: $50K",
-      "Platform Enhancements: $100K",
-      "Operational Costs: $200K",
-      "Security & Compliance: $100K",
-      "Miscellaneous Buffer: $50K"
+      "Development: $250K",
+      "Marketing: $150K",
+      "Operations: $150K",
+      "Reserve: $100K",
+      "Total: $650K"
     ]
   },
   {
-    title: "The Team",
+    title: "Team",
     content: "Expert Leadership",
     bullets: [
-      "Founder & CEO: Web3 entrepreneur with fintech & education expertise",
-      "CTO: Blockchain developer & AI specialist",
-      "Head of Content: Crypto educator & research analyst",
-      "Marketing Lead: Community builder & digital strategist"
+      "Experienced founders",
+      "Technical expertise",
+      "Education background",
+      "Industry network",
+      "Advisory board"
     ]
   },
   {
-    title: "Future Token Integration",
-    content: "Token Utility & Ecosystem",
-    bullets: [
-      "Tokenized Rewards – Earn for completing courses and contributing",
-      "Staking for Premium Access – Unlock advanced content",
-      "Decentralized Governance – Community-driven platform decisions",
-      "Marketplace & Peer Learning Economy – Token-based incentives",
-      "Building long-term engagement and community-driven growth"
-    ]
-  },
-  {
-    title: "5-Year Financial Forecasts",
-    content: "Growth Projections",
-    bullets: [
-      "Year 1: 100K+ users, ($400K - $500K) Loss",
-      "Year 2: 500K+ users, $500K Revenue, ($700K) Loss",
-      "Year 3: 1M+ users, $2M - $5M Revenue, Break-even to $2M Profit",
-      "Focus on user acquisition before monetization",
-      "Additional fundraising required in Year 2"
-    ]
-  },
-  {
-    title: "Call to Action",
-    content: "Join us in revolutionizing crypto education",
+    title: "Join Us",
+    content: "Be Part of the Future",
     type: "call-to-action",
     bullets: [
-      "Seeking investors, partners, and early adopters",
+      "Investment opportunity",
+      "Partnership programs",
       "Contact: team@sulla.com",
-      "Twitter: @SullaCrypto"
+      "Website: sulla.edu",
+      "Start learning today"
     ]
   }
 ];
