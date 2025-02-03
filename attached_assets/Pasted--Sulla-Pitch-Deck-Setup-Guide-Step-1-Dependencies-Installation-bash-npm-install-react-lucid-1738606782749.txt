@@ -1,0 +1,129 @@
+# Sulla Pitch Deck Setup Guide
+
+## Step 1: Dependencies Installation
+```bash
+npm install react lucide-react framer-motion html2pdf.js tailwindcss postcss autoprefixer
+```
+
+## Step 2: Tailwind Configuration
+Create a `tailwind.config.js` file:
+
+```js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        blue: {
+          50: '#eff6ff',
+          100: '#dbeafe',
+          600: '#2563eb',
+          800: '#1e40af',
+        },
+        gray: {
+          50: '#f9fafb',
+          100: '#f3f4f6',
+          500: '#6b7280',
+          600: '#4b5563',
+        },
+        red: {
+          500: '#ef4444',
+        },
+        green: {
+          500: '#22c55e',
+        },
+      },
+    },
+  },
+  plugins: [],
+}
+```
+
+## Step 3: PostCSS Configuration
+Create a `postcss.config.js` file:
+
+```js
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+}
+```
+
+## Step 4: Add Base CSS
+Create or update your `index.css`:
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Optional: Add custom styles */
+.page-break-after {
+  page-break-after: always;
+}
+
+.page-break-inside-avoid {
+  page-break-inside: avoid;
+}
+```
+
+## Step 5: Using the Pitch Deck Component
+
+1. Copy the entire content of `sulla-slides.tsx` to your project
+2. Import and use the component:
+
+```tsx
+import { SullaPitchDeck } from './components/sulla-slides';
+
+function App() {
+  return (
+    <div className="min-h-screen bg-gray-100">
+      <SullaPitchDeck />
+    </div>
+  );
+}
+```
+
+## Step 6: Customization
+
+### Modifying Colors
+- Update Tailwind classes in the components (e.g., change `bg-blue-600` to your brand color)
+- Or extend the Tailwind config with your brand colors
+
+### Updating Content
+- Edit the `slides` array in `sulla-slides.tsx`
+- Each slide is a React component using the `Slide` wrapper
+- Modify text, images, and layout as needed
+
+### PDF Export
+The PDF export functionality uses `html2pdf.js`. To customize:
+- Adjust margin, format, and quality in the `handleExport` function
+- Modify page breaks and styling in the export container
+
+## Common Issues & Solutions
+
+1. PDF Export Blank Pages:
+   - Check CSS print media queries
+   - Ensure proper page break settings
+   - Verify all content is loaded before export
+
+2. Styling Issues:
+   - Make sure Tailwind is properly configured
+   - Check for conflicting styles
+   - Verify class names match Tailwind config
+
+3. Animation Problems:
+   - Ensure Framer Motion is properly imported
+   - Check for conflicting transition properties
+   - Verify animation settings in components
+
+## Additional Notes
+
+- The components use SVG for logos - replace with your own images/logos as needed
+- All icons come from `lucide-react` - can be replaced with any icon library
+- Animation is handled by Framer Motion - can be modified or removed if needed
