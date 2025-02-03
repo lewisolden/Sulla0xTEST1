@@ -33,6 +33,7 @@ import {
   MessageCircle,
   Building2,
   Globe2,
+  Wallet,
   type LucideIcon
 } from 'lucide-react';
 
@@ -723,7 +724,7 @@ const growthExpansionSlide = <Slide key="growth-expansion">
     <div className="space-y-6">
       <motion.div
         initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
+        animate{{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2 }}
         className="bg-gradient-tobr from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
       >
@@ -918,6 +919,136 @@ const tractionSlide = <Slide key="traction">
   </motion.div>
 </Slide>;
 
+const financialSlide = <Slide key="financial">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <div className="flex items-center gap-4 mb-8">
+      <div className="p-3 bg-green-500/20 rounded-lg">
+        <LineChart className="w-8 h-8 text-green-400" />
+      </div>
+      <h2 className="text-4xl font-bold text-blue-400">5-Year Financial Forecasts & Growth Projections</h2>
+    </div>
+    <Card className="bg-blue-900/30 p-6 mb-8">
+      <p className="text-lg text-blue-100">
+        As Sulla scales, we project significant growth in user adoption, revenue streams, and enterprise partnerships. 
+        Below is our 5-year financial outlook, assuming steady market adoption and expansion of our platform features.
+      </p>
+    </Card>
+
+    <div className="overflow-x-auto">
+      <table className="min-w-full bg-gradient-to-br from-blue-900/30 to-purple-900/30 rounded-lg">
+        <thead className="border-b border-blue-400/30">
+          <tr>
+            <th className="px-4 py-3 text-left text-blue-300">Year</th>
+            <th className="px-4 py-3 text-left text-blue-300">Users</th>
+            <th className="px-4 py-3 text-left text-blue-300">Revenue</th>
+            <th className="px-4 py-3 text-left text-blue-300">Expenses</th>
+            <th className="px-4 py-3 text-left text-blue-300">Net Profit</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-blue-400/30">
+          <tr>
+            <td className="px-4 py-3 text-blue-100">Year 1</td>
+            <td className="px-4 py-3 text-blue-100">100K+ users</td>
+            <td className="px-4 py-3 text-blue-100">$0 (User Growth Focus)</td>
+            <td className="px-4 py-3 text-blue-100">$400K - $500K</td>
+            <td className="px-4 py-3 text-red-400">($400K - $500K) Loss</td>
+          </tr>
+          <tr>
+            <td className="px-4 py-3 text-blue-100">Year 2</td>
+            <td className="px-4 py-3 text-blue-100">500K+ users</td>
+            <td className="px-4 py-3 text-blue-100">$500K</td>
+            <td className="px-4 py-3 text-blue-100">$1.2M</td>
+            <td className="px-4 py-3 text-red-400">($700K) Loss</td>
+          </tr>
+          <tr>
+            <td className="px-4 py-3 text-blue-100">Year 3</td>
+            <td className="px-4 py-3 text-blue-100">1M+ users</td>
+            <td className="px-4 py-3 text-blue-100">$2M - $5M</td>
+            <td className="px-4 py-3 text-blue-100">$3M</td>
+            <td className="px-4 py-3 text-green-400">Break-even to $2M Profit</td>
+          </tr>
+          <tr>
+            <td className="px-4 py-3 text-blue-100">Year 4</td>
+            <td className="px-4 py-3 text-blue-100">2.5M+ users</td>
+            <td className="px-4 py-3 text-blue-100">$10M+</td>
+            <td className="px-4 py-3 text-blue-100">$6M</td>
+            <td className="px-4 py-3 text-green-400">$4M+ Profit</td>
+          </tr>
+          <tr>
+            <td className="px-4 py-3 text-blue-100">Year 5</td>
+            <td className="px-4 py-3 text-blue-100">5M+ users</td>
+            <td className="px-4 py-3 text-blue-100">$20M+</td>
+            <td className="px-4 py-3 text-blue-100">$10M</td>
+            <td className="px-4 py-3 text-green-400">$10M+ Profit</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div className="mt-8">
+      <h3 className="text-2xl font-semibold text-blue-300 mb-4">Revenue Growth Drivers</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {[
+          {
+            icon: Wallet,
+            title: "Subscription Plans",
+            description: "Users pay $9.99 - $49.99/month for premium courses"
+          },
+          {
+            icon: Building,
+            title: "Institutional Licensing",
+            description: "Crypto exchanges, fintech firms, and universities integrate Sulla's courses"
+          },
+          {
+            icon: Award,
+            title: "NFT-Based Certifications",
+            description: "Users pay $99 - $499 for blockchain-backed credentials"
+          },
+          {
+            icon: MessageCircle,
+            title: "Sponsored Content & Partnerships",
+            description: "Crypto brands pay to feature learning modules"
+          },
+          {
+            icon: Trophy,
+            title: "Gamified Microtransactions",
+            description: "Monetization of in-app rewards and premium content"
+          }
+        ].map((driver, index) => (
+          <motion.div
+            key={index}
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: index * 0.1 }}
+            className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-4 rounded-lg"
+          >
+            <div className="flex items-center gap-3 mb-2">
+              <driver.icon className="w-5 h-5 text-blue-400" />
+              <h4 className="font-semibold text-blue-300">{driver.title}</h4>
+            </div>
+            <p className="text-blue-100 text-sm">{driver.description}</p>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+
+    <Card className="bg-blue-900/30 p-6 mt-8">
+      <div className="flex items-start gap-3">
+        <span className="text-2xl">📌</span>
+        <p className="text-lg text-blue-100">
+          Year 1 is dedicated solely to user acquisition, with revenue generation beginning in Year 2 once a critical mass of engaged users has been established. 
+          Given the anticipated burn rate, we will likely need to raise additional funding in Year 2 to sustain momentum and continue scaling effectively.
+        </p>
+      </div>
+    </Card>
+  </motion.div>
+</Slide>;
+
+// Update slides array
 const slides = [
   titleSlide,
   problemSlide,
@@ -934,7 +1065,8 @@ const slides = [
   goToMarketSlide,
   growthExpansionSlide,
   tokenIntegrationSlide,
-  tractionSlide
+  tractionSlide,
+  financialSlide
 ];
 
 const DeckPage: React.FC = () => {
