@@ -37,6 +37,24 @@ import {
   Mail,
   Twitter,
   type LucideIcon,
+  Sparkles,
+  Bot,
+  Puzzle,
+  Laptop,
+  GraduationCap,
+  BrainCircuit,
+  School,
+  BookOpen,
+  Microscope,
+  CircleDollarSign,
+  TrendingUp,
+  UserCheck,
+  PieChart,
+  DollarSign,
+  BellRing,
+  BadgePercent,
+  ShieldCheck,
+  Infinity,
 } from 'lucide-react';
 
 interface SlideProps {
@@ -147,9 +165,12 @@ const solutionSlide = <Slide key="solution">
       <h2 className="text-4xl font-bold text-blue-400">The Solution</h2>
     </div>
     <Card className="bg-blue-900/30 p-6 mb-8">
-      <p className="text-xl text-blue-100">
-        Sulla is a next-generation crypto education platform that bridges this gap by offering interactive, structured, and engaging courses tailored for beginners, developers, and institutions.
-      </p>
+      <div className="flex items-center gap-4 mb-4">
+        <Sparkles className="w-6 h-6 text-blue-400" />
+        <p className="text-xl text-blue-100">
+          Sulla is a next-generation crypto education platform that bridges this gap by offering interactive, structured, and engaging courses tailored for beginners, developers, and institutions.
+        </p>
+      </div>
     </Card>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <motion.div
@@ -158,7 +179,10 @@ const solutionSlide = <Slide key="solution">
         transition={{ delay: 0.3 }}
         className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
       >
-        <h3 className="text-xl font-semibold text-blue-300 mb-4">Adaptive Learning</h3>
+        <div className="flex items-center gap-3 mb-4">
+          <Bot className="w-6 h-6 text-blue-400" />
+          <h3 className="text-xl font-semibold text-blue-300">Adaptive Learning</h3>
+        </div>
         <p className="text-blue-100">
           AI-driven personalization tailors content based on individual learning styles
         </p>
@@ -169,7 +193,10 @@ const solutionSlide = <Slide key="solution">
         transition={{ delay: 0.4 }}
         className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
       >
-        <h3 className="text-xl font-semibold text-blue-300 mb-4">Intelligent Recommendations</h3>
+        <div className="flex items-center gap-3 mb-4">
+          <BrainCircuit className="w-6 h-6 text-blue-400" />
+          <h3 className="text-xl font-semibold text-blue-300">Intelligent Recommendations</h3>
+        </div>
         <p className="text-blue-100">
           Machine learning algorithms suggest the most relevant courses
         </p>
@@ -193,18 +220,22 @@ const featuresSlide = <Slide key="features">
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {[
         {
+          icon: Puzzle,
           title: "Modular Learning",
           description: "Comprehensive coverage of Bitcoin, Ethereum, DeFi, Smart Contracts, Security"
         },
         {
+          icon: GraduationCap,
           title: "Interactive Experience",
           description: "Gamified quizzes, real-world scenarios, and NFT certifications"
         },
         {
+          icon: BadgePercent,
           title: "Freemium Model",
           description: "Free introductory content with premium offerings for deeper knowledge"
         },
         {
+          icon: Building2,
           title: "B2B Integration",
           description: "White-label solutions for fintech companies and institutions"
         }
@@ -216,7 +247,10 @@ const featuresSlide = <Slide key="features">
           transition={{ delay: index * 0.1 }}
           className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
         >
-          <h3 className="text-xl font-semibold text-blue-300 mb-4">{feature.title}</h3>
+          <div className="flex items-center gap-3 mb-4">
+            <feature.icon className="w-6 h-6 text-blue-400" />
+            <h3 className="text-xl font-semibold text-blue-300">{feature.title}</h3>
+          </div>
           <p className="text-blue-100">{feature.description}</p>
         </motion.div>
       ))}
@@ -242,9 +276,12 @@ const missionSlide = <Slide key="mission">
       transition={{ delay: 0.3 }}
       className="bg-gradient-to-br from-purple-900/50 to-blue-900/50 p-8 rounded-lg mb-8"
     >
-      <h3 className="text-2xl font-semibold text-blue-300 mb-4">
-        To make crypto education accessible, engaging, and financially rewarding
-      </h3>
+      <div className="flex items-center gap-4 mb-4">
+        <Infinity className="w-8 h-8 text-blue-400" />
+        <h3 className="text-2xl font-semibold text-blue-300">
+          To make crypto education accessible, engaging, and financially rewarding
+        </h3>
+      </div>
     </motion.div>
     <motion.div
       initial={{ y: 20, opacity: 0 }}
@@ -252,9 +289,12 @@ const missionSlide = <Slide key="mission">
       transition={{ delay: 0.5 }}
       className="bg-blue-900/30 p-6 rounded-lg"
     >
-      <p className="text-xl text-blue-100">
-        Empowering users to confidently navigate the blockchain space through structured, high-quality educational resources and interactive learning experiences.
-      </p>
+      <div className="flex items-center gap-4">
+        <ShieldCheck className="w-6 h-6 text-blue-400" />
+        <p className="text-xl text-blue-100">
+          Empowering users to confidently navigate the blockchain space through structured, high-quality educational resources and interactive learning experiences.
+        </p>
+      </div>
     </motion.div>
   </motion.div>
 </Slide>;
@@ -271,12 +311,24 @@ const marketOpportunitySlide = <Slide key="market-opportunity">
       </div>
       <h2 className="text-4xl font-bold text-blue-400">Market Opportunity</h2>
     </div>
-    <h3 className="text-2xl font-semibold text-blue-300 mb-6">Why Now?</h3>
+    <div className="flex items-center gap-4 mb-6">
+      <CircleDollarSign className="w-6 h-6 text-blue-400" />
+      <h3 className="text-2xl font-semibold text-blue-300">Why Now?</h3>
+    </div>
     <motion.div className="space-y-4">
       {[
-        "Over 420 million crypto users worldwide (2024)",
-        "80% of major banks exploring digital assets",
-        "Lack of quality education leading to confusion and security risks"
+        {
+          icon: UserCheck,
+          text: "Over 420 million crypto users worldwide (2024)"
+        },
+        {
+          icon: Building2,
+          text: "80% of major banks exploring digital assets"
+        },
+        {
+          icon: School,
+          text: "Lack of quality education leading to confusion and security risks"
+        }
       ].map((point, index) => (
         <motion.div
           key={index}
@@ -285,8 +337,8 @@ const marketOpportunitySlide = <Slide key="market-opportunity">
           transition={{ delay: index * 0.2 }}
           className="flex items-start gap-4 bg-blue-900/30 p-4 rounded-lg"
         >
-          <div className="h-2 w-2 bg-blue-400 rounded-full mt-2 flex-shrink-0" />
-          <p className="text-lg text-blue-100">{point}</p>
+          <point.icon className="w-6 h-6 text-blue-400 mt-1" />
+          <p className="text-lg text-blue-100">{point.text}</p>
         </motion.div>
       ))}
     </motion.div>
@@ -312,12 +364,17 @@ const marketSizeSlide = <Slide key="market-size">
         transition={{ delay: 0.3 }}
         className="space-y-6"
       >
-        <h3 className="text-2xl font-semibold text-blue-300">Current Market Value</h3>
+        <div className="flex items-center gap-4">
+          <LineChart className="w-6 h-6 text-blue-400" />
+          <h3 className="text-2xl font-semibold text-blue-300">Current Market Value</h3>
+        </div>
         <div className="space-y-4">
-          <div className="bg-blue-900/30 p-4 rounded-lg">
+          <div className="bg-blue-900/30 p-4 rounded-lg flex items-center gap-4">
+            <DollarSign className="w-5 h-5 text-blue-400" />
             <p className="text-lg text-blue-100">Crypto Education Market (2024): $1.5B+ and growing</p>
           </div>
-          <div className="bg-blue-900/30 p-4 rounded-lg">
+          <div className="bg-blue-900/30 p-4 rounded-lg flex items-center gap-4">
+            <TrendingUp className="w-5 h-5 text-blue-400" />
             <p className="text-lg text-blue-100">Expected to exceed $5B by 2028 as Web3 adoption accelerates</p>
           </div>
         </div>
@@ -327,23 +384,38 @@ const marketSizeSlide = <Slide key="market-size">
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.5 }}
       >
-        <h3 className="text-2xl font-semibold text-blue-300 mb-6">Target Audience</h3>
+        <div className="flex items-center gap-4 mb-6">
+          <PieChart className="w-6 h-6 text-blue-400" />
+          <h3 className="text-2xl font-semibold text-blue-300">Target Audience</h3>
+        </div>
         <div className="space-y-4">
           {[
-            "Crypto enthusiasts and newcomers",
-            "Developers and technical professionals",
-            "Traders and investors",
-            "Fintech institutions"
+            {
+              icon: BookOpen,
+              text: "Crypto enthusiasts and newcomers"
+            },
+            {
+              icon: Laptop,
+              text: "Developers and technical professionals"
+            },
+            {
+              icon: LineChart,
+              text: "Traders and investors"
+            },
+            {
+              icon: Building2,
+              text: "Fintech institutions"
+            }
           ].map((audience, index) => (
             <motion.div
               key={index}
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ delay: 0.6 + index * 0.1 }}
-              className="flex items-center gap-3 bg-blue-900/30 p-4 rounded-lg"
+              className="flex items-center gap-4 bg-blue-900/30 p-4 rounded-lg"
             >
-              <div className="h-2 w-2 bg-blue-400 rounded-full flex-shrink-0" />
-              <p className="text-lg text-blue-100">{audience}</p>
+              <audience.icon className="w-5 h-5 text-blue-400" />
+              <p className="text-lg text-blue-100">{audience.text}</p>
             </motion.div>
           ))}
         </div>
@@ -674,7 +746,7 @@ const goToMarketSlide = <Slide key="go-to-market">
               transition={{ delay: 0.3 + index * 0.1 }}
               className="flex items-center gap-3 text-blue-100"
             >
-              <ArrowRight className="w-4 h-4 text-blue-400 flex-shrink-0" />
+              <ArrowRight className="w-4 h4 text-blue-400 flex-shrink-0" />
               {item}
             </motion.li>
           ))}
@@ -1366,9 +1438,6 @@ const fundingBreakdownSlide = <Slide key="funding-breakdown">
   </motion.div>
 </Slide>;
 
-// Previous slides remain unchanged
-
-// Update slides array to include all slides in the correct order
 const slides = [
   titleSlide,
   problemSlide,
