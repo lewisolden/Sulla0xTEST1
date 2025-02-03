@@ -1,29 +1,11 @@
 import React, { useState, useRef } from 'react';
-import html2pdf from 'html2pdf.js';
+import { Card } from '@/components/ui/card';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ChevronLeft, 
   ChevronRight,
-  Brain,
-  Trophy,
-  Dumbbell,
-  Target,
-  Rocket,
-  Globe,
-  BookOpen,
-  GraduationCap,
-  Zap,
-  Shield,
-  Users,
-  Building,
-  BarChart,
-  Lightbulb,
-  Wallet,
-  Network,
-  Code,
   type LucideIcon
 } from 'lucide-react';
-import { Card } from '@/components/ui/card';
-import { motion, AnimatePresence } from 'framer-motion';
 
 // Types
 interface TimelineItem {
@@ -51,22 +33,15 @@ interface TeamMember {
   description: string;
 }
 
-interface Slide {
-  type?: 'title' | 'call-to-action';
-  title: string;
-  content: string;
-  icon?: LucideIcon;
-  bullets?: string[];
-  timeline?: TimelineItem[];
-  features?: Feature[];
-  funding?: FundingItem[];
-  totalFunding?: string;
-  team?: TeamMember[];
-  subsections?: { title: string; content: string; }[];
-  marketData?: { title: string; items: string[]; };
+interface SlideProps {
+  key: string;
+  children: React.ReactNode;
 }
 
-// Logo Component
+const Slide: React.FC<SlideProps> = ({ children }) => {
+  return <>{children}</>;
+};
+
 const Logo: React.FC<{ className?: string }> = ({ className = '' }) => (
   <svg
     viewBox="0 0 200 50"
@@ -86,478 +61,647 @@ const Logo: React.FC<{ className?: string }> = ({ className = '' }) => (
   </svg>
 );
 
-const titleSlide: Slide = {
-  type: 'title',
-  title: "Sulla",
-  content: "Next-Generation Crypto Education Platform",
-  icon: Rocket,
-  bullets: [
-    "Interactive Learning Experience",
-    "AI-Powered Personalization",
-    "Comprehensive Curriculum"
-  ]
-};
+const titleSlide = <Slide key="title">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <h1 className="text-4xl font-bold mb-6 text-blue-600">Sulla</h1>
+    <div className="space-y-4">
+      <p className="text-2xl">
+        Next-Generation Crypto Education Platform
+      </p>
+      <p className="text-lg">
+        A comprehensive educational platform that makes learning crypto intuitive, engaging, and effective.
+      </p>
+    </div>
+  </motion.div>
+</Slide>;
 
-const problemSlide: Slide = {
-  title: "The Problem",
-  content: "Current Crypto Education Landscape",
-  icon: Target,
-  bullets: [
-    "Fragmented and unreliable educational resources",
-    "Complex technical concepts with poor explanation",
-    "Lack of structured learning paths",
-    "Missing hands-on practice environments",
-    "No verification of learning progress"
-  ]
-};
+const problemSlide = <Slide key="problem">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <h2 className="text-3xl font-bold mb-6 text-blue-600">The Problem</h2>
+    <div className="space-y-4">
+      <Card className="bg-blue-50 p-6">
+        <p className="text-lg">
+          Despite widespread crypto adoption, quality education remains fragmented and inaccessible. 
+          Current solutions are either too technical, outdated, or lack practical application.
+        </p>
+      </Card>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card className="bg-gray-50 p-4">
+          <h3 className="font-semibold mb-2">For Users</h3>
+          <ul className="space-y-2 text-gray-600">
+            <li>• Overwhelming technical jargon</li>
+            <li>• Lack of structured learning paths</li>
+            <li>• Limited hands-on practice</li>
+            <li>• No verification of knowledge</li>
+          </ul>
+        </Card>
+        <Card className="bg-gray-50 p-4">
+          <h3 className="font-semibold mb-2">For Institutions</h3>
+          <ul className="space-y-2 text-gray-600">
+            <li>• Difficulty training staff</li>
+            <li>• No standardized curriculum</li>
+            <li>• Limited tracking capabilities</li>
+            <li>• High costs of custom solutions</li>
+          </ul>
+        </Card>
+      </div>
+    </div>
+  </motion.div>
+</Slide>;
 
-const solutionSlide1: Slide = {
-  title: "Our Solution",
-  content: "Comprehensive Learning Platform",
-  icon: BookOpen,
-  features: [
-    {
-      icon: Zap,
-      title: "Adaptive Learning",
-      desc: "AI-driven personalization tailors content to individual learning styles"
-    },
-    {
-      icon: Target,
-      title: "Interactive Experience",
-      desc: "Hands-on exercises, simulations, and real-world scenarios"
-    },
-    {
-      icon: Trophy,
-      title: "Verified Progress",
-      desc: "NFT-based certifications and achievement tracking"
-    },
-    {
-      icon: Users,
-      title: "Community Learning",
-      desc: "Peer-to-peer support and expert mentorship"
-    }
-  ]
-};
+const solutionSlide1 = <Slide key="solution-1">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <h2 className="text-3xl font-bold mb-6 text-blue-600">Our Solution</h2>
+    <div className="space-y-4">
+      <Card className="bg-blue-50 p-6">
+        <p className="text-lg">
+          Sulla is a comprehensive educational platform that combines cutting-edge technology 
+          with proven learning methodologies to make crypto education accessible, engaging, and effective.
+        </p>
+      </Card>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card className="bg-gray-50 p-4">
+          <h3 className="font-semibold mb-2">Key Features</h3>
+          <ul className="space-y-2 text-gray-600">
+            <li>• AI-powered personalized learning</li>
+            <li>• Interactive simulations & exercises</li>
+            <li>• Gamified progression system</li>
+            <li>• Real-time progress tracking</li>
+          </ul>
+        </Card>
+        <Card className="bg-gray-50 p-4">
+          <h3 className="font-semibold mb-2">Benefits</h3>
+          <ul className="space-y-2 text-gray-600">
+            <li>• Learn at your own pace</li>
+            <li>• Practical, hands-on experience</li>
+            <li>• Verified certifications</li>
+            <li>• Community support</li>
+          </ul>
+        </Card>
+      </div>
+    </div>
+  </motion.div>
+</Slide>;
 
-const marketSlide: Slide = {
-  title: "Market Opportunity",
-  content: "Growing Demand for Crypto Education",
-  icon: Network,
-  marketData: {
-    title: "Key Statistics",
-    items: [
-      "420M+ crypto users worldwide (2024)",
-      "80% of major banks exploring digital assets",
-      "$1.5B+ crypto education market value",
-      "Projected $5B market size by 2028"
-    ]
-  }
-};
+const solutionSlide2 = <Slide key="solution-2">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <h2 className="text-3xl font-bold mb-6 text-blue-600">Platform Overview</h2>
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Card className="bg-gray-50 p-4">
+          <h3 className="font-semibold mb-2">Learn</h3>
+          <p className="text-sm text-gray-600">
+            Structured courses with interactive content and real-world examples
+          </p>
+        </Card>
+        <Card className="bg-gray-50 p-4">
+          <h3 className="font-semibold mb-2">Practice</h3>
+          <p className="text-sm text-gray-600">
+            Hands-on exercises and simulated trading environments
+          </p>
+        </Card>
+        <Card className="bg-gray-50 p-4">
+          <h3 className="font-semibold mb-2">Achieve</h3>
+          <p className="text-sm text-gray-600">
+            Earn verifiable certificates and track your progress
+          </p>
+        </Card>
+      </div>
+      <Card className="bg-blue-50 p-6">
+        <h3 className="text-xl font-semibold mb-4">Technical Innovation</h3>
+        <ul className="space-y-2">
+          <li>• AI-driven content adaptation</li>
+          <li>• Blockchain-verified credentials</li>
+          <li>• Interactive learning tools</li>
+          <li>• Real-time progress tracking</li>
+        </ul>
+      </Card>
+    </div>
+  </motion.div>
+</Slide>;
 
-const productStatusSlide: Slide = {
-  title: "Product Status",
-  content: "What's Built",
-  icon: Code,
-  bullets: [
-    "Complete introduction to cryptocurrency course",
-    "Interactive blockchain explorer simulation",
-    "Gamified learning modules with rewards",
-    "Progress tracking and analytics dashboard",
-    "Mobile-responsive platform"
-  ]
-};
+const missionSlide = <Slide key="mission">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <h2 className="text-3xl font-bold mb-6 text-blue-600">Our Mission</h2>
+    <div className="space-y-4">
+      <Card className="bg-blue-50 p-6">
+        <p className="text-xl font-semibold mb-4">
+          To democratize crypto education and empower individuals to participate confidently in the digital economy.
+        </p>
+        <p className="text-lg">
+          We believe that quality education is the foundation of widespread crypto adoption and aim to make it 
+          accessible to everyone, regardless of their technical background.
+        </p>
+      </Card>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card className="bg-gray-50 p-4">
+          <h3 className="font-semibold mb-2">Vision</h3>
+          <p className="text-gray-600">
+            To become the world's leading platform for cryptocurrency and blockchain education, 
+            serving millions of learners globally.
+          </p>
+        </Card>
+        <Card className="bg-gray-50 p-4">
+          <h3 className="font-semibold mb-2">Values</h3>
+          <ul className="space-y-1 text-gray-600">
+            <li>• Innovation in Education</li>
+            <li>• User-Centric Design</li>
+            <li>• Community Growth</li>
+            <li>• Continuous Improvement</li>
+          </ul>
+        </Card>
+      </div>
+    </div>
+  </motion.div>
+</Slide>;
 
-const growthStrategySlide: Slide = {
-  title: "Growth Strategy",
-  content: "12-Month Roadmap",
-  icon: BarChart,
-  timeline: [
-    {
-      phase: "Q1-Q2 2024",
-      milestone: "Platform Launch",
-      goals: "Initial course release, 10K users"
-    },
-    {
-      phase: "Q3 2024",
-      milestone: "Feature Expansion",
-      goals: "Advanced courses, B2B partnerships"
-    },
-    {
-      phase: "Q4 2024",
-      milestone: "Market Growth",
-      goals: "100K users, revenue generation"
-    }
-  ]
-};
+const marketSlide1 = <Slide key="market-1">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <h2 className="text-3xl font-bold mb-6 text-blue-600">Market Overview</h2>
+    <div className="space-y-4">
+      <Card className="bg-blue-50 p-6">
+        <p className="text-lg">
+          The cryptocurrency education market is experiencing exponential growth, 
+          driven by increasing adoption and institutional interest.
+        </p>
+      </Card>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card className="bg-gray-50 p-4">
+          <h3 className="font-semibold mb-2">Market Size</h3>
+          <p className="text-3xl font-bold text-blue-600 mb-2">$1.5B+</p>
+          <p className="text-gray-600">Current crypto education market value</p>
+        </Card>
+        <Card className="bg-gray-50 p-4">
+          <h3 className="font-semibold mb-2">Growth</h3>
+          <p className="text-3xl font-bold text-blue-600 mb-2">$5B</p>
+          <p className="text-gray-600">Projected market size by 2028</p>
+        </Card>
+      </div>
+    </div>
+  </motion.div>
+</Slide>;
 
-const investmentSlide: Slide = {
-  title: "Investment Opportunity",
-  content: "Funding Requirements: $650K",
-  icon: Wallet,
-  funding: [
-    {
-      category: "Content Development",
-      amount: "$150K",
-      purpose: "Course creation and certification system"
-    },
-    {
-      category: "Technology",
-      amount: "$200K",
-      purpose: "AI implementation and platform scaling"
-    },
-    {
-      category: "Marketing",
-      amount: "$150K",
-      purpose: "User acquisition and brand building"
-    },
-    {
-      category: "Operations",
-      amount: "$150K",
-      purpose: "Team expansion and overhead"
-    }
-  ],
-  totalFunding: "$650K"
-};
+const marketSlide2 = <Slide key="market-2">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <h2 className="text-3xl font-bold mb-6 text-blue-600">Market Opportunity</h2>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <Card className="bg-gray-50 p-6">
+        <h3 className="text-xl font-semibold mb-4">Target Segments</h3>
+        <ul className="space-y-2 text-gray-600">
+          <li>• Retail Investors (80%)</li>
+          <li>• Financial Institutions (10%)</li>
+          <li>• Educational Institutions (5%)</li>
+          <li>• Corporate Training (5%)</li>
+        </ul>
+      </Card>
+      <Card className="bg-gray-50 p-6">
+        <h3 className="text-xl font-semibold mb-4">Key Stats</h3>
+        <ul className="space-y-2 text-gray-600">
+          <li>• 420M+ global crypto users</li>
+          <li>• 80% of banks exploring crypto</li>
+          <li>• 71% want better education</li>
+          <li>• 65% struggle with complexity</li>
+        </ul>
+      </Card>
+    </div>
+  </motion.div>
+</Slide>;
 
-const teamSlide: Slide = {
-  title: "Team",
-  content: "Expert Leadership",
-  icon: Users,
-  team: [
-    {
-      role: "CEO & Founder",
-      description: "10+ years in EdTech & Blockchain"
-    },
-    {
-      role: "CTO",
-      description: "Senior Blockchain Developer, AI Expert"
-    },
-    {
-      role: "Head of Education",
-      description: "Crypto Educator, Former University Professor"
-    },
-    {
-      role: "Growth Lead",
-      description: "Marketing Expert, Community Builder"
-    }
-  ]
-};
+const productSlide1 = <Slide key="product-1">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <h2 className="text-3xl font-bold mb-6 text-blue-600">Product Features</h2>
+    <div className="space-y-6">
+      <Card className="bg-blue-50 p-6">
+        <p className="text-lg">
+          Sulla combines cutting-edge technology with proven educational methodologies 
+          to deliver an engaging and effective learning experience.
+        </p>
+      </Card>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {[
+          { title: "AI-Powered Learning", desc: "Personalized content and adaptive difficulty" },
+          { title: "Interactive Modules", desc: "Hands-on exercises and simulations" },
+          { title: "Progress Tracking", desc: "Real-time analytics and achievements" }
+        ].map((feature, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+          >
+            <Card className="bg-gray-50 p-4 h-full">
+              <h3 className="font-semibold mb-2">{feature.title}</h3>
+              <p className="text-gray-600">{feature.desc}</p>
+            </Card>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  </motion.div>
+</Slide>;
 
-const ctaSlide: Slide = {
-  type: 'call-to-action',
-  title: "Join Our Mission",
-  content: "Transform Crypto Education",
-  icon: Zap,
-  bullets: [
-    "Be part of the future of crypto education",
-    "Strategic partnership opportunities available",
-    "Early investor benefits and perks",
-    "Contact: team@sulla.edu"
-  ]
-};
+const productSlide2 = <Slide key="product-2">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <h2 className="text-3xl font-bold mb-6 text-blue-600">Learning Experience</h2>
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card className="bg-gray-50 p-6">
+          <h3 className="text-xl font-semibold mb-4">For Individuals</h3>
+          <ul className="space-y-2 text-gray-600">
+            <li>• Personalized learning paths</li>
+            <li>• Interactive practice exercises</li>
+            <li>• Progress tracking & rewards</li>
+            <li>• Community support</li>
+          </ul>
+        </Card>
+        <Card className="bg-gray-50 p-6">
+          <h3 className="text-xl font-semibold mb-4">For Institutions</h3>
+          <ul className="space-y-2 text-gray-600">
+            <li>• Custom learning programs</li>
+            <li>• Analytics & reporting</li>
+            <li>• Team management tools</li>
+            <li>• White-label solutions</li>
+          </ul>
+        </Card>
+      </div>
+    </div>
+  </motion.div>
+</Slide>;
+
+const marketSlide = <Slide key="market">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <h2 className="text-3xl font-bold mb-6 text-blue-600">Market Opportunity</h2>
+      <div className="space-y-4">
+          <Card className="bg-blue-50 p-6">
+              <p className="text-lg">
+                The global crypto education market is experiencing unprecedented growth, creating a vast opportunity for innovative platforms.
+              </p>
+          </Card>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card className="bg-gray-50 p-4">
+              <h3 className="font-semibold mb-2">Market Size</h3>
+              <ul className="space-y-2 text-gray-600">
+                <li>• Current market value: $1.5B+</li>
+                <li>• Projected market size by 2028: $5B+</li>
+              </ul>
+            </Card>
+            <Card className="bg-gray-50 p-4">
+              <h3 className="font-semibold mb-2">Key Trends</h3>
+              <ul className="space-y-2 text-gray-600">
+                <li>• Increasing crypto adoption</li>
+                <li>• Rising demand for digital literacy</li>
+                <li>• Shift towards personalized learning</li>
+                <li>• Focus on verifiable credentials</li>
+              </ul>
+            </Card>
+          </div>
+      </div>
+  </motion.div>
+</Slide>;
+
+const productStatusSlide = <Slide key="product-status">
+    <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+    >
+        <h2 className="text-3xl font-bold mb-6 text-blue-600">Product Status</h2>
+        <div className="space-y-4">
+            <Card className="bg-blue-50 p-6">
+                <p className="text-lg">
+                    We have successfully built a functional MVP with a focus on delivering a user-friendly,
+                    engaging educational experience.
+                </p>
+            </Card>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Card className="bg-gray-50 p-4">
+                    <h3 className="font-semibold mb-2">Key Features</h3>
+                    <ul className="space-y-2 text-gray-600">
+                        <li>• Interactive courses</li>
+                        <li>• Blockchain explorer simulation</li>
+                        <li>• Gamified learning modules</li>
+                    </ul>
+                </Card>
+                <Card className="bg-gray-50 p-4">
+                    <h3 className="font-semibold mb-2">Technology</h3>
+                    <ul className="space-y-2 text-gray-600">
+                        <li>• React-based frontend</li>
+                        <li>• Node.js backend</li>
+                        <li>• Cloud infrastructure</li>
+                    </ul>
+                </Card>
+            </div>
+        </div>
+    </motion.div>
+</Slide>;
+
+const growthStrategySlide = <Slide key="growth-strategy">
+    <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+    >
+        <h2 className="text-3xl font-bold mb-6 text-blue-600">Growth Strategy</h2>
+            <div className="space-y-4">
+                <Card className="bg-blue-50 p-6">
+                  <p className="text-lg">
+                    Our growth strategy focuses on phased expansion, strategic partnerships, and a strong community-driven approach.
+                  </p>
+                </Card>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <Card className="bg-gray-50 p-4">
+                        <h3 className="font-semibold mb-2">Phase 1 (Q1-Q2 2024)</h3>
+                        <ul className="space-y-2 text-gray-600">
+                            <li>• Platform launch</li>
+                            <li>• Initial course release</li>
+                            <li>• 10,000 user acquisition</li>
+                        </ul>
+                    </Card>
+                    <Card className="bg-gray-50 p-4">
+                        <h3 className="font-semibold mb-2">Phase 2 (Q3-Q4 2024)</h3>
+                        <ul className="space-y-2 text-gray-600">
+                            <li>• Feature expansion</li>
+                            <li>• B2B partnerships</li>
+                            <li>• 100,000 user acquisition</li>
+                        </ul>
+                    </Card>
+                </div>
+            </div>
+    </motion.div>
+</Slide>;
+
+const businessModelSlide = <Slide key="business-model">
+    <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+    >
+        <h2 className="text-3xl font-bold mb-6 text-blue-600">Business Model</h2>
+        <div className="space-y-4">
+            <Card className="bg-blue-50 p-6">
+                <p className="text-lg">
+                    Our revenue model is diversified and scalable, ensuring long-term sustainability and growth.
+                </p>
+            </Card>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Card className="bg-gray-50 p-4">
+                    <h3 className="font-semibold mb-2">Primary Streams</h3>
+                    <ul className="space-y-2 text-gray-600">
+                        <li>• Premium subscriptions</li>
+                        <li>• Corporate training solutions</li>
+                        <li>• Certified courses</li>
+                    </ul>
+                </Card>
+                <Card className="bg-gray-50 p-4">
+                    <h3 className="font-semibold mb-2">Future Streams</h3>
+                    <ul className="space-y-2 text-gray-600">
+                        <li>• Sponsored content</li>
+                        <li>• White-label partnerships</li>
+                        <li>• Advanced learning tools</li>
+                    </ul>
+                </Card>
+            </div>
+        </div>
+    </motion.div>
+</Slide>;
+
+
+const fundingBreakdownSlide = <Slide key="funding-breakdown">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <h2 className="text-3xl font-bold mb-6 text-blue-600">Funding Breakdown</h2>
+    <div className="space-y-4">
+        <Card className="bg-blue-50 p-6">
+            <p className="text-lg">
+                We are seeking $650,000 in seed funding to support our initial growth and development efforts.
+            </p>
+        </Card>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card className="bg-gray-50 p-4">
+                <h3 className="font-semibold mb-2">Allocation</h3>
+                <ul className="space-y-2 text-gray-600">
+                    <li>• Content Development: $150K</li>
+                    <li>• Technology Development: $200K</li>
+                    <li>• Marketing & Growth: $150K</li>
+                    <li>• Operational Costs: $150K</li>
+                </ul>
+            </Card>
+            <Card className="bg-gray-50 p-4">
+                <h3 className="font-semibold mb-2">Use of Funds</h3>
+                <ul className="space-y-2 text-gray-600">
+                    <li>• Course creation & certification</li>
+                    <li>• AI & platform scaling</li>
+                    <li>• User acquisition & brand building</li>
+                    <li>• Team expansion & overhead</li>
+                </ul>
+            </Card>
+        </div>
+    </div>
+  </motion.div>
+</Slide>;
+
+const teamSlide = <Slide key="team">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <h2 className="text-3xl font-bold mb-6 text-blue-600">Team</h2>
+    <div className="space-y-4">
+      <Card className="bg-blue-50 p-6">
+        <p className="text-lg">
+           Our team comprises experienced professionals with a proven track record in EdTech, blockchain, 
+           and business development.
+        </p>
+      </Card>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card className="bg-gray-50 p-4">
+            <h3 className="font-semibold mb-2">Leadership</h3>
+            <ul className="space-y-2 text-gray-600">
+                <li>• CEO & Founder: 10+ years in EdTech & Blockchain</li>
+                <li>• CTO: Senior Blockchain Developer, AI Expert</li>
+                <li>• Head of Education: Crypto Educator, Former University Professor</li>
+            </ul>
+        </Card>
+         <Card className="bg-gray-50 p-4">
+            <h3 className="font-semibold mb-2">Advisors</h3>
+            <ul className="space-y-2 text-gray-600">
+                <li>• Marketing Expert, Community Builder</li>
+                <li>• Strategic Partnerships Advisor</li>
+                <li>• Financial Advisor</li>
+            </ul>
+        </Card>
+      </div>
+    </div>
+  </motion.div>
+</Slide>;
+
+const tractionSlide = <Slide key="traction">
+    <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+    >
+        <h2 className="text-3xl font-bold mb-6 text-blue-600">Traction & Milestones</h2>
+        <div className="space-y-4">
+            <Card className="bg-blue-50 p-6">
+                <p className="text-lg">
+                    We have achieved significant traction in a short time, demonstrating strong market demand for our platform.
+                </p>
+            </Card>
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Card className="bg-gray-50 p-4">
+                    <h3 className="font-semibold mb-2">Key Milestones</h3>
+                     <ul className="space-y-2 text-gray-600">
+                        <li>• MVP launch in Q1 2024</li>
+                        <li>• 500+ beta users</li>
+                        <li>• 10+ partnerships secured</li>
+                    </ul>
+                </Card>
+                <Card className="bg-gray-50 p-4">
+                    <h3 className="font-semibold mb-2">User Engagement</h3>
+                    <ul className="space-y-2 text-gray-600">
+                        <li>• Average session duration: 30+ mins</li>
+                        <li>• 80% course completion rate</li>
+                        <li>• 90% positive user feedback</li>
+                     </ul>
+                </Card>
+            </div>
+        </div>
+    </motion.div>
+</Slide>;
+
+
+const ctaSlide = <Slide key="cta">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <h2 className="text-3xl font-bold mb-6 text-blue-600">Join Our Mission</h2>
+    <div className="space-y-4">
+      <Card className="bg-blue-50 p-6">
+        <p className="text-xl font-semibold mb-4">
+            Be part of the future of crypto education
+        </p>
+        <p className="text-lg">
+            Strategic partnership opportunities are available. Contact team@sulla.edu to explore.
+        </p>
+      </Card>
+    </div>
+  </motion.div>
+</Slide>;
+
 
 const slides = [
   titleSlide,
   problemSlide,
   solutionSlide1,
+  solutionSlide2,
+  missionSlide,
+    marketSlide1,
+    marketSlide2,
+    productSlide1,
+    productSlide2,
   marketSlide,
   productStatusSlide,
   growthStrategySlide,
-  investmentSlide,
-  teamSlide,
+  businessModelSlide,
+  fundingBreakdownSlide,
+    teamSlide,
+    tractionSlide,
   ctaSlide
 ];
 
 const DeckPage: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isDownloading, setIsDownloading] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const deckRef = useRef<HTMLDivElement>(null);
 
-  const nextSlide = () => {
-    setCurrentSlide(curr => curr < slides.length - 1 ? curr + 1 : curr);
-  };
-
-  const previousSlide = () => {
-    setCurrentSlide(curr => curr > 0 ? curr - 1 : curr);
-  };
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === "ArrowRight") {
-      nextSlide();
-    } else if (event.key === "ArrowLeft") {
-      previousSlide();
-    }
-  };
-
   const handleExport = async () => {
-    setIsDownloading(true);
-    const element = deckRef.current;
-    if (!element) return;
-
-    const opt = {
-      margin: 0.5,
-      filename: 'Sulla-Pitch-Deck.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { 
-        scale: 2,
-        useCORS: true,
-        logging: true,
-        letterRendering: true,
-        allowTaint: true
-      },
-      jsPDF: { 
-        unit: 'in', 
-        format: 'letter', 
-        orientation: 'landscape',
-        compress: true
-      },
-      pagebreak: { mode: 'avoid-all' }
-    };
+    setIsExporting(true);
+    if (!deckRef.current) return;
 
     try {
-      await html2pdf().set(opt).from(element).save();
+      const { jsPDF } = await import('jspdf');
+      const html2canvas = (await import('html2canvas')).default;
+
+      const element = deckRef.current;
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        logging: true
+      });
+
+      const pdf = new jsPDF({
+        format: 'a4',
+        unit: 'px',
+        orientation: 'landscape'
+      });
+
+      const imgData = canvas.toDataURL('image/png');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save('Sulla-Pitch-Deck.pdf');
     } catch (error) {
       console.error('PDF export failed:', error);
     } finally {
-      setIsDownloading(false);
+      setIsExporting(false);
     }
-  };
-
-  const renderContent = () => {
-    const slide = slides[currentSlide];
-    const Icon = slide.icon;
-
-    return (
-      <div className="w-full">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex items-center gap-4 mb-8"
-        >
-          {Icon && (
-            <div className="p-3 bg-blue-500/20 rounded-lg">
-              <Icon className="w-8 h-8 text-blue-400" />
-            </div>
-          )}
-          <h2 className="text-4xl font-bold text-blue-400">
-            {slide.title}
-          </h2>
-        </motion.div>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="text-xl mb-8 text-blue-200"
-        >
-          {slide.content}
-        </motion.p>
-
-        {slide.timeline && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="grid grid-cols-2 gap-6 mb-8"
-          >
-            {slide.timeline.map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 + index * 0.1 }}
-                className="bg-blue-500/10 p-6 rounded-lg"
-              >
-                <h3 className="text-xl font-semibold text-blue-300 mb-4">
-                  {item.quarter || item.phase}
-                </h3>
-                <ul className="space-y-2">
-                  {item.items ? (
-                    item.items.map((i, idx) => (
-                      <motion.li
-                        key={idx}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.5 + idx * 0.1 }}
-                        className="text-blue-100"
-                      >
-                        • {i}
-                      </motion.li>
-                    ))
-                  ) : (
-                    <>
-                      <motion.li
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.5 }}
-                        className="text-blue-100"
-                      >
-                        • {item.milestone}
-                      </motion.li>
-                      <motion.li
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.6 }}
-                        className="text-blue-100"
-                      >
-                        • {item.goals}
-                      </motion.li>
-                    </>
-                  )}
-                </ul>
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
-
-        {slide.bullets && slide.bullets.length > 0 && (
-          <motion.ul
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="space-y-4 text-left w-full max-w-3xl mx-auto"
-          >
-            {slide.bullets.map((bullet, index) => (
-              <motion.li
-                key={index}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.4 + index * 0.1 }}
-                className="flex items-center gap-3 text-lg"
-              >
-                <div className="h-2 w-2 bg-blue-400 rounded-full flex-shrink-0" />
-                <span className="text-blue-100">{bullet}</span>
-              </motion.li>
-            ))}
-          </motion.ul>
-        )}
-
-        {slide.features && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="grid grid-cols-2 gap-6 mb-8"
-          >
-            {slide.features.map((feature, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 + index * 0.1 }}
-                className="bg-blue-500/10 p-6 rounded-lg"
-              >
-                <div className="flex items-center gap-2 mb-3">
-                  <feature.icon className="h-5 w-5 text-blue-400" />
-                  <h3 className="text-lg font-semibold text-blue-300">
-                    {feature.title}
-                  </h3>
-                </div>
-                <p className="text-blue-100">{feature.desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
-
-        {slide.funding && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="mb-8"
-          >
-            <h3 className="text-2xl font-semibold text-blue-300 mb-4">
-              Funding Allocation
-            </h3>
-            <div className="space-y-3">
-              {slide.funding?.map((item, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 + index * 0.1 }}
-                  className="bg-blue-500/10 p-4 rounded-lg flex justify-between items-center"
-                >
-                  <span className="text-blue-100">{item.category}</span>
-                  <div className="text-right">
-                    <span className="text-blue-200 font-medium">{item.amount}</span>
-                    <p className="text-blue-100 text-sm">{item.purpose}</p>
-                  </div>
-                </motion.div>
-              ))}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 + slide.funding!.length * 0.1 }}
-                className="text-xl text-blue-200 text-right font-medium"
-              >
-                Total: {slide.totalFunding}
-              </motion.div>
-            </div>
-          </motion.div>
-        )}
-
-        {slide.team && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="mb-8"
-          >
-            <h3 className="text-2xl font-semibold text-blue-300 mb-4">
-              Our Team
-            </h3>
-            <div className="space-y-3">
-              {slide.team?.map((member, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 + index * 0.1 }}
-                  className="bg-blue-500/10 p-4 rounded-lg"
-                >
-                  <h4 className="text-blue-200 font-medium">{member.role}</h4>
-                  <p className="text-blue-100">{member.description}</p>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        )}
-
-        {slide.marketData && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="mb-8"
-          >
-            <h3 className="text-2xl font-semibold text-blue-300 mb-4">
-              {slide.marketData?.title}
-            </h3>
-            <ul className="space-y-3">
-              {slide.marketData?.items.map((item, index) => (
-                <motion.li
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 + index * 0.1 }}
-                  className="text-blue-100 text-lg flex items-center gap-2"
-                >
-                  <div className="h-2 w-2 bg-blue-400 rounded-full flex-shrink-0" />
-                  {item}
-                </motion.li>
-              ))}
-            </ul>
-          </motion.div>
-        )}
-      </div>
-    );
   };
 
   return (
     <div 
       className="min-h-screen bg-gradient-to-b from-blue-900 to-black text-white p-8"
-      onKeyDown={handleKeyDown}
+      onKeyDown={(e) => {
+        if (e.key === "ArrowRight") setCurrentSlide(c => Math.min(c + 1, slides.length - 1));
+        if (e.key === "ArrowLeft") setCurrentSlide(c => Math.max(c - 1, 0));
+      }}
       tabIndex={0}
       ref={deckRef}
     >
@@ -566,10 +710,10 @@ const DeckPage: React.FC = () => {
           <Logo className="text-white h-8 w-auto" />
           <button
             onClick={handleExport}
-            disabled={isDownloading}
+            disabled={isExporting}
             className="px-4 py-2 bg-white text-blue-900 rounded-lg hover:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
           >
-            {isDownloading ? 'Downloading...' : 'Download PDF'}
+            {isExporting ? 'Exporting...' : 'Export PDF'}
           </button>
         </div>
 
@@ -583,41 +727,15 @@ const DeckPage: React.FC = () => {
               transition={{ duration: 0.3 }}
               className="absolute inset-0 p-12"
             >
-              <Card className="h-full bg-opacity-90 backdrop-blur-sm p-8 flex flex-col justify-center items-center text-center bg-gradient-to-br from-blue-900/95 to-black/95">
-                {slides[currentSlide].type === 'title' ? (
-                  <>
-                    <Logo className="text-white h-16 w-auto mb-8" />
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.2 }}
-                    >
-                      <h2 className="text-4xl font-bold mb-4 text-blue-400">
-                        {slides[currentSlide].content}
-                      </h2>
-                      {slides[currentSlide].bullets?.map((bullet, index) => (
-                        <motion.p
-                          key={index}
-                          className="text-xl text-blue-200"
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.3 + index * 0.1 }}
-                        >
-                          {bullet}
-                        </motion.p>
-                      ))}
-                    </motion.div>
-                  </>
-                ) : (
-                  renderContent()
-                )}
+              <Card className="h-full bg-opacity-90 backdrop-blur-sm p-8 overflow-y-auto bg-gradient-to-br from-blue-900/95 to-black/95">
+                {slides[currentSlide]}
               </Card>
             </motion.div>
           </AnimatePresence>
 
           <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-4">
             <button
-              onClick={previousSlide}
+              onClick={() => setCurrentSlide(c => Math.max(c - 1, 0))}
               disabled={currentSlide === 0}
               className="px-4 py-2 bg-white text-blue-900 rounded-lg hover:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
             >
@@ -628,7 +746,7 @@ const DeckPage: React.FC = () => {
               {currentSlide + 1} / {slides.length}
             </span>
             <button
-              onClick={nextSlide}
+              onClick={() => setCurrentSlide(c => Math.min(c + 1, slides.length - 1))}
               disabled={currentSlide === slides.length - 1}
               className="px-4 py-2 bg-white text-blue-900 rounded-lg hover:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
             >
