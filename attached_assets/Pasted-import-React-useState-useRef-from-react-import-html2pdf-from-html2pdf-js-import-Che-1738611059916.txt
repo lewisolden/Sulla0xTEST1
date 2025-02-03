@@ -1,0 +1,165 @@
+import React, { useState, useRef } from 'react';
+import html2pdf from 'html2pdf.js';
+import { 
+  ChevronLeft, 
+  ChevronRight, 
+  Brain, 
+  Trophy, 
+  Dumbbell, 
+  Target, 
+  Rocket, 
+  Globe,
+  BookOpen,
+  GraduationCap,
+  Zap,
+  Shield,
+  Users,
+  Building,
+  BarChart,
+  Lightbulb,
+  Wallet,
+  Network,
+  Code
+} from 'lucide-react';
+import { motion } from 'framer-motion';
+
+// Components from your UI library - make sure these are imported in the new project
+import { Card } from '@/components/ui/card';
+import Logo from '@/components/ui/logo';
+import HeaderLogo from '@/components/ui/header-logo';
+
+// Slide Component
+const Slide: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = '' }) => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.95 }}
+    animate={{ opacity: 1, scale: 1 }}
+    exit={{ opacity: 0, scale: 0.95 }}
+    transition={{ duration: 0.3 }}
+    className={`bg-white rounded-lg shadow-lg p-8 mx-auto w-full mt-8 ${className}`}
+  >
+    {children}
+  </motion.div>
+);
+
+const PitchDeck = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isExporting, setIsExporting] = useState(false);
+  const deckRef = useRef(null);
+
+  const handleExport = async () => {
+    setIsExporting(true);
+    const element = deckRef.current;
+    const opt = {
+      margin: 0.5,
+      filename: 'Sulla-Pitch-Deck.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { 
+        scale: 2,
+        useCORS: true,
+        logging: true,
+        letterRendering: true,
+        allowTaint: true
+      },
+      jsPDF: { 
+        unit: 'in', 
+        format: 'letter', 
+        orientation: 'landscape',
+        compress: true
+      },
+      pagebreak: { mode: 'avoid-all' }
+    };
+
+    try {
+      await html2pdf().set(opt).from(element).save();
+    } catch (error) {
+      console.error('PDF export failed:', error);
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  // All your slides defined here...
+  const slides = [
+    titleSlide,
+    problemSlide,
+    solutionSlide1,
+    solutionSlide2,
+    missionSlide,
+    marketSlide1,
+    marketSlide2,
+    productSlide1,
+    productSlide2,
+    modulesSlide,
+    roadmapSlide,
+    progressSlide,
+    gtmSlide1,
+    gtmSlide2,
+    tokenSlide,
+    tractionSlide,
+    financialSlide,
+    financialModelSlide,
+    fundingNarrativeSlide,
+    fundingBreakdownSlide,
+    teamSlide,
+    ctaSlide,
+  ].filter(Boolean);
+
+  return (
+    <div className="min-h-screen bg-gray-100 p-4">
+      <div className="pl-4 pt-2 mb-2">
+        <HeaderLogo className="text-blue-600 h-12 w-auto" />
+      </div>
+      <div className="relative">
+        <div id="deck-content" ref={deckRef}>
+          {isExporting ? (
+            <div className="space-y-4">
+              {slides.map((slide, index) => (
+                <div 
+                  key={index}
+                  style={{
+                    pageBreakInside: 'avoid',
+                    pageBreakBefore: index === 0 ? 'avoid' : 'always',
+                    pageBreakAfter: 'avoid',
+                    marginBottom: '0',
+                    minHeight: '100%',
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }}
+                >
+                  {slide}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div>
+              {slides[currentSlide]}
+              <div className="flex justify-between mt-4">
+                <button
+                  onClick={() => setCurrentSlide(Math.max(0, currentSlide - 1))}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center"
+                  disabled={currentSlide === 0}
+                >
+                  <ChevronLeft className="w-6 h-6 mr-2" />
+                  Previous
+                </button>
+                <span className="text-gray-600">
+                  Slide {currentSlide + 1} of {slides.length}
+                </span>
+                <button
+                  onClick={() => setCurrentSlide(Math.min(slides.length - 1, currentSlide + 1))}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center"
+                  disabled={currentSlide === slides.length - 1}
+                >
+                  Next
+                  <ChevronRight className="w-6 h-6 ml-2" />
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default PitchDeck;
