@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -223,29 +223,27 @@ const slides = [
 
 export default function DeckPage() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isDownloading, setIsDownloading] = useState(false);
 
-  const nextSlide = () => {
-    if (currentSlide < slides.length - 1) {
-      setCurrentSlide(currentSlide + 1);
-    }
-  };
+  const nextSlide = useCallback(() => {
+    setCurrentSlide(curr => curr < slides.length - 1 ? curr + 1 : curr);
+  }, []);
 
-  const previousSlide = () => {
-    if (currentSlide > 0) {
-      setCurrentSlide(currentSlide - 1);
-    }
-  };
+  const previousSlide = useCallback(() => {
+    setCurrentSlide(curr => curr > 0 ? curr - 1 : curr);
+  }, []);
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleKeyDown = useCallback((event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "ArrowRight") {
       nextSlide();
     } else if (event.key === "ArrowLeft") {
       previousSlide();
     }
-  };
+  }, [nextSlide, previousSlide]);
 
   const downloadPDF = async () => {
     try {
+      setIsDownloading(true);
       const response = await fetch('/api/deck/download');
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
@@ -258,6 +256,8 @@ export default function DeckPage() {
       document.body.removeChild(a);
     } catch (error) {
       console.error('Error downloading PDF:', error);
+    } finally {
+      setIsDownloading(false);
     }
   };
 
@@ -273,10 +273,11 @@ export default function DeckPage() {
           <Button
             variant="outline"
             onClick={downloadPDF}
+            disabled={isDownloading}
             className="gap-2"
           >
             <Download className="h-4 w-4" />
-            Download PDF
+            {isDownloading ? 'Downloading...' : 'Download PDF'}
           </Button>
         </div>
 
