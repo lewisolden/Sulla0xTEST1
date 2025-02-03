@@ -1,0 +1,1154 @@
+import React, { useState, useRef } from 'react';
+import html2pdf from 'html2pdf.js';
+import { 
+  ChevronLeft, 
+  ChevronRight, 
+  Brain, 
+  Trophy, 
+  Dumbbell, 
+  Target, 
+  Rocket, 
+  Globe, 
+  BookOpen, 
+  GraduationCap, 
+  Zap,
+  Shield,
+  Users,
+  Building,
+  BarChart,
+  Lightbulb,
+  Wallet,
+  Network,
+  Code
+} from 'lucide-react';
+import { Slide } from '@/components/slides/Slide';
+import { Card } from '@/components/ui/card';
+import { motion, AnimatePresence } from 'framer-motion';
+import Logo from '@/components/ui/logo';
+import HeaderLogo from '@/components/ui/header-logo';
+
+const SlideHeader: React.FC = () => (
+  <div className="pl-4 pt-2 mb-2">
+    <HeaderLogo className="text-blue-600 h-12 w-auto" />
+  </div>
+);
+
+const PitchDeck = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isExporting, setIsExporting] = useState(false);
+  const deckRef = useRef(null);
+
+  const handleExport = async () => {
+    setIsExporting(true);
+    const element = deckRef.current;
+    const opt = {
+      margin: 0.5,
+      filename: 'Sulla-Pitch-Deck.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { 
+        scale: 2,
+        useCORS: true,
+        logging: true,
+        letterRendering: true,
+        allowTaint: true
+      },
+      jsPDF: { 
+        unit: 'in', 
+        format: 'letter', 
+        orientation: 'landscape',
+        compress: true
+      },
+      pagebreak: { mode: 'avoid-all' }
+    };
+
+    try {
+      await html2pdf().set(opt).from(element).save();
+    } catch (error) {
+      console.error('PDF export failed:', error);
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const titleSlide = (
+    <Slide key="title" className="text-center bg-gradient-to-br from-blue-600 to-blue-800 text-white">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Logo className="text-white mx-auto mb-8 h-16 w-auto" />
+        <h2 className="text-3xl mb-8">Next-Generation Crypto Education Platform</h2>
+        <p className="text-xl mb-4">Investor Pitch Deck</p>
+        <p className="text-lg">2025</p>
+        <button
+          onClick={handleExport}
+          className="mt-8 px-6 py-3 bg-white text-blue-600 rounded-lg hover:bg-gray-100 transition-colors"
+        >
+          Download PDF
+        </button>
+      </motion.div>
+    </Slide>
+  );
+    
+  const problemSlide = <Slide key="problem">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h2 className="text-3xl font-bold mb-6 text-blue-600">The Problem</h2>
+        <div className="space-y-4">
+          <div className="bg-gray-50 p-6 rounded-lg shadow-sm">
+            <p className="text-xl mb-6">The cryptocurrency industry is rapidly evolving, yet:</p>
+            <ul className="space-y-4">
+              <li className="flex items-start text-lg">
+                <span className="text-red-500 mr-3 mt-1">•</span>
+                <span>Structured, high-quality educational resources remain fragmented</span>
+              </li>
+              <li className="flex items-start text-lg">
+                <span className="text-red-500 mr-3 mt-1">•</span>
+                <span>Content is often overly technical or unreliable</span>
+              </li>
+              <li className="flex items-start text-lg">
+                <span className="text-red-500 mr-3 mt-1">•</span>
+                <span>Many newcomers struggle to understand the fundamentals</span>
+              </li>
+              <li className="flex items-start text-lg">
+                <span className="text-red-500 mr-3 mt-1">•</span>
+                <span>Experienced users lack clear pathways for advanced learning</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </motion.div>
+    </Slide>;
+
+    const solutionSlide1 = <Slide key="solution-1">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h2 className="text-3xl font-bold mb-6 text-blue-600">The Solution</h2>
+        <div className="space-y-4">
+          <Card className="bg-blue-50 p-6">
+            <p className="text-xl mb-4">
+              Sulla is a <span className="font-bold">next-generation crypto education platform</span> that bridges this gap by offering <span className="font-bold">interactive, structured, and engaging courses</span> tailored for beginners, developers, and institutions.
+            </p>
+          </Card>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card className="bg-blue-50 p-6">
+              <Brain className="h-8 w-8 mb-4 text-blue-600" />
+              <h3 className="text-xl font-semibold mb-2">Adaptive Learning</h3>
+              <p>AI-driven personalization tailors content based on individual learning styles</p>
+            </Card>
+            <Card className="bg-blue-50 p-6">
+              <Lightbulb className="h-8 w-8 mb-4 text-blue-600" />
+              <h3 className="text-xl font-semibold mb-2">Intelligent Recommendations</h3>
+              <p>Machine learning algorithms suggest the most relevant courses</p>
+            </Card>
+          </div>
+        </div>
+      </motion.div>
+    </Slide>;
+
+  const solutionSlide2 =  <Slide key="solution-2">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h2 className="text-3xl font-bold mb-6 text-blue-600">Key Features</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Card className="bg-blue-50 p-6">
+            <BookOpen className="h-8 w-8 mb-4 text-blue-600" />
+            <h3 className="text-xl font-semibold mb-2">Modular Learning</h3>
+            <p>Comprehensive coverage of Bitcoin, Ethereum, DeFi, Smart Contracts, Security</p>
+          </Card>
+          <Card className="bg-blue-50 p-6">
+            <Trophy className="h-8 w-8 mb-4 text-blue-600" />
+            <h3 className="text-xl font-semibold mb-2">Interactive Experience</h3>
+            <p>Gamified quizzes, real-world scenarios, and NFT certifications</p>
+          </Card>
+          <Card className="bg-blue-50 p-6">
+            <Wallet className="h-8 w-8 mb-4 text-blue-600" />
+            <h3 className="text-xl font-semibold mb-2">Freemium Model</h3>
+            <p>Free introductory content with premium offerings for deeper knowledge</p>
+          </Card>
+          <Card className="bg-blue-50 p-6">
+            <Network className="h-8 w-8 mb-4 text-blue-600" />
+            <h3 className="text-xl font-semibold mb-2">B2B Integration</h3>
+            <p>White-label solutions for fintech companies and institutions</p>
+          </Card>
+        </div>
+      </motion.div>
+    </Slide>;
+
+  const missionSlide = <Slide key="mission">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h2 className="text-3xl font-bold mb-6 text-blue-600">Our Mission</h2>
+        <div className="space-y-6">
+          <Card className="bg-blue-50 p-8">
+            <p className="text-2xl font-semibold mb-4">
+              To make crypto education accessible, engaging, and financially rewarding
+            </p>
+            <p className="text-lg text-gray-700">
+              Empowering users to confidently navigate the blockchain space through structured, 
+              high-quality educational resources and interactive learning experiences.
+            </p>
+          </Card>
+        </div>
+      </motion.div>
+    </Slide>;
+
+    const marketSlide1 = <Slide key="market-1">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h2 className="text-3xl font-bold mb-6 text-blue-600">Market Opportunity</h2>
+        <div className="space-y-6">
+          <Card className="bg-gray-50 p-6">
+            <h3 className="text-2xl font-semibold mb-4">Why Now?</h3>
+            <ul className="space-y-4">
+              <li className="flex items-center text-lg">
+                <Users className="text-green-500 w-6 h-6 mr-3 flex-shrink-0" />
+                <span>Over 420 million crypto users worldwide (2024)</span>
+              </li>
+              <li className="flex items-center text-lg">
+                <Building className="text-green-500 w-6 h-6 mr-3 flex-shrink-0" />
+                <span>80% of major banks exploring digital assets</span>
+              </li>
+              <li className="flex items-center text-lg">
+                <BarChart className="text-green-500 w-6 h-6 mr-3 flex-shrink-0" />
+                <span>Lack of quality education leading to confusion and security risks</span>
+              </li>
+            </ul>
+          </Card>
+        </div>
+      </motion.div>
+    </Slide>;
+
+    const marketSlide2 = <Slide key="market-2">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h2 className="text-3xl font-bold mb-6 text-blue-600">Market Size</h2>
+        <div className="space-y-6">
+          <Card className="bg-gray-50 p-6">
+            <h3 className="text-2xl font-semibold mb-4">Current Market Value</h3>
+            <ul className="space-y-4">
+              <li className="flex items-center text-lg">
+                <span className="text-blue-500 mr-3">•</span>
+                <span>Crypto Education Market (2024): $1.5B+ and growing</span>
+              </li>
+              <li className="flex items-center text-lg">
+                <span className="text-blue-500 mr-3">•</span>
+                <span>Expected to exceed $5B by 2028 as Web3 adoption accelerates</span>
+              </li>
+            </ul>
+          </Card>
+          <Card className="bg-gray-50 p-6">
+            <h3 className="text-2xl font-semibold mb-4">Target Audience</h3>
+            <ul className="space-y-4">
+              <li className="flex items-center text-lg">
+                <Users className="text-blue-500 w-6 h-6 mr-3" />
+                <span>Crypto enthusiasts and newcomers</span>
+              </li>
+              <li className="flex items-center text-lg">
+                <Code className="text-blue-500 w-6 h-6 mr-3" />
+                <span>Developers and technical professionals</span>
+              </li>
+              <li className="flex items-center text-lg">
+                <BarChart className="text-blue-500 w-6 h-6 mr-3" />
+                <span>Traders and investors</span>
+              </li>
+              <li className="flex items-center text-lg">
+                <Building className="text-blue-500 w-6 h-6 mr-3" />
+                <span>Fintech institutions</span>
+              </li>
+            </ul>
+          </Card>
+        </div>
+      </motion.div>
+    </Slide>;
+
+  const productSlide1 =   <Slide key="product-1">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h2 className="text-3xl font-bold mb-6 text-blue-600">Product Overview</h2>
+        <div className="space-y-6">
+          <p className="text-xl">What Makes Sulla Unique:</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card className="bg-blue-50 p-6 hover:bg-blue-100 transition-colors">
+              <Brain className="h-8 w-8 mb-4 text-blue-600" />
+              <h3 className="text-xl font-semibold mb-2">AI-Powered Learning</h3>
+              <p>Personalized learning paths that adapt to your understanding and pace</p>
+            </Card>
+            <Card className="bg-blue-50 p-6 hover:bg-blue-100 transition-colors">
+              <Target className="h-8 w-8 mb-4 text-blue-600" />
+              <h3 className="text-xl font-semibold mb-2">Practical Exercises</h3>
+              <p>Hands-on learning with interactive exercises and real-world examples</p>
+            </Card>
+            <Card className="bg-blue-50 p-6 hover:bg-blue-100 transition-colors">
+              <Trophy className="h-8 w-8 mb-4 text-blue-600" />
+              <h3 className="text-xl font-semibold mb-2">Achievement NFTs</h3>
+              <p>Earn verifiable NFT certificates as you complete modules</p>
+            </Card>
+            <Card className="bg-blue-50 p-6 hover:bg-blue-100 transition-colors">
+              <Zap className="h-8 w-8 mb-4 text-blue-600" />
+              <h3 className="text-xl font-semibold mb-2">Progress Tracking</h3>
+              <p>Monitor your learning journey with detailed analytics</p>
+            </Card>
+          </div>
+        </div>
+      </motion.div>
+    </Slide>;
+
+  const productSlide2 =  <Slide key="product-2">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h2 className="text-3xl font-bold mb-6 text-blue-600">Interactive Learning Tools</h2>
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 gap-6">
+            <div className="space-y-6">
+              <div className="flex items-start space-x-4">
+                <div className="bg-blue-100 p-2 rounded">
+                  <Brain className="w-6 h-6 text-blue-600" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">Interactive & Adaptive Learning</h3>
+                  <p className="text-gray-600">
+                    AI-powered learning paths that adapt to your understanding and pace
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-4">
+                <div className="bg-blue-100 p-2 rounded">
+                  <Target className="w-6 h-6 text-blue-600" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">Progress Tracking</h3>
+                  <p className="text-gray-600">
+                    Monitor your learning journey with detailed progress analytics
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-4">
+                <div className="bg-blue-100 p-2 rounded">
+                  <Trophy className="w-6 h-6 text-blue-600" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">Achievement System</h3>
+                  <p className="text-gray-600">
+                    Unlock badges and rewards as you complete modules and challenges
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </Slide>;
+
+  const modulesSlide =   <Slide key="modules">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h2 className="text-3xl font-bold mb-6 text-blue-600">Your Journey into the Future of Finance</h2>
+        <motion.h3 
+          className="text-2xl font-bold text-blue-800 text-center mb-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.1 }}
+        >
+          Course 1: Introduction to Cryptocurrency
+        </motion.h3>
+        <div className="grid md:grid-cols-3 gap-8">
+          <Card className="bg-blue-50 p-6">
+            <BookOpen className="h-8 w-8 mb-4 text-blue-600" />
+            <h3 className="text-xl font-semibold mb-2">Module 1: Understanding Cryptocurrency</h3>
+            <p className="text-gray-600">Master the fundamentals through interactive learning and practical exercises</p>
+          </Card>
+          <Card className="bg-blue-50 p-6">
+            <GraduationCap className="h-8 w-8 mb-4 text-blue-600" />
+            <h3 className="text-xl font-semibold mb-2">Module 2: Bitcoin Fundamentals</h3>
+            <p className="text-gray-600">Deep dive into Bitcoin, investment strategies, and security considerations</p>
+          </Card>
+          <Card className="bg-blue-50 p-6">
+            <Zap className="h-8 w-8 mb-4 text-blue-600" />
+            <h3 className="text-xl font-semibold mb-2">Module 3: Ethereum & Smart Contracts</h3>
+            <p className="text-gray-600">Explore Ethereum, smart contracts, and their practical applications</p>
+          </Card>
+        </div>
+      </motion.div>
+    </Slide>;
+
+  const roadmapSlide =   <Slide key="product-roadmap">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h2 className="text-3xl font-bold mb-6 text-blue-600">Product Roadmap</h2>
+        <div className="space-y-4">
+          <Card className="bg-gray-50 p-6">
+            <h3 className="text-xl font-semibold mb-4">Next 12 Months</h3>
+            <ul className="space-y-3">
+              <li className="flex items-start">
+                <BookOpen className="h-6 w-6 mr-3 text-blue-600 mt-1" />
+                <div>
+                  <p className="font-semibold">Expand Course Library</p>
+                  <p className="text-gray-600">Launch advanced DeFi, Smart Contracts, and Trading courses</p>
+                </div>
+              </li>
+              <li className="flex items-start">
+                <Brain className="h-6 w-6 mr-3 text-blue-600 mt-1" />
+                <div>
+                  <p className="font-semibold">AI-Powered Learning Tools</p>
+                  <p className="text-gray-600">Enhanced personalization and adaptive assessments</p>
+                </div>
+              </li>
+              <li className="flex items-start">
+                <Trophy className="h-6 w-6 mr-3 text-blue-600 mt-1" />
+                <div>
+                  <p className="font-semibold">Gamification Expansion</p>
+                  <p className="text-gray-600">Leaderboards, NFT achievements, and competitions</p>
+                </div>
+              </li>
+            </ul>
+          </Card>
+        </div>
+      </motion.div>
+    </Slide>;
+
+    const progressSlide =  <Slide key="progress">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h2 className="text-3xl font-bold mb-6 text-blue-600">What's Been Built</h2>
+         <div className="space-y-6">
+            <Card className="bg-blue-50 p-6">
+             <h3 className="text-2xl font-semibold mb-4">First Course Launch Success</h3>
+                <div className="space-y-4">
+                  <div className="flex items-start">
+                    <BookOpen className="h-6 w-6 mr-3 text-blue-600 mt-1" />
+                    <div>
+                       <p className="font-semibold">Understanding Cryptocurrency</p>
+                      <p className="text-gray-600">Evolution of money and digital assets</p>
+                   </div>
+                </div>
+                 <div className="flex items-start">
+                   <GraduationCap className="h-6 w-6 mr-3 text-blue-600 mt-1" />
+                     <div>
+                       <p className="font-semibold">Bitcoin & Ethereum Basics</p>
+                      <p className="text-gray-600">Deep dive into technology and use cases</p>
+                     </div>
+                 </div>
+                 <div className="flex items-start">
+                   <Shield className="h-6 w-6 mr-3 text-blue-600 mt-1" />
+                     <div>
+                       <p className="font-semibold">Security & Risk Management</p>
+                       <p className="text-gray-600">Asset protection and scam prevention</p>
+                    </div>
+                  </div>
+               </div>
+             </Card>
+             <Card className="bg-blue-50 p-6">
+              <p className="text-lg">
+                This course serves as a <span className="font-semibold">proven framework for future course expansion</span> and has been tested with early users, providing valuable data to refine the platform.
+              </p>
+            </Card>
+            <Card className="bg-blue-50 p-6">
+              <p className="text-lg">
+                The entire platform, including the learning management system and course delivery infrastructure, has been <span className="font-semibold">built from the ground up using proprietary code</span>. This gives us complete control over the user experience and allows us to rapidly adapt the platform based on user feedback and emerging market needs.
+              </p>
+            </Card>
+          </div>
+        </motion.div>
+      </Slide>;
+    
+    const gtmSlide1 =   <Slide key="gtm-1">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h2 className="text-3xl font-bold mb-6 text-blue-600">Go-to-Market Strategy</h2>
+        <div className="space-y-6">
+          <Card className="bg-gray-50 p-6">
+            <h3 className="text-xl font-semibold mb-4">Phase 1: Community Growth (0-6 Months)</h3>
+            <ul className="space-y-3">
+              <li className="flex items-center">
+                <Users className="text-blue-500 w-6 h-6 mr-3" />
+                <span>Leverage Web3 Twitter, Discord, and Telegram for viral adoption</span>
+              </li>
+              <li className="flex items-center">
+                <Trophy className="text-blue-500 w-6 h-6 mr-3" />
+                <span>Run interactive quizzes & NFT rewards to engage users</span>
+              </li>
+              <li className="flex items-center">
+                <Network className="text-blue-500 w-6 h-6 mr-3" />
+                <span>YouTube & influencer partnerships for educational content distribution</span>
+              </li>
+              <li className="flex items-center">
+                <BarChart className="text-blue-500 w-6 h-6 mr-3" />
+                <span>SEO & content strategy for long-term organic traffic</span>
+              </li>
+            </ul>
+          </Card>
+          <Card className="bg-gray-50 p-6">
+            <h3 className="text-xl font-semibold mb-4">Phase 2: Pre-Monetization & User Scaling (6-12 Months)</h3>
+            <ul className="space-y-3">
+              <li className="flex items-center">
+                <Brain className="text-blue-500 w-6 h-6 mr-3" />
+                <span>Expand AI learning personalization with increased user data</span>
+              </li>
+              <li className="flex items-center">
+                <Target className="text-blue-500 w-6 h-6 mr-3" />
+                <span>Optimize onboarding experience for engagement and retention</span>
+              </li>
+              <li className="flex items-center">
+                <Building className="text-blue-500 w-6 h-6 mr-3" />
+                <span>Strengthen partnerships with crypto projects, DAOs, and institutions</span>
+              </li>
+            </ul>
+          </Card>
+        </div>
+      </motion.div>
+    </Slide>;
+    
+    const gtmSlide2 =   <Slide key="gtm-2">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h2 className="text-3xl font-bold mb-6 text-blue-600">Growth & Expansion Strategy</h2>
+        <div className="space-y-6">
+          <Card className="bg-gray-50 p-6">
+            <h3 className="text-xl font-semibold mb-4">Phase 3: Monetization & Scaling (12-18 Months)</h3>
+            <ul className="space-y-3">
+              <li className="flex items-center">
+                <Wallet className="text-blue-500 w-6 h-6 mr-3" />
+                <span>Launch paid subscriptions & B2B deals with exchanges & fintechs</span>
+              </li>
+              <li className="flex items-center">
+                <Building className="text-blue-500 w-6 h-6 mr-3" />
+                <span>Secure institutional licensing with universities & corporate training programs</span>
+              </li>
+              <li className="flex items-center">
+                <Zap className="text-blue-500 w-6 h-6 mr-3" />
+                <span>Expand platform features, AI-driven learning tools, and gamification</span>
+              </li>
+            </ul>
+          </Card>
+          <Card className="bg-gray-50 p-6">
+            <h3 className="text-xl font-semibold mb-4">Phase 4: Global Expansion (18-24 Months)</h3>
+            <ul className="space-y-3">
+              <li className="flex items-center">
+                <Globe className="text-blue-500 w-6 h-6 mr-3" />
+                <span>Multi-language support for Europe, LATAM, and Asia</span>
+              </li>
+              <li className="flex items-center">
+                <Network className="text-blue-500 w-6 h-6 mr-3" />
+                <span>Partnerships with blockchain-based job networks</span>
+              </li>
+              <li className="flex items-center">
+                <Users className="text-blue-500 w-6 h-6 mr-3" />
+                <span>Web3 education DAO for decentralized governance & course development</span>
+              </li>
+            </ul>
+          </Card>
+        </div>
+      </motion.div>
+    </Slide>;
+    
+    // New Token Integration Slide
+const tokenSlide = <Slide key="token">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <h2 className="text-3xl font-bold mb-6 text-blue-600">Future Token Integration</h2>
+    <div className="space-y-6">
+      <Card className="bg-blue-50 p-6">
+        <p className="text-lg">
+          As Sulla continues to grow and establish itself as a trusted leader in crypto education, 
+          the possibility of a future token launch will be carefully evaluated. A token integration 
+          will only be pursued once the platform has amassed a large and engaged user base, ensuring 
+          that it provides genuine value rather than speculative trading.
+        </p>
+        <p className="text-lg mt-4">
+          As an education platform, our integrity and reputation are paramount. Any token launch 
+          must be meticulously designed and responsibly executed to enhance the user experience 
+          and strengthen the ecosystem in a meaningful way.
+        </p>
+      </Card>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card className="bg-gray-50 p-6">
+          <h3 className="text-xl font-semibold mb-2">Tokenized Rewards</h3>
+          <p>Users earn tokens for completing courses, contributing to the community, and achieving learning milestones</p>
+        </Card>
+        <Card className="bg-gray-50 p-6">
+          <h3 className="text-xl font-semibold mb-2">Staking for Premium Access</h3>
+          <p>Users stake tokens to unlock advanced courses and exclusive content</p>
+        </Card>
+        <Card className="bg-gray-50 p-6">
+          <h3 className="text-xl font-semibold mb-2">Decentralized Governance</h3>
+          <p>Token holders vote on course additions, platform updates, and feature prioritization</p>
+        </Card>
+        <Card className="bg-gray-50 p-6">
+          <h3 className="text-xl font-semibold mb-2">Marketplace & Peer Learning</h3>
+          <p>Incentivizing expert contributions, tutoring, and user-generated content with token rewards</p>
+        </Card>
+      </div>
+      <Card className="bg-blue-50 p-6">
+        <p className="text-lg">
+          <span className="font-semibold">The Sulla token will serve as the backbone of an ecosystem</span>, 
+          ensuring long-term engagement, responsible adoption, and community-driven growth. We are committed 
+          to designing a token model that aligns with educational integrity, transparency, and user empowerment, 
+          while preventing speculative risks.
+        </p>
+      </Card>
+    </div>
+  </motion.div>
+</Slide>;
+// Update Team Slide
+const teamSlide = <Slide key="team">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <h2 className="text-3xl font-bold mb-6 text-blue-600">The Team</h2>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <Card className="bg-gray-50 p-6 hover:bg-gray-100 transition-colors">
+        <h3 className="text-xl font-semibold mb-2">Founder - Lewis Olden</h3>
+        <p className="text-gray-600">Entrepreneur with finance & education expertise</p>
+      </Card>
+      <Card className="bg-gray-50 p-6 hover:bg-gray-100 transition-colors">
+        <h3 className="text-xl font-semibold mb-2">CTO</h3>
+        <p className="text-gray-600">Blockchain developer & AI specialist</p>
+      </Card>
+      <Card className="bg-gray-50 p-6 hover:bg-gray-100 transition-colors">
+        <h3 className="text-xl font-semibold mb-2">Head of Content</h3>
+        <p className="text-gray-600">Crypto educator & research analyst</p>
+      </Card>
+      <Card className="bg-gray-50 p-6 hover:bg-gray-100 transition-colors">
+        <h3 className="text-xl font-semibold mb-2">Marketing Lead</h3>
+        <p className="text-gray-600">Web3 community builder & digital strategist</p>
+      </Card>
+    </div>
+  </motion.div>
+</Slide>;
+    
+    const ctaSlide = <Slide key="cta">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <h2 className="text-3xl font-bold mb-6 text-blue-600">Join Us</h2>
+    <div className="space-y-6">
+      <p className="text-xl mb-4">Join us in revolutionizing crypto education</p>
+      <Card className="bg-blue-50 p-8 max-w-2xl mx-auto">
+        <p className="mb-4 text-lg">Seeking investors, partners, and early adopters</p>
+        <div className="space-y-2 text-lg">
+          <p>Email: lewis@sullacrypto.com</p>
+          <p>Twitter: @SullaCrypto</p>
+          <p>Website: sullacrypto.com</p>
+        </div>
+      </Card>
+      <div className="flex justify-center mt-8">
+        <button
+          onClick={() => setCurrentSlide(0)}
+          className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+        >
+          <ChevronLeft className="w-5 h-5" />
+          Back to Start
+        </button>
+      </div>
+    </div>
+  </motion.div>
+</Slide>;
+
+    const tractionSlide = <Slide key="traction">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h2 className="text-3xl font-bold mb-6 text-blue-600">Traction & Milestones</h2>
+        <div className="space-y-6">
+          <Card className="bg-blue-50 p-6">
+            <p className="text-xl mb-4">
+              <span className="font-bold">Our primary goal in the first 12 months is to onboard as many users as possible</span>, as more user data improves our AI capabilities.
+            </p>
+          </Card>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card className="bg-gray-50 p-6">
+              <h3 className="text-xl font-semibold mb-4">0-12M: Community Growth</h3>
+              <p>100K users, 10K Discord members</p>
+            </Card>
+            <Card className="bg-gray-50 p-6">
+              <h3 className="text-xl font-semibold mb-4">12-18M: Monetization</h3>
+              <p>First $500K revenue from subscriptions & B2B deals</p>
+            </Card>
+            <Card className="bg-gray-50 p-6">
+              <h3 className="text-xl font-semibold mb-4">18-24M: Institutional</h3>
+              <p>500K+ users, major fintech & university partnerships</p>
+            </Card>
+            <Card className="bg-gray-50 p-6">
+              <h3 className="text-xl font-semibold mb-4">24M+: Global</h3>
+              <p>1M users, $5M+ ARR</p>
+            </Card>
+          </div>
+        </div>
+      </motion.div>
+    </Slide>;
+
+  const fundingNarrativeSlide =  <Slide key="funding-1">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h2 className="text-3xl font-bold mb-6 text-blue-600">Funding Requirements</h2>
+        <div className="space-y-6">
+          <Card className="bg-blue-50 p-6">
+            <h3 className="text-2xl font-semibold mb-4">Narrative</h3>
+            <p className="text-lg mb-4">
+              To scale Sulla effectively, we require funding that supports key areas: content expansion, 
+              marketing, platform improvements, and operational growth. Our focus is on building 
+              <span className="font-bold"> a user-centric platform with AI-driven personalization</span>, 
+              ensuring <span className="font-bold">high engagement and long-term retention</span>.
+            </p>
+            <p className="text-lg">
+              We have strategically allocated funds to maximize user acquisition in the first 12 months 
+              while setting up monetization in the second year. Security, legal compliance, and 
+              infrastructure enhancements are also prioritized to support future scalability.
+            </p>
+          </Card>
+        </div>
+      </motion.div>
+    </Slide>;
+
+  const fundingBreakdownSlide =  <Slide key="funding-2">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h2 className="text-3xl font-bold mb-6 text-blue-600">Funding Breakdown</h2>
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card className="bg-gray-50 p-4">
+              <h3 className="font-semibold mb-2">Content Expansion</h3>
+              <p className="text-lg">$50K</p>
+              <p className="text-sm text-gray-600">Develop additional courses and certifications</p>
+            </Card>
+            <Card className="bg-gray-50 p-4">
+              <h3 className="font-semibold mb-2">Marketing & User Acquisition</h3>
+              <p className="text-lg">$50K</p>
+              <p className="text-sm text-gray-600">Build brand awareness and onboard early adopters</p>
+            </Card>
+            <Card className="bg-gray-50 p-4">
+              <h3 className="font-semibold mb-2">Business Development</h3>
+              <p className="text-lg">$50K</p>
+              <p className="text-sm text-gray-600">Secure partnerships and institutional deals</p>
+            </Card>
+            <Card className="bg-gray-50 p-4">
+              <h3 className="font-semibold mb-2">Platform Enhancements</h3>
+              <p className="text-lg">$100K</p>
+              <p className="text-sm text-gray-600">Improve AI learning algorithms and gamification</p>
+            </Card>
+            <Card className="bg-gray-50 p-4">
+              <h3 className="font-semibold mb-2">Legal & Compliance</h3>
+              <p className="text-lg">$50K</p>
+              <p className="text-sm text-gray-600">Ensure regulatory compliance for sustainability</p>
+            </Card>
+            <Card className="bg-gray-50 p-4">
+              <h3 className="font-semibold mb-2">Operational Costs</h3>
+              <p className="text-lg">$200K</p>
+              <p className="text-sm text-gray-600">Support core team and day-to-day operations</p>
+            </Card>
+            <Card className="bg-gray-50 p-4">
+              <h3 className="font-semibold mb-2">Security & Maintenance</h3>
+              <p className="text-lg">$100K</p>
+              <p className="text-sm text-gray-600">Protect user data and enhance system resilience</p>
+            </Card>
+             <Card className="bg-gray-50 p-4">
+              <h3 className="font-semibold mb-2">Buffer Fund</h3>
+              <p className="text-lg">$50K</p>
+              <p className="text-sm text-gray-600">Flexibility for unforeseen operational needs</p>
+            </Card>
+          </div>
+           <Card className="bg-blue-50 p-6 mt-4">
+            <div className="flex justify-between items-center">
+              <h3 className="text-xl font-bold">Total Funding Needed</h3>
+              <p className="text-xl font-bold">$650K</p>
+            </div>
+             <p className="text-lg mt-2">Break-even is expected in 18-24 months, with user acquisition as the top priority in the first year.</p>
+          </Card>
+        </div>
+      </motion.div>
+    </Slide>;
+const financialSlide = <Slide key="financial">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h2 className="text-3xl font-bold mb-6 text-blue-600">5-Year Financial Forecasts & Growth Projections</h2>
+        <div className="space-y-6">
+          <Card className="bg-blue-50 p-6">
+            <p className="text-lg mb-4">
+              As Sulla scales, we project significant growth in user adoption, revenue streams, and enterprise partnerships. 
+              Below is our 5-year financial outlook, assuming steady market adoption and expansion of our platform features.
+            </p>
+          </Card>
+
+          <div className="overflow-x-auto">
+            <table className="min-w-full bg-white rounded-lg shadow-sm">
+              <thead className="bg-blue-600 text-white">
+                <tr>
+                  <th className="px-4 py-3">Year</th>
+                  <th className="px-4 py-3">Users</th>
+                  <th className="px-4 py-3">Revenue</th>
+                  <th className="px-4 py-3">Expenses</th>
+                  <th className="px-4 py-3">Net Profit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b">
+                  <td className="px-4 py-3">Year 1</td>
+                  <td className="px-4 py-3">100K+ users</td>
+                  <td className="px-4 py-3">$0 (User Growth Focus)</td>
+                  <td className="px-4 py-3">$400K - $500K</td>
+                  <td className="px-4 py-3 text-red-600">($400K - $500K) Loss</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="px-4 py-3">Year 2</td>
+                  <td className="px-4 py-3">500K+ users</td>
+                  <td className="px-4 py-3">$500K</td>
+                  <td className="px-4 py-3">$1.2M</td>
+                  <td className="px-4 py-3 text-red-600">($700K) Loss</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="px-4 py-3">Year 3</td>
+                  <td className="px-4 py-3">1M+ users</td>
+                  <td className="px-4 py-3">$2M - $5M</td>
+                  <td className="px-4 py-3">$3M</td>
+                  <td className="px-4 py-3 text-green-600">Break-even to $2M Profit</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="px-4 py-3">Year 4</td>
+                  <td className="px-4 py-3">2.5M+ users</td>
+                  <td className="px-4 py-3">$10M+</td>
+                  <td className="px-4 py-3">$6M</td>
+                  <td className="px-4 py-3 text-green-600">$4M+ Profit</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-3">Year 5</td>
+                  <td className="px-4 py-3">5M+ users</td>
+                  <td className="px-4 py-3">$20M+</td>
+                  <td className="px-4 py-3">$10M</td>
+                  <td className="px-4 py-3 text-green-600">$10M+ Profit</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <Card className="bg-gray-50 p-6">
+            <h3 className="text-xl font-semibold mb-4">Revenue Growth Drivers</h3>
+            <ul className="space-y-3">
+              <li className="flex items-start">
+                <span className="text-blue-600 mr-3">•</span>
+                <div>
+                  <span className="font-semibold">Subscription Plans:</span>
+                  <span className="ml-2">Users pay $9.99 - $49.99/month for premium courses.</span>
+                </div>
+              </li>
+              <li className="flex items-start">
+                <span className="text-blue-600 mr-3">•</span>
+                <div>
+                  <span className="font-semibold">Institutional Licensing:</span>
+                  <span className="ml-2">Crypto exchanges, fintech firms, and universities integrate Sulla's courses.</span>
+                </div>
+              </li>
+              <li className="flex items-start">
+                <span className="text-blue-600 mr-3">•</span>
+                <div>
+                  <span className="font-semibold">NFT-Based Certifications:</span>
+                  <span className="ml-2">Users pay $99 - $499 for blockchain-backed credentials.</span>
+                </div>
+              </li>
+              <li className="flex items-start">
+                <span className="text-blue-600 mr-3">•</span>
+                <div>
+                  <span className="font-semibold">Sponsored Content & Partnerships:</span>
+                  <span className="ml-2">Crypto brands pay to feature learning modules.</span>
+                </div>
+              </li>
+              <li className="flex items-start">
+                <span className="text-blue-600 mr-3">•</span>
+                <div>
+                  <span className="font-semibold">Gamified Microtransactions:</span>
+                  <span className="ml-2">Monetization of in-app rewards and premium content.</span>
+                </div>
+              </li>
+            </ul>
+          </Card>
+
+          <Card className="bg-blue-50 p-6">
+            <p className="text-lg">
+              📌 Year 1 is dedicated solely to user acquisition, with revenue generation beginning in Year 2 once a critical mass of engaged users has been established. 
+              Given the anticipated burn rate, we will likely need to raise additional funding in Year 2 to sustain momentum and continue scaling effectively.
+            </p>
+          </Card>
+        </div>
+      </motion.div>
+    </Slide>;
+   const financialModelSlide = <Slide key="financial-model">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h2 className="text-3xl font-bold mb-6 text-blue-600">Comprehensive Financial Model</h2>
+        <div className="space-y-6">
+          <Card className="bg-blue-50 p-6">
+            <p className="text-lg">
+              Sulla's financial model is structured to ensure long-term sustainability, strong cash flow, and strategic reinvestment into growth.
+            </p>
+          </Card>
+
+          <Card className="bg-gray-50 p-6">
+            <h3 className="text-xl font-semibold mb-4">Key Financial Assumptions</h3>
+            <ul className="space-y-3">
+              <li className="flex items-start">
+                <span className="text-blue-600 mr-3">•</span>
+                <div>
+                  <span className="font-semibold">User Acquisition Cost (CAC):</span>
+                  <span className="ml-2">$10-$20 per active user</span>
+                </div>
+              </li>
+              <li className="flex items-start">
+                <span className="text-blue-600 mr-3">•</span>
+                <div>
+                  <span className="font-semibold">Customer Lifetime Value (LTV):</span>
+                  <span className="ml-2">$300+ per premium user</span>
+                </div>
+              </li>
+              <li className="flex items-start">
+                <span className="text-blue-600 mr-3">•</span>
+                <div>
+                  <span className="font-semibold">Conversion Rate:</span>
+                  <span className="ml-2">5-10% of free users upgrade to paid plans</span>
+                </div>
+              </li>
+              <li className="flex items-start">
+                <span className="text-blue-600 mr-3">•</span>
+                <div>
+                  <span className="font-semibold">Institutional Partnerships:</span>
+                  <span className="ml-2">10-50 enterprise clients within 5 years</span>
+                </div>
+              </li>
+              <li className="flex items-start">
+                <span className="text-blue-600 mr-3">•</span>
+                 <div>
+                    <span className="font-semibold">Operating Margins:</span>
+                    <span className="ml-2">Greater than 60% due to digital content scalability</span>
+                  </div>
+              </li>
+            </ul>
+          </Card>
+
+          <div className="overflow-x-auto">
+            <h3 className="text-xl font-semibold mb-4">Projected Financial Breakdown (Year 2-5)</h3>
+            <table className="min-w-full bg-white rounded-lg shadow-sm">
+              <thead className="bg-blue-600 text-white">
+                <tr>
+                  <th className="px-4 py-3">Category</th>
+                  <th className="px-4 py-3">Year 2</th>
+                  <th className="px-4 py-3">Year 3</th>
+                  <th className="px-4 py-3">Year 4</th>
+                  <th className="px-4 py-3">Year 5</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b">
+                  <td className="px-4 py-3 font-semibold">Revenue</td>
+                  <td className="px-4 py-3">$500K</td>
+                  <td className="px-4 py-3">$2M-$5M</td>
+                  <td className="px-4 py-3">$10M+</td>
+                  <td className="px-4 py-3">$20M+</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="px-4 py-3 font-semibold">Marketing Spend</td>
+                  <td className="px-4 py-3">$150K</td>
+                  <td className="px-4 py-3">$400K</td>
+                  <td className="px-4 py-3">$1M</td>
+                  <td className="px-4 py-3">$2M</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="px-4 py-3 font-semibold">Tech & Development</td>
+                  <td className="px-4 py-3">$300K</td>
+                  <td className="px-4 py-3">$1M</td>
+                  <td className="px-4 py-3">$2M</td>
+                  <td className="px-4 py-3">$4M</td>
+                </tr>
+                <tr className="border-b">
+                  <td className="px-4 py-3 font-semibold">Operational Costs</td>
+                  <td className="px-4 py-3">$750K</td>
+                  <td className="px-4 py-3">$1.5M</td>
+                  <td className="px-4 py-3">$3M</td>
+                  <td className="px-4 py-3">$4M</td>
+                </tr>
+                <tr>
+                  <td className="px-4 py-3 font-semibold">Profitability Projection</td>
+                  <td className="px-4 py-3 text-red-600">($700K) Loss</td>
+                  <td className="px-4 py-3 text-green-600">Break-even to $2M Profit</td>
+                  <td className="px-4 py-3 text-green-600">$4M+ Profit</td>
+                  <td className="px-4 py-3 text-green-600">$10M+ Profit</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <Card className="bg-gray-50 p-6">
+            <h3 className="text-xl font-semibold mb-4">Break-Even & Scalability</h3>
+            <ul className="space-y-3">
+              <li className="flex items-start">
+                <span className="text-blue-600 mr-3">•</span>
+                <p>Break-even occurs in Year 3, following an aggressive user acquisition phase in Year 1 and modest monetization in Year 2.</p>
+              </li>
+              <li className="flex items-start">
+                <span className="text-blue-600 mr-3">•</span>
+                <p>High-margin digital content model ensures scalability with minimal additional costs per new user.</p>
+              </li>
+              <li className="flex items-start">
+                <span className="text-blue-600 mr-3">•</span>
+                <p>Future Token Integration (post-500K users) will unlock additional revenue streams through staking, governance, and in-platform rewards.</p>
+              </li>
+            </ul>
+          </Card>
+
+          <Card className="bg-blue-50 p-6">
+            <p className="text-lg">
+              This financial model provides a realistic yet ambitious roadmap for Sulla's future, aligning user growth, revenue expansion, and sustainable operations to ensure long-term success. 🚀
+            </p>
+          </Card>
+        </div>
+      </motion.div>
+    </Slide>;
+const slides = [
+  titleSlide,
+  problemSlide,
+  solutionSlide1,
+  solutionSlide2,
+  missionSlide,
+  marketSlide1,
+  marketSlide2,
+  productSlide1,
+  productSlide2,
+  modulesSlide,
+  roadmapSlide,
+  progressSlide,
+  gtmSlide1,
+  gtmSlide2,
+  tokenSlide,
+  tractionSlide,
+  financialSlide,
+  financialModelSlide,
+  fundingNarrativeSlide,
+  fundingBreakdownSlide,
+  teamSlide,
+  ctaSlide,
+].filter(Boolean);
+
+  return (
+    <div className="min-h-screen bg-gray-100">
+      <div className="container mx-auto px-4 py-8" ref={deckRef}>
+        {!isExporting && <SlideHeader />}
+        <AnimatePresence mode="wait">
+          {isExporting ? (
+            <div className="space-y-4">
+              {slides.map((slide, index) => (
+                <div 
+                  key={index}
+                  className="page-break-inside-avoid"
+                >
+                  {slide}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <motion.div
+              key={currentSlide}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              {slides[currentSlide]}
+              <div className="flex justify-between items-center mt-8">
+                <button
+                  onClick={() => setCurrentSlide(Math.max(0, currentSlide - 1))}
+                  disabled={currentSlide === 0}
+                  className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
+                    currentSlide === 0 
+                      ? 'bg-gray-300 text-gray-600 cursor-not-allowed' 
+                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                  }`}
+                >
+                  <ChevronLeft className="w-5 h-5 mr-2" />
+                  Previous
+                </button>
+                <span className="text-gray-600">
+                  Slide {currentSlide + 1} of {slides.length}
+                </span>
+                <button
+                  onClick={() => setCurrentSlide(Math.min(slides.length - 1, currentSlide + 1))}
+                  disabled={currentSlide === slides.length - 1}
+                  className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
+                    currentSlide === slides.length - 1 
+                      ? 'bg-gray-300 text-gray-600 cursor-not-allowed' 
+                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                  }`}
+                >
+                  Next
+                  <ChevronRight className="w-5 h-5 ml-2" />
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+};
+
+export default PitchDeck;
