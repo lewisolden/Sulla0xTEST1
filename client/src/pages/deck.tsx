@@ -6,151 +6,118 @@ import { ChevronLeft, ChevronRight, Download } from "lucide-react";
 
 const slides = [
   {
-    title: "Sulla - Revolutionizing Crypto Education",
-    content: "A comprehensive platform for learning cryptocurrency and blockchain technology",
+    title: "The Sulla Crypto Learning Platform",
+    content: "An interactive educational platform for learning cryptocurrency and blockchain technology",
     type: "title"
   },
   {
-    title: "Problem",
-    content: "The cryptocurrency learning curve is steep and existing resources are fragmented",
+    title: "Our Mission",
+    content: "To democratize cryptocurrency education through interactive and engaging learning experiences",
     bullets: [
-      "Complex terminology",
-      "Technical barriers",
-      "Information overload",
-      "Lack of structured learning",
-      "High risk of mistakes"
+      "Make crypto education accessible",
+      "Provide practical learning tools",
+      "Build confidence through hands-on experience",
+      "Foster a supportive learning community",
+      "Enable informed participation in digital finance"
     ]
   },
   {
-    title: "Solution",
-    content: "An all-in-one educational platform that makes crypto learning accessible and engaging",
+    title: "The Challenge",
+    content: "Cryptocurrency education faces significant barriers",
+    bullets: [
+      "Complex technical concepts",
+      "Rapidly evolving landscape",
+      "Information overload",
+      "Limited practical experience",
+      "High stakes for mistakes"
+    ]
+  },
+  {
+    title: "Our Solution",
+    content: "A comprehensive learning platform that combines theory with practice",
     bullets: [
       "Interactive learning modules",
-      "Practical simulations",
-      "Guided progression",
+      "Hands-on simulations",
       "Real-world applications",
-      "Risk-free environment"
+      "Progress tracking",
+      "Community support"
     ]
   },
   {
     title: "Key Features",
-    content: "Comprehensive tools for effective learning",
+    content: "Innovative tools for effective learning",
     bullets: [
-      "Modular curriculum structure",
-      "Interactive exercises",
-      "Virtual trading simulator",
-      "Progress tracking",
-      "Achievement system"
-    ]
-  },
-  {
-    title: "Curriculum Overview",
-    content: "Structured learning path from basics to advanced concepts",
-    bullets: [
-      "Module 1: Cryptocurrency Basics",
-      "Module 2: Bitcoin & Blockchain",
-      "Module 3: Ethereum & Smart Contracts",
-      "Module 4: Advanced Topics",
-      "Practical Applications"
-    ]
-  },
-  {
-    title: "Interactive Learning",
-    content: "Hands-on experience in a safe environment",
-    bullets: [
-      "Virtual wallet simulation",
+      "Structured curriculum",
+      "Virtual wallet simulator",
       "Trading practice platform",
-      "Smart contract interaction",
-      "Real-time market data",
-      "Guided exercises"
+      "Achievement system",
+      "Expert guidance"
+    ]
+  },
+  {
+    title: "Learning Approach",
+    content: "Multi-faceted educational methodology",
+    bullets: [
+      "Step-by-step progression",
+      "Interactive exercises",
+      "Real-time feedback",
+      "Practical applications",
+      "Community learning"
     ]
   },
   {
     title: "Technology Stack",
-    content: "Built with modern, reliable technologies",
+    content: "Built with cutting-edge technologies",
     bullets: [
-      "React.js frontend",
+      "React & TypeScript frontend",
       "Node.js backend",
       "PostgreSQL database",
-      "TypeScript",
-      "Blockchain integration"
-    ]
-  },
-  {
-    title: "Security Focus",
-    content: "Emphasizing safe practices in cryptocurrency",
-    bullets: [
-      "Wallet security best practices",
-      "Transaction safety",
-      "Private key management",
-      "Scam awareness",
-      "Risk management"
-    ]
-  },
-  {
-    title: "Market Understanding",
-    content: "Comprehensive market analysis tools",
-    bullets: [
-      "Price analysis",
-      "Market trends",
-      "Trading patterns",
-      "Risk assessment",
-      "Portfolio management"
-    ]
-  },
-  {
-    title: "Achievement System",
-    content: "Gamified learning experience",
-    bullets: [
-      "Progress badges",
-      "Completion certificates",
-      "Skill level tracking",
-      "Learning milestones",
-      "Performance rewards"
-    ]
-  },
-  {
-    title: "Community Features",
-    content: "Building a supportive learning environment",
-    bullets: [
-      "Discussion forums",
-      "Peer learning",
-      "Expert guidance",
-      "Community challenges",
-      "Knowledge sharing"
-    ]
-  },
-  {
-    title: "Personalized Learning",
-    content: "Adaptive learning paths for individual needs",
-    bullets: [
-      "Custom pace setting",
-      "Progress tracking",
-      "Difficulty adjustment",
-      "Topic focus areas",
-      "Learning style adaptation"
-    ]
-  },
-  {
-    title: "Technical Innovation",
-    content: "Cutting-edge educational technology",
-    bullets: [
       "Blockchain integration",
-      "Real-time data feeds",
-      "Interactive visualizations",
-      "Smart contract demos",
-      "API connectivity"
+      "Real-time data feeds"
+    ]
+  },
+  {
+    title: "Course Structure",
+    content: "Comprehensive curriculum design",
+    bullets: [
+      "Fundamentals of Cryptocurrency",
+      "Blockchain Technology",
+      "Smart Contracts",
+      "DeFi Concepts",
+      "Advanced Topics"
+    ]
+  },
+  {
+    title: "Learning Tools",
+    content: "Practical tools for hands-on experience",
+    bullets: [
+      "Interactive tutorials",
+      "Practice environments",
+      "Market simulators",
+      "Code sandboxes",
+      "Assessment tools"
+    ]
+  },
+  {
+    title: "User Benefits",
+    content: "Value proposition for learners",
+    bullets: [
+      "Structured learning path",
+      "Practical experience",
+      "Risk-free environment",
+      "Progress tracking",
+      "Community support"
     ]
   },
   {
     title: "Market Opportunity",
-    content: "Addressing a growing need in crypto education",
+    content: "Growing demand for crypto education",
     bullets: [
       "Rising crypto adoption",
-      "Increasing demand for education",
-      "Limited quality resources",
-      "Market gap",
-      "Growth potential"
+      "Need for qualified professionals",
+      "Industry skills gap",
+      "Educational market growth",
+      "Corporate training demand"
     ]
   },
   {
@@ -158,66 +125,34 @@ const slides = [
     content: "Serving diverse learning needs",
     bullets: [
       "Crypto beginners",
-      "Intermediate traders",
-      "Technical developers",
-      "Investment professionals",
-      "Blockchain enthusiasts"
-    ]
-  },
-  {
-    title: "Business Model",
-    content: "Sustainable revenue generation",
-    bullets: [
-      "Subscription tiers",
-      "Premium features",
-      "Corporate training",
-      "Custom solutions",
-      "Partner integrations"
+      "Traditional investors",
+      "Tech professionals",
+      "Financial advisors",
+      "Business leaders"
     ]
   },
   {
     title: "Growth Strategy",
-    content: "Planned expansion and development",
+    content: "Roadmap for platform expansion",
     bullets: [
-      "Feature expansion",
-      "Market penetration",
-      "Partnership development",
-      "Content enhancement",
-      "Community growth"
+      "Content expansion",
+      "Feature development",
+      "Community building",
+      "Partnership programs",
+      "Market penetration"
     ]
   },
   {
-    title: "Competitive Advantage",
-    content: "What sets Sulla apart",
+    title: "Join Sulla",
+    content: "Start your crypto learning journey today",
     bullets: [
-      "Comprehensive curriculum",
-      "Interactive learning",
-      "Practical experience",
-      "Safety focus",
-      "Community support"
-    ]
-  },
-  {
-    title: "Roadmap",
-    content: "Future development plans",
-    bullets: [
-      "Mobile app development",
-      "Advanced trading features",
-      "AI-powered learning",
-      "Enhanced simulations",
-      "Global expansion"
-    ]
-  },
-  {
-    title: "Join the Revolution",
-    content: "Be part of the future of crypto education",
-    bullets: [
-      "Start learning today",
-      "Join our community",
-      "Track your progress",
-      "Build your skills",
-      "Achieve your goals"
-    ]
+      "Register now",
+      "Explore our modules",
+      "Join the community",
+      "Practice safely",
+      "Build your future"
+    ],
+    type: "call-to-action"
   }
 ];
 
