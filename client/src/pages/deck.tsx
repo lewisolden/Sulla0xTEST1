@@ -6,153 +6,135 @@ import { ChevronLeft, ChevronRight, Download } from "lucide-react";
 
 const slides = [
   {
-    title: "The Sulla Crypto Learning Platform",
-    content: "An interactive educational platform for learning cryptocurrency and blockchain technology",
-    type: "title"
+    title: "Sulla Pitch Deck",
+    content: "",
+    type: "title",
+    bullets: []
   },
   {
-    title: "Our Mission",
-    content: "To democratize cryptocurrency education through interactive and engaging learning experiences",
+    title: "Introduction",
+    content: "The Problem & Solution",
     bullets: [
-      "Make crypto education accessible",
-      "Provide practical learning tools",
-      "Build confidence through hands-on experience",
-      "Foster a supportive learning community",
-      "Enable informed participation in digital finance"
-    ]
-  },
-  {
-    title: "The Challenge",
-    content: "Cryptocurrency education faces significant barriers",
-    bullets: [
-      "Complex technical concepts",
-      "Rapidly evolving landscape",
-      "Information overload",
-      "Limited practical experience",
-      "High stakes for mistakes"
-    ]
-  },
-  {
-    title: "Our Solution",
-    content: "A comprehensive learning platform that combines theory with practice",
-    bullets: [
-      "Interactive learning modules",
-      "Hands-on simulations",
-      "Real-world applications",
-      "Progress tracking",
-      "Community support"
-    ]
-  },
-  {
-    title: "Key Features",
-    content: "Innovative tools for effective learning",
-    bullets: [
-      "Structured curriculum",
-      "Virtual wallet simulator",
-      "Trading practice platform",
-      "Achievement system",
-      "Expert guidance"
-    ]
-  },
-  {
-    title: "Learning Approach",
-    content: "Multi-faceted educational methodology",
-    bullets: [
-      "Step-by-step progression",
-      "Interactive exercises",
-      "Real-time feedback",
-      "Practical applications",
-      "Community learning"
-    ]
-  },
-  {
-    title: "Technology Stack",
-    content: "Built with cutting-edge technologies",
-    bullets: [
-      "React & TypeScript frontend",
-      "Node.js backend",
-      "PostgreSQL database",
-      "Blockchain integration",
-      "Real-time data feeds"
-    ]
-  },
-  {
-    title: "Course Structure",
-    content: "Comprehensive curriculum design",
-    bullets: [
-      "Fundamentals of Cryptocurrency",
-      "Blockchain Technology",
-      "Smart Contracts",
-      "DeFi Concepts",
-      "Advanced Topics"
-    ]
-  },
-  {
-    title: "Learning Tools",
-    content: "Practical tools for hands-on experience",
-    bullets: [
-      "Interactive tutorials",
-      "Practice environments",
-      "Market simulators",
-      "Code sandboxes",
-      "Assessment tools"
-    ]
-  },
-  {
-    title: "User Benefits",
-    content: "Value proposition for learners",
-    bullets: [
-      "Structured learning path",
-      "Practical experience",
-      "Risk-free environment",
-      "Progress tracking",
-      "Community support"
+      "The cryptocurrency industry is rapidly evolving, yet structured, high-quality educational resources remain fragmented, overly technical, or unreliable",
+      "Many newcomers struggle to understand the fundamentals, and experienced users lack clear pathways for advanced learning",
+      "Sulla is a next-generation crypto education platform bridging this gap with interactive, structured courses",
+      "Adaptive Learning with AI-driven personalization",
+      "Intelligent Course Recommendations via machine learning",
+      "Modular Learning covering Bitcoin, Ethereum, DeFi, Smart Contracts, Security",
+      "Interactive Experience with gamified quizzes and NFT certifications",
+      "Freemium Model with premium offerings for deeper knowledge"
     ]
   },
   {
     title: "Market Opportunity",
-    content: "Growing demand for crypto education",
+    content: "Why Now?",
     bullets: [
-      "Rising crypto adoption",
-      "Need for qualified professionals",
-      "Industry skills gap",
-      "Educational market growth",
-      "Corporate training demand"
+      "Global Crypto Adoption: Over 420 million crypto users worldwide (2024)",
+      "Institutional Interest: 80% of major banks exploring digital assets",
+      "Lack of Quality Education: Most resources too technical or outdated",
+      "Market Size: Crypto Education Market Value (2024): $1.5B+ and growing",
+      "Projected Growth: Expected to exceed $5B by 2028",
+      "Target Audience: Crypto enthusiasts, developers, traders, and fintech institutions"
     ]
   },
   {
-    title: "Target Audience",
-    content: "Serving diverse learning needs",
+    title: "Product Overview",
+    content: "What Makes Sulla Unique?",
     bullets: [
-      "Crypto beginners",
-      "Traditional investors",
-      "Tech professionals",
-      "Financial advisors",
-      "Business leaders"
+      "Comprehensive Course Library – Covers Bitcoin, Ethereum, DeFi, NFTs, DAOs, Security, Trading",
+      "Adaptive Learning & AI Personalization – Dynamic difficulty adjustment",
+      "Gamified Learning – Engaging quizzes and interactive simulations",
+      "NFT-Based Certifications – Blockchain-verified credentials",
+      "B2B Integration – White-label solutions for fintech companies"
     ]
   },
   {
-    title: "Growth Strategy",
-    content: "Roadmap for platform expansion",
+    title: "What's Been Built to Date?",
+    content: "First Course: Introduction to Cryptocurrency",
     bullets: [
-      "Content expansion",
-      "Feature development",
-      "Community building",
-      "Partnership programs",
-      "Market penetration"
+      "Understanding Cryptocurrency – Evolution of money and digital assets",
+      "Bitcoin & Ethereum Basics – Technology deep dive",
+      "Security & Risk Management – Asset protection and scam awareness",
+      "Practical Applications – Hands-on exercises",
+      "Interactive Assessments – Gamified quizzes with instant feedback"
     ]
   },
   {
-    title: "Join Sulla",
-    content: "Start your crypto learning journey today",
+    title: "Go-to-Market Strategy",
+    content: "Three Phase Approach",
     bullets: [
-      "Register now",
-      "Explore our modules",
-      "Join the community",
-      "Practice safely",
-      "Build your future"
-    ],
-    type: "call-to-action"
+      "Phase 1 (0-6 Months): Community Growth via Web3 social media",
+      "Interactive quizzes & NFT rewards",
+      "YouTube & influencer partnerships",
+      "SEO Strategy for organic growth",
+      "Phase 2 (6-12 Months): Pre-Monetization & User Scaling",
+      "Phase 3 (12-18 Months): Launch subscriptions ($9.99-$49.99/month)"
+    ]
+  },
+  {
+    title: "Traction & Milestones",
+    content: "Growth Timeline",
+    bullets: [
+      "0-12M: Community Growth – 100K users, 10K Discord members",
+      "12-18M: Monetization – First $500K revenue",
+      "18-24M: Institutional Adoption – 500K+ users, major partnerships",
+      "24M+: Global Expansion – 1M users, $5M+ ARR"
+    ]
+  },
+  {
+    title: "Funding Requirements",
+    content: "Total Funding Needed: $650K",
+    bullets: [
+      "Content Expansion: $50K",
+      "Marketing & Acquisition: $50K",
+      "Business Development: $50K",
+      "Platform Enhancements: $100K",
+      "Operational Costs: $200K",
+      "Security & Compliance: $100K",
+      "Miscellaneous Buffer: $50K"
+    ]
+  },
+  {
+    title: "The Team",
+    content: "Expert Leadership",
+    bullets: [
+      "Founder & CEO: Web3 entrepreneur with fintech & education expertise",
+      "CTO: Blockchain developer & AI specialist",
+      "Head of Content: Crypto educator & research analyst",
+      "Marketing Lead: Community builder & digital strategist"
+    ]
+  },
+  {
+    title: "Future Token Integration",
+    content: "Token Utility & Ecosystem",
+    bullets: [
+      "Tokenized Rewards – Earn for completing courses and contributing",
+      "Staking for Premium Access – Unlock advanced content",
+      "Decentralized Governance – Community-driven platform decisions",
+      "Marketplace & Peer Learning Economy – Token-based incentives",
+      "Building long-term engagement and community-driven growth"
+    ]
+  },
+  {
+    title: "5-Year Financial Forecasts",
+    content: "Growth Projections",
+    bullets: [
+      "Year 1: 100K+ users, ($400K - $500K) Loss",
+      "Year 2: 500K+ users, $500K Revenue, ($700K) Loss",
+      "Year 3: 1M+ users, $2M - $5M Revenue, Break-even to $2M Profit",
+      "Focus on user acquisition before monetization",
+      "Additional fundraising required in Year 2"
+    ]
+  },
+  {
+    title: "Call to Action",
+    content: "Join us in revolutionizing crypto education",
+    type: "call-to-action",
+    bullets: [
+      "Seeking investors, partners, and early adopters",
+      "Contact: team@sulla.com",
+      "Twitter: @SullaCrypto"
+    ]
   }
 ];
 
@@ -209,7 +191,7 @@ export default function DeckPage() {
             variant="outline"
             onClick={downloadPDF}
             disabled={isDownloading}
-            className="gap-2"
+            className="gap-2 bg-white text-blue-900 hover:bg-blue-100"
           >
             <Download className="h-4 w-4" />
             {isDownloading ? 'Downloading...' : 'Download PDF'}
@@ -226,25 +208,25 @@ export default function DeckPage() {
               transition={{ duration: 0.3 }}
               className="absolute inset-0 p-12 deck-slide"
             >
-              <Card className="h-full bg-opacity-90 backdrop-blur-sm p-8 flex flex-col justify-center items-center text-center">
-                <h2 className="text-4xl font-bold mb-8 text-blue-500">
+              <Card className="h-full bg-opacity-90 backdrop-blur-sm p-8 flex flex-col justify-center items-center text-center bg-gradient-to-br from-blue-900/95 to-black/95">
+                <h2 className="text-4xl font-bold mb-8 text-blue-400">
                   {slides[currentSlide].title}
                 </h2>
-                <p className="text-xl mb-8 text-gray-300">
+                <p className="text-xl mb-8 text-blue-200">
                   {slides[currentSlide].content}
                 </p>
-                {slides[currentSlide].bullets && (
-                  <ul className="text-left space-y-4">
+                {slides[currentSlide].bullets && slides[currentSlide].bullets.length > 0 && (
+                  <ul className="text-left space-y-4 w-full max-w-3xl">
                     {slides[currentSlide].bullets.map((bullet, index) => (
                       <motion.li
                         key={index}
                         initial={{ opacity: 0, x: 50 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className="flex items-center gap-2"
+                        className="flex items-center gap-3 text-lg"
                       >
-                        <div className="h-2 w-2 bg-blue-500 rounded-full" />
-                        {bullet}
+                        <div className="h-2 w-2 bg-blue-400 rounded-full flex-shrink-0" />
+                        <span className="text-blue-100">{bullet}</span>
                       </motion.li>
                     ))}
                   </ul>
@@ -258,19 +240,19 @@ export default function DeckPage() {
               variant="outline"
               onClick={previousSlide}
               disabled={currentSlide === 0}
-              className="gap-2"
+              className="gap-2 bg-white text-blue-900 hover:bg-blue-100"
             >
               <ChevronLeft className="h-4 w-4" />
               Previous
             </Button>
-            <span className="px-4 py-2 bg-black bg-opacity-50 rounded">
+            <span className="px-4 py-2 bg-white/20 rounded">
               {currentSlide + 1} / {slides.length}
             </span>
             <Button
               variant="outline"
               onClick={nextSlide}
               disabled={currentSlide === slides.length - 1}
-              className="gap-2"
+              className="gap-2 bg-white text-blue-900 hover:bg-blue-100"
             >
               Next
               <ChevronRight className="h-4 w-4" />
