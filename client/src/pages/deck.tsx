@@ -2,245 +2,224 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ChevronLeft, ChevronRight, Download } from "lucide-react";
+import { 
+  ChevronLeft, ChevronRight, Download, Shield, Wallet, BookOpen, 
+  Users, Building2, Target, Lock, Coins, Trophy, BarChart3, Brain,
+  Boxes, Puzzle, Lightbulb, HandCoins, Network, Award
+} from "lucide-react";
+
+// Slide animation variants
+const slideVariants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? 1000 : -1000,
+    opacity: 0
+  }),
+  center: {
+    zIndex: 1,
+    x: 0,
+    opacity: 1
+  },
+  exit: (direction: number) => ({
+    zIndex: 0,
+    x: direction < 0 ? 1000 : -1000,
+    opacity: 0
+  })
+};
+
+const FinancialTable = () => (
+  <motion.div 
+    className="w-full overflow-x-auto"
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: 0.3 }}
+  >
+    <table className="min-w-full divide-y divide-blue-200">
+      <thead>
+        <tr>
+          <th className="px-6 py-3 text-left text-xs font-medium text-blue-300 uppercase tracking-wider">Phase</th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-blue-300 uppercase tracking-wider">Timeline</th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-blue-300 uppercase tracking-wider">Target Goals</th>
+        </tr>
+      </thead>
+      <tbody className="divide-y divide-blue-200">
+        <motion.tr 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+        >
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-100">0-12M</td>
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-100">Community Growth</td>
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-100">100K users, 10K Discord</td>
+        </motion.tr>
+        <motion.tr 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+        >
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-100">12-18M</td>
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-100">Monetization</td>
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-100">First $500K revenue</td>
+        </motion.tr>
+        <motion.tr 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6 }}
+        >
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-100">18-24M</td>
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-100">Institutional</td>
+          <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-100">500K+ users, major partnerships</td>
+        </motion.tr>
+      </tbody>
+    </table>
+  </motion.div>
+);
+
+const FundingTable = () => (
+  <motion.div 
+    className="w-full overflow-x-auto"
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay: 0.3 }}
+  >
+    <table className="min-w-full divide-y divide-blue-200">
+      <thead>
+        <tr>
+          <th className="px-6 py-3 text-left text-xs font-medium text-blue-300 uppercase tracking-wider">Category</th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-blue-300 uppercase tracking-wider">Budget ($)</th>
+          <th className="px-6 py-3 text-left text-xs font-medium text-blue-300 uppercase tracking-wider">Purpose</th>
+        </tr>
+      </thead>
+      <tbody className="divide-y divide-blue-200">
+        {[
+          { category: "Content Expansion", budget: "50K", purpose: "Develop additional courses" },
+          { category: "Marketing", budget: "50K", purpose: "User acquisition" },
+          { category: "Business Dev", budget: "50K", purpose: "Secure partnerships" },
+          { category: "Platform", budget: "100K", purpose: "AI features" },
+          { category: "Operations", budget: "200K", purpose: "Core team & hosting" },
+          { category: "Security", budget: "100K", purpose: "Data protection" },
+          { category: "Buffer", budget: "50K", purpose: "Contingency" }
+        ].map((item, index) => (
+          <motion.tr 
+            key={item.category}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 + (index * 0.1) }}
+          >
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-100">{item.category}</td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-100">{item.budget}</td>
+            <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-100">{item.purpose}</td>
+          </motion.tr>
+        ))}
+      </tbody>
+    </table>
+  </motion.div>
+);
+
+const IconComponent = ({ icon: Icon }: { icon: any }) => {
+  return <Icon className="w-16 h-16 text-blue-400" />;
+};
 
 const slides = [
   {
-    title: "About Sulla",
+    title: "Sulla Pitch Deck",
     content: "Next-Generation Crypto Education Platform",
     type: "title",
+    icon: BookOpen,
     bullets: []
   },
   {
-    title: "The Problem",
-    content: "Current State of Crypto Education",
+    title: "Introduction",
+    content: "The Problem & Solution",
+    icon: Shield,
     bullets: [
-      "Fragmented and unreliable educational resources",
-      "Complex technical barriers for newcomers",
-      "Lack of structured learning paths",
-      "Limited practical experience opportunities",
-      "High risk of costly mistakes"
-    ]
-  },
-  {
-    title: "Our Solution",
-    content: "Interactive Learning Platform",
-    bullets: [
-      "Comprehensive, structured curriculum",
-      "Interactive learning modules",
-      "Hands-on practice environments",
-      "AI-driven personalization",
-      "Real-time progress tracking"
-    ]
-  },
-  {
-    title: "Key Features",
-    content: "What Makes Sulla Different",
-    bullets: [
-      "Gamified learning experience",
-      "Virtual trading simulator",
-      "Smart contract playground",
-      "NFT-based achievements",
-      "Community support system"
+      "The cryptocurrency industry is rapidly evolving, yet structured, high-quality educational resources remain fragmented",
+      "Many newcomers struggle with fundamentals, experienced users lack clear pathways",
+      "Sulla bridges this gap with interactive, structured courses",
+      "Adaptive Learning with AI-driven personalization",
+      "Intelligent Course Recommendations",
+      "Modular Learning covering Bitcoin, Ethereum, DeFi, Security",
+      "Interactive Experience with gamified quizzes",
+      "Freemium Model with premium offerings"
     ]
   },
   {
     title: "Market Opportunity",
-    content: "Growing Demand",
+    content: "Why Now?",
+    icon: Target,
+    chart: true,
     bullets: [
-      "420M+ global crypto users",
-      "$1.5B crypto education market",
-      "80% of banks exploring crypto",
-      "Rising institutional adoption",
-      "Increasing regulatory clarity"
+      "Global Crypto Adoption: Over 420 million crypto users worldwide (2024)",
+      "Institutional Interest: 80% of major banks exploring digital assets",
+      "Market Size: $1.5B+ crypto education market and growing",
+      "Projected Growth: Expected to exceed $5B by 2028",
+      "Target Audience: Crypto enthusiasts, developers, traders, institutions"
     ]
   },
   {
-    title: "Target Audience",
-    content: "Who We Serve",
+    title: "Product Overview",
+    content: "What Makes Sulla Unique?",
+    icon: Puzzle,
     bullets: [
-      "Crypto newcomers",
-      "Traditional investors",
-      "Developers",
-      "Financial institutions",
-      "Educational organizations"
+      "Comprehensive Course Library – Covers Bitcoin, Ethereum, DeFi, NFTs, DAOs, Security, Trading",
+      "Adaptive Learning & AI Personalization – Dynamic difficulty adjustment",
+      "Gamified Learning – Engaging quizzes and interactive simulations",
+      "NFT-Based Certifications – Blockchain-verified credentials",
+      "B2B Integration – White-label solutions for fintech companies"
     ]
   },
   {
-    title: "Technology Stack",
-    content: "Built for Scale",
+    title: "Built to Date",
+    content: "First Course: Introduction to Cryptocurrency",
+    icon: Building2,
     bullets: [
-      "React & TypeScript frontend",
-      "Node.js backend",
-      "PostgreSQL database",
-      "Blockchain integrations",
-      "AI/ML capabilities"
+      "Understanding Cryptocurrency – Evolution of money and digital assets",
+      "Bitcoin & Ethereum Basics – Technology deep dive",
+      "Security & Risk Management – Asset protection and scam awareness",
+      "Practical Applications – Hands-on exercises",
+      "Interactive Assessments – Gamified quizzes with instant feedback"
     ]
   },
   {
-    title: "Learning Modules",
-    content: "Comprehensive Curriculum",
+    title: "Traction & Milestones",
+    content: "Growth Timeline",
+    icon: BarChart3,
+    chart: true,
     bullets: [
-      "Cryptocurrency Fundamentals",
-      "Blockchain Technology",
-      "DeFi & Smart Contracts",
-      "Trading & Investment",
-      "Security & Best Practices"
-    ]
-  },
-  {
-    title: "Interactive Tools",
-    content: "Practical Learning Environment",
-    bullets: [
-      "Trading simulator",
-      "Wallet practice",
-      "Smart contract editor",
-      "Market analysis tools",
-      "Security workshops"
-    ]
-  },
-  {
-    title: "Progress Tracking",
-    content: "Measure Your Growth",
-    bullets: [
-      "Achievement system",
-      "Skill assessments",
-      "Learning analytics",
-      "Performance metrics",
-      "Completion certificates"
-    ]
-  },
-  {
-    title: "Community Features",
-    content: "Learn Together",
-    bullets: [
-      "Discussion forums",
-      "Study groups",
-      "Mentor matching",
-      "Peer reviews",
-      "Knowledge sharing"
-    ]
-  },
-  {
-    title: "B2B Solutions",
-    content: "Enterprise & Institutional",
-    bullets: [
-      "Custom learning paths",
-      "White-label platform",
-      "API integration",
-      "Analytics dashboard",
-      "Compliance training"
-    ]
-  },
-  {
-    title: "Security Focus",
-    content: "Safe Learning Environment",
-    bullets: [
-      "Best practice training",
-      "Secure testing environment",
-      "Risk management",
-      "Scam prevention",
-      "Privacy protection"
-    ]
-  },
-  {
-    title: "User Benefits",
-    content: "Why Choose Sulla",
-    bullets: [
-      "Structured learning path",
-      "Practical experience",
-      "Risk-free environment",
-      "Industry recognition",
-      "Career advancement"
-    ]
-  },
-  {
-    title: "Revenue Model",
-    content: "Sustainable Growth",
-    bullets: [
-      "Freemium model",
-      "Premium subscriptions",
-      "Enterprise licensing",
-      "B2B partnerships",
-      "Custom solutions"
-    ]
-  },
-  {
-    title: "Growth Strategy",
-    content: "Expansion Plans",
-    bullets: [
-      "Market penetration",
-      "Product development",
-      "Geographic expansion",
-      "Partnership network",
-      "Community growth"
-    ]
-  },
-  {
-    title: "Competition Analysis",
-    content: "Market Position",
-    bullets: [
-      "Comprehensive solution",
-      "Interactive approach",
-      "Enterprise focus",
-      "Technology advantage",
-      "Community strength"
-    ]
-  },
-  {
-    title: "Token Economics",
-    content: "Platform Token Utility",
-    bullets: [
-      "Learning incentives",
-      "Governance rights",
-      "Premium access",
-      "Community rewards",
-      "Ecosystem integration"
-    ]
-  },
-  {
-    title: "Financial Projections",
-    content: "5-Year Forecast",
-    bullets: [
-      "Year 1: Market entry",
-      "Year 2: Revenue growth",
-      "Year 3: Break-even",
-      "Year 4: Expansion",
-      "Year 5: Market leader"
+      "0-12M: Community Growth – 100K users, 10K Discord members",
+      "12-18M: Monetization – First $500K revenue",
+      "18-24M: Institutional Adoption – 500K+ users, major partnerships",
+      "24M+: Global Expansion – 1M users, $5M+ ARR"
     ]
   },
   {
     title: "Funding Requirements",
-    content: "Investment Opportunity",
-    bullets: [
-      "Development: $250K",
-      "Marketing: $150K",
-      "Operations: $150K",
-      "Reserve: $100K",
-      "Total: $650K"
-    ]
+    content: "Strategic Investment Allocation",
+    icon: HandCoins,
+    fundingTable: true,
+    bullets: []
   },
   {
-    title: "Team",
+    title: "The Team",
     content: "Expert Leadership",
+    icon: Users,
     bullets: [
-      "Experienced founders",
-      "Technical expertise",
-      "Education background",
-      "Industry network",
-      "Advisory board"
+      "Founder & CEO: Web3 entrepreneur with fintech & education expertise",
+      "CTO: Blockchain developer & AI specialist",
+      "Head of Content: Crypto educator & research analyst",
+      "Marketing Lead: Web3 community builder & digital strategist"
     ]
   },
   {
-    title: "Join Us",
-    content: "Be Part of the Future",
+    title: "Call to Action",
+    content: "Join us in revolutionizing crypto education",
     type: "call-to-action",
+    icon: Award,
     bullets: [
-      "Investment opportunity",
-      "Partnership programs",
+      "Seeking strategic partners and early adopters",
+      "Investment opportunity available now",
       "Contact: team@sulla.com",
-      "Website: sulla.edu",
-      "Start learning today"
+      "Twitter: @SullaCrypto",
+      "Let's build the future of crypto education together"
     ]
   }
 ];
@@ -248,22 +227,30 @@ const slides = [
 export default function DeckPage() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isDownloading, setIsDownloading] = useState(false);
+  const [slideDirection, setSlideDirection] = useState(0);
 
   const nextSlide = useCallback(() => {
+    setSlideDirection(1);
     setCurrentSlide(curr => curr < slides.length - 1 ? curr + 1 : curr);
   }, []);
 
   const previousSlide = useCallback(() => {
+    setSlideDirection(-1);
     setCurrentSlide(curr => curr > 0 ? curr - 1 : curr);
   }, []);
 
-  const handleKeyDown = useCallback((event: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
     if (event.key === "ArrowRight") {
       nextSlide();
     } else if (event.key === "ArrowLeft") {
       previousSlide();
     }
   }, [nextSlide, previousSlide]);
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyDown]);
 
   const downloadPDF = async () => {
     try {
@@ -286,11 +273,7 @@ export default function DeckPage() {
   };
 
   return (
-    <div 
-      className="min-h-screen bg-gradient-to-b from-blue-900 to-black text-white p-8"
-      onKeyDown={handleKeyDown}
-      tabIndex={0}
-    >
+    <div className="min-h-screen bg-gradient-to-b from-blue-900 to-black text-white p-8">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold">Sulla Presentation</h1>
@@ -306,22 +289,72 @@ export default function DeckPage() {
         </div>
 
         <div className="relative aspect-video bg-black rounded-lg shadow-2xl overflow-hidden">
-          <AnimatePresence mode="wait">
+          <AnimatePresence initial={false} custom={slideDirection}>
             <motion.div
               key={currentSlide}
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -100 }}
-              transition={{ duration: 0.3 }}
-              className="absolute inset-0 p-12 deck-slide"
+              custom={slideDirection}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={{
+                x: { type: "spring", stiffness: 300, damping: 30 },
+                opacity: { duration: 0.2 }
+              }}
+              className="absolute inset-0 p-12"
             >
               <Card className="h-full bg-opacity-90 backdrop-blur-sm p-8 flex flex-col justify-center items-center text-center bg-gradient-to-br from-blue-900/95 to-black/95">
-                <h2 className="text-4xl font-bold mb-8 text-blue-400">
+                {slides[currentSlide].icon && (
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                    className="mb-6"
+                  >
+                    <IconComponent icon={slides[currentSlide].icon} />
+                  </motion.div>
+                )}
+
+                <motion.h2
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="text-4xl font-bold mb-8 text-blue-400"
+                >
                   {slides[currentSlide].title}
-                </h2>
-                <p className="text-xl mb-8 text-blue-200">
+                </motion.h2>
+
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                  className="text-xl mb-8 text-blue-200"
+                >
                   {slides[currentSlide].content}
-                </p>
+                </motion.p>
+
+                {slides[currentSlide].chart && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.4 }}
+                    className="w-full max-w-3xl mb-8"
+                  >
+                    <FinancialTable />
+                  </motion.div>
+                )}
+
+                {slides[currentSlide].fundingTable && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.4 }}
+                    className="w-full max-w-3xl mb-8"
+                  >
+                    <FundingTable />
+                  </motion.div>
+                )}
+
                 {slides[currentSlide].bullets && slides[currentSlide].bullets.length > 0 && (
                   <ul className="text-left space-y-4 w-full max-w-3xl">
                     {slides[currentSlide].bullets.map((bullet, index) => (
@@ -329,7 +362,7 @@ export default function DeckPage() {
                         key={index}
                         initial={{ opacity: 0, x: 50 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
+                        transition={{ delay: index * 0.1 + 0.4 }}
                         className="flex items-center gap-3 text-lg"
                       >
                         <div className="h-2 w-2 bg-blue-400 rounded-full flex-shrink-0" />
