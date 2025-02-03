@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight, Download } from "lucide-react";
 
 const slides = [
   {
-    title: "About Sulla",
+    title: "Sulla",
     content: "Next-Generation Crypto Education Platform",
     type: "title",
     bullets: []
@@ -49,7 +49,7 @@ const slides = [
     content: "Growing Demand",
     bullets: [
       "420M+ global crypto users",
-      "$1.5B crypto education market",
+      "$ 1.5B crypto education market",
       "80% of banks exploring crypto",
       "Rising institutional adoption",
       "Increasing regulatory clarity"
