@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -6,242 +6,196 @@ import { ChevronLeft, ChevronRight, Download } from "lucide-react";
 import html2pdf from 'html2pdf.js';
 import { useToast } from "@/hooks/use-toast";
 
+// Logo Component
+const Logo = ({ className = '' }) => (
+  <svg
+    viewBox="0 0 200 50"
+    className={`h-10 w-auto ${className}`}
+    fill="currentColor"
+  >
+    <text
+      x="50%"
+      y="35"
+      fontFamily="system-ui, -apple-system, sans-serif"
+      fontSize="32"
+      fontWeight="bold"
+      textAnchor="middle"
+    >
+      Sulla
+    </text>
+  </svg>
+);
+
 const slides = [
   {
+    type: 'title',
     title: "Sulla",
     content: "Next-Generation Crypto Education Platform",
-    type: "title",
-    bullets: []
+    bullets: ["Investor Pitch Deck", "2025"]
   },
   {
     title: "The Problem",
-    content: "Current State of Crypto Education",
+    content: "Current crypto education is fragmented, lacks engagement, and fails to provide practical skills.",
     bullets: [
-      "Fragmented and unreliable educational resources",
-      "Complex technical barriers for newcomers",
-      "Lack of structured learning paths",
-      "Limited practical experience opportunities",
-      "High risk of costly mistakes"
+      "Lack of Engagement - Existing resources are often boring and passive",
+      "Limited Practical Application - Theory without hands-on experience",
+      "Fragmented Learning Paths - No structured progression",
+      "Inconsistent Quality - Varying content reliability"
     ]
   },
   {
     title: "Our Solution",
-    content: "Interactive Learning Platform",
+    content: "Sulla provides an engaging and practical crypto education platform with a focus on hands-on learning and community engagement.",
     bullets: [
-      "Comprehensive, structured curriculum",
-      "Interactive learning modules",
-      "Hands-on practice environments",
-      "AI-driven personalization",
-      "Real-time progress tracking"
+      "Interactive Learning Modules - Gamified theory and practice",
+      "Community-Driven Platform - Collaborative learning environment",
+      "Structured Learning Paths - Clear progression system",
+      "Certified Learning - Verifiable achievements"
     ]
   },
   {
     title: "Key Features",
-    content: "What Makes Sulla Different",
+    content: "What sets us apart",
     bullets: [
-      "Gamified learning experience",
-      "Virtual trading simulator",
-      "Smart contract playground",
-      "NFT-based achievements",
-      "Community support system"
+      "Real-Time Market Simulators - Risk-free trading practice",
+      "Security Focused Approach - Best practices emphasis",
+      "Personalized Learning Experience - Adaptive pathways",
+      "Expert Instructors - Industry leaders teaching"
+    ]
+  },
+  {
+    title: "Our Mission",
+    content: "To empower individuals with the knowledge and skills to thrive in the decentralized future.",
+    bullets: [
+      "Accessible Education",
+      "High-Quality Content",
+      "Practical Skills Development",
+      "Community Building",
+      "Innovation Leadership"
     ]
   },
   {
     title: "Market Opportunity",
-    content: "Growing Demand",
+    content: "The global crypto market is rapidly expanding, with growing demand for education.",
     bullets: [
+      "Multi-billion dollar education market",
       "420M+ global crypto users",
-      "$ 1.5B crypto education market",
-      "80% of banks exploring crypto",
       "Rising institutional adoption",
-      "Increasing regulatory clarity"
+      "Increasing regulatory clarity",
+      "Growing skill gap"
     ]
   },
   {
-    title: "Target Audience",
-    content: "Who We Serve",
+    title: "Our Product",
+    content: "A comprehensive learning platform",
     bullets: [
-      "Crypto newcomers",
-      "Traditional investors",
-      "Developers",
-      "Financial institutions",
-      "Educational organizations"
+      "Interactive Learning Platform - Gamified courses",
+      "Community and Collaboration - Social learning",
+      "Personalized Learning Paths - Custom progression",
+      "Certifications - Verifiable achievements"
     ]
   },
   {
-    title: "Technology Stack",
-    content: "Built for Scale",
+    title: "Platform Features",
+    content: "Built for engagement and results",
     bullets: [
-      "React & TypeScript frontend",
-      "Node.js backend",
-      "PostgreSQL database",
-      "Blockchain integrations",
-      "AI/ML capabilities"
+      "Real-Time Trading Simulators",
+      "Security Best Practices",
+      "Expert-Led Content",
+      "Data-Driven Approach"
     ]
   },
   {
     title: "Learning Modules",
-    content: "Comprehensive Curriculum",
+    content: "Comprehensive curriculum coverage",
     bullets: [
-      "Cryptocurrency Fundamentals",
-      "Blockchain Technology",
-      "DeFi & Smart Contracts",
-      "Trading & Investment",
-      "Security & Best Practices"
+      "Introduction to Blockchain",
+      "Crypto Economics",
+      "Trading Strategies",
+      "Risk Management",
+      "Security Best Practices",
+      "Advanced Concepts"
     ]
   },
   {
-    title: "Interactive Tools",
-    content: "Practical Learning Environment",
+    title: "Roadmap",
+    content: "Our path to success",
     bullets: [
-      "Trading simulator",
-      "Wallet practice",
-      "Smart contract editor",
-      "Market analysis tools",
-      "Security workshops"
+      "Q3 2024 - Core development and beta testing",
+      "Q4 2024 - Strategic partnerships",
+      "Q1 2025 - Full platform launch",
+      "Q2 2025 - Advanced courses and enterprise clients"
     ]
   },
   {
-    title: "Progress Tracking",
-    content: "Measure Your Growth",
+    title: "Progress to Date",
+    content: "What we've achieved",
     bullets: [
-      "Achievement system",
-      "Skill assessments",
-      "Learning analytics",
-      "Performance metrics",
-      "Completion certificates"
+      "Core platform 90% developed",
+      "Beta testing underway",
+      "Key team members hired",
+      "Initial community growing",
+      "Strategic partnerships in discussion"
     ]
   },
   {
-    title: "Community Features",
-    content: "Learn Together",
+    title: "Go-to-Market Strategy",
+    content: "Our approach to growth",
     bullets: [
-      "Discussion forums",
-      "Study groups",
-      "Mentor matching",
-      "Peer reviews",
-      "Knowledge sharing"
+      "Content Marketing - High-quality educational content",
+      "Social Media Marketing - Platform engagement",
+      "Affiliate Partnerships - Influencer collaboration",
+      "Paid Advertising - Targeted campaigns"
     ]
   },
   {
-    title: "B2B Solutions",
-    content: "Enterprise & Institutional",
+    title: "Token Utility",
+    content: "Platform Token Integration",
     bullets: [
-      "Custom learning paths",
-      "White-label platform",
-      "API integration",
-      "Analytics dashboard",
-      "Compliance training"
+      "Platform Access - Premium features",
+      "Community Governance - Decision making",
+      "Incentivization - Rewards system",
+      "Staking - Additional benefits"
     ]
   },
   {
-    title: "Security Focus",
-    content: "Safe Learning Environment",
+    title: "Financial Highlights",
+    content: "Growth and Revenue",
     bullets: [
-      "Best practice training",
-      "Secure testing environment",
-      "Risk management",
-      "Scam prevention",
-      "Privacy protection"
-    ]
-  },
-  {
-    title: "User Benefits",
-    content: "Why Choose Sulla",
-    bullets: [
-      "Structured learning path",
-      "Practical experience",
-      "Risk-free environment",
-      "Industry recognition",
-      "Career advancement"
-    ]
-  },
-  {
-    title: "Revenue Model",
-    content: "Sustainable Growth",
-    bullets: [
-      "Freemium model",
-      "Premium subscriptions",
-      "Enterprise licensing",
-      "B2B partnerships",
-      "Custom solutions"
-    ]
-  },
-  {
-    title: "Growth Strategy",
-    content: "Expansion Plans",
-    bullets: [
-      "Market penetration",
-      "Product development",
-      "Geographic expansion",
-      "Partnership network",
-      "Community growth"
-    ]
-  },
-  {
-    title: "Competition Analysis",
-    content: "Market Position",
-    bullets: [
-      "Comprehensive solution",
-      "Interactive approach",
-      "Enterprise focus",
-      "Technology advantage",
-      "Community strength"
-    ]
-  },
-  {
-    title: "Token Economics",
-    content: "Platform Token Utility",
-    bullets: [
-      "Learning incentives",
-      "Governance rights",
-      "Premium access",
-      "Community rewards",
-      "Ecosystem integration"
-    ]
-  },
-  {
-    title: "Financial Projections",
-    content: "5-Year Forecast",
-    bullets: [
-      "Year 1: Market entry",
-      "Year 2: Revenue growth",
-      "Year 3: Break-even",
-      "Year 4: Expansion",
-      "Year 5: Market leader"
+      "Projected $5M ARR in first year",
+      "70%+ Gross Profit Margin",
+      "Low Customer Acquisition Cost",
+      "100%+ YoY Growth Projection"
     ]
   },
   {
     title: "Funding Requirements",
-    content: "Investment Opportunity",
+    content: "$1.5M Seed Round",
     bullets: [
-      "Development: $250K",
-      "Marketing: $150K",
-      "Operations: $150K",
-      "Reserve: $100K",
-      "Total: $650K"
+      "Platform Development - 40%",
+      "Marketing and Sales - 30%",
+      "Team Expansion - 20%",
+      "Operational Costs - 10%"
     ]
   },
   {
-    title: "Team",
+    title: "Our Team",
     content: "Expert Leadership",
     bullets: [
-      "Experienced founders",
-      "Technical expertise",
-      "Education background",
-      "Industry network",
-      "Advisory board"
+      "Experienced Founders",
+      "Expert Developers",
+      "Top Educators",
+      "Seasoned Marketers"
     ]
   },
   {
+    type: 'call-to-action',
     title: "Join Us",
-    content: "Be Part of the Future",
-    type: "call-to-action",
+    content: "Be Part of the Future of Crypto Education",
     bullets: [
-      "Investment opportunity",
-      "Partnership programs",
-      "Contact: team@sulla.com",
-      "Website: sulla.edu",
+      "Investment Opportunity",
+      "Strategic Partnerships",
+      "Contact: team@sulla.edu",
       "Start learning today"
     ]
   }
@@ -348,7 +302,7 @@ export default function DeckPage() {
     >
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-bold">Sulla Presentation</h1>
+          <Logo className="text-white h-8 w-auto" />
           <Button
             variant="outline"
             onClick={downloadPDF}
@@ -371,12 +325,23 @@ export default function DeckPage() {
               className="absolute inset-0 p-12 deck-slide"
             >
               <Card className="h-full bg-opacity-90 backdrop-blur-sm p-8 flex flex-col justify-center items-center text-center bg-gradient-to-br from-blue-900/95 to-black/95">
-                <h2 className="text-4xl font-bold mb-8 text-blue-400">
-                  {slides[currentSlide].title}
-                </h2>
-                <p className="text-xl mb-8 text-blue-200">
-                  {slides[currentSlide].content}
-                </p>
+                {slides[currentSlide].type === 'title' ? (
+                  <>
+                    <Logo className="text-white h-16 w-auto mb-8" />
+                    <h2 className="text-4xl font-bold mb-8 text-blue-400">
+                      {slides[currentSlide].content}
+                    </h2>
+                  </>
+                ) : (
+                  <>
+                    <h2 className="text-4xl font-bold mb-8 text-blue-400">
+                      {slides[currentSlide].title}
+                    </h2>
+                    <p className="text-xl mb-8 text-blue-200">
+                      {slides[currentSlide].content}
+                    </p>
+                  </>
+                )}
                 {slides[currentSlide].bullets && slides[currentSlide].bullets.length > 0 && (
                   <ul className="text-left space-y-4 w-full max-w-3xl">
                     {slides[currentSlide].bullets.map((bullet, index) => (

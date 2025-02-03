@@ -1,0 +1,853 @@
+import React, { useState, useRef } from 'react';
+import html2pdf from 'html2pdf.js';
+import { 
+  ChevronLeft, 
+  ChevronRight, 
+  Brain, 
+  Trophy, 
+  Dumbbell, 
+  Target, 
+  Rocket, 
+  Globe,
+  BookOpen,
+  GraduationCap,
+  Zap,
+  Shield,
+  Users,
+  Building,
+  BarChart,
+  Lightbulb,
+  Wallet,
+  Network,
+  Code
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+
+// Logo Component
+const Logo = ({ className = '' }) => (
+  <svg
+    viewBox="0 0 200 50"
+    className={`h-10 w-auto ${className}`}
+    fill="currentColor"
+  >
+    <text
+      x="50%"
+      y="35"
+      fontFamily="system-ui, -apple-system, sans-serif"
+      fontSize="32"
+      fontWeight="bold"
+      textAnchor="middle"
+    >
+      Sulla
+    </text>
+  </svg>
+);
+
+// HeaderLogo Component
+const HeaderLogo = ({ className = '' }) => (
+  <svg
+    viewBox="0 0 200 50"
+    className={`h-10 w-auto ${className}`}
+    fill="currentColor"
+  >
+    <text
+      x="0"
+      y="35"
+      fontFamily="system-ui, -apple-system, sans-serif"
+      fontSize="32"
+      fontWeight="bold"
+      textAnchor="start"
+    >
+      Sulla
+    </text>
+  </svg>
+);
+
+// Card Component
+const Card: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = '' }) => (
+  <div className={`rounded-lg shadow p-4 ${className}`}>
+    {children}
+  </div>
+);
+
+// Slide Component
+const Slide: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = '' }) => (
+  <motion.div
+    initial={{ opacity: 0, scale: 0.95 }}
+    animate={{ opacity: 1, scale: 1 }}
+    exit={{ opacity: 0, scale: 0.95 }}
+    transition={{ duration: 0.3 }}
+    className={`bg-white rounded-lg shadow-lg p-8 mx-auto w-full mt-8 ${className}`}
+  >
+    {children}
+  </motion.div>
+);
+
+const PitchDeck = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isExporting, setIsExporting] = useState(false);
+  const deckRef = useRef(null);
+
+  const handleExport = async () => {
+    setIsExporting(true);
+    const element = deckRef.current;
+    const opt = {
+      margin: 0.5,
+      filename: 'Sulla-Pitch-Deck.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { 
+        scale: 2,
+        useCORS: true,
+        logging: true,
+        letterRendering: true,
+        allowTaint: true
+      },
+      jsPDF: { 
+        unit: 'in', 
+        format: 'letter', 
+        orientation: 'landscape',
+        compress: true
+      },
+      pagebreak: { mode: 'avoid-all' }
+    };
+
+    try {
+      await html2pdf().set(opt).from(element).save();
+    } catch (error) {
+      console.error('PDF export failed:', error);
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  const titleSlide = (
+    <Slide key="title" className="text-center bg-gradient-to-br from-blue-600 to-blue-800 text-white">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Logo className="text-white mx-auto mb-8 h-16 w-auto" />
+        <h2 className="text-3xl mb-8">Next-Generation Crypto Education Platform</h2>
+        <p className="text-xl mb-4">Investor Pitch Deck</p>
+        <p className="text-lg">2025</p>
+        <button
+          onClick={handleExport}
+          className="mt-8 px-6 py-3 bg-white text-blue-600 rounded-lg hover:bg-gray-100 transition-colors"
+        >
+          Download PDF
+        </button>
+      </motion.div>
+    </Slide>
+  );
+    const problemSlide = (
+    <Slide key="problem">
+      <h2 className="text-2xl font-bold mb-4">The Problem</h2>
+      <p className="mb-4">
+        Current crypto education is fragmented, lacks engagement, and fails to
+        provide practical skills.
+      </p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card className="bg-red-100">
+          <div className="flex items-center mb-2">
+            <Brain className="w-6 h-6 mr-2 text-red-500" />
+            <h3 className="font-bold text-lg">Lack of Engagement</h3>
+          </div>
+          <p>Existing resources are often boring and passive, leading to low retention rates.</p>
+        </Card>
+        <Card className="bg-red-100">
+          <div className="flex items-center mb-2">
+            <Trophy className="w-6 h-6 mr-2 text-red-500" />
+            <h3 className="font-bold text-lg">Limited Practical Application</h3>
+          </div>
+          <p>Theoretical knowledge without hands-on experience fails to prepare users for real-world scenarios.</p>
+        </Card>
+        <Card className="bg-red-100">
+          <div className="flex items-center mb-2">
+              <Dumbbell className="w-6 h-6 mr-2 text-red-500" />
+              <h3 className="font-bold text-lg">Fragmented Learning Paths</h3>
+            </div>
+            <p>Users struggle to find structured pathways from beginner to advanced levels.</p>
+          </Card>
+          <Card className="bg-red-100">
+          <div className="flex items-center mb-2">
+            <Target className="w-6 h-6 mr-2 text-red-500" />
+            <h3 className="font-bold text-lg">Inconsistent Quality</h3>
+          </div>
+            <p>Varying quality across content makes it difficult to discern reliable sources.</p>
+        </Card>
+      </div>
+    </Slide>
+  );
+
+  const solutionSlide1 = (
+    <Slide key="solution1">
+        <h2 className="text-2xl font-bold mb-4">Our Solution</h2>
+        <p className="mb-4">
+            Sulla provides an engaging and practical crypto education platform with a focus on
+            hands-on learning and community engagement.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card className="bg-green-100">
+                <div className="flex items-center mb-2">
+                    <Rocket className="w-6 h-6 mr-2 text-green-500" />
+                    <h3 className="font-bold text-lg">Interactive Learning Modules</h3>
+                </div>
+                <p>Our platform will feature gamified modules that combine theory with practical exercises and simulations.</p>
+            </Card>
+            <Card className="bg-green-100">
+                <div className="flex items-center mb-2">
+                    <Globe className="w-6 h-6 mr-2 text-green-500" />
+                    <h3 className="font-bold text-lg">Community-Driven Platform</h3>
+                </div>
+                <p>Users can collaborate, share insights, and learn from each other, fostering a supportive community.</p>
+            </Card>
+            <Card className="bg-green-100">
+                <div className="flex items-center mb-2">
+                    <BookOpen className="w-6 h-6 mr-2 text-green-500" />
+                    <h3 className="font-bold text-lg">Structured Learning Paths</h3>
+                </div>
+                <p>We offer structured learning paths designed to take users from beginner to expert.</p>
+            </Card>
+          <Card className="bg-green-100">
+            <div className="flex items-center mb-2">
+              <GraduationCap className="w-6 h-6 mr-2 text-green-500" />
+              <h3 className="font-bold text-lg">Certified Learning</h3>
+            </div>
+            <p>Users will be able to obtain certifications after completing courses.</p>
+          </Card>
+        </div>
+    </Slide>
+  );
+
+    const solutionSlide2 = (
+        <Slide key="solution2">
+            <h2 className="text-2xl font-bold mb-4">Key Features</h2>
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Card className="bg-green-100">
+                <div className="flex items-center mb-2">
+                  <Zap className="w-6 h-6 mr-2 text-green-500" />
+                  <h3 className="font-bold text-lg">Real-Time Market Simulators</h3>
+                </div>
+                <p>Users can practice trading strategies in a risk-free simulated environment.</p>
+              </Card>
+             <Card className="bg-green-100">
+              <div className="flex items-center mb-2">
+                <Shield className="w-6 h-6 mr-2 text-green-500" />
+                <h3 className="font-bold text-lg">Security Focused Approach</h3>
+              </div>
+              <p>We emphasize security best practices through out our modules.</p>
+            </Card>
+            <Card className="bg-green-100">
+              <div className="flex items-center mb-2">
+                  <Users className="w-6 h-6 mr-2 text-green-500" />
+                  <h3 className="font-bold text-lg">Personalized Learning Experience</h3>
+              </div>
+                <p>Tailored learning paths that adapt to individual learning styles and goals.</p>
+            </Card>
+            <Card className="bg-green-100">
+              <div className="flex items-center mb-2">
+                <Building className="w-6 h-6 mr-2 text-green-500" />
+                <h3 className="font-bold text-lg">Expert Instructors</h3>
+              </div>
+              <p>Courses are designed and led by top-tier experts in the field.</p>
+            </Card>
+          </div>
+        </Slide>
+    );
+
+  const missionSlide = (
+    <Slide key="mission">
+      <h2 className="text-2xl font-bold mb-4">Our Mission</h2>
+      <p className="mb-4">
+        To empower individuals with the knowledge and skills to thrive in the
+        decentralized future.
+      </p>
+      <p className="mb-4">
+        We are committed to providing accessible, high-quality education that
+        fosters a deeper understanding of the crypto space.
+      </p>
+       <Card className="bg-blue-100 text-center">
+        <div className="flex items-center justify-center mb-2">
+          <Lightbulb className="w-6 h-6 mr-2 text-blue-500" />
+          <h3 className="font-bold text-lg">Educating the Next Generation of Crypto Innovators</h3>
+        </div>
+      </Card>
+    </Slide>
+  );
+
+  const marketSlide1 = (
+    <Slide key="market1">
+      <h2 className="text-2xl font-bold mb-4">Market Opportunity</h2>
+      <p className="mb-4">
+        The global crypto market is rapidly expanding, with a growing demand for
+        education and training.
+      </p>
+        <Card className="bg-gray-100">
+            <div className="flex items-center mb-2">
+                 <BarChart className="w-6 h-6 mr-2 text-blue-500" />
+                <h3 className="font-bold text-lg">Large and Growing Market</h3>
+            </div>
+            <p>The crypto education market is a multi-billion dollar industry with significant growth potential.</p>
+        </Card>
+      <p className="mt-4">
+      Our target market includes:
+      </p>
+       <ul className="list-disc list-inside">
+            <li>Newcomers to crypto</li>
+            <li>Existing crypto users seeking deeper knowledge</li>
+            <li>Professionals looking to transition into the crypto industry</li>
+        </ul>
+    </Slide>
+  );
+
+    const marketSlide2 = (
+        <Slide key="market2">
+        <h2 className="text-2xl font-bold mb-4">Market Trends</h2>
+         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card className="bg-gray-100">
+                <div className="flex items-center mb-2">
+                    <Wallet className="w-6 h-6 mr-2 text-blue-500" />
+                    <h3 className="font-bold text-lg">Increased Investment in Crypto</h3>
+                </div>
+                <p>Growing institutional and retail investments are fueling the need for reliable crypto education.</p>
+            </Card>
+            <Card className="bg-gray-100">
+              <div className="flex items-center mb-2">
+                <Network className="w-6 h-6 mr-2 text-blue-500" />
+                <h3 className="font-bold text-lg">Mainstream Adoption</h3>
+              </div>
+                <p>As crypto becomes more mainstream, the demand for education will only increase.</p>
+            </Card>
+              <Card className="bg-gray-100">
+              <div className="flex items-center mb-2">
+                  <Code className="w-6 h-6 mr-2 text-blue-500" />
+                  <h3 className="font-bold text-lg">Skill Gap</h3>
+              </div>
+                <p>A significant gap exists between the skills required for the new economy and the skills people currently have.</p>
+            </Card>
+              <Card className="bg-gray-100">
+                <div className="flex items-center mb-2">
+                  <Users className="w-6 h-6 mr-2 text-blue-500" />
+                    <h3 className="font-bold text-lg">Growing User Base</h3>
+                </div>
+                <p>The number of crypto users is expanding rapidly and each of these individuals need to be educated in a structured way.</p>
+            </Card>
+         </div>
+    </Slide>
+  );
+
+    const productSlide1 = (
+      <Slide key="product1">
+        <h2 className="text-2xl font-bold mb-4">Our Product</h2>
+          <p className="mb-4">
+              Sulla is a crypto education platform that provides interactive learning modules, practical exercises, and a supportive community for a holistic learning experience.
+          </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card className="bg-purple-100">
+                <div className="flex items-center mb-2">
+                    <Rocket className="w-6 h-6 mr-2 text-purple-500" />
+                    <h3 className="font-bold text-lg">Interactive Learning Platform</h3>
+                </div>
+                <p>Gamified courses that make learning about crypto fun and engaging.</p>
+            </Card>
+            <Card className="bg-purple-100">
+                <div className="flex items-center mb-2">
+                    <Globe className="w-6 h-6 mr-2 text-purple-500" />
+                    <h3 className="font-bold text-lg">Community and Collaboration</h3>
+                </div>
+                <p>Built-in community platform that allows for social learning and collaboration.</p>
+            </Card>
+             <Card className="bg-purple-100">
+               <div className="flex items-center mb-2">
+                    <BookOpen className="w-6 h-6 mr-2 text-purple-500" />
+                    <h3 className="font-bold text-lg">Personalized Learning Paths</h3>
+                </div>
+                <p>Structured learning pathways that tailor to each users goals.</p>
+            </Card>
+            <Card className="bg-purple-100">
+                <div className="flex items-center mb-2">
+                    <GraduationCap className="w-6 h-6 mr-2 text-purple-500" />
+                    <h3 className="font-bold text-lg">Certifications</h3>
+                </div>
+                <p>Users will be able to obtain certificates upon completing courses.</p>
+            </Card>
+        </div>
+      </Slide>
+    );
+      const productSlide2 = (
+        <Slide key="product2">
+          <h2 className="text-2xl font-bold mb-4">Key Platform Features</h2>
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card className="bg-purple-100">
+               <div className="flex items-center mb-2">
+                 <Zap className="w-6 h-6 mr-2 text-purple-500" />
+                 <h3 className="font-bold text-lg">Real-Time Trading Simulators</h3>
+                </div>
+              <p>Real-time market simulators that provide a risk-free environment to test strategies.</p>
+            </Card>
+           <Card className="bg-purple-100">
+                <div className="flex items-center mb-2">
+                    <Shield className="w-6 h-6 mr-2 text-purple-500" />
+                    <h3 className="font-bold text-lg">Security Best Practices</h3>
+                </div>
+              <p>Modules built with the best security practices in mind.</p>
+          </Card>
+          <Card className="bg-purple-100">
+              <div className="flex items-center mb-2">
+                  <Users className="w-6 h-6 mr-2 text-purple-500" />
+                <h3 className="font-bold text-lg">Expert Instructors</h3>
+              </div>
+                <p>Courses are designed and led by industry professionals with decades of experience.</p>
+            </Card>
+           <Card className="bg-purple-100">
+            <div className="flex items-center mb-2">
+               <Building className="w-6 h-6 mr-2 text-purple-500" />
+                  <h3 className="font-bold text-lg">Data-Driven Approach</h3>
+              </div>
+                <p>We use data driven approach to track progress and enhance the learning experience.</p>
+            </Card>
+          </div>
+        </Slide>
+      );
+
+  const modulesSlide = (
+    <Slide key="modules">
+        <h2 className="text-2xl font-bold mb-4">Our Modules</h2>
+        <p className="mb-4">Our platform will cover a comprehensive range of topics, from beginner-level concepts to advanced trading strategies.</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <Card className="bg-orange-100">
+              <h3 className="font-bold text-lg mb-2">Introduction to Blockchain</h3>
+              <p>Understand the fundamentals of blockchain technology, including its history, and key concepts.</p>
+            </Card>
+             <Card className="bg-orange-100">
+                <h3 className="font-bold text-lg mb-2">Crypto Economics</h3>
+                <p>Learn about the economic forces that drive the crypto market.</p>
+            </Card>
+            <Card className="bg-orange-100">
+                <h3 className="font-bold text-lg mb-2">Trading Strategies</h3>
+                <p>Explore different trading techniques to master the market.</p>
+            </Card>
+           <Card className="bg-orange-100">
+                <h3 className="font-bold text-lg mb-2">Risk Management</h3>
+                <p>Learn to identify, analyze, and mitigate risks within the crypto market.</p>
+            </Card>
+            <Card className="bg-orange-100">
+                <h3 className="font-bold text-lg mb-2">Security Best Practices</h3>
+                <p>Understand how to protect your assets from the ever growing risks.</p>
+            </Card>
+            <Card className="bg-orange-100">
+                <h3 className="font-bold text-lg mb-2">Advanced Concepts</h3>
+                <p>Explore advanced concepts such as DeFi, DAOs, and NFTs.</p>
+            </Card>
+        </div>
+    </Slide>
+);
+
+  const roadmapSlide = (
+    <Slide key="roadmap">
+      <h2 className="text-2xl font-bold mb-4">Roadmap</h2>
+       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+           <Card className="bg-yellow-100">
+                <h3 className="font-bold text-lg mb-2">Q3 2024</h3>
+                <ul className="list-disc list-inside">
+                    <li>Complete core development</li>
+                     <li>Begin beta testing</li>
+                 </ul>
+            </Card>
+            <Card className="bg-yellow-100">
+               <h3 className="font-bold text-lg mb-2">Q4 2024</h3>
+                <ul className="list-disc list-inside">
+                    <li>Complete core development</li>
+                    <li>Finalize strategic partnerships</li>
+                </ul>
+            </Card>
+           <Card className="bg-yellow-100">
+                <h3 className="font-bold text-lg mb-2">Q1 2025</h3>
+                <ul className="list-disc list-inside">
+                    <li>Full platform launch</li>
+                     <li>Start user acquisition campaign</li>
+                </ul>
+            </Card>
+           <Card className="bg-yellow-100">
+                <h3 className="font-bold text-lg mb-2">Q2 2025</h3>
+                <ul className="list-disc list-inside">
+                    <li>Introduce advanced courses</li>
+                    <li>Onboard enterprise clients</li>
+               </ul>
+            </Card>
+       </div>
+    </Slide>
+  );
+
+   const progressSlide = (
+    <Slide key="progress">
+      <h2 className="text-2xl font-bold mb-4">Progress to Date</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card className="bg-teal-100">
+                <h3 className="font-bold text-lg mb-2">Development</h3>
+                <ul className="list-disc list-inside">
+                    <li>Core platform is 90% developed</li>
+                     <li>Beta testing is underway</li>
+                 </ul>
+            </Card>
+             <Card className="bg-teal-100">
+                <h3 className="font-bold text-lg mb-2">Team Building</h3>
+                <ul className="list-disc list-inside">
+                    <li>Key hires have been made</li>
+                    <li>Team consists of experienced developers, educators, and marketers</li>
+                </ul>
+            </Card>
+            <Card className="bg-teal-100">
+                <h3 className="font-bold text-lg mb-2">Community Building</h3>
+                 <ul className="list-disc list-inside">
+                    <li>Initial community is growing</li>
+                    <li>Early adopters are providing feedback</li>
+                 </ul>
+            </Card>
+          <Card className="bg-teal-100">
+                <h3 className="font-bold text-lg mb-2">Strategic Partnerships</h3>
+                <ul className="list-disc list-inside">
+                    <li>Discussions are underway with potential partners</li>
+                    <li>Partnerships will enhance user acquisition and product development</li>
+                </ul>
+            </Card>
+      </div>
+    </Slide>
+  );
+
+    const gtmSlide1 = (
+        <Slide key="gtm1">
+            <h2 className="text-2xl font-bold mb-4">Go-to-Market Strategy</h2>
+            <p className="mb-4">Our go-to-market strategy will focus on creating a targeted and effective approach to user acquisition.</p>
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Card className="bg-indigo-100">
+                    <h3 className="font-bold text-lg mb-2">Content Marketing</h3>
+                    <p>Create high-quality content to educate and engage our target audience.</p>
+                 </Card>
+                 <Card className="bg-indigo-100">
+                    <h3 className="font-bold text-lg mb-2">Social Media Marketing</h3>
+                    <p>Engage with our audience on all major social platforms.</p>
+                 </Card>
+                <Card className="bg-indigo-100">
+                    <h3 className="font-bold text-lg mb-2">Affiliate Partnerships</h3>
+                    <p>Collaborate with key influencers to drive signups.</p>
+                 </Card>
+                <Card className="bg-indigo-100">
+                  <h3 className="font-bold text-lg mb-2">Paid Advertising</h3>
+                  <p>Run targeted ads on social media and search engines.</p>
+                </Card>
+            </div>
+        </Slide>
+    );
+
+  const gtmSlide2 = (
+      <Slide key="gtm2">
+        <h2 className="text-2xl font-bold mb-4">GTM Expansion</h2>
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Card className="bg-indigo-100">
+                    <h3 className="font-bold text-lg mb-2">Community Building</h3>
+                    <p>Actively engage with early adopters and build a strong following.</p>
+                </Card>
+                 <Card className="bg-indigo-100">
+                    <h3 className="font-bold text-lg mb-2">Strategic Partnerships</h3>
+                     <p>Partner with top companies in the crypto space to expand userbase.</p>
+                 </Card>
+                <Card className="bg-indigo-100">
+                    <h3 className="font-bold text-lg mb-2">Enterprise Sales</h3>
+                    <p>Onboard enterprise clients seeking to upskill their employees.</p>
+                 </Card>
+                 <Card className="bg-indigo-100">
+                     <h3 className="font-bold text-lg mb-2">Global Expansion</h3>
+                     <p>Expand into new markets and languages to reach a wider audience.</p>
+                </Card>
+            </div>
+      </Slide>
+  );
+
+  const tokenSlide = (
+    <Slide key="token">
+      <h2 className="text-2xl font-bold mb-4">Token Utility</h2>
+      <p className="mb-4">
+       Sulla will be powered by a utility token that provides access to exclusive features, content, and governance rights.
+      </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card className="bg-pink-100">
+              <h3 className="font-bold text-lg mb-2">Platform Access</h3>
+               <p>Users can use the token to access premium content and features.</p>
+            </Card>
+            <Card className="bg-pink-100">
+                <h3 className="font-bold text-lg mb-2">Community Governance</h3>
+                <p>Token holders will have a say in the governance of the platform.</p>
+            </Card>
+            <Card className="bg-pink-100">
+                 <h3 className="font-bold text-lg mb-2">Incentivization</h3>
+                  <p>Users will be rewarded for contributing to the ecosystem.</p>
+             </Card>
+            <Card className="bg-pink-100">
+                 <h3 className="font-bold text-lg mb-2">Staking</h3>
+                <p>Users can stake their tokens to earn rewards.</p>
+            </Card>
+        </div>
+    </Slide>
+  );
+
+  const tractionSlide = (
+        <Slide key="traction">
+            <h2 className="text-2xl font-bold mb-4">Traction</h2>
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Card className="bg-gray-100">
+                    <h3 className="font-bold text-lg mb-2">Beta Users</h3>
+                    <p>Over 100 beta testers are actively using the platform and providing feedback.</p>
+                </Card>
+                <Card className="bg-gray-100">
+                   <h3 className="font-bold text-lg mb-2">Social Media Following</h3>
+                    <p>We have built a strong social media presence with over 5,000 followers.</p>
+                </Card>
+                <Card className="bg-gray-100">
+                  <h3 className="font-bold text-lg mb-2">Early Partnerships</h3>
+                   <p>We are in discussions with potential strategic partners.</p>
+                </Card>
+               <Card className="bg-gray-100">
+                <h3 className="font-bold text-lg mb-2">User Engagement</h3>
+                <p>Beta users are engaging with the platform and completing courses.</p>
+               </Card>
+            </div>
+        </Slide>
+    );
+
+
+  const financialSlide = (
+    <Slide key="financial">
+      <h2 className="text-2xl font-bold mb-4">Financial Highlights</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card className="bg-green-100">
+            <h3 className="font-bold text-lg mb-2">Projected Revenue</h3>
+            <p>Projected to reach $5M in ARR within the first 12 months.</p>
+        </Card>
+         <Card className="bg-green-100">
+          <h3 className="font-bold text-lg mb-2">Customer Acquisition Cost</h3>
+            <p>Projected to be less than $2 per user.</p>
+          </Card>
+        <Card className="bg-green-100">
+             <h3 className="font-bold text-lg mb-2">Gross Profit Margin</h3>
+              <p>Projected to be over 70%.</p>
+        </Card>
+         <Card className="bg-green-100">
+          <h3 className="font-bold text-lg mb-2">Growth Projections</h3>
+          <p>Expected to grow at over 100% year over year.</p>
+        </Card>
+      </div>
+    </Slide>
+  );
+
+  const financialModelSlide = (
+    <Slide key="financialModel">
+      <h2 className="text-2xl font-bold mb-4">Financial Model</h2>
+      <p className="mb-4">
+        Sulla operates on a recurring revenue model based on tiered subscriptions.
+      </p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card className="bg-blue-100">
+          <h3 className="font-bold text-lg mb-2">Subscription Tiers</h3>
+            <p>Basic, Premium, and Enterprise tiers to meet all users needs.</p>
+        </Card>
+         <Card className="bg-blue-100">
+            <h3 className="font-bold text-lg mb-2">Enterprise Solutions</h3>
+            <p>Enterprise solutions focused on custom training programs.</p>
+        </Card>
+        <Card className="bg-blue-100">
+           <h3 className="font-bold text-lg mb-2">Token Sales</h3>
+           <p>Token sales to be conducted in phases to raise capital.</p>
+        </Card>
+         <Card className="bg-blue-100">
+          <h3 className="font-bold text-lg mb-2">Partnership Revenue</h3>
+          <p>Revenue from strategic partnerships.</p>
+        </Card>
+      </div>
+    </Slide>
+  );
+
+  const fundingNarrativeSlide = (
+    <Slide key="fundingNarrative">
+      <h2 className="text-2xl font-bold mb-4">Funding Narrative</h2>
+      <p className="mb-4">
+        We are seeking $1.5M in seed funding to scale our operations, expand our
+        team, and accelerate our go-to-market strategy.
+      </p>
+       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card className="bg-purple-100">
+              <h3 className="font-bold text-lg mb-2">Accelerate Development</h3>
+                <p>Hire additional developers to speed up development and feature release.</p>
+            </Card>
+            <Card className="bg-purple-100">
+                <h3 className="font-bold text-lg mb-2">Expand Marketing</h3>
+<p>Expand marketing budget and launch aggressive ad campaigns.</p>
+            </Card>
+            <Card className="bg-purple-100">
+                <h3 className="font-bold text-lg mb-2">Scale Operations</h3>
+                <p>Invest in additional resources and personnel to expand our reach.</p>
+            </Card>
+            <Card className="bg-purple-100">
+                <h3 className="font-bold text-lg mb-2">Strategic Partnerships</h3>
+                <p>Further develop strategic partnerships to expand market share.</p>
+            </Card>
+        </div>
+    </Slide>
+  );
+
+  const fundingBreakdownSlide = (
+    <Slide key="fundingBreakdown">
+      <h2 className="text-2xl font-bold mb-4">Use of Funds</h2>
+       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Card className="bg-orange-100">
+                <h3 className="font-bold text-lg mb-2">Platform Development</h3>
+                <p>40% allocated to platform development.</p>
+            </Card>
+            <Card className="bg-orange-100">
+                <h3 className="font-bold text-lg mb-2">Marketing and Sales</h3>
+                <p>30% allocated to marketing and sales.</p>
+            </Card>
+            <Card className="bg-orange-100">
+                <h3 className="font-bold text-lg mb-2">Team Expansion</h3>
+                <p>20% allocated to team expansion.</p>
+            </Card>
+            <Card className="bg-orange-100">
+                 <h3 className="font-bold text-lg mb-2">Operational Costs</h3>
+                 <p>10% allocated to cover operational costs.</p>
+             </Card>
+        </div>
+    </Slide>
+  );
+
+
+    const teamSlide = (
+        <Slide key="team">
+            <h2 className="text-2xl font-bold mb-4">Our Team</h2>
+              <p className="mb-4">Our team consists of experienced entrepreneurs, developers, and educators with a proven track record.</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Card className="bg-teal-100">
+                    <h3 className="font-bold text-lg mb-2">Experienced Founders</h3>
+                    <p>Proven entrepreneurs with a history of building successful companies.</p>
+                </Card>
+                 <Card className="bg-teal-100">
+                    <h3 className="font-bold text-lg mb-2">Expert Developers</h3>
+                    <p>Top-tier developers with decades of combined experience.</p>
+                </Card>
+                 <Card className="bg-teal-100">
+                    <h3 className="font-bold text-lg mb-2">Top Educators</h3>
+                    <p>Educators with a proven history of effective teaching.</p>
+                </Card>
+                 <Card className="bg-teal-100">
+                    <h3 className="font-bold text-lg mb-2">Seasoned Marketers</h3>
+                     <p>Marketers with proven ability to drive growth.</p>
+                 </Card>
+            </div>
+        </Slide>
+    );
+
+
+  const ctaSlide = (
+    <Slide key="cta" className="text-center bg-gradient-to-br from-blue-600 to-blue-800 text-white">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Logo className="text-white mx-auto mb-8 h-16 w-auto" />
+        <h2 className="text-3xl mb-8">Join the Future of Crypto Education</h2>
+        <p className="text-xl mb-4">Partner with us today to revolutionize the way people learn about crypto.</p>
+         <button
+          onClick={handleExport}
+          className="mt-8 px-6 py-3 bg-white text-blue-600 rounded-lg hover:bg-gray-100 transition-colors"
+        >
+          Download PDF
+        </button>
+      </motion.div>
+    </Slide>
+  );
+
+  const slides = [
+    titleSlide,
+    problemSlide,
+    solutionSlide1,
+    solutionSlide2,
+    missionSlide,
+    marketSlide1,
+    marketSlide2,
+    productSlide1,
+    productSlide2,
+    modulesSlide,
+    roadmapSlide,
+    progressSlide,
+    gtmSlide1,
+    gtmSlide2,
+    tokenSlide,
+    tractionSlide,
+    financialSlide,
+    financialModelSlide,
+    fundingNarrativeSlide,
+    fundingBreakdownSlide,
+    teamSlide,
+    ctaSlide,
+  ].filter(Boolean);
+
+  return (
+    <div className="min-h-screen bg-gray-100 p-4">
+      <div className="pl-4 pt-2 mb-2">
+        <HeaderLogo className="text-blue-600 h-12 w-auto" />
+      </div>
+      <div className="relative">
+        <div id="deck-content" ref={deckRef}>
+          {isExporting ? (
+            <div className="space-y-4">
+              {slides.map((slide, index) => (
+                <div 
+                  key={index}
+                  style={{
+                    pageBreakInside: 'avoid',
+                    pageBreakBefore: index === 0 ? 'avoid' : 'always',
+                    pageBreakAfter: 'avoid',
+                    marginBottom: '0',
+                    minHeight: '100%',
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }}
+                >
+                  {slide}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div>
+              {slides[currentSlide]}
+              <div className="flex justify-between mt-4">
+                <button
+                  onClick={() => setCurrentSlide(Math.max(0, currentSlide - 1))}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center"
+                  disabled={currentSlide === 0}
+                >
+                  <ChevronLeft className="w-6 h-6 mr-2" />
+                  Previous
+                </button>
+                <span className="text-gray-600">
+                  Slide {currentSlide + 1} of {slides.length}
+                </span>
+                <button
+                  onClick={() => setCurrentSlide(Math.min(slides.length - 1, currentSlide + 1))}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center"
+                  disabled={currentSlide === slides.length - 1}
+                >
+                  Next
+                  <ChevronRight className="w-6 h-6 ml-2" />
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default PitchDeck;
