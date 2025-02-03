@@ -28,6 +28,11 @@ import {
   Blocks,
   Lock,
   CheckCircle,
+  Coins,
+  Network,
+  MessageCircle,
+  Building2,
+  Globe2,
   type LucideIcon
 } from 'lucide-react';
 
@@ -773,6 +778,146 @@ const growthExpansionSlide = <Slide key="growth-expansion">
   </motion.div>
 </Slide>;
 
+const tokenIntegrationSlide = <Slide key="token-integration">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <div className="flex items-center gap-4 mb-8">
+      <div className="p-3 bg-purple-500/20 rounded-lg">
+        <Coins className="w-8 h-8 text-purple-400" />
+      </div>
+      <h2 className="text-4xl font-bold text-blue-400">Future Token Integration</h2>
+    </div>
+    <Card className="bg-blue-900/30 p-6 mb-8">
+      <p className="text-lg text-blue-100 mb-4">
+        As Sulla continues to grow and establish itself as a trusted leader in crypto education, 
+        the possibility of a future token launch will be carefully evaluated. A token integration 
+        will only be pursued once the platform has amassed a large and engaged user base, ensuring 
+        that it provides genuine value rather than speculative trading.
+      </p>
+      <p className="text-lg text-blue-100">
+        As an education platform, our integrity and reputation are paramount. Any token launch 
+        must be meticulously designed and responsibly executed to enhance the user experience 
+        and strengthen the ecosystem in a meaningful way.
+      </p>
+    </Card>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {[
+        {
+          icon: Trophy,
+          title: "Tokenized Rewards",
+          description: "Users earn tokens for completing courses, contributing to the community, and achieving learning milestones"
+        },
+        {
+          icon: Lock,
+          title: "Staking for Premium Access",
+          description: "Users stake tokens to unlock advanced courses and exclusive content"
+        },
+        {
+          icon: Users,
+          title: "Decentralized Governance",
+          description: "Token holders vote on course additions, platform updates, and feature prioritization"
+        },
+        {
+          icon: Network,
+          title: "Marketplace & Peer Learning",
+          description: "Incentivizing expert contributions, tutoring, and user-generated content with token rewards"
+        }
+      ].map((feature, index) => (
+        <motion.div
+          key={index}
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: index * 0.1 }}
+          className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <feature.icon className="w-6 h-6 text-blue-400" />
+            <h3 className="text-xl font-semibold text-blue-300">{feature.title}</h3>
+          </div>
+          <p className="text-blue-100">{feature.description}</p>
+        </motion.div>
+      ))}
+    </div>
+
+    <Card className="bg-blue-900/30 p-6 mt-8">
+      <p className="text-lg text-blue-100">
+        The Sulla token will serve as the backbone of an ecosystem, ensuring long-term engagement, 
+        responsible adoption, and community-driven growth. We are committed to designing a token 
+        model that aligns with educational integrity, transparency, and user empowerment, while 
+        preventing speculative risks.
+      </p>
+    </Card>
+  </motion.div>
+</Slide>;
+
+const tractionSlide = <Slide key="traction">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <div className="flex items-center gap-4 mb-8">
+      <div className="p-3 bg-green-500/20 rounded-lg">
+        <BarChart className="w-8 h-8 text-green-400" />
+      </div>
+      <h2 className="text-4xl font-bold text-blue-400">Traction & Milestones</h2>
+    </div>
+    <Card className="bg-blue-900/30 p-6 mb-8">
+      <p className="text-lg text-blue-100">
+        Our primary goal in the first 12 months is to onboard as many users as possible, 
+        as more user data improves our AI capabilities.
+      </p>
+    </Card>
+
+    <div className="space-y-6">
+      {[
+        {
+          icon: Users,
+          phase: "0-12M: Community Growth",
+          metrics: "100K users, 10K Discord members"
+        },
+        {
+          icon: BarChart,
+          phase: "12-18M: Monetization",
+          metrics: "First $500K revenue from subscriptions & B2B deals"
+        },
+        {
+          icon: Building2,
+          phase: "18-24M: Institutional",
+          metrics: "500K+ users, major fintech & university partnerships"
+        },
+        {
+          icon: Globe2,
+          phase: "24M+: Global",
+          metrics: "1M users, $5M+ ARR"
+        }
+      ].map((milestone, index) => (
+        <motion.div
+          key={index}
+          initial={{ x: -50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ delay: index * 0.2 }}
+          className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+        >
+          <div className="flex items-center gap-4">
+            <div className="p-2 bg-blue-400/20 rounded-full">
+              <milestone.icon className="w-6 h-6 text-blue-400" />
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold text-blue-300">{milestone.phase}</h3>
+              <p className="text-blue-100">{milestone.metrics}</p>
+            </div>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  </motion.div>
+</Slide>;
+
 const slides = [
   titleSlide,
   problemSlide,
@@ -787,7 +932,9 @@ const slides = [
   roadmapSlide,
   whatIsBuiltSlide,
   goToMarketSlide,
-  growthExpansionSlide
+  growthExpansionSlide,
+  tokenIntegrationSlide,
+  tractionSlide
 ];
 
 const DeckPage: React.FC = () => {
