@@ -34,9 +34,10 @@ import {
   Building2,
   Globe2,
   Wallet,
+  Mail,
+  Twitter,
   type LucideIcon
 } from 'lucide-react';
-
 interface SlideProps {
   key: string;
   children: React.ReactNode;
@@ -726,7 +727,8 @@ const growthExpansionSlide = <Slide key="growth-expansion">
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2 }}
-        className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+        className```
+="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
       >
         <h3 className="text-2xl font-semibold text-blue-300 mb-4">Phase 3: Monetization & Scaling (12-18 Months)</h3>
         <ul className="space-y-3">
