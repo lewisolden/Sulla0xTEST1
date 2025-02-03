@@ -1185,6 +1185,102 @@ const financialModelSlide = <Slide key="financial-model">
   </motion.div>
 </Slide>;
 
+const fundingNarrativeSlide = <Slide key="funding-narrative">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <div className="flex items-center gap-4 mb-8">
+      <div className="p-3 bg-blue-500/20 rounded-lg">
+        <LineChart className="w-8 h-8 text-blue-400" />
+      </div>
+      <h2 className="text-4xl font-bold text-blue-400">Funding Requirements</h2>
+    </div>
+    <motion.div 
+      initial={{ y: 20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ delay: 0.2 }}
+    >
+      <Card className="bg-blue-900/30 p-6 mb-6">
+        <h3 className="text-2xl font-semibold text-blue-300 mb-4">Narrative</h3>
+        <p className="text-lg text-blue-100 mb-4">
+          To scale Sulla effectively, we require funding that supports key areas: content expansion, 
+          marketing, platform improvements, and operational growth. Our focus is on building a 
+          user-centric platform with AI-driven personalization, ensuring high engagement and 
+          long-term retention.
+        </p>
+        <p className="text-lg">
+          We have strategically allocated funds to maximize user acquisition in the first 12 months 
+          while setting up monetization in the second year. Security, legal compliance, and 
+          infrastructure enhancements are also prioritized to support future scalability.
+        </p>
+      </Card>
+    </motion.div>
+  </motion.div>
+</Slide>;
+
+const fundingBreakdownSlide =  <Slide key="funding-2">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <h2 className="text-3xl font-bold mb-6 text-blue-600">Funding Breakdown</h2>
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Card className="bg-gray-50 p-4">
+          <h3 className="font-semibold mb-2">Content Expansion</h3>
+          <p className="text-lg">$50K</p>
+          <p className="text-sm text-gray-600">Develop additional courses and certifications</p>
+        </Card>
+        <Card className="bg-gray-50 p-4">
+          <h3 className="font-semibold mb-2">Marketing & User Acquisition</h3>
+          <p className="text-lg">$50K</p>
+          <p className="text-sm text-gray-600">Build brand awareness and onboard early adopters</p>
+        </Card>
+        <Card className="bg-gray-50 p-4">
+          <h3 className="font-semibold mb-2">Business Development</h3>
+          <p className="text-lg">$50K</p>
+          <p className="text-sm text-gray-600">Secure partnerships and institutional deals</p>
+        </Card>
+        <Card className="bg-gray-50 p-4">
+          <h3 className="font-semibold mb-2">Platform Enhancements</h3>
+          <p className="text-lg">$100K</p>
+          <p className="text-sm text-gray-600">Improve AI learning algorithms and gamification</p>
+        </Card>
+        <Card className="bg-gray-50 p-4">
+          <h3 className="font-semibold mb-2">Legal & Compliance</h3>
+          <p className="text-lg">$50K</p>
+          <p className="text-sm text-gray-600">Ensure regulatory compliance for sustainability</p>
+        </Card>
+        <Card className="bg-gray-50 p-4">
+          <h3 className="font-semibold mb-2">Operational Costs</h3>
+          <p className="text-lg">$200K</p>
+          <p className="text-sm text-gray-600">Support core team and day-to-day operations</p>
+        </Card>
+        <Card className="bg-gray-50 p-4">
+          <h3 className="font-semibold mb-2">Security & Maintenance</h3>
+          <p className="text-lg">$100K</p>
+          <p className="text-sm text-gray-600">Protect user data and enhance system resilience</p>
+        </Card>
+         <Card className="bg-gray-50 p-4">
+          <h3 className="font-semibold mb-2">Buffer Fund</h3>
+          <p className="text-lg">$50K</p>
+          <p className="text-sm text-gray-600">Flexibility for unforeseen operational needs</p>
+        </Card>
+      </div>
+       <Card className="bg-blue-50 p-6 mt-4">
+        <div className="flex justify-between items-center">
+          <h3 className="text-xl font-bold">Total Funding Needed</h3>
+          <p className="text-xl font-bold">$650K</p>
+        </div>
+         <p className="text-lg mt-2">Break-even is expected in 18-24 months, with user acquisition as the top priority in the first year.</p>
+      </Card>
+    </div>
+  </motion.div>
+</Slide>;
+
 // Update slides array
 const slides = [
   titleSlide,
@@ -1204,7 +1300,9 @@ const slides = [
   tokenIntegrationSlide,
   tractionSlide,
   financialSlide,
-  financialModelSlide
+  financialModelSlide,
+  fundingNarrativeSlide,
+  fundingBreakdownSlide
 ];
 
 const DeckPage: React.FC = () => {
