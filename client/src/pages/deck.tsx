@@ -8,7 +8,15 @@ import {
   Boxes, Puzzle, Lightbulb, HandCoins, Network, Award
 } from "lucide-react";
 
-// Slide animation variants
+// Import diagram components
+import { GettingStartedDiagram } from "@/components/diagrams/GettingStartedDiagram";
+import { PlatformsDiagram } from "@/components/diagrams/PlatformsDiagram";
+import { BlockchainTypesDiagram } from "@/components/diagrams/BlockchainTypesDiagram";
+import BlockchainBasicsDiagram from "@/components/diagrams/BlockchainBasicsDiagram";
+import BitcoinBasicsDiagram from "@/components/diagrams/BitcoinBasicsDiagram";
+import BlockStructureDiagram from "@/components/diagrams/BlockStructureDiagram";
+import { PracticalApplicationsDiagram } from "@/components/diagrams/PracticalApplicationsDiagram";
+
 const slideVariants = {
   enter: (direction: number) => ({
     x: direction > 0 ? 1000 : -1000,
@@ -125,21 +133,57 @@ const slides = [
     content: "Next-Generation Crypto Education Platform",
     type: "title",
     icon: BookOpen,
+    diagram: <GettingStartedDiagram />,
     bullets: []
   },
   {
-    title: "Introduction",
-    content: "The Problem & Solution",
+    title: "The Problem",
+    content: "The Current State of Crypto Education",
     icon: Shield,
     bullets: [
-      "The cryptocurrency industry is rapidly evolving, yet structured, high-quality educational resources remain fragmented",
-      "Many newcomers struggle with fundamentals, experienced users lack clear pathways",
-      "Sulla bridges this gap with interactive, structured courses",
+      "The cryptocurrency industry is rapidly evolving, yet structured, high-quality educational resources remain fragmented, overly technical, or unreliable",
+      "Many newcomers struggle to understand the fundamentals, and experienced users lack clear pathways for advanced learning",
+      "High risk of costly mistakes due to lack of practical experience",
+      "Fragmented learning resources across multiple platforms",
+      "No standardized certification or progress tracking"
+    ]
+  },
+  {
+    title: "Our Solution",
+    content: "Sulla: Interactive Learning Platform",
+    icon: Puzzle,
+    diagram: <PlatformsDiagram />,
+    bullets: [
+      "Next-generation crypto education platform bridging this gap",
+      "Interactive, structured, and engaging courses",
       "Adaptive Learning with AI-driven personalization",
       "Intelligent Course Recommendations",
-      "Modular Learning covering Bitcoin, Ethereum, DeFi, Security",
-      "Interactive Experience with gamified quizzes",
-      "Freemium Model with premium offerings"
+      "Practical hands-on experience in a safe environment"
+    ]
+  },
+  {
+    title: "Key Features",
+    content: "What Makes Sulla Different",
+    icon: Brain,
+    bullets: [
+      "Comprehensive Course Library",
+      "Adaptive Learning & AI Personalization",
+      "Interactive Simulations & Practice Environments",
+      "NFT-Based Certifications",
+      "Community-Driven Learning"
+    ]
+  },
+  {
+    title: "Course Structure",
+    content: "Modular Learning Path",
+    icon: Boxes,
+    diagram: <BlockchainTypesDiagram />,
+    bullets: [
+      "Fundamentals of Cryptocurrency",
+      "Blockchain Technology Deep Dive",
+      "DeFi & Smart Contracts",
+      "Security Best Practices",
+      "Trading & Investment Strategies"
     ]
   },
   {
@@ -150,33 +194,73 @@ const slides = [
     bullets: [
       "Global Crypto Adoption: Over 420 million crypto users worldwide (2024)",
       "Institutional Interest: 80% of major banks exploring digital assets",
-      "Market Size: $1.5B+ crypto education market and growing",
+      "Market Size: Crypto Education Market Value (2024): $1.5B+ and growing",
       "Projected Growth: Expected to exceed $5B by 2028",
-      "Target Audience: Crypto enthusiasts, developers, traders, institutions"
+      "Target Audience: Crypto enthusiasts, developers, traders, and institutions"
     ]
   },
   {
-    title: "Product Overview",
-    content: "What Makes Sulla Unique?",
-    icon: Puzzle,
+    title: "Target Audience",
+    content: "Who We Serve",
+    icon: Users,
     bullets: [
-      "Comprehensive Course Library – Covers Bitcoin, Ethereum, DeFi, NFTs, DAOs, Security, Trading",
-      "Adaptive Learning & AI Personalization – Dynamic difficulty adjustment",
-      "Gamified Learning – Engaging quizzes and interactive simulations",
-      "NFT-Based Certifications – Blockchain-verified credentials",
-      "B2B Integration – White-label solutions for fintech companies"
+      "Crypto Newcomers seeking structured learning",
+      "Experienced users looking to advance skills",
+      "Developers transitioning to blockchain",
+      "Financial institutions training staff",
+      "Educational organizations"
     ]
   },
   {
-    title: "Built to Date",
-    content: "First Course: Introduction to Cryptocurrency",
+    title: "Learning Experience",
+    content: "Interactive & Engaging",
+    icon: Lightbulb,
+    diagram: <BlockchainBasicsDiagram />,
+    bullets: [
+      "Gamified learning modules",
+      "Real-time progress tracking",
+      "Interactive quizzes and exercises",
+      "Practical simulations",
+      "Peer learning opportunities"
+    ]
+  },
+  {
+    title: "Technology Stack",
+    content: "Built for Scale",
+    icon: Network,
+    diagram: <BitcoinBasicsDiagram />,
+    bullets: [
+      "Modern web technologies (React, Node.js)",
+      "AI/ML for personalization",
+      "Blockchain integration",
+      "Cloud infrastructure",
+      "Security-first architecture"
+    ]
+  },
+  {
+    title: "Security Focus",
+    content: "Safe Learning Environment",
+    icon: Lock,
+    diagram: <BlockStructureDiagram />,
+    bullets: [
+      "Protected practice environment",
+      "Risk-free experimentation",
+      "Best practice training",
+      "Real-world security scenarios",
+      "Regular security updates"
+    ]
+  },
+  {
+    title: "Product Status",
+    content: "What's Been Built",
     icon: Building2,
+    diagram: <PracticalApplicationsDiagram />,
     bullets: [
-      "Understanding Cryptocurrency – Evolution of money and digital assets",
-      "Bitcoin & Ethereum Basics – Technology deep dive",
-      "Security & Risk Management – Asset protection and scam awareness",
-      "Practical Applications – Hands-on exercises",
-      "Interactive Assessments – Gamified quizzes with instant feedback"
+      "Complete MVP with core features",
+      "First course: Intro to Cryptocurrency",
+      "Interactive learning modules",
+      "Testing environment",
+      "Basic certification system"
     ]
   },
   {
@@ -192,11 +276,83 @@ const slides = [
     ]
   },
   {
+    title: "Go-to-Market Strategy",
+    content: "Three-Phase Approach",
+    icon: Target,
+    bullets: [
+      "Phase 1: Community Building & Brand Awareness",
+      "Phase 2: B2C Growth & Initial Monetization",
+      "Phase 3: B2B Expansion & Institutional Partnerships",
+      "Content Marketing & Social Media Strategy",
+      "Strategic Partnerships & Influencer Collaboration"
+    ]
+  },
+  {
+    title: "Business Model",
+    content: "Revenue Streams",
+    icon: Coins,
+    bullets: [
+      "Freemium Model with Premium Features",
+      "B2B Enterprise Solutions",
+      "Custom Corporate Training",
+      "White-Label Platform Licensing",
+      "Certification Programs"
+    ]
+  },
+  {
+    title: "Competition Analysis",
+    content: "Our Advantage",
+    icon: Trophy,
+    bullets: [
+      "Most competitors offer static content only",
+      "Limited practical application in existing solutions",
+      "Our AI-driven personalization is unique",
+      "Comprehensive learning path vs fragmented courses",
+      "Strong focus on security and best practices"
+    ]
+  },
+    {
+    title: "Token Integration",
+    content: "Platform Token Utility",
+    icon: Coins,
+    bullets: [
+      "Learn-to-Earn Rewards",
+      "Governance Rights",
+      "Premium Content Access",
+      "NFT Certification System",
+      "Community Incentives"
+    ]
+  },
+  {
+    title: "Financial Projections",
+    content: "5-Year Growth Plan",
+    icon: BarChart3,
+    bullets: [
+      "Year 1: 100K+ users, Focus on Growth",
+      "Year 2: 500K+ users, $500K Revenue",
+      "Year 3: 1M+ users, $2M - $5M Revenue",
+      "Year 4: 2M+ users, $10M+ Revenue",
+      "Year 5: 5M+ users, $25M+ Revenue"
+    ]
+  },
+  {
     title: "Funding Requirements",
     content: "Strategic Investment Allocation",
     icon: HandCoins,
     fundingTable: true,
     bullets: []
+  },
+  {
+    title: "Use of Funds",
+    content: "Investment Allocation",
+    icon: HandCoins,
+    bullets: [
+      "Product Development: 35%",
+      "Marketing & User Acquisition: 25%",
+      "Team Expansion: 20%",
+      "Operations & Infrastructure: 15%",
+      "Legal & Compliance: 5%"
+    ]
   },
   {
     title: "The Team",
@@ -210,16 +366,28 @@ const slides = [
     ]
   },
   {
-    title: "Call to Action",
+    title: "Next Steps",
     content: "Join us in revolutionizing crypto education",
-    type: "call-to-action",
     icon: Award,
-    bullets: [
+      bullets: [
       "Seeking strategic partners and early adopters",
       "Investment opportunity available now",
+      "Platform launch in Q2 2024",
       "Contact: team@sulla.com",
-      "Twitter: @SullaCrypto",
-      "Let's build the future of crypto education together"
+      "Twitter: @SullaCrypto"
+    ]
+  },
+  {
+    title: "Thank You",
+    content: "Let's build the future of crypto education together",
+      type: "call-to-action",
+    icon: Award,
+    bullets: [
+        "Investment opportunity: $650K Seed Round",
+        "Strategic partnerships welcome",
+        "Early access program opening soon",
+        "Connect with us today",
+        "Email: team@sulla.com"
     ]
   }
 ];
@@ -352,6 +520,17 @@ export default function DeckPage() {
                     className="w-full max-w-3xl mb-8"
                   >
                     <FundingTable />
+                  </motion.div>
+                )}
+
+                {slides[currentSlide].diagram && (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.4 }}
+                    className="w-full max-w-3xl mb-8"
+                  >
+                    {slides[currentSlide].diagram}
                   </motion.div>
                 )}
 
