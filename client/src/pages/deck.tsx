@@ -724,9 +724,9 @@ const growthExpansionSlide = <Slide key="growth-expansion">
     <div className="space-y-6">
       <motion.div
         initial={{ y: 20, opacity: 0 }}
-        animate{{ y: 0, opacity: 1 }}
+        animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2 }}
-        className="bg-gradient-tobr from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+        className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
       >
         <h3 className="text-2xl font-semibold text-blue-300 mb-4">Phase 3: Monetization & Scaling (12-18 Months)</h3>
         <ul className="space-y-3">
@@ -1048,6 +1048,143 @@ const financialSlide = <Slide key="financial">
   </motion.div>
 </Slide>;
 
+const financialModelSlide = <Slide key="financial-model">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <div className="flex items-center gap-4 mb-8">
+      <div className="p-3 bg-purple-500/20 rounded-lg">
+        <LineChart className="w-8 h-8 text-purple-400" />
+      </div>
+      <h2 className="text-4xl font-bold text-blue-400">Comprehensive Financial Model</h2>
+    </div>
+    <Card className="bg-blue-900/30 p-6 mb-8">
+      <p className="text-lg text-blue-100">
+        Sulla's financial model is structured to ensure long-term sustainability, strong cash flow, and strategic reinvestment into growth.
+      </p>
+    </Card>
+
+    <Card className="bg-gray-50 p-6">
+      <h3 className="text-xl font-semibold mb-4">Key Financial Assumptions</h3>
+      <ul className="space-y-3">
+        <li className="flex items-start">
+          <span className="text-blue-600 mr-3">•</span>
+          <div>
+            <span className="font-semibold">User Acquisition Cost (CAC):</span>
+            <span className="ml-2">$10-$20 per active user</span>
+          </div>
+        </li>
+        <li className="flex items-start">
+          <span className="text-blue-600 mr-3">•</span>
+          <div>
+            <span className="font-semibold">Customer Lifetime Value (LTV):</span>
+            <span className="ml-2">$300+ per premium user</span>
+          </div>
+        </li>
+        <li className="flex items-start">
+          <span className="text-blue-600 mr-3">•</span>
+          <div>
+            <span className="font-semibold">Conversion Rate:</span>
+            <span className="ml-2">5-10% of free users upgrade to paid plans</span>
+          </div>
+        </li>
+        <li className="flex items-start">
+          <span className="text-blue-600 mr-3">•</span>
+          <div>
+            <span className="font-semibold">Institutional Partnerships:</span>
+            <span className="ml-2">10-50 enterprise clients within 5 years</span>
+          </div>
+        </li>
+        <li className="flex items-start">
+          <span className="text-blue-600 mr-3">•</span>
+           <div>
+              <span className="font-semibold">Operating Margins:</span>
+              <span className="ml-2">Greater than 60% due to digital content scalability</span>
+            </div>
+        </li>
+      </ul>
+    </Card>
+
+    <div className="overflow-x-auto">
+      <h3 className="text-xl font-semibold mb-4">Projected Financial Breakdown (Year 2-5)</h3>
+      <table className="min-w-full bg-white rounded-lg shadow-sm">
+        <thead className="bg-blue-600 text-white">
+          <tr>
+            <th className="px-4 py-3">Category</th>
+            <th className="px-4 py-3">Year 2</th>
+            <th className="px-4 py-3">Year 3</th>
+            <th className="px-4 py-3">Year 4</th>
+            <th className="px-4 py-3">Year 5</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr className="border-b">
+            <td className="px-4 py-3 font-semibold">Revenue</td>
+            <td className="px-4 py-3">$500K</td>
+            <td className="px-4 py-3">$2M-$5M</td>
+            <td className="px-4 py-3">$10M+</td>
+            <td className="px-4 py-3">$20M+</td>
+          </tr>
+          <tr className="border-b">
+            <td className="px-4 py-3 font-semibold">Marketing Spend</td>
+            <td className="px-4 py-3">$150K</td>
+            <td className="px-4 py-3">$400K</td>
+            <td className="px-4 py-3">$1M</td>
+            <td className="px-4 py-3">$2M</td>
+          </tr>
+          <tr className="border-b">
+            <td className="px-4 py-3 font-semibold">Tech & Development</td>
+            <td className="px-4 py-3">$300K</td>
+            <td className="px-4 py-3">$1M</td>
+            <td className="px-4 py-3">$2M</td>
+            <td className="px-4 py-3">$4M</td>
+          </tr>
+          <tr className="border-b">
+            <td className="px-4 py-3 font-semibold">Operational Costs</td>
+            <td className="px-4 py-3">$750K</td>
+            <td className="px-4 py-3">$1.5M</td>
+            <td className="px-4 py-3">$3M</td>
+            <td className="px-4 py-3">$4M</td>
+          </tr>
+          <tr>
+            <td className="px-4 py-3 font-semibold">Profitability Projection</td>
+            <td className="px-4 py-3 text-red-600">($700K) Loss</td>
+            <td className="px-4 py-3 text-green-600">Break-even to $2M Profit</td>
+            <td className="px-4 py-3 text-green-600">$4M+ Profit</td>
+            <td className="px-4 py-3 text-green-600">$10M+ Profit</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <Card className="bg-gray-50 p-6">
+      <h3 className="text-xl font-semibold mb-4">Break-Even & Scalability</h3>
+      <ul className="space-y-3">
+        <li className="flex items-start">
+          <span className="text-blue-600 mr-3">•</span>
+          <p>Break-even occurs in Year 3, following an aggressive user acquisition phase in Year 1 and modest monetization in Year 2.</p>
+        </li>
+        <li className="flex items-start">
+          <span className="text-blue-600 mr-3">•</span>
+          <p>High-margin digital content model ensures scalability with minimal additional costs per new user.</p>
+        </li>
+        <li className="flex items-start">
+          <span className="text-blue-600 mr-3">•</span>
+          <p>Future Token Integration (post-500K users) will unlock additional revenue streams through staking, governance, and in-platform rewards.</p>
+        </li>
+      </ul>
+    </Card>
+
+    <Card className="bg-blue-900/30 p-6">
+      <p className="text-lg text-blue-100">
+        This financial model provides a realistic yet ambitious roadmap for Sulla's future, aligning user growth, revenue expansion, and sustainable operations to ensure long-term success. 🚀
+      </p>
+    </Card>
+  </motion.div>
+</Slide>;
+
 // Update slides array
 const slides = [
   titleSlide,
@@ -1066,7 +1203,8 @@ const slides = [
   growthExpansionSlide,
   tokenIntegrationSlide,
   tractionSlide,
-  financialSlide
+  financialSlide,
+  financialModelSlide
 ];
 
 const DeckPage: React.FC = () => {
