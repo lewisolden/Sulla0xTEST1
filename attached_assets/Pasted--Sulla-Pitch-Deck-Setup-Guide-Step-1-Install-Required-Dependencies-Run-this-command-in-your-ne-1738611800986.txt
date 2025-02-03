@@ -1,0 +1,120 @@
+# Sulla Pitch Deck Setup Guide
+
+## Step 1: Install Required Dependencies
+Run this command in your new project:
+```bash
+npm install html2pdf.js framer-motion lucide-react @radix-ui/react-slot react-icons tailwindcss postcss autoprefixer @tanstack/react-query wouter
+```
+
+## Step 2: Configure Tailwind CSS
+Create a `tailwind.config.js` file:
+```js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        blue: {
+          50: '#eff6ff',
+          100: '#dbeafe',
+          600: '#2563eb',
+          800: '#1e40af',
+        },
+        gray: {
+          50: '#f9fafb',
+          100: '#f3f4f6',
+          500: '#6b7280',
+          600: '#4b5563',
+        },
+        red: {
+          500: '#ef4444',
+        },
+        green: {
+          500: '#22c55e',
+        },
+      },
+    },
+  },
+  plugins: [],
+}
+```
+
+## Step 3: Create PostCSS Config
+Create a `postcss.config.js` file:
+```js
+module.exports = {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+}
+```
+
+## Step 4: Add CSS Styles
+Create or update your `index.css`:
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.page-break-after {
+  page-break-after: always;
+}
+
+.page-break-inside-avoid {
+  page-break-inside: avoid;
+}
+```
+
+## Step 5: Copy the Pitch Deck Files
+1. Copy `sulla-22-slides.tsx` to your project's components directory
+2. Import and use the component in your App.tsx:
+
+```tsx
+import { PitchDeck } from './components/sulla-22-slides';
+
+function App() {
+  return (
+    <div className="min-h-screen bg-gray-100">
+      <PitchDeck />
+    </div>
+  );
+}
+
+export default App;
+```
+
+## Step 6: Project Structure
+Ensure your project structure looks like this:
+```
+/your-project
+  ├── src/
+  │   ├── components/
+  │   │   └── sulla-22-slides.tsx
+  │   ├── App.tsx
+  │   ├── index.css
+  │   └── main.tsx
+  ├── tailwind.config.js
+  ├── postcss.config.js
+  ├── package.json
+  └── index.html
+```
+
+## Troubleshooting
+1. If you see styling issues:
+   - Make sure Tailwind CSS is properly configured
+   - Check that all CSS classes are being processed
+   - Verify your PostCSS configuration
+
+2. If PDF export isn't working:
+   - Check that html2pdf.js is properly installed
+   - Ensure all assets are loading correctly
+   - Try increasing the HTML to canvas scale option if quality is poor
+
+3. If animations aren't smooth:
+   - Verify that framer-motion is properly installed
+   - Check for any console errors related to animations
+   - Try reducing animation complexity if performance is an issue

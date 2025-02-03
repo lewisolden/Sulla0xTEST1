@@ -3,6 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ChevronLeft, ChevronRight, Download } from "lucide-react";
+import html2pdf from 'html2pdf.js';
+import { useToast } from "@/hooks/use-toast";
 
 const slides = [
   {
@@ -248,6 +250,7 @@ const slides = [
 export default function DeckPage() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isDownloading, setIsDownloading] = useState(false);
+  const { toast } = useToast();
 
   const nextSlide = useCallback(() => {
     setCurrentSlide(curr => curr < slides.length - 1 ? curr + 1 : curr);
@@ -268,18 +271,70 @@ export default function DeckPage() {
   const downloadPDF = async () => {
     try {
       setIsDownloading(true);
-      const response = await fetch('/api/deck/download');
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'sulla-presentation.pdf';
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
+
+      const container = document.createElement('div');
+      container.style.width = '1920px';
+      container.style.position = 'absolute';
+      container.style.left = '-9999px';
+      document.body.appendChild(container);
+
+      for (const slide of slides) {
+        const slideDiv = document.createElement('div');
+        slideDiv.className = 'page-break-after bg-gradient-to-br from-blue-900/95 to-black/95 p-12 text-white';
+        slideDiv.style.height = '1080px';
+
+        slideDiv.innerHTML = `
+          <h2 class="text-4xl font-bold mb-8 text-blue-400">${slide.title}</h2>
+          <p class="text-xl mb-8 text-blue-200">${slide.content}</p>
+          ${slide.bullets && slide.bullets.length > 0 ? `
+            <ul class="text-left space-y-4 w-full max-w-3xl">
+              ${slide.bullets.map((bullet, i) => `
+                <li class="flex items-center gap-3 text-lg">
+                  <div class="h-2 w-2 bg-blue-400 rounded-full flex-shrink-0"></div>
+                  <span class="text-blue-100">${bullet}</span>
+                </li>
+              `).join('')}
+            </ul>
+          ` : ''}
+        `;
+        container.appendChild(slideDiv);
+      }
+
+      const opt = {
+        margin: 0,
+        filename: 'sulla-presentation.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { 
+          scale: 2,
+          letterRendering: true,
+          useCORS: true,
+          logging: false
+        },
+        jsPDF: { 
+          unit: 'px', 
+          format: [1920, 1080], 
+          orientation: 'landscape',
+          compress: true
+        }
+      };
+
+      await html2pdf().from(container).set(opt).save();
+
+      document.body.removeChild(container);
+
+      toast({
+        title: "Success",
+        description: "Presentation PDF has been downloaded",
+        variant: "default",
+      });
+
     } catch (error) {
-      console.error('Error downloading PDF:', error);
+      console.error('Error generating PDF:', error);
+      toast({
+        title: "Error",
+        description: "Failed to generate PDF. Please try again.",
+        variant: "destructive",
+      });
     } finally {
       setIsDownloading(false);
     }
