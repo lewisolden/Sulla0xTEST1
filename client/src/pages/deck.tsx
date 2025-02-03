@@ -11,6 +11,14 @@ import {
   Target,
   Globe,
   BarChart,
+    Brain,
+    Trophy,
+    Award,
+    BarChart2,
+    Zap,
+    LineChart,
+    Book,
+    GitBranch,
   type LucideIcon
 } from 'lucide-react';
 
@@ -325,6 +333,209 @@ const marketSizeSlide = <Slide key="market-size">
   </motion.div>
 </Slide>;
 
+const productOverviewSlide = <Slide key="product-overview">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <div className="flex items-center gap-4 mb-8">
+      <div className="p-3 bg-purple-500/20 rounded-lg">
+        <Layers className="w-8 h-8 text-purple-400" />
+      </div>
+      <h2 className="text-4xl font-bold text-blue-400">Product Overview</h2>
+    </div>
+    <p className="text-xl text-blue-200 mb-8">What Makes Sulla Unique:</p>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {[
+        {
+          icon: Brain,
+          title: "AI-Powered Learning",
+          description: "Personalized learning paths that adapt to your understanding and pace"
+        },
+        {
+          icon: Target,
+          title: "Practical Exercises",
+          description: "Hands-on learning with interactive exercises and real-world examples"
+        },
+        {
+          icon: Award,
+          title: "Achievement NFTs",
+          description: "Earn verifiable NFT certificates as you complete modules"
+        },
+        {
+          icon: LineChart,
+          title: "Progress Tracking",
+          description: "Monitor your learning journey with detailed analytics"
+        }
+      ].map((feature, index) => (
+        <motion.div
+          key={index}
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: index * 0.1 }}
+          className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <feature.icon className="w-6 h-6 text-blue-400" />
+            <h3 className="text-xl font-semibold text-blue-300">{feature.title}</h3>
+          </div>
+          <p className="text-blue-100">{feature.description}</p>
+        </motion.div>
+      ))}
+    </div>
+  </motion.div>
+</Slide>;
+
+const interactiveToolsSlide = <Slide key="interactive-tools">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <div className="flex items-center gap-4 mb-8">
+      <div className="p-3 bg-blue-500/20 rounded-lg">
+        <Zap className="w-8 h-8 text-blue-400" />
+      </div>
+      <h2 className="text-4xl font-bold text-blue-400">Interactive Learning Tools</h2>
+    </div>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {[
+        {
+          icon: Brain,
+          title: "Interactive & Adaptive Learning",
+          description: "AI-powered learning paths that adapt to your understanding and pace"
+        },
+        {
+          icon: BarChart2,
+          title: "Progress Tracking",
+          description: "Monitor your learning journey with detailed progress analytics"
+        },
+        {
+          icon: Trophy,
+          title: "Achievement System",
+          description: "Unlock badges and rewards as you complete modules and challenges"
+        }
+      ].map((feature, index) => (
+        <motion.div
+          key={index}
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: index * 0.1 }}
+          className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <feature.icon className="w-6 h-6 text-blue-400" />
+            <h3 className="text-xl font-semibold text-blue-300">{feature.title}</h3>
+          </div>
+          <p className="text-blue-100">{feature.description}</p>
+        </motion.div>
+      ))}
+    </div>
+  </motion.div>
+</Slide>;
+
+const futureFinanceSlide = <Slide key="future-finance">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <div className="flex items-center gap-4 mb-8">
+      <div className="p-3 bg-green-500/20 rounded-lg">
+        <Book className="w-8 h-8 text-green-400" />
+      </div>
+      <h2 className="text-4xl font-bold text-blue-400">Your Journey into the Future of Finance</h2>
+    </div>
+    <Card className="bg-blue-900/30 p-6 mb-8">
+      <h3 className="text-2xl font-semibold text-blue-300 mb-4">Course 1: Introduction to Cryptocurrency</h3>
+    </Card>
+    <div className="space-y-6">
+      {[
+        {
+          title: "Module 1: Understanding Cryptocurrency",
+          description: "Master the fundamentals through interactive learning and practical exercises"
+        },
+        {
+          title: "Module 2: Bitcoin Fundamentals",
+          description: "Deep dive into Bitcoin, investment strategies, and security considerations"
+        },
+        {
+          title: "Module 3: Ethereum & Smart Contracts",
+          description: "Explore Ethereum, smart contracts, and their practical applications"
+        }
+      ].map((module, index) => (
+        <motion.div
+          key={index}
+          initial={{ x: -50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ delay: index * 0.2 }}
+          className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+        >
+          <div className="flex items-start gap-4">
+            <div className="p-2 bg-blue-400/20 rounded-full mt-1">
+              <GitBranch className="w-5 h-5 text-blue-400" />
+            </div>
+            <div>
+              <h4 className="text-xl font-semibold text-blue-300 mb-2">{module.title}</h4>
+              <p className="text-blue-100">{module.description}</p>
+            </div>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  </motion.div>
+</Slide>;
+
+const roadmapSlide = <Slide key="roadmap">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <div className="flex items-center gap-4 mb-8">
+      <div className="p-3 bg-blue-500/20 rounded-lg">
+        <Rocket className="w-8 h-8 text-blue-400" />
+      </div>
+      <h2 className="text-4xl font-bold text-blue-400">Product Roadmap</h2>
+    </div>
+    <h3 className="text-2xl font-semibold text-blue-300 mb-6">Next 12 Months</h3>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {[
+        {
+          icon: Book,
+          title: "Expand Course Library",
+          description: "Launch advanced DeFi, Smart Contracts, and Trading courses"
+        },
+        {
+          icon: Brain,
+          title: "AI-Powered Learning Tools",
+          description: "Enhanced personalization and adaptive assessments"
+        },
+        {
+          icon: Trophy,
+          title: "Gamification Expansion",
+          description: "Leaderboards, NFT achievements, and competitions"
+        }
+      ].map((item, index) => (
+        <motion.div
+          key={index}
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: index * 0.1 }}
+          className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <item.icon className="w-6 h-6 text-blue-400" />
+            <h3 className="text-xl font-semibold text-blue-300">{item.title}</h3>
+          </div>
+          <p className="text-blue-100">{item.description}</p>
+        </motion.div>
+      ))}
+    </div>
+  </motion.div>
+</Slide>;
+
 const slides = [
   titleSlide,
   problemSlide,
@@ -332,7 +543,11 @@ const slides = [
   featuresSlide,
   missionSlide,
   marketOpportunitySlide,
-  marketSizeSlide
+  marketSizeSlide,
+  productOverviewSlide,
+  interactiveToolsSlide,
+  futureFinanceSlide,
+  roadmapSlide
 ];
 
 const DeckPage: React.FC = () => {
