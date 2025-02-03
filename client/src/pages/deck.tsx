@@ -88,220 +88,163 @@ const Logo: React.FC<{ className?: string }> = ({ className = '' }) => (
 const slides: Slide[] = [
   {
     type: 'title',
-    title: "Sulla Pitch Deck",
+    title: "Sulla",
     content: "Next-Generation Crypto Education Platform",
-    icon: Target,
-    bullets: []
+    icon: Rocket,
+    bullets: [
+      "Interactive Learning Experience",
+      "AI-Powered Personalization",
+      "Comprehensive Curriculum"
+    ]
   },
   {
-    title: "Introduction",
-    content: "The cryptocurrency industry is rapidly evolving, yet structured, high-quality educational resources remain fragmented, overly technical, or unreliable. Many newcomers struggle to understand the fundamentals, and experienced users lack clear pathways for advanced learning.",
-    icon: BookOpen,
-    subsections: [
-      {
-        title: "The Solution",
-        content: "Sulla is a next-generation crypto education platform that bridges this gap by offering interactive, structured, and engaging courses tailored for beginners, developers, and institutions."
-      }
-    ],
+    title: "The Problem",
+    content: "Current Crypto Education Landscape",
+    icon: Target,
     bullets: [
-      "Adaptive Learning: AI-driven personalization tailors content based on individual learning styles, skill levels, and progress",
-      "Intelligent Course Recommendations: Machine learning algorithms suggest the most relevant courses, exercises, and additional resources",
-      "Modular Learning: Covers Bitcoin, Ethereum, DeFi, Smart Contracts, Security, and more",
-      "Interactive Experience: Gamified quizzes, real-world scenarios, and NFT-based certifications",
-      "Freemium Model: Free introductory content, with premium offerings for deeper knowledge"
+      "Fragmented and unreliable educational resources",
+      "Complex technical concepts with poor explanation",
+      "Lack of structured learning paths",
+      "Missing hands-on practice environments",
+      "No verification of learning progress"
+    ]
+  },
+  {
+    title: "Our Solution",
+    content: "Comprehensive Learning Platform",
+    icon: BookOpen,
+    features: [
+      {
+        icon: Zap,
+        title: "Adaptive Learning",
+        desc: "AI-driven personalization tailors content to individual learning styles"
+      },
+      {
+        icon: Target,
+        title: "Interactive Experience",
+        desc: "Hands-on exercises, simulations, and real-world scenarios"
+      },
+      {
+        icon: Award,
+        title: "Verified Progress",
+        desc: "NFT-based certifications and achievement tracking"
+      },
+      {
+        icon: Users,
+        title: "Community Learning",
+        desc: "Peer-to-peer support and expert mentorship"
+      }
     ]
   },
   {
     title: "Market Opportunity",
-    content: "Why Now?",
+    content: "Growing Demand for Crypto Education",
     icon: TrendingUp,
-    bullets: [
-      "Global Crypto Adoption: Over 420 million crypto users worldwide (2024)",
-      "Institutional Interest: Traditional finance is embracing blockchain; 80% of major banks are exploring digital assets",
-      "Lack of Quality Education: Most educational resources are either too technical or outdated, leading to confusion and security risks"
-    ],
     marketData: {
-      title: "Market Size",
+      title: "Key Statistics",
       items: [
-        "Crypto Education Market Value (2024): $1.5B+ and growing",
-        "Projected Growth: Expected to exceed $5B by 2028 as Web3 adoption accelerates",
-        "Target Audience: Crypto enthusiasts, developers, traders, and fintech institutions"
+        "420M+ crypto users worldwide (2024)",
+        "80% of major banks exploring digital assets",
+        "$1.5B+ crypto education market value",
+        "Projected $5B market size by 2028"
       ]
     }
   },
   {
-    title: "Product Overview",
-    content: "What Makes Sulla Unique?",
-    icon: Layers,
-    features: [
-      {
-        icon: BookOpen,
-        title: "Comprehensive Course Library",
-        desc: "Covers Bitcoin, Ethereum, DeFi, NFTs, DAOs, Security, Trading, and more"
-      },
-      {
-        icon: Zap,
-        title: "Adaptive Learning & AI Personalization",
-        desc: "AI algorithms analyze user behavior and dynamically adjust difficulty"
-      },
-      {
-        icon: Target,
-        title: "Gamified Learning",
-        desc: "Engaging quizzes, skill challenges, and interactive simulations"
-      },
-      {
-        icon: Award,
-        title: "NFT-Based Certifications",
-        desc: "Blockchain-verified credentials for job applications"
-      },
-      {
-        icon: Users,
-        title: "B2B Integration",
-        desc: "White-label learning solutions for fintech companies"
-      }
-    ]
-  },
-  {
-    title: "Product Roadmap",
-    content: "Next 12 Months",
-    icon: Rocket,
-    timeline: [
-      {
-        quarter: "Q1",
-        items: [
-          "Expand Course Library - Launch advanced DeFi courses",
-          "AI-Powered Learning Tools - Adaptive content suggestions"
-        ]
-      },
-      {
-        quarter: "Q2",
-        items: [
-          "Onboard Institutional Partners - Licensing deals",
-          "Gamification Expansion - Leaderboards and NFT achievements"
-        ]
-      }
-    ]
-  },
-  {
-    title: "What's Been Built to Date?",
-    content: "First Course: Introduction to Cryptocurrency",
+    title: "Product Status",
+    content: "What's Built",
     icon: Code2,
     bullets: [
-      "Understanding Cryptocurrency - The evolution of money and digital assets",
-      "Bitcoin & Ethereum Basics - Deep dive into technology and use cases",
-      "Security & Risk Management - Protecting assets and recognizing scams",
-      "Practical Applications - Hands-on exercises and quizzes",
-      "Interactive Assessments - Gamified quizzes with instant feedback"
+      "Complete introduction to cryptocurrency course",
+      "Interactive blockchain explorer simulation",
+      "Gamified learning modules with rewards",
+      "Progress tracking and analytics dashboard",
+      "Mobile-responsive platform"
     ]
   },
   {
-    title: "Traction & Milestones",
-    content: "Our primary goal in the first 12 months is to onboard as many users as possible, as more user data improves our AI capabilities.",
+    title: "Growth Strategy",
+    content: "12-Month Roadmap",
     icon: BarChart2,
     timeline: [
       {
-        phase: "0-12M",
-        milestone: "Community Growth",
-        goals: "100K users, 10K Discord members"
+        phase: "Q1-Q2 2024",
+        milestone: "Platform Launch",
+        goals: "Initial course release, 10K users"
       },
       {
-        phase: "12-18M",
-        milestone: "Monetization & Revenue",
-        goals: "First $500K revenue from subscriptions & B2B deals"
+        phase: "Q3 2024",
+        milestone: "Feature Expansion",
+        goals: "Advanced courses, B2B partnerships"
       },
       {
-        phase: "18-24M",
-        milestone: "Institutional Adoption",
-        goals: "500K+ users, major fintech & university partnerships"
-      },
-      {
-        phase: "24M+",
-        milestone: "Global Expansion",
-        goals: "1M users, $5M+ ARR"
+        phase: "Q4 2024",
+        milestone: "Market Growth",
+        goals: "100K users, revenue generation"
       }
     ]
   },
   {
-    title: "Funding Requirements",
-    content: "Investment Breakdown",
+    title: "Investment Opportunity",
+    content: "Funding Requirements: $650K",
     icon: DollarSign,
     funding: [
       {
-        category: "Content Expansion",
-        amount: "$50K",
-        purpose: "Develop additional courses and certifications"
+        category: "Content Development",
+        amount: "$150K",
+        purpose: "Course creation and certification system"
       },
       {
-        category: "Marketing & User Acquisition",
-        amount: "$50K",
-        purpose: "Build brand awareness and onboard early adopters"
-      },
-      {
-        category: "Business Development",
-        amount: "$50K",
-        purpose: "Secure partnerships and institutional deals"
-      },
-      {
-        category: "Platform Enhancements",
-        amount: "$100K",
-        purpose: "Improve AI learning algorithms and gamification features"
-      },
-      {
-        category: "Legal & Compliance",
-        amount: "$50K",
-        purpose: "Ensure regulatory compliance"
-      },
-      {
-        category: "Operational Costs",
+        category: "Technology",
         amount: "$200K",
-        purpose: "Support core team and operations"
+        purpose: "AI implementation and platform scaling"
       },
       {
-        category: "Security & Platform Maintenance",
-        amount: "$100K",
-        purpose: "Protect user data and enhance system resilience"
+        category: "Marketing",
+        amount: "$150K",
+        purpose: "User acquisition and brand building"
       },
       {
-        category: "Miscellaneous & Buffer Fund",
-        amount: "$50K",
-        purpose: "Provide flexibility for unforeseen needs"
+        category: "Operations",
+        amount: "$150K",
+        purpose: "Team expansion and overhead"
       }
     ],
     totalFunding: "$650K"
   },
   {
-    title: "The Team",
-    content: "Expert Leadership Team",
+    title: "Team",
+    content: "Expert Leadership",
     icon: UserCheck,
     team: [
       {
-        role: "Founder & CEO",
-        description: "Web3 entrepreneur with fintech & education expertise"
+        role: "CEO & Founder",
+        description: "10+ years in EdTech & Blockchain"
       },
       {
         role: "CTO",
-        description: "Blockchain developer & AI specialist"
+        description: "Senior Blockchain Developer, AI Expert"
       },
       {
-        role: "Head of Content",
-        description: "Crypto educator & research analyst"
+        role: "Head of Education",
+        description: "Crypto Educator, Former University Professor"
       },
       {
-        role: "Marketing & Growth Lead",
-        description: "Web3 community builder & digital strategist"
+        role: "Growth Lead",
+        description: "Marketing Expert, Community Builder"
       }
     ]
   },
   {
     type: 'call-to-action',
-    title: "Call to Action",
-    content: "Join us in revolutionizing crypto education",
+    title: "Join Our Mission",
+    content: "Transform Crypto Education",
     icon: Zap,
     bullets: [
-      "Join us in revolutionizing crypto education",
-      "Seeking investors, partners, and early adopters",
-      "Let's connect to discuss funding & strategic collaborations",
-      "Contact: [Your Email] | Twitter: @SullaCrypto | Website: [Your Website]"
+      "Be part of the future of crypto education",
+      "Strategic partnership opportunities available",
+      "Early investor benefits and perks",
+      "Contact: team@sulla.edu"
     ]
   }
 ];
