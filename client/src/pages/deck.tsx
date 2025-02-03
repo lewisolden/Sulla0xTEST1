@@ -29,174 +29,150 @@ const Logo = ({ className = '' }) => (
 const slides = [
   {
     type: 'title',
-    title: "Sulla",
-    content: "Next-Generation Crypto Education Platform",
-    bullets: ["Investor Pitch Deck", "2025"]
+    title: "Our Vision",
+    content: "A Comprehensive Pitch Deck for Sulla",
+    bullets: ["Next-Generation Crypto Education Platform", "2024"]
   },
   {
-    title: "The Problem",
-    content: "Current crypto education is fragmented, lacks engagement, and fails to provide practical skills.",
+    title: "Introduction",
+    content: "Sulla is revolutionizing cryptocurrency education through an interactive, comprehensive learning platform.",
     bullets: [
-      "Lack of Engagement - Existing resources are often boring and passive",
-      "Limited Practical Application - Theory without hands-on experience",
-      "Fragmented Learning Paths - No structured progression",
-      "Inconsistent Quality - Varying content reliability"
+      "Immersive Learning Experience",
+      "Expert-Led Content",
+      "Practical Applications",
+      "Community-Driven Growth",
+      "Advanced Technology Stack"
+    ]
+  },
+  {
+    title: "Market Problem",
+    content: "The cryptocurrency education landscape is fragmented and ineffective.",
+    bullets: [
+      "Lack of structured learning paths",
+      "Limited practical experience",
+      "Poor quality control",
+      "High entry barriers",
+      "Insufficient support systems"
     ]
   },
   {
     title: "Our Solution",
-    content: "Sulla provides an engaging and practical crypto education platform with a focus on hands-on learning and community engagement.",
+    content: "A comprehensive platform that combines theory, practice, and community.",
     bullets: [
-      "Interactive Learning Modules - Gamified theory and practice",
-      "Community-Driven Platform - Collaborative learning environment",
-      "Structured Learning Paths - Clear progression system",
-      "Certified Learning - Verifiable achievements"
-    ]
-  },
-  {
-    title: "Key Features",
-    content: "What sets us apart",
-    bullets: [
-      "Real-Time Market Simulators - Risk-free trading practice",
-      "Security Focused Approach - Best practices emphasis",
-      "Personalized Learning Experience - Adaptive pathways",
-      "Expert Instructors - Industry leaders teaching"
-    ]
-  },
-  {
-    title: "Our Mission",
-    content: "To empower individuals with the knowledge and skills to thrive in the decentralized future.",
-    bullets: [
-      "Accessible Education",
-      "High-Quality Content",
-      "Practical Skills Development",
-      "Community Building",
-      "Innovation Leadership"
-    ]
-  },
-  {
-    title: "Market Opportunity",
-    content: "The global crypto market is rapidly expanding, with growing demand for education.",
-    bullets: [
-      "Multi-billion dollar education market",
-      "420M+ global crypto users",
-      "Rising institutional adoption",
-      "Increasing regulatory clarity",
-      "Growing skill gap"
-    ]
-  },
-  {
-    title: "Our Product",
-    content: "A comprehensive learning platform",
-    bullets: [
-      "Interactive Learning Platform - Gamified courses",
-      "Community and Collaboration - Social learning",
-      "Personalized Learning Paths - Custom progression",
-      "Certifications - Verifiable achievements"
+      "Interactive Learning Modules",
+      "Real-World Applications",
+      "Guided Progress System",
+      "Community Support",
+      "Expert Mentorship"
     ]
   },
   {
     title: "Platform Features",
-    content: "Built for engagement and results",
+    content: "Key components that make Sulla unique",
     bullets: [
-      "Real-Time Trading Simulators",
-      "Security Best Practices",
-      "Expert-Led Content",
-      "Data-Driven Approach"
+      "Structured Curriculum",
+      "Practice Environments",
+      "Progress Tracking",
+      "Community Integration",
+      "Professional Certification"
     ]
   },
   {
-    title: "Learning Modules",
-    content: "Comprehensive curriculum coverage",
+    title: "Technology",
+    content: "Built on cutting-edge technology for scalability and performance",
     bullets: [
-      "Introduction to Blockchain",
-      "Crypto Economics",
-      "Trading Strategies",
-      "Risk Management",
-      "Security Best Practices",
-      "Advanced Concepts"
+      "Blockchain Integration",
+      "AI-Powered Learning",
+      "Cloud Infrastructure",
+      "Mobile Optimization",
+      "Real-Time Analytics"
     ]
   },
   {
-    title: "Roadmap",
-    content: "Our path to success",
+    title: "Market Size",
+    content: "A rapidly growing market with significant potential",
     bullets: [
-      "Q3 2024 - Core development and beta testing",
-      "Q4 2024 - Strategic partnerships",
-      "Q1 2025 - Full platform launch",
-      "Q2 2025 - Advanced courses and enterprise clients"
+      "$2.3B Crypto Education Market",
+      "300M+ Potential Users",
+      "50% YoY Growth",
+      "Global Reach",
+      "Expanding Use Cases"
     ]
   },
   {
-    title: "Progress to Date",
-    content: "What we've achieved",
+    title: "Business Model",
+    content: "Multiple revenue streams for sustainable growth",
     bullets: [
-      "Core platform 90% developed",
-      "Beta testing underway",
-      "Key team members hired",
-      "Initial community growing",
-      "Strategic partnerships in discussion"
+      "Subscription Plans",
+      "Enterprise Solutions",
+      "Certification Programs",
+      "Partnership Revenue",
+      "Premium Content"
     ]
   },
   {
-    title: "Go-to-Market Strategy",
-    content: "Our approach to growth",
+    title: "Go-To-Market",
+    content: "Strategic approach to market penetration",
     bullets: [
-      "Content Marketing - High-quality educational content",
-      "Social Media Marketing - Platform engagement",
-      "Affiliate Partnerships - Influencer collaboration",
-      "Paid Advertising - Targeted campaigns"
+      "Content Marketing",
+      "Strategic Partnerships",
+      "Community Building",
+      "Influencer Collaboration",
+      "Educational Events"
     ]
   },
   {
-    title: "Token Utility",
-    content: "Platform Token Integration",
+    title: "Competition",
+    content: "Positioned for market leadership",
     bullets: [
-      "Platform Access - Premium features",
-      "Community Governance - Decision making",
-      "Incentivization - Rewards system",
-      "Staking - Additional benefits"
-    ]
-  },
-  {
-    title: "Financial Highlights",
-    content: "Growth and Revenue",
-    bullets: [
-      "Projected $5M ARR in first year",
-      "70%+ Gross Profit Margin",
-      "Low Customer Acquisition Cost",
-      "100%+ YoY Growth Projection"
-    ]
-  },
-  {
-    title: "Funding Requirements",
-    content: "$1.5M Seed Round",
-    bullets: [
-      "Platform Development - 40%",
-      "Marketing and Sales - 30%",
-      "Team Expansion - 20%",
-      "Operational Costs - 10%"
+      "Comprehensive Solution",
+      "Interactive Learning",
+      "Practical Focus",
+      "Community Emphasis",
+      "Technical Excellence"
     ]
   },
   {
     title: "Our Team",
-    content: "Expert Leadership",
+    content: "Experienced leaders in cryptocurrency and education",
     bullets: [
-      "Experienced Founders",
-      "Expert Developers",
-      "Top Educators",
-      "Seasoned Marketers"
+      "Blockchain Experts",
+      "Education Specialists",
+      "Technical Innovators",
+      "Industry Veterans",
+      "Community Leaders"
+    ]
+  },
+  {
+    title: "Financials",
+    content: "Sustainable growth and profitability",
+    bullets: [
+      "Current ARR: $500K",
+      "Projected Growth: 200% YoY",
+      "Gross Margin: 75%",
+      "CAC: $200",
+      "LTV: $2,000"
+    ]
+  },
+  {
+    title: "Funding Ask",
+    content: "Seeking $5M Series A Investment",
+    bullets: [
+      "Product Development: 40%",
+      "Marketing & Sales: 30%",
+      "Team Expansion: 20%",
+      "Operations: 10%"
     ]
   },
   {
     type: 'call-to-action',
-    title: "Join Us",
-    content: "Be Part of the Future of Crypto Education",
+    title: "Join Our Journey",
+    content: "Be part of the future of crypto education",
     bullets: [
       "Investment Opportunity",
-      "Strategic Partnerships",
-      "Contact: team@sulla.edu",
-      "Start learning today"
+      "Strategic Partnership",
+      "Contact: invest@sulla.io",
+      "Visit: www.sulla.io"
     ]
   }
 ];
