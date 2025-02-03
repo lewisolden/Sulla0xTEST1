@@ -10,6 +10,7 @@ import About from "@/pages/about";
 import Games from "@/pages/games";
 import WalletSimulator from "@/pages/wallet-simulator";
 import Achievements from "@/pages/achievements";
+import Deck from "@/pages/deck";
 // Module 1 Routes
 import Module1Landing from "@/pages/modules/module1";
 import Module1Quiz from "@/pages/modules/module1/quiz";
@@ -53,6 +54,7 @@ function Router() {
       <Route path="/about" component={About} />
       <Route path="/games" component={Games} />
       <Route path="/achievements" component={Achievements} />
+      <Route path="/deck" component={Deck} />
       {/* Module 1 Routes */}
       <Route path="/modules/module1" component={Module1Landing} />
       <Route path="/modules/module1/quiz" component={Module1Quiz} />

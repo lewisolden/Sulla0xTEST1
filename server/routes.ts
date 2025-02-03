@@ -4,6 +4,7 @@ import { db } from "@db";
 import { quizzes, userQuizResponses } from "@db/schema";
 import { eq } from "drizzle-orm";
 import { setupAuth } from "./auth";
+import puppeteer from 'puppeteer';
 
 export function registerRoutes(app: Express): Server {
   // Set up authentication routes
@@ -55,6 +56,49 @@ export function registerRoutes(app: Express): Server {
       });
     } catch (error) {
       res.status(500).json({ message: "Failed to process answer" });
+    }
+  });
+
+  // Download deck as PDF
+  app.get("/api/deck/download", async (req, res) => {
+    try {
+      const browser = await puppeteer.launch({
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
+      });
+      const page = await browser.newPage();
+
+      // Get the full URL of the deck page
+      const host = req.get('host');
+      const protocol = req.protocol;
+      await page.goto(`${protocol}://${host}/deck`, {
+        waitUntil: 'networkidle0'
+      });
+
+      // Wait for content to load
+      await page.waitForSelector('.deck-slide');
+
+      // Generate PDF
+      const pdf = await page.pdf({
+        format: 'A4',
+        printBackground: true,
+        margin: {
+          top: '20px',
+          right: '20px',
+          bottom: '20px',
+          left: '20px'
+        }
+      });
+
+      await browser.close();
+
+      // Send PDF
+      res.contentType('application/pdf');
+      res.setHeader('Content-Disposition', 'attachment; filename=sulla-presentation.pdf');
+      res.send(pdf);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      res.status(500).json({ message: "Failed to generate PDF" });
     }
   });
 
