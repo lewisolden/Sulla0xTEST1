@@ -11,14 +11,23 @@ import {
   Target,
   Globe,
   BarChart,
-    Brain,
-    Trophy,
-    Award,
-    BarChart2,
-    Zap,
-    LineChart,
-    Book,
-    GitBranch,
+  Brain,
+  Trophy,
+  Award,
+  BarChart2,
+  Zap,
+  LineChart,
+  Book,
+  GitBranch,
+  Monitor,
+  Code,
+  Terminal,
+  Users,
+  ArrowRight,
+  Building,
+  Blocks,
+  Lock,
+  CheckCircle,
   type LucideIcon
 } from 'lucide-react';
 
@@ -95,10 +104,10 @@ const problemSlide = <Slide key="problem">
     </p>
     <motion.div className="space-y-4">
       {[
-        "Structured, high-quality educational resources remain fragmented",
-        "Content is often overly technical or unreliable",
-        "Many newcomers struggle to understand the fundamentals",
-        "Experienced users lack clear pathways for advanced learning"
+        { icon: Blocks, text: "Structured, high-quality educational resources remain fragmented" },
+        { icon: Code, text: "Content is often overly technical or unreliable" },
+        { icon: Users, text: "Many newcomers struggle to understand the fundamentals" },
+        { icon: ArrowRight, text: "Experienced users lack clear pathways for advanced learning" }
       ].map((point, index) => (
         <motion.div
           key={index}
@@ -107,8 +116,10 @@ const problemSlide = <Slide key="problem">
           transition={{ delay: index * 0.2 }}
           className="flex items-start gap-4 bg-blue-900/30 p-4 rounded-lg"
         >
-          <div className="h-2 w-2 bg-blue-400 rounded-full mt-2 flex-shrink-0" />
-          <p className="text-lg text-blue-100">{point}</p>
+          <div className="p-2 bg-blue-400/20 rounded-full">
+            <point.icon className="w-5 h-5 text-blue-400" />
+          </div>
+          <p className="text-lg text-blue-100">{point.text}</p>
         </motion.div>
       ))}
     </motion.div>
@@ -536,6 +547,232 @@ const roadmapSlide = <Slide key="roadmap">
   </motion.div>
 </Slide>;
 
+const whatIsBuiltSlide = <Slide key="whats-built">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <div className="flex items-center gap-4 mb-8">
+      <div className="p-3 bg-green-500/20 rounded-lg">
+        <CheckCircle className="w-8 h-8 text-green-400" />
+      </div>
+      <h2 className="text-4xl font-bold text-blue-400">What's Been Built</h2>
+    </div>
+    <div className="space-y-6">
+      <Card className="bg-blue-900/30 p-6">
+        <h3 className="text-2xl font-semibold text-blue-300 mb-4">First Course Launch Success</h3>
+        <div className="space-y-4">
+          {[
+            {
+              icon: Book,
+              title: "Understanding Cryptocurrency",
+              desc: "Evolution of money and digital assets"
+            },
+            {
+              icon: Blocks,
+              title: "Bitcoin & Ethereum Basics",
+              desc: "Deep dive into technology and use cases"
+            },
+            {
+              icon: Lock,
+              title: "Security & Risk Management",
+              desc: "Asset protection and scam prevention"
+            }
+          ].map((module, index) => (
+            <motion.div
+              key={index}
+              initial={{ x: -50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: index * 0.2 }}
+              className="flex items-start gap-4"
+            >
+              <div className="p-2 bg-blue-400/20 rounded-full mt-1">
+                <module.icon className="w-5 h-5 text-blue-400" />
+              </div>
+              <div>
+                <h4 className="text-xl font-semibold text-blue-300 mb-1">{module.title}</h4>
+                <p className="text-blue-100">{module.desc}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </Card>
+
+      <Card className="bg-blue-900/30 p-6">
+        <p className="text-lg text-blue-100 mb-4">
+          This course serves as a proven framework for future course expansion and has been tested with early users, providing valuable data to refine the platform.
+        </p>
+        <p className="text-lg text-blue-100">
+          The entire platform, including the learning management system and course delivery infrastructure, has been built from the ground up using proprietary code. This gives us complete control over the user experience and allows us to rapidly adapt the platform based on user feedback and emerging market needs.
+        </p>
+      </Card>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {[
+          { icon: Monitor, text: "React.js frontend" },
+          { icon: Terminal, text: "Node.js backend" },
+          { icon: Building, text: "PostgreSQL database" },
+          { icon: Code, text: "TypeScript" },
+          { icon: Blocks, text: "Blockchain integration" }
+        ].map((tech, index) => (
+          <motion.div
+            key={index}
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: index * 0.1 }}
+            className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-4 rounded-lg flex items-center gap-3"
+          >
+            <tech.icon className="w-5 h-5 text-blue-400" />
+            <span className="text-blue-100">{tech.text}</span>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  </motion.div>
+</Slide>;
+
+const goToMarketSlide = <Slide key="go-to-market">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <div className="flex items-center gap-4 mb-8">
+      <div className="p-3 bg-blue-500/20 rounded-lg">
+        <Rocket className="w-8 h-8 text-blue-400" />
+      </div>
+      <h2 className="text-4xl font-bold text-blue-400">Go-to-Market Strategy</h2>
+    </div>
+    <div className="space-y-6">
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.2 }}
+        className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+      >
+        <h3 className="text-2xl font-semibold text-blue-300 mb-4">Phase 1: Community Growth (0-6 Months)</h3>
+        <ul className="space-y-3">
+          {[
+            "Leverage Web3 Twitter, Discord, and Telegram for viral adoption",
+            "Run interactive quizzes & NFT rewards to engage users",
+            "YouTube & influencer partnerships for educational content distribution",
+            "SEO & content strategy for long-term organic traffic"
+          ].map((item, index) => (
+            <motion.li
+              key={index}
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.3 + index * 0.1 }}
+              className="flex items-center gap-3 text-blue-100"
+            >
+              <ArrowRight className="w-4 h-4 text-blue-400 flex-shrink-0" />
+              {item}
+            </motion.li>
+          ))}
+        </ul>
+      </motion.div>
+
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.4 }}
+        className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+      >
+        <h3 className="text-2xl font-semibold text-blue-300 mb-4">Phase 2: Pre-Monetization & User Scaling (6-12 Months)</h3>
+        <ul className="space-y-3">
+          {[
+            "Expand AI learning personalization with increased user data",
+            "Optimize onboarding experience for engagement and retention",
+            "Strengthen partnerships with crypto projects, DAOs, and institutions"
+          ].map((item, index) => (
+            <motion.li
+              key={index}
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.5 + index * 0.1 }}
+              className="flex items-center gap-3 text-blue-100"
+            >
+              <ArrowRight className="w-4 h-4 text-blue-400 flex-shrink-0" />
+              {item}
+            </motion.li>
+          ))}
+        </ul>
+      </motion.div>
+    </div>
+  </motion.div>
+</Slide>;
+
+const growthExpansionSlide = <Slide key="growth-expansion">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <div className="flex items-center gap-4 mb-8">
+      <div className="p-3 bg-green-500/20 rounded-lg">
+        <BarChart2 className="w-8 h-8 text-green-400" />
+      </div>
+      <h2 className="text-4xl font-bold text-blue-400">Growth & Expansion Strategy</h2>
+    </div>
+    <div className="space-y-6">
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.2 }}
+        className="bg-gradient-tobr from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+      >
+        <h3 className="text-2xl font-semibold text-blue-300 mb-4">Phase 3: Monetization & Scaling (12-18 Months)</h3>
+        <ul className="space-y-3">
+          {[
+            "Launch paid subscriptions & B2B deals with exchanges & fintechs",
+            "Secure institutional licensing with universities & corporate training programs",
+            "Expand platform features, AI-driven learning tools, and gamification"
+          ].map((item, index) => (
+            <motion.li
+              key={index}
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.3 + index * 0.1 }}
+              className="flex items-center gap-3 text-blue-100"
+            >
+              <Building className="w-4 h-4 text-blue-400 flex-shrink-0" />
+              {item}
+            </motion.li>
+          ))}
+        </ul>
+      </motion.div>
+
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.4 }}
+        className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+      >
+        <h3 className="text-2xl font-semibold text-blue-300 mb-4">Phase 4: Global Expansion (18-24 Months)</h3>
+        <ul className="space-y-3">
+          {[
+            "Multi-language support for Europe, LATAM, and Asia",
+            "Partnerships with blockchain-based job networks",
+            "Web3 education DAO for decentralized governance & course development"
+          ].map((item, index) => (
+            <motion.li
+              key={index}
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.5 + index * 0.1 }}
+              className="flex items-center gap-3 text-blue-100"
+            >
+              <Globe className="w-4 h-4 text-blue-400 flex-shrink-0" />
+              {item}
+            </motion.li>
+          ))}
+        </ul>
+      </motion.div>
+    </div>
+  </motion.div>
+</Slide>;
+
 const slides = [
   titleSlide,
   problemSlide,
@@ -547,7 +784,10 @@ const slides = [
   productOverviewSlide,
   interactiveToolsSlide,
   futureFinanceSlide,
-  roadmapSlide
+  roadmapSlide,
+  whatIsBuiltSlide,
+  goToMarketSlide,
+  growthExpansionSlide
 ];
 
 const DeckPage: React.FC = () => {
