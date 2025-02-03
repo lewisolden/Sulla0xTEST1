@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -18,7 +19,7 @@ import {
   Award,
   UserCheck,
   Zap,
-  LucideIcon
+  type LucideIcon
 } from "lucide-react";
 import html2pdf from 'html2pdf.js';
 import { useToast } from "@/hooks/use-toast";
@@ -65,7 +66,7 @@ interface Slide {
 }
 
 // Logo Component
-const Logo = ({ className = '' }: { className?: string }) => (
+const Logo: React.FC<{ className?: string }> = ({ className = '' }) => (
   <svg
     viewBox="0 0 200 50"
     className={`h-10 w-auto ${className}`}
@@ -305,7 +306,7 @@ const slides: Slide[] = [
   }
 ];
 
-export default function DeckPage() {
+const DeckPage: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isDownloading, setIsDownloading] = useState(false);
   const { toast } = useToast();
@@ -329,147 +330,148 @@ export default function DeckPage() {
   const downloadPDF = async () => {
     try {
       setIsDownloading(true);
+      const response = await fetch('/api/deck/download');
 
-      const container = document.createElement('div');
-      container.style.width = '1920px';
-      container.style.position = 'absolute';
-      container.style.left = '-9999px';
-      document.body.appendChild(container);
-
-      for (const slide of slides) {
-        const slideDiv = document.createElement('div');
-        slideDiv.className = 'page-break-after bg-gradient-to-br from-blue-900/95 to-black/95 p-12 text-white';
-        slideDiv.style.height = '1080px';
-
-        const Icon = slide.icon;
-
-        // Create a temporary div to render the icon
-        let iconSvg = '';
-        if (Icon) {
-          const tempDiv = document.createElement('div');
-          const iconElement = document.createElement('div');
-          iconElement.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>`;
-          tempDiv.appendChild(iconElement);
-          iconSvg = tempDiv.innerHTML;
-        }
-
-        slideDiv.innerHTML = `
-          <div class="flex items-center gap-4 mb-8">
-            ${Icon ? `<div class="p-3 bg-blue-500/20 rounded-lg">
-              ${iconSvg}
-            </div>` : ''}
-            <h2 class="text-4xl font-bold text-blue-400">${slide.title}</h2>
-          </div>
-          <p class="text-xl mb-8 text-blue-200">${slide.content}</p>
-          ${slide.timeline ? `
-            <div class="grid grid-cols-2 gap-6 mb-8">
-              ${slide.timeline.map(item => `
-                <div class="bg-blue-500/10 p-6 rounded-lg">
-                  <h3 class="text-xl font-semibold text-blue-300 mb-4">${item.quarter || item.phase}</h3>
-                  <ul class="space-y-2">
-                    ${Array.isArray(item.items) ? 
-                      item.items.map(i => `<li class="text-blue-100">• ${i}</li>`).join('') :
-                      `<li class="text-blue-100">• ${item.milestone}</li>
-                       <li class="text-blue-100">• ${item.goals}</li>`
-                    }
-                  </ul>
-                </div>
-              `).join('')}
-            </div>
-          ` : ''}
-          ${slide.features ? `
-            <div class="grid grid-cols-2 gap-6 mb-8">
-              ${slide.features.map(feature => `
-                <div class="flex items-start gap-4 bg-blue-500/10 p-6 rounded-lg">
-                  <div class="p-2 bg-blue-500/20 rounded-lg">
-                    ${iconSvg}
-                  </div>
-                  <div>
-                    <h3 class="text-lg font-semibold text-blue-300">${feature.title}</h3>
-                    <p class="text-blue-100">${feature.desc}</p>
-                  </div>
-                </div>
-              `).join('')}
-            </div>
-          ` : ''}
-          ${slide.funding ? `
-            <div class="space-y-4">
-              ${slide.funding.map(item => `
-                <div class="flex items-center justify-between bg-blue-500/10 p-4 rounded-lg">
-                  <div class="flex-1">
-                    <h3 class="font-semibold text-blue-300">${item.category}</h3>
-                    <p class="text-sm text-blue-100">${item.purpose}</p>
-                  </div>
-                  <div class="text-xl font-bold text-blue-400">${item.amount}</div>
-                </div>
-              `).join('')}
-              <div class="flex justify-end mt-4">
-                <div class="text-2xl font-bold text-blue-400">Total: ${slide.totalFunding}</div>
-              </div>
-            </div>
-          ` : ''}
-          ${slide.team ? `
-            <div class="grid grid-cols-2 gap-6">
-              ${slide.team.map(member => `
-                <div class="bg-blue-500/10 p-6 rounded-lg">
-                  <h3 class="text-xl font-semibold text-blue-300 mb-2">${member.role}</h3>
-                  <p class="text-blue-100">${member.description}</p>
-                </div>
-              `).join('')}
-            </div>
-          ` : ''}
-          ${slide.bullets && slide.bullets.length > 0 ? `
-            <ul class="space-y-4 text-left w-full max-w-3xl">
-              ${slide.bullets.map(bullet => `
-                <li class="flex items-center gap-3 text-lg">
-                  <div class="h-2 w-2 bg-blue-400 rounded-full flex-shrink-0"></div>
-                  <span class="text-blue-100">${bullet}</span>
-                </li>
-              `).join('')}
-            </ul>
-          ` : ''}
-        `;
-        container.appendChild(slideDiv);
+      if (!response.ok) {
+        throw new Error('Failed to generate PDF');
       }
 
-      const opt = {
-        margin: 0,
-        filename: 'sulla-presentation.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { 
-          scale: 2,
-          letterRendering: true,
-          useCORS: true,
-          logging: false
-        },
-        jsPDF: { 
-          unit: 'px', 
-          format: [1920, 1080], 
-          orientation: 'landscape',
-          compress: true
-        }
-      };
-
-      await html2pdf().from(container).set(opt).save();
-
-      document.body.removeChild(container);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'sulla-presentation.pdf';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
 
       toast({
         title: "Success",
         description: "Presentation PDF has been downloaded",
         variant: "default",
       });
-
     } catch (error) {
-      console.error('Error generating PDF:', error);
+      console.error('Error downloading PDF:', error);
       toast({
         title: "Error",
-        description: "Failed to generate PDF. Please try again.",
+        description: "Failed to download PDF. Please try again.",
         variant: "destructive",
       });
     } finally {
       setIsDownloading(false);
     }
+  };
+
+  const renderSlideContent = (slide: Slide) => {
+    const Icon = slide.icon;
+
+    return (
+      <div className="w-full">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center gap-4 mb-8"
+        >
+          {Icon && (
+            <div className="p-3 bg-blue-500/20 rounded-lg">
+              <Icon className="w-8 h-8 text-blue-400" />
+            </div>
+          )}
+          <h2 className="text-4xl font-bold text-blue-400">
+            {slide.title}
+          </h2>
+        </motion.div>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="text-xl mb-8 text-blue-200"
+        >
+          {slide.content}
+        </motion.p>
+
+        {slide.timeline && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="grid grid-cols-2 gap-6 mb-8"
+          >
+            {slide.timeline.map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 + index * 0.1 }}
+                className="bg-blue-500/10 p-6 rounded-lg"
+              >
+                <h3 className="text-xl font-semibold text-blue-300 mb-4">
+                  {item.quarter || item.phase}
+                </h3>
+                <ul className="space-y-2">
+                  {item.items ? (
+                    item.items.map((i, idx) => (
+                      <motion.li
+                        key={idx}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.5 + idx * 0.1 }}
+                        className="text-blue-100"
+                      >
+                        • {i}
+                      </motion.li>
+                    ))
+                  ) : (
+                    <>
+                      <motion.li
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.5 }}
+                        className="text-blue-100"
+                      >
+                        • {item.milestone}
+                      </motion.li>
+                      <motion.li
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.6 }}
+                        className="text-blue-100"
+                      >
+                        • {item.goals}
+                      </motion.li>
+                    </>
+                  )}
+                </ul>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+
+        {slide.bullets && slide.bullets.length > 0 && (
+          <motion.ul
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="space-y-4 text-left w-full max-w-3xl mx-auto"
+          >
+            {slide.bullets.map((bullet, index) => (
+              <motion.li
+                key={index}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 + index * 0.1 }}
+                className="flex items-center gap-3 text-lg"
+              >
+                <div className="h-2 w-2 bg-blue-400 rounded-full flex-shrink-0" />
+                <span className="text-blue-100">{bullet}</span>
+              </motion.li>
+            ))}
+          </motion.ul>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -528,198 +530,7 @@ export default function DeckPage() {
                     </motion.div>
                   </>
                 ) : (
-                  <div className="w-full">
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="flex items-center gap-4 mb-8"
-                    >
-                      {slides[currentSlide].icon && (
-                        <div className="p-3 bg-blue-500/20 rounded-lg">
-                          {React.createElement(slides[currentSlide].icon, {
-                            className: "w-8 h-8 text-blue-400"
-                          })}
-                        </div>
-                      )}
-                      <h2 className="text-4xl font-bold text-blue-400">
-                        {slides[currentSlide].title}
-                      </h2>
-                    </motion.div>
-
-                    <motion.p
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.2 }}
-                      className="text-xl mb-8 text-blue-200"
-                    >
-                      {slides[currentSlide].content}
-                    </motion.p>
-
-                    {slides[currentSlide].timeline && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3 }}
-                        className="grid grid-cols-2 gap-6 mb-8"
-                      >
-                        {slides[currentSlide].timeline.map((item, index) => (
-                          <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.4 + index * 0.1 }}
-                            className="bg-blue-500/10 p-6 rounded-lg"
-                          >
-                            <h3 className="text-xl font-semibold text-blue-300 mb-4">
-                              {item.quarter || item.phase}
-                            </h3>
-                            <ul className="space-y-2">
-                              {item.items ? (
-                                item.items.map((i, idx) => (
-                                  <motion.li
-                                    key={idx}
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: 0.5 + idx * 0.1 }}
-                                    className="text-blue-100"
-                                  >
-                                    • {i}
-                                  </motion.li>
-                                ))
-                              ) : (
-                                <>
-                                  <motion.li
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: 0.5 }}
-                                    className="text-blue-100"
-                                  >
-                                    • {item.milestone}
-                                  </motion.li>
-                                  <motion.li
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: 0.6 }}
-                                    className="text-blue-100"
-                                  >
-                                    • {item.goals}
-                                  </motion.li>
-                                </>
-                              )}
-                            </ul>
-                          </motion.div>
-                        ))}
-                      </motion.div>
-                    )}
-
-                    {slides[currentSlide].features && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3 }}
-                        className="grid grid-cols-2 gap-6 mb-8"
-                      >
-                        {slides[currentSlide].features.map((feature, index) => (
-                          <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.4 + index * 0.1 }}
-                            className="flex items-start gap-4 bg-blue-500/10 p-6 rounded-lg"
-                          >
-                            <div className="p-2 bg-blue-500/20 rounded-lg">
-                              {React.createElement(feature.icon, {
-                                className: "w-6 h-6 text-blue-400"
-                              })}
-                            </div>
-                            <div>
-                              <h3 className="text-lg font-semibold text-blue-300">{feature.title}</h3>
-                              <p className="text-blue-100">{feature.desc}</p>
-                            </div>
-                          </motion.div>
-                        ))}
-                      </motion.div>
-                    )}
-
-                    {slides[currentSlide].funding && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3 }}
-                        className="space-y-4"
-                      >
-                        {slides[currentSlide].funding.map((item, index) => (
-                          <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.4 + index * 0.1 }}
-                            className="flex items-center justify-between bg-blue-500/10 p-4 rounded-lg"
-                          >
-                            <div className="flex-1">
-                              <h3 className="font-semibold text-blue-300">{item.category}</h3>
-                              <p className="text-sm text-blue-100">{item.purpose}</p>
-                            </div>
-                            <div className="text-xl font-bold text-blue-400">{item.amount}</div>
-                          </motion.div>
-                        ))}
-                        <motion.div
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ delay: 0.6 }}
-                          className="flex justify-end mt-4"
-                        >
-                          <div className="text-2xl font-bold text-blue-400">
-                            Total: {slides[currentSlide].totalFunding}
-                          </div>
-                        </motion.div>
-                      </motion.div>
-                    )}
-
-                    {slides[currentSlide].team && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3 }}
-                        className="grid grid-cols-2 gap-6"
-                      >
-                        {slides[currentSlide].team.map((member, index) => (
-                          <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.4 + index * 0.1 }}
-                            className="bg-blue-500/10 p-6 rounded-lg"
-                          >
-                            <h3 className="text-xl font-semibold text-blue-300 mb-2">{member.role}</h3>
-                            <p className="text-blue-100">{member.description}</p>
-                          </motion.div>
-                        ))}
-                      </motion.div>
-                    )}
-
-                    {slides[currentSlide].bullets && slides[currentSlide].bullets.length > 0 && (
-                      <motion.ul
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3 }}
-                        className="space-y-4 text-left w-full max-w-3xl mx-auto"
-                      >
-                        {slides[currentSlide].bullets.map((bullet, index) => (
-                          <motion.li
-                            key={index}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.4 + index * 0.1 }}
-                            className="flex items-center gap-3 text-lg"
-                          >
-                            <div className="h-2 w-2 bg-blue-400 rounded-full flex-shrink-0" />
-                            <span className="text-blue-100">{bullet}</span>
-                          </motion.li>
-                        ))}
-                      </motion.ul>
-                    )}
-                  </div>
+                  renderSlideContent(slides[currentSlide])
                 )}
               </Card>
             </motion.div>
@@ -752,4 +563,6 @@ export default function DeckPage() {
       </div>
     </div>
   );
-}
+};
+
+export default DeckPage;
