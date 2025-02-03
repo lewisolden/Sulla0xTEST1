@@ -2,12 +2,70 @@ import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ChevronLeft, ChevronRight, Download } from "lucide-react";
+import { 
+  ChevronLeft, 
+  ChevronRight, 
+  Download,
+  BookOpen,
+  Target,
+  Users,
+  BarChart2,
+  Layers,
+  Code2,
+  TrendingUp,
+  DollarSign,
+  Rocket,
+  Award,
+  UserCheck,
+  Zap,
+  LucideIcon
+} from "lucide-react";
 import html2pdf from 'html2pdf.js';
 import { useToast } from "@/hooks/use-toast";
 
+// Types
+interface TimelineItem {
+  quarter?: string;
+  phase?: string;
+  items?: string[];
+  milestone?: string;
+  goals?: string;
+}
+
+interface Feature {
+  icon: LucideIcon;
+  title: string;
+  desc: string;
+}
+
+interface FundingItem {
+  category: string;
+  amount: string;
+  purpose: string;
+}
+
+interface TeamMember {
+  role: string;
+  description: string;
+}
+
+interface Slide {
+  type?: 'title' | 'call-to-action';
+  title: string;
+  content: string;
+  icon?: LucideIcon;
+  bullets?: string[];
+  timeline?: TimelineItem[];
+  features?: Feature[];
+  funding?: FundingItem[];
+  totalFunding?: string;
+  team?: TeamMember[];
+  subsections?: { title: string; content: string; }[];
+  marketData?: { title: string; items: string[]; };
+}
+
 // Logo Component
-const Logo = ({ className = '' }) => (
+const Logo = ({ className = '' }: { className?: string }) => (
   <svg
     viewBox="0 0 200 50"
     className={`h-10 w-auto ${className}`}
@@ -26,153 +84,223 @@ const Logo = ({ className = '' }) => (
   </svg>
 );
 
-const slides = [
+const slides: Slide[] = [
   {
     type: 'title',
-    title: "Our Vision",
-    content: "A Comprehensive Pitch Deck for Sulla",
-    bullets: ["Next-Generation Crypto Education Platform", "2024"]
+    title: "Sulla Pitch Deck",
+    content: "Next-Generation Crypto Education Platform",
+    icon: Target,
+    bullets: []
   },
   {
     title: "Introduction",
-    content: "Sulla is revolutionizing cryptocurrency education through an interactive, comprehensive learning platform.",
+    content: "The cryptocurrency industry is rapidly evolving, yet structured, high-quality educational resources remain fragmented, overly technical, or unreliable. Many newcomers struggle to understand the fundamentals, and experienced users lack clear pathways for advanced learning.",
+    icon: BookOpen,
+    subsections: [
+      {
+        title: "The Solution",
+        content: "Sulla is a next-generation crypto education platform that bridges this gap by offering interactive, structured, and engaging courses tailored for beginners, developers, and institutions."
+      }
+    ],
     bullets: [
-      "Immersive Learning Experience",
-      "Expert-Led Content",
-      "Practical Applications",
-      "Community-Driven Growth",
-      "Advanced Technology Stack"
+      "Adaptive Learning: AI-driven personalization tailors content based on individual learning styles, skill levels, and progress",
+      "Intelligent Course Recommendations: Machine learning algorithms suggest the most relevant courses, exercises, and additional resources",
+      "Modular Learning: Covers Bitcoin, Ethereum, DeFi, Smart Contracts, Security, and more",
+      "Interactive Experience: Gamified quizzes, real-world scenarios, and NFT-based certifications",
+      "Freemium Model: Free introductory content, with premium offerings for deeper knowledge"
     ]
   },
   {
-    title: "Market Problem",
-    content: "The cryptocurrency education landscape is fragmented and ineffective.",
+    title: "Market Opportunity",
+    content: "Why Now?",
+    icon: TrendingUp,
     bullets: [
-      "Lack of structured learning paths",
-      "Limited practical experience",
-      "Poor quality control",
-      "High entry barriers",
-      "Insufficient support systems"
+      "Global Crypto Adoption: Over 420 million crypto users worldwide (2024)",
+      "Institutional Interest: Traditional finance is embracing blockchain; 80% of major banks are exploring digital assets",
+      "Lack of Quality Education: Most educational resources are either too technical or outdated, leading to confusion and security risks"
+    ],
+    marketData: {
+      title: "Market Size",
+      items: [
+        "Crypto Education Market Value (2024): $1.5B+ and growing",
+        "Projected Growth: Expected to exceed $5B by 2028 as Web3 adoption accelerates",
+        "Target Audience: Crypto enthusiasts, developers, traders, and fintech institutions"
+      ]
+    }
+  },
+  {
+    title: "Product Overview",
+    content: "What Makes Sulla Unique?",
+    icon: Layers,
+    features: [
+      {
+        icon: BookOpen,
+        title: "Comprehensive Course Library",
+        desc: "Covers Bitcoin, Ethereum, DeFi, NFTs, DAOs, Security, Trading, and more"
+      },
+      {
+        icon: Zap,
+        title: "Adaptive Learning & AI Personalization",
+        desc: "AI algorithms analyze user behavior and dynamically adjust difficulty"
+      },
+      {
+        icon: Target,
+        title: "Gamified Learning",
+        desc: "Engaging quizzes, skill challenges, and interactive simulations"
+      },
+      {
+        icon: Award,
+        title: "NFT-Based Certifications",
+        desc: "Blockchain-verified credentials for job applications"
+      },
+      {
+        icon: Users,
+        title: "B2B Integration",
+        desc: "White-label learning solutions for fintech companies"
+      }
     ]
   },
   {
-    title: "Our Solution",
-    content: "A comprehensive platform that combines theory, practice, and community.",
-    bullets: [
-      "Interactive Learning Modules",
-      "Real-World Applications",
-      "Guided Progress System",
-      "Community Support",
-      "Expert Mentorship"
+    title: "Product Roadmap",
+    content: "Next 12 Months",
+    icon: Rocket,
+    timeline: [
+      {
+        quarter: "Q1",
+        items: [
+          "Expand Course Library - Launch advanced DeFi courses",
+          "AI-Powered Learning Tools - Adaptive content suggestions"
+        ]
+      },
+      {
+        quarter: "Q2",
+        items: [
+          "Onboard Institutional Partners - Licensing deals",
+          "Gamification Expansion - Leaderboards and NFT achievements"
+        ]
+      }
     ]
   },
   {
-    title: "Platform Features",
-    content: "Key components that make Sulla unique",
+    title: "What's Been Built to Date?",
+    content: "First Course: Introduction to Cryptocurrency",
+    icon: Code2,
     bullets: [
-      "Structured Curriculum",
-      "Practice Environments",
-      "Progress Tracking",
-      "Community Integration",
-      "Professional Certification"
+      "Understanding Cryptocurrency - The evolution of money and digital assets",
+      "Bitcoin & Ethereum Basics - Deep dive into technology and use cases",
+      "Security & Risk Management - Protecting assets and recognizing scams",
+      "Practical Applications - Hands-on exercises and quizzes",
+      "Interactive Assessments - Gamified quizzes with instant feedback"
     ]
   },
   {
-    title: "Technology",
-    content: "Built on cutting-edge technology for scalability and performance",
-    bullets: [
-      "Blockchain Integration",
-      "AI-Powered Learning",
-      "Cloud Infrastructure",
-      "Mobile Optimization",
-      "Real-Time Analytics"
+    title: "Traction & Milestones",
+    content: "Our primary goal in the first 12 months is to onboard as many users as possible, as more user data improves our AI capabilities.",
+    icon: BarChart2,
+    timeline: [
+      {
+        phase: "0-12M",
+        milestone: "Community Growth",
+        goals: "100K users, 10K Discord members"
+      },
+      {
+        phase: "12-18M",
+        milestone: "Monetization & Revenue",
+        goals: "First $500K revenue from subscriptions & B2B deals"
+      },
+      {
+        phase: "18-24M",
+        milestone: "Institutional Adoption",
+        goals: "500K+ users, major fintech & university partnerships"
+      },
+      {
+        phase: "24M+",
+        milestone: "Global Expansion",
+        goals: "1M users, $5M+ ARR"
+      }
     ]
   },
   {
-    title: "Market Size",
-    content: "A rapidly growing market with significant potential",
-    bullets: [
-      "$2.3B Crypto Education Market",
-      "300M+ Potential Users",
-      "50% YoY Growth",
-      "Global Reach",
-      "Expanding Use Cases"
-    ]
+    title: "Funding Requirements",
+    content: "Investment Breakdown",
+    icon: DollarSign,
+    funding: [
+      {
+        category: "Content Expansion",
+        amount: "$50K",
+        purpose: "Develop additional courses and certifications"
+      },
+      {
+        category: "Marketing & User Acquisition",
+        amount: "$50K",
+        purpose: "Build brand awareness and onboard early adopters"
+      },
+      {
+        category: "Business Development",
+        amount: "$50K",
+        purpose: "Secure partnerships and institutional deals"
+      },
+      {
+        category: "Platform Enhancements",
+        amount: "$100K",
+        purpose: "Improve AI learning algorithms and gamification features"
+      },
+      {
+        category: "Legal & Compliance",
+        amount: "$50K",
+        purpose: "Ensure regulatory compliance"
+      },
+      {
+        category: "Operational Costs",
+        amount: "$200K",
+        purpose: "Support core team and operations"
+      },
+      {
+        category: "Security & Platform Maintenance",
+        amount: "$100K",
+        purpose: "Protect user data and enhance system resilience"
+      },
+      {
+        category: "Miscellaneous & Buffer Fund",
+        amount: "$50K",
+        purpose: "Provide flexibility for unforeseen needs"
+      }
+    ],
+    totalFunding: "$650K"
   },
   {
-    title: "Business Model",
-    content: "Multiple revenue streams for sustainable growth",
-    bullets: [
-      "Subscription Plans",
-      "Enterprise Solutions",
-      "Certification Programs",
-      "Partnership Revenue",
-      "Premium Content"
-    ]
-  },
-  {
-    title: "Go-To-Market",
-    content: "Strategic approach to market penetration",
-    bullets: [
-      "Content Marketing",
-      "Strategic Partnerships",
-      "Community Building",
-      "Influencer Collaboration",
-      "Educational Events"
-    ]
-  },
-  {
-    title: "Competition",
-    content: "Positioned for market leadership",
-    bullets: [
-      "Comprehensive Solution",
-      "Interactive Learning",
-      "Practical Focus",
-      "Community Emphasis",
-      "Technical Excellence"
-    ]
-  },
-  {
-    title: "Our Team",
-    content: "Experienced leaders in cryptocurrency and education",
-    bullets: [
-      "Blockchain Experts",
-      "Education Specialists",
-      "Technical Innovators",
-      "Industry Veterans",
-      "Community Leaders"
-    ]
-  },
-  {
-    title: "Financials",
-    content: "Sustainable growth and profitability",
-    bullets: [
-      "Current ARR: $500K",
-      "Projected Growth: 200% YoY",
-      "Gross Margin: 75%",
-      "CAC: $200",
-      "LTV: $2,000"
-    ]
-  },
-  {
-    title: "Funding Ask",
-    content: "Seeking $5M Series A Investment",
-    bullets: [
-      "Product Development: 40%",
-      "Marketing & Sales: 30%",
-      "Team Expansion: 20%",
-      "Operations: 10%"
+    title: "The Team",
+    content: "Expert Leadership Team",
+    icon: UserCheck,
+    team: [
+      {
+        role: "Founder & CEO",
+        description: "Web3 entrepreneur with fintech & education expertise"
+      },
+      {
+        role: "CTO",
+        description: "Blockchain developer & AI specialist"
+      },
+      {
+        role: "Head of Content",
+        description: "Crypto educator & research analyst"
+      },
+      {
+        role: "Marketing & Growth Lead",
+        description: "Web3 community builder & digital strategist"
+      }
     ]
   },
   {
     type: 'call-to-action',
-    title: "Join Our Journey",
-    content: "Be part of the future of crypto education",
+    title: "Call to Action",
+    content: "Join us in revolutionizing crypto education",
+    icon: Zap,
     bullets: [
-      "Investment Opportunity",
-      "Strategic Partnership",
-      "Contact: invest@sulla.io",
-      "Visit: www.sulla.io"
+      "Join us in revolutionizing crypto education",
+      "Seeking investors, partners, and early adopters",
+      "Let's connect to discuss funding & strategic collaborations",
+      "Contact: [Your Email] | Twitter: @SullaCrypto | Website: [Your Website]"
     ]
   }
 ];
@@ -213,12 +341,86 @@ export default function DeckPage() {
         slideDiv.className = 'page-break-after bg-gradient-to-br from-blue-900/95 to-black/95 p-12 text-white';
         slideDiv.style.height = '1080px';
 
+        const Icon = slide.icon;
+
+        // Create a temporary div to render the icon
+        let iconSvg = '';
+        if (Icon) {
+          const tempDiv = document.createElement('div');
+          const iconElement = document.createElement('div');
+          iconElement.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>`;
+          tempDiv.appendChild(iconElement);
+          iconSvg = tempDiv.innerHTML;
+        }
+
         slideDiv.innerHTML = `
-          <h2 class="text-4xl font-bold mb-8 text-blue-400">${slide.title}</h2>
+          <div class="flex items-center gap-4 mb-8">
+            ${Icon ? `<div class="p-3 bg-blue-500/20 rounded-lg">
+              ${iconSvg}
+            </div>` : ''}
+            <h2 class="text-4xl font-bold text-blue-400">${slide.title}</h2>
+          </div>
           <p class="text-xl mb-8 text-blue-200">${slide.content}</p>
+          ${slide.timeline ? `
+            <div class="grid grid-cols-2 gap-6 mb-8">
+              ${slide.timeline.map(item => `
+                <div class="bg-blue-500/10 p-6 rounded-lg">
+                  <h3 class="text-xl font-semibold text-blue-300 mb-4">${item.quarter || item.phase}</h3>
+                  <ul class="space-y-2">
+                    ${Array.isArray(item.items) ? 
+                      item.items.map(i => `<li class="text-blue-100">• ${i}</li>`).join('') :
+                      `<li class="text-blue-100">• ${item.milestone}</li>
+                       <li class="text-blue-100">• ${item.goals}</li>`
+                    }
+                  </ul>
+                </div>
+              `).join('')}
+            </div>
+          ` : ''}
+          ${slide.features ? `
+            <div class="grid grid-cols-2 gap-6 mb-8">
+              ${slide.features.map(feature => `
+                <div class="flex items-start gap-4 bg-blue-500/10 p-6 rounded-lg">
+                  <div class="p-2 bg-blue-500/20 rounded-lg">
+                    ${iconSvg}
+                  </div>
+                  <div>
+                    <h3 class="text-lg font-semibold text-blue-300">${feature.title}</h3>
+                    <p class="text-blue-100">${feature.desc}</p>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          ` : ''}
+          ${slide.funding ? `
+            <div class="space-y-4">
+              ${slide.funding.map(item => `
+                <div class="flex items-center justify-between bg-blue-500/10 p-4 rounded-lg">
+                  <div class="flex-1">
+                    <h3 class="font-semibold text-blue-300">${item.category}</h3>
+                    <p class="text-sm text-blue-100">${item.purpose}</p>
+                  </div>
+                  <div class="text-xl font-bold text-blue-400">${item.amount}</div>
+                </div>
+              `).join('')}
+              <div class="flex justify-end mt-4">
+                <div class="text-2xl font-bold text-blue-400">Total: ${slide.totalFunding}</div>
+              </div>
+            </div>
+          ` : ''}
+          ${slide.team ? `
+            <div class="grid grid-cols-2 gap-6">
+              ${slide.team.map(member => `
+                <div class="bg-blue-500/10 p-6 rounded-lg">
+                  <h3 class="text-xl font-semibold text-blue-300 mb-2">${member.role}</h3>
+                  <p class="text-blue-100">${member.description}</p>
+                </div>
+              `).join('')}
+            </div>
+          ` : ''}
           ${slide.bullets && slide.bullets.length > 0 ? `
-            <ul class="text-left space-y-4 w-full max-w-3xl">
-              ${slide.bullets.map((bullet, i) => `
+            <ul class="space-y-4 text-left w-full max-w-3xl">
+              ${slide.bullets.map(bullet => `
                 <li class="flex items-center gap-3 text-lg">
                   <div class="h-2 w-2 bg-blue-400 rounded-full flex-shrink-0"></div>
                   <span class="text-blue-100">${bullet}</span>
@@ -304,35 +506,220 @@ export default function DeckPage() {
                 {slides[currentSlide].type === 'title' ? (
                   <>
                     <Logo className="text-white h-16 w-auto mb-8" />
-                    <h2 className="text-4xl font-bold mb-8 text-blue-400">
-                      {slides[currentSlide].content}
-                    </h2>
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      <h2 className="text-4xl font-bold mb-4 text-blue-400">
+                        {slides[currentSlide].content}
+                      </h2>
+                      {slides[currentSlide].bullets?.map((bullet, index) => (
+                        <motion.p
+                          key={index}
+                          className="text-xl text-blue-200"
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.3 + index * 0.1 }}
+                        >
+                          {bullet}
+                        </motion.p>
+                      ))}
+                    </motion.div>
                   </>
                 ) : (
-                  <>
-                    <h2 className="text-4xl font-bold mb-8 text-blue-400">
-                      {slides[currentSlide].title}
-                    </h2>
-                    <p className="text-xl mb-8 text-blue-200">
+                  <div className="w-full">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="flex items-center gap-4 mb-8"
+                    >
+                      {slides[currentSlide].icon && (
+                        <div className="p-3 bg-blue-500/20 rounded-lg">
+                          {React.createElement(slides[currentSlide].icon, {
+                            className: "w-8 h-8 text-blue-400"
+                          })}
+                        </div>
+                      )}
+                      <h2 className="text-4xl font-bold text-blue-400">
+                        {slides[currentSlide].title}
+                      </h2>
+                    </motion.div>
+
+                    <motion.p
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.2 }}
+                      className="text-xl mb-8 text-blue-200"
+                    >
                       {slides[currentSlide].content}
-                    </p>
-                  </>
-                )}
-                {slides[currentSlide].bullets && slides[currentSlide].bullets.length > 0 && (
-                  <ul className="text-left space-y-4 w-full max-w-3xl">
-                    {slides[currentSlide].bullets.map((bullet, index) => (
-                      <motion.li
-                        key={index}
-                        initial={{ opacity: 0, x: 50 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="flex items-center gap-3 text-lg"
+                    </motion.p>
+
+                    {slides[currentSlide].timeline && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="grid grid-cols-2 gap-6 mb-8"
                       >
-                        <div className="h-2 w-2 bg-blue-400 rounded-full flex-shrink-0" />
-                        <span className="text-blue-100">{bullet}</span>
-                      </motion.li>
-                    ))}
-                  </ul>
+                        {slides[currentSlide].timeline.map((item, index) => (
+                          <motion.div
+                            key={index}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.4 + index * 0.1 }}
+                            className="bg-blue-500/10 p-6 rounded-lg"
+                          >
+                            <h3 className="text-xl font-semibold text-blue-300 mb-4">
+                              {item.quarter || item.phase}
+                            </h3>
+                            <ul className="space-y-2">
+                              {item.items ? (
+                                item.items.map((i, idx) => (
+                                  <motion.li
+                                    key={idx}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.5 + idx * 0.1 }}
+                                    className="text-blue-100"
+                                  >
+                                    • {i}
+                                  </motion.li>
+                                ))
+                              ) : (
+                                <>
+                                  <motion.li
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.5 }}
+                                    className="text-blue-100"
+                                  >
+                                    • {item.milestone}
+                                  </motion.li>
+                                  <motion.li
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.6 }}
+                                    className="text-blue-100"
+                                  >
+                                    • {item.goals}
+                                  </motion.li>
+                                </>
+                              )}
+                            </ul>
+                          </motion.div>
+                        ))}
+                      </motion.div>
+                    )}
+
+                    {slides[currentSlide].features && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="grid grid-cols-2 gap-6 mb-8"
+                      >
+                        {slides[currentSlide].features.map((feature, index) => (
+                          <motion.div
+                            key={index}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.4 + index * 0.1 }}
+                            className="flex items-start gap-4 bg-blue-500/10 p-6 rounded-lg"
+                          >
+                            <div className="p-2 bg-blue-500/20 rounded-lg">
+                              {React.createElement(feature.icon, {
+                                className: "w-6 h-6 text-blue-400"
+                              })}
+                            </div>
+                            <div>
+                              <h3 className="text-lg font-semibold text-blue-300">{feature.title}</h3>
+                              <p className="text-blue-100">{feature.desc}</p>
+                            </div>
+                          </motion.div>
+                        ))}
+                      </motion.div>
+                    )}
+
+                    {slides[currentSlide].funding && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="space-y-4"
+                      >
+                        {slides[currentSlide].funding.map((item, index) => (
+                          <motion.div
+                            key={index}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.4 + index * 0.1 }}
+                            className="flex items-center justify-between bg-blue-500/10 p-4 rounded-lg"
+                          >
+                            <div className="flex-1">
+                              <h3 className="font-semibold text-blue-300">{item.category}</h3>
+                              <p className="text-sm text-blue-100">{item.purpose}</p>
+                            </div>
+                            <div className="text-xl font-bold text-blue-400">{item.amount}</div>
+                          </motion.div>
+                        ))}
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.6 }}
+                          className="flex justify-end mt-4"
+                        >
+                          <div className="text-2xl font-bold text-blue-400">
+                            Total: {slides[currentSlide].totalFunding}
+                          </div>
+                        </motion.div>
+                      </motion.div>
+                    )}
+
+                    {slides[currentSlide].team && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="grid grid-cols-2 gap-6"
+                      >
+                        {slides[currentSlide].team.map((member, index) => (
+                          <motion.div
+                            key={index}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.4 + index * 0.1 }}
+                            className="bg-blue-500/10 p-6 rounded-lg"
+                          >
+                            <h3 className="text-xl font-semibold text-blue-300 mb-2">{member.role}</h3>
+                            <p className="text-blue-100">{member.description}</p>
+                          </motion.div>
+                        ))}
+                      </motion.div>
+                    )}
+
+                    {slides[currentSlide].bullets && slides[currentSlide].bullets.length > 0 && (
+                      <motion.ul
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="space-y-4 text-left w-full max-w-3xl mx-auto"
+                      >
+                        {slides[currentSlide].bullets.map((bullet, index) => (
+                          <motion.li
+                            key={index}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.4 + index * 0.1 }}
+                            className="flex items-center gap-3 text-lg"
+                          >
+                            <div className="h-2 w-2 bg-blue-400 rounded-full flex-shrink-0" />
+                            <span className="text-blue-100">{bullet}</span>
+                          </motion.li>
+                        ))}
+                      </motion.ul>
+                    )}
+                  </div>
                 )}
               </Card>
             </motion.div>
