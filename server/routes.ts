@@ -71,16 +71,28 @@ export function registerRoutes(app: Express): Server {
       // Get the full URL of the deck page
       const host = req.get('host');
       const protocol = req.protocol;
-      await page.goto(`${protocol}://${host}/deck`, {
+
+      // Set viewport to ensure proper rendering
+      await page.setViewport({
+        width: 1920,
+        height: 1080,
+        deviceScaleFactor: 1,
+      });
+
+      // Navigate to the deck page in export mode
+      await page.goto(`${protocol}://${host}/deck?export=true`, {
         waitUntil: 'networkidle0'
       });
 
-      // Wait for content to load
-      await page.waitForSelector('.deck-slide');
+      // Wait for all slides to be rendered
+      await page.waitForSelector('#deck-content[data-export-ready="true"]', {
+        timeout: 30000
+      });
 
-      // Generate PDF
+      // Generate PDF with landscape orientation for slides
       const pdf = await page.pdf({
         format: 'A4',
+        landscape: true,
         printBackground: true,
         margin: {
           top: '20px',

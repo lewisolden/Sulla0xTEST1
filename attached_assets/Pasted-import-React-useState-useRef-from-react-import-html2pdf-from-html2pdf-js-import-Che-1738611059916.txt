@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import html2pdf from 'html2pdf.js';
 import { 
   ChevronLeft, 
@@ -46,35 +46,26 @@ const PitchDeck = () => {
   const [isExporting, setIsExporting] = useState(false);
   const deckRef = useRef(null);
 
-  const handleExport = async () => {
-    setIsExporting(true);
-    const element = deckRef.current;
-    const opt = {
-      margin: 0.5,
-      filename: 'Sulla-Pitch-Deck.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { 
-        scale: 2,
-        useCORS: true,
-        logging: true,
-        letterRendering: true,
-        allowTaint: true
-      },
-      jsPDF: { 
-        unit: 'in', 
-        format: 'letter', 
-        orientation: 'landscape',
-        compress: true
-      },
-      pagebreak: { mode: 'avoid-all' }
-    };
+  // Check if we're in export mode
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('export') === 'true') {
+      setIsExporting(true);
+    }
+  }, []);
 
+  // Signal when the deck is ready for export
+  useEffect(() => {
+    if (isExporting && deckRef.current) {
+      deckRef.current.setAttribute('data-export-ready', 'true');
+    }
+  }, [isExporting]);
+
+  const handleExport = async () => {
     try {
-      await html2pdf().set(opt).from(element).save();
+      window.location.href = '/api/deck/download';
     } catch (error) {
       console.error('PDF export failed:', error);
-    } finally {
-      setIsExporting(false);
     }
   };
 
@@ -157,6 +148,14 @@ const PitchDeck = () => {
             </div>
           )}
         </div>
+        {!isExporting && (
+          <button
+            onClick={handleExport}
+            className="mt-8 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            Download PDF
+          </button>
+        )}
       </div>
     </div>
   );
