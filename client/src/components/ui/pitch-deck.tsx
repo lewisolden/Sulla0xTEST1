@@ -53,7 +53,7 @@ const PitchDeck: React.FC = () => {
     ctaSlide,
   ];
 
-  const handleExport = () => {
+  const handleDownloadPDF = () => {
     window.location.href = '/api/deck/download-static';
   };
 
@@ -83,7 +83,7 @@ const PitchDeck: React.FC = () => {
           </button>
         </div>
         <button
-          onClick={handleExport}
+          onClick={handleDownloadPDF}
           className="mt-8 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
           Download PDF
