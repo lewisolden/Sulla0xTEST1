@@ -1478,24 +1478,47 @@ const DeckPage: React.FC = () => {
       const { jsPDF } = await import('jspdf');
       const html2canvas = (await import('html2canvas')).default;
 
-      const element = deckRef.current;
-      const canvas = await html2canvas(element, {
-        scale: 2,
-        useCORS: true,
-        logging: true
-      });
-
       const pdf = new jsPDF({
         format: 'a4',
         unit: 'px',
         orientation: 'landscape'
       });
 
-      const imgData = canvas.toDataURL('image/png');
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
+      // Store current slide to restore later
+      const currentSlideIndex = currentSlide;
 
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      for (let i = 0; i < slides.length; i++) {
+        // Change to the slide we want to export
+        setCurrentSlide(i);
+
+        // Wait for the slide transition animation to complete
+        await new Promise(resolve => setTimeout(resolve, 400));
+
+        const element = deckRef.current;
+        if (!element) continue;
+
+        const canvas = await html2canvas(element, {
+          scale: 2,
+          useCORS: true,
+          logging: true,
+          backgroundColor: '#000000'
+        });
+
+        const imgData = canvas.toDataURL('image/png');
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+
+        // Add new page if not the first page
+        if (i > 0) {
+          pdf.addPage();
+        }
+
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      }
+
+      // Restore original slide
+      setCurrentSlide(currentSlideIndex);
+
       pdf.save('Sulla-Pitch-Deck.pdf');
     } catch (error) {
       console.error('PDF export failed:', error);
