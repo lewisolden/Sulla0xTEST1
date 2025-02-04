@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -56,6 +56,8 @@ import {
   ShieldCheck,
   Infinity,
 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+
 
 interface SlideProps {
   key: string;
@@ -1463,44 +1465,45 @@ const slides = [
   joinUsSlide
 ];
 
+const exportToPDF = async () => {
+  const { jsPDF } = await import('jspdf');
+  const html2canvas = (await import('html2canvas')).default;
+
+  const pdf = new jsPDF('l', 'mm', 'a4');
+  const slideElements = document.querySelectorAll('.slide-content');
+  const totalSlides = slideElements.length;
+
+  for (let i = 0; i < totalSlides; i++) {
+    const canvas = await html2canvas(slideElements[i] as HTMLElement, {
+      scale: 2,
+      useCORS: true,
+      logging: false,
+      backgroundColor: null
+    });
+
+    const imgData = canvas.toDataURL('image/png');
+    if (i > 0) pdf.addPage();
+
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
+    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+  }
+
+  pdf.save('sulla-pitch-deck.pdf');
+};
+
 const DeckPage: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isExporting, setIsExporting] = useState(false);
-  const deckRef = useRef<HTMLDivElement>(null);
 
-  const handleExport = async () => {
-    setIsExporting(true);
-    if (!deckRef.current) return;
-
-    try {
-      const { jsPDF } = await import('jspdf');
-      const html2canvas = (await import('html2canvas')).default;
-
-      const element = deckRef.current;
-      const canvas = await html2canvas(element, {
-        scale: 2,
-        useCORS: true,
-        logging: true
-      });
-
-      const pdf = new jsPDF({
-        format: 'a4',
-        unit: 'px',
-        orientation: 'landscape'
-      });
-
-      const imgData = canvas.toDataURL('image/png');
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      pdf.save('Sulla-Pitch-Deck.pdf');
-    } catch (error) {
-      console.error('PDF export failed:', error);
-    } finally {
-      setIsExporting(false);
-    }
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === "ArrowRight") setCurrentSlide(c => Math.min(c + 1, slides.length - 1));
+    if (e.key === "ArrowLeft") setCurrentSlide(c => Math.max(c - 1, 0));
   };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   return (
     <div
@@ -1510,58 +1513,39 @@ const DeckPage: React.FC = () => {
         if (e.key === "ArrowLeft") setCurrentSlide(c => Math.max(c - 1, 0));
       }}
       tabIndex={0}
-      ref={deckRef}
     >
-      <div className="max-w-6xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <Logo className="text-white h-8 w-auto" />
-          <button
-            onClick={handleExport}
-            disabled={isExporting}
-            className="px-4 py-2 bg-white text-blue-900 rounded-lg hover:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-          >
-            {isExporting ? 'Exporting...' : 'Export PDF'}
-          </button>
-        </div>
-
-        <div className="relative aspect-video bg-black rounded-lg shadow-2xl overflow-hidden">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentSlide}
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -100 }}
-              transition={{ duration: 0.3 }}
-              className="absolute inset-0 p-12"
-            >
-              <Card className="h-full bg-opacity-90 backdrop-blur-sm p-8 overflow-y-auto bg-gradient-to-br from-blue-900/95 to-black/95">
-                {slides[currentSlide]}
-              </Card>
-            </motion.div>
-          </AnimatePresence>
-
-          <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-4">
-            <button
-              onClick={() => setCurrentSlide(c => Math.max(c - 1, 0))}
-              disabled={currentSlide === 0}
-              className="px-4 py-2 bg-white text-blue-900 rounded-lg hover:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-            >
-              <ChevronLeft className="w-4 h-4" />
-              Previous
-            </button>
-            <span className="px-4 py-2 bg-white/20 rounded">
-              {currentSlide + 1} / {slides.length}
-            </span>
-            <button
-              onClick={() => setCurrentSlide(c => Math.min(c + 1, slides.length - 1))}
-              disabled={currentSlide === slides.length - 1}
-              className="px-4 py-2 bg-white text-blue-900 rounded-lg hover:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-            >
-              Next
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
+      <div className="fixed top-4 right-4 z-50 flex gap-4">
+        <Button
+          onClick={() => setCurrentSlide(c => Math.max(c - 1, 0))}
+          disabled={currentSlide === 0}
+          variant="ghost"
+          size="icon"
+          className="bg-white/10 hover:bg-white/20"
+        >
+          <ChevronLeft className="h-4 w-4" />
+        </Button>
+        <Button
+          onClick={() => setCurrentSlide(c => Math.min(c + 1, slides.length - 1))}
+          disabled={currentSlide === slides.length - 1}
+          variant="ghost"
+          size="icon"
+          className="bg-white/10 hover:bg-white/20"
+        >
+          <ChevronRight className="h-4 w-4" />
+        </Button>
+        <Button
+          onClick={exportToPDF}
+          variant="ghost"
+          className="bg-white/10 hover:bg-white/20"
+        >
+          Export PDF
+        </Button>
+      </div>
+      <div className="slide-content">
+        {slides[currentSlide]}
+      </div>
+      <div className="fixed bottom-4 right-4 text-sm text-white/60">
+        Slide {currentSlide + 1} of {slides.length}
       </div>
     </div>
   );
