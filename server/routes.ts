@@ -68,28 +68,23 @@ export function registerRoutes(app: Express): Server {
       });
       const page = await browser.newPage();
 
-      // Get the full URL of the deck page
       const host = req.get('host');
       const protocol = req.protocol;
 
-      // Set viewport to ensure proper rendering
       await page.setViewport({
         width: 1920,
         height: 1080,
         deviceScaleFactor: 1,
       });
 
-      // Navigate to the deck page in export mode
       await page.goto(`${protocol}://${host}/deck?export=true`, {
         waitUntil: 'networkidle0'
       });
 
-      // Wait for all slides to be rendered
       await page.waitForSelector('#deck-content[data-export-ready="true"]', {
         timeout: 30000
       });
 
-      // Generate PDF with landscape orientation for slides
       const pdf = await page.pdf({
         format: 'A4',
         landscape: true,
@@ -99,14 +94,14 @@ export function registerRoutes(app: Express): Server {
           right: '20px',
           bottom: '20px',
           left: '20px'
-        }
+        },
+        scale: 0.7
       });
 
       await browser.close();
 
-      // Send PDF
       res.contentType('application/pdf');
-      res.setHeader('Content-Disposition', 'attachment; filename=sulla-presentation.pdf');
+      res.setHeader('Content-Disposition', 'attachment; filename=sulla-pitch-deck.pdf');
       res.send(pdf);
     } catch (error) {
       console.error('Error generating PDF:', error);
