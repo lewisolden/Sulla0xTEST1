@@ -42,7 +42,7 @@ export default function Footer() {
               LinkedIn
             </a>
             <a 
-              href="mailto:contact@sulla.com" 
+              href="mailto:lewis@sullacrypto.com" 
               className="hover:text-blue-200"
             >
               Email
