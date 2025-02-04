@@ -4,6 +4,7 @@ import { db } from "@db";
 import { quizzes, userQuizResponses } from "@db/schema";
 import { eq } from "drizzle-orm";
 import { setupAuth } from "./auth";
+import path from 'path';
 import puppeteer from 'puppeteer';
 
 export function registerRoutes(app: Express): Server {
@@ -85,15 +86,35 @@ export function registerRoutes(app: Express): Server {
         timeout: 30000
       });
 
+      // Add custom styles for PDF generation
+      await page.addStyleTag({
+        content: `
+          @page {
+            size: A4 landscape;
+            margin: 0;
+          }
+          body {
+            margin: 0;
+            padding: 0;
+          }
+          .slide-wrapper {
+            height: 100vh;
+            page-break-after: always;
+            margin: 0 !important;
+            padding: 0 !important;
+          }
+        `
+      });
+
       const pdf = await page.pdf({
         format: 'A4',
         landscape: true,
         printBackground: true,
         margin: {
-          top: '20px',
-          right: '20px',
-          bottom: '20px',
-          left: '20px'
+          top: '0',
+          right: '0',
+          bottom: '0',
+          left: '0'
         },
         scale: 0.7
       });
@@ -107,6 +128,12 @@ export function registerRoutes(app: Express): Server {
       console.error('Error generating PDF:', error);
       res.status(500).json({ message: "Failed to generate PDF" });
     }
+  });
+
+  // Serve the static PDF file
+  app.get("/api/deck/download-static", (req, res) => {
+    const pdfPath = path.join(__dirname, '../attached_assets/Sulla-Pitch-Deck.pdf');
+    res.download(pdfPath, 'sulla-pitch-deck.pdf');
   });
 
   const httpServer = createServer(app);

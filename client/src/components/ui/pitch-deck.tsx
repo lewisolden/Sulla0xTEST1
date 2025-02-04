@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import {
   titleSlide,
@@ -27,8 +27,6 @@ import {
 
 const PitchDeck: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isExporting, setIsExporting] = useState(false);
-  const deckRef = useRef<HTMLDivElement>(null);
 
   const slides = [
     titleSlide,
@@ -55,73 +53,42 @@ const PitchDeck: React.FC = () => {
     ctaSlide,
   ];
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('export') === 'true') {
-      setIsExporting(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (isExporting && deckRef.current) {
-      deckRef.current.dataset.exportReady = 'true';
-    }
-  }, [isExporting]);
-
-  const handleExport = async () => {
-    try {
-      window.location.href = '/api/deck/download';
-    } catch (error) {
-      console.error('PDF export failed:', error);
-    }
+  const handleExport = () => {
+    window.location.href = '/api/deck/download-static';
   };
 
   return (
-    <div className={isExporting ? "print-only" : "min-h-screen bg-gray-100 p-4"}>
-      <div id="deck-content" ref={deckRef}>
-        {isExporting ? (
-          <div className="slides-container">
-            {slides.map((slide, index) => (
-              <div key={index}>
-                {slide}
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div>
-            {slides[currentSlide]}
-            <div className="flex justify-between mt-4">
-              <button
-                onClick={() => setCurrentSlide(Math.max(0, currentSlide - 1))}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center"
-                disabled={currentSlide === 0}
-              >
-                <ChevronLeft className="w-6 h-6 mr-2" />
-                Previous
-              </button>
-              <span className="text-gray-600">
-                Slide {currentSlide + 1} of {slides.length}
-              </span>
-              <button
-                onClick={() => setCurrentSlide(Math.min(slides.length - 1, currentSlide + 1))}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center"
-                disabled={currentSlide === slides.length - 1}
-              >
-                Next
-                <ChevronRight className="w-6 h-6 ml-2" />
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-      {!isExporting && (
+    <div className="min-h-screen bg-gray-100 p-4">
+      <div>
+        {slides[currentSlide]}
+        <div className="flex justify-between mt-4">
+          <button
+            onClick={() => setCurrentSlide(Math.max(0, currentSlide - 1))}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center"
+            disabled={currentSlide === 0}
+          >
+            <ChevronLeft className="w-6 h-6 mr-2" />
+            Previous
+          </button>
+          <span className="text-gray-600">
+            Slide {currentSlide + 1} of {slides.length}
+          </span>
+          <button
+            onClick={() => setCurrentSlide(Math.min(slides.length - 1, currentSlide + 1))}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center"
+            disabled={currentSlide === slides.length - 1}
+          >
+            Next
+            <ChevronRight className="w-6 h-6 ml-2" />
+          </button>
+        </div>
         <button
           onClick={handleExport}
           className="mt-8 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
           Download PDF
         </button>
-      )}
+      </div>
     </div>
   );
 };

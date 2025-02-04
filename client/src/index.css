@@ -11,3 +11,35 @@
     @apply font-sans antialiased bg-background text-foreground;
   }
 }
+
+/* PDF Export Specific Styles */
+.export-container {
+  background: white !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.export-slides {
+  background: white !important;
+}
+
+.export-only .slide-wrapper {
+  break-after: page;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Hide navigation elements in export mode */
+.export-only button,
+.export-only .navigation {
+  display: none !important;
+}
+
+/* Ensure proper page breaks */
+@media print {
+  .slide-wrapper {
+    break-after: page;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
