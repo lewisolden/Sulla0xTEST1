@@ -55,6 +55,7 @@ import {
   BadgePercent,
   ShieldCheck,
   Infinity,
+  Download,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -1388,7 +1389,7 @@ const fundingBreakdownSlide = <Slide key="funding-breakdown">
     <h2 className="text-3xl font-bold mb-6 text-blue-400">Funding Breakdown</h2>
     <div className="spacey-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card className="bg-blue-900/30 p-4">
+        <Card className="bg-blue-900/30 p4">
           <h3 className="font-semibold text-blue-300 mb-2">Content Expansion</h3>
           <p className="text-lg text-blue-100">$50K</p>
           <p className="text-sm text-blue-200">Develop additional courses and certifications</p>
@@ -1470,6 +1471,7 @@ const DeckPage: React.FC = () => {
   const [isExporting, setIsExporting] = useState(false);
   const deckRef = useRef<HTMLDivElement>(null);
 
+
   const handleExport = async () => {
     setIsExporting(true);
     if (!deckRef.current) return;
@@ -1527,67 +1529,71 @@ const DeckPage: React.FC = () => {
     }
   };
 
+  const ExportButton = () => {
+    const [isDownloading, setIsDownloading] = useState(false);
+
+    const handleExport = async () => {
+      try {
+        setIsDownloading(true);
+        const response = await fetch('/api/deck/download-static');
+        if (!response.ok) throw new Error('Download failed');
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'sulla-pitch-deck.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      } catch (error) {
+        console.error('Error downloading PDF:', error);
+      } finally {
+        setIsDownloading(false);
+      }
+    };
+
+    return (
+      <Button 
+        onClick={handleExport}
+        className="fixed bottom-4 right-4 bg-blue-600 hover:bg-blue-700"
+        disabled={isDownloading}
+      >
+        <Download className="w-4 h-4 mr-2" />
+        {isDownloading ? 'Downloading...' : 'Export PDF'}
+      </Button>
+    );
+  };
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const prevSlide = () => setCurrentIndex(Math.max(0, currentIndex - 1));
+  const nextSlide = () => setCurrentIndex(Math.min(slides.length - 1, currentIndex + 1));
+
   return (
-    <div 
-      className="min-h-screen bg-gradient-to-b from-blue-900 to-black text-white p-8"
-      onKeyDown={(e) => {
-        if (e.key === "ArrowRight") setCurrentSlide(c => Math.min(c + 1, slides.length - 1));
-        if (e.key === "ArrowLeft") setCurrentSlide(c => Math.max(c - 1, 0));
-      }}
-      tabIndex={0}
-      ref={deckRef}
-    >
+    <div className="min-h-screen bg-gray-900 text-white p-8">
       <div className="max-w-6xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <Logo className="text-white h-8 w-auto" />
-          <button
-            onClick={handleExport}
-            disabled={isExporting}
-            className="px-4 py-2 bg-white text-blue-900 rounded-lg hover:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-          >
-            {isExporting ? 'Exporting...' : 'Export PDF'}
-          </button>
-        </div>
-
-        <div className="relative aspect-video bg-black rounded-lg shadow-2xl overflow-hidden">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentSlide}
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -100 }}
-              transition={{ duration: 0.3 }}
-              className="absolute inset-0 p-12"
-            >
-              <Card className="h-full bg-opacity-90 backdrop-blur-sm p-8 overflow-y-auto bg-gradient-to-br from-blue-900/95 to-black/95">
-                {slides[currentSlide]}
-              </Card>
-            </motion.div>
-          </AnimatePresence>
-
-          <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-4">
-            <button
-              onClick={() => setCurrentSlide(c => Math.max(c - 1, 0))}
-              disabled={currentSlide === 0}
-              className="px-4 py-2 bg-white text-blue-900 rounded-lg hover:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-            >
-              <ChevronLeft className="w-4 h-4" />
-              Previous
-            </button>
-            <span className="px-4 py-2 bg-white/20 rounded">
-              {currentSlide + 1} / {slides.length}
-            </span>
-            <button
-              onClick={() => setCurrentSlide(c => Math.min(c + 1, slides.length - 1))}
-              disabled={currentSlide === slides.length - 1}
-              className="px-4 py-2 bg-white text-blue-900 rounded-lg hover:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-            >
-              Next
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
+        {currentIndex}
       </div>
+      <div className="fixed bottom-4 left-4 flex items-center gap-4">
+        <Button
+          variant="outline"
+          onClick={prevSlide}
+          disabled={currentIndex === 0}
+        >
+          <ChevronLeft className="w-4 h-4" />
+          Previous
+        </Button>
+        <Button
+          variant="outline"
+          onClick={nextSlide}
+          disabled={currentIndex === slides.length - 1}
+        >
+          Next
+          <ChevronRight className="w-4 h-4" />
+        </Button>
+      </div>
+      <ExportButton />
     </div>
   );
 };
