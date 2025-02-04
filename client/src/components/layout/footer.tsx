@@ -26,20 +26,12 @@ export default function Footer() {
           <h4 className="font-semibold mb-3">Connect</h4>
           <div className="flex space-x-4">
             <a 
-              href="https://twitter.com/sulla_crypto" 
+              href="https://x.com/Sullacrypto" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="hover:text-blue-200"
             >
-              Twitter
-            </a>
-            <a 
-              href="https://linkedin.com/company/sulla" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="hover:text-blue-200"
-            >
-              LinkedIn
+              X
             </a>
             <a 
               href="mailto:lewis@sullacrypto.com" 
