@@ -5,7 +5,12 @@ import { quizzes, userQuizResponses } from "@db/schema";
 import { eq } from "drizzle-orm";
 import { setupAuth } from "./auth";
 import path from 'path';
+import { fileURLToPath } from 'url';
 import puppeteer from 'puppeteer';
+
+// ES Module path handling
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export function registerRoutes(app: Express): Server {
   // Set up authentication routes

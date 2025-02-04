@@ -58,7 +58,6 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-
 interface SlideProps {
   key: string;
   children: React.ReactNode;
@@ -1467,63 +1466,22 @@ const slides = [
 
 const DeckPage: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isExporting, setIsExporting] = useState(false);
   const deckRef = useRef<HTMLDivElement>(null);
 
-  const handleExport = async () => {
-    setIsExporting(true);
-    if (!deckRef.current) return;
-
+  const downloadPDF = async () => {
     try {
-      const { jsPDF } = await import('jspdf');
-      const html2canvas = (await import('html2canvas')).default;
-
-      const pdf = new jsPDF({
-        format: 'a4',
-        unit: 'px',
-        orientation: 'landscape'
-      });
-
-      // Store current slide to restore later
-      const currentSlideIndex = currentSlide;
-
-      for (let i = 0; i < slides.length; i++) {
-        // Change to the slide we want to export
-        setCurrentSlide(i);
-
-        // Wait for the slide transition animation to complete
-        await new Promise(resolve => setTimeout(resolve, 400));
-
-        const element = deckRef.current;
-        if (!element) continue;
-
-        const canvas = await html2canvas(element, {
-          scale: 2,
-          useCORS: true,
-          logging: true,
-          backgroundColor: '#000000'
-        });
-
-        const imgData = canvas.toDataURL('image/png');
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = pdf.internal.pageSize.getHeight();
-
-        // Add new page if not the first page
-        if (i > 0) {
-          pdf.addPage();
-        }
-
-        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      }
-
-      // Restore original slide
-      setCurrentSlide(currentSlideIndex);
-
-      pdf.save('Sulla-Pitch-Deck.pdf');
+      const response = await fetch('/api/deck/download-static');
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'sulla-pitch-deck.pdf';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
     } catch (error) {
-      console.error('PDF export failed:', error);
-    } finally {
-      setIsExporting(false);
+      console.error('Error downloading PDF:', error);
     }
   };
 
@@ -1540,13 +1498,13 @@ const DeckPage: React.FC = () => {
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <Logo className="text-white h-8 w-auto" />
-          <button
-            onClick={handleExport}
-            disabled={isExporting}
-            className="px-4 py-2 bg-white text-blue-900 rounded-lg hover:bg-blue-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+          <Button
+            onClick={downloadPDF}
+            size="lg"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"
           >
-            {isExporting ? 'Exporting...' : 'Export PDF'}
-          </button>
+            Export PDF
+          </Button>
         </div>
 
         <div className="relative aspect-video bg-black rounded-lg shadow-2xl overflow-hidden">
