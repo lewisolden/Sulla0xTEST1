@@ -134,7 +134,7 @@ const DigitalCurrenciesQuiz = () => {
               Restart Quiz
             </Button>
             {score >= 3 && (
-              <Link href="/modules/module1/security">
+              <Link href="/modules/module1/history-of-money">
                 <Button 
                   className="w-full bg-green-600 hover:bg-green-700"
                   size="lg"
