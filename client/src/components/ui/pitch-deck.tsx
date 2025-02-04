@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 import {
   titleSlide,
   problemSlide,
@@ -53,8 +54,21 @@ const PitchDeck: React.FC = () => {
     ctaSlide,
   ];
 
-  const handleDownloadPDF = () => {
-    window.location.href = '/api/deck/download-static';
+  const handleDownloadPDF = async () => {
+    try {
+      const response = await fetch('/api/deck/download-static');
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'sulla-pitch-deck.pdf';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Error downloading PDF:', error);
+    }
   };
 
   return (
@@ -82,12 +96,13 @@ const PitchDeck: React.FC = () => {
             <ChevronRight className="w-6 h-6 ml-2" />
           </button>
         </div>
-        <button
+        <Button
           onClick={handleDownloadPDF}
-          className="mt-8 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="mt-8 w-full bg-blue-600 hover:bg-blue-700 text-white"
+          size="lg"
         >
-          Download PDF
-        </button>
+          Download Pitch Deck PDF
+        </Button>
       </div>
     </div>
   );
