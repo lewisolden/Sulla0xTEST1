@@ -112,7 +112,8 @@ export default function Curriculum() {
               to create a personalized educational journey. Through gamified exercises, real-world applications, and
               progressive skill building, we ensure that every learner can master new technologies at their own pace.
               Our comprehensive curriculum features visual learning aids, practical exercises, and instant feedback to
-              help you build confidence and expertise in emerging technologies.
+              help you build confidence and expertise in emerging technologies. Ready to embark on your learning journey? 
+              Explore our curriculum and discover the power of interactive education today!
             </p>
           </Card>
         </motion.div>
