@@ -7,6 +7,7 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Dumbbell, BookOpen, Shield, Brain, Wallet } from "lucide-react";
+import { useEffect } from "react";
 
 const moduleTopics = [
   {
@@ -56,6 +57,16 @@ export default function Module1() {
   const moduleProgress = progress.filter(p => p.moduleId === 1);
   const completedSections = moduleProgress.filter(p => p.completed).length;
   const progressPercentage = (completedSections / moduleTopics.length) * 100;
+
+  // Add useEffect for auto-scrolling
+  useEffect(() => {
+    // Immediate scroll
+    window.scrollTo(0, 0);
+    // Double-check scroll position after mount
+    requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
+    });
+  }, []); // Empty dependency array means this runs once on mount
 
   const topicsWithProgress = moduleTopics.map(topic => ({
     ...topic,
