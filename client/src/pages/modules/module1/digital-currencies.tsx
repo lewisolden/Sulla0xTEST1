@@ -269,7 +269,7 @@ export default function DigitalCurrenciesSection() {
                     One of cryptocurrency's most revolutionary aspects is its decentralized nature. Traditional financial systems operate through centralized authorities – banks, governments, and financial institutions. These entities control money creation, verify transactions, and maintain account balances.
                   </motion.p>
                   <motion.p variants={listItemVariants} className="mt-4">
-                    Cryptocurrency works differently. Instead of relying on central authorities, it uses a network of computers running specialized software. This network collectively maintains and verifies all transactions through a system called blockchain. Think of it as a shared digital ledger that everyone can see but no one can alter without network consensus.
+                    Cryptocurrency works differently. Instead of relying on central authorities, it uses a network of computers running specialized software. This network collectively maintains and verifies all transactions through a system called blockchain. Network consensus, which is the process where all participating computers agree on the validity of transactions and the current state of the network, ensures that everyone has the same version of truth without needing a central authority. Think of it as a shared digital ledger that everyone can see but no one can alter without network consensus.
                   </motion.p>
                   <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
@@ -438,6 +438,30 @@ export default function DigitalCurrenciesSection() {
                     ))}
                   </motion.ul>
                 </motion.div>
+
+                <motion.div 
+                  variants={cardVariants}
+                  whileHover="hover"
+                  className="mt-8 p-6 bg-white rounded-lg shadow-md"
+                >
+                  <h3 className="text-2xl font-semibold text-blue-600">Stablecoins: Bridging Traditional and Digital Finance</h3>
+                  <motion.p variants={listItemVariants} className="mt-4">
+                    Stablecoins represent a crucial innovation in the cryptocurrency space, designed to minimize volatility by maintaining a stable value:
+                  </motion.p>
+                  <motion.ul variants={sectionVariants} className="list-disc pl-5 mt-2">
+                    {[
+                      "Pegged to stable assets like USD, reducing price volatility",
+                      "Ideal for everyday transactions and commerce",
+                      "Provides a reliable store of value in volatile markets",
+                      "Enables easier conversion between traditional and digital currencies",
+                      "Useful for international trade and remittances"
+                    ].map((item, index) => (
+                      <motion.li key={index} variants={listItemVariants} custom={index}>
+                        {item}
+                      </motion.li>
+                    ))}
+                  </motion.ul>
+                </motion.div>
               </motion.section>
 
               {/* Getting Started Safely */}
@@ -555,7 +579,7 @@ export default function DigitalCurrenciesSection() {
                     "Prioritize security in all activities",
                     "Stay informed about developments",
                     "Practice with small amounts first",
-                    "Maintain proper risk management"
+                    "Maintain proper risk management by considering factors such as liquidity (ability to buy/sell quickly), volatility (price fluctuations), portfolio concentration (avoiding overexposure to single assets), and diversification (spreading risk across different types of assets)"
                   ].map((item, index) => (
                     <motion.li key={index} variants={listItemVariants} custom={index}>
                       {item}
