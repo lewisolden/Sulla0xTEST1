@@ -3,13 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { 
-  Wallet, 
-  Key, 
-  Shield, 
-  Lock, 
-  Unlock, 
-  Copy, 
+import {
+  Wallet,
+  Key,
+  Shield,
+  Lock,
+  Unlock,
+  Copy,
   AlertTriangle,
   CheckCircle,
   HelpCircle,
@@ -77,6 +77,62 @@ export default function WalletAdventure() {
   const scenarios: Scenario[] = [
     {
       id: 1,
+      title: "Creating Your First Digital Wallet",
+      description: "Welcome to the world of cryptocurrency! Let's create your first digital wallet. What's the most important step when setting up a new wallet?",
+      choices: [
+        {
+          id: 1,
+          text: "Take a screenshot of the seed phrase and save it in your phone",
+          explanation: "Storing seed phrases digitally makes them vulnerable to hacking and device loss."
+        },
+        {
+          id: 2,
+          text: "Write down the seed phrase on paper and store it in a secure location",
+          explanation: "Correct! Physical backup of seed phrases is the safest method."
+        },
+        {
+          id: 3,
+          text: "Skip the seed phrase backup - you can always reset it later",
+          explanation: "Never skip backing up your seed phrase - it's your only way to recover your wallet!"
+        }
+      ],
+      feedback: {
+        correct: "Perfect! Writing down your seed phrase on paper and storing it securely is essential. This ensures you can recover your wallet even if your device is lost or damaged.",
+        incorrect: "That's not the safest approach. Your seed phrase is the master key to your wallet - it needs to be backed up securely offline."
+      },
+      educationalContent: "A seed phrase is a list of 12 or 24 words that allows you to recover your wallet. Think of it like a master password that gives access to all your crypto assets. Never share it with anyone!",
+      correctChoice: 2
+    },
+    {
+      id: 2,
+      title: "Wallet Security Setup",
+      description: "Now that you have your wallet, let's secure it properly. Which security measure should you enable first?",
+      choices: [
+        {
+          id: 1,
+          text: "Enable biometric authentication (fingerprint/face ID)",
+          explanation: "Correct! Biometric authentication adds an extra layer of security for daily wallet access."
+        },
+        {
+          id: 2,
+          text: "Share the recovery phrase with a trusted friend as backup",
+          explanation: "Never share your recovery phrase with anyone, even trusted friends."
+        },
+        {
+          id: 3,
+          text: "Use the same password as your email for convenience",
+          explanation: "Always use unique, strong passwords for your crypto wallets."
+        }
+      ],
+      feedback: {
+        correct: "Excellent! Biometric authentication is a secure and convenient way to protect your wallet from unauthorized access.",
+        incorrect: "Think about security first - your wallet needs unique, strong protection methods."
+      },
+      educationalContent: "Modern wallets offer multiple security features. Biometric authentication, strong passwords, and 2FA all work together to keep your assets safe.",
+      correctChoice: 1
+    },
+    {
+      id: 3,
       title: "Creating Your First Wallet",
       description: "You've decided to enter the world of cryptocurrency. What's the first step you should take to secure your digital assets?",
       choices: [
@@ -104,7 +160,7 @@ export default function WalletAdventure() {
       correctChoice: 2
     },
     {
-      id: 2,
+      id: 4,
       title: "Suspicious Website Alert",
       description: "You receive an email claiming to be from your wallet provider asking you to verify your seed phrase. What should you do?",
       choices: [
@@ -132,7 +188,7 @@ export default function WalletAdventure() {
       correctChoice: 2
     },
     {
-      id: 3,
+      id: 5,
       title: "Wallet Recovery Challenge",
       description: "You've gotten a new phone and need to recover your wallet. What's the correct order of steps?",
       choices: [
@@ -172,11 +228,11 @@ export default function WalletAdventure() {
   const handleChoice = (choiceId: number) => {
     const scenario = scenarios[currentScenario];
     const isCorrect = choiceId === scenario.correctChoice;
-    
+
     if (isCorrect) {
       setScore(prev => prev + 10);
       setFeedback(scenario.feedback.correct);
-      
+
       // Check for achievements
       const newAchievements = [...achievements];
       if (currentScenario === 0 && !newAchievements[0].unlocked) {
@@ -244,7 +300,7 @@ export default function WalletAdventure() {
               </div>
             </div>
           </div>
-          <Button 
+          <Button
             onClick={startGame}
             className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg"
           >
