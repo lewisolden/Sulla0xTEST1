@@ -5,9 +5,68 @@ import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { PracticalApplicationsDiagram } from "@/components/diagrams/PracticalApplicationsDiagram";
-import { PracticalApplicationsQuiz } from "@/components/quizzes/PracticalApplicationsQuiz";
+import { 
+  ArrowLeft, 
+  ArrowRight, 
+  Globe, 
+  Users, 
+  Wallet, 
+  Timer, 
+  Lock,
+  Clock,
+  Building2,
+  PiggyBank,
+  Send,
+  ShieldCheck,
+  Code2,
+  Banknote
+} from "lucide-react";
+
+// Financial Inclusion Diagram Component
+const FinancialInclusionDiagram = () => {
+  return (
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-8">
+      {[
+        {
+          icon: Globe,
+          title: "Global Access",
+          description: "Connect to the financial system from anywhere"
+        },
+        {
+          icon: PiggyBank,
+          title: "Cost Reduction",
+          description: "Lower fees for sending money internationally"
+        },
+        {
+          icon: Users,
+          title: "Peer-to-Peer",
+          description: "Direct financial transactions without intermediaries"
+        },
+        {
+          icon: Building2,
+          title: "Banking Alternative",
+          description: "Financial services without traditional bank accounts"
+        }
+      ].map((item, index) => (
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.1 }}
+          className="bg-blue-50 p-4 rounded-lg text-center"
+        >
+          <div className="mb-3 flex justify-center">
+            <div className="p-3 bg-blue-100 rounded-full">
+              <item.icon className="w-6 h-6 text-blue-600" />
+            </div>
+          </div>
+          <h4 className="font-semibold text-blue-800 mb-2">{item.title}</h4>
+          <p className="text-sm text-gray-600">{item.description}</p>
+        </motion.div>
+      ))}
+    </div>
+  );
+};
 
 const PracticalApplicationsSection = () => {
   const [isFullyRead, setIsFullyRead] = useState(false);
@@ -23,19 +82,13 @@ const PracticalApplicationsSection = () => {
       document.body.scrollTop = 0;
     };
 
-    // Initial scroll
     forceScrollTop();
-
-    // Backup scroll after a short delay
     setTimeout(forceScrollTop, 0);
-
-    // Final scroll after animations
     requestAnimationFrame(() => {
       forceScrollTop();
-      // Double check after one more frame
       requestAnimationFrame(forceScrollTop);
     });
-  }, []); // Empty dependency array means this runs once on mount
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -84,49 +137,128 @@ const PracticalApplicationsSection = () => {
               <p className="text-gray-700">
                 While blockchain technology gained prominence through cryptocurrencies, its potential applications extend far beyond digital currencies. This section explores how blockchain is transforming various industries and creating new possibilities for business and society.
               </p>
-
               <PracticalApplicationsDiagram />
             </section>
 
             <section className="mt-8">
               <h2 className="text-2xl font-bold text-blue-700">Financial Inclusion</h2>
-              <p className="text-gray-700">
-                One of the most significant applications of blockchain is providing financial services to the unbanked and underbanked populations worldwide. Through blockchain:
+              <p className="text-gray-700 mb-4">
+                One of the most significant applications of blockchain is providing financial services to the unbanked and underbanked populations worldwide.
               </p>
-              <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                <li>People without access to traditional banking can participate in the global economy</li>
-                <li>Remittance costs can be significantly reduced</li>
-                <li>Micro-lending and peer-to-peer financial services become more accessible</li>
-                <li>Cross-border transactions become faster and cheaper</li>
-              </ul>
+
+              <FinancialInclusionDiagram />
+
+              <div className="bg-blue-50 p-4 rounded-lg mt-4">
+                <h3 className="text-lg font-semibold text-blue-800 mb-2">Impact on Global Financial Access</h3>
+                <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                  <li>Enables participation in the global economy without traditional bank accounts</li>
+                  <li>Reduces remittance costs for international money transfers</li>
+                  <li>Facilitates micro-lending and peer-to-peer financial services</li>
+                  <li>Provides secure and affordable cross-border transactions</li>
+                </ul>
+              </div>
             </section>
 
             <section className="mt-8">
               <h2 className="text-2xl font-bold text-blue-700">Payment Efficiency</h2>
-              <p className="text-gray-700">
-                Blockchain is revolutionizing payment systems by offering:
+              <p className="text-gray-700 mb-6">
+                Blockchain technology is revolutionizing payment systems through several key innovations:
               </p>
-              <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                <li>Near-instant settlements</li>
-                <li>24/7 operation without banking hours restrictions</li>
-                <li>Lower transaction fees for international transfers</li>
-                <li>Programmable payments through smart contracts</li>
-                <li>Enhanced security through cryptographic verification</li>
-              </ul>
+
+              <div className="space-y-6">
+                {[
+                  {
+                    icon: Timer,
+                    title: "Near-instant settlements",
+                    description: "Unlike traditional banking systems that can take days to settle transactions, blockchain enables almost immediate settlement of payments. This is achieved through decentralized consensus mechanisms that validate transactions in minutes or seconds."
+                  },
+                  {
+                    icon: Clock,
+                    title: "24/7 operation without banking hours restrictions",
+                    description: "Blockchain networks operate continuously without downtime, allowing transactions to be processed at any time. This eliminates the limitations of traditional banking hours and enables global commerce across time zones."
+                  },
+                  {
+                    icon: Send,
+                    title: "Lower transaction fees for international transfers",
+                    description: "By removing intermediary banks and reducing operational costs, blockchain significantly lowers the fees associated with international money transfers. This makes cross-border payments more accessible and economical."
+                  },
+                  {
+                    icon: Code2,
+                    title: "Programmable payments through smart contracts",
+                    description: "Smart contracts enable automated, condition-based payments that execute when predefined criteria are met. This allows for complex financial arrangements without the need for manual intervention or trust in intermediaries."
+                  },
+                  {
+                    icon: ShieldCheck,
+                    title: "Enhanced security through cryptographic verification",
+                    description: "Every transaction is secured using advanced cryptography and must be verified by multiple network participants. This makes fraud extremely difficult and provides transparent, immutable records of all transactions."
+                  }
+                ].map((item, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="bg-blue-50 p-4 rounded-lg"
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="p-2 bg-blue-100 rounded-full mt-1">
+                        <item.icon className="w-5 h-5 text-blue-600" />
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-semibold text-blue-800 mb-2">{item.title}</h3>
+                        <p className="text-gray-700">{item.description}</p>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </section>
 
             <section className="mt-8">
               <h2 className="text-2xl font-bold text-blue-700">Investment Opportunities</h2>
-              <p className="text-gray-700">
+              <p className="text-gray-700 mb-4">
                 Blockchain has created new investment possibilities:
               </p>
-              <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                <li>Digital asset trading</li>
-                <li>Decentralized finance (DeFi) opportunities</li>
-                <li>Tokenized real-world assets</li>
-                <li>Yield farming and liquidity provision</li>
-                <li>Cryptocurrency index funds and ETFs</li>
-              </ul>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {[
+                  {
+                    icon: Banknote,
+                    title: "Digital asset trading",
+                    description: "Trade cryptocurrencies and digital tokens"
+                  },
+                  {
+                    icon: Building2,
+                    title: "DeFi opportunities",
+                    description: "Access decentralized finance platforms"
+                  },
+                  {
+                    icon: Lock,
+                    title: "Tokenized assets",
+                    description: "Invest in tokenized real-world assets"
+                  },
+                  {
+                    icon: Wallet,
+                    title: "Yield farming",
+                    description: "Earn returns through liquidity provision"
+                  }
+                ].map((item, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="bg-blue-50 p-4 rounded-lg"
+                  >
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="p-2 bg-blue-100 rounded-full">
+                        <item.icon className="w-4 h-4 text-blue-600" />
+                      </div>
+                      <h4 className="font-semibold text-blue-800">{item.title}</h4>
+                    </div>
+                    <p className="text-sm text-gray-600">{item.description}</p>
+                  </motion.div>
+                ))}
+              </div>
             </section>
           </CardContent>
         </Card>
