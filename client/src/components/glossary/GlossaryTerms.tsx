@@ -21,16 +21,30 @@ interface Term {
 // Mock data - In a real app, this would come from the API
 const mockGlossaryTerms: Term[] = [
   {
-    id: "blockchain",
-    term: "Blockchain",
-    definition: "A decentralized, distributed ledger technology that records transactions across a network of computers. Each block contains a list of transactions and is linked to the previous block, forming a chain of information.",
-    category: "Core Concepts",
+    id: "bitcoin",
+    term: "Bitcoin",
+    definition: "The first and most well-known cryptocurrency, created by Satoshi Nakamoto in 2009. Bitcoin operates on a decentralized peer-to-peer network using blockchain technology and proof-of-work consensus mechanism.",
+    category: "Cryptocurrencies",
     difficulty: "Beginner",
     examples: [
-      "Bitcoin's blockchain stores all transactions since its creation in 2009",
-      "Ethereum's blockchain adds smart contract functionality"
+      "Used as a store of value, often called 'digital gold'",
+      "Medium of exchange for goods and services",
+      "First successful implementation of blockchain technology"
     ],
-    relatedTerms: ["Distributed Ledger", "Mining", "Block"]
+    relatedTerms: ["Blockchain", "Proof of Work", "Cryptocurrency", "Mining"]
+  },
+  {
+    id: "ethereum",
+    term: "Ethereum",
+    definition: "A decentralized, open-source blockchain platform that enables smart contracts and decentralized applications (dApps). It introduced programmable blockchain functionality and its native cryptocurrency is called Ether (ETH).",
+    category: "Cryptocurrencies",
+    difficulty: "Intermediate",
+    examples: [
+      "Smart contract platform for DeFi applications",
+      "NFT creation and trading",
+      "Decentralized autonomous organizations (DAOs)"
+    ],
+    relatedTerms: ["Smart Contract", "DeFi", "Gas", "dApps"]
   },
   {
     id: "cryptocurrency",
