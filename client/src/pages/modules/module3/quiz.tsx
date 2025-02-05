@@ -5,6 +5,8 @@ import { useProgress } from "@/context/progress-context";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { ArrowLeft, CheckCircle2, XCircle } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { useScrollTop } from "@/hooks/useScrollTop";
 
 const quizQuestions = [
   {
@@ -70,6 +72,7 @@ const quizQuestions = [
 ];
 
 const Module3Quiz = () => {
+  useScrollTop();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
@@ -136,7 +139,7 @@ const Module3Quiz = () => {
             <CardContent className="pt-6">
               <div className="text-center py-8">
                 <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
-                  <h2 className="text-xl font-semibold text-yellow-800 mb-2">
+                  <h2 className="text-xl font-semibold text-yellow-800 mb-2" role="alert">
                     ⚠️ Complete Required Sections
                   </h2>
                   <p className="text-yellow-700">
@@ -151,7 +154,7 @@ const Module3Quiz = () => {
 
                 <div className="bg-white p-6 rounded-lg shadow-sm">
                   <h3 className="text-lg font-medium text-gray-700 mb-4">Module Sections:</h3>
-                  <ul className="space-y-3">
+                  <ul className="space-y-3" role="list">
                     {requiredSections.map(section => {
                       const isComplete = progress.some(
                         p => p.moduleId === 3 && p.sectionId === section && p.completed
@@ -169,12 +172,13 @@ const Module3Quiz = () => {
                           className={`flex items-center justify-between p-3 rounded-lg ${
                             isComplete ? 'bg-green-50' : 'bg-gray-50'
                           }`}
+                          role="listitem"
                         >
                           <span className="flex items-center gap-2">
                             {isComplete ? (
-                              <CheckCircle2 className="h-5 w-5 text-green-500" />
+                              <CheckCircle2 className="h-5 w-5 text-green-500" aria-label="Completed" />
                             ) : (
-                              <XCircle className="h-5 w-5 text-gray-400" />
+                              <XCircle className="h-5 w-5 text-gray-400" aria-label="Not completed" />
                             )}
                             <span className={`${isComplete ? 'text-green-700' : 'text-gray-600'}`}>
                               {sectionName}
@@ -182,7 +186,7 @@ const Module3Quiz = () => {
                           </span>
                           {!isComplete && (
                             <Link href={`/modules/module3/${section}`}>
-                              <Button variant="outline" size="sm">
+                              <Button variant="outline" size="sm" aria-label={`Start ${sectionName} section`}>
                                 Start Section
                               </Button>
                             </Link>
@@ -222,12 +226,17 @@ const Module3Quiz = () => {
                 <h2 className="text-3xl font-bold text-blue-800 mb-6">
                   Module 3 Quiz Results
                 </h2>
+                <Progress 
+                  value={(score / quizQuestions.length) * 100} 
+                  className="w-full h-2 mb-4"
+                  aria-label="Quiz score progress"
+                />
                 <p className="text-xl mb-4">
                   You scored {score} out of {quizQuestions.length}
                 </p>
 
                 {passed ? (
-                  <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-6">
+                  <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-6" role="alert">
                     <p className="text-green-700">
                       🎉 Congratulations! You've passed Module 3!
                     </p>
@@ -236,7 +245,7 @@ const Module3Quiz = () => {
                     </p>
                   </div>
                 ) : (
-                  <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-6">
+                  <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-6" role="alert">
                     <p className="text-red-700">
                       You didn't pass this time. Review the topics and try again.
                     </p>
@@ -256,6 +265,7 @@ const Module3Quiz = () => {
                   <Button 
                     onClick={restartQuiz}
                     className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700"
+                    aria-label="Restart quiz"
                   >
                     Try Again
                   </Button>
@@ -304,13 +314,19 @@ const Module3Quiz = () => {
                 </span>
               </div>
 
+              <Progress 
+                value={((currentQuestion + 1) / quizQuestions.length) * 100}
+                className="mb-6"
+                aria-label="Quiz progress"
+              />
+
               <div className="bg-blue-50 rounded-lg p-6 mb-6">
-                <p className="text-lg text-gray-700">
+                <p className="text-lg text-gray-700" role="heading" aria-level={3}>
                   {quizQuestions[currentQuestion].question}
                 </p>
               </div>
 
-              <div className="grid gap-4">
+              <div className="grid gap-4" role="radiogroup" aria-label="Answer options">
                 {quizQuestions[currentQuestion].options.map((option, index) => (
                   <button
                     key={index}
@@ -326,6 +342,9 @@ const Module3Quiz = () => {
                             : 'bg-gray-100'}
                     `}
                     disabled={selectedAnswer !== null}
+                    role="radio"
+                    aria-checked={selectedAnswer === index}
+                    aria-label={option}
                   >
                     <span className="text-lg">{option}</span>
                   </button>
@@ -338,7 +357,7 @@ const Module3Quiz = () => {
                   ${selectedAnswer === quizQuestions[currentQuestion].correctAnswer 
                     ? 'bg-green-100 border-l-4 border-green-500' 
                     : 'bg-red-100 border-l-4 border-red-500'}
-                `}>
+                `} role="alert">
                   <h3 className="font-bold mb-2">
                     {selectedAnswer === quizQuestions[currentQuestion].correctAnswer 
                       ? '✅ Correct!' 
@@ -355,6 +374,9 @@ const Module3Quiz = () => {
                   onClick={moveToNextQuestion}
                   className="mt-8 w-full bg-blue-600 hover:bg-blue-700"
                   size="lg"
+                  aria-label={currentQuestion < quizQuestions.length - 1 
+                    ? 'Go to next question' 
+                    : 'Complete quiz'}
                 >
                   {currentQuestion < quizQuestions.length - 1 
                     ? 'Next Question' 
