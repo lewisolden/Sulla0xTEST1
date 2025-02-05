@@ -26,47 +26,57 @@ export default function DecentralizationDiagram() {
   return (
     <div className="my-12 bg-white p-12 rounded-lg shadow-lg overflow-x-auto" ref={diagramRef}>
       {`
-      graph TB
-          subgraph "Traditional System" [Traditional Banking System]
-          direction TB
-          A["Central Bank<br/><br/>Controls All<br/>Transactions"]:::centralNode
-          B["Regional Bank<br/><br/>Processes<br/>Transactions"]:::bankNode
-          C["Regional Bank<br/><br/>Processes<br/>Transactions"]:::bankNode
-          D["Regional Bank<br/><br/>Processes<br/>Transactions"]:::bankNode
-          E["User Account<br/><br/>Limited Control"]:::userNode
-          F["User Account<br/><br/>Limited Control"]:::userNode
-          G["User Account<br/><br/>Limited Control"]:::userNode
+      flowchart TB
+        subgraph TS[Traditional System]
+          A[Central Bank]:::centralNode
+          B[Regional Bank 1]:::bankNode
+          C[Regional Bank 2]:::bankNode
+          D[Regional Bank 3]:::bankNode
+          E[User Account]:::userNode
+          F[User Account]:::userNode
+          G[User Account]:::userNode
 
-          A --> B & C & D
+          A --> B
+          A --> C
+          A --> D
           B --> E
           C --> F
           D --> G
-          end
+        end
 
-          subgraph "Cryptocurrency Network" [Peer-to-Peer Network]
-          direction TB
-          H["Network Node<br/><br/>Validates &<br/>Processes"]:::cryptoNode
-          I["Network Node<br/><br/>Validates &<br/>Processes"]:::cryptoNode
-          J["Network Node<br/><br/>Validates &<br/>Processes"]:::cryptoNode
-          K["Network Node<br/><br/>Validates &<br/>Processes"]:::cryptoNode
-          L["User Wallet<br/><br/>Full Control"]:::userNode
-          M["User Wallet<br/><br/>Full Control"]:::userNode
-          N["User Wallet<br/><br/>Full Control"]:::userNode
+        subgraph CN[Cryptocurrency Network]
+          H[Network Node]:::cryptoNode
+          I[Network Node]:::cryptoNode
+          J[Network Node]:::cryptoNode
+          K[Network Node]:::cryptoNode
+          L[User Wallet]:::userNode
+          M[User Wallet]:::userNode
+          N[User Wallet]:::userNode
 
-          H --- I & J & K
-          I --- J & K
+          H --- I
+          H --- J
+          H --- K
+          I --- J
+          I --- K
           J --- K
           H --- L
           I --- M
           J --- N
-          end
+        end
 
-          classDef centralNode fill:#ff9999,stroke:#ff0000,stroke-width:4px,color:#000000,rx:10,ry:10,width:200px,height:120px;
-          classDef bankNode fill:#99ff99,stroke:#00ff00,stroke-width:3px,color:#000000,rx:10,ry:10,width:180px,height:100px;
-          classDef cryptoNode fill:#9999ff,stroke:#0000ff,stroke-width:3px,color:#000000,rx:10,ry:10,width:180px,height:100px;
-          classDef userNode fill:#ffffff,stroke:#666666,stroke-width:2px,color:#000000,rx:10,ry:10,width:160px,height:90px;
+        classDef centralNode fill:#ff9999,stroke:#ff0000,stroke-width:4px
+        classDef bankNode fill:#99ff99,stroke:#00ff00,stroke-width:3px
+        classDef cryptoNode fill:#9999ff,stroke:#0000ff,stroke-width:3px
+        classDef userNode fill:#ffffff,stroke:#666666,stroke-width:2px
 
-          linkStyle default stroke-width:2px,stroke:#666;
+        style A font-size:18px,font-weight:bold
+        style B font-size:16px
+        style C font-size:16px
+        style D font-size:16px
+        style H font-size:16px
+        style I font-size:16px
+        style J font-size:16px
+        style K font-size:16px
       `}
     </div>
   );
