@@ -96,13 +96,22 @@ export default function Curriculum() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 py-16">
       <div className="container mx-auto px-4 max-w-6xl">
-        <motion.h1 
-          className="text-4xl font-bold text-blue-900 mb-6 text-center"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
+        <motion.div
+          className="text-center mb-12"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
         >
-          {currentCourse.title}
-        </motion.h1>
+          <h1 className="text-4xl font-bold text-blue-900 mb-6">
+            Sulla Cryptocurrency Curriculum
+          </h1>
+          <p className="text-xl text-blue-700 max-w-3xl mx-auto">
+            Sulla offers a comprehensive learning experience that combines theoretical knowledge with practical applications. 
+            Our courses are designed to take you from blockchain basics to advanced concepts through interactive lessons, 
+            hands-on exercises, and real-world simulations. Whether you're a beginner exploring cryptocurrencies or an 
+            experienced user looking to deepen your understanding, our adaptive learning system guides you through a 
+            personalized educational journey.
+          </p>
+        </motion.div>
 
         {/* Filter Section */}
         <motion.div 
@@ -157,6 +166,14 @@ export default function Curriculum() {
             </SelectContent>
           </Select>
         </motion.div>
+
+        <motion.h2
+          className="text-3xl font-bold text-blue-800 mb-6 text-center"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          {currentCourse.title}
+        </motion.h2>
 
         <motion.p
           className="text-xl text-blue-700 mb-12 text-center"
