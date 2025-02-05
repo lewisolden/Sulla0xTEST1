@@ -183,15 +183,49 @@ const SmartContractsSection = () => {
               animate="visible"
             >
               <h2 className="text-2xl font-bold text-blue-700 mb-4">Understanding Smart Contracts</h2>
-              <p className="text-gray-700 mb-4">
-                Smart contracts represent a revolutionary way to create and enforce agreements. They are 
-                self-executing programs that run on the Ethereum blockchain, automatically enforcing the 
-                terms of an agreement without the need for intermediaries.
-              </p>
+
+              <div className="bg-blue-50 p-6 rounded-lg mb-6">
+                <h3 className="text-xl font-semibold text-blue-700 mb-3">What are Smart Contracts?</h3>
+                <p className="text-gray-700 mb-4">
+                  Think of a smart contract as a digital vending machine: when you insert money and select an item, 
+                  the machine automatically gives you what you selected. No human needs to verify or approve the transaction. 
+                  Similarly, smart contracts are programs that automatically execute actions when specific conditions are met.
+                </p>
+                <div className="bg-white p-4 rounded-lg">
+                  <h4 className="font-semibold text-blue-600 mb-2">Real-World Example:</h4>
+                  <p className="text-gray-600">
+                    Imagine buying a house. Traditionally, you need lawyers, banks, and other intermediaries to verify and 
+                    process the transaction. With a smart contract, once you send the payment, the deed is automatically 
+                    transferred to you - instantly and without intermediaries.
+                  </p>
+                </div>
+              </div>
 
               <div className="my-8 p-4 bg-gray-50 rounded-lg shadow-inner">
-                <h3 className="text-xl font-semibold text-blue-700 mb-4">Smart Contract Deployment Flow</h3>
+                <h3 className="text-xl font-semibold text-blue-700 mb-4">How Smart Contracts Work</h3>
                 <MermaidDiagram chart={deploymentFlowDiagram} />
+                <div className="mt-4 space-y-3">
+                  <div className="bg-white p-3 rounded">
+                    <span className="font-semibold text-blue-700">1. Write Contract:</span>
+                    <span className="ml-2 text-gray-600">Create the rules and conditions in code (like Solidity)</span>
+                  </div>
+                  <div className="bg-white p-3 rounded">
+                    <span className="font-semibold text-blue-700">2. Compile:</span>
+                    <span className="ml-2 text-gray-600">Convert the code into machine-readable format</span>
+                  </div>
+                  <div className="bg-white p-3 rounded">
+                    <span className="font-semibold text-blue-700">3. Deploy:</span>
+                    <span className="ml-2 text-gray-600">Upload to the blockchain where it becomes permanent</span>
+                  </div>
+                  <div className="bg-white p-3 rounded">
+                    <span className="font-semibold text-blue-700">4. Verify:</span>
+                    <span className="ml-2 text-gray-600">Test to ensure everything works as intended</span>
+                  </div>
+                  <div className="bg-white p-3 rounded">
+                    <span className="font-semibold text-blue-700">5. Interact:</span>
+                    <span className="ml-2 text-gray-600">Users can now use the contract's functions</span>
+                  </div>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -201,13 +235,25 @@ const SmartContractsSection = () => {
                 >
                   <div className="flex items-center gap-2 mb-4">
                     <Code className="w-6 h-6 text-blue-600" />
-                    <h3 className="text-xl font-semibold text-blue-700">Self-Executing Programs</h3>
+                    <h3 className="text-xl font-semibold text-blue-700">Key Features</h3>
                   </div>
                   <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                    <li>Run exactly as programmed</li>
-                    <li>No need for intermediaries</li>
-                    <li>Zero downtime operation</li>
-                    <li>Tamper-proof execution</li>
+                    <li>
+                      <span className="font-semibold">Automatic Execution:</span>
+                      <p className="text-sm mt-1">No manual intervention needed once conditions are met</p>
+                    </li>
+                    <li>
+                      <span className="font-semibold">Transparency:</span>
+                      <p className="text-sm mt-1">Everyone can see and verify the contract's code</p>
+                    </li>
+                    <li>
+                      <span className="font-semibold">Immutable:</span>
+                      <p className="text-sm mt-1">Cannot be changed after deployment, ensuring trust</p>
+                    </li>
+                    <li>
+                      <span className="font-semibold">Decentralized:</span>
+                      <p className="text-sm mt-1">Runs on blockchain network, not controlled by any single entity</p>
+                    </li>
                   </ul>
                 </motion.div>
 
@@ -217,20 +263,52 @@ const SmartContractsSection = () => {
                 >
                   <div className="flex items-center gap-2 mb-4">
                     <Shield className="w-6 h-6 text-blue-600" />
-                    <h3 className="text-xl font-semibold text-blue-700">Code-Based Rules</h3>
+                    <h3 className="text-xl font-semibold text-blue-700">Important Considerations</h3>
                   </div>
                   <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                    <li>Immutable logic</li>
-                    <li>Transparent execution</li>
-                    <li>Verifiable outcomes</li>
-                    <li>Automated enforcement</li>
+                    <li>
+                      <span className="font-semibold">Gas Fees:</span>
+                      <p className="text-sm mt-1">Each operation costs a small amount of cryptocurrency</p>
+                    </li>
+                    <li>
+                      <span className="font-semibold">Code is Law:</span>
+                      <p className="text-sm mt-1">Contracts execute exactly as written - no exceptions</p>
+                    </li>
+                    <li>
+                      <span className="font-semibold">Security First:</span>
+                      <p className="text-sm mt-1">Thorough testing is crucial as bugs cannot be fixed after deployment</p>
+                    </li>
+                    <li>
+                      <span className="font-semibold">Network Limitations:</span>
+                      <p className="text-sm mt-1">Consider blockchain's speed and capacity constraints</p>
+                    </li>
                   </ul>
                 </motion.div>
               </div>
 
               <div className="my-8 p-4 bg-gray-50 rounded-lg shadow-inner">
-                <h3 className="text-xl font-semibold text-blue-700 mb-4">Smart Contract Architecture</h3>
+                <h3 className="text-xl font-semibold text-blue-700 mb-4">Smart Contract Structure</h3>
                 <MermaidDiagram chart={contractHierarchyDiagram} />
+                <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="bg-white p-4 rounded-lg">
+                    <h4 className="font-semibold text-blue-700 mb-2">Storage</h4>
+                    <p className="text-sm text-gray-600">
+                      Where the contract stores its data, like account balances or user information
+                    </p>
+                  </div>
+                  <div className="bg-white p-4 rounded-lg">
+                    <h4 className="font-semibold text-blue-700 mb-2">Logic</h4>
+                    <p className="text-sm text-gray-600">
+                      The rules and conditions that determine how the contract behaves
+                    </p>
+                  </div>
+                  <div className="bg-white p-4 rounded-lg">
+                    <h4 className="font-semibold text-blue-700 mb-2">Interface</h4>
+                    <p className="text-sm text-gray-600">
+                      How users and other contracts interact with this contract
+                    </p>
+                  </div>
+                </div>
               </div>
             </motion.section>
 
@@ -240,21 +318,35 @@ const SmartContractsSection = () => {
               animate="visible"
               className="mt-12"
             >
-              <h2 className="text-2xl font-bold text-blue-700 mb-4">Real-World Applications</h2>
+              <h2 className="text-2xl font-bold text-blue-700 mb-4">Practical Applications</h2>
 
               <div className="space-y-6">
                 <motion.div
                   variants={itemVariants}
                   className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                 >
-                  <h3 className="text-xl font-semibold text-blue-700 mb-4">Financial Services</h3>
+                  <h3 className="text-xl font-semibold text-blue-700 mb-4">Financial Services (DeFi)</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <ul className="list-disc pl-5 space-y-2">
-                      <li>Automated lending protocols</li>
-                      <li>Decentralized exchanges</li>
-                      <li>Insurance products</li>
-                      <li>Payment systems</li>
-                    </ul>
+                    <div className="space-y-3">
+                      <div className="bg-blue-50 p-3 rounded">
+                        <span className="font-semibold">Automated Lending:</span>
+                        <p className="text-sm mt-1">Get loans instantly without bank approval</p>
+                      </div>
+                      <div className="bg-blue-50 p-3 rounded">
+                        <span className="font-semibold">Decentralized Trading:</span>
+                        <p className="text-sm mt-1">Exchange tokens without intermediaries</p>
+                      </div>
+                    </div>
+                    <div className="space-y-3">
+                      <div className="bg-blue-50 p-3 rounded">
+                        <span className="font-semibold">Insurance:</span>
+                        <p className="text-sm mt-1">Automatic claim processing and payouts</p>
+                      </div>
+                      <div className="bg-blue-50 p-3 rounded">
+                        <span className="font-semibold">Payments:</span>
+                        <p className="text-sm mt-1">Programmable money transfers</p>
+                      </div>
+                    </div>
                   </div>
                 </motion.div>
 
@@ -264,12 +356,26 @@ const SmartContractsSection = () => {
                 >
                   <h3 className="text-xl font-semibold text-blue-700 mb-4">Digital Rights Management</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <ul className="list-disc pl-5 space-y-2">
-                      <li>Content licensing</li>
-                      <li>Royalty distribution</li>
-                      <li>Access control</li>
-                      <li>Usage tracking</li>
-                    </ul>
+                    <div className="space-y-3">
+                      <div className="bg-blue-50 p-3 rounded">
+                        <span className="font-semibold">Content Licensing:</span>
+                        <p className="text-sm mt-1">Automatic royalty payments to creators</p>
+                      </div>
+                      <div className="bg-blue-50 p-3 rounded">
+                        <span className="font-semibold">Access Control:</span>
+                        <p className="text-sm mt-1">Manage digital content permissions</p>
+                      </div>
+                    </div>
+                    <div className="space-y-3">
+                      <div className="bg-blue-50 p-3 rounded">
+                        <span className="font-semibold">NFT Creation:</span>
+                        <p className="text-sm mt-1">Create and trade unique digital assets</p>
+                      </div>
+                      <div className="bg-blue-50 p-3 rounded">
+                        <span className="font-semibold">Usage Tracking:</span>
+                        <p className="text-sm mt-1">Monitor and verify content usage</p>
+                      </div>
+                    </div>
                   </div>
                 </motion.div>
 
@@ -279,12 +385,26 @@ const SmartContractsSection = () => {
                 >
                   <h3 className="text-xl font-semibold text-blue-700 mb-4">Supply Chain Management</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <ul className="list-disc pl-5 space-y-2">
-                      <li>Product tracking</li>
-                      <li>Authenticity verification</li>
-                      <li>Payment automation</li>
-                      <li>Document management</li>
-                    </ul>
+                    <div className="space-y-3">
+                      <div className="bg-blue-50 p-3 rounded">
+                        <span className="font-semibold">Product Tracking:</span>
+                        <p className="text-sm mt-1">Monitor items from factory to consumer</p>
+                      </div>
+                      <div className="bg-blue-50 p-3 rounded">
+                        <span className="font-semibold">Authenticity:</span>
+                        <p className="text-sm mt-1">Verify genuine products and documents</p>
+                      </div>
+                    </div>
+                    <div className="space-y-3">
+                      <div className="bg-blue-50 p-3 rounded">
+                        <span className="font-semibold">Payments:</span>
+                        <p className="text-sm mt-1">Automatic payment on delivery confirmation</p>
+                      </div>
+                      <div className="bg-blue-50 p-3 rounded">
+                        <span className="font-semibold">Documentation:</span>
+                        <p className="text-sm mt-1">Secure storage of shipping records</p>
+                      </div>
+                    </div>
                   </div>
                 </motion.div>
               </div>
