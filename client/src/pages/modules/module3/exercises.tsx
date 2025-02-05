@@ -5,21 +5,15 @@ import { useProgress } from "@/context/progress-context";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
-import { Wrench, Code, Award, Terminal } from "lucide-react";
-import Mermaid from "mermaid";
+import { Wrench, Code, Award, Terminal, Check, AlertTriangle } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
-
-// Initialize mermaid
-Mermaid.initialize({
-  startOnLoad: true,
-  theme: 'neutral',
-  securityLevel: 'loose',
-});
 
 export default function ExercisesPage() {
   useScrollTop();
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [completedSteps, setCompletedSteps] = useState(new Set());
   const { updateProgress } = useProgress();
 
   useEffect(() => {
@@ -39,20 +33,8 @@ export default function ExercisesPage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [updateProgress]);
 
-  const contractLifecycleDiagram = `
-    graph TD
-      A[Write Contract] -->|Compile| B[Bytecode]
-      B --> C[Deploy]
-      C --> D[Contract Address]
-      D --> E[Interact]
-      E -->|Read| F[View Functions]
-      E -->|Write| G[State Changes]
-      G --> H[Emit Events]
-  `;
-
-  const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
+  const markStepComplete = (step: number) => {
+    setCompletedSteps(prev => new Set([...prev, step]));
   };
 
   return (
@@ -71,280 +53,265 @@ export default function ExercisesPage() {
           transition={{ delay: 0.2 }}
           className="text-4xl font-bold text-blue-800 mb-6"
         >
-          Module 3: Practical Exercises
+          Getting Started with Ethereum: Beginner's Practice Guide
         </motion.h1>
 
         <div className="space-y-8">
-          {/* Exercise 1: Wallet Setup */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <Card className="p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <Wrench className="w-6 h-6 text-blue-600" />
-                <h2 className="text-2xl font-bold text-blue-700">Exercise 1: Ethereum Wallet Setup and Security</h2>
-              </div>
-              <div className="space-y-4">
-                <p className="text-gray-700">Set up and configure your Ethereum development environment:</p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
-                    <div className="bg-blue-50 p-6 rounded-lg">
-                      <h4 className="font-semibold mb-2">Wallet Setup</h4>
-                      <ul className="list-disc pl-5 space-y-2">
-                        <li>Install MetaMask extension</li>
-                        <li>Create a new wallet</li>
-                        <li>Securely store recovery phrase</li>
-                        <li>Configure security settings</li>
-                      </ul>
-                    </div>
-                  </motion.div>
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
-                    <div className="bg-blue-50 p-6 rounded-lg">
-                      <h4 className="font-semibold mb-2">Network Configuration</h4>
-                      <ul className="list-disc pl-5 space-y-2">
-                        <li>Connect to Ethereum testnet</li>
-                        <li>Request test ETH from faucet</li>
-                        <li>Configure gas settings</li>
-                        <li>Verify network connection</li>
-                      </ul>
-                    </div>
-                  </motion.div>
-                </div>
-              </div>
-            </Card>
-          </motion.div>
-
-          {/* Exercise 2: Smart Contract Development */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <Card className="p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <Code className="w-6 h-6 text-blue-600" />
-                <h2 className="text-2xl font-bold text-blue-700">Exercise 2: Smart Contract Development</h2>
-              </div>
-              <div className="space-y-6">
-                <p className="text-gray-700">
-                  Learn to write and deploy smart contracts using Remix IDE. We'll walk through each step
-                  of the development process with interactive examples.
-                </p>
-
-                {/* Contract Lifecycle Diagram */}
-                <div className="bg-white p-6 rounded-lg shadow-sm">
-                  <h3 className="text-lg font-semibold mb-4">Smart Contract Lifecycle</h3>
-                  <div className="mermaid">
-                    {contractLifecycleDiagram}
-                  </div>
-                </div>
-
-                {/* Interactive Contract Code */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold">Basic Storage Contract</h3>
-
-                    <motion.div 
-                      className="bg-gray-50 p-4 rounded-lg"
-                      whileHover={{ scale: 1.01 }}
-                    >
-                      <div className="space-y-4">
-                        {/* Contract Setup */}
-                        <div>
-                          <h4 className="text-sm font-semibold text-blue-600 mb-2">1. Contract Setup</h4>
-                          <pre className="text-sm bg-gray-900 text-white p-4 rounded-md">
-                            <code>
-                              {`// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;`}
-                            </code>
-                          </pre>
-                          <p className="text-sm text-gray-600 mt-2">
-                            Every Solidity contract starts with a license identifier and version pragma.
-                          </p>
-                        </div>
-
-                        {/* State Variables */}
-                        <div>
-                          <h4 className="text-sm font-semibold text-blue-600 mb-2">2. State Variables</h4>
-                          <pre className="text-sm bg-gray-900 text-white p-4 rounded-md">
-                            <code>
-                              {`contract BasicStorage {
-    uint256 private value;
-    event ValueChanged(uint256 newValue);`}
-                            </code>
-                          </pre>
-                          <p className="text-sm text-gray-600 mt-2">
-                            State variables persist in contract storage. Events allow logging to the blockchain.
-                          </p>
-                        </div>
-
-                        {/* Contract Functions */}
-                        <div>
-                          <h4 className="text-sm font-semibold text-blue-600 mb-2">3. Contract Functions</h4>
-                          <pre className="text-sm bg-gray-900 text-white p-4 rounded-md">
-                            <code>
-                              {`    function setValue(uint256 _value) public {
-        value = _value;
-        emit ValueChanged(_value);
-    }
-
-    function getValue() public view returns (uint256) {
-        return value;
-    }`}
-                            </code>
-                          </pre>
-                          <p className="text-sm text-gray-600 mt-2">
-                            Functions can modify state (setValue) or view state without modification (getValue).
-                          </p>
-                        </div>
-                      </div>
-                    </motion.div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <h3 className="text-lg font-semibold">Development Steps</h3>
-                    <div className="bg-blue-50 p-6 rounded-lg">
-                      <ol className="list-decimal pl-5 space-y-4">
-                        <motion.li
-                          whileHover={{ x: 5 }}
-                          className="cursor-pointer"
-                        >
-                          <h4 className="font-semibold">Set up Remix IDE</h4>
-                          <p className="text-sm text-gray-600">
-                            Access the web interface at remix.ethereum.org and create a new file.
-                          </p>
-                        </motion.li>
-                        <motion.li
-                          whileHover={{ x: 5 }}
-                          className="cursor-pointer"
-                        >
-                          <h4 className="font-semibold">Write and Compile</h4>
-                          <p className="text-sm text-gray-600">
-                            Write your contract and compile using the Solidity compiler.
-                          </p>
-                        </motion.li>
-                        <motion.li
-                          whileHover={{ x: 5 }}
-                          className="cursor-pointer"
-                        >
-                          <h4 className="font-semibold">Deploy Contract</h4>
-                          <p className="text-sm text-gray-600">
-                            Deploy to a test network using MetaMask and test ETH.
-                          </p>
-                        </motion.li>
-                        <motion.li
-                          whileHover={{ x: 5 }}
-                          className="cursor-pointer"
-                        >
-                          <h4 className="font-semibold">Interact and Test</h4>
-                          <p className="text-sm text-gray-600">
-                            Use Remix's interface to call functions and monitor events.
-                          </p>
-                        </motion.li>
-                      </ol>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Card>
-          </motion.div>
-
-          {/* Project: DeFi Application */}
+          {/* Exercise 1: Understanding MetaMask */}
           <Card className="p-6">
             <div className="flex items-center gap-2 mb-4">
-              <Terminal className="w-6 h-6 text-blue-600" />
-              <h2 className="text-2xl font-bold text-blue-700">Project: Build a DeFi Application</h2>
+              <Wrench className="w-6 h-6 text-blue-600" />
+              <h2 className="text-2xl font-bold text-blue-700">Exercise 1: Your First Ethereum Wallet</h2>
             </div>
             <div className="space-y-4">
-              <p className="text-gray-700">Create a decentralized application with the following features:</p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h4 className="font-semibold mb-2">Implementation Tasks</h4>
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>Token smart contract</li>
-                    <li>Web3 integration</li>
-                    <li>Wallet connectivity</li>
-                    <li>Transaction handling</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-2">Security Considerations</h4>
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>Input validation</li>
-                    <li>Access control</li>
-                    <li>Gas optimization</li>
-                    <li>Error handling</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </Card>
-
-          {/* Assessment */}
-          <Card className="p-6">
-            <div className="flex items-center gap-2 mb-4">
-              <Award className="w-6 h-6 text-blue-600" />
-              <h2 className="text-2xl font-bold text-blue-700">Assessment</h2>
-            </div>
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h4 className="font-semibold mb-2">Evaluation Criteria</h4>
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>Code quality and organization</li>
-                    <li>Security best practices</li>
-                    <li>Documentation completeness</li>
-                    <li>Test coverage</li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-semibold mb-2">Deliverables</h4>
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>Working DeFi application</li>
-                    <li>Source code repository</li>
-                    <li>Technical documentation</li>
-                    <li>Test suite results</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </Card>
-        </div>
-
-        {isFullyRead && (
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mt-8"
-          >
-            <Card className="bg-green-100 border-l-4 border-green-500 p-4">
-              <p className="text-green-700">
-                🎉 Congratulations! You've completed the Module 3 Practical Exercises section!
+              <p className="text-gray-700">
+                Let's start with the basics! We'll learn how to set up and use MetaMask, 
+                the most popular Ethereum wallet. Think of MetaMask as your digital banking app for cryptocurrencies.
               </p>
-            </Card>
-          </motion.div>
-        )}
 
-        <ModuleNavigation
-          prev={{
-            path: "/modules/module3/security-risks",
-            label: "Security and Risk Management"
-          }}
-          next={{
-            path: "/modules/module3/quiz",
-            label: "Module Quiz"
-          }}
-        />
+              <div className="bg-blue-50 p-6 rounded-lg space-y-4">
+                <h3 className="font-semibold text-blue-800">Step-by-Step Guide:</h3>
+                <ol className="list-decimal pl-5 space-y-4">
+                  <li>
+                    <div className="space-y-2">
+                      <p><strong>Install MetaMask:</strong></p>
+                      <ul className="list-disc pl-5 text-gray-600">
+                        <li>Go to the Chrome Web Store</li>
+                        <li>Search for "MetaMask"</li>
+                        <li>Click "Add to Chrome"</li>
+                        <li>Look for the fox icon in your browser</li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li>
+                    <div className="space-y-2">
+                      <p><strong>Create Your Wallet:</strong></p>
+                      <ul className="list-disc pl-5 text-gray-600">
+                        <li>Click "Get Started"</li>
+                        <li>Choose "Create a Wallet"</li>
+                        <li>Create a strong password</li>
+                        <li>Write down your Secret Recovery Phrase (Never share this!)</li>
+                      </ul>
+                      <div className="bg-yellow-100 p-4 rounded-lg mt-2">
+                        <AlertTriangle className="w-5 h-5 text-yellow-600 inline mr-2" />
+                        <span className="text-yellow-700">
+                          Important: Your Secret Recovery Phrase is like the master key to your wallet. 
+                          Never share it with anyone and store it safely offline!
+                        </span>
+                      </div>
+                    </div>
+                  </li>
+                </ol>
+
+                <div className="mt-4">
+                  <Button
+                    onClick={() => markStepComplete(1)}
+                    className="flex items-center gap-2"
+                    variant={completedSteps.has(1) ? "secondary" : "default"}
+                  >
+                    {completedSteps.has(1) ? (
+                      <>
+                        <Check className="w-4 h-4" />
+                        Completed!
+                      </>
+                    ) : (
+                      "Mark as Complete"
+                    )}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          {/* Exercise 2: Understanding Test Networks */}
+          <Card className="p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <Code className="w-6 h-6 text-purple-600" />
+              <h2 className="text-2xl font-bold text-purple-700">Exercise 2: Playing with Test Networks</h2>
+            </div>
+            <div className="space-y-4">
+              <p className="text-gray-700">
+                Before we work with real Ethereum, let's practice on a test network. 
+                It's like a simulation where you can experiment without using real money!
+              </p>
+
+              <div className="bg-purple-50 p-6 rounded-lg space-y-4">
+                <h3 className="font-semibold text-purple-800">Follow These Steps:</h3>
+                <ol className="list-decimal pl-5 space-y-4">
+                  <li>
+                    <div className="space-y-2">
+                      <p><strong>Switch to Sepolia Test Network:</strong></p>
+                      <ul className="list-disc pl-5 text-gray-600">
+                        <li>Open MetaMask</li>
+                        <li>Click the network dropdown (usually says "Ethereum Mainnet")</li>
+                        <li>Select "Sepolia Test Network"</li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li>
+                    <div className="space-y-2">
+                      <p><strong>Get Test Ether:</strong></p>
+                      <ul className="list-disc pl-5 text-gray-600">
+                        <li>Visit a Sepolia faucet (e.g., sepoliafaucet.com)</li>
+                        <li>Copy your wallet address from MetaMask</li>
+                        <li>Paste your address in the faucet website</li>
+                        <li>Request test ETH</li>
+                      </ul>
+                    </div>
+                  </li>
+                </ol>
+
+                <div className="bg-blue-100 p-4 rounded-lg mt-2">
+                  <p className="text-blue-700">
+                    <strong>Pro Tip:</strong> Test networks let you practice transactions 
+                    and smart contract interactions without risking real money. Always experiment 
+                    on test networks first!
+                  </p>
+                </div>
+
+                <div className="mt-4">
+                  <Button
+                    onClick={() => markStepComplete(2)}
+                    className="flex items-center gap-2"
+                    variant={completedSteps.has(2) ? "secondary" : "default"}
+                  >
+                    {completedSteps.has(2) ? (
+                      <>
+                        <Check className="w-4 h-4" />
+                        Completed!
+                      </>
+                    ) : (
+                      "Mark as Complete"
+                    )}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          {/* Exercise 3: Simple Smart Contract Interaction */}
+          <Card className="p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <Terminal className="w-6 h-6 text-green-600" />
+              <h2 className="text-2xl font-bold text-green-700">Exercise 3: Your First Smart Contract Interaction</h2>
+            </div>
+            <div className="space-y-4">
+              <p className="text-gray-700">
+                Now let's interact with a simple smart contract! We'll use Remix IDE, 
+                a browser-based tool for writing and testing smart contracts.
+              </p>
+
+              <div className="bg-green-50 p-6 rounded-lg space-y-4">
+                <h3 className="font-semibold text-green-800">Let's Practice:</h3>
+                <ol className="list-decimal pl-5 space-y-4">
+                  <li>
+                    <div className="space-y-2">
+                      <p><strong>Open Remix IDE:</strong></p>
+                      <ul className="list-disc pl-5 text-gray-600">
+                        <li>Go to remix.ethereum.org</li>
+                        <li>Click "Create New File"</li>
+                        <li>Name it "HelloWorld.sol"</li>
+                      </ul>
+                    </div>
+                  </li>
+                  <li>
+                    <div className="space-y-2">
+                      <p><strong>Copy this Simple Contract:</strong></p>
+                      <pre className="bg-gray-800 text-white p-4 rounded-md text-sm">
+{`// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract HelloWorld {
+    string public message = "Hello, Ethereum!";
+
+    function updateMessage(string memory newMessage) public {
+        message = newMessage;
+    }
+}`}
+                      </pre>
+                      <p className="text-gray-600 mt-2">
+                        This contract stores a message that anyone can read and update.
+                      </p>
+                    </div>
+                  </li>
+                  <li>
+                    <div className="space-y-2">
+                      <p><strong>Deploy and Interact:</strong></p>
+                      <ul className="list-disc pl-5 text-gray-600">
+                        <li>Click the "Compile" button</li>
+                        <li>Switch to the "Deploy" tab</li>
+                        <li>Make sure you're connected to Sepolia Test Network</li>
+                        <li>Click "Deploy"</li>
+                        <li>Try reading and updating the message!</li>
+                      </ul>
+                    </div>
+                  </li>
+                </ol>
+
+                <div className="bg-blue-100 p-4 rounded-lg mt-2">
+                  <p className="text-blue-700">
+                    <strong>Understanding:</strong> This simple contract demonstrates the basics 
+                    of smart contracts - they can store data (the message) and have functions 
+                    to change that data (updateMessage). Every interaction with the contract is 
+                    recorded on the blockchain!
+                  </p>
+                </div>
+
+                <div className="mt-4">
+                  <Button
+                    onClick={() => markStepComplete(3)}
+                    className="flex items-center gap-2"
+                    variant={completedSteps.has(3) ? "secondary" : "default"}
+                  >
+                    {completedSteps.has(3) ? (
+                      <>
+                        <Check className="w-4 h-4" />
+                        Completed!
+                      </>
+                    ) : (
+                      "Mark as Complete"
+                    )}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          {isFullyRead && (
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-8"
+            >
+              <Card className="bg-green-100 border-l-4 border-green-500 p-4">
+                <div className="flex flex-col items-center">
+                  <p className="text-green-700 mb-4">
+                    🎉 Congratulations! You've completed the basic Ethereum exercises!
+                  </p>
+                  <p className="text-green-600">
+                    You now understand the basics of:
+                    <ul className="list-disc pl-5 mt-2">
+                      <li>Setting up a wallet</li>
+                      <li>Using test networks</li>
+                      <li>Interacting with smart contracts</li>
+                    </ul>
+                  </p>
+                </div>
+              </Card>
+            </motion.div>
+          )}
+
+          <ModuleNavigation
+            prev={{
+              path: "/modules/module3/security-risks",
+              label: "Security and Risk Management"
+            }}
+            next={{
+              path: "/modules/module3/quiz",
+              label: "Module Quiz"
+            }}
+          />
+        </div>
       </div>
     </div>
   );
