@@ -5,7 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, Shield, Wallet, BookOpen } from "lucide-react";
 import { GettingStartedQuiz } from "@/components/quizzes/GettingStartedQuiz";
 import { SecurityIcon, WalletIcon } from "@/components/icons/CryptoIcons";
 import { GettingStartedDiagram } from "@/components/diagrams/GettingStartedDiagram";
@@ -75,88 +75,250 @@ const GettingStartedSection = () => {
         </div>
 
         <h1 className="text-4xl font-bold text-blue-800 mb-6">
-          Getting Started Safely with Cryptocurrency
+          Your First Steps into Cryptocurrency
         </h1>
 
         <Card className="mb-6">
           <CardContent className="prose max-w-none p-6">
-            <section>
-              <h2 className="text-2xl font-bold text-blue-700">First Steps</h2>
-              <div className="flex items-center gap-4 mb-4">
-                <SecurityIcon size={32} className="text-blue-600" />
+            {/* Introduction Section */}
+            <section className="mb-8">
+              <h2 className="text-2xl font-bold text-blue-700 flex items-center gap-2">
+                <BookOpen className="h-6 w-6" />
+                Welcome to Your Crypto Journey
+              </h2>
+              <p className="text-gray-700 mt-4">
+                Starting your cryptocurrency journey can feel overwhelming, but don't worry! 
+                We'll break it down into simple, manageable steps. Think of it like learning 
+                to swim - you'll start in the shallow end with basic concepts before diving deeper.
+              </p>
+
+              <div className="bg-blue-50 p-4 rounded-lg my-4">
+                <h3 className="text-lg font-semibold text-blue-800">Before You Begin</h3>
                 <p className="text-gray-700">
-                  Beginning your cryptocurrency journey requires careful preparation and understanding. This section will guide you through the essential first steps to ensure a safe and successful start.
+                  Just like you wouldn't jump into a pool without knowing how to swim, 
+                  it's important to understand the basics before investing any money in 
+                  cryptocurrency. This guide will help you build a strong foundation.
                 </p>
               </div>
-
-              <GettingStartedDiagram />
-
-              <div className="bg-blue-50 p-4 rounded-lg mb-6">
-                <h3 className="text-xl font-semibold text-blue-800 mb-2">Getting Started Checklist</h3>
-                <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                  <li>Educate yourself about cryptocurrency basics</li>
-                  <li>Choose reputable exchanges and wallets</li>
-                  <li>Understand security best practices</li>
-                  <li>Start with small amounts</li>
-                  <li>Keep detailed records of transactions</li>
-                </ul>
-              </div>
             </section>
 
-            <section className="mt-8">
-              <h2 className="text-2xl font-bold text-blue-700">Security Best Practices</h2>
-              <div className="flex items-center gap-4 mb-4">
-                <WalletIcon size={32} className="text-blue-600" />
-                <p className="text-gray-700">
-                  Security is paramount in the cryptocurrency space. Following these best practices will help protect your assets:
-                </p>
-              </div>
-              <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                <li>Use strong, unique passwords for all accounts</li>
-                <li>Enable two-factor authentication (2FA)</li>
-                <li>Keep private keys and recovery phrases secure</li>
-                <li>Use hardware wallets for significant amounts</li>
-                <li>Be cautious of phishing attempts and scams</li>
-                <li>Regularly update software and applications</li>
-                <li>Verify all transaction details carefully</li>
-              </ul>
-            </section>
+            {/* Essential Knowledge Section */}
+            <section className="mb-8">
+              <h2 className="text-2xl font-bold text-blue-700 flex items-center gap-2">
+                <CheckCircle2 className="h-6 w-6" />
+                Essential Knowledge First
+              </h2>
 
-            <section className="mt-8">
-              <h2 className="text-2xl font-bold text-blue-700">Storage and Access Security</h2>
-              <div className="bg-yellow-50 p-4 rounded-lg mb-6">
-                <h3 className="text-xl font-semibold text-yellow-800 mb-2">Critical Security Tips</h3>
-                <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                  <li>Never share private keys or recovery phrases</li>
-                  <li>Use different wallets for different purposes</li>
-                  <li>Backup wallet information securely</li>
-                  <li>Consider using multiple storage solutions</li>
-                  <li>Test small transactions first</li>
-                </ul>
-              </div>
-            </section>
-
-            <section className="mt-8">
-              <h2 className="text-2xl font-bold text-blue-700">Recommended Tools and Resources</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                <Card className="p-4 bg-gray-50">
-                  <h3 className="font-semibold text-blue-700 mb-2">Security Tools</h3>
-                  <ul className="list-disc pl-5 text-gray-700">
-                    <li>Hardware wallets</li>
-                    <li>Password managers</li>
-                    <li>Authentication apps</li>
-                    <li>Secure backup solutions</li>
+                <Card className="p-4 bg-white border-l-4 border-blue-500">
+                  <h3 className="font-semibold text-blue-700 mb-2">What You'll Need</h3>
+                  <ul className="list-disc pl-5 text-gray-700 space-y-2">
+                    <li>Basic computer skills</li>
+                    <li>Secure internet connection</li>
+                    <li>Strong passwords</li>
+                    <li>Note-taking tools</li>
+                    <li>Critical thinking mindset</li>
                   </ul>
                 </Card>
-                <Card className="p-4 bg-gray-50">
-                  <h3 className="font-semibold text-blue-700 mb-2">Learning Resources</h3>
-                  <ul className="list-disc pl-5 text-gray-700">
-                    <li>Educational platforms</li>
-                    <li>Community forums</li>
-                    <li>Security guides</li>
-                    <li>Market analysis tools</li>
+
+                <Card className="p-4 bg-white border-l-4 border-green-500">
+                  <h3 className="font-semibold text-green-700 mb-2">What You'll Learn</h3>
+                  <ul className="list-disc pl-5 text-gray-700 space-y-2">
+                    <li>How to secure your assets</li>
+                    <li>Understanding wallets</li>
+                    <li>Safe trading practices</li>
+                    <li>Risk management</li>
+                    <li>Common pitfalls to avoid</li>
                   </ul>
                 </Card>
+              </div>
+            </section>
+
+            {/* Step-by-Step Guide */}
+            <section className="mb-8">
+              <h2 className="text-2xl font-bold text-blue-700">Your First Steps</h2>
+
+              <div className="space-y-6 mt-4">
+                {/* Step 1: Education */}
+                <Card className="p-6 bg-white">
+                  <div className="flex items-start gap-4">
+                    <div className="bg-blue-100 p-3 rounded-full">
+                      <BookOpen className="h-6 w-6 text-blue-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-blue-800">Step 1: Learn the Basics</h3>
+                      <p className="text-gray-700 mt-2">
+                        Before making any investments, understand:
+                      </p>
+                      <ul className="list-disc pl-5 mt-2 space-y-2 text-gray-700">
+                        <li><strong>What is cryptocurrency?</strong> - Digital money that uses cryptography for security</li>
+                        <li><strong>How does it work?</strong> - Through a technology called blockchain</li>
+                        <li><strong>What are the risks?</strong> - Price volatility, security concerns, regulatory changes</li>
+                        <li><strong>What are the benefits?</strong> - Fast transfers, potential investment growth, financial innovation</li>
+                      </ul>
+                      <div className="bg-yellow-50 p-4 rounded-lg mt-4">
+                        <p className="text-yellow-800">
+                          💡 Tip: Take notes and don't rush. Understanding the basics will help you make better decisions later.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Step 2: Security */}
+                <Card className="p-6 bg-white">
+                  <div className="flex items-start gap-4">
+                    <div className="bg-purple-100 p-3 rounded-full">
+                      <Shield className="h-6 w-6 text-purple-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-purple-800">Step 2: Set Up Security</h3>
+                      <p className="text-gray-700 mt-2">
+                        Security is crucial in cryptocurrency. Think of it like setting up a digital vault:
+                      </p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div className="bg-white p-4 rounded-lg border border-gray-200">
+                          <h4 className="font-semibold text-purple-700">Essential Security Measures:</h4>
+                          <ul className="list-disc pl-5 mt-2 space-y-2 text-gray-700">
+                            <li>Use strong, unique passwords</li>
+                            <li>Enable two-factor authentication (2FA)</li>
+                            <li>Use a password manager</li>
+                            <li>Keep software updated</li>
+                          </ul>
+                        </div>
+                        <div className="bg-white p-4 rounded-lg border border-gray-200">
+                          <h4 className="font-semibold text-purple-700">Red Flags to Watch For:</h4>
+                          <ul className="list-disc pl-5 mt-2 space-y-2 text-gray-700">
+                            <li>Unsolicited investment advice</li>
+                            <li>Promises of guaranteed returns</li>
+                            <li>Pressure to act quickly</li>
+                            <li>Requests to share private keys</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Step 3: Wallets */}
+                <Card className="p-6 bg-white">
+                  <div className="flex items-start gap-4">
+                    <div className="bg-green-100 p-3 rounded-full">
+                      <Wallet className="h-6 w-6 text-green-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-green-800">Step 3: Choose Your First Wallet</h3>
+                      <p className="text-gray-700 mt-2">
+                        A cryptocurrency wallet is like a digital bank account. Here's how to get started:
+                      </p>
+                      <div className="mt-4 space-y-4">
+                        <div className="bg-white p-4 rounded-lg border border-gray-200">
+                          <h4 className="font-semibold text-green-700">Types of Wallets:</h4>
+                          <ul className="list-disc pl-5 mt-2 space-y-2 text-gray-700">
+                            <li>
+                              <strong>Software Wallets</strong> (Mobile/Desktop)
+                              <p className="text-sm">Good for beginners, convenient for small amounts</p>
+                            </li>
+                            <li>
+                              <strong>Hardware Wallets</strong>
+                              <p className="text-sm">Best for storing larger amounts, more secure but requires investment</p>
+                            </li>
+                            <li>
+                              <strong>Paper Wallets</strong>
+                              <p className="text-sm">Offline storage, not recommended for beginners</p>
+                            </li>
+                          </ul>
+                        </div>
+                        <div className="bg-green-50 p-4 rounded-lg">
+                          <p className="text-green-800">
+                            🔑 Remember: Your wallet's recovery phrase is like the master key to your funds. 
+                            Write it down on paper and store it safely. Never store it digitally or share it with anyone.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            </section>
+
+            {/* Practical Tips */}
+            <section className="mb-8">
+              <h2 className="text-2xl font-bold text-blue-700">Practical Tips for Beginners</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                <Card className="p-4 bg-white">
+                  <h3 className="font-semibold text-blue-700 mb-2">DO's</h3>
+                  <ul className="list-disc pl-5 text-gray-700 space-y-2">
+                    <li>Start with small amounts</li>
+                    <li>Research before investing</li>
+                    <li>Keep detailed records</li>
+                    <li>Use reputable exchanges</li>
+                    <li>Backup your wallet information</li>
+                  </ul>
+                </Card>
+                <Card className="p-4 bg-white">
+                  <h3 className="font-semibold text-red-700 mb-2">DON'Ts</h3>
+                  <ul className="list-disc pl-5 text-gray-700 space-y-2">
+                    <li>Invest more than you can afford to lose</li>
+                    <li>Share private keys or recovery phrases</li>
+                    <li>Fall for get-rich-quick schemes</li>
+                    <li>Trust unsolicited advice</li>
+                    <li>Forget to consider taxes</li>
+                  </ul>
+                </Card>
+              </div>
+            </section>
+
+            {/* Common Mistakes to Avoid */}
+            <section className="mb-8">
+              <h2 className="text-2xl font-bold text-blue-700">Common Beginner Mistakes</h2>
+              <div className="bg-red-50 p-6 rounded-lg mt-4">
+                <ul className="space-y-4">
+                  {[
+                    {
+                      title: "FOMO Trading",
+                      description: "Buying because of fear of missing out. Always research and make informed decisions."
+                    },
+                    {
+                      title: "Poor Security Practices",
+                      description: "Using weak passwords or sharing private keys. Security should always be your top priority."
+                    },
+                    {
+                      title: "No Backup Plan",
+                      description: "Not properly backing up wallet information. Always have secure backups of important data."
+                    },
+                    {
+                      title: "Overinvesting",
+                      description: "Investing more than you can afford to lose. Start small and learn as you go."
+                    }
+                  ].map((mistake, index) => (
+                    <li key={index} className="flex items-start gap-3">
+                      <div className="text-red-500 font-bold">❌</div>
+                      <div>
+                        <h4 className="font-semibold text-red-800">{mistake.title}</h4>
+                        <p className="text-gray-700">{mistake.description}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </section>
+
+            {/* Next Steps */}
+            <section>
+              <h2 className="text-2xl font-bold text-blue-700">Ready to Start?</h2>
+              <div className="bg-blue-50 p-6 rounded-lg mt-4">
+                <p className="text-blue-800">
+                  Remember: The crypto world is constantly evolving. Stay informed, start small, 
+                  and never stop learning. Your journey is just beginning!
+                </p>
+                <div className="mt-4 flex gap-4">
+                  <Link href="/modules/module1/security">
+                    <Button className="bg-blue-600 hover:bg-blue-700">
+                      Next: Understanding Security
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </section>
           </CardContent>
