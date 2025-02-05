@@ -1,5 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
+import { Sparkles } from "lucide-react";
 
 export default function Navigation() {
   const [location] = useLocation();
@@ -12,9 +13,17 @@ export default function Navigation() {
             <span className="text-2xl font-bold text-white">Sulla</span>
           </Link>
         </div>
-        <div className="flex items-center mr-8">
+        <div className="flex items-center gap-6 mr-8">
           <Link href="/curriculum">
-            <span className="text-white hover:text-blue-200 transition-colors font-bold">Courses</span>
+            <span className="text-white hover:text-blue-200 transition-colors font-bold">
+              Courses
+            </span>
+          </Link>
+          <Link href="/ai" className="flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-white" />
+            <span className="text-white hover:text-blue-200 transition-colors font-bold">
+              AI Features
+            </span>
           </Link>
         </div>
       </div>
