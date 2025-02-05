@@ -1,6 +1,7 @@
 import { TrendingUp, Wallet, Building2, Hash, Network, Search } from "lucide-react";
 import { motion } from "framer-motion";
 import TradingSimulator from "@/components/games/TradingSimulator";
+import WalletAdventure from "@/components/games/WalletAdventure";
 import { Card } from "@/components/ui/card";
 import { useState } from "react";
 import MiningGame from "@/components/games/MiningGame";
@@ -20,7 +21,7 @@ const games = [
     title: "Crypto Wallet Adventure",
     description: "Master wallet security and management through an interactive story-driven experience.",
     icon: Wallet,
-    available: false, // Coming soon
+    available: true, // Changed to true to enable the game
   },
   {
     id: "city",
@@ -115,10 +116,10 @@ export default function Games() {
             className="md:col-span-3"
           >
             {selectedGame === "trading" && <TradingSimulator />}
+            {selectedGame === "wallet" && <WalletAdventure />}
             {selectedGame === "mining" && <MiningGame />}
             {selectedGame === "consensus" && <NetworkConsensusGame />}
             {selectedGame === "explorer" && <BlockchainExplorerGame />}
-            {/* Other games will be added here as they're developed */}
           </motion.div>
         </div>
       </div>
