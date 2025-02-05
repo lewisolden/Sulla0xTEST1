@@ -405,7 +405,7 @@ const PracticalApplicationsQuiz = () => {
   const getOptionStyle = (questionId: string, option: string) => {
     if (answers[questionId]) {
       if (option === questions.find(q => q.id === questionId)?.correct) {
-        return "bg-green-50 border-green-200";
+        return "bg-green-50 border-green-500";
       }
       if (answers[questionId] === option) {
         return "bg-red-50 border-red-200";
@@ -445,27 +445,36 @@ const PracticalApplicationsQuiz = () => {
           disabled={isQuestionAnswered(currentQuestionData.id)}
         >
           {Object.entries(currentQuestionData.options).map(([key, value]) => (
-            <div
+            <motion.div
               key={key}
-              className={`flex items-center space-x-3 p-3 rounded-lg border transition-colors ${getOptionStyle(currentQuestionData.id, key)} ${isQuestionAnswered(currentQuestionData.id) ? 'cursor-default' : 'cursor-pointer'}`}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className={`flex items-center p-4 rounded-lg border-2 transition-all ${getOptionStyle(currentQuestionData.id, key)} ${isQuestionAnswered(currentQuestionData.id) ? 'cursor-default' : 'cursor-pointer hover:shadow-md'}`}
             >
               <div className="flex items-center flex-1">
                 <RadioGroupItem 
                   value={key} 
                   id={`${currentQuestionData.id}-${key}`}
-                  className="pointer-events-none"
+                  className="hidden"
                 />
-                <Label htmlFor={`${currentQuestionData.id}-${key}`} className="text-gray-700 ml-3 flex-1">
+                <Label htmlFor={`${currentQuestionData.id}-${key}`} className="text-gray-700 flex-1">
                   {value}
                 </Label>
               </div>
-              {answers[currentQuestionData.id] && key === currentQuestionData.correct && (
-                <CheckCircle className="w-5 h-5 text-green-500 ml-auto flex-shrink-0" />
+              {answers[currentQuestionData.id] && (
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                >
+                  {key === currentQuestionData.correct ? (
+                    <CheckCircle className="w-6 h-6 text-green-500 ml-2" />
+                  ) : answers[currentQuestionData.id] === key ? (
+                    <XCircle className="w-6 h-6 text-red-500 ml-2" />
+                  ) : null}
+                </motion.div>
               )}
-              {answers[currentQuestionData.id] === key && key !== currentQuestionData.correct && (
-                <XCircle className="w-5 h-5 text-red-500 ml-auto flex-shrink-0" />
-              )}
-            </div>
+            </motion.div>
           ))}
         </RadioGroup>
 
@@ -473,7 +482,8 @@ const PracticalApplicationsQuiz = () => {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-4 p-4 bg-blue-50 rounded-lg"
+            transition={{ delay: 0.3 }}
+            className="mt-4 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500"
           >
             <p className="text-blue-800">{currentQuestionData.explanation}</p>
           </motion.div>
@@ -504,7 +514,8 @@ const PracticalApplicationsQuiz = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mt-6 p-4 bg-blue-50 rounded-lg"
+          transition={{ delay: 0.2 }}
+          className="mt-6 p-4 bg-blue-50 rounded-lg border-l-4 border-green-500"
         >
           <p className="text-xl font-semibold text-blue-800">
             Quiz Complete!
