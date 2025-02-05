@@ -5,7 +5,7 @@ import { useProgress } from "@/context/progress-context";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
-import { TrendingUp, Users, Code, Coins } from "lucide-react";
+import { TrendingUp, Users, Code, Coins, Activity, Lock, Shield, Zap } from "lucide-react";
 import InvestmentValueQuiz from "@/components/quizzes/InvestmentValueQuiz";
 
 const InvestmentValueSection = () => {
@@ -62,7 +62,7 @@ const InvestmentValueSection = () => {
         <div 
           className="h-full bg-blue-600" 
           style={{ width: `${scrollProgress}%` }}
-        ></div>
+        />
       </div>
 
       <div className="max-w-4xl mx-auto">
@@ -83,11 +83,24 @@ const InvestmentValueSection = () => {
               transition={{ delay: 0.4 }}
             >
               <h2 className="text-2xl font-bold text-blue-700 mb-4">Understanding Ethereum's Value</h2>
-              <p className="text-gray-700 mb-4">
-                Ethereum's value derives from its utility and network effects. The platform's ability to 
-                support diverse applications and its growing ecosystem contribute to its fundamental value 
-                proposition.
-              </p>
+
+              <div className="bg-blue-50 p-6 rounded-lg mb-6">
+                <h3 className="text-xl font-semibold text-blue-700 mb-3">What Makes Ethereum Valuable?</h3>
+                <p className="text-gray-700 mb-4">
+                  Think of Ethereum like a global computer that anyone can use. Just as the internet 
+                  revolutionized information sharing, Ethereum is revolutionizing how we handle digital 
+                  value and agreements. Its value comes from its utility and growing network of users 
+                  and developers.
+                </p>
+                <div className="bg-white p-4 rounded-lg">
+                  <h4 className="font-semibold text-blue-600 mb-2">Real-World Analogy:</h4>
+                  <p className="text-gray-600">
+                    Imagine a city where buildings are smart contracts, roads are blockchain networks, 
+                    and ETH is the electricity powering everything. The more businesses (applications) 
+                    and people (users) move into the city, the more valuable the entire ecosystem becomes.
+                  </p>
+                </div>
+              </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <motion.div
@@ -100,12 +113,24 @@ const InvestmentValueSection = () => {
                     <Code className="w-6 h-6 text-blue-600" />
                     <h3 className="text-xl font-semibold text-blue-700">Developer Ecosystem</h3>
                   </div>
-                  <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                    <li>Largest blockchain developer community</li>
-                    <li>Extensive tooling and documentation</li>
-                    <li>Regular protocol improvements</li>
-                    <li>Active research and development</li>
-                  </ul>
+                  <div className="space-y-3">
+                    <div className="bg-white p-3 rounded">
+                      <span className="font-semibold">Active Developers:</span>
+                      <p className="text-sm mt-1">Largest blockchain developer community building new applications daily</p>
+                    </div>
+                    <div className="bg-white p-3 rounded">
+                      <span className="font-semibold">Development Tools:</span>
+                      <p className="text-sm mt-1">Rich set of tools and frameworks making development easier</p>
+                    </div>
+                    <div className="bg-white p-3 rounded">
+                      <span className="font-semibold">Innovation:</span>
+                      <p className="text-sm mt-1">Continuous improvements and new features being added</p>
+                    </div>
+                    <div className="bg-white p-3 rounded">
+                      <span className="font-semibold">Documentation:</span>
+                      <p className="text-sm mt-1">Extensive resources and community support</p>
+                    </div>
+                  </div>
                 </motion.div>
 
                 <motion.div
@@ -118,12 +143,24 @@ const InvestmentValueSection = () => {
                     <Users className="w-6 h-6 text-blue-600" />
                     <h3 className="text-xl font-semibold text-blue-700">Network Effects</h3>
                   </div>
-                  <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                    <li>Growing user base</li>
-                    <li>Increasing application diversity</li>
-                    <li>Enhanced platform utility</li>
-                    <li>Strengthening network security</li>
-                  </ul>
+                  <div className="space-y-3">
+                    <div className="bg-white p-3 rounded">
+                      <span className="font-semibold">User Growth:</span>
+                      <p className="text-sm mt-1">More users mean more valuable applications and services</p>
+                    </div>
+                    <div className="bg-white p-3 rounded">
+                      <span className="font-semibold">Application Diversity:</span>
+                      <p className="text-sm mt-1">From finance to gaming, increasing use cases</p>
+                    </div>
+                    <div className="bg-white p-3 rounded">
+                      <span className="font-semibold">Network Security:</span>
+                      <p className="text-sm mt-1">More participants strengthen the network's security</p>
+                    </div>
+                    <div className="bg-white p-3 rounded">
+                      <span className="font-semibold">Market Liquidity:</span>
+                      <p className="text-sm mt-1">Easier to buy and sell with more trading activity</p>
+                    </div>
+                  </div>
                 </motion.div>
               </div>
             </motion.section>
@@ -134,35 +171,97 @@ const InvestmentValueSection = () => {
               transition={{ delay: 0.8 }}
             >
               <h2 className="text-2xl font-bold text-blue-700 mb-4">Economic Model</h2>
-              
+
               <div className="space-y-6">
                 <div className="bg-white p-6 rounded-lg shadow-sm">
                   <div className="flex items-center gap-2 mb-4">
                     <Coins className="w-6 h-6 text-blue-600" />
-                    <h3 className="text-xl font-semibold text-blue-700">Supply Mechanics</h3>
+                    <h3 className="text-xl font-semibold text-blue-700">Understanding ETH Supply</h3>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <ul className="list-disc pl-5 space-y-2">
-                      <li>Proof of Stake rewards</li>
-                      <li>EIP-1559 fee burning</li>
-                      <li>Reduced issuance</li>
-                      <li>Deflationary potential</li>
-                    </ul>
+                  <div className="space-y-4">
+                    <div className="bg-blue-50 p-4 rounded-lg">
+                      <h4 className="font-semibold text-blue-700 mb-2">How New ETH is Created</h4>
+                      <p className="text-gray-700 mb-2">
+                        Unlike Bitcoin's fixed supply, Ethereum's supply model is dynamic:
+                      </p>
+                      <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                        <li>
+                          <span className="font-semibold">Staking Rewards:</span>
+                          <p className="text-sm mt-1">Validators earn new ETH for helping secure the network</p>
+                        </li>
+                        <li>
+                          <span className="font-semibold">Fee Burning:</span>
+                          <p className="text-sm mt-1">Part of transaction fees is permanently removed from supply</p>
+                        </li>
+                        <li>
+                          <span className="font-semibold">Balance:</span>
+                          <p className="text-sm mt-1">The interplay between new ETH creation and burning can make ETH deflationary</p>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
 
                 <div className="bg-white p-6 rounded-lg shadow-sm">
                   <div className="flex items-center gap-2 mb-4">
-                    <TrendingUp className="w-6 h-6 text-blue-600" />
-                    <h3 className="text-xl font-semibold text-blue-700">Staking Economics</h3>
+                    <Lock className="w-6 h-6 text-blue-600" />
+                    <h3 className="text-xl font-semibold text-blue-700">Staking: Earning from Your ETH</h3>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <ul className="list-disc pl-5 space-y-2">
-                      <li>Validator rewards</li>
-                      <li>Network security incentives</li>
-                      <li>Participation incentives</li>
-                      <li>Yield opportunities</li>
-                    </ul>
+                  <div className="space-y-4">
+                    <div className="bg-blue-50 p-4 rounded-lg">
+                      <h4 className="font-semibold text-blue-700 mb-2">How Staking Works</h4>
+                      <p className="text-gray-700 mb-2">
+                        Staking is like putting your money in a savings account that helps secure the network:
+                      </p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div className="bg-white p-3 rounded">
+                          <span className="font-semibold">Solo Staking:</span>
+                          <p className="text-sm mt-1">Run your own validator with 32 ETH minimum</p>
+                        </div>
+                        <div className="bg-white p-3 rounded">
+                          <span className="font-semibold">Pooled Staking:</span>
+                          <p className="text-sm mt-1">Join others to stake with any amount</p>
+                        </div>
+                        <div className="bg-white p-3 rounded">
+                          <span className="font-semibold">Rewards:</span>
+                          <p className="text-sm mt-1">Earn regular ETH rewards for participation</p>
+                        </div>
+                        <div className="bg-white p-3 rounded">
+                          <span className="font-semibold">Security:</span>
+                          <p className="text-sm mt-1">Your stake helps protect the network</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white p-6 rounded-lg shadow-sm">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Shield className="w-6 h-6 text-blue-600" />
+                    <h3 className="text-xl font-semibold text-blue-700">Investment Considerations</h3>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="bg-blue-50 p-4 rounded-lg">
+                      <h4 className="font-semibold text-blue-700 mb-2">What to Consider Before Investing</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div className="bg-white p-3 rounded">
+                          <span className="font-semibold">Market Volatility:</span>
+                          <p className="text-sm mt-1">Prices can change significantly in short periods</p>
+                        </div>
+                        <div className="bg-white p-3 rounded">
+                          <span className="font-semibold">Technology Risk:</span>
+                          <p className="text-sm mt-1">New upgrades and changes can affect value</p>
+                        </div>
+                        <div className="bg-white p-3 rounded">
+                          <span className="font-semibold">Regulatory Environment:</span>
+                          <p className="text-sm mt-1">Government policies can impact adoption</p>
+                        </div>
+                        <div className="bg-white p-3 rounded">
+                          <span className="font-semibold">Long-term Potential:</span>
+                          <p className="text-sm mt-1">Consider the growing ecosystem and adoption</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
