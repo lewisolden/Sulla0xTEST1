@@ -5,6 +5,8 @@ import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 import {
   ArrowLeft,
   ArrowRight,
@@ -19,7 +21,9 @@ import {
   Send,
   ShieldCheck,
   Code2,
-  Banknote
+  Banknote,
+  CheckCircle,
+  XCircle
 } from "lucide-react";
 
 // Financial Inclusion Diagram Component
@@ -327,6 +331,144 @@ const PracticalApplicationsSection = () => {
           </motion.div>
         )}
       </div>
+    </div>
+  );
+};
+
+const PracticalApplicationsQuiz = () => {
+  const [answers, setAnswers] = useState<{ [key: string]: string }>({});
+  const [showExplanations, setShowExplanations] = useState(false);
+  const [score, setScore] = useState(0);
+
+  const questions = [
+    {
+      id: "q1",
+      question: "Which of the following best describes how blockchain technology promotes financial inclusion?",
+      options: {
+        a: "By requiring users to have traditional bank accounts",
+        b: "By enabling access to financial services without traditional banking infrastructure",
+        c: "By eliminating the need for money completely",
+        d: "By making all transactions free"
+      },
+      correct: "b",
+      explanation: "Blockchain technology promotes financial inclusion by allowing people to access financial services without requiring traditional banking infrastructure. This is particularly important for the unbanked and underbanked populations who may not have access to conventional banking services but can participate in the global economy through blockchain-based solutions."
+    },
+    {
+      id: "q2",
+      question: "What is a key advantage of blockchain-based payments over traditional banking systems?",
+      options: {
+        a: "They require more intermediaries",
+        b: "They only work during banking hours",
+        c: "They enable near-instant settlement 24/7",
+        d: "They are only available in developed countries"
+      },
+      correct: "c",
+      explanation: "Blockchain-based payments operate 24/7 and enable near-instant settlement of transactions. Unlike traditional banking systems that may take days to process payments and operate only during business hours, blockchain networks operate continuously and can validate transactions within minutes or even seconds."
+    },
+    {
+      id: "q3",
+      question: "How do smart contracts enhance payment systems?",
+      options: {
+        a: "By requiring manual verification for every transaction",
+        b: "By automating payments based on predefined conditions",
+        c: "By increasing transaction fees",
+        d: "By slowing down transaction processing"
+      },
+      correct: "b",
+      explanation: "Smart contracts enhance payment systems by automating transactions based on predefined conditions. This automation eliminates the need for manual intervention, reduces the risk of human error, and enables complex financial arrangements to execute automatically when specific criteria are met."
+    },
+    {
+      id: "q4",
+      question: "Which of these is NOT a typical investment opportunity in the blockchain space?",
+      options: {
+        a: "Digital asset trading",
+        b: "Yield farming",
+        c: "Risk-free guaranteed returns",
+        d: "Tokenized real-world assets"
+      },
+      correct: "c",
+      explanation: "Risk-free guaranteed returns is NOT a legitimate investment opportunity in the blockchain space. While blockchain offers various investment opportunities like digital asset trading, yield farming, and tokenized assets, all investments carry risks. Claims of guaranteed returns are often associated with scams or fraudulent schemes."
+    }
+  ];
+
+  const handleSubmit = () => {
+    let newScore = 0;
+    questions.forEach(q => {
+      if (answers[q.id] === q.correct) newScore += 1;
+    });
+    setScore(newScore);
+    setShowExplanations(true);
+  };
+
+  const getOptionStyle = (questionId: string, option: string) => {
+    if (!showExplanations) return "bg-white";
+    if (option === questions.find(q => q.id === questionId)?.correct) {
+      return "bg-green-50 border-green-200";
+    }
+    if (answers[questionId] === option && option !== questions.find(q => q.id === questionId)?.correct) {
+      return "bg-red-50 border-red-200";
+    }
+    return "bg-white";
+  };
+
+  return (
+    <div className="space-y-8">
+      {questions.map((q) => (
+        <div key={q.id} className="space-y-4">
+          <p className="font-semibold text-lg text-blue-800">{q.question}</p>
+          <RadioGroup
+            onValueChange={(value) => setAnswers(prev => ({ ...prev, [q.id]: value }))}
+            value={answers[q.id]}
+            className="space-y-2"
+          >
+            {Object.entries(q.options).map(([key, value]) => (
+              <div
+                key={key}
+                className={`flex items-start space-x-3 p-3 rounded-lg border ${getOptionStyle(q.id, key)}`}
+              >
+                <RadioGroupItem value={key} id={`${q.id}-${key}`} disabled={showExplanations} />
+                <Label htmlFor={`${q.id}-${key}`} className="text-gray-700">{value}</Label>
+                {showExplanations && key === q.correct && (
+                  <CheckCircle className="w-5 h-5 text-green-500 ml-auto" />
+                )}
+                {showExplanations && answers[q.id] === key && key !== q.correct && (
+                  <XCircle className="w-5 h-5 text-red-500 ml-auto" />
+                )}
+              </div>
+            ))}
+          </RadioGroup>
+          {showExplanations && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-4 p-4 bg-blue-50 rounded-lg"
+            >
+              <p className="text-blue-800">{q.explanation}</p>
+            </motion.div>
+          )}
+        </div>
+      ))}
+
+      {!showExplanations && (
+        <Button
+          onClick={handleSubmit}
+          className="w-full bg-blue-600 hover:bg-blue-700"
+          disabled={Object.keys(answers).length !== questions.length}
+        >
+          Submit Answers
+        </Button>
+      )}
+
+      {showExplanations && (
+        <div className="p-4 bg-blue-50 rounded-lg">
+          <p className="text-xl font-semibold text-blue-800">
+            Your Score: {score} out of {questions.length}
+          </p>
+          <p className="text-blue-600 mt-2">
+            Review the explanations above to understand the correct answers.
+          </p>
+        </div>
+      )}
     </div>
   );
 };
