@@ -13,9 +13,9 @@ export default function DecentralizationDiagram() {
         flowchart: {
           htmlLabels: true,
           curve: 'basis',
-          nodeSpacing: 100,
-          rankSpacing: 150,
           padding: 50,
+          nodeSpacing: 80,
+          rankSpacing: 100,
         },
       });
 
@@ -24,65 +24,63 @@ export default function DecentralizationDiagram() {
   }, []);
 
   return (
-    <div className="my-12 bg-white p-16 rounded-lg shadow-lg overflow-x-auto" ref={diagramRef}>
+    <div className="my-12 bg-white p-8 rounded-lg shadow-lg overflow-x-auto" ref={diagramRef}>
       {`
       flowchart TD
-        subgraph TS[Traditional Banking System]
+        subgraph Traditional["Traditional Banking System"]
           direction TB
-          A[Central Bank<br>Controls All]:::centralNode
-          B[Bank<br>Processes]:::bankNode
-          C[Bank<br>Processes]:::bankNode
-          D[Bank<br>Processes]:::bankNode
-          E[User<br>Limited]:::userNode
-          F[User<br>Limited]:::userNode
-          G[User<br>Limited]:::userNode
+          CB["Central Authority"]:::central
+          B1["Bank"]:::bank
+          B2["Bank"]:::bank
+          B3["Bank"]:::bank
+          U1["User"]:::user
+          U2["User"]:::user
+          U3["User"]:::user
 
-          A --> B & C & D
-          B --> E
-          C --> F
-          D --> G
+          %% Traditional system connections
+          CB --> B1 & B2 & B3
+          B1 --> U1
+          B2 --> U2
+          B3 --> U3
         end
 
-        subgraph CN[Decentralized Network]
+        subgraph Decentralized["Peer-to-Peer Network"]
           direction TB
-          H[Node<br>Validates]:::cryptoNode
-          I[Node<br>Validates]:::cryptoNode
-          J[Node<br>Validates]:::cryptoNode
-          K[Node<br>Validates]:::cryptoNode
-          L[User<br>Direct]:::userNode
-          M[User<br>Direct]:::userNode
-          N[User<br>Direct]:::userNode
+          P1["Peer"]:::peer
+          P2["Peer"]:::peer
+          P3["Peer"]:::peer
+          P4["Peer"]:::peer
+          W1["User"]:::user
+          W2["User"]:::user
+          W3["User"]:::user
 
-          H --- I & J & K
-          H --- L
-          I --- M
-          J --- N
+          %% P2P connections
+          P1 --- P2 & P3 & P4
+          P2 --- P3 & P4
+          P3 --- P4
+          P1 --- W1
+          P2 --- W2
+          P3 --- W3
         end
 
-        %% Define much larger node sizes
-        classDef centralNode fill:#ff9999,stroke:#ff0000,stroke-width:4px,width:200px,height:100px;
-        classDef bankNode fill:#99ff99,stroke:#00ff00,stroke-width:3px,width:180px,height:90px;
-        classDef cryptoNode fill:#9999ff,stroke:#0000ff,stroke-width:3px,width:180px,height:90px;
-        classDef userNode fill:#ffffff,stroke:#666666,stroke-width:2px,width:160px,height:80px;
+        %% Styles
+        classDef central fill:#ff8080,stroke:#ff4040,stroke-width:2px,rx:10,ry:10,padding:20px;
+        classDef bank fill:#90EE90,stroke:#4CAF50,stroke-width:2px,rx:10,ry:10,padding:15px;
+        classDef peer fill:#87CEEB,stroke:#4682B4,stroke-width:2px,rx:10,ry:10,padding:15px;
+        classDef user fill:#FFFFFF,stroke:#666666,stroke-width:2px,rx:10,ry:10,padding:15px;
 
-        %% Keep font sizes the same but add more vertical spacing
-        style A font-size:20px,font-weight:bold
-        style B font-size:18px
-        style C font-size:18px
-        style D font-size:18px
-        style E font-size:16px
-        style F font-size:16px
-        style G font-size:16px
-        style H font-size:18px
-        style I font-size:18px
-        style J font-size:18px
-        style K font-size:18px
-        style L font-size:16px
-        style M font-size:16px
-        style N font-size:16px
+        %% Node styles - larger fonts and bold where needed
+        style CB fontSize:20px,fontWeight:bold
+        style B1 fontSize:18px
+        style B2 fontSize:18px
+        style B3 fontSize:18px
+        style P1 fontSize:18px
+        style P2 fontSize:18px
+        style P3 fontSize:18px
+        style P4 fontSize:18px
 
-        %% Add more padding to all links
-        linkStyle default stroke:#666,stroke-width:2px;
+        %% Link styles
+        linkStyle default stroke-width:2px,fill:none,stroke:#666;
       `}
     </div>
   );
