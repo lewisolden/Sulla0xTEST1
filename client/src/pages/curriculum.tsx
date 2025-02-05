@@ -88,7 +88,7 @@ export default function Curriculum() {
   const [selectedCourse, setSelectedCourse] = useState<string>("1");
   const [selectedLevel, setSelectedLevel] = useState<string>("beginner");
 
-  const filteredCourses = courses.filter(course => 
+  const filteredCourses = courses.filter(course =>
     course.subject === selectedSubject
   );
 
@@ -105,20 +105,20 @@ export default function Curriculum() {
           <h1 className="text-4xl font-bold text-blue-900 mb-6">
             Sulla's Curriculum
           </h1>
-          <Card className="p-6">
-            <p className="text-xl text-blue-700 max-w-3xl mx-auto">
-              Sulla transforms complex technical concepts into engaging, accessible learning experiences. 
-              Our innovative platform combines interactive lessons, hands-on simulations, and adaptive learning technology 
-              to create a personalized educational journey. Through gamified exercises, real-world applications, and 
-              progressive skill building, we ensure that every learner can master new technologies at their own pace. 
-              Our comprehensive curriculum features visual learning aids, practical exercises, and instant feedback to 
+          <Card className="p-6 bg-blue-600">
+            <p className="text-xl text-white max-w-3xl mx-auto text-justify">
+              Sulla transforms complex technical concepts into engaging, accessible learning experiences.
+              Our innovative platform combines interactive lessons, hands-on simulations, and adaptive learning technology
+              to create a personalized educational journey. Through gamified exercises, real-world applications, and
+              progressive skill building, we ensure that every learner can master new technologies at their own pace.
+              Our comprehensive curriculum features visual learning aids, practical exercises, and instant feedback to
               help you build confidence and expertise in emerging technologies.
             </p>
           </Card>
         </motion.div>
 
         {/* Filter Section */}
-        <motion.div 
+        <motion.div
           className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -194,8 +194,8 @@ export default function Curriculum() {
 
         <div className="space-y-8">
           {currentCourse.modules.map((module) => (
-            <motion.div 
-              key={module.id} 
+            <motion.div
+              key={module.id}
               className="bg-white shadow-lg rounded-lg p-8 hover:shadow-xl transition-all duration-300"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -219,8 +219,8 @@ export default function Curriculum() {
                     </h3>
                     <div className="grid md:grid-cols-2 gap-4">
                       {module.sections.map((section, index) => (
-                        <div 
-                          key={index} 
+                        <div
+                          key={index}
                           className="bg-blue-50 p-4 rounded-lg text-blue-700 hover:bg-blue-100 transition-colors"
                         >
                           {section}
@@ -242,7 +242,7 @@ export default function Curriculum() {
           ))}
         </div>
 
-        <motion.div 
+        <motion.div
           className="mt-12 bg-white shadow-lg rounded-lg p-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -265,7 +265,7 @@ export default function Curriculum() {
           </div>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           className="mt-12 bg-white shadow-lg rounded-lg p-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -274,7 +274,7 @@ export default function Curriculum() {
           <h2 className="text-2xl font-semibold text-blue-800 mb-6">Interactive Learning Tools</h2>
           <div className="grid md:grid-cols-2 gap-6">
             {simulators.map((sim) => (
-              <motion.div 
+              <motion.div
                 key={sim.id}
                 className="bg-blue-50 p-6 rounded-lg"
                 whileHover={{ scale: 1.02 }}
