@@ -77,17 +77,23 @@ const Module3Quiz = () => {
   const [showExplanation, setShowExplanation] = useState(false);
   const { progress, updateProgress } = useProgress();
 
-  // Check if required sections are completed
+  // Update required sections to match actual module content
   const requiredSections = [
     'ethereum-fundamentals',
     'smart-contracts',
     'investment-value',
-    'security-risks'
+    'security-risks',
+    'exercises'
   ];
 
-  const isAllTopicsCompleted = requiredSections.every(section =>
-    progress.some(p => p.moduleId === 3 && p.sectionId === section && p.completed)
-  );
+  const getCompletedSections = () => {
+    return requiredSections.filter(section =>
+      progress.some(p => p.moduleId === 3 && p.sectionId === section && p.completed)
+    );
+  };
+
+  const completedSections = getCompletedSections();
+  const isAllTopicsCompleted = completedSections.length === requiredSections.length;
 
   const handleAnswerSelect = (optionIndex: number) => {
     setSelectedAnswer(optionIndex);
@@ -131,20 +137,32 @@ const Module3Quiz = () => {
               <div className="text-center py-8">
                 <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
                   <h2 className="text-xl font-semibold text-yellow-800 mb-2">
-                    ⚠️ Access Requirements
+                    ⚠️ Complete Required Sections
                   </h2>
                   <p className="text-yellow-700">
-                    You need to complete all four sections below before you can take the quiz.
+                    You need to complete all module sections before taking the quiz.
+                    {completedSections.length > 0 && (
+                      <span className="block mt-2">
+                        You've completed {completedSections.length} out of {requiredSections.length} sections.
+                      </span>
+                    )}
                   </p>
                 </div>
 
                 <div className="bg-white p-6 rounded-lg shadow-sm">
-                  <h3 className="text-lg font-medium text-gray-700 mb-4">Required Sections:</h3>
+                  <h3 className="text-lg font-medium text-gray-700 mb-4">Module Sections:</h3>
                   <ul className="space-y-3">
                     {requiredSections.map(section => {
                       const isComplete = progress.some(
                         p => p.moduleId === 3 && p.sectionId === section && p.completed
                       );
+
+                      // Convert section ID to display name
+                      const sectionName = section
+                        .split('-')
+                        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                        .join(' ');
+
                       return (
                         <li 
                           key={section} 
@@ -159,15 +177,13 @@ const Module3Quiz = () => {
                               <XCircle className="h-5 w-5 text-gray-400" />
                             )}
                             <span className={`${isComplete ? 'text-green-700' : 'text-gray-600'}`}>
-                              {section.split('-').map(word => 
-                                word.charAt(0).toUpperCase() + word.slice(1)
-                              ).join(' ')}
+                              {sectionName}
                             </span>
                           </span>
                           {!isComplete && (
                             <Link href={`/modules/module3/${section}`}>
                               <Button variant="outline" size="sm">
-                                Complete Section
+                                Start Section
                               </Button>
                             </Link>
                           )}
