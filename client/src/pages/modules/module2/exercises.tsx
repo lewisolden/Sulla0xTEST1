@@ -80,12 +80,13 @@ export default function ModuleExercises() {
                 Previous: Bitcoin Investment
               </Button>
             </Link>
-            <Link href="/modules/module2/quiz">
-              <Button className="gap-2">
-                Continue to Quiz
-                <ArrowLeft className="h-4 w-4 rotate-180" />
-              </Button>
-            </Link>
+            <Button
+              className="gap-2"
+              onClick={() => setActiveTab("security")}
+            >
+              Continue to Security Workshop
+              <Shield className="h-4 w-4" />
+            </Button>
           </div>
         </div>
       </motion.div>
