@@ -120,6 +120,142 @@ export default function BitcoinFundamentalsSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
+            className="mt-12"
+          >
+            <h2 className="text-3xl font-bold text-blue-700">Technical Concepts Explained</h2>
+            <div className="grid grid-cols-1 gap-6 mt-4">
+              <motion.div
+                className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-lg"
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <h3 className="text-xl font-semibold text-blue-800 mb-3">Blockchain Technology</h3>
+                <div className="space-y-2">
+                  <p className="text-gray-700">Think of a blockchain as a digital ledger that:</p>
+                  <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                    <li>Records all Bitcoin transactions in blocks, like pages in a book</li>
+                    <li>Each block links to the previous one, forming an unbreakable chain</li>
+                    <li>Once information is recorded, it cannot be changed without changing all subsequent blocks</li>
+                    <li>Every participant has a copy of the entire history</li>
+                  </ul>
+                </div>
+              </motion.div>
+
+              <motion.div
+                className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-lg"
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <h3 className="text-xl font-semibold text-blue-800 mb-3">The Bitcoin Network</h3>
+                <div className="space-y-2">
+                  <p className="text-gray-700">The Bitcoin network is a peer-to-peer system where:</p>
+                  <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                    <li>Thousands of computers (nodes) work together without central control</li>
+                    <li>Each node validates and relays transactions to others</li>
+                    <li>Anyone can join or leave the network at any time</li>
+                    <li>The network reaches consensus on the state of all Bitcoin transactions</li>
+                  </ul>
+                </div>
+              </motion.div>
+
+              <motion.div
+                className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-lg"
+                whileHover={{ scale: 1.02 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
+                <h3 className="text-xl font-semibold text-blue-800 mb-3">Bitcoin Mining</h3>
+                <div className="space-y-2">
+                  <p className="text-gray-700">Mining is the process that:</p>
+                  <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                    <li>Secures the network through complex mathematical computations</li>
+                    <li>Creates new bitcoins as a reward for miners</li>
+                    <li>Processes and verifies transactions</li>
+                    <li>Requires significant computing power and electricity</li>
+                  </ul>
+                </div>
+              </motion.div>
+            </div>
+          </motion.section>
+
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <h2 className="text-3xl font-bold text-blue-700 mt-8">Key Historical Milestones</h2>
+            <div className="relative mt-8">
+              {/* Timeline line */}
+              <div className="absolute left-0 md:left-1/2 h-full w-1 bg-blue-200 transform -translate-x-1/2"></div>
+
+              {/* Timeline events */}
+              <div className="space-y-12">
+                <motion.div 
+                  className="relative flex items-center justify-start md:justify-between"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <div className="flex md:w-1/2 md:pr-8 items-center">
+                    <div className="w-full">
+                      <div className="bg-white p-4 rounded-lg shadow-md border border-blue-100">
+                        <h3 className="text-lg font-semibold text-blue-800">October 31, 2008</h3>
+                        <p className="text-gray-700">Bitcoin whitepaper published by Satoshi Nakamoto</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="absolute left-0 md:left-1/2 w-4 h-4 bg-blue-500 rounded-full transform -translate-x-1/2"></div>
+                </motion.div>
+
+                <motion.div 
+                  className="relative flex items-center justify-end md:justify-between"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <div className="flex md:w-1/2 md:ml-auto md:pl-8 items-center">
+                    <div className="w-full">
+                      <div className="bg-white p-4 rounded-lg shadow-md border border-blue-100">
+                        <h3 className="text-lg font-semibold text-blue-800">January 3, 2009</h3>
+                        <p className="text-gray-700">Genesis Block mined with a message about bank bailouts</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="absolute left-0 md:left-1/2 w-4 h-4 bg-blue-500 rounded-full transform -translate-x-1/2"></div>
+                </motion.div>
+
+                <motion.div 
+                  className="relative flex items-center justify-start md:justify-between"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <div className="flex md:w-1/2 md:pr-8 items-center">
+                    <div className="w-full">
+                      <div className="bg-white p-4 rounded-lg shadow-md border border-blue-100">
+                        <h3 className="text-lg font-semibold text-blue-800">January 12, 2009</h3>
+                        <p className="text-gray-700">First Bitcoin transaction between Satoshi and Hal Finney</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="absolute left-0 md:left-1/2 w-4 h-4 bg-blue-500 rounded-full transform -translate-x-1/2"></div>
+                </motion.div>
+
+                <motion.div 
+                  className="relative flex items-center justify-end md:justify-between"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <div className="flex md:w-1/2 md:ml-auto md:pl-8 items-center">
+                    <div className="w-full">
+                      <div className="bg-white p-4 rounded-lg shadow-md border border-blue-100">
+                        <h3 className="text-lg font-semibold text-blue-800">May 22, 2010</h3>
+                        <p className="text-gray-700">First real-world transaction: 10,000 BTC for two pizzas</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="absolute left-0 md:left-1/2 w-4 h-4 bg-blue-500 rounded-full transform -translate-x-1/2"></div>
+                </motion.div>
+              </div>
+            </div>
+          </motion.section>
+
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
           >
             <h2 className="text-3xl font-bold text-blue-700">The Birth of Bitcoin</h2>
             <h3 className="text-2xl font-semibold text-blue-600">Historical Context and Significance</h3>
@@ -133,40 +269,6 @@ export default function BitcoinFundamentalsSection() {
               <li>The need for financial innovation became clear</li>
             </ul>
             <p>This environment gave birth to Bitcoin, introduced through a whitepaper by the mysterious Satoshi Nakamoto.</p>
-          </motion.section>
-
-          <motion.section
-            variants={contentVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <h3 className="text-2xl font-semibold text-blue-600">Key Historical Milestones</h3>
-            <div className="space-y-4">
-              <div>
-                <strong>Genesis Block (January 3, 2009)</strong>
-                <ul className="list-disc pl-5 space-y-1">
-                  <li>First Bitcoin block ever mined</li>
-                  <li>Contained a message about bank bailouts</li>
-                  <li>Marked the start of Bitcoin's blockchain</li>
-                </ul>
-              </div>
-              <div>
-                <strong>First Transaction</strong>
-                <ul className="list-disc pl-5 space-y-1">
-                  <li>Between Satoshi and Hal Finney</li>
-                  <li>Proved the network could transfer value</li>
-                  <li>Demonstrated peer-to-peer functionality</li>
-                </ul>
-              </div>
-              <div>
-                <strong>Pizza Purchase (May 2010)</strong>
-                <ul className="list-disc pl-5 space-y-1">
-                  <li>10,000 BTC for two pizzas</li>
-                  <li>First real-world transaction</li>
-                  <li>Shows Bitcoin's remarkable value evolution</li>
-                </ul>
-              </div>
-            </div>
           </motion.section>
 
           <motion.section
