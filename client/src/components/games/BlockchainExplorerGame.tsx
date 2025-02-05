@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Search, Key, Lock, Unlock, ArrowRight, Gift } from 'lucide-react';
+import { Search, Key, Lock, Unlock, ArrowRight, Gift, Lightbulb, BookOpen } from 'lucide-react';
 
 interface Block {
   id: string;
@@ -11,6 +11,7 @@ interface Block {
   previousHash: string;
   clue: string;
   isDecoded: boolean;
+  explanation: string;
 }
 
 interface Puzzle {
@@ -19,6 +20,7 @@ interface Puzzle {
   hint: string;
   answer: string;
   reward: number;
+  explanation: string;
 }
 
 export default function BlockchainExplorerGame() {
@@ -28,31 +30,35 @@ export default function BlockchainExplorerGame() {
   const [currentPuzzle, setCurrentPuzzle] = useState<Puzzle | null>(null);
   const [userInput, setUserInput] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
-  const [showHint, setShowHint] = useState(true); // Show hints by default
+  const [showHint, setShowHint] = useState(true);
   const [feedback, setFeedback] = useState('');
   const [showTutorial, setShowTutorial] = useState(true);
+  const [showExplanation, setShowExplanation] = useState(false);
 
   const puzzles: Puzzle[] = [
     {
       id: 1,
-      question: "Look at Block #2. It contains the text 'HELLO'. What's the hash of this block?",
-      hint: "The hash is shown right below the block data. It starts with '0x'!",
-      answer: "0xdef",
-      reward: 10
+      question: "Let's start with something simple! Find the hash of Block #1 (Genesis Block). Look for a code that starts with '0x'.",
+      hint: "The hash is like a digital fingerprint - it's that unique code shown below the block data. In this case, it starts with '0x'!",
+      answer: "0xabc",
+      reward: 10,
+      explanation: "Every block in a blockchain has a unique hash (like a fingerprint). The first block is special - it's called the Genesis Block!"
     },
     {
       id: 2,
-      question: "How many blocks are connected to Block #1? Count the blocks that have arrows pointing to or from it.",
-      hint: "Look for the arrow icons between blocks. Each arrow represents a connection!",
-      answer: "2",
-      reward: 20
+      question: "How many blocks are linked together in our mini blockchain? Count all the blocks you can see.",
+      hint: "Look at each block connected by arrows. Each arrow shows how blocks are linked together in sequence!",
+      answer: "3",
+      reward: 20,
+      explanation: "Blocks in a blockchain are connected in sequence - each new block points back to the previous one, creating a chain of trust."
     },
     {
       id: 3,
-      question: "What's the word hidden in Block #3? Just decode the text you see.",
-      hint: "The text is in UPPERCASE. It's a common blockchain term that starts with 'B'!",
+      question: "What's the special message hidden in Block #3? Decode it by looking at the data field.",
+      hint: "Look at the 'Data' field in Block #3. This represents the actual information stored in the block!",
       answer: "BLOCKCHAIN",
-      reward: 30
+      reward: 30,
+      explanation: "Blocks can store any kind of data - transactions, messages, or even smart contracts. This is what makes blockchain so versatile!"
     }
   ];
 
@@ -60,27 +66,30 @@ export default function BlockchainExplorerGame() {
     const newBlocks: Block[] = [
       {
         id: "1",
-        data: "Welcome to block explorer!",
+        data: "Genesis Block - The Start of Our Chain!",
         hash: "0xabc",
         previousHash: "0x000",
-        clue: "This is the first block - called the genesis block!",
-        isDecoded: true // Start with first block decoded
+        clue: "I'm the first block - the Genesis Block!",
+        isDecoded: true,
+        explanation: "The Genesis Block is the first block in any blockchain. It's special because it has no previous block!"
       },
       {
         id: "2",
-        data: "HELLO",
+        data: "HELLO CRYPTO WORLD",
         hash: "0xdef",
         previousHash: "0xabc",
-        clue: "Look at the hash of this block for puzzle #1",
-        isDecoded: false
+        clue: "I contain a friendly greeting!",
+        isDecoded: false,
+        explanation: "Each block's previousHash matches the hash of the block before it - this creates the 'chain' in blockchain!"
       },
       {
         id: "3",
         data: "BLOCKCHAIN",
         hash: "0xghi",
         previousHash: "0xdef",
-        clue: "This block contains a special word",
-        isDecoded: false
+        clue: "I contain the name of this amazing technology!",
+        isDecoded: false,
+        explanation: "This block shows how data is stored transparently in a blockchain - anyone can read it!"
       }
     ];
     setBlocks(newBlocks);
@@ -93,6 +102,7 @@ export default function BlockchainExplorerGame() {
     generateBlockchain();
     setCurrentPuzzle(puzzles[0]);
     setShowTutorial(true);
+    setShowExplanation(false);
   };
 
   const checkAnswer = () => {
@@ -100,46 +110,44 @@ export default function BlockchainExplorerGame() {
 
     if (userInput.toLowerCase() === currentPuzzle.answer.toLowerCase()) {
       setScore(prev => prev + currentPuzzle.reward);
-      setFeedback(`Correct! 🎉 You earned ${currentPuzzle.reward} points! You're doing great!`);
+      setFeedback(`🎉 Correct! You earned ${currentPuzzle.reward} points!\n\n${currentPuzzle.explanation}`);
+      setShowExplanation(true);
 
-      // Decode the relevant block
+      // Decode the block
       setBlocks(prev => prev.map((block, idx) => 
         idx === currentLevel - 1 ? { ...block, isDecoded: true } : block
       ));
 
-      // Move to next level
+      // Progress to next level
       if (currentLevel < puzzles.length) {
         setTimeout(() => {
           setCurrentLevel(prev => prev + 1);
           setCurrentPuzzle(puzzles[currentLevel]);
           setUserInput('');
           setShowHint(true);
+          setShowExplanation(false);
           setFeedback('');
-        }, 2000);
+        }, 3000);
       } else {
         setTimeout(() => {
-          setFeedback('🎉 Congratulations! You completed all puzzles! You are now a blockchain explorer expert! 🏆');
-        }, 2000);
+          setFeedback('🎓 Congratulations! You\'ve completed the Blockchain Explorer game! You now understand how blocks are connected and how data is stored in a blockchain. Keep exploring the world of crypto! 🌟');
+        }, 3000);
       }
     } else {
-      // More helpful feedback for wrong answers
-      const distance = Math.abs(userInput.length - currentPuzzle.answer.length);
-      let helpfulFeedback = "Not quite right. ";
+      // Helpful feedback for wrong answers
+      let helpfulFeedback = "Not quite right. Here's a helpful tip: ";
 
-      if (distance > 2) {
-        helpfulFeedback += "Your answer is a different length than expected. ";
+      if (currentPuzzle.id === 1) {
+        helpfulFeedback += "Look for a code starting with '0x' in the first block. It's right there in the block details!";
+      } else if (currentPuzzle.id === 2) {
+        helpfulFeedback += "Count each box you see - each one is a block. Don't forget to include the Genesis Block!";
+      } else if (currentPuzzle.id === 3) {
+        helpfulFeedback += "The message is written in capital letters in Block #3's data field. It's a term we use to describe this technology!";
       }
 
-      if (currentPuzzle.id === 1 && !userInput.startsWith("0x")) {
-        helpfulFeedback += "Remember, block hashes start with '0x'. ";
-      }
-
-      if (currentPuzzle.id === 2 && isNaN(Number(userInput))) {
-        helpfulFeedback += "The answer should be a number. ";
-      }
-
-      setFeedback(helpfulFeedback + "Try again! You can do this! 💪");
-      setScore(prev => Math.max(0, prev - 2)); // Reduced penalty
+      setFeedback(helpfulFeedback);
+      // Reduced penalty to keep it encouraging
+      setScore(prev => Math.max(0, prev - 1));
     }
   };
 
@@ -148,7 +156,7 @@ export default function BlockchainExplorerGame() {
       <div className="text-center mb-6">
         <h2 className="text-2xl font-bold text-blue-800 mb-2">Blockchain Explorer Adventure</h2>
         <p className="text-gray-600">
-          Decode messages and solve puzzles hidden in the blockchain!
+          Discover how blockchain works by exploring blocks and solving puzzles! Perfect for beginners! 🚀
         </p>
         {isPlaying && (
           <div className="mt-4">
@@ -160,50 +168,68 @@ export default function BlockchainExplorerGame() {
 
       {!isPlaying ? (
         <div className="text-center">
+          <div className="bg-blue-50 p-6 rounded-lg mb-6">
+            <h3 className="text-xl font-semibold text-blue-800 mb-4">Welcome to Blockchain Explorer! 🎮</h3>
+            <div className="text-left space-y-4">
+              <p className="text-blue-700">
+                <span className="font-semibold">What is this game?</span><br/>
+                This is a fun way to learn how blockchain works! You'll explore blocks, decode messages, and understand how blockchain stores information.
+              </p>
+              <div className="bg-white p-4 rounded-lg">
+                <h4 className="font-semibold text-blue-800 mb-2">How to Play:</h4>
+                <ul className="list-disc pl-6 text-blue-700 space-y-2">
+                  <li>Examine each block's data, hash, and connections</li>
+                  <li>Answer questions about what you find</li>
+                  <li>Use hints if you need help - they're free!</li>
+                  <li>Learn about blockchain as you play</li>
+                  <li>Earn points and unlock achievements</li>
+                </ul>
+              </div>
+            </div>
+          </div>
           <Button 
             onClick={startGame}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg"
           >
-            Start Adventure
+            Start Your Blockchain Adventure! 🚀
           </Button>
-          <div className="mt-4 text-gray-600">
-            <h3 className="font-semibold mb-2">How to Play:</h3>
-            <ul className="text-left list-disc pl-6">
-              <li>Each block contains information you need to solve puzzles</li>
-              <li>Look at the block's hash, data, and connections</li>
-              <li>Hints are shown by default to help you</li>
-              <li>Wrong answers only lose 2 points now</li>
-              <li>Take your time and have fun exploring!</li>
-            </ul>
-          </div>
         </div>
       ) : (
         <div className="space-y-6">
-          {/* Tutorial Modal */}
-          {showTutorial && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="bg-yellow-50 p-4 rounded-lg border border-yellow-200"
-            >
-              <h3 className="font-semibold text-yellow-800 mb-2">Quick Tutorial</h3>
-              <p className="text-yellow-700 mb-4">
-                Welcome to the Blockchain Explorer! Here's how to play:
-                <br />• Each puzzle is about finding information in the blocks below
-                <br />• Look at the block's hash (starts with 0x), data, and connections
-                <br />• Use the hints - they're very helpful!
-              </p>
-              <Button
-                onClick={() => setShowTutorial(false)}
-                variant="outline"
-                className="bg-yellow-100"
+          {/* Enhanced Tutorial */}
+          <AnimatePresence>
+            {showTutorial && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="bg-yellow-50 p-6 rounded-lg border border-yellow-200"
               >
-                Got it!
-              </Button>
-            </motion.div>
-          )}
+                <div className="flex items-start gap-4">
+                  <Lightbulb className="w-6 h-6 text-yellow-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="font-semibold text-yellow-800 mb-2">Quick Guide to Blockchain</h3>
+                    <p className="text-yellow-700 mb-4">
+                      Think of a blockchain as a chain of connected boxes (blocks), where each box:
+                      <br />• Has its own unique code (hash)
+                      <br />• Points to the previous box (previousHash)
+                      <br />• Contains some information (data)
+                      <br />• Is connected to form a secure chain!
+                    </p>
+                    <Button
+                      onClick={() => setShowTutorial(false)}
+                      variant="outline"
+                      className="bg-yellow-100"
+                    >
+                      Got it! Let's explore! 🔍
+                    </Button>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-          {/* Puzzle Section */}
+          {/* Enhanced Puzzle Section */}
           <AnimatePresence mode="wait">
             {currentPuzzle && (
               <motion.div
@@ -213,19 +239,26 @@ export default function BlockchainExplorerGame() {
                 exit={{ opacity: 0, y: -20 }}
                 className="bg-white p-6 rounded-lg shadow-sm"
               >
-                <h3 className="text-lg font-semibold text-blue-700 mb-4">
-                  Puzzle #{currentPuzzle.id}
-                </h3>
+                <div className="flex items-center gap-2 mb-4">
+                  <BookOpen className="w-6 h-6 text-blue-600" />
+                  <h3 className="text-lg font-semibold text-blue-700">
+                    Challenge #{currentPuzzle.id}
+                  </h3>
+                </div>
+
                 <p className="text-gray-700 mb-4">{currentPuzzle.question}</p>
 
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="bg-yellow-50 p-3 rounded-md mb-4"
+                  className="bg-blue-50 p-4 rounded-md mb-4"
                 >
-                  <p className="text-sm text-yellow-700">
-                    <span className="font-semibold">💡 Hint:</span> {currentPuzzle.hint}
-                  </p>
+                  <div className="flex items-start gap-2">
+                    <Lightbulb className="w-5 h-5 text-blue-600 flex-shrink-0 mt-1" />
+                    <p className="text-blue-700">
+                      <span className="font-semibold">Helpful Hint:</span> {currentPuzzle.hint}
+                    </p>
+                  </div>
                 </motion.div>
 
                 <div className="flex gap-2 mb-4">
@@ -248,7 +281,7 @@ export default function BlockchainExplorerGame() {
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className={`mt-4 p-3 rounded-md ${
+                    className={`mt-4 p-4 rounded-md ${
                       feedback.includes('Correct') || feedback.includes('Congratulations')
                         ? 'bg-green-50 text-green-700'
                         : 'bg-yellow-50 text-yellow-700'
@@ -261,9 +294,12 @@ export default function BlockchainExplorerGame() {
             )}
           </AnimatePresence>
 
-          {/* Blockchain Visualization */}
+          {/* Enhanced Blockchain Visualization */}
           <div className="mt-8">
-            <h3 className="text-lg font-semibold text-blue-700 mb-4">Blockchain Explorer</h3>
+            <h3 className="text-lg font-semibold text-blue-700 mb-4 flex items-center gap-2">
+              <Search className="w-5 h-5" />
+              Blockchain Explorer View
+            </h3>
             <div className="flex overflow-x-auto pb-4 space-x-4">
               {blocks.map((block, index) => (
                 <motion.div
@@ -272,32 +308,44 @@ export default function BlockchainExplorerGame() {
                   animate={{ opacity: 1, scale: 1 }}
                   className="flex-shrink-0"
                 >
-                  <Card className={`w-64 p-4 ${
-                    block.isDecoded ? 'bg-green-100' : 'bg-white'
+                  <Card className={`w-80 p-6 ${
+                    block.isDecoded ? 'bg-green-50' : 'bg-white'
                   } ${currentLevel === index + 1 ? 'ring-2 ring-blue-400' : ''}`}>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-semibold">Block #{block.id}</span>
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-lg font-semibold text-blue-800">Block #{block.id}</span>
                       {block.isDecoded ? (
-                        <Unlock className="w-4 h-4 text-green-600" />
+                        <Unlock className="w-5 h-5 text-green-600" />
                       ) : (
-                        <Lock className="w-4 h-4 text-gray-400" />
+                        <Lock className="w-5 h-5 text-gray-400" />
                       )}
                     </div>
-                    <div className="text-xs space-y-1">
-                      <p className="font-mono truncate">Hash: {block.hash}</p>
-                      <p className="font-mono truncate">Prev: {block.previousHash}</p>
-                      <p className="mt-2">
-                        <span className={block.isDecoded ? "text-green-700" : "text-gray-500"}>
-                          {block.data}
-                        </span>
-                      </p>
-                      <p className="text-sm text-blue-600 mt-2">
-                        💡 {block.clue}
+                    <div className="space-y-2">
+                      <div className="bg-blue-50 p-2 rounded">
+                        <p className="text-sm text-blue-700">
+                          <span className="font-semibold">Hash:</span> {block.hash}
+                        </p>
+                      </div>
+                      <div className="bg-blue-50 p-2 rounded">
+                        <p className="text-sm text-blue-700">
+                          <span className="font-semibold">Previous Hash:</span> {block.previousHash}
+                        </p>
+                      </div>
+                      <div className="bg-blue-50 p-2 rounded">
+                        <p className="text-sm text-blue-700">
+                          <span className="font-semibold">Data:</span><br/>
+                          <span className={block.isDecoded ? "text-green-700" : "text-gray-500"}>
+                            {block.data}
+                          </span>
+                        </p>
+                      </div>
+                      <p className="text-sm text-blue-600 flex items-center gap-2">
+                        <Lightbulb className="w-4 h-4" />
+                        {block.clue}
                       </p>
                     </div>
                     {index < blocks.length - 1 && (
-                      <div className="absolute right-[-20px] top-1/2 transform -translate-y-1/2">
-                        <ArrowRight className="w-4 h-4 text-blue-300" />
+                      <div className="absolute right-[-24px] top-1/2 transform -translate-y-1/2">
+                        <ArrowRight className="w-6 h-6 text-blue-400" />
                       </div>
                     )}
                   </Card>
@@ -306,13 +354,13 @@ export default function BlockchainExplorerGame() {
             </div>
           </div>
 
-          <div className="text-center mt-4">
+          <div className="text-center mt-6">
             <Button
               onClick={() => setIsPlaying(false)}
               variant="outline"
               className="text-blue-600"
             >
-              End Game
+              Exit Game
             </Button>
           </div>
         </div>
