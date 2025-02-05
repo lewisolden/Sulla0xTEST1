@@ -393,55 +393,92 @@ export default function BitcoinFundamentalsSection() {
             <div className="space-y-6">
               <div className="bg-blue-50 rounded-lg p-6">
                 <h3 className="text-2xl font-semibold text-blue-600 mb-4">How Bitcoin Transactions Work</h3>
-                <p className="text-gray-700 mb-4">
-                  Understanding Bitcoin transactions is crucial for grasping how value moves through the network. 
-                  Unlike traditional bank transfers, Bitcoin uses a unique model called UTXO (Unspent Transaction Output).
-                </p>
 
-                <div className="space-y-4">
-                  <div className="bg-white p-4 rounded-lg shadow-sm">
-                    <h4 className="font-semibold text-blue-800 mb-2">The UTXO Model</h4>
-                    <p className="text-gray-700">
-                      Think of UTXOs like physical coins or bills in your wallet:
+                {/* Simple Introduction */}
+                <div className="bg-white p-4 rounded-lg shadow-sm mb-4">
+                  <h4 className="font-semibold text-blue-800 mb-2">The Basics: Think of it Like Cash</h4>
+                  <p className="text-gray-700">
+                    Imagine you have a $20 bill and want to buy something that costs $8. What happens?
+                  </p>
+                  <ul className="list-disc pl-5 mt-2 space-y-2 text-gray-700">
+                    <li>You give the $20 bill (you can't tear it in half!)</li>
+                    <li>You get $12 back as change</li>
+                    <li>The original $20 bill can't be used again by you</li>
+                    <li>You now have a new $12 bill instead</li>
+                  </ul>
+                  <p className="mt-4 text-gray-700">
+                    Bitcoin works very similarly! This is what we call the "UTXO model" - but don't worry about the fancy name yet.
+                  </p>
+                </div>
+
+                {/* UTXO Explanation */}
+                <div className="bg-white p-4 rounded-lg shadow-sm">
+                  <h4 className="font-semibold text-blue-800 mb-2">Bitcoin's Digital Wallet: UTXOs Explained</h4>
+                  <p className="text-gray-700">
+                    Your Bitcoin wallet doesn't actually store a single "balance" number. Instead, it's like having different bills in your physical wallet:
+                  </p>
+                  <div className="my-4 p-4 bg-gray-50 rounded-lg">
+                    <p className="font-medium text-gray-800">Example of Your Digital Wallet:</p>
+                    <ul className="list-none pl-5 mt-2 space-y-2">
+                      <li className="flex items-center">
+                        <span className="inline-block w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                        One "digital bill" worth 0.5 BTC
+                      </li>
+                      <li className="flex items-center">
+                        <span className="inline-block w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                        Another worth 0.3 BTC
+                      </li>
+                      <li className="flex items-center">
+                        <span className="inline-block w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                        And one worth 0.1 BTC
+                      </li>
+                      <li className="font-medium mt-2">Total Balance: 0.9 BTC</li>
+                    </ul>
+                  </div>
+                  <p className="text-gray-700">
+                    Each of these "digital bills" is called an Unspent Transaction Output (UTXO).
+                  </p>
+                </div>
+
+                {/* Real World Example */}
+                <div className="bg-white p-4 rounded-lg shadow-sm mt-4">
+                  <h4 className="font-semibold text-blue-800 mb-2">Let's Make a Purchase!</h4>
+                  <div className="border-l-4 border-blue-200 pl-4">
+                    <p className="text-gray-700 mb-2">
+                      You want to send 0.6 BTC to your friend. Here's what happens:
                     </p>
-                    <ul className="list-disc pl-5 mt-2 space-y-2">
-                      <li>When you receive bitcoin, you get "unspent outputs" from previous transactions</li>
-                      <li>Each UTXO is like a bill or coin of a specific amount</li>
-                      <li>You can't split a UTXO - you must use it entirely in a transaction</li>
-                      <li>Change from a transaction becomes a new UTXO</li>
-                    </ul>
+                    <ol className="list-decimal pl-5 space-y-2 text-gray-700">
+                      <li>You need to use your 0.5 BTC and 0.3 BTC UTXOs (total 0.8 BTC)</li>
+                      <li>Your friend gets their 0.6 BTC</li>
+                      <li>You get 0.19 BTC back as change (after a 0.01 BTC transaction fee)</li>
+                      <li>Your old 0.5 and 0.3 BTC UTXOs are now "spent" - like used up bills</li>
+                      <li>You now have a new 0.19 BTC UTXO (plus your unused 0.1 BTC UTXO)</li>
+                    </ol>
                   </div>
+                </div>
 
-                  <div className="bg-white p-4 rounded-lg shadow-sm">
-                    <h4 className="font-semibold text-blue-800 mb-2">Example Transaction</h4>
-                    <p className="text-gray-700">
-                      Let's say you want to send 0.5 BTC to someone, and you have a UTXO worth 1 BTC:
+                {/* Key Points */}
+                <div className="bg-purple-50 p-4 rounded-lg mt-4">
+                  <h4 className="font-semibold text-purple-800 mb-2">Remember These Simple Rules:</h4>
+                  <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                    <li>You must use entire "digital bills" (UTXOs) - no tearing them in half!</li>
+                    <li>If you spend more than needed, you get change back as a new UTXO</li>
+                    <li>Once you spend a UTXO, it's gone (like spending a dollar bill)</li>
+                    <li>Your wallet's balance is just the sum of all your unspent UTXOs</li>
+                  </ul>
+                </div>
+
+                {/* Advanced Details (Optional) */}
+                <div className="mt-6 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <h4 className="font-semibold text-gray-700 mb-2">Want to Learn More? (Optional)</h4>
+                  <div className="space-y-2">
+                    <p className="text-gray-600 text-sm">
+                      Behind the scenes, each UTXO contains:
                     </p>
-                    <ul className="list-disc pl-5 mt-2 space-y-2">
-                      <li>Input: Your 1 BTC UTXO</li>
-                      <li>Output 1: 0.5 BTC to the recipient</li>
-                      <li>Output 2: 0.499 BTC back to you as change (assuming 0.001 BTC fee)</li>
-                      <li>The original 1 BTC UTXO is now "spent" and can't be used again</li>
-                    </ul>
-                  </div>
-
-                  <div className="bg-white p-4 rounded-lg shadow-sm">
-                    <h4 className="font-semibold text-blue-800 mb-2">Transaction Components</h4>
-                    <ul className="list-disc pl-5 space-y-2">
-                      <li>Inputs: References to previous transaction outputs (UTXOs)</li>
-                      <li>Outputs: New UTXOs created for recipients</li>
-                      <li>Digital Signatures: Prove you own the input UTXOs</li>
-                      <li>Transaction Fee: Difference between inputs and outputs</li>
-                    </ul>
-                  </div>
-
-                  <div className="bg-purple-50 p-4 rounded-lg">
-                    <h4 className="font-semibold text-purple-800 mb-2">Key Points to Remember</h4>
-                    <ul className="list-disc pl-5 space-y-2">
-                      <li>Every bitcoin in existence is recorded as a UTXO</li>
-                      <li>Your wallet balance is the sum of all your UTXOs</li>
-                      <li>Transactions must use entire UTXOs - change is returned as a new UTXO</li>
-                      <li>Mining fees incentivize faster transaction processing</li>
+                    <ul className="list-disc pl-5 text-sm text-gray-600">
+                      <li>A unique identifier (like a serial number on a bill)</li>
+                      <li>The amount it's worth</li>
+                      <li>A digital lock that only you can unlock with your wallet</li>
                     </ul>
                   </div>
                 </div>
