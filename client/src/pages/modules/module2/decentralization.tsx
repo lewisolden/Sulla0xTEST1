@@ -75,10 +75,11 @@ export default function DecentralizationSection() {
             initial="hidden"
             animate="visible"
           >
-            <p className="lead">
+            <p className="lead text-lg">
               Decentralization is a core principle of blockchain technology that distributes power
               and control across a network of participants instead of concentrating it in a single
-              entity or organization.
+              entity or organization. This revolutionary approach changes how we think about
+              trust, authority, and cooperation in digital systems.
             </p>
           </motion.section>
 
