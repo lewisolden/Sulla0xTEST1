@@ -110,6 +110,69 @@ export default function SecurityRiskSection() {
     }
   ];
 
+  const exchangeGuide = [
+    {
+      name: "Coinbase",
+      description: "Most popular US-based exchange, ideal for beginners",
+      features: [
+        "User-friendly interface",
+        "Strong security measures",
+        "Educational rewards program",
+        "24/7 customer support"
+      ],
+      setupSteps: [
+        "Visit coinbase.com and click 'Get started'",
+        "Verify your email and phone number",
+        "Add payment method (bank account/card)",
+        "Complete ID verification",
+        "Enable 2-factor authentication"
+      ],
+      fees: "Variable, typically 0.5% - 1.5% per trade",
+      link: "https://www.coinbase.com/",
+      recommendedFor: "Complete beginners"
+    },
+    {
+      name: "Kraken",
+      description: "Established exchange with advanced features and security",
+      features: [
+        "Advanced trading features",
+        "Strong security track record",
+        "Competitive fees",
+        "Multiple currency pairs"
+      ],
+      setupSteps: [
+        "Go to kraken.com and create account",
+        "Verify email and set up 2FA",
+        "Complete identity verification",
+        "Add funding method",
+        "Start with basic trading interface"
+      ],
+      fees: "0.16% - 0.26% maker-taker fees",
+      link: "https://www.kraken.com/",
+      recommendedFor: "Users wanting more advanced features"
+    },
+    {
+      name: "Gemini",
+      description: "Regulated US exchange with focus on security",
+      features: [
+        "Highly regulated platform",
+        "Free withdrawals",
+        "Insurance on USD deposits",
+        "ActiveTrader platform"
+      ],
+      setupSteps: [
+        "Visit gemini.com to register",
+        "Complete identity verification",
+        "Set up security features",
+        "Link bank account",
+        "Start with basic interface"
+      ],
+      fees: "1.49% for basic, 0.35% on ActiveTrader",
+      link: "https://www.gemini.com/",
+      recommendedFor: "Security-focused users"
+    }
+  ];
+
   const securityChecklist = [
     {
       id: "backup",
@@ -209,9 +272,10 @@ export default function SecurityRiskSection() {
         </motion.h1>
 
         <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-4">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="basics">Security Basics</TabsTrigger>
             <TabsTrigger value="wallets">Wallet Guide</TabsTrigger>
+            <TabsTrigger value="exchanges">Exchange Guide</TabsTrigger>
             <TabsTrigger value="examples">Real Examples</TabsTrigger>
             <TabsTrigger value="practice">Practice</TabsTrigger>
           </TabsList>
@@ -318,6 +382,71 @@ export default function SecurityRiskSection() {
                   <li>Start with small amounts while learning</li>
                   <li>Consider using both hardware and software wallets for different purposes</li>
                   <li>Never store your recovery phrase digitally or share it with anyone</li>
+                </ul>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="exchanges">
+            <div className="space-y-6">
+              <Card className="p-6 bg-blue-50">
+                <h2 className="text-2xl font-semibold text-blue-800 mb-4">Getting Started with Exchanges</h2>
+                <p className="text-gray-700 mb-4">
+                  Cryptocurrency exchanges are platforms where you can buy, sell, and trade Bitcoin. Here's a guide to some of the most reputable exchanges:
+                </p>
+              </Card>
+
+              {exchangeGuide.map((exchange) => (
+                <Card key={exchange.name} className="p-6">
+                  <div className="flex justify-between items-start">
+                    <h3 className="text-xl font-semibold text-blue-800">{exchange.name}</h3>
+                    <a
+                      href={exchange.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 hover:text-blue-700"
+                    >
+                      <ExternalLink className="h-5 w-5" />
+                    </a>
+                  </div>
+                  <p className="text-gray-600 mt-2">{exchange.description}</p>
+
+                  <div className="mt-4">
+                    <h4 className="font-semibold text-gray-700">Key Features:</h4>
+                    <ul className="list-disc pl-5 mt-2 space-y-1">
+                      {exchange.features.map((feature, idx) => (
+                        <li key={idx} className="text-gray-600">{feature}</li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="mt-4">
+                    <h4 className="font-semibold text-gray-700">Account Setup Steps:</h4>
+                    <ol className="list-decimal pl-5 mt-2 space-y-1">
+                      {exchange.setupSteps.map((step, idx) => (
+                        <li key={idx} className="text-gray-600">{step}</li>
+                      ))}
+                    </ol>
+                  </div>
+
+                  <div className="mt-4 flex justify-between items-center">
+                    <span className="text-gray-700">Fees: {exchange.fees}</span>
+                    <span className="text-sm text-blue-600">
+                      Best for: {exchange.recommendedFor}
+                    </span>
+                  </div>
+                </Card>
+              ))}
+
+              <Card className="p-6 bg-yellow-50">
+                <h3 className="text-xl font-semibold text-yellow-800 mb-2">Exchange Safety Tips:</h3>
+                <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                  <li>Always enable two-factor authentication (2FA)</li>
+                  <li>Use a strong, unique password</li>
+                  <li>Verify the exchange URL before logging in</li>
+                  <li>Start with small amounts to test the process</li>
+                  <li>Don't keep large amounts on exchanges long-term</li>
+                  <li>Regularly check your account activity</li>
                 </ul>
               </Card>
             </div>
