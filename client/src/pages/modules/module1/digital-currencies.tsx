@@ -301,18 +301,49 @@ export default function DigitalCurrenciesSection() {
                   </motion.p>
                 </motion.div>
 
+                {/* Transaction Flow Section */}
                 <motion.div
                   variants={cardVariants}
                   whileHover="hover"
                   className="mt-8 p-6 bg-white rounded-lg shadow-md"
                 >
-                  <h3 className="text-2xl font-semibold text-blue-600 mb-4">Transaction Flow Visualization</h3>
-                  <TransactionFlowDiagram />
-                </motion.div>
+                  <h3 className="text-2xl font-semibold text-blue-600 mb-4">Understanding Transaction Flow</h3>
+                  <motion.p variants={listItemVariants} className="mt-4">
+                    When you make a cryptocurrency transaction, it goes through several important steps to ensure security and validity:
+                  </motion.p>
 
+                  <motion.ul variants={sectionVariants} className="list-disc pl-5 mt-4 mb-6">
+                    {[
+                      "Transaction Broadcast: When you initiate a transfer, your transaction is announced to the network",
+                      "Verification: Network nodes check the transaction's validity and your available balance",
+                      "Consensus: Multiple nodes work together to confirm the transaction",
+                      "Validation: The transaction is validated and added to the blockchain",
+                      "Completion: The recipient receives the funds after network confirmation"
+                    ].map((item, index) => (
+                      <motion.li 
+                        key={index}
+                        variants={listItemVariants}
+                        custom={index}
+                        className="mb-2"
+                      >
+                        {item}
+                      </motion.li>
+                    ))}
+                  </motion.ul>
+
+                  <TransactionFlowDiagram />
+
+                  <motion.div className="mt-6 text-gray-600">
+                    <p className="text-sm">
+                      This visualization shows how your transaction moves through the cryptocurrency network. 
+                      Each node represents a computer in the network that helps verify and process the transaction. 
+                      The arrows show the flow of information and validation steps required before the transaction is complete.
+                    </p>
+                  </motion.div>
+                </motion.div>
               </motion.section>
 
-              {/* Understanding Cryptocurrency Security */}
+              {/*Understanding Cryptocurrency Security */}
               <motion.section
                 variants={sectionVariants}
                 initial="hidden"
