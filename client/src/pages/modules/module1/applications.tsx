@@ -337,10 +337,154 @@ const PracticalApplicationsSection = () => {
 
 const PracticalApplicationsQuiz = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState<{ [key: string]: string }>({});
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+  const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
+  const [showExplanation, setShowExplanation] = useState(false);
+  const { updateProgress } = useProgress();
 
-  const questions = [
+  const handleAnswerSelect = (optionIndex: number) => {
+    setSelectedAnswer(optionIndex);
+    setShowExplanation(true);
+  };
+
+  const moveToNextQuestion = () => {
+    const isCorrect = selectedAnswer === questions[currentQuestion].correct;
+
+    if (isCorrect) {
+      setScore(prev => prev + 1);
+    }
+
+    if (currentQuestion < questions.length - 1) {
+      setCurrentQuestion(prev => prev + 1);
+      setSelectedAnswer(null);
+      setShowExplanation(false);
+    } else {
+      setShowResult(true);
+      const passThreshold = questions.length * 0.6;
+      updateProgress(1, 'practical-applications-quiz', score >= passThreshold);
+    }
+  };
+
+  const restartQuiz = () => {
+    setCurrentQuestion(0);
+    setSelectedAnswer(null);
+    setShowResult(false);
+    setScore(0);
+    setShowExplanation(false);
+  };
+
+  if (showResult) {
+    return (
+      <Card>
+        <CardContent className="p-8 text-center">
+          <h2 className="text-3xl font-bold mb-4 text-blue-800">
+            Quiz Completed!
+          </h2>
+          <p className="text-xl mb-4">
+            You scored {score} out of {questions.length}
+          </p>
+          {score >= questions.length * 0.6 ? (
+            <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-4">
+              <p className="text-green-700">
+                🎉 Congratulations! You've passed the Practical Applications quiz!
+              </p>
+            </div>
+          ) : (
+            <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4">
+              <p className="text-red-700">
+                You didn't pass this time. Review the content and try again.
+              </p>
+            </div>
+          )}
+          <Button 
+            onClick={restartQuiz}
+            variant="outline"
+            className="mt-4"
+          >
+            Restart Quiz
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const currentQuizQuestion = questions[currentQuestion];
+
+  return (
+    <Card>
+      <CardContent className="p-8">
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold text-blue-800 mb-4">
+            Practical Applications Quiz
+            <span className="text-sm ml-4 text-gray-600">
+              Question {currentQuestion + 1} of {questions.length}
+            </span>
+          </h2>
+
+          <div className="bg-blue-50 rounded-lg p-4 mb-6">
+            <p className="text-lg text-gray-700">
+              {currentQuizQuestion.question}
+            </p>
+          </div>
+
+          <div className="grid gap-4">
+            {Object.entries(currentQuizQuestion.options).map(([key, value], index) => (
+              <Button
+                key={key}
+                onClick={() => handleAnswerSelect(parseInt(key))}
+                className={`
+                  w-full p-4 h-auto whitespace-normal text-left justify-start
+                  ${selectedAnswer === null 
+                    ? 'bg-gray-100 hover:bg-blue-100 text-gray-700' 
+                    : index === currentQuizQuestion.correct 
+                      ? 'bg-green-200 text-gray-700' 
+                      : selectedAnswer === index 
+                        ? 'bg-red-200 text-gray-700' 
+                        : 'bg-gray-100 text-gray-700'}
+                `}
+                disabled={selectedAnswer !== null}
+                variant="ghost"
+              >
+                {value}
+              </Button>
+            ))}
+          </div>
+
+          {showExplanation && (
+            <div className={`
+              mt-6 p-4 rounded-lg
+              ${selectedAnswer === currentQuizQuestion.correct 
+                ? 'bg-green-100 border-l-4 border-green-500' 
+                : 'bg-red-100 border-l-4 border-red-500'}
+            `}>
+              <h3 className="font-bold mb-2">
+                {selectedAnswer === currentQuizQuestion.correct 
+                  ? '✅ Correct!' 
+                  : '❌ Incorrect'}
+              </h3>
+              <p>{currentQuizQuestion.explanation}</p>
+            </div>
+          )}
+
+          {selectedAnswer !== null && (
+            <Button
+              onClick={moveToNextQuestion}
+              className="mt-6 w-full"
+            >
+              {currentQuestion < questions.length - 1 
+                ? 'Next Question' 
+                : 'Finish Quiz'}
+            </Button>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+
+const questions = [
     {
       id: "q1",
       question: "Which of the following best describes how blockchain technology promotes financial inclusion?",
@@ -350,7 +494,7 @@ const PracticalApplicationsQuiz = () => {
         c: "By eliminating the need for money completely",
         d: "By making all transactions free"
       },
-      correct: "b",
+      correct: 1,
       explanation: "Blockchain technology promotes financial inclusion by allowing people to access financial services without requiring traditional banking infrastructure. This is particularly important for the unbanked and underbanked populations who may not have access to conventional banking services but can participate in the global economy through blockchain-based solutions."
     },
     {
@@ -362,7 +506,7 @@ const PracticalApplicationsQuiz = () => {
         c: "They enable near-instant settlement 24/7",
         d: "They are only available in developed countries"
       },
-      correct: "c",
+      correct: 2,
       explanation: "Blockchain-based payments operate 24/7 and enable near-instant settlement of transactions. Unlike traditional banking systems that may take days to process payments and operate only during business hours, blockchain networks operate continuously and can validate transactions within minutes or even seconds."
     },
     {
@@ -374,7 +518,7 @@ const PracticalApplicationsQuiz = () => {
         c: "By increasing transaction fees",
         d: "By slowing down transaction processing"
       },
-      correct: "b",
+      correct: 1,
       explanation: "Smart contracts enhance payment systems by automating transactions based on predefined conditions. This automation eliminates the need for manual intervention, reduces the risk of human error, and enables complex financial arrangements to execute automatically when specific criteria are met."
     },
     {
@@ -386,147 +530,9 @@ const PracticalApplicationsQuiz = () => {
         c: "Risk-free guaranteed returns",
         d: "Tokenized real-world assets"
       },
-      correct: "c",
+      correct: 2,
       explanation: "Risk-free guaranteed returns is NOT a legitimate investment opportunity in the blockchain space. While blockchain offers various investment opportunities like digital asset trading, yield farming, and tokenized assets, all investments carry risks. Claims of guaranteed returns are often associated with scams or fraudulent schemes."
     }
   ];
-
-  const handleAnswer = (questionId: string, answer: string) => {
-    const question = questions.find(q => q.id === questionId);
-    if (question && !answers[questionId]) {
-      const isCorrect = answer === question.correct;
-      setAnswers(prev => ({ ...prev, [questionId]: answer }));
-      if (isCorrect) {
-        setScore(prev => prev + 1);
-      }
-    }
-  };
-
-  const getOptionStyle = (questionId: string, option: string) => {
-    if (answers[questionId]) {
-      if (option === questions.find(q => q.id === questionId)?.correct) {
-        return "bg-green-50 border-green-500";
-      }
-      if (answers[questionId] === option) {
-        return "bg-red-50 border-red-200";
-      }
-    }
-    return "hover:bg-gray-50 cursor-pointer";
-  };
-
-  const isQuestionAnswered = (questionId: string) => {
-    return questionId in answers;
-  };
-
-  const canMoveNext = currentQuestion < questions.length - 1 && isQuestionAnswered(questions[currentQuestion].id);
-  const canMovePrev = currentQuestion > 0;
-  const currentQuestionData = questions[currentQuestion];
-  const totalAnswered = Object.keys(answers).length;
-
-  return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center mb-4">
-        <p className="text-sm text-gray-500">
-          Question {currentQuestion + 1} of {questions.length}
-        </p>
-        <p className="text-sm text-gray-500">
-          Score: {score} / {questions.length}
-        </p>
-      </div>
-
-      <Progress value={(totalAnswered / questions.length) * 100} className="mb-4" />
-
-      <div className="space-y-4">
-        <p className="font-semibold text-lg text-blue-800">{currentQuestionData.question}</p>
-        <RadioGroup
-          value={answers[currentQuestionData.id] || ""}
-          onValueChange={(value) => !isQuestionAnswered(currentQuestionData.id) && handleAnswer(currentQuestionData.id, value)}
-          className="space-y-2"
-          disabled={isQuestionAnswered(currentQuestionData.id)}
-        >
-          {Object.entries(currentQuestionData.options).map(([key, value]) => (
-            <motion.div
-              key={key}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className={`flex items-center p-4 rounded-lg border-2 transition-all ${getOptionStyle(currentQuestionData.id, key)} ${isQuestionAnswered(currentQuestionData.id) ? 'cursor-default' : 'cursor-pointer hover:shadow-md'}`}
-            >
-              <div className="flex items-center flex-1">
-                <RadioGroupItem 
-                  value={key} 
-                  id={`${currentQuestionData.id}-${key}`}
-                  className="hidden"
-                />
-                <Label htmlFor={`${currentQuestionData.id}-${key}`} className="text-gray-700 flex-1">
-                  {value}
-                </Label>
-              </div>
-              {answers[currentQuestionData.id] && (
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: "spring", stiffness: 200, damping: 10 }}
-                >
-                  {key === currentQuestionData.correct ? (
-                    <CheckCircle className="w-6 h-6 text-green-500 ml-2" />
-                  ) : answers[currentQuestionData.id] === key ? (
-                    <XCircle className="w-6 h-6 text-red-500 ml-2" />
-                  ) : null}
-                </motion.div>
-              )}
-            </motion.div>
-          ))}
-        </RadioGroup>
-
-        {isQuestionAnswered(currentQuestionData.id) && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="mt-4 p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500"
-          >
-            <p className="text-blue-800">{currentQuestionData.explanation}</p>
-          </motion.div>
-        )}
-      </div>
-
-      <div className="flex justify-between mt-6">
-        <Button
-          onClick={() => setCurrentQuestion(prev => prev - 1)}
-          disabled={!canMovePrev}
-          variant="outline"
-          className="gap-2"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Previous
-        </Button>
-        <Button
-          onClick={() => setCurrentQuestion(prev => prev + 1)}
-          disabled={!canMoveNext}
-          className="gap-2"
-        >
-          Next
-          <ArrowRight className="w-4 h-4" />
-        </Button>
-      </div>
-
-      {totalAnswered === questions.length && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="mt-6 p-4 bg-blue-50 rounded-lg border-l-4 border-green-500"
-        >
-          <p className="text-xl font-semibold text-blue-800">
-            Quiz Complete!
-          </p>
-          <p className="text-blue-600 mt-2">
-            Final Score: {score} out of {questions.length}
-          </p>
-        </motion.div>
-      )}
-    </div>
-  );
-};
 
 export default PracticalApplicationsSection;
