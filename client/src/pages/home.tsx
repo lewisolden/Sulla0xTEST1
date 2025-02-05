@@ -85,6 +85,9 @@ export default function Home() {
                 <p className="text-gray-600">
                   Personalized learning paths that adapt to your understanding and pace
                 </p>
+                <button className="mt-4 text-blue-600 hover:text-blue-700 font-medium">
+                  Learn More →
+                </button>
               </motion.div>
             </Link>
 
