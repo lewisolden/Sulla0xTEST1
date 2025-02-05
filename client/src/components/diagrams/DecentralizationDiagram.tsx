@@ -28,13 +28,13 @@ export default function DecentralizationDiagram() {
       {`
       flowchart TB
         subgraph TS[Traditional System]
-          A[Central Bank]:::centralNode
-          B[Regional Bank 1]:::bankNode
-          C[Regional Bank 2]:::bankNode
-          D[Regional Bank 3]:::bankNode
-          E[User Account]:::userNode
-          F[User Account]:::userNode
-          G[User Account]:::userNode
+          A((Central<br/>Bank)):::centralNode
+          B((Regional<br/>Bank 1)):::bankNode
+          C((Regional<br/>Bank 2)):::bankNode
+          D((Regional<br/>Bank 3)):::bankNode
+          E((User<br/>Account)):::userNode
+          F((User<br/>Account)):::userNode
+          G((User<br/>Account)):::userNode
 
           A --> B
           A --> C
@@ -45,13 +45,13 @@ export default function DecentralizationDiagram() {
         end
 
         subgraph CN[Cryptocurrency Network]
-          H[Network Node]:::cryptoNode
-          I[Network Node]:::cryptoNode
-          J[Network Node]:::cryptoNode
-          K[Network Node]:::cryptoNode
-          L[User Wallet]:::userNode
-          M[User Wallet]:::userNode
-          N[User Wallet]:::userNode
+          H((Network<br/>Node)):::cryptoNode
+          I((Network<br/>Node)):::cryptoNode
+          J((Network<br/>Node)):::cryptoNode
+          K((Network<br/>Node)):::cryptoNode
+          L((User<br/>Wallet)):::userNode
+          M((User<br/>Wallet)):::userNode
+          N((User<br/>Wallet)):::userNode
 
           H --- I
           H --- J
@@ -64,19 +64,25 @@ export default function DecentralizationDiagram() {
           J --- N
         end
 
-        classDef centralNode fill:#ff9999,stroke:#ff0000,stroke-width:4px
-        classDef bankNode fill:#99ff99,stroke:#00ff00,stroke-width:3px
-        classDef cryptoNode fill:#9999ff,stroke:#0000ff,stroke-width:3px
-        classDef userNode fill:#ffffff,stroke:#666666,stroke-width:2px
+        classDef centralNode fill:#ff9999,stroke:#ff0000,stroke-width:4px;
+        classDef bankNode fill:#99ff99,stroke:#00ff00,stroke-width:3px;
+        classDef cryptoNode fill:#9999ff,stroke:#0000ff,stroke-width:3px;
+        classDef userNode fill:#ffffff,stroke:#666666,stroke-width:2px;
 
-        style A font-size:18px,font-weight:bold
-        style B font-size:16px
-        style C font-size:16px
-        style D font-size:16px
-        style H font-size:16px
-        style I font-size:16px
-        style J font-size:16px
-        style K font-size:16px
+        style A font-size:24px,font-weight:bold
+        style B font-size:20px
+        style C font-size:20px
+        style D font-size:20px
+        style E font-size:18px
+        style F font-size:18px
+        style G font-size:18px
+        style H font-size:20px
+        style I font-size:20px
+        style J font-size:20px
+        style K font-size:20px
+        style L font-size:18px
+        style M font-size:18px
+        style N font-size:18px
       `}
     </div>
   );
