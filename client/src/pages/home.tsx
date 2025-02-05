@@ -108,14 +108,14 @@ export default function Home() {
               {...fadeInUp}
               transition={{ delay: 0.4 }}
             >
-              <Trophy className="w-12 h-12 text-blue-600 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Achievement NFTs</h3>
+              <BookOpen className="w-12 h-12 text-blue-600 mb-4" />
+              <h3 className="text-xl font-semibold mb-2">Interactive Glossary</h3>
               <p className="text-gray-600">
-                Earn verifiable NFT certificates as you complete modules
+                Comprehensive crypto terminology guide with easy-to-understand definitions
               </p>
-              <Link href="/achievements">
+              <Link href="/glossary">
                 <button className="mt-2 text-blue-600 hover:text-blue-700 font-medium">
-                  View Achievements →
+                  View Glossary →
                 </button>
               </Link>
             </motion.div>
