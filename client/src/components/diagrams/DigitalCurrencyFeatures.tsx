@@ -10,7 +10,7 @@ export default function DigitalCurrencyFeatures() {
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 py-8">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-12">
       {features.map((Feature, index) => (
         <motion.div
           key={Feature.label}
@@ -21,11 +21,13 @@ export default function DigitalCurrencyFeatures() {
         >
           <motion.div
             whileHover={{ scale: 1.1 }}
-            className={`p-4 bg-${Feature.color}-100 rounded-lg`}
+            className={`p-6 bg-${Feature.color}-100 rounded-lg shadow-md hover:shadow-lg transition-shadow`}
           >
             <Feature.icon className={`w-8 h-8 text-${Feature.color}-600`} />
           </motion.div>
-          <p className="mt-2 text-sm font-medium text-gray-600">{Feature.label}</p>
+          <p className="mt-3 text-base font-medium text-gray-700 text-center max-w-[120px]">
+            {Feature.label}
+          </p>
         </motion.div>
       ))}
     </div>
