@@ -383,6 +383,72 @@ export default function BitcoinFundamentalsSection() {
             </div>
           </motion.section>
 
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
+            className="mt-12"
+          >
+            <h2 className="text-3xl font-bold text-blue-700">Understanding Bitcoin Transactions</h2>
+            <div className="space-y-6">
+              <div className="bg-blue-50 rounded-lg p-6">
+                <h3 className="text-2xl font-semibold text-blue-600 mb-4">How Bitcoin Transactions Work</h3>
+                <p className="text-gray-700 mb-4">
+                  Understanding Bitcoin transactions is crucial for grasping how value moves through the network. 
+                  Unlike traditional bank transfers, Bitcoin uses a unique model called UTXO (Unspent Transaction Output).
+                </p>
+
+                <div className="space-y-4">
+                  <div className="bg-white p-4 rounded-lg shadow-sm">
+                    <h4 className="font-semibold text-blue-800 mb-2">The UTXO Model</h4>
+                    <p className="text-gray-700">
+                      Think of UTXOs like physical coins or bills in your wallet:
+                    </p>
+                    <ul className="list-disc pl-5 mt-2 space-y-2">
+                      <li>When you receive bitcoin, you get "unspent outputs" from previous transactions</li>
+                      <li>Each UTXO is like a bill or coin of a specific amount</li>
+                      <li>You can't split a UTXO - you must use it entirely in a transaction</li>
+                      <li>Change from a transaction becomes a new UTXO</li>
+                    </ul>
+                  </div>
+
+                  <div className="bg-white p-4 rounded-lg shadow-sm">
+                    <h4 className="font-semibold text-blue-800 mb-2">Example Transaction</h4>
+                    <p className="text-gray-700">
+                      Let's say you want to send 0.5 BTC to someone, and you have a UTXO worth 1 BTC:
+                    </p>
+                    <ul className="list-disc pl-5 mt-2 space-y-2">
+                      <li>Input: Your 1 BTC UTXO</li>
+                      <li>Output 1: 0.5 BTC to the recipient</li>
+                      <li>Output 2: 0.499 BTC back to you as change (assuming 0.001 BTC fee)</li>
+                      <li>The original 1 BTC UTXO is now "spent" and can't be used again</li>
+                    </ul>
+                  </div>
+
+                  <div className="bg-white p-4 rounded-lg shadow-sm">
+                    <h4 className="font-semibold text-blue-800 mb-2">Transaction Components</h4>
+                    <ul className="list-disc pl-5 space-y-2">
+                      <li>Inputs: References to previous transaction outputs (UTXOs)</li>
+                      <li>Outputs: New UTXOs created for recipients</li>
+                      <li>Digital Signatures: Prove you own the input UTXOs</li>
+                      <li>Transaction Fee: Difference between inputs and outputs</li>
+                    </ul>
+                  </div>
+
+                  <div className="bg-purple-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-purple-800 mb-2">Key Points to Remember</h4>
+                    <ul className="list-disc pl-5 space-y-2">
+                      <li>Every bitcoin in existence is recorded as a UTXO</li>
+                      <li>Your wallet balance is the sum of all your UTXOs</li>
+                      <li>Transactions must use entire UTXOs - change is returned as a new UTXO</li>
+                      <li>Mining fees incentivize faster transaction processing</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.section>
+
           {isFullyRead && (
             <motion.div
               className="mt-8 space-y-6"
