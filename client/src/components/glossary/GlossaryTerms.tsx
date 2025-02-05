@@ -58,6 +58,141 @@ const mockGlossaryTerms: Term[] = [
     relatedTerms: ["Public Key", "Wallet", "Cryptography"]
   },
   {
+    id: "hash",
+    term: "Hash",
+    definition: "A fixed-length string of characters generated from input data of any length. In blockchain, hashing is used to maintain data integrity and link blocks together.",
+    category: "Technology",
+    difficulty: "Intermediate",
+    examples: [
+      "SHA-256 hash algorithm used in Bitcoin",
+      "Transaction IDs are typically represented as hashes"
+    ],
+    relatedTerms: ["Cryptography", "Block", "Mining"]
+  },
+  {
+    id: "node",
+    term: "Node",
+    definition: "A computer or device that participates in a blockchain network by maintaining a copy of the blockchain and, in some cases, verifying transactions.",
+    category: "Technology",
+    difficulty: "Intermediate",
+    examples: [
+      "Full nodes store the complete blockchain",
+      "Light nodes store only block headers"
+    ],
+    relatedTerms: ["Blockchain", "Mining", "Network"]
+  },
+  {
+    id: "cold-storage",
+    term: "Cold Storage",
+    definition: "A method of keeping cryptocurrency offline to protect it from unauthorized access, hacking, and other vulnerabilities that come with internet connectivity.",
+    category: "Security",
+    difficulty: "Intermediate",
+    examples: [
+      "Hardware wallets",
+      "Paper wallets",
+      "Air-gapped computers"
+    ],
+    relatedTerms: ["Hardware Wallet", "Private Key", "Security"]
+  },
+  {
+    id: "bull-market",
+    term: "Bull Market",
+    definition: "A period in the financial market characterized by rising prices and optimistic investor sentiment. In crypto, this often leads to significant price increases.",
+    category: "Market",
+    difficulty: "Beginner",
+    examples: [
+      "Bitcoin's rise to $69,000 in 2021",
+      "The 2017 crypto bull run"
+    ],
+    relatedTerms: ["Bear Market", "Market Sentiment", "Trading"]
+  },
+  {
+    id: "bear-market",
+    term: "Bear Market",
+    definition: "A period in the financial market characterized by falling prices and pessimistic investor sentiment. Typically defined as a drop of 20% or more from recent highs.",
+    category: "Market",
+    difficulty: "Beginner",
+    examples: [
+      "The 2018 crypto winter",
+      "The 2022 market downturn"
+    ],
+    relatedTerms: ["Bull Market", "Market Sentiment", "Trading"]
+  },
+  {
+    id: "market-cap",
+    term: "Market Capitalization",
+    definition: "The total value of a cryptocurrency, calculated by multiplying the current price by the total number of coins in circulation.",
+    category: "Market",
+    difficulty: "Beginner",
+    examples: [
+      "Bitcoin's market cap = Price per BTC × Total BTC in circulation",
+      "Used to rank cryptocurrencies by size"
+    ],
+    relatedTerms: ["Circulating Supply", "Trading Volume", "Price"]
+  },
+  {
+    id: "dex",
+    term: "DEX (Decentralized Exchange)",
+    definition: "A type of cryptocurrency exchange that operates without a central authority, using smart contracts to facilitate trading directly between users.",
+    category: "Applications",
+    difficulty: "Advanced",
+    examples: [
+      "Uniswap",
+      "SushiSwap",
+      "PancakeSwap"
+    ],
+    relatedTerms: ["DeFi", "Smart Contract", "Liquidity Pool"]
+  },
+  {
+    id: "liquidity-pool",
+    term: "Liquidity Pool",
+    definition: "A collection of cryptocurrency funds locked in a smart contract, used to facilitate trading, lending, and other DeFi activities.",
+    category: "Applications",
+    difficulty: "Advanced",
+    examples: [
+      "Trading pairs on DEXes",
+      "Lending pools on DeFi platforms"
+    ],
+    relatedTerms: ["DeFi", "DEX", "Smart Contract"]
+  },
+  {
+    id: "staking",
+    term: "Staking",
+    definition: "The process of locking up cryptocurrency to support network operations, validate transactions, and earn rewards in proof-of-stake systems.",
+    category: "Technology",
+    difficulty: "Intermediate",
+    examples: [
+      "Ethereum 2.0 staking",
+      "Delegated staking on proof-of-stake networks"
+    ],
+    relatedTerms: ["Proof of Stake", "Validator", "Rewards"]
+  },
+  {
+    id: "nft",
+    term: "NFT (Non-Fungible Token)",
+    definition: "A unique digital asset that represents ownership of a specific item or piece of content on the blockchain. Unlike cryptocurrencies, each NFT is unique and cannot be replaced with something else of equal value.",
+    category: "Applications",
+    difficulty: "Intermediate",
+    examples: [
+      "Digital art collections",
+      "Virtual real estate",
+      "Gaming items"
+    ],
+    relatedTerms: ["Smart Contract", "Digital Asset", "Ethereum"]
+  },
+  {
+    id: "yield-farming",
+    term: "Yield Farming",
+    definition: "A DeFi strategy where users provide liquidity to various protocols in exchange for rewards, often in the form of governance tokens or trading fees.",
+    category: "Applications",
+    difficulty: "Advanced",
+    examples: [
+      "Providing liquidity on DEXes",
+      "Lending assets on DeFi platforms"
+    ],
+    relatedTerms: ["DeFi", "Liquidity Pool", "APY"]
+  },
+  {
     id: "smart-contract",
     term: "Smart Contract",
     definition: "Self-executing contracts with the terms directly written into code. They automatically execute when predetermined conditions are met.",
@@ -71,80 +206,22 @@ const mockGlossaryTerms: Term[] = [
     relatedTerms: ["Ethereum", "DApp", "Gas"]
   },
   {
-    id: "mining",
-    term: "Mining",
-    definition: "The process of validating and adding new transactions to a blockchain using computational power, often rewarded with newly created cryptocurrencies.",
-    category: "Technology",
-    difficulty: "Intermediate",
-    examples: [
-      "Bitcoin mining using specialized ASIC hardware",
-      "Pool mining to share rewards"
-    ],
-    relatedTerms: ["Proof of Work", "Hash Rate", "Block Reward"]
-  },
-  {
-    id: "wallet",
-    term: "Cryptocurrency Wallet",
-    definition: "A digital tool that allows you to store, send, and receive cryptocurrencies. Can be software-based (hot wallet) or hardware-based (cold wallet).",
+    id: "two-factor-authentication",
+    term: "Two-Factor Authentication (2FA)",
+    definition: "A security measure that requires two forms of verification to access an account, enhancing security beyond a simple password.",
     category: "Security",
     difficulty: "Beginner",
-    examples: [
-      "MetaMask (Browser Extension Wallet)",
-      "Ledger (Hardware Wallet)",
-      "Paper Wallet (Physical Storage)"
-    ],
-    relatedTerms: ["Private Key", "Public Key", "Address"]
+    examples: ["Using an authenticator app", "Receiving a code via SMS"],
+    relatedTerms: ["Security", "Authentication", "Password"]
   },
   {
-    id: "defi",
-    term: "DeFi (Decentralized Finance)",
-    definition: "Financial services and products built on blockchain technology that operate without traditional financial intermediaries.",
-    category: "Applications",
-    difficulty: "Advanced",
-    examples: [
-      "Decentralized exchanges (DEX)",
-      "Lending platforms",
-      "Yield farming"
-    ],
-    relatedTerms: ["Smart Contract", "Liquidity Pool", "Yield Farming"]
-  },
-  {
-    id: "consensus",
-    term: "Consensus Mechanism",
-    definition: "The protocol by which all nodes in a blockchain network agree on the validity of transactions and the current state of the network.",
-    category: "Technology",
-    difficulty: "Advanced",
-    examples: [
-      "Proof of Work (Bitcoin)",
-      "Proof of Stake (Ethereum 2.0)",
-      "Delegated Proof of Stake"
-    ],
-    relatedTerms: ["Mining", "Staking", "Network Security"]
-  },
-  {
-    id: "gas",
-    term: "Gas",
-    definition: "The fee required to perform a transaction or execute a contract on the Ethereum network. Paid in ETH and varies based on network congestion.",
-    category: "Technology",
+    id: "technical-analysis",
+    term: "Technical Analysis",
+    definition: "A method of evaluating investments by analyzing statistics generated by market activity, such as past prices and volume.",
+    category: "Market",
     difficulty: "Intermediate",
-    examples: [
-      "Transaction fees on Ethereum",
-      "Smart contract execution costs"
-    ],
-    relatedTerms: ["Ethereum", "Transaction Fee", "Wei"]
-  },
-  {
-    id: "altcoin",
-    term: "Altcoin",
-    definition: "Any cryptocurrency that isn't Bitcoin. Short for 'alternative coin', these can have various use cases and technological features.",
-    category: "Core Concepts",
-    difficulty: "Beginner",
-    examples: [
-      "Ethereum (ETH)",
-      "Litecoin (LTC)",
-      "Ripple (XRP)"
-    ],
-    relatedTerms: ["Bitcoin", "Cryptocurrency", "Token"]
+    examples: ["Using charts to identify trends", "Employing indicators like RSI and MACD"],
+    relatedTerms: ["Chart Patterns", "Indicators", "Trading"]
   }
 ];
 
@@ -278,7 +355,7 @@ export default function GlossaryTerms() {
                         <h4 className="font-medium text-gray-900 mb-2">Related Terms:</h4>
                         <div className="flex flex-wrap gap-2">
                           {term.relatedTerms.map((relatedTerm, index) => (
-                            <Badge 
+                            <Badge
                               key={index}
                               variant="secondary"
                               className="cursor-pointer hover:bg-gray-200"
