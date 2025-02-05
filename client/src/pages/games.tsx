@@ -1,34 +1,59 @@
-import { Gamepad2, Hash, Network, Search } from "lucide-react";
+import { TrendingUp, Wallet, Building2, Hash, Network, Search } from "lucide-react";
 import { motion } from "framer-motion";
+import TradingSimulator from "@/components/games/TradingSimulator";
+import { Card } from "@/components/ui/card";
+import { useState } from "react";
 import MiningGame from "@/components/games/MiningGame";
 import NetworkConsensusGame from "@/components/games/NetworkConsensusGame";
 import BlockchainExplorerGame from "@/components/games/BlockchainExplorerGame";
-import { Card } from "@/components/ui/card";
-import { useState } from "react";
 
 const games = [
+  {
+    id: "trading",
+    title: "Crypto Trading Simulator",
+    description: "Learn to trade cryptocurrency in a risk-free environment with virtual money.",
+    icon: TrendingUp,
+    available: true,
+  },
+  {
+    id: "wallet",
+    title: "Crypto Wallet Adventure",
+    description: "Master wallet security and management through an interactive story-driven experience.",
+    icon: Wallet,
+    available: false, // Coming soon
+  },
+  {
+    id: "city",
+    title: "Blockchain City Builder",
+    description: "Build and manage your own blockchain-powered city while learning core concepts.",
+    icon: Building2,
+    available: false, // Coming soon
+  },
   {
     id: "mining",
     title: "Mining Simulator",
     description: "Learn how proof-of-work mining works by finding valid block hashes.",
     icon: Hash,
+    available: true,
   },
   {
     id: "consensus",
     title: "Network Consensus",
     description: "Validate transactions and build blocks to understand how blockchain networks reach consensus.",
     icon: Network,
+    available: true,
   },
   {
     id: "explorer",
     title: "Blockchain Explorer Adventure",
     description: "Decode hidden messages and solve puzzles by analyzing blockchain data.",
     icon: Search,
+    available: true,
   }
 ];
 
 export default function Games() {
-  const [selectedGame, setSelectedGame] = useState("mining");
+  const [selectedGame, setSelectedGame] = useState("trading");
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 py-16">
@@ -39,10 +64,10 @@ export default function Games() {
           className="text-center mb-12"
         >
           <h1 className="text-4xl font-bold text-blue-900 mb-4">
-            Interactive Blockchain Games
+            Interactive Crypto Games
           </h1>
           <p className="text-xl text-blue-600">
-            Learn blockchain concepts through hands-on simulations and games
+            Learn cryptocurrency concepts through fun, interactive games!
           </p>
         </motion.div>
 
@@ -56,17 +81,26 @@ export default function Games() {
               {games.map((game) => (
                 <Card
                   key={game.id}
-                  className={`p-4 cursor-pointer transition-all duration-300 ${
-                    selectedGame === game.id
+                  className={`p-4 ${!game.available ? 'opacity-75' : ''} ${
+                    game.available ? 'cursor-pointer' : 'cursor-not-allowed'
+                  } transition-all duration-300 ${
+                    selectedGame === game.id && game.available
                       ? "bg-blue-600 text-white"
                       : "hover:bg-blue-50"
                   }`}
-                  onClick={() => setSelectedGame(game.id)}
+                  onClick={() => game.available && setSelectedGame(game.id)}
                 >
                   <div className="flex items-center space-x-3">
                     <game.icon className="w-5 h-5" />
                     <div>
-                      <h3 className="font-semibold">{game.title}</h3>
+                      <h3 className="font-semibold">
+                        {game.title}
+                        {!game.available && (
+                          <span className="ml-2 text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded">
+                            Coming Soon
+                          </span>
+                        )}
+                      </h3>
                       <p className="text-sm opacity-80">{game.description}</p>
                     </div>
                   </div>
@@ -80,9 +114,11 @@ export default function Games() {
             animate={{ opacity: 1, x: 0 }}
             className="md:col-span-3"
           >
+            {selectedGame === "trading" && <TradingSimulator />}
             {selectedGame === "mining" && <MiningGame />}
             {selectedGame === "consensus" && <NetworkConsensusGame />}
             {selectedGame === "explorer" && <BlockchainExplorerGame />}
+            {/* Other games will be added here as they're developed */}
           </motion.div>
         </div>
       </div>
