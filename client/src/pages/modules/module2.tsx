@@ -8,6 +8,7 @@ import { Database, Network, Code, FileText, ArrowRight } from "lucide-react";
 import { CheckCircle2, XCircle } from "lucide-react";
 import ModuleProgress from "@/components/modules/module-progress";
 import BadgeShowcase from "@/components/modules/badge-showcase";
+import { useScrollTop } from "@/hooks/useScrollTop";
 
 const moduleTopics = [
   {
@@ -61,6 +62,7 @@ const moduleTopics = [
 ];
 
 export default function Module2() {
+  useScrollTop();
   const { progress } = useProgress();
   const moduleProgress = progress.filter(p => p.moduleId === 2);
   const completedSections = moduleProgress.filter(p => p.completed).length;
