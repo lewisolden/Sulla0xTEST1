@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
 import EthereumFundamentalsQuiz from "@/components/quizzes/EthereumFundamentalsQuiz";
 import mermaid from "mermaid";
+import { useScrollTop } from "@/hooks/useScrollTop";
 
 const MermaidDiagram = ({ chart }) => {
   const [svg, setSvg] = useState('');
@@ -49,6 +50,7 @@ const MermaidDiagram = ({ chart }) => {
 };
 
 const EthereumFundamentalsSection = () => {
+  useScrollTop();
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showQuiz, setShowQuiz] = useState(false);
