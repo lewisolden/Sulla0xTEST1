@@ -5,7 +5,7 @@ import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, ArrowRight, Shield, Key, Wallet, AlertTriangle, CheckCircle2, XCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, Shield, Key, Wallet, AlertTriangle, CheckCircle2, XCircle, ExternalLink } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "@/hooks/use-toast";
@@ -38,7 +38,6 @@ export default function SecurityRiskSection() {
   const handleCheckItem = (id: string) => {
     setCheckedItems(prev => {
       const newItems = { ...prev, [id]: !prev[id] };
-      // Show encouraging toast message when checking items
       if (!prev[id]) {
         toast({
           title: "Great progress!",
@@ -49,6 +48,67 @@ export default function SecurityRiskSection() {
       return newItems;
     });
   };
+
+  const walletRecommendations = [
+    {
+      type: "Hardware Wallets",
+      options: [
+        {
+          name: "Ledger Nano S Plus",
+          description: "Popular hardware wallet with a screen for transaction verification",
+          features: [
+            "Supports 5500+ coins and tokens",
+            "Built-in screen for security",
+            "Certified secure element chip"
+          ],
+          price: "$79",
+          link: "https://shop.ledger.com/",
+          recommendedFor: "Long-term storage and large amounts"
+        },
+        {
+          name: "Trezor Model T",
+          description: "Premium hardware wallet with touchscreen interface",
+          features: [
+            "Colored touchscreen",
+            "Open-source software",
+            "Advanced recovery options"
+          ],
+          price: "$219",
+          link: "https://trezor.io/",
+          recommendedFor: "Advanced users and large portfolios"
+        }
+      ]
+    },
+    {
+      type: "Software Wallets",
+      options: [
+        {
+          name: "Blue Wallet",
+          description: "User-friendly mobile Bitcoin wallet",
+          features: [
+            "Built specifically for Bitcoin",
+            "Lightning Network support",
+            "Open source"
+          ],
+          price: "Free",
+          link: "https://bluewallet.io/",
+          recommendedFor: "Beginners and small amounts"
+        },
+        {
+          name: "Exodus",
+          description: "Desktop and mobile wallet with built-in exchange",
+          features: [
+            "Beautiful interface",
+            "Built-in exchange",
+            "Multiple device sync"
+          ],
+          price: "Free",
+          link: "https://exodus.com/",
+          recommendedFor: "Beginners wanting multiple coins"
+        }
+      ]
+    }
+  ];
 
   const securityChecklist = [
     {
@@ -132,9 +192,9 @@ export default function SecurityRiskSection() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-6"
         >
-          <Link href="/modules/module2">
+          <Link href="/modules/module2/bitcoin-investment">
             <Button variant="ghost" className="gap-2">
-              <ArrowLeft className="h-4 w-4" /> Back to Module Overview
+              <ArrowLeft className="h-4 w-4" /> Back to Bitcoin Investment
             </Button>
           </Link>
         </motion.div>
@@ -149,8 +209,9 @@ export default function SecurityRiskSection() {
         </motion.h1>
 
         <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-4">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="basics">Security Basics</TabsTrigger>
+            <TabsTrigger value="wallets">Wallet Guide</TabsTrigger>
             <TabsTrigger value="examples">Real Examples</TabsTrigger>
             <TabsTrigger value="practice">Practice</TabsTrigger>
           </TabsList>
@@ -202,6 +263,62 @@ export default function SecurityRiskSection() {
                     </motion.div>
                   ))}
                 </div>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="wallets">
+            <div className="space-y-6">
+              {walletRecommendations.map((category) => (
+                <Card key={category.type} className="p-6">
+                  <h2 className="text-2xl font-semibold text-blue-700 mb-4">{category.type}</h2>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {category.options.map((wallet) => (
+                      <motion.div
+                        key={wallet.name}
+                        className="p-4 rounded-lg border"
+                        whileHover={{ scale: 1.02 }}
+                      >
+                        <div className="flex justify-between items-start">
+                          <h3 className="text-xl font-semibold text-blue-800">{wallet.name}</h3>
+                          <a
+                            href={wallet.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-500 hover:text-blue-700"
+                          >
+                            <ExternalLink className="h-5 w-5" />
+                          </a>
+                        </div>
+                        <p className="text-gray-600 mt-2">{wallet.description}</p>
+                        <div className="mt-4">
+                          <h4 className="font-semibold text-gray-700">Key Features:</h4>
+                          <ul className="list-disc pl-5 mt-2 space-y-1">
+                            {wallet.features.map((feature, idx) => (
+                              <li key={idx} className="text-gray-600">{feature}</li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div className="mt-4 flex justify-between items-center">
+                          <span className="text-gray-700">Price: {wallet.price}</span>
+                          <span className="text-sm text-blue-600">
+                            Best for: {wallet.recommendedFor}
+                          </span>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </Card>
+              ))}
+
+              <Card className="p-6 bg-yellow-50">
+                <h3 className="text-xl font-semibold text-yellow-800 mb-2">Important Notes:</h3>
+                <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                  <li>Always download wallets from official websites only</li>
+                  <li>Start with small amounts while learning</li>
+                  <li>Consider using both hardware and software wallets for different purposes</li>
+                  <li>Never store your recovery phrase digitally or share it with anyone</li>
+                </ul>
               </Card>
             </div>
           </TabsContent>
@@ -261,9 +378,9 @@ export default function SecurityRiskSection() {
             </Card>
 
             <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
-              <Link href="/modules/module2">
+              <Link href="/modules/module2/bitcoin-investment">
                 <Button variant="outline" className="w-full md:w-auto">
-                  <ArrowLeft className="mr-2 h-4 w-4" /> Back to Module Overview
+                  <ArrowLeft className="mr-2 h-4 w-4" /> Back to Bitcoin Investment
                 </Button>
               </Link>
 
