@@ -6,7 +6,6 @@ import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import DecentralizationDiagram from "@/components/diagrams/DecentralizationDiagram";
 import DoubleSpendDiagram from "@/components/diagrams/DoubleSpendDiagram";
 import DigitalCurrenciesQuiz from "@/components/quizzes/DigitalCurrenciesQuiz";
 import { BlockchainIcon, DecentralizationIcon, WalletIcon, SecurityIcon } from "@/components/icons/CryptoIcons";
@@ -271,20 +270,7 @@ export default function DigitalCurrenciesSection() {
                   <motion.p variants={listItemVariants} className="mt-4">
                     Cryptocurrency works differently. Instead of relying on central authorities, it uses a network of computers running specialized software. This network collectively maintains and verifies all transactions through a system called blockchain. Network consensus, which is the process where all participating computers agree on the validity of transactions and the current state of the network using predefined rules and cryptographic proofs, ensures that everyone has the same version of truth without needing a central authority. Think of it as a shared digital ledger that everyone can see but no one can alter without network consensus.
                   </motion.p>
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ 
-                      opacity: 1, 
-                      scale: 1,
-                      transition: {
-                        duration: 0.5,
-                        ease: "easeOut"
-                      }
-                    }}
-                    viewport={{ once: true }}
-                  >
-                    <DecentralizationDiagram />
-                  </motion.div>
+                  {/*DecentralizationDiagram removed here*/}
                 </motion.div>
 
                 <motion.div 
