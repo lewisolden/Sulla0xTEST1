@@ -7,8 +7,10 @@ import { Button } from "@/components/ui/button";
 import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
 import { TrendingUp, Users, Code, Coins, Activity, Lock, Shield, Zap } from "lucide-react";
 import InvestmentValueQuiz from "@/components/quizzes/InvestmentValueQuiz";
+import { useScrollTop } from "@/hooks/useScrollTop";
 
 const InvestmentValueSection = () => {
+  useScrollTop();
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showQuiz, setShowQuiz] = useState(false);

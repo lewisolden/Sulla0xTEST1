@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Link, Route, useRoute } from "wouter";
 import { Scale, Network, Code, Shield } from "lucide-react";
 import ExercisesPage from "./module3/exercises";
+import { useScrollTop } from "@/hooks/useScrollTop";
 
 const moduleTopics = [
   {
@@ -61,6 +62,7 @@ const moduleTopics = [
 ];
 
 export default function Module3() {
+  useScrollTop();
   const { progress } = useProgress();
   const moduleProgress = progress.filter(p => p.moduleId === 3);
   const completedSections = moduleProgress.filter(p => p.completed).length;

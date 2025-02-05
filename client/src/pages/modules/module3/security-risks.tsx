@@ -9,8 +9,10 @@ import { Shield, AlertTriangle, TrendingUp, Lock, Info, FileKey, DollarSign, Ale
 import { SecurityQuiz } from "@/components/quizzes/SecurityQuiz";
 import { Link } from "wouter";
 import { ArrowRight } from "lucide-react";
+import { useScrollTop } from "@/hooks/useScrollTop";
 
 const SecurityRisksSection = () => {
+  useScrollTop();
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showQuiz, setShowQuiz] = useState(false);

@@ -8,6 +8,7 @@ import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
 import { Code, Shield, Workflow, GitBranch } from "lucide-react";
 import SmartContractsQuiz from "@/components/quizzes/SmartContractsQuiz";
 import mermaid from "mermaid";
+import { useScrollTop } from "@/hooks/useScrollTop";
 
 const MermaidDiagram = ({ chart }) => {
   const [svg, setSvg] = useState('');
@@ -50,6 +51,7 @@ const MermaidDiagram = ({ chart }) => {
 };
 
 const SmartContractsSection = () => {
+  useScrollTop();
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showQuiz, setShowQuiz] = useState(false);

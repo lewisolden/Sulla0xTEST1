@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
 import { Wrench, Code, Award, Terminal } from "lucide-react";
 import Mermaid from "mermaid";
+import { useScrollTop } from "@/hooks/useScrollTop";
 
 // Initialize mermaid
 Mermaid.initialize({
@@ -16,6 +17,7 @@ Mermaid.initialize({
 });
 
 export default function ExercisesPage() {
+  useScrollTop();
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const { updateProgress } = useProgress();
@@ -162,7 +164,7 @@ export default function ExercisesPage() {
                           <h4 className="text-sm font-semibold text-blue-600 mb-2">1. Contract Setup</h4>
                           <pre className="text-sm bg-gray-900 text-white p-4 rounded-md">
                             <code>
-{`// SPDX-License-Identifier: MIT
+                              {`// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;`}
                             </code>
                           </pre>
@@ -176,7 +178,7 @@ pragma solidity ^0.8.0;`}
                           <h4 className="text-sm font-semibold text-blue-600 mb-2">2. State Variables</h4>
                           <pre className="text-sm bg-gray-900 text-white p-4 rounded-md">
                             <code>
-{`contract BasicStorage {
+                              {`contract BasicStorage {
     uint256 private value;
     event ValueChanged(uint256 newValue);`}
                             </code>
@@ -191,7 +193,7 @@ pragma solidity ^0.8.0;`}
                           <h4 className="text-sm font-semibold text-blue-600 mb-2">3. Contract Functions</h4>
                           <pre className="text-sm bg-gray-900 text-white p-4 rounded-md">
                             <code>
-{`    function setValue(uint256 _value) public {
+                              {`    function setValue(uint256 _value) public {
         value = _value;
         emit ValueChanged(_value);
     }
