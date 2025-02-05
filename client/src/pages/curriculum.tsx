@@ -115,7 +115,9 @@ export default function Curriculum() {
                 Explore our curriculum and discover the power of interactive education today!
               </p>
             </div>
-            <p className="text-xl text-white max-w-3xl mx-auto text-justify">
+          </Card>
+          <Card className="p-6 mt-4">
+            <p className="text-xl text-gray-800 max-w-3xl mx-auto text-justify">
               Sulla transforms complex technical concepts into engaging, accessible learning experiences.
               Our innovative platform combines interactive lessons, hands-on simulations, and adaptive learning technology
               to create a personalized educational journey. Through gamified exercises, real-world applications, and
