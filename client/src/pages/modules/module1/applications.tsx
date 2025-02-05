@@ -411,7 +411,7 @@ const PracticalApplicationsQuiz = () => {
         return "bg-red-50 border-red-200";
       }
     }
-    return "bg-white";
+    return "hover:bg-gray-50 cursor-pointer";
   };
 
   const isQuestionAnswered = (questionId: string) => {
@@ -438,28 +438,33 @@ const PracticalApplicationsQuiz = () => {
 
       <div className="space-y-4">
         <p className="font-semibold text-lg text-blue-800">{currentQuestionData.question}</p>
-        <RadioGroup
-          onValueChange={(value) => handleAnswer(currentQuestionData.id, value)}
-          value={answers[currentQuestionData.id] || ""}
-          className="space-y-2"
-          disabled={isQuestionAnswered(currentQuestionData.id)}
-        >
+        <div className="space-y-2">
           {Object.entries(currentQuestionData.options).map(([key, value]) => (
             <div
               key={key}
-              className={`flex items-start space-x-3 p-3 rounded-lg border ${getOptionStyle(currentQuestionData.id, key)}`}
+              onClick={() => !isQuestionAnswered(currentQuestionData.id) && handleAnswer(currentQuestionData.id, key)}
+              className={`flex items-center space-x-3 p-3 rounded-lg border transition-colors ${getOptionStyle(currentQuestionData.id, key)} ${isQuestionAnswered(currentQuestionData.id) ? 'cursor-default' : 'cursor-pointer'}`}
             >
-              <RadioGroupItem value={key} id={`${currentQuestionData.id}-${key}`} />
-              <Label htmlFor={`${currentQuestionData.id}-${key}`} className="text-gray-700">{value}</Label>
+              <div className="flex items-center flex-1">
+                <RadioGroupItem 
+                  value={key} 
+                  id={`${currentQuestionData.id}-${key}`}
+                  checked={answers[currentQuestionData.id] === key}
+                  className="pointer-events-none"
+                />
+                <Label htmlFor={`${currentQuestionData.id}-${key}`} className="text-gray-700 ml-3 flex-1">
+                  {value}
+                </Label>
+              </div>
               {answers[currentQuestionData.id] && key === currentQuestionData.correct && (
-                <CheckCircle className="w-5 h-5 text-green-500 ml-auto" />
+                <CheckCircle className="w-5 h-5 text-green-500 ml-auto flex-shrink-0" />
               )}
               {answers[currentQuestionData.id] === key && key !== currentQuestionData.correct && (
-                <XCircle className="w-5 h-5 text-red-500 ml-auto" />
+                <XCircle className="w-5 h-5 text-red-500 ml-auto flex-shrink-0" />
               )}
             </div>
           ))}
-        </RadioGroup>
+        </div>
 
         {isQuestionAnswered(currentQuestionData.id) && (
           <motion.div
