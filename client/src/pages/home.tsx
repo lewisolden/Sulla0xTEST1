@@ -74,17 +74,19 @@ export default function Home() {
           </motion.h2>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <motion.div 
-              className="bg-blue-50 p-6 rounded-lg"
-              {...fadeInUp}
-              transition={{ delay: 0.2 }}
-            >
-              <Brain className="w-12 h-12 text-blue-600 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">AI-Powered Learning</h3>
-              <p className="text-gray-600">
-                Personalized learning paths that adapt to your understanding and pace
-              </p>
-            </motion.div>
+            <Link href="/ai">
+              <motion.div 
+                className="bg-blue-50 p-6 rounded-lg cursor-pointer hover:shadow-lg transition-shadow"
+                {...fadeInUp}
+                transition={{ delay: 0.2 }}
+              >
+                <Brain className="w-12 h-12 text-blue-600 mb-4" />
+                <h3 className="text-xl font-semibold mb-2">AI-Powered Learning</h3>
+                <p className="text-gray-600">
+                  Personalized learning paths that adapt to your understanding and pace
+                </p>
+              </motion.div>
+            </Link>
 
             <motion.div 
               className="bg-blue-50 p-6 rounded-lg"
