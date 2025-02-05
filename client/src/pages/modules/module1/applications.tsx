@@ -5,13 +5,13 @@ import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { 
-  ArrowLeft, 
-  ArrowRight, 
-  Globe, 
-  Users, 
-  Wallet, 
-  Timer, 
+import {
+  ArrowLeft,
+  ArrowRight,
+  Globe,
+  Users,
+  Wallet,
+  Timer,
   Lock,
   Clock,
   Building2,
@@ -110,8 +110,8 @@ const PracticalApplicationsSection = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="fixed top-0 left-0 w-full h-1 bg-gray-300 z-50">
-        <div 
-          className="h-full bg-blue-600" 
+        <div
+          className="h-full bg-blue-600"
           style={{ width: `${scrollProgress}%` }}
         ></div>
       </div>
@@ -137,7 +137,17 @@ const PracticalApplicationsSection = () => {
               <p className="text-gray-700">
                 While blockchain technology gained prominence through cryptocurrencies, its potential applications extend far beyond digital currencies. This section explores how blockchain is transforming various industries and creating new possibilities for business and society.
               </p>
-              <PracticalApplicationsDiagram />
+              <div className="bg-blue-50 p-4 rounded-lg mt-4">
+                <p className="text-gray-700">
+                  Through this section, you'll learn about:
+                </p>
+                <ul className="list-disc pl-5 mt-2 space-y-1 text-gray-700">
+                  <li>Financial inclusion and accessibility</li>
+                  <li>Payment system improvements</li>
+                  <li>Investment opportunities</li>
+                  <li>Real-world blockchain applications</li>
+                </ul>
+              </div>
             </section>
 
             <section className="mt-8">
@@ -306,7 +316,7 @@ const PracticalApplicationsSection = () => {
                 </Button>
               </Link>
               <Link href="/modules/module1/getting-started">
-                <Button 
+                <Button
                   className="bg-blue-600 hover:bg-blue-700 gap-2"
                 >
                   Next Topic: Getting Started Safely
