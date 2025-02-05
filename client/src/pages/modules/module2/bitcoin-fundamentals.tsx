@@ -8,6 +8,7 @@ import { useScrollTop } from "@/hooks/useScrollTop";
 import { ArrowLeft, ArrowRight, BookOpen, Code, Network } from "lucide-react";
 import BitcoinBasicsDiagram from "@/components/diagrams/BitcoinBasicsDiagram";
 import BitcoinFundamentalsQuiz from "@/components/modules/quizzes/BitcoinFundamentalsQuiz";
+import ProofOfWorkDiagram from "@/components/diagrams/ProofOfWorkDiagram";
 
 export default function BitcoinFundamentalsSection() {
   useScrollTop();
@@ -288,6 +289,97 @@ export default function BitcoinFundamentalsSection() {
                 <li>Cannot be changed once written</li>
                 <li>Is visible to everyone</li>
               </ul>
+            </div>
+          </motion.section>
+
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
+            className="mt-12"
+          >
+            <h2 className="text-3xl font-bold text-blue-700">Understanding Proof of Work</h2>
+            <div className="space-y-6">
+              <div className="bg-blue-50 rounded-lg p-6">
+                <h3 className="text-2xl font-semibold text-blue-600 mb-4">What is Proof of Work?</h3>
+                <p className="text-gray-700 mb-4">
+                  Think of Proof of Work like a complex puzzle competition where:
+                </p>
+                <ul className="list-disc pl-5 space-y-2 text-gray-700 mb-6">
+                  <li>Many computers (miners) compete to solve a mathematical puzzle</li>
+                  <li>The first one to solve it gets to add a new block to the blockchain</li>
+                  <li>The winner receives newly created bitcoins as a reward</li>
+                  <li>The puzzle is hard to solve but easy to verify - like a Sudoku puzzle</li>
+                </ul>
+
+                <h4 className="text-xl font-semibold text-blue-600 mb-3">Why is it Important?</h4>
+                <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                  <li>Makes it expensive and difficult to cheat the system</li>
+                  <li>Ensures all computers on the network agree on the transaction history</li>
+                  <li>Provides a fair way to distribute new bitcoins</li>
+                  <li>Secures the network through computational work</li>
+                </ul>
+              </div>
+
+              <ProofOfWorkDiagram />
+
+              <div className="bg-purple-50 rounded-lg p-6">
+                <h3 className="text-2xl font-semibold text-purple-600 mb-4">How it Works in Simple Terms</h3>
+                <div className="space-y-4">
+                  <div className="bg-white p-4 rounded-lg shadow-sm">
+                    <h4 className="font-semibold text-purple-800 mb-2">1. The Race Begins</h4>
+                    <p className="text-gray-700">
+                      Miners gather new transactions and compete to be the first to find a special number
+                      that makes their block of transactions valid.
+                    </p>
+                  </div>
+
+                  <div className="bg-white p-4 rounded-lg shadow-sm">
+                    <h4 className="font-semibold text-purple-800 mb-2">2. The Mining Process</h4>
+                    <p className="text-gray-700">
+                      Miners' computers try millions of random numbers per second until one finds the
+                      correct solution - like trying combinations on a lock.
+                    </p>
+                  </div>
+
+                  <div className="bg-white p-4 rounded-lg shadow-sm">
+                    <h4 className="font-semibold text-purple-800 mb-2">3. Winner Takes All</h4>
+                    <p className="text-gray-700">
+                      The first miner to find the solution gets to add their block to the blockchain
+                      and receives newly created bitcoins as a reward.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-green-50 rounded-lg p-6">
+                <h3 className="text-2xl font-semibold text-green-600 mb-4">Common Questions</h3>
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="font-semibold text-green-800 mb-2">Why does it use so much energy?</h4>
+                    <p className="text-gray-700">
+                      The high energy use is actually a feature, not a bug. It makes it extremely expensive
+                      to attack the network, ensuring its security through real-world costs.
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-green-800 mb-2">Can anyone be a miner?</h4>
+                    <p className="text-gray-700">
+                      Yes, but today most mining is done by specialized computers in large facilities.
+                      Individual miners often join mining pools to share resources and rewards.
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-green-800 mb-2">What happens if two miners solve it at once?</h4>
+                    <p className="text-gray-700">
+                      The network will temporarily split but quickly resolves to the longest chain of blocks.
+                      This is why exchanges often wait for multiple confirmations.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </motion.section>
 
