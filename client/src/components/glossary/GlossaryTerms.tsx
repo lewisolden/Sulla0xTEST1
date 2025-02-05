@@ -18,21 +18,148 @@ interface Term {
   relatedTerms: string[];
 }
 
+// Mock data - In a real app, this would come from the API
+const mockGlossaryTerms: Term[] = [
+  {
+    id: "blockchain",
+    term: "Blockchain",
+    definition: "A decentralized, distributed ledger technology that records transactions across a network of computers. Each block contains a list of transactions and is linked to the previous block, forming a chain of information.",
+    category: "Core Concepts",
+    difficulty: "Beginner",
+    examples: [
+      "Bitcoin's blockchain stores all transactions since its creation in 2009",
+      "Ethereum's blockchain adds smart contract functionality"
+    ],
+    relatedTerms: ["Distributed Ledger", "Mining", "Block"]
+  },
+  {
+    id: "cryptocurrency",
+    term: "Cryptocurrency",
+    definition: "A digital or virtual currency that uses cryptography for security, operates on a blockchain, and generally functions independently of a central bank.",
+    category: "Core Concepts",
+    difficulty: "Beginner",
+    examples: [
+      "Bitcoin (BTC)",
+      "Ethereum (ETH)",
+      "Cardano (ADA)"
+    ],
+    relatedTerms: ["Bitcoin", "Altcoin", "Digital Currency"]
+  },
+  {
+    id: "private-key",
+    term: "Private Key",
+    definition: "A secure cryptographic code that allows direct access to your cryptocurrency and proves ownership of a digital wallet. Should never be shared with anyone.",
+    category: "Security",
+    difficulty: "Intermediate",
+    examples: [
+      "Used to sign transactions",
+      "Required for accessing and managing your wallet"
+    ],
+    relatedTerms: ["Public Key", "Wallet", "Cryptography"]
+  },
+  {
+    id: "smart-contract",
+    term: "Smart Contract",
+    definition: "Self-executing contracts with the terms directly written into code. They automatically execute when predetermined conditions are met.",
+    category: "Technology",
+    difficulty: "Advanced",
+    examples: [
+      "Automated token distributions",
+      "Decentralized exchanges",
+      "NFT minting processes"
+    ],
+    relatedTerms: ["Ethereum", "DApp", "Gas"]
+  },
+  {
+    id: "mining",
+    term: "Mining",
+    definition: "The process of validating and adding new transactions to a blockchain using computational power, often rewarded with newly created cryptocurrencies.",
+    category: "Technology",
+    difficulty: "Intermediate",
+    examples: [
+      "Bitcoin mining using specialized ASIC hardware",
+      "Pool mining to share rewards"
+    ],
+    relatedTerms: ["Proof of Work", "Hash Rate", "Block Reward"]
+  },
+  {
+    id: "wallet",
+    term: "Cryptocurrency Wallet",
+    definition: "A digital tool that allows you to store, send, and receive cryptocurrencies. Can be software-based (hot wallet) or hardware-based (cold wallet).",
+    category: "Security",
+    difficulty: "Beginner",
+    examples: [
+      "MetaMask (Browser Extension Wallet)",
+      "Ledger (Hardware Wallet)",
+      "Paper Wallet (Physical Storage)"
+    ],
+    relatedTerms: ["Private Key", "Public Key", "Address"]
+  },
+  {
+    id: "defi",
+    term: "DeFi (Decentralized Finance)",
+    definition: "Financial services and products built on blockchain technology that operate without traditional financial intermediaries.",
+    category: "Applications",
+    difficulty: "Advanced",
+    examples: [
+      "Decentralized exchanges (DEX)",
+      "Lending platforms",
+      "Yield farming"
+    ],
+    relatedTerms: ["Smart Contract", "Liquidity Pool", "Yield Farming"]
+  },
+  {
+    id: "consensus",
+    term: "Consensus Mechanism",
+    definition: "The protocol by which all nodes in a blockchain network agree on the validity of transactions and the current state of the network.",
+    category: "Technology",
+    difficulty: "Advanced",
+    examples: [
+      "Proof of Work (Bitcoin)",
+      "Proof of Stake (Ethereum 2.0)",
+      "Delegated Proof of Stake"
+    ],
+    relatedTerms: ["Mining", "Staking", "Network Security"]
+  },
+  {
+    id: "gas",
+    term: "Gas",
+    definition: "The fee required to perform a transaction or execute a contract on the Ethereum network. Paid in ETH and varies based on network congestion.",
+    category: "Technology",
+    difficulty: "Intermediate",
+    examples: [
+      "Transaction fees on Ethereum",
+      "Smart contract execution costs"
+    ],
+    relatedTerms: ["Ethereum", "Transaction Fee", "Wei"]
+  },
+  {
+    id: "altcoin",
+    term: "Altcoin",
+    definition: "Any cryptocurrency that isn't Bitcoin. Short for 'alternative coin', these can have various use cases and technological features.",
+    category: "Core Concepts",
+    difficulty: "Beginner",
+    examples: [
+      "Ethereum (ETH)",
+      "Litecoin (LTC)",
+      "Ripple (XRP)"
+    ],
+    relatedTerms: ["Bitcoin", "Cryptocurrency", "Token"]
+  }
+];
+
 export default function GlossaryTerms() {
   const [searchTerm, setSearchTerm] = useState("");
   const [expandedTerm, setExpandedTerm] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | "all">("all");
   const [selectedDifficulty, setSelectedDifficulty] = useState<string | "all">("all");
 
-  // Fetch glossary terms from the API
-  const { data: terms = [], isLoading } = useQuery<Term[]>({
+  // In a real implementation, this would fetch from an API
+  const { data: terms = mockGlossaryTerms, isLoading } = useQuery<Term[]>({
     queryKey: ['glossary-terms'],
     queryFn: async () => {
-      const response = await fetch('/api/glossary');
-      if (!response.ok) {
-        throw new Error('Failed to fetch glossary terms');
-      }
-      return response.json();
+      // For now, return mock data
+      return mockGlossaryTerms;
     }
   });
 
@@ -135,16 +262,6 @@ export default function GlossaryTerms() {
                   >
                     <p className="text-gray-700">{term.definition}</p>
 
-                    {term.visualAid && (
-                      <div className="mt-4">
-                        <img 
-                          src={term.visualAid} 
-                          alt={`Visual explanation of ${term.term}`}
-                          className="rounded-lg shadow-md max-w-full h-auto"
-                        />
-                      </div>
-                    )}
-
                     {term.examples && term.examples.length > 0 && (
                       <div className="bg-gray-50 p-4 rounded-md">
                         <h4 className="font-medium text-gray-900 mb-2">Examples:</h4>
@@ -181,20 +298,6 @@ export default function GlossaryTerms() {
                       <Badge variant="outline" className="bg-blue-50">
                         {term.category}
                       </Badge>
-                      {term.visualAid && (
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          className="ml-auto"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            window.open(term.visualAid, '_blank');
-                          }}
-                        >
-                          <ExternalLink className="h-4 w-4 mr-2" />
-                          View Full Image
-                        </Button>
-                      )}
                     </div>
                   </motion.div>
                 )}
