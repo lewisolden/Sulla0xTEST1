@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { BookOpen, GraduationCap, Zap, Gamepad2, CreditCard, Dumbbell } from "lucide-react";
+import { BookOpen, GraduationCap, Zap, Gamepad2, CreditCard, Dumbbell, Lightbulb } from "lucide-react";
 import { motion } from "framer-motion";
 import Footer from "@/components/layout/footer";
 import { PersonalizedPath } from "@/components/learning/personalized-path";
@@ -112,9 +112,17 @@ export default function Curriculum() {
               to create a personalized educational journey. Through gamified exercises, real-world applications, and
               progressive skill building, we ensure that every learner can master new technologies at their own pace.
               Our comprehensive curriculum features visual learning aids, practical exercises, and instant feedback to
-              help you build confidence and expertise in emerging technologies. Ready to embark on your learning journey? 
-              Explore our curriculum and discover the power of interactive education today!
+              help you build confidence and expertise in emerging technologies.
             </p>
+            <div className="mt-6 text-center">
+              <div className="flex items-center justify-center gap-2 text-xl font-bold text-white">
+                <Lightbulb className="h-6 w-6" />
+                <p>Ready to embark on your learning journey?</p>
+              </div>
+              <p className="text-xl font-bold text-white mt-2">
+                Explore our curriculum and discover the power of interactive education today!
+              </p>
+            </div>
           </Card>
         </motion.div>
 
