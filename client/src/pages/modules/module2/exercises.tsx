@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link } from "wouter";
-import { ArrowLeft, Wallet, Shield, Brain } from "lucide-react";
+import { ArrowLeft, Wallet, Shield, Brain, ArrowRight } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import WalletSimulator from "@/components/exercises/WalletSimulator";
 import SecurityWorkshop from "@/components/exercises/SecurityWorkshop";
@@ -80,13 +80,21 @@ export default function ModuleExercises() {
                 Previous: Bitcoin Investment
               </Button>
             </Link>
-            <Button
-              className="gap-2"
-              onClick={() => setActiveTab("security")}
-            >
-              Continue to Security Workshop
-              <Shield className="h-4 w-4" />
-            </Button>
+            <div className="space-x-4">
+              <Button
+                className="gap-2"
+                onClick={() => setActiveTab("security")}
+              >
+                Continue to Security Workshop
+                <Shield className="h-4 w-4" />
+              </Button>
+              <Link href="/modules/module2/quiz">
+                <Button variant="default" className="gap-2">
+                  Take Module Quiz
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </motion.div>
