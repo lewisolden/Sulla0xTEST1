@@ -15,7 +15,8 @@ const questions = [
       "A new type of bank account",
       "A government-backed cryptocurrency"
     ],
-    correctAnswer: 1
+    correctAnswer: 1,
+    explanation: "Bitcoin's revolutionary innovation was creating the first decentralized digital currency that operates without any central authority or intermediaries. This solved the 'double-spending problem' without requiring a trusted third party."
   },
   {
     id: 2,
@@ -26,7 +27,8 @@ const questions = [
       "To secure the network and process transactions",
       "To store Bitcoin in digital wallets"
     ],
-    correctAnswer: 2
+    correctAnswer: 2,
+    explanation: "Bitcoin mining serves multiple purposes: it secures the network through proof-of-work, processes and validates transactions, and introduces new bitcoins into circulation according to a predetermined schedule."
   },
   {
     id: 3,
@@ -37,7 +39,8 @@ const questions = [
       "May 22, 2010",
       "December 25, 2008"
     ],
-    correctAnswer: 0
+    correctAnswer: 0,
+    explanation: "Satoshi Nakamoto published the Bitcoin whitepaper titled 'Bitcoin: A Peer-to-Peer Electronic Cash System' on October 31, 2008. This date marks the theoretical foundation of Bitcoin, though the network wouldn't launch until January 2009."
   },
   {
     id: 4,
@@ -48,7 +51,8 @@ const questions = [
       "A type of cryptocurrency wallet",
       "A mining software"
     ],
-    correctAnswer: 1
+    correctAnswer: 1,
+    explanation: "The blockchain is a public, distributed ledger that permanently records all Bitcoin transactions. It's called a 'chain' because each block of transactions links to the previous one, creating an immutable history."
   },
   {
     id: 5,
@@ -59,20 +63,23 @@ const questions = [
       "It was the first real-world purchase using Bitcoin",
       "It crashed the Bitcoin network"
     ],
-    correctAnswer: 2
+    correctAnswer: 2,
+    explanation: "On May 22, 2010, Laszlo Hanyecz paid 10,000 BTC for two pizzas, marking the first documented real-world purchase using Bitcoin. This transaction helped establish Bitcoin's potential as a medium of exchange and is now celebrated as 'Bitcoin Pizza Day'."
   }
 ];
 
 export default function BitcoinFundamentalsQuiz() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+  const [isAnswered, setIsAnswered] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
   const { updateProgress } = useProgress();
 
   const handleAnswer = (answerIndex: number) => {
     setSelectedAnswer(answerIndex);
-    
+    setIsAnswered(true);
+
     if (answerIndex === questions[currentQuestion].correctAnswer) {
       setScore(score + 1);
     }
@@ -82,6 +89,7 @@ export default function BitcoinFundamentalsQuiz() {
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
       setSelectedAnswer(null);
+      setIsAnswered(false);
     } else {
       setShowResult(true);
       if (score >= Math.floor(questions.length * 0.7)) {
@@ -107,14 +115,14 @@ export default function BitcoinFundamentalsQuiz() {
               <>
                 <CheckCircle2 className="h-5 w-5 text-green-500" />
                 <p className="text-green-700">
-                  Congratulations! You've passed the quiz.
+                  Congratulations! You've passed the quiz and demonstrated a solid understanding of Bitcoin fundamentals.
                 </p>
               </>
             ) : (
               <>
                 <XCircle className="h-5 w-5 text-red-500" />
                 <p className="text-red-700">
-                  Keep learning and try again to improve your score.
+                  Keep learning and try again. Review the sections you found challenging to improve your understanding.
                 </p>
               </>
             )}
@@ -130,39 +138,64 @@ export default function BitcoinFundamentalsQuiz() {
       animate={{ opacity: 1 }}
       className="space-y-6"
     >
-      <Card className="p-6">
-        <div className="mb-4">
-          <h3 className="text-lg font-semibold mb-2">
+      <Card className="p-8">
+        <div className="mb-6">
+          <h3 className="text-xl font-semibold mb-2">
             Question {currentQuestion + 1} of {questions.length}
           </h3>
-          <p className="text-gray-700">{questions[currentQuestion].question}</p>
+          <p className="text-lg text-gray-700">{questions[currentQuestion].question}</p>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-4">
           {questions[currentQuestion].options.map((option, index) => (
             <Button
               key={index}
               variant={selectedAnswer === index ? "default" : "outline"}
-              className={`w-full justify-start text-left ${
-                selectedAnswer === index ? "bg-blue-600 text-white" : ""
-              }`}
-              onClick={() => handleAnswer(index)}
-              disabled={selectedAnswer !== null}
+              className={`w-full p-6 justify-start text-left text-lg transition-colors
+                ${selectedAnswer !== null ? 
+                  index === questions[currentQuestion].correctAnswer ?
+                    "bg-green-100 hover:bg-green-100 text-green-800 border-green-500" :
+                    selectedAnswer === index ?
+                      "bg-red-100 hover:bg-red-100 text-red-800 border-red-500" :
+                      "opacity-50"
+                  : ""
+                }
+              `}
+              onClick={() => !isAnswered && handleAnswer(index)}
+              disabled={isAnswered}
             >
               {option}
             </Button>
           ))}
         </div>
 
-        {selectedAnswer !== null && (
-          <div className="mt-4">
+        {isAnswered && (
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-6"
+          >
+            <Card className={`p-4 ${
+              selectedAnswer === questions[currentQuestion].correctAnswer
+                ? "bg-green-50 border-green-200"
+                : "bg-red-50 border-red-200"
+            }`}>
+              <p className={`text-lg ${
+                selectedAnswer === questions[currentQuestion].correctAnswer
+                  ? "text-green-800"
+                  : "text-red-800"
+              }`}>
+                {questions[currentQuestion].explanation}
+              </p>
+            </Card>
+
             <Button
               onClick={handleNext}
-              className="w-full bg-blue-600 hover:bg-blue-700"
+              className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-lg p-6"
             >
               {currentQuestion === questions.length - 1 ? "Finish Quiz" : "Next Question"}
             </Button>
-          </div>
+          </motion.div>
         )}
       </Card>
     </motion.div>
