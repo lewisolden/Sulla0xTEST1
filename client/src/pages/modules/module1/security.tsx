@@ -7,6 +7,7 @@ import { Link } from "wouter";
 import { ArrowLeft, ArrowRight, Shield, Key, Wallet, Lock } from "lucide-react";
 import { SecurityDiagram } from "@/components/diagrams/SecurityDiagram";
 import { SecurityThreats } from "@/components/diagrams/SecurityThreats";
+import { SecurityQuiz } from "@/components/quizzes/SecurityQuiz";
 
 export default function SecurityPage() {
   const [isFullyRead, setIsFullyRead] = useState(false);
@@ -253,6 +254,29 @@ export default function SecurityPage() {
                     🎉 Congratulations! You've completed the Security section!
                   </p>
                 </Card>
+
+                <Button
+                  onClick={() => setShowQuiz(!showQuiz)}
+                  className="w-full bg-purple-600 hover:bg-purple-700"
+                  size="lg"
+                >
+                  {showQuiz ? "Hide Quiz" : "Take Topic Quiz"}
+                </Button>
+
+                {showQuiz && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <Card className="mt-4">
+                      <CardContent className="p-6">
+                        <h2 className="text-2xl font-bold text-blue-800 mb-4">Topic Quiz</h2>
+                        <SecurityQuiz />
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                )}
 
                 <div className="flex justify-between mt-4">
                   <Link href="/modules/module1/digital-currencies">
