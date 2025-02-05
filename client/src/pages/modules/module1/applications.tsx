@@ -336,8 +336,8 @@ const PracticalApplicationsSection = () => {
 };
 
 const PracticalApplicationsQuiz = () => {
+  const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<{ [key: string]: string }>({});
-  const [showExplanations, setShowExplanations] = useState(false);
   const [score, setScore] = useState(0);
 
   const questions = [
@@ -391,83 +391,120 @@ const PracticalApplicationsQuiz = () => {
     }
   ];
 
-  const handleSubmit = () => {
-    let newScore = 0;
-    questions.forEach(q => {
-      if (answers[q.id] === q.correct) newScore += 1;
-    });
-    setScore(newScore);
-    setShowExplanations(true);
+  const handleAnswer = (questionId: string, answer: string) => {
+    const question = questions.find(q => q.id === questionId);
+    if (question && !answers[questionId]) {
+      const isCorrect = answer === question.correct;
+      setAnswers(prev => ({ ...prev, [questionId]: answer }));
+      if (isCorrect) {
+        setScore(prev => prev + 1);
+      }
+    }
   };
 
   const getOptionStyle = (questionId: string, option: string) => {
-    if (!showExplanations) return "bg-white";
-    if (option === questions.find(q => q.id === questionId)?.correct) {
-      return "bg-green-50 border-green-200";
-    }
-    if (answers[questionId] === option && option !== questions.find(q => q.id === questionId)?.correct) {
-      return "bg-red-50 border-red-200";
+    if (answers[questionId]) {
+      if (option === questions.find(q => q.id === questionId)?.correct) {
+        return "bg-green-50 border-green-200";
+      }
+      if (answers[questionId] === option) {
+        return "bg-red-50 border-red-200";
+      }
     }
     return "bg-white";
   };
 
+  const isQuestionAnswered = (questionId: string) => {
+    return questionId in answers;
+  };
+
+  const canMoveNext = currentQuestion < questions.length - 1 && isQuestionAnswered(questions[currentQuestion].id);
+  const canMovePrev = currentQuestion > 0;
+  const currentQuestionData = questions[currentQuestion];
+  const totalAnswered = Object.keys(answers).length;
+
   return (
-    <div className="space-y-8">
-      {questions.map((q) => (
-        <div key={q.id} className="space-y-4">
-          <p className="font-semibold text-lg text-blue-800">{q.question}</p>
-          <RadioGroup
-            onValueChange={(value) => setAnswers(prev => ({ ...prev, [q.id]: value }))}
-            value={answers[q.id]}
-            className="space-y-2"
-          >
-            {Object.entries(q.options).map(([key, value]) => (
-              <div
-                key={key}
-                className={`flex items-start space-x-3 p-3 rounded-lg border ${getOptionStyle(q.id, key)}`}
-              >
-                <RadioGroupItem value={key} id={`${q.id}-${key}`} disabled={showExplanations} />
-                <Label htmlFor={`${q.id}-${key}`} className="text-gray-700">{value}</Label>
-                {showExplanations && key === q.correct && (
-                  <CheckCircle className="w-5 h-5 text-green-500 ml-auto" />
-                )}
-                {showExplanations && answers[q.id] === key && key !== q.correct && (
-                  <XCircle className="w-5 h-5 text-red-500 ml-auto" />
-                )}
-              </div>
-            ))}
-          </RadioGroup>
-          {showExplanations && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-4 p-4 bg-blue-50 rounded-lg"
-            >
-              <p className="text-blue-800">{q.explanation}</p>
-            </motion.div>
-          )}
-        </div>
-      ))}
+    <div className="space-y-6">
+      <div className="flex justify-between items-center mb-4">
+        <p className="text-sm text-gray-500">
+          Question {currentQuestion + 1} of {questions.length}
+        </p>
+        <p className="text-sm text-gray-500">
+          Score: {score} / {questions.length}
+        </p>
+      </div>
 
-      {!showExplanations && (
-        <Button
-          onClick={handleSubmit}
-          className="w-full bg-blue-600 hover:bg-blue-700"
-          disabled={Object.keys(answers).length !== questions.length}
+      <Progress value={(totalAnswered / questions.length) * 100} className="mb-4" />
+
+      <div className="space-y-4">
+        <p className="font-semibold text-lg text-blue-800">{currentQuestionData.question}</p>
+        <RadioGroup
+          onValueChange={(value) => handleAnswer(currentQuestionData.id, value)}
+          value={answers[currentQuestionData.id] || ""}
+          className="space-y-2"
+          disabled={isQuestionAnswered(currentQuestionData.id)}
         >
-          Submit Answers
-        </Button>
-      )}
+          {Object.entries(currentQuestionData.options).map(([key, value]) => (
+            <div
+              key={key}
+              className={`flex items-start space-x-3 p-3 rounded-lg border ${getOptionStyle(currentQuestionData.id, key)}`}
+            >
+              <RadioGroupItem value={key} id={`${currentQuestionData.id}-${key}`} />
+              <Label htmlFor={`${currentQuestionData.id}-${key}`} className="text-gray-700">{value}</Label>
+              {answers[currentQuestionData.id] && key === currentQuestionData.correct && (
+                <CheckCircle className="w-5 h-5 text-green-500 ml-auto" />
+              )}
+              {answers[currentQuestionData.id] === key && key !== currentQuestionData.correct && (
+                <XCircle className="w-5 h-5 text-red-500 ml-auto" />
+              )}
+            </div>
+          ))}
+        </RadioGroup>
 
-      {showExplanations && (
-        <div className="p-4 bg-blue-50 rounded-lg">
+        {isQuestionAnswered(currentQuestionData.id) && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-4 p-4 bg-blue-50 rounded-lg"
+          >
+            <p className="text-blue-800">{currentQuestionData.explanation}</p>
+          </motion.div>
+        )}
+      </div>
+
+      <div className="flex justify-between mt-6">
+        <Button
+          onClick={() => setCurrentQuestion(prev => prev - 1)}
+          disabled={!canMovePrev}
+          variant="outline"
+          className="gap-2"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Previous
+        </Button>
+        <Button
+          onClick={() => setCurrentQuestion(prev => prev + 1)}
+          disabled={!canMoveNext}
+          className="gap-2"
+        >
+          Next
+          <ArrowRight className="w-4 h-4" />
+        </Button>
+      </div>
+
+      {totalAnswered === questions.length && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mt-6 p-4 bg-blue-50 rounded-lg"
+        >
           <p className="text-xl font-semibold text-blue-800">
-            Your Score: {score} out of {questions.length}
+            Quiz Complete!
           </p>
           <p className="text-blue-600 mt-2">
-            Review the explanations above to understand the correct answers.
+            Final Score: {score} out of {questions.length}
           </p>
-        </div>
+        </motion.div>
       )}
     </div>
   );
