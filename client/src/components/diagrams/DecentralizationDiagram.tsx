@@ -14,8 +14,6 @@ export default function DecentralizationDiagram() {
           htmlLabels: true,
           curve: 'basis',
           padding: 50,
-          nodeSpacing: 80,
-          rankSpacing: 100,
         },
       });
 
@@ -26,61 +24,60 @@ export default function DecentralizationDiagram() {
   return (
     <div className="my-12 bg-white p-8 rounded-lg shadow-lg overflow-x-auto" ref={diagramRef}>
       {`
-      flowchart TD
-        subgraph Traditional["Traditional Banking System"]
-          direction TB
-          CB["Central Authority"]:::central
-          B1["Bank"]:::bank
-          B2["Bank"]:::bank
-          B3["Bank"]:::bank
-          U1["User"]:::user
-          U2["User"]:::user
-          U3["User"]:::user
+      graph TD
+          %% Traditional System
+          subgraph Traditional[Traditional Banking System]
+              CB[Central Bank]
+              B1[Bank]
+              B2[Bank]
+              B3[Bank]
+              U1[User]
+              U2[User]
+              U3[User]
 
-          %% Traditional system connections
-          CB --> B1 & B2 & B3
-          B1 --> U1
-          B2 --> U2
-          B3 --> U3
-        end
+              CB --> B1
+              CB --> B2
+              CB --> B3
+              B1 --> U1
+              B2 --> U2
+              B3 --> U3
+          end
 
-        subgraph Decentralized["Peer-to-Peer Network"]
-          direction TB
-          P1["Peer"]:::peer
-          P2["Peer"]:::peer
-          P3["Peer"]:::peer
-          P4["Peer"]:::peer
-          W1["User"]:::user
-          W2["User"]:::user
-          W3["User"]:::user
+          %% Decentralized System
+          subgraph Decentralized[Peer-to-Peer Network]
+              P1[Peer]
+              P2[Peer]
+              P3[Peer]
+              P4[Peer]
+              W1[User]
+              W2[User]
+              W3[User]
 
-          %% P2P connections
-          P1 --- P2 & P3 & P4
-          P2 --- P3 & P4
-          P3 --- P4
-          P1 --- W1
-          P2 --- W2
-          P3 --- W3
-        end
+              P1 --- P2
+              P1 --- P3
+              P1 --- P4
+              P2 --- P3
+              P2 --- P4
+              P3 --- P4
+              P1 --- W1
+              P2 --- W2
+              P3 --- W3
+          end
 
-        %% Styles
-        classDef central fill:#ff8080,stroke:#ff4040,stroke-width:2px,rx:10,ry:10,padding:20px;
-        classDef bank fill:#90EE90,stroke:#4CAF50,stroke-width:2px,rx:10,ry:10,padding:15px;
-        classDef peer fill:#87CEEB,stroke:#4682B4,stroke-width:2px,rx:10,ry:10,padding:15px;
-        classDef user fill:#FFFFFF,stroke:#666666,stroke-width:2px,rx:10,ry:10,padding:15px;
+          %% Styling
+          classDef central fill:#ff8080,stroke:#ff4040,stroke-width:2px
+          classDef bank fill:#90EE90,stroke:#4CAF50,stroke-width:2px
+          classDef peer fill:#87CEEB,stroke:#4682B4,stroke-width:2px
+          classDef user fill:#FFFFFF,stroke:#666666,stroke-width:2px
 
-        %% Node styles - larger fonts and bold where needed
-        style CB fontSize:20px,fontWeight:bold
-        style B1 fontSize:18px
-        style B2 fontSize:18px
-        style B3 fontSize:18px
-        style P1 fontSize:18px
-        style P2 fontSize:18px
-        style P3 fontSize:18px
-        style P4 fontSize:18px
+          class CB central
+          class B1,B2,B3 bank
+          class P1,P2,P3,P4 peer
+          class U1,U2,U3,W1,W2,W3 user
 
-        %% Link styles
-        linkStyle default stroke-width:2px,fill:none,stroke:#666;
+          %% Node label styling
+          style CB fontSize:20px,fontWeight:bold
+          style B1,B2,B3,P1,P2,P3,P4 fontSize:18px
       `}
     </div>
   );
