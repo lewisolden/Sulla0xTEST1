@@ -438,18 +438,21 @@ const PracticalApplicationsQuiz = () => {
 
       <div className="space-y-4">
         <p className="font-semibold text-lg text-blue-800">{currentQuestionData.question}</p>
-        <div className="space-y-2">
+        <RadioGroup
+          value={answers[currentQuestionData.id] || ""}
+          onValueChange={(value) => !isQuestionAnswered(currentQuestionData.id) && handleAnswer(currentQuestionData.id, value)}
+          className="space-y-2"
+          disabled={isQuestionAnswered(currentQuestionData.id)}
+        >
           {Object.entries(currentQuestionData.options).map(([key, value]) => (
             <div
               key={key}
-              onClick={() => !isQuestionAnswered(currentQuestionData.id) && handleAnswer(currentQuestionData.id, key)}
               className={`flex items-center space-x-3 p-3 rounded-lg border transition-colors ${getOptionStyle(currentQuestionData.id, key)} ${isQuestionAnswered(currentQuestionData.id) ? 'cursor-default' : 'cursor-pointer'}`}
             >
               <div className="flex items-center flex-1">
                 <RadioGroupItem 
                   value={key} 
                   id={`${currentQuestionData.id}-${key}`}
-                  checked={answers[currentQuestionData.id] === key}
                   className="pointer-events-none"
                 />
                 <Label htmlFor={`${currentQuestionData.id}-${key}`} className="text-gray-700 ml-3 flex-1">
@@ -464,7 +467,7 @@ const PracticalApplicationsQuiz = () => {
               )}
             </div>
           ))}
-        </div>
+        </RadioGroup>
 
         {isQuestionAnswered(currentQuestionData.id) && (
           <motion.div
