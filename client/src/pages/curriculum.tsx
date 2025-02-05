@@ -106,15 +106,7 @@ export default function Curriculum() {
             Sulla's Curriculum
           </h1>
           <Card className="p-6 bg-blue-600">
-            <p className="text-xl text-white max-w-3xl mx-auto text-justify">
-              Sulla transforms complex technical concepts into engaging, accessible learning experiences.
-              Our innovative platform combines interactive lessons, hands-on simulations, and adaptive learning technology
-              to create a personalized educational journey. Through gamified exercises, real-world applications, and
-              progressive skill building, we ensure that every learner can master new technologies at their own pace.
-              Our comprehensive curriculum features visual learning aids, practical exercises, and instant feedback to
-              help you build confidence and expertise in emerging technologies.
-            </p>
-            <div className="mt-6 text-center">
+            <div className="text-center mb-6">
               <div className="flex items-center justify-center gap-2 text-xl font-bold text-white">
                 <Lightbulb className="h-6 w-6" />
                 <p>Ready to embark on your learning journey?</p>
@@ -123,6 +115,14 @@ export default function Curriculum() {
                 Explore our curriculum and discover the power of interactive education today!
               </p>
             </div>
+            <p className="text-xl text-white max-w-3xl mx-auto text-justify">
+              Sulla transforms complex technical concepts into engaging, accessible learning experiences.
+              Our innovative platform combines interactive lessons, hands-on simulations, and adaptive learning technology
+              to create a personalized educational journey. Through gamified exercises, real-world applications, and
+              progressive skill building, we ensure that every learner can master new technologies at their own pace.
+              Our comprehensive curriculum features visual learning aids, practical exercises, and instant feedback to
+              help you build confidence and expertise in emerging technologies.
+            </p>
           </Card>
         </motion.div>
 
