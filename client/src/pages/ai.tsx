@@ -1,7 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sparkles, Brain, ChartBar, Lock, BookOpen, Lightbulb } from "lucide-react";
+import { useEffect } from "react";
 
 export default function AIOverview() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const features = [
     {
       icon: Brain,
@@ -81,9 +86,9 @@ export default function AIOverview() {
           <Card className="mb-8">
             <CardContent className="pt-6">
               <p className="text-lg text-gray-700">
-                At Sulla, we harness the power of artificial intelligence to create a dynamic, 
-                personalized learning environment that adapts to each user's unique needs. Our 
-                AI systems work continuously behind the scenes to optimize your educational 
+                At Sulla, we harness the power of artificial intelligence to create a dynamic,
+                personalized learning environment that adapts to each user's unique needs. Our
+                AI systems work continuously behind the scenes to optimize your educational
                 journey and help you master blockchain and cryptocurrency concepts effectively.
               </p>
             </CardContent>
@@ -118,7 +123,7 @@ export default function AIOverview() {
             <CardContent>
               <div className="prose max-w-none">
                 <p className="mb-4">
-                  Our AI systems collect and analyze various types of data to continuously improve 
+                  Our AI systems collect and analyze various types of data to continuously improve
                   the learning experience:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-gray-700">
