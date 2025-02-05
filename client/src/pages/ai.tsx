@@ -35,6 +35,41 @@ export default function AIOverview() {
     }
   ];
 
+  const upcomingFeatures = [
+    {
+      title: "AI Course Assistant",
+      description: "An intelligent assistant trained specifically on our course content, providing instant, contextually relevant support and explanations to enhance your learning experience."
+    },
+    {
+      title: "Dynamic Learning Path Optimization",
+      description: "Real-time adjustments to your learning journey based on performance metrics, engagement patterns, and learning speed to ensure optimal knowledge retention."
+    },
+    {
+      title: "Smart Content Recommendations",
+      description: "Advanced AI algorithms that analyze your learning style and progress to suggest the most relevant content, exercises, and resources for your specific needs."
+    },
+    {
+      title: "Adaptive Difficulty System",
+      description: "Intelligent adjustment of content difficulty based on your performance and comfort level, ensuring you're always challenged but never overwhelmed."
+    },
+    {
+      title: "Natural Language Query System",
+      description: "Advanced NLP capabilities allowing you to ask questions in plain language and receive accurate, context-aware responses about blockchain and cryptocurrency concepts."
+    },
+    {
+      title: "Learning Outcome Prediction",
+      description: "Predictive analytics that forecast your learning trajectory and potential outcomes, helping you stay on track to achieve your educational goals."
+    },
+    {
+      title: "AI Assessment Generation",
+      description: "Dynamically generated assessments that adapt to your knowledge level and learning progress, ensuring comprehensive understanding of key concepts."
+    },
+    {
+      title: "Adaptive Content Generation",
+      description: "AI-powered system that creates personalized learning materials, examples, and exercises tailored to your unique learning style and preferences."
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
@@ -103,6 +138,31 @@ export default function AIOverview() {
                   <li>Optimize the difficulty progression of content</li>
                   <li>Create more effective learning paths for future users</li>
                 </ul>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="mt-8">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <span>Features In Development</span>
+                <Sparkles className="w-5 h-5 text-blue-600" />
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-4 md:grid-cols-2">
+                {upcomingFeatures.map((feature, index) => (
+                  <Card key={index} className="transition-all hover:shadow-md border border-blue-100">
+                    <CardContent className="p-4">
+                      <h3 className="text-lg font-semibold text-blue-800 mb-2">
+                        {feature.title}
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        {feature.description}
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
             </CardContent>
           </Card>
