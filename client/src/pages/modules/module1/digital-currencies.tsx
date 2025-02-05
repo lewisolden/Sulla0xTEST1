@@ -11,6 +11,7 @@ import DigitalCurrenciesQuiz from "@/components/quizzes/DigitalCurrenciesQuiz";
 import { BlockchainIcon, DecentralizationIcon, WalletIcon, SecurityIcon } from "@/components/icons/CryptoIcons";
 import TransactionFlowDiagram from "@/components/diagrams/TransactionFlowDiagram";
 import { useNavigate } from "@/hooks/useNavigate";
+import MoneyEvolutionTimeline from "@/components/diagrams/MoneyEvolutionTimeline";
 
 export default function DigitalCurrenciesSection() {
   // Force scroll to top on mount
@@ -221,8 +222,18 @@ export default function DigitalCurrenciesSection() {
               >
                 <h2 className="text-3xl font-bold text-blue-700">The Evolution of Money</h2>
                 <motion.p variants={listItemVariants} className="mt-4">
-                  To understand cryptocurrency's significance, consider how money has evolved:
+                  To understand cryptocurrency's significance, consider how money has evolved through history:
                 </motion.p>
+
+                {/* Add the Timeline component */}
+                <motion.div
+                  variants={cardVariants}
+                  whileHover="hover"
+                  className="mt-8 p-6 bg-white rounded-lg shadow-md"
+                >
+                  <MoneyEvolutionTimeline />
+                </motion.div>
+
                 <motion.ul
                   variants={sectionVariants}
                   className="list-disc pl-5 space-y-2 mt-4"
