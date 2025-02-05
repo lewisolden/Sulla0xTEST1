@@ -8,8 +8,9 @@ import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
 import EthereumFundamentalsQuiz from "@/components/quizzes/EthereumFundamentalsQuiz";
 import mermaid from "mermaid";
 import { useScrollTop } from "@/hooks/useScrollTop";
+import PosVsPowDiagram from "@/components/diagrams/PosVsPowDiagram";
 
-const MermaidDiagram = ({ chart }) => {
+const MermaidDiagram = ({ chart }: { chart: string }) => {
   const [svg, setSvg] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
@@ -322,6 +323,74 @@ const EthereumFundamentalsSection = () => {
                   </ul>
                 </motion.div>
               </motion.div>
+            </motion.section>
+
+
+            <motion.section
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <h2 className="text-2xl font-bold text-blue-700 mb-4">Understanding Proof of Stake (PoS)</h2>
+
+              <div className="bg-blue-50 p-4 rounded-lg mb-6">
+                <p className="text-gray-700">
+                  <strong>🎯 Think of Proof of Stake like this:</strong> Instead of using powerful computers to solve puzzles (like in Bitcoin's Proof of Work), 
+                  Ethereum now uses a system where people put their ETH as a security deposit to help verify transactions. It's like putting down a deposit 
+                  when you rent an apartment - if you damage the place, you lose your deposit!
+                </p>
+              </div>
+
+              <div className="my-8 p-4 bg-gray-50 rounded-lg shadow-inner">
+                <h3 className="text-xl font-semibold text-blue-700 mb-4">Proof of Work vs Proof of Stake: A Simple Comparison</h3>
+                <PosVsPowDiagram />
+                <p className="text-sm text-gray-600 mt-4">
+                  <strong>💡 Key Difference:</strong> While Proof of Work uses massive computing power and electricity, 
+                  Proof of Stake uses financial stakes to keep the network secure and running.
+                </p>
+              </div>
+
+              <motion.div
+                variants={containerVariants}
+                className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8"
+              >
+                <motion.div
+                  variants={itemVariants}
+                  className="bg-blue-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                >
+                  <h4 className="font-semibold text-blue-700 mb-3">🌱 How PoS Works</h4>
+                  <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                    <li>You need 32 ETH to become a validator</li>
+                    <li>Validators are chosen to create new blocks</li>
+                    <li>Good behavior earns rewards</li>
+                    <li>Bad behavior loses your stake</li>
+                    <li>No special hardware needed</li>
+                  </ul>
+                </motion.div>
+
+                <motion.div
+                  variants={itemVariants}
+                  className="bg-blue-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                >
+                  <h4 className="font-semibold text-blue-700 mb-3">🌍 Benefits for Everyone</h4>
+                  <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                    <li>Uses 99.95% less energy than PoW</li>
+                    <li>Faster transaction processing</li>
+                    <li>Lower fees possible</li>
+                    <li>More people can participate</li>
+                    <li>Better for the environment</li>
+                  </ul>
+                </motion.div>
+              </motion.div>
+
+              <div className="bg-green-50 p-4 rounded-lg mb-6">
+                <h4 className="font-semibold text-green-700 mb-2">🤔 What if I don't have 32 ETH?</h4>
+                <p className="text-gray-700">
+                  Don't worry! You can join a staking pool where you combine your ETH with others. 
+                  It's like a group of friends pooling money together to buy something expensive - 
+                  everyone contributes what they can and shares the rewards!
+                </p>
+              </div>
             </motion.section>
           </div>
         </Card>
