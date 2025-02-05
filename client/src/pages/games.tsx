@@ -7,6 +7,7 @@ import { useState } from "react";
 import MiningGame from "@/components/games/MiningGame";
 import NetworkConsensusGame from "@/components/games/NetworkConsensusGame";
 import BlockchainExplorerGame from "@/components/games/BlockchainExplorerGame";
+import BlockchainCityBuilder from "@/components/games/BlockchainCityBuilder";
 
 const games = [
   {
@@ -21,14 +22,14 @@ const games = [
     title: "Crypto Wallet Adventure",
     description: "Master wallet security and management through an interactive story-driven experience.",
     icon: Wallet,
-    available: true, // Changed to true to enable the game
+    available: true,
   },
   {
     id: "city",
     title: "Blockchain City Builder",
     description: "Build and manage your own blockchain-powered city while learning core concepts.",
     icon: Building2,
-    available: false, // Coming soon
+    available: true, 
   },
   {
     id: "mining",
@@ -117,6 +118,7 @@ export default function Games() {
           >
             {selectedGame === "trading" && <TradingSimulator />}
             {selectedGame === "wallet" && <WalletAdventure />}
+            {selectedGame === "city" && <BlockchainCityBuilder />}
             {selectedGame === "mining" && <MiningGame />}
             {selectedGame === "consensus" && <NetworkConsensusGame />}
             {selectedGame === "explorer" && <BlockchainExplorerGame />}
