@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Footer from "@/components/layout/footer";
 import { PersonalizedPath } from "@/components/learning/personalized-path";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Card } from "@/components/ui/card";
 import { useState } from "react";
 
 const subjects = [
@@ -104,14 +105,16 @@ export default function Curriculum() {
           <h1 className="text-4xl font-bold text-blue-900 mb-6">
             Sulla's Curriculum
           </h1>
-          <p className="text-xl text-blue-700 max-w-3xl mx-auto">
-            Sulla transforms complex technical concepts into engaging, accessible learning experiences. 
-            Our innovative platform combines interactive lessons, hands-on simulations, and adaptive learning technology 
-            to create a personalized educational journey. Through gamified exercises, real-world applications, and 
-            progressive skill building, we ensure that every learner can master new technologies at their own pace. 
-            Our comprehensive curriculum features visual learning aids, practical exercises, and instant feedback to 
-            help you build confidence and expertise in emerging technologies.
-          </p>
+          <Card className="p-6">
+            <p className="text-xl text-blue-700 max-w-3xl mx-auto">
+              Sulla transforms complex technical concepts into engaging, accessible learning experiences. 
+              Our innovative platform combines interactive lessons, hands-on simulations, and adaptive learning technology 
+              to create a personalized educational journey. Through gamified exercises, real-world applications, and 
+              progressive skill building, we ensure that every learner can master new technologies at their own pace. 
+              Our comprehensive curriculum features visual learning aids, practical exercises, and instant feedback to 
+              help you build confidence and expertise in emerging technologies.
+            </p>
+          </Card>
         </motion.div>
 
         {/* Filter Section */}
