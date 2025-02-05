@@ -114,15 +114,15 @@ const EthereumFundamentalsSection = () => {
   };
 
   const comparisonDiagram = `graph TD
-    subgraph Bitcoin
-    A[Transactions] --> B[Value Transfer]
+    subgraph Bitcoin["Bitcoin (Digital Money)"]
+    A[Basic Transactions] --> B[Send & Receive Money]
     end
 
-    subgraph Ethereum
-    C[Smart Contracts] --> D[dApps]
-    C --> E[DeFi]
-    C --> F[NFTs]
-    C --> G[DAOs]
+    subgraph Ethereum["Ethereum (Programmable Platform)"]
+    C[Smart Contracts] --> D[Apps/dApps]
+    C --> E[Financial Services/DeFi]
+    C --> F[Digital Art/NFTs]
+    C --> G[Organizations/DAOs]
     end
 
     style Bitcoin fill:#f9f9f9,stroke:#2563eb
@@ -136,13 +136,16 @@ const EthereumFundamentalsSection = () => {
     style G fill:#93c5fd`;
 
   const evmDiagram = `sequenceDiagram
-    participant U as User
+    participant U as User/You
     participant C as Smart Contract
-    participant N as Network
-    U->>C: Submit Transaction
-    C->>N: Execute Code
-    N-->>C: Update State
-    C-->>U: Return Result`;
+    participant N as Ethereum Network
+
+    Note over U,N: When you interact with Ethereum...
+    U->>C: 1. Send Transaction (like clicking a button)
+    Note over C: 2. Contract runs your request
+    C->>N: 3. Updates blockchain data
+    N-->>C: 4. Confirms changes
+    C-->>U: 5. Shows you the result`;
 
   const startQuiz = () => {
     setShowQuiz(true);
@@ -196,15 +199,34 @@ const EthereumFundamentalsSection = () => {
               animate="visible"
             >
               <h2 className="text-2xl font-bold text-blue-700 mb-4">What Makes Ethereum Different?</h2>
+
+              <div className="bg-blue-50 p-4 rounded-lg mb-6">
+                <p className="text-gray-700">
+                  <strong>🎯 Think of it this way:</strong> If Bitcoin is like digital gold that you can send 
+                  and receive, Ethereum is like a global computer that can run programs (called smart contracts) 
+                  and store data. It's not just for sending money - it's for building entire applications that 
+                  run on the blockchain!
+                </p>
+              </div>
+
               <p className="text-gray-700 mb-4">
-                Unlike Bitcoin's primary focus on monetary transactions, Ethereum represents a fundamental 
-                shift in blockchain technology. It serves as a global, decentralized computing platform 
-                that can run applications and handle complex financial interactions.
+                Unlike Bitcoin's focus on being digital money, Ethereum gives you the power to:
               </p>
 
+              <ul className="list-disc pl-6 mb-6 space-y-2">
+                <li>Create and run applications that can't be shut down</li>
+                <li>Build financial services without banks</li>
+                <li>Make digital art and collectibles (NFTs)</li>
+                <li>Form online organizations (DAOs) that run by code</li>
+              </ul>
+
               <div className="my-8 p-4 bg-gray-50 rounded-lg shadow-inner">
-                <h3 className="text-xl font-semibold text-blue-700 mb-4">Bitcoin vs Ethereum Comparison</h3>
+                <h3 className="text-xl font-semibold text-blue-700 mb-4">Bitcoin vs Ethereum: A Simple Comparison</h3>
                 <MermaidDiagram chart={comparisonDiagram} />
+                <p className="text-sm text-gray-600 mt-4">
+                  <strong>💡 Key Difference:</strong> Bitcoin focuses on doing one thing well (being digital money), 
+                  while Ethereum can do many things because it's programmable!
+                </p>
               </div>
 
               <motion.div
@@ -215,24 +237,27 @@ const EthereumFundamentalsSection = () => {
                   variants={itemVariants}
                   className="bg-blue-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                 >
-                  <h4 className="font-semibold text-blue-700 mb-3">dApps</h4>
-                  <p className="text-sm">Applications that run on the blockchain, ensuring continuous operation</p>
+                  <h4 className="font-semibold text-blue-700 mb-3">📱 dApps (Decentralized Apps)</h4>
+                  <p className="text-sm">Just like the apps on your phone, but they run on Ethereum instead of 
+                  Apple or Google's servers. This means they're always available and can't be shut down!</p>
                 </motion.div>
 
                 <motion.div
                   variants={itemVariants}
                   className="bg-blue-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                 >
-                  <h4 className="font-semibold text-blue-700 mb-3">Smart Contracts</h4>
-                  <p className="text-sm">Self-executing programs that automatically enforce agreements</p>
+                  <h4 className="font-semibold text-blue-700 mb-3">📝 Smart Contracts</h4>
+                  <p className="text-sm">These are like digital vending machines - they automatically run when 
+                  you interact with them. No person needs to approve or process your request!</p>
                 </motion.div>
 
                 <motion.div
                   variants={itemVariants}
                   className="bg-blue-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                 >
-                  <h4 className="font-semibold text-blue-700 mb-3">Digital Assets</h4>
-                  <p className="text-sm">Create various types of tokens and digital assets</p>
+                  <h4 className="font-semibold text-blue-700 mb-3">🎨 Digital Assets</h4>
+                  <p className="text-sm">Create your own tokens, digital art, or virtual items that can be 
+                  bought, sold, and collected.</p>
                 </motion.div>
               </motion.div>
             </motion.section>
@@ -244,9 +269,26 @@ const EthereumFundamentalsSection = () => {
             >
               <h2 className="text-2xl font-bold text-blue-700 mb-4">The Ethereum Virtual Machine (EVM)</h2>
 
+              <div className="bg-blue-50 p-4 rounded-lg mb-6">
+                <p className="text-gray-700">
+                  <strong>🤔 Think of the EVM as:</strong> A giant, global computer that everyone can use. 
+                  It's like having a computer that:
+                  <ul className="list-disc pl-6 mt-2">
+                    <li>Never turns off</li>
+                    <li>Can't be hacked or changed</li>
+                    <li>Runs exactly the same for everyone</li>
+                    <li>Keeps perfect track of everything it does</li>
+                  </ul>
+                </p>
+              </div>
+
               <div className="my-8 p-4 bg-gray-50 rounded-lg shadow-inner">
-                <h3 className="text-xl font-semibold text-blue-700 mb-4">EVM Transaction Flow</h3>
+                <h3 className="text-xl font-semibold text-blue-700 mb-4">How the EVM Works</h3>
                 <MermaidDiagram chart={evmDiagram} />
+                <p className="text-sm text-gray-600 mt-4">
+                  <strong>💡 Important:</strong> Every action on Ethereum costs a small fee called "gas". 
+                  This is like paying for computer processing time!
+                </p>
               </div>
 
               <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -254,13 +296,13 @@ const EthereumFundamentalsSection = () => {
                   variants={itemVariants}
                   className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                 >
-                  <h4 className="font-semibold text-blue-700 mb-3">Execution Environment</h4>
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>Consistent execution across all nodes</li>
-                    <li>Deterministic operation</li>
-                    <li>Secure code isolation</li>
-                    <li>Resource management</li>
-                    <li>State maintenance</li>
+                  <h4 className="font-semibold text-blue-700 mb-3">🖥️ How It Runs Programs</h4>
+                  <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                    <li>Every computer in the network runs the same code</li>
+                    <li>Results are verified by everyone</li>
+                    <li>Can't be tampered with or cheated</li>
+                    <li>Keeps track of all changes</li>
+                    <li>Runs 24/7 without stopping</li>
                   </ul>
                 </motion.div>
 
@@ -268,13 +310,13 @@ const EthereumFundamentalsSection = () => {
                   variants={itemVariants}
                   className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                 >
-                  <h4 className="font-semibold text-blue-700 mb-3">Gas System</h4>
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>Operation-specific gas costs</li>
-                    <li>Dynamic pricing based on demand</li>
-                    <li>Spam prevention mechanism</li>
-                    <li>Fair resource allocation</li>
-                    <li>Optimization opportunities</li>
+                  <h4 className="font-semibold text-blue-700 mb-3">⛽ Understanding Gas</h4>
+                  <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                    <li>Gas is like fuel for Ethereum operations</li>
+                    <li>More complex actions cost more gas</li>
+                    <li>Prevents spam and infinite loops</li>
+                    <li>Price changes based on network usage</li>
+                    <li>You can choose how fast you want your transaction to process</li>
                   </ul>
                 </motion.div>
               </motion.div>
