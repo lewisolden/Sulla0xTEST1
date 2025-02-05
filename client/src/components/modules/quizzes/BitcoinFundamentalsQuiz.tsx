@@ -180,6 +180,19 @@ export default function BitcoinFundamentalsQuiz() {
                 ? "bg-green-50 border-green-200"
                 : "bg-red-50 border-red-200"
             }`}>
+              <div className="flex items-center gap-2 mb-2">
+                {selectedAnswer === questions[currentQuestion].correctAnswer ? (
+                  <>
+                    <CheckCircle2 className="h-6 w-6 text-green-500" />
+                    <span className="font-semibold text-green-700">Correct!</span>
+                  </>
+                ) : (
+                  <>
+                    <XCircle className="h-6 w-6 text-red-500" />
+                    <span className="font-semibold text-red-700">Incorrect!</span>
+                  </>
+                )}
+              </div>
               <p className={`text-lg ${
                 selectedAnswer === questions[currentQuestion].correctAnswer
                   ? "text-green-800"
