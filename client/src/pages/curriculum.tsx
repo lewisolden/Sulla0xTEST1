@@ -103,13 +103,22 @@ export default function Curriculum() {
 
   const enrollMutation = useMutation({
     mutationFn: async (courseId: number) => {
-      const response = await fetch('/api/enrollments', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ courseId })
-      });
-      if (!response.ok) throw new Error('Failed to enroll');
-      return response.json();
+      try {
+        const response = await fetch('/api/enrollments', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ courseId })
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to enroll in course');
+        }
+
+        return response.json();
+      } catch (error) {
+        throw new Error(error instanceof Error ? error.message : 'Failed to enroll in course');
+      }
     },
     onSuccess: () => {
       toast({
@@ -117,7 +126,7 @@ export default function Curriculum() {
         description: "You can now access all course materials.",
       });
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toast({
         title: "Failed to enroll",
         description: error.message,
