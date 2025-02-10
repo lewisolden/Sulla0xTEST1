@@ -8,10 +8,15 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Dumbbell, BookOpen, Shield, Brain, Wallet, AlertCircle, CheckCircle } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { moduleTopics } from "@/lib/module-data";
-import { useState } from "react";
+import { moduleTopics, type ModuleTopic } from "@/lib/module-data";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
+
+interface Enrollment {
+  id: number;
+  courseId: number;
+  status: string;
+}
 
 export default function Module1() {
   useScrollTop();
@@ -22,13 +27,13 @@ export default function Module1() {
   const completedSections = moduleProgress.filter(p => p.completed).length;
   const progressPercentage = (completedSections / moduleTopics.length) * 100;
 
-  const topicsWithProgress = moduleTopics.map(topic => ({
+  const topicsWithProgress = moduleTopics.map((topic: ModuleTopic) => ({
     ...topic,
     completed: moduleProgress.some(p => p.sectionId === topic.id && p.completed)
   }));
 
   // Query enrollment status
-  const { data: enrollments, isLoading: isLoadingEnrollments } = useQuery({
+  const { data: enrollments, isLoading: isLoadingEnrollments } = useQuery<Enrollment[]>({
     queryKey: ['enrollments'],
     queryFn: async () => {
       const response = await fetch('/api/enrollments');
@@ -38,12 +43,12 @@ export default function Module1() {
   });
 
   // Determine if user is enrolled in this course
-  const isEnrolled = enrollments?.some(enrollment => 
+  const isEnrolled = enrollments?.some((enrollment: Enrollment) => 
     enrollment.courseId === 1 && enrollment.status === 'active'
   );
 
   // Mutation for enrolling
-  const { mutate: enroll, isLoading: isEnrolling } = useMutation({
+  const { mutate: enroll } = useMutation({
     mutationFn: async () => {
       const response = await fetch('/api/enrollments', {
         method: 'POST',
@@ -60,7 +65,7 @@ export default function Module1() {
         description: "You can now start learning about cryptocurrency.",
       });
     },
-    onError: (error) => {
+    onError: () => {
       toast({
         title: "Failed to enroll",
         description: "Please try again later.",
@@ -78,8 +83,23 @@ export default function Module1() {
 
         <div className="mb-8">
           <Progress value={progressPercentage} className="w-full" />
-          <p className="text-sm text-muted-foreground mt-2">Progress: {Math.round(progressPercentage)}%</p>
+          <p className="text-sm text-muted-foreground mt-2">
+            Progress: {Math.round(progressPercentage)}%
+          </p>
         </div>
+
+        {/* Add enrollment button here, before the tabs */}
+        {!isLoadingEnrollments && !isEnrolled && (
+          <div className="mb-6">
+            <Button 
+              onClick={() => enroll()}
+              size="lg"
+              className="bg-green-600 hover:bg-green-700"
+            >
+              Enroll in This Course
+            </Button>
+          </div>
+        )}
 
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsList>
@@ -131,27 +151,7 @@ export default function Module1() {
                         </Link>
                       </>
                     ) : (
-                      <div className="flex flex-col items-center gap-4">
-                        <Button 
-                          size="lg"
-                          className="bg-green-600 hover:bg-green-700"
-                          onClick={() => enroll()}
-                          disabled={isEnrolling}
-                        >
-                          {isEnrolling ? (
-                            <>
-                              <span className="animate-spin mr-2">⟳</span>
-                              Enrolling...
-                            </>
-                          ) : (
-                            'Enroll Now'
-                          )}
-                        </Button>
-                        <p className="text-sm text-gray-600 flex items-center gap-2">
-                          <AlertCircle className="h-4 w-4" />
-                          Enroll to track your progress and earn certificates
-                        </p>
-                      </div>
+                      <></> // Removed redundant enrollment button
                     )}
                   </div>
                 </div>
