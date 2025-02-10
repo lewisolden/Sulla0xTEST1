@@ -9,13 +9,14 @@ export async function getEnrollments(req: Request, res: Response) {
   }
 
   try {
+    console.log("Fetching enrollments for user:", req.user!.id);
     const userEnrollments = await db.query.courseEnrollments.findMany({
       where: eq(courseEnrollments.userId, req.user!.id),
       with: {
         course: true
       }
     });
-    
+
     res.json(userEnrollments);
   } catch (error) {
     console.error("Error fetching enrollments:", error);
@@ -34,6 +35,8 @@ export async function createEnrollment(req: Request, res: Response) {
   }
 
   try {
+    console.log("Creating enrollment - User:", req.user!.id, "Course:", courseId);
+
     // Check if course exists
     const [course] = await db.select().from(courses).where(eq(courses.id, courseId));
     if (!course) {

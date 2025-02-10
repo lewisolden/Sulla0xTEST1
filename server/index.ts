@@ -49,12 +49,11 @@ app.use((req, res, next) => {
       const message = err.message || "Internal Server Error";
       log(`Error: ${message}`);
       res.status(status).json({ message });
-      // Don't throw here, just log
       console.error(err);
     });
 
     const isProduction = process.env.NODE_ENV === 'production';
-    const PORT = 5000; // Explicitly set port to 5000
+    const port = Number(process.env.PORT || 3000); // Convert port to number
 
     if (!isProduction) {
       log("Setting up Vite middleware...");
@@ -66,20 +65,23 @@ app.use((req, res, next) => {
       log("Static file serving setup complete");
     }
 
-    log(`Attempting to start server on port ${PORT}...`);
+    log(`Attempting to start server on port ${port}...`);
 
-    server.listen(PORT, "0.0.0.0", () => {
-      log(`Server is running on port ${PORT}`);
-    });
-
-    // Handle server errors
-    server.on('error', (error: NodeJS.ErrnoException) => {
+    // Try to start the server with better error handling
+    server.listen(port, "0.0.0.0", () => {
+      log(`Server is running on port ${port}`);
+    }).on('error', (error: NodeJS.ErrnoException) => {
       if (error.code === 'EADDRINUSE') {
-        log(`Port ${PORT} is already in use`);
+        log(`Port ${port} is already in use. Please try a different port.`);
+        // Try to find a free port by incrementing
+        const newPort = port + 1;
+        server.listen(newPort, "0.0.0.0", () => {
+          log(`Server started on alternate port ${newPort}`);
+        });
       } else {
         log(`Server error: ${error.message}`);
+        process.exit(1);
       }
-      process.exit(1);
     });
 
   } catch (error) {
