@@ -7,8 +7,31 @@ export const users = pgTable("users", {
   username: text("username").unique().notNull(),
   email: text("email").unique().notNull(),
   password: text("password").notNull(),
-  learningPreferences: jsonb("learning_preferences"), // Store AI learning preferences
+  learningPreferences: jsonb("learning_preferences"),
   lastActivity: timestamp("last_activity").defaultNow(),
+});
+
+export const courses = pgTable("courses", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  subject: text("subject").notNull(),
+  level: text("level").notNull(),
+  modules: jsonb("modules").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const courseEnrollments = pgTable("course_enrollments", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  courseId: integer("course_id").references(() => courses.id).notNull(),
+  status: text("status").notNull().default('active'),
+  enrolledAt: timestamp("enrolled_at").defaultNow().notNull(),
+  completedAt: timestamp("completed_at"),
+  lastAccessedAt: timestamp("last_accessed_at").defaultNow().notNull(),
+  progress: integer("progress").default(0),
+  metadata: jsonb("metadata"),
 });
 
 export const moduleProgress = pgTable("module_progress", {
@@ -18,10 +41,10 @@ export const moduleProgress = pgTable("module_progress", {
   sectionId: text("section_id").notNull(),
   completed: boolean("completed").default(false).notNull(),
   score: integer("score"),
-  timeSpent: integer("time_spent"), // Time spent in seconds
+  timeSpent: integer("time_spent"),
   lastAccessed: timestamp("last_accessed").defaultNow().notNull(),
   completedAt: timestamp("completed_at"),
-  aiRecommendations: jsonb("ai_recommendations"), // Store AI recommendations
+  aiRecommendations: jsonb("ai_recommendations"),
 });
 
 export const quizzes = pgTable("quizzes", {
@@ -32,7 +55,7 @@ export const quizzes = pgTable("quizzes", {
   correctAnswer: text("correct_answer").notNull(),
   explanation: text("explanation").notNull(),
   order: integer("order").notNull(),
-  difficulty: text("difficulty"), // For AI adaptation
+  difficulty: text("difficulty"),
 });
 
 export const userQuizResponses = pgTable("user_quiz_responses", {
@@ -41,15 +64,14 @@ export const userQuizResponses = pgTable("user_quiz_responses", {
   quizId: integer("quiz_id").references(() => quizzes.id).notNull(),
   selectedAnswer: text("selected_answer").notNull(),
   isCorrect: boolean("is_correct").notNull(),
-  timeSpent: integer("time_spent"), // Time taken to answer
+  timeSpent: integer("time_spent"),
   answeredAt: timestamp("answered_at").defaultNow().notNull(),
 });
 
-// Virtual Wallet System
 export const virtualWallets = pgTable("virtual_wallets", {
   id: serial("id").primaryKey(),
   userId: integer("user_id").references(() => users.id).notNull(),
-  balance: jsonb("balance").notNull(), // Store different crypto balances
+  balance: jsonb("balance").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
@@ -57,23 +79,22 @@ export const virtualWallets = pgTable("virtual_wallets", {
 export const virtualTransactions = pgTable("virtual_transactions", {
   id: serial("id").primaryKey(),
   walletId: integer("wallet_id").references(() => virtualWallets.id).notNull(),
-  type: text("type").notNull(), // 'buy', 'sell', 'transfer'
+  type: text("type").notNull(),
   amount: text("amount").notNull(),
   currency: text("currency").notNull(),
   price: text("price").notNull(),
   timestamp: timestamp("timestamp").defaultNow().notNull(),
-  status: text("status").notNull(), // 'completed', 'pending', 'failed'
+  status: text("status").notNull(),
 });
 
-// Achievement System
 export const achievements = pgTable("achievements", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   description: text("description").notNull(),
-  criteria: jsonb("criteria").notNull(), // Conditions to earn
-  nftMetadata: jsonb("nft_metadata"), // NFT certificate data
+  criteria: jsonb("criteria").notNull(),
+  nftMetadata: jsonb("nft_metadata"),
   imageUrl: text("image_url"),
-  type: text("type").notNull(), // 'badge', 'certificate', 'milestone'
+  type: text("type").notNull(),
 });
 
 export const userAchievements = pgTable("user_achievements", {
@@ -81,23 +102,21 @@ export const userAchievements = pgTable("user_achievements", {
   userId: integer("user_id").references(() => users.id).notNull(),
   achievementId: integer("achievement_id").references(() => achievements.id).notNull(),
   earnedAt: timestamp("earned_at").defaultNow().notNull(),
-  nftTokenId: text("nft_token_id"), // If minted as NFT
-  metadata: jsonb("metadata"), // Additional achievement data
+  nftTokenId: text("nft_token_id"),
+  metadata: jsonb("metadata"),
 });
 
-// Glossary System
 export const glossaryTerms = pgTable("glossary_terms", {
   id: serial("id").primaryKey(),
   term: text("term").unique().notNull(),
   definition: text("definition").notNull(),
   category: text("category").notNull(),
   difficulty: text("difficulty").notNull(),
-  visualAid: text("visual_aid"), // URL to visual explanation
-  examples: jsonb("examples"), // Array of example usages
-  relatedTerms: jsonb("related_terms"), // Array of related term IDs
+  visualAid: text("visual_aid"),
+  examples: jsonb("examples"),
+  relatedTerms: jsonb("related_terms"),
 });
 
-// Relations
 export const moduleProgressRelations = relations(moduleProgress, ({ one }) => ({
   user: one(users, {
     fields: [moduleProgress.userId],
@@ -139,7 +158,21 @@ export const userAchievementsRelations = relations(userAchievements, ({ one }) =
   }),
 }));
 
-// Schemas
+export const courseEnrollmentRelations = relations(courseEnrollments, ({ one }) => ({
+  user: one(users, {
+    fields: [courseEnrollments.userId],
+    references: [users.id],
+  }),
+  course: one(courses, {
+    fields: [courseEnrollments.courseId],
+    references: [courses.id],
+  }),
+}));
+
+export const courseRelations = relations(courses, ({ many }) => ({
+  enrollments: many(courseEnrollments),
+}));
+
 export const insertUserSchema = createInsertSchema(users);
 export const selectUserSchema = createSelectSchema(users);
 export const insertModuleProgressSchema = createInsertSchema(moduleProgress);
@@ -154,8 +187,11 @@ export const insertAchievementSchema = createInsertSchema(achievements);
 export const selectAchievementSchema = createSelectSchema(achievements);
 export const insertGlossaryTermSchema = createInsertSchema(glossaryTerms);
 export const selectGlossaryTermSchema = createSelectSchema(glossaryTerms);
+export const insertCourseSchema = createInsertSchema(courses);
+export const selectCourseSchema = createSelectSchema(courses);
+export const insertCourseEnrollmentSchema = createInsertSchema(courseEnrollments);
+export const selectCourseEnrollmentSchema = createSelectSchema(courseEnrollments);
 
-// Types
 export type InsertUser = typeof users.$inferInsert;
 export type SelectUser = typeof users.$inferSelect;
 export type InsertModuleProgress = typeof moduleProgress.$inferInsert;
@@ -170,3 +206,7 @@ export type InsertAchievement = typeof achievements.$inferInsert;
 export type SelectAchievement = typeof achievements.$inferSelect;
 export type InsertGlossaryTerm = typeof glossaryTerms.$inferInsert;
 export type SelectGlossaryTerm = typeof glossaryTerms.$inferSelect;
+export type InsertCourse = typeof courses.$inferInsert;
+export type SelectCourse = typeof courses.$inferSelect;
+export type InsertCourseEnrollment = typeof courseEnrollments.$inferInsert;
+export type SelectCourseEnrollment = typeof courseEnrollments.$inferSelect;

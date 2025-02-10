@@ -5,7 +5,10 @@ import Footer from "@/components/layout/footer";
 import { PersonalizedPath } from "@/components/learning/personalized-path";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
 
 const subjects = [
   { id: "crypto", name: "Cryptocurrency" },
@@ -87,12 +90,55 @@ export default function Curriculum() {
   const [selectedSubject, setSelectedSubject] = useState<string>("crypto");
   const [selectedCourse, setSelectedCourse] = useState<string>("1");
   const [selectedLevel, setSelectedLevel] = useState<string>("beginner");
+  const { toast } = useToast();
+
+  const { data: enrollments, isLoading: loadingEnrollments } = useQuery({
+    queryKey: ['enrollments'],
+    queryFn: async () => {
+      const response = await fetch('/api/enrollments');
+      if (!response.ok) throw new Error('Failed to fetch enrollments');
+      return response.json();
+    }
+  });
+
+  const enrollMutation = useMutation({
+    mutationFn: async (courseId: number) => {
+      const response = await fetch('/api/enrollments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ courseId })
+      });
+      if (!response.ok) throw new Error('Failed to enroll');
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Successfully enrolled!",
+        description: "You can now access all course materials.",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Failed to enroll",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  });
 
   const filteredCourses = courses.filter(course =>
     course.subject === selectedSubject
   );
 
   const currentCourse = courses.find(course => course.id.toString() === selectedCourse) || courses[0];
+
+  const isEnrolled = enrollments?.some(
+    (enrollment: any) => enrollment.courseId === currentCourse.id
+  );
+
+  const handleEnroll = () => {
+    enrollMutation.mutate(currentCourse.id);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 py-16">
@@ -128,7 +174,6 @@ export default function Curriculum() {
           </Card>
         </motion.div>
 
-        {/* Filter Section */}
         <motion.div
           className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8"
           initial={{ opacity: 0 }}
@@ -199,59 +244,92 @@ export default function Curriculum() {
           {currentCourse.description}
         </motion.p>
 
-        <div className="mb-12">
-          <PersonalizedPath />
-        </div>
-
-        <div className="space-y-8">
-          {currentCourse.modules.map((module) => (
-            <motion.div
-              key={module.id}
-              className="bg-white shadow-lg rounded-lg p-8 hover:shadow-xl transition-all duration-300"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: module.id * 0.2 }}
+        <motion.div
+          className="mb-8 text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          {loadingEnrollments ? (
+            <p>Loading enrollment status...</p>
+          ) : isEnrolled ? (
+            <div className="bg-green-100 text-green-800 px-4 py-2 rounded-lg inline-block">
+              You are enrolled in this course
+            </div>
+          ) : (
+            <Button 
+              onClick={handleEnroll}
+              className="bg-blue-600 hover:bg-blue-700"
+              disabled={enrollMutation.isPending}
             >
-              <div className="flex items-start space-x-4">
-                <div className="bg-blue-100 p-3 rounded-lg">
-                  <module.icon className="h-8 w-8 text-blue-600" />
-                </div>
-                <div className="flex-1">
-                  <h2 className="text-2xl font-semibold text-blue-800 mb-2">
-                    {module.title}
-                  </h2>
-                  <p className="text-blue-700 mb-6">
-                    {module.description}
-                  </p>
+              {enrollMutation.isPending ? "Enrolling..." : "Enroll in Course"}
+            </Button>
+          )}
+        </motion.div>
 
-                  <div className="border-t border-blue-100 pt-6">
-                    <h3 className="text-xl font-semibold text-blue-800 mb-4">
-                      Module Content
-                    </h3>
-                    <div className="grid md:grid-cols-2 gap-4">
-                      {module.sections.map((section, index) => (
-                        <div
-                          key={index}
-                          className="bg-blue-50 p-4 rounded-lg text-blue-700 hover:bg-blue-100 transition-colors"
-                        >
-                          {section}
-                        </div>
-                      ))}
+        {isEnrolled ? (
+          <>
+            <div className="mb-12">
+              <PersonalizedPath />
+            </div>
+
+            <div className="space-y-8">
+              {currentCourse.modules.map((module) => (
+                <motion.div
+                  key={module.id}
+                  className="bg-white shadow-lg rounded-lg p-8 hover:shadow-xl transition-all duration-300"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: module.id * 0.2 }}
+                >
+                  <div className="flex items-start space-x-4">
+                    <div className="bg-blue-100 p-3 rounded-lg">
+                      <module.icon className="h-8 w-8 text-blue-600" />
                     </div>
+                    <div className="flex-1">
+                      <h2 className="text-2xl font-semibold text-blue-800 mb-2">
+                        {module.title}
+                      </h2>
+                      <p className="text-blue-700 mb-6">
+                        {module.description}
+                      </p>
 
-                    <div className="mt-6 text-center">
-                      <Link href={module.path}>
-                        <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
-                          Start Learning
-                        </button>
-                      </Link>
+                      <div className="border-t border-blue-100 pt-6">
+                        <h3 className="text-xl font-semibold text-blue-800 mb-4">
+                          Module Content
+                        </h3>
+                        <div className="grid md:grid-cols-2 gap-4">
+                          {module.sections.map((section, index) => (
+                            <div
+                              key={index}
+                              className="bg-blue-50 p-4 rounded-lg text-blue-700 hover:bg-blue-100 transition-colors"
+                            >
+                              {section}
+                            </div>
+                          ))}
+                        </div>
+
+                        <div className="mt-6 text-center">
+                          <Link href={module.path}>
+                            <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                              Start Learning
+                            </button>
+                          </Link>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+                </motion.div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <Card className="p-6 text-center">
+            <h3 className="text-xl font-semibold mb-4">Enroll to Access Course Content</h3>
+            <p className="text-gray-600 mb-4">
+              Please enroll in this course to access all learning materials, modules, and interactive content.
+            </p>
+          </Card>
+        )}
 
         <motion.div
           className="mt-12 bg-white shadow-lg rounded-lg p-8"
