@@ -9,6 +9,15 @@ app.use(express.urlencoded({ extended: false }));
 // Trust proxy - required for secure cookies in production
 app.set('trust proxy', 1);
 
+// Add Content-Security-Policy headers
+app.use((req, res, next) => {
+  res.setHeader(
+    'Content-Security-Policy',
+    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+  );
+  next();
+});
+
 // Add request logging middleware
 app.use((req, res, next) => {
   const start = Date.now();
@@ -38,49 +47,41 @@ app.use((req, res, next) => {
   next();
 });
 
-// Function to try starting the server on a port
-async function startServer(port: number): Promise<boolean> {
-  return new Promise((resolve) => {
-    const server = registerRoutes(app);
-
-    server.listen(port, "0.0.0.0")
-      .once('listening', () => {
-        log(`Server successfully started on port ${port}`);
-        resolve(true);
-      })
-      .once('error', (error: NodeJS.ErrnoException) => {
-        if (error.code === 'EADDRINUSE') {
-          log(`Port ${port} is in use, will try alternative`);
-          resolve(false);
-        } else {
-          log(`Failed to start server: ${error.message}`);
-          process.exit(1);
-        }
-      });
-  });
-}
+// Add health check endpoint
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
 
 (async () => {
   try {
     log("Starting server initialization...");
+    const PORT = 5000;
 
-    const isProduction = process.env.NODE_ENV === 'production';
-    let port = Number(process.env.PORT || 3000);
+    // Set up Vite middleware in development
+    if (process.env.NODE_ENV !== 'production') {
+      await setupVite(app);
+    }
 
     log("Setting up initial middleware...");
+    const server = registerRoutes(app);
 
-    // Keep trying ports until we find an available one
-    let serverStarted = false;
-    while (!serverStarted && port < 3010) { // Try up to 10 ports
-      serverStarted = await startServer(port);
-      if (!serverStarted) {
-        port++;
+    // Serve static files in production
+    if (process.env.NODE_ENV === 'production') {
+      app.use(serveStatic());
+    }
+
+    // Start server on port 5000
+    server.listen(PORT, "0.0.0.0", () => {
+      log(`Server successfully started on port ${PORT}`);
+    }).on('error', (error: NodeJS.ErrnoException) => {
+      if (error.code === 'EADDRINUSE') {
+        log(`Port ${PORT} is already in use`);
+        process.exit(1);
+      } else {
+        log(`Failed to start server: ${error.message}`);
+        process.exit(1);
       }
-    }
-
-    if (!serverStarted) {
-      throw new Error("Could not find an available port");
-    }
+    });
 
     // Error handling middleware - should be last
     app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
