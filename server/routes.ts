@@ -4,6 +4,7 @@ import { db } from "@db";
 import { quizzes, userQuizResponses } from "@db/schema";
 import { eq } from "drizzle-orm";
 import { setupAuth } from "./auth";
+import enrollmentsRouter from "./routes/enrollments";
 import path from 'path';
 import { fileURLToPath } from 'url';
 import type { Browser } from 'puppeteer';
@@ -28,6 +29,9 @@ async function getBrowser() {
 export function registerRoutes(app: Express): Server {
   // Set up authentication routes
   setupAuth(app);
+
+  // Register enrollments routes
+  app.use(enrollmentsRouter);
 
   // Get quizzes for a specific module
   app.get("/api/modules/:moduleId/quizzes", async (req, res) => {
