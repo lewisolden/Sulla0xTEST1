@@ -72,7 +72,22 @@ router.get("/api/enrollments", async (req, res) => {
     const userEnrollments = await db.query.courseEnrollments.findMany({
       where: eq(courseEnrollments.userId, req.user.id),
       with: {
-        course: true
+        course: {
+          columns: {
+            id: true,
+            title: true,
+            description: true,
+          }
+        }
+      },
+      columns: {
+        id: true,
+        courseId: true,
+        status: true,
+        progress: true,
+        enrolledAt: true,
+        lastAccessedAt: true,
+        metadata: true
       }
     });
 

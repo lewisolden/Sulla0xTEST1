@@ -9,13 +9,31 @@ import { useProgress } from "@/context/progress-context";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 
+interface Enrollment {
+  id: number;
+  courseId: number;
+  status: string;
+  progress: number;
+  enrolledAt: string;
+  lastAccessedAt: string;
+  metadata: {
+    lastModule?: string;
+    lastTopic?: string;
+    lastPath?: string;
+  } | null;
+  course: {
+    title: string;
+    description: string;
+  };
+}
+
 export default function AccountPage() {
   const { user } = useAuth();
   const { progress } = useProgress();
   const [activeTab, setActiveTab] = useState("dashboard");
 
   // Fetch enrollments data
-  const { data: enrollments, isLoading: loadingEnrollments } = useQuery({
+  const { data: enrollments, isLoading: loadingEnrollments } = useQuery<Enrollment[]>({
     queryKey: ['enrollments'],
     queryFn: async () => {
       const response = await fetch('/api/enrollments');
@@ -28,6 +46,13 @@ export default function AccountPage() {
   const totalEnrollments = enrollments?.length || 0;
   const completedEnrollments = enrollments?.filter(e => e.status === 'completed').length || 0;
   const overallProgress = totalEnrollments ? (completedEnrollments / totalEnrollments) * 100 : 0;
+
+  const getContinueLearningPath = (enrollment: Enrollment) => {
+    if (enrollment.metadata?.lastPath) {
+      return enrollment.metadata.lastPath;
+    }
+    return '/curriculum';
+  };
 
   if (!user) return null;
 
@@ -98,9 +123,17 @@ export default function AccountPage() {
                             <p className="text-sm text-gray-500">
                               Enrolled: {new Date(enrollment.enrolledAt).toLocaleDateString()}
                             </p>
+                            {enrollment.metadata?.lastModule && (
+                              <p className="text-sm text-gray-500">
+                                Last Activity: {enrollment.metadata.lastModule}
+                                {enrollment.metadata.lastTopic && ` - ${enrollment.metadata.lastTopic}`}
+                              </p>
+                            )}
                           </div>
                           <Button className="w-full" asChild>
-                            <Link href="/curriculum">Continue Learning</Link>
+                            <Link href={getContinueLearningPath(enrollment)}>
+                              Continue Learning
+                            </Link>
                           </Button>
                         </div>
                       </CardContent>
