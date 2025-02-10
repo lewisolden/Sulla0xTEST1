@@ -21,16 +21,16 @@ export default function AccountPage() {
   if (!user) return null;
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <div className="container mx-auto px-4 py-8 max-w-6xl">
       {/* Profile Header */}
-      <Card>
+      <Card className="mb-8">
         <CardContent className="flex items-center gap-6 p-6">
           <Avatar className="h-24 w-24">
             <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${user.username}`} />
             <AvatarFallback>{user.username[0].toUpperCase()}</AvatarFallback>
           </Avatar>
           <div className="space-y-2">
-            <h1 className="text-2xl font-bold">{user.username}</h1>
+            <h1 className="text-2xl font-bold text-blue-900">{user.username}</h1>
             <p className="text-gray-500">{user.email}</p>
           </div>
         </CardContent>
@@ -39,17 +39,17 @@ export default function AccountPage() {
       {/* Main Content */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-          <TabsTrigger value="learning">Interactive Learning</TabsTrigger>
-          <TabsTrigger value="feedback">Feedback & Reviews</TabsTrigger>
+          <TabsTrigger value="dashboard">Overview</TabsTrigger>
+          <TabsTrigger value="progress">Course Progress</TabsTrigger>
+          <TabsTrigger value="learning">Interactive Tools</TabsTrigger>
           <TabsTrigger value="profile">Profile Settings</TabsTrigger>
         </TabsList>
 
-        {/* Dashboard Tab */}
+        {/* Overview Tab */}
         <TabsContent value="dashboard">
           <Card>
             <CardHeader>
-              <CardTitle>Learning Progress</CardTitle>
+              <CardTitle>Learning Dashboard</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
@@ -89,6 +89,92 @@ export default function AccountPage() {
           </Card>
         </TabsContent>
 
+        {/* Course Progress Tab */}
+        <TabsContent value="progress">
+          <Card>
+            <CardHeader>
+              <CardTitle>Course Progress & Management</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-6">
+                {/* Module Progress Cards */}
+                <div className="grid gap-4 md:grid-cols-2">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-lg">Module 1: Blockchain Fundamentals</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div>
+                          <div className="flex justify-between text-sm mb-2">
+                            <span>Course Completion</span>
+                            <span>75%</span>
+                          </div>
+                          <Progress value={75} />
+                        </div>
+                        <div className="space-y-2">
+                          <p className="text-sm text-gray-500">Quiz Scores: 85%</p>
+                          <p className="text-sm text-gray-500">Time Spent: 4.5 hours</p>
+                        </div>
+                        <Button className="w-full" asChild>
+                          <Link href="/modules/module1">Continue Learning</Link>
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-lg">Module 2: Smart Contracts</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div>
+                          <div className="flex justify-between text-sm mb-2">
+                            <span>Course Completion</span>
+                            <span>45%</span>
+                          </div>
+                          <Progress value={45} />
+                        </div>
+                        <div className="space-y-2">
+                          <p className="text-sm text-gray-500">Quiz Scores: 90%</p>
+                          <p className="text-sm text-gray-500">Time Spent: 2.5 hours</p>
+                        </div>
+                        <Button className="w-full" asChild>
+                          <Link href="/modules/module2">Continue Learning</Link>
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Achievement Summary */}
+                  <Card className="md:col-span-2">
+                    <CardHeader>
+                      <CardTitle className="text-lg">Learning Achievements</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid gap-4 md:grid-cols-3">
+                        <div className="text-center p-4 bg-blue-50 rounded-lg">
+                          <h3 className="font-semibold">Quizzes Completed</h3>
+                          <p className="text-2xl font-bold text-blue-600">12</p>
+                        </div>
+                        <div className="text-center p-4 bg-green-50 rounded-lg">
+                          <h3 className="font-semibold">Average Score</h3>
+                          <p className="text-2xl font-bold text-green-600">87%</p>
+                        </div>
+                        <div className="text-center p-4 bg-purple-50 rounded-lg">
+                          <h3 className="font-semibold">Badges Earned</h3>
+                          <p className="text-2xl font-bold text-purple-600">5</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
         {/* Interactive Learning Tab */}
         <TabsContent value="learning">
           <Card>
@@ -99,7 +185,7 @@ export default function AccountPage() {
               <div className="grid gap-4 md:grid-cols-2">
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg">Active Quizzes</CardTitle>
+                    <CardTitle className="text-lg">Practice Quizzes</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-2">
@@ -108,7 +194,7 @@ export default function AccountPage() {
                         <Button size="sm">Start Quiz</Button>
                       </li>
                       <li className="flex justify-between items-center">
-                        <span>Cryptocurrency Basics</span>
+                        <span>Smart Contracts Basics</span>
                         <Button size="sm">Continue</Button>
                       </li>
                     </ul>
@@ -117,43 +203,19 @@ export default function AccountPage() {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-lg">Discussion Forums</CardTitle>
+                    <CardTitle className="text-lg">Learning Resources</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-2">
                       <li className="flex justify-between items-center">
-                        <span>Latest Topics</span>
+                        <span>Video Tutorials</span>
                         <Button size="sm" variant="outline">View</Button>
                       </li>
                       <li className="flex justify-between items-center">
-                        <span>My Discussions</span>
-                        <Button size="sm" variant="outline">View</Button>
+                        <span>Practice Exercises</span>
+                        <Button size="sm" variant="outline">Start</Button>
                       </li>
                     </ul>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Live Sessions</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      <p className="text-sm text-gray-500">Upcoming live learning sessions</p>
-                      <Button className="w-full">Schedule a Session</Button>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Assignments</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      <p className="text-sm text-gray-500">Track your assignments and submissions</p>
-                      <Button className="w-full" variant="outline">View Assignments</Button>
-                    </div>
                   </CardContent>
                 </Card>
               </div>
