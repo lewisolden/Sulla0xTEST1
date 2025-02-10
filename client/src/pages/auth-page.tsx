@@ -34,7 +34,12 @@ export default function AuthPage() {
   const onSubmit = async (data: InsertUser) => {
     try {
       if (isRegisterPage) {
-        await registerMutation.mutateAsync(data);
+        // Ensure email is included for registration
+        await registerMutation.mutateAsync({
+          username: data.username,
+          email: data.email,
+          password: data.password,
+        });
       } else {
         const { username, password } = data;
         await loginMutation.mutateAsync({ username, password });
