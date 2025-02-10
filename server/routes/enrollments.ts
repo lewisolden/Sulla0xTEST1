@@ -17,10 +17,11 @@ export async function getEnrollments(req: Request, res: Response) {
       }
     });
 
+    console.log("Found enrollments:", userEnrollments);
     res.json(userEnrollments);
   } catch (error) {
     console.error("Error fetching enrollments:", error);
-    res.status(500).json({ error: "Failed to fetch enrollments" });
+    res.status(500).json({ error: "Failed to fetch enrollments", details: error instanceof Error ? error.message : String(error) });
   }
 }
 
@@ -40,6 +41,7 @@ export async function createEnrollment(req: Request, res: Response) {
     // Check if course exists
     const [course] = await db.select().from(courses).where(eq(courses.id, courseId));
     if (!course) {
+      console.log("Course not found:", courseId);
       return res.status(404).json({ error: "Course not found" });
     }
 
@@ -55,6 +57,7 @@ export async function createEnrollment(req: Request, res: Response) {
       );
 
     if (existing) {
+      console.log("User already enrolled:", req.user!.id, "Course:", courseId);
       return res.status(400).json({ error: "Already enrolled in this course" });
     }
 
@@ -65,13 +68,15 @@ export async function createEnrollment(req: Request, res: Response) {
         userId: req.user!.id,
         courseId: courseId,
         status: 'active',
-        progress: 0
+        progress: 0,
+        metadata: {}
       })
       .returning();
 
-    res.status(200).json(enrollment);
+    console.log("Created enrollment:", enrollment);
+    res.status(201).json(enrollment);
   } catch (error) {
     console.error("Error creating enrollment:", error);
-    res.status(500).json({ error: "Failed to create enrollment" });
+    res.status(500).json({ error: "Failed to create enrollment", details: error instanceof Error ? error.message : String(error) });
   }
 }

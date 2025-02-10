@@ -38,10 +38,49 @@ app.use((req, res, next) => {
   next();
 });
 
+// Function to try starting the server on a port
+async function startServer(port: number): Promise<boolean> {
+  return new Promise((resolve) => {
+    const server = registerRoutes(app);
+
+    server.listen(port, "0.0.0.0")
+      .once('listening', () => {
+        log(`Server successfully started on port ${port}`);
+        resolve(true);
+      })
+      .once('error', (error: NodeJS.ErrnoException) => {
+        if (error.code === 'EADDRINUSE') {
+          log(`Port ${port} is in use, will try alternative`);
+          resolve(false);
+        } else {
+          log(`Failed to start server: ${error.message}`);
+          process.exit(1);
+        }
+      });
+  });
+}
+
 (async () => {
   try {
     log("Starting server initialization...");
-    const server = registerRoutes(app);
+
+    const isProduction = process.env.NODE_ENV === 'production';
+    let port = Number(process.env.PORT || 3000);
+
+    log("Setting up initial middleware...");
+
+    // Keep trying ports until we find an available one
+    let serverStarted = false;
+    while (!serverStarted && port < 3010) { // Try up to 10 ports
+      serverStarted = await startServer(port);
+      if (!serverStarted) {
+        port++;
+      }
+    }
+
+    if (!serverStarted) {
+      throw new Error("Could not find an available port");
+    }
 
     // Error handling middleware - should be last
     app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
@@ -50,38 +89,6 @@ app.use((req, res, next) => {
       log(`Error: ${message}`);
       res.status(status).json({ message });
       console.error(err);
-    });
-
-    const isProduction = process.env.NODE_ENV === 'production';
-    const port = Number(process.env.PORT || 3000); // Convert port to number
-
-    if (!isProduction) {
-      log("Setting up Vite middleware...");
-      await setupVite(app, server);
-      log("Vite middleware setup complete");
-    } else {
-      log("Setting up static file serving...");
-      serveStatic(app);
-      log("Static file serving setup complete");
-    }
-
-    log(`Attempting to start server on port ${port}...`);
-
-    // Try to start the server with better error handling
-    server.listen(port, "0.0.0.0", () => {
-      log(`Server is running on port ${port}`);
-    }).on('error', (error: NodeJS.ErrnoException) => {
-      if (error.code === 'EADDRINUSE') {
-        log(`Port ${port} is already in use. Please try a different port.`);
-        // Try to find a free port by incrementing
-        const newPort = port + 1;
-        server.listen(newPort, "0.0.0.0", () => {
-          log(`Server started on alternate port ${newPort}`);
-        });
-      } else {
-        log(`Server error: ${error.message}`);
-        process.exit(1);
-      }
     });
 
   } catch (error) {
