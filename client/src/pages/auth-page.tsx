@@ -106,8 +106,8 @@ export default function AuthPage() {
               )}
             </div>
 
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700"
               disabled={isLoading}
             >
@@ -138,10 +138,10 @@ export default function AuthPage() {
 
         <div className="hidden md:block text-center">
           <h2 className="text-4xl font-bold text-blue-900 mb-4">
-            Learning Platform
+            Sulla
           </h2>
           <p className="text-lg text-blue-700">
-            Explore and master complex subjects through innovative, interactive educational experiences.
+            Master blockchain technology through interactive learning experiences. From fundamentals to advanced smart contracts, your journey to Web3 expertise starts here.
           </p>
         </div>
       </div>
