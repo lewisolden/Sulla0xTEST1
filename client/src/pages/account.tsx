@@ -9,8 +9,7 @@ import { useProgress } from "@/context/progress-context";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { Clock, Trophy, Zap, Flame, ArrowRight, GamepadIcon, BookOpen, Brain } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
-import { Bell, Bookmark, Target, Calendar as CalendarIcon } from "lucide-react";
+import { Bell, Bookmark, Target } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 
 interface Enrollment {
@@ -35,7 +34,6 @@ export default function AccountPage() {
   const { user } = useAuth();
   const { progress } = useProgress();
   const [activeTab, setActiveTab] = useState("dashboard");
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [showNotifications, setShowNotifications] = useState(false);
 
   const { data: enrollments, isLoading: loadingEnrollments } = useQuery<Enrollment[]>({
@@ -95,12 +93,10 @@ export default function AccountPage() {
       </Card>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-6">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="dashboard">Overview</TabsTrigger>
           <TabsTrigger value="progress">Course Progress</TabsTrigger>
-          <TabsTrigger value="learning">Interactive Tools</TabsTrigger>
           <TabsTrigger value="goals">Learning Goals</TabsTrigger>
-          <TabsTrigger value="schedule">Study Schedule</TabsTrigger>
           <TabsTrigger value="profile">Profile</TabsTrigger>
         </TabsList>
 
@@ -344,54 +340,6 @@ export default function AccountPage() {
           </Card>
         </TabsContent>
 
-        <TabsContent value="learning">
-          <Card>
-            <CardHeader>
-              <CardTitle>Interactive Learning Tools</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-4 md:grid-cols-2">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Practice Quizzes</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-2">
-                      <li className="flex justify-between items-center">
-                        <span>Blockchain Fundamentals</span>
-                        <Button size="sm">Start Quiz</Button>
-                      </li>
-                      <li className="flex justify-between items-center">
-                        <span>Smart Contracts Basics</span>
-                        <Button size="sm">Continue</Button>
-                      </li>
-                    </ul>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Learning Resources</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-2">
-                      <li className="flex justify-between items-center">
-                        <span>Video Tutorials</span>
-                        <Button size="sm" variant="outline">View</Button>
-                      </li>
-                      <li className="flex justify-between items-center">
-                        <span>Practice Exercises</span>
-                        <Button size="sm" variant="outline">Start</Button>
-                      </li>
-                    </ul>
-                  </CardContent>
-                </Card>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-
         <TabsContent value="goals">
           <Card>
             <CardHeader>
@@ -430,45 +378,6 @@ export default function AccountPage() {
                   <Target className="mr-2 h-4 w-4" />
                   Set New Goal
                 </Button>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="schedule">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <CalendarIcon className="h-5 w-5" />
-                Study Schedule
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <Calendar
-                    mode="single"
-                    selected={selectedDate}
-                    onSelect={setSelectedDate}
-                    className="rounded-md border"
-                  />
-                </div>
-                <Card className="p-4">
-                  <h3 className="font-semibold mb-4">Upcoming Sessions</h3>
-                  <div className="space-y-4">
-                    <div className="p-3 bg-blue-50 rounded-lg">
-                      <p className="font-medium">Blockchain Fundamentals</p>
-                      <p className="text-sm text-gray-600">Today, 3:00 PM</p>
-                    </div>
-                    <div className="p-3 bg-green-50 rounded-lg">
-                      <p className="font-medium">Smart Contracts Workshop</p>
-                      <p className="text-sm text-gray-600">Tomorrow, 2:00 PM</p>
-                    </div>
-                  </div>
-                  <Button className="w-full mt-4">
-                    Schedule New Session
-                  </Button>
-                </Card>
               </div>
             </CardContent>
           </Card>
