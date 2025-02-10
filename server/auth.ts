@@ -28,12 +28,6 @@ const crypto = {
   },
 };
 
-declare global {
-  namespace Express {
-    interface User extends SelectUser {}
-  }
-}
-
 export function setupAuth(app: Express) {
   const MemoryStore = createMemoryStore(session);
   const isProduction = process.env.NODE_ENV === 'production';
