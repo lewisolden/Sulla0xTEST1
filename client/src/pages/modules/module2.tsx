@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import Footer from "@/components/layout/footer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -63,23 +64,23 @@ const moduleTopics = [
 
 export default function Module2() {
   useScrollTop();
-  const { progress } = useProgress();
-  const moduleProgress = progress.filter(p => p.moduleId === 2);
-  const completedSections = moduleProgress.filter(p => p.completed).length;
+  const { progress = [] } = useProgress();
+  const moduleProgress = (progress || []).filter(p => p?.moduleId === 2);
+  const completedSections = moduleProgress.filter(p => p?.completed).length;
   const progressPercentage = (completedSections / moduleTopics.length) * 100;
 
   // Check if quiz is completed
-  const isQuizCompleted = moduleProgress.some(p => p.sectionId === "module2-quiz" && p.completed);
+  const isQuizCompleted = moduleProgress.some(p => p?.sectionId === "module2-quiz" && p?.completed);
   // Check if all topics are completed
   const allTopicsCompleted = moduleTopics.every(topic => 
-    moduleProgress.some(p => p.sectionId === topic.id && p.completed)
+    moduleProgress.some(p => p?.sectionId === topic.id && p?.completed)
   );
   // Module is complete when all topics and quiz are done
   const isModuleComplete = allTopicsCompleted && isQuizCompleted;
 
   const topicsWithProgress = moduleTopics.map(topic => ({
     ...topic,
-    completed: moduleProgress.some(p => p.sectionId === topic.id && p.completed)
+    completed: moduleProgress.some(p => p?.sectionId === topic.id && p?.completed)
   }));
 
   return (
