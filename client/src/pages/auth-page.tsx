@@ -8,7 +8,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { insertUserSchema } from "@db/schema";
 import type { InsertUser } from "@db/schema";
 import { useLocation } from "wouter";
-import { Loader2 } from "lucide-react";
+import { Loader2, Blocks, GraduationCap, Brain, Lightbulb } from "lucide-react";
 
 export default function AuthPage() {
   const [, setLocation] = useLocation();
@@ -52,9 +52,9 @@ export default function AuthPage() {
   const isLoading = loginMutation.isPending || registerMutation.isPending;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4">
       <div className="w-full max-w-6xl grid md:grid-cols-2 gap-8 items-center">
-        <Card className="p-8 shadow-lg">
+        <Card className="p-8 shadow-xl backdrop-blur-sm bg-white/90">
           <h1 className="text-3xl font-bold text-center mb-8 text-blue-900">
             {isRegisterPage ? "Create Account" : "Welcome Back!"}
           </h1>
@@ -66,6 +66,7 @@ export default function AuthPage() {
                 {...form.register("username")}
                 placeholder="Enter your username"
                 disabled={isLoading}
+                className="border-blue-200 focus:border-blue-400"
               />
               {form.formState.errors.username && (
                 <p className="text-sm text-red-500">
@@ -82,6 +83,7 @@ export default function AuthPage() {
                   type="email"
                   placeholder="Enter your email"
                   disabled={isLoading}
+                  className="border-blue-200 focus:border-blue-400"
                 />
                 {form.formState.errors.email && (
                   <p className="text-sm text-red-500">
@@ -98,6 +100,7 @@ export default function AuthPage() {
                 type="password"
                 placeholder="Enter your password"
                 disabled={isLoading}
+                className="border-blue-200 focus:border-blue-400"
               />
               {form.formState.errors.password && (
                 <p className="text-sm text-red-500">
@@ -108,7 +111,7 @@ export default function AuthPage() {
 
             <Button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700"
+              className="w-full bg-blue-600 hover:bg-blue-700 mt-6"
               disabled={isLoading}
             >
               {isLoading ? (
@@ -125,7 +128,7 @@ export default function AuthPage() {
           <div className="mt-6 text-center">
             <button
               onClick={() => setLocation(isRegisterPage ? "/login" : "/register")}
-              className="text-blue-600 hover:text-blue-800"
+              className="text-blue-600 hover:text-blue-800 transition-colors"
               type="button"
               disabled={isLoading}
             >
@@ -136,13 +139,37 @@ export default function AuthPage() {
           </div>
         </Card>
 
-        <div className="hidden md:block text-center">
-          <h2 className="text-4xl font-bold text-blue-900 mb-4">
+        <div className="hidden md:block text-center space-y-8">
+          <div className="flex justify-center mb-6">
+            <Blocks className="h-20 w-20 text-blue-600 animate-pulse" />
+          </div>
+          <h2 className="text-5xl font-bold text-blue-900 mb-6">
             Sulla
           </h2>
-          <p className="text-lg text-blue-700">
+          <p className="text-xl text-blue-700 leading-relaxed max-w-lg mx-auto">
             Master blockchain technology through interactive learning experiences. From fundamentals to advanced smart contracts, your journey to Web3 expertise starts here.
           </p>
+
+          <div className="grid grid-cols-3 gap-6 mt-12">
+            <div className="flex flex-col items-center space-y-2">
+              <div className="p-3 bg-blue-100 rounded-full">
+                <Brain className="h-6 w-6 text-blue-600" />
+              </div>
+              <span className="text-sm text-blue-700">Interactive Learning</span>
+            </div>
+            <div className="flex flex-col items-center space-y-2">
+              <div className="p-3 bg-blue-100 rounded-full">
+                <GraduationCap className="h-6 w-6 text-blue-600" />
+              </div>
+              <span className="text-sm text-blue-700">Expert-Led Content</span>
+            </div>
+            <div className="flex flex-col items-center space-y-2">
+              <div className="p-3 bg-blue-100 rounded-full">
+                <Lightbulb className="h-6 w-6 text-blue-600" />
+              </div>
+              <span className="text-sm text-blue-700">Practical Projects</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
