@@ -10,35 +10,28 @@ import { db } from "@db";
 import { eq } from "drizzle-orm";
 
 const scryptAsync = promisify(scrypt);
-const crypto = {
-  hash: async (password: string) => {
-    const salt = randomBytes(16).toString("hex");
-    const buf = (await scryptAsync(password, salt, 64)) as Buffer;
-    return `${buf.toString("hex")}.${salt}`;
-  },
-  compare: async (suppliedPassword: string, storedPassword: string) => {
-    const [hashedPassword, salt] = storedPassword.split(".");
-    if (!hashedPassword || !salt) {
-      return false;
-    }
-    const hashedPasswordBuf = Buffer.from(hashedPassword, "hex");
-    const suppliedPasswordBuf = (await scryptAsync(
-      suppliedPassword,
-      salt,
-      64
-    )) as Buffer;
-    return timingSafeEqual(hashedPasswordBuf, suppliedPasswordBuf);
-  },
-};
+
+async function hashPassword(password: string) {
+  const salt = randomBytes(16).toString("hex");
+  const buf = (await scryptAsync(password, salt, 64)) as Buffer;
+  return `${buf.toString("hex")}.${salt}`;
+}
+
+async function verifyPassword(supplied: string, stored: string) {
+  const [hashedPassword, salt] = stored.split(".");
+  if (!hashedPassword || !salt) return false;
+
+  const hashedBuf = Buffer.from(hashedPassword, "hex");
+  const suppliedBuf = (await scryptAsync(supplied, salt, 64)) as Buffer;
+  return hashedBuf.length === suppliedBuf.length && timingSafeEqual(hashedBuf, suppliedBuf);
+}
 
 declare global {
   namespace Express {
-    interface User extends SelectUser {}
-    interface AdminUser extends SelectAdminUser {}
+    interface User extends Partial<SelectUser & SelectAdminUser> {}
   }
 }
 
-// Middleware to check if user is an admin
 export const requireAdmin = async (req: any, res: any, next: any) => {
   if (!req.isAuthenticated()) {
     return res.status(401).json({ error: "Not authenticated" });
@@ -84,7 +77,7 @@ export function setupAuth(app: Express) {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  // Regular user authentication strategy
+  // Regular user strategy
   passport.use('local', new LocalStrategy(async (username, password, done) => {
     try {
       const [user] = await db
@@ -96,17 +89,19 @@ export function setupAuth(app: Express) {
       if (!user) {
         return done(null, false, { message: "Incorrect username." });
       }
-      const isMatch = await crypto.compare(password, user.password);
-      if (!isMatch) {
+
+      const isValid = await verifyPassword(password, user.password);
+      if (!isValid) {
         return done(null, false, { message: "Incorrect password." });
       }
-      return done(null, user);
+
+      return done(null, { ...user, role: 'user' });
     } catch (err) {
       return done(err);
     }
   }));
 
-  // Admin authentication strategy
+  // Admin strategy
   passport.use('admin-local', new LocalStrategy(async (username, password, done) => {
     try {
       const [admin] = await db
@@ -118,18 +113,20 @@ export function setupAuth(app: Express) {
       if (!admin) {
         return done(null, false, { message: "Incorrect admin username." });
       }
-      const isMatch = await crypto.compare(password, admin.password);
-      if (!isMatch) {
-        return done(null, false, { message: "Incorrect admin password." });
+
+      const isValid = await verifyPassword(password, admin.password);
+      if (!isValid) {
+        return done(null, false, { message: "Incorrect password." });
       }
+
       return done(null, admin);
     } catch (err) {
       return done(err);
     }
   }));
 
-  passport.serializeUser((user: any, done) => {
-    done(null, { id: user.id, isAdmin: !!user.role });
+  passport.serializeUser((user: Express.User, done) => {
+    done(null, { id: user.id, isAdmin: user.role === 'admin' });
   });
 
   passport.deserializeUser(async (data: { id: number, isAdmin: boolean }, done) => {
@@ -140,41 +137,54 @@ export function setupAuth(app: Express) {
           .from(adminUsers)
           .where(eq(adminUsers.id, data.id))
           .limit(1);
-        done(null, admin);
+        done(null, { ...admin, role: 'admin' });
       } else {
         const [user] = await db
           .select()
           .from(users)
           .where(eq(users.id, data.id))
           .limit(1);
-        done(null, user);
+        done(null, { ...user, role: 'user' });
       }
     } catch (err) {
       done(err);
     }
   });
 
-  // Admin login route
+  // Admin login route with improved error handling
   app.post("/api/admin/login", (req, res, next) => {
-    passport.authenticate("admin-local", (err: any, admin: Express.AdminUser | false, info: IVerifyOptions) => {
+    passport.authenticate("admin-local", async (err: any, admin: Express.User | false, info: IVerifyOptions) => {
       if (err) {
-        return next(err);
+        console.error("Admin login error:", err);
+        return res.status(500).json({ error: "Internal server error" });
       }
 
       if (!admin) {
-        return res.status(400).json({ error: info.message ?? "Admin login failed" });
+        return res.status(401).json({ 
+          error: info?.message || "Invalid username or password" 
+        });
       }
 
-      req.logIn(admin, (err) => {
-        if (err) {
-          return next(err);
-        }
+      try {
+        await new Promise((resolve, reject) => {
+          req.logIn(admin, (err) => {
+            if (err) reject(err);
+            else resolve(admin);
+          });
+        });
 
         return res.json({
           message: "Admin login successful",
-          admin: { id: admin.id, username: admin.username, role: admin.role },
+          user: {
+            id: admin.id,
+            username: admin.username,
+            role: 'admin'
+          }
         });
-      });
+      } catch (error) {
+        console.error("Session error:", error);
+        return res.status(500).json({ error: "Failed to create session" });
+      }
     })(req, res, next);
   });
 
@@ -183,51 +193,39 @@ export function setupAuth(app: Express) {
     try {
       const result = insertUserSchema.safeParse(req.body);
       if (!result.success) {
-        return res
-          .status(400)
-          .json({ error: result.error.issues.map((issue) => issue.message).join(", ") });
+        return res.status(400).json({ 
+          error: result.error.issues.map((issue) => issue.message).join(", ") 
+        });
       }
 
       const { username, email, password } = result.data;
 
-      const [existingUsername] = await db
+      const [existingUser] = await db
         .select()
         .from(users)
         .where(eq(users.username, username))
         .limit(1);
 
-      if (existingUsername) {
+      if (existingUser) {
         return res.status(400).json({ error: "Username already exists" });
       }
-
-      const [existingEmail] = await db
-        .select()
-        .from(users)
-        .where(eq(users.email, email))
-        .limit(1);
-
-      if (existingEmail) {
-        return res.status(400).json({ error: "Email already exists" });
-      }
-
-      const hashedPassword = await crypto.hash(password);
 
       const [newUser] = await db
         .insert(users)
         .values({
           username,
           email,
-          password: hashedPassword,
+          password: await hashPassword(password),
         })
         .returning();
 
-      req.login(newUser, (err) => {
+      req.login({ ...newUser, role: 'user' }, (err) => {
         if (err) {
           return next(err);
         }
         return res.status(201).json({
           message: "Registration successful",
-          user: { id: newUser.id, username: newUser.username },
+          user: { id: newUser.id, username: newUser.username, role: 'user' },
         });
       });
     } catch (error) {
@@ -253,7 +251,7 @@ export function setupAuth(app: Express) {
 
         return res.json({
           message: "Login successful",
-          user: { id: user.id, username: user.username },
+          user: { id: user.id, username: user.username, role: user.role },
         });
       });
     })(req, res, next);
@@ -274,8 +272,6 @@ export function setupAuth(app: Express) {
     }
     res.json(req.user);
   });
-
-  // New admin registration route (protected)
   app.post("/api/admin/register", requireAdmin, async (req, res, next) => {
     try {
       const result = insertAdminUserSchema.safeParse(req.body);
@@ -297,7 +293,7 @@ export function setupAuth(app: Express) {
         return res.status(400).json({ error: "Admin username already exists" });
       }
 
-      const hashedPassword = await crypto.hash(password);
+      const hashedPassword = await hashPassword(password);
 
       const [newAdmin] = await db
         .insert(adminUsers)
