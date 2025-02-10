@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
+import { Clock, Trophy, Zap, Flame, ArrowRight, GamepadIcon, BookOpen, Brain } from "lucide-react";
 
 interface Enrollment {
   id: number;
@@ -51,12 +52,10 @@ export default function AccountPage() {
     if (enrollment.metadata?.lastPath) {
       return enrollment.metadata.lastPath;
     }
-    // If no lastPath is saved, extract module number from the lastModule or default to module1
     const moduleMatch = enrollment.metadata?.lastModule?.match(/Module (\d+)/i);
     if (moduleMatch) {
       return `/modules/module${moduleMatch[1]}`;
     }
-    // Default to first module
     return `/modules/module1`;
   };
 
@@ -88,73 +87,173 @@ export default function AccountPage() {
 
         {/* Overview Tab */}
         <TabsContent value="dashboard">
-          <Card>
-            <CardHeader>
-              <CardTitle>Learning Dashboard</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span>Overall Progress</span>
-                  <span>{Math.round(overallProgress)}%</span>
-                </div>
-                <Progress value={overallProgress} />
-              </div>
+          <div className="grid gap-6">
+            {/* Quick Stats Section */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <Card className="bg-blue-50">
+                <CardContent className="pt-6">
+                  <div className="flex items-center gap-3">
+                    <div className="p-3 bg-blue-100 rounded-full">
+                      <Clock className="h-6 w-6 text-blue-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-blue-600">Learning Time</p>
+                      <p className="text-2xl font-bold text-blue-900">12.5 hrs</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
 
-              {loadingEnrollments ? (
-                <div className="text-center p-4">
-                  <p>Loading your courses...</p>
-                </div>
-              ) : enrollments && enrollments.length > 0 ? (
-                <div className="grid gap-4 md:grid-cols-2">
-                  {enrollments.map((enrollment) => (
-                    <Card key={enrollment.id}>
-                      <CardHeader>
-                        <CardTitle className="text-lg">{enrollment.course.title}</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-4">
-                          <div>
-                            <div className="flex justify-between text-sm mb-2">
-                              <span>Course Progress</span>
-                              <span>{enrollment.progress}%</span>
+              <Card className="bg-green-50">
+                <CardContent className="pt-6">
+                  <div className="flex items-center gap-3">
+                    <div className="p-3 bg-green-100 rounded-full">
+                      <Trophy className="h-6 w-6 text-green-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-green-600">Completed Quizzes</p>
+                      <p className="text-2xl font-bold text-green-900">15</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-purple-50">
+                <CardContent className="pt-6">
+                  <div className="flex items-center gap-3">
+                    <div className="p-3 bg-purple-100 rounded-full">
+                      <Zap className="h-6 w-6 text-purple-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-purple-600">Achievement Badges</p>
+                      <p className="text-2xl font-bold text-purple-900">8</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="bg-orange-50">
+                <CardContent className="pt-6">
+                  <div className="flex items-center gap-3">
+                    <div className="p-3 bg-orange-100 rounded-full">
+                      <Flame className="h-6 w-6 text-orange-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-orange-600">Learning Streak</p>
+                      <p className="text-2xl font-bold text-orange-900">5 days</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Course Progress Section */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Your Learning Journey</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Overall Progress</span>
+                      <span>{Math.round(overallProgress)}%</span>
+                    </div>
+                    <Progress value={overallProgress} />
+                  </div>
+
+                  {loadingEnrollments ? (
+                    <div className="text-center p-4">
+                      <p>Loading your courses...</p>
+                    </div>
+                  ) : enrollments && enrollments.length > 0 ? (
+                    <div className="grid gap-4 md:grid-cols-2">
+                      {enrollments.map((enrollment) => (
+                        <Card key={enrollment.id} className="bg-gradient-to-br from-blue-50 to-blue-100">
+                          <CardHeader>
+                            <CardTitle className="text-lg">{enrollment.course.title}</CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="space-y-4">
+                              <div>
+                                <div className="flex justify-between text-sm mb-2">
+                                  <span>Course Progress</span>
+                                  <span>{enrollment.progress}%</span>
+                                </div>
+                                <Progress value={enrollment.progress} />
+                              </div>
+                              <div className="space-y-2">
+                                <p className="text-sm text-gray-600">
+                                  Status: {enrollment.status.charAt(0).toUpperCase() + enrollment.status.slice(1)}
+                                </p>
+                                <p className="text-sm text-gray-600">
+                                  Enrolled: {new Date(enrollment.enrolledAt).toLocaleDateString()}
+                                </p>
+                                {enrollment.metadata?.lastModule && (
+                                  <p className="text-sm text-gray-600">
+                                    Last Activity: {enrollment.metadata.lastModule}
+                                    {enrollment.metadata.lastTopic && ` - ${enrollment.metadata.lastTopic}`}
+                                  </p>
+                                )}
+                              </div>
+                              <Button className="w-full" asChild>
+                                <Link href={getContinueLearningPath(enrollment)}>
+                                  Continue Learning <ArrowRight className="ml-2 h-4 w-4" />
+                                </Link>
+                              </Button>
                             </div>
-                            <Progress value={enrollment.progress} />
-                          </div>
-                          <div className="space-y-2">
-                            <p className="text-sm text-gray-500">
-                              Status: {enrollment.status.charAt(0).toUpperCase() + enrollment.status.slice(1)}
-                            </p>
-                            <p className="text-sm text-gray-500">
-                              Enrolled: {new Date(enrollment.enrolledAt).toLocaleDateString()}
-                            </p>
-                            {enrollment.metadata?.lastModule && (
-                              <p className="text-sm text-gray-500">
-                                Last Activity: {enrollment.metadata.lastModule}
-                                {enrollment.metadata.lastTopic && ` - ${enrollment.metadata.lastTopic}`}
-                              </p>
-                            )}
-                          </div>
-                          <Button className="w-full" asChild>
-                            <Link href={getContinueLearningPath(enrollment)}>
-                              Continue Learning
-                            </Link>
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center p-4">
+                      <p className="text-gray-500">You haven't enrolled in any courses yet.</p>
+                      <Button className="mt-4" asChild>
+                        <Link href="/curriculum">Browse Courses</Link>
+                      </Button>
+                    </div>
+                  )}
                 </div>
-              ) : (
-                <div className="text-center p-4">
-                  <p className="text-gray-500">You haven't enrolled in any courses yet.</p>
-                  <Button className="mt-4" asChild>
-                    <Link href="/curriculum">Browse Courses</Link>
-                  </Button>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+
+            {/* Quick Access Tools */}
+            <div className="grid md:grid-cols-3 gap-4">
+              <Card>
+                <CardContent className="pt-6">
+                  <Link href="/trading-simulator">
+                    <Button className="w-full" variant="outline">
+                      <GamepadIcon className="mr-2 h-4 w-4" />
+                      Trading Simulator
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="pt-6">
+                  <Link href="/curriculum">
+                    <Button className="w-full" variant="outline">
+                      <BookOpen className="mr-2 h-4 w-4" />
+                      Course Catalog
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="pt-6">
+                  <Link href="/exercises">
+                    <Button className="w-full" variant="outline">
+                      <Brain className="mr-2 h-4 w-4" />
+                      Practice Exercises
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
         </TabsContent>
 
         {/* Course Progress Tab */}
