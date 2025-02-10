@@ -1,4 +1,4 @@
-import { createContext, useContext, ReactNode, useState, useEffect } from "react";
+import { createContext, useContext, ReactNode, useState, useEffect, useCallback } from "react";
 import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { useCertificateAward } from "@/hooks/use-certificate-award";
 import type { AchievementBadge } from "@/components/badges/badge";
@@ -83,6 +83,8 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       }
       return response.json();
     },
+    staleTime: 30000,
+    cacheTime: 3600000,
   });
 
   const { data: badgeProgress = { badges: defaultBadges, earnedBadges: [] } } = useQuery<BadgeProgress>({
@@ -94,16 +96,19 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       }
       return response.json();
     },
+    staleTime: 30000,
+    cacheTime: 3600000,
   });
 
   useEffect(() => {
-    setBadges(prevBadges =>
-      prevBadges.map(badge => ({
-        ...badge,
-        earned: badgeProgress.earnedBadges.includes(badge.id),
-        earnedAt: badge.earned ? new Date() : undefined
-      }))
-    );
+    if (badgeProgress.earnedBadges) {
+      setBadges(prevBadges =>
+        prevBadges.map(badge => ({
+          ...badge,
+          earned: badgeProgress.earnedBadges.includes(badge.id)
+        }))
+      );
+    }
   }, [badgeProgress.earnedBadges]);
 
   const updateProgressMutation = useMutation({
@@ -144,25 +149,21 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     },
   });
 
-  const updateProgress = (moduleId: number, sectionId: string, completed: boolean) => {
+  const updateProgress = useCallback((moduleId: number, sectionId: string, completed: boolean) => {
     updateProgressMutation.mutate({ moduleId, sectionId, completed });
 
     if (completed) {
-      const moduleProgress = progress.filter((p: Progress) => p.moduleId === moduleId);
+      const moduleProgress = progress.filter(p => p.moduleId === moduleId);
       const moduleTopics = moduleProgress.length;
-      const completedTopics = moduleProgress.filter((p: Progress) => p.completed).length + 1;
+      const completedTopics = moduleProgress.filter(p => p.completed).length + 1;
 
       if (moduleTopics === completedTopics) {
-        // Award module completion badge
         awardBadgeMutation.mutate(`module${moduleId}_complete`);
-
-        // Check for certificate award
         checkModuleCompletion(moduleId);
 
-        // Check if all modules are completed
         const allModulesCompleted = [1, 2, 3, 4].every(mid => {
-          const modProgress = progress.filter((p: Progress) => p.moduleId === mid);
-          return modProgress.every((p: Progress) => p.completed);
+          const modProgress = progress.filter(p => p.moduleId === mid);
+          return modProgress.every(p => p.completed);
         });
 
         if (allModulesCompleted) {
@@ -170,11 +171,11 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         }
       }
     }
-  };
+  }, [progress, awardBadgeMutation, checkModuleCompletion]);
 
-  const awardBadge = (badgeId: string) => {
+  const awardBadge = useCallback((badgeId: string) => {
     awardBadgeMutation.mutate(badgeId);
-  };
+  }, [awardBadgeMutation]);
 
   return (
     <ProgressContext.Provider

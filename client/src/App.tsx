@@ -3,7 +3,7 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { ProgressProvider } from "@/context/progress-context";
-import { AuthProvider } from "@/hooks/use-auth";
+import { AuthProvider, useAuth } from "@/hooks/use-auth";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Curriculum from "@/pages/curriculum";
@@ -14,6 +14,7 @@ import Achievements from "@/pages/achievements";
 import AIOverview from "@/pages/ai";
 import Deck from "@/pages/deck";
 import AuthPage from "@/pages/auth-page";
+
 // Module 1 Routes
 import Module1Landing from "@/pages/modules/module1";
 import Module1Quiz from "@/pages/modules/module1/quiz";
@@ -49,52 +50,67 @@ import Navigation from "@/components/layout/navigation";
 import TradingSimulator from "@/pages/trading-simulator";
 import GlossaryPage from "@/pages/glossary";
 
+function ProtectedRoute({ component: Component, ...rest }: any) {
+  const { user, isLoading } = useAuth();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!user) {
+    window.location.href = "/auth";
+    return null;
+  }
+
+  return <Component {...rest} />;
+}
+
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/register" component={AuthPage} />
       <Route path="/auth" component={AuthPage} />
-      <Route path="/curriculum" component={Curriculum} />
-      <Route path="/about" component={About} />
-      <Route path="/games" component={Games} />
-      <Route path="/achievements" component={Achievements} />
-      <Route path="/ai" component={AIOverview} />
-      <Route path="/deck" component={Deck} />
+      <Route path="/register" component={AuthPage} />
+      <ProtectedRoute path="/" component={Home} />
+      <ProtectedRoute path="/curriculum" component={Curriculum} />
+      <ProtectedRoute path="/about" component={About} />
+      <ProtectedRoute path="/games" component={Games} />
+      <ProtectedRoute path="/achievements" component={Achievements} />
+      <ProtectedRoute path="/ai" component={AIOverview} />
+      <ProtectedRoute path="/deck" component={Deck} />
+      <ProtectedRoute path="/wallet-simulator" component={WalletSimulator} />
+      <ProtectedRoute path="/trading-simulator" component={TradingSimulator} />
+      <ProtectedRoute path="/glossary" component={GlossaryPage} />
       {/* Module 1 Routes */}
-      <Route path="/modules/module1" component={Module1Landing} />
-      <Route path="/modules/module1/quiz" component={Module1Quiz} />
-      <Route path="/modules/module1/exercises" component={ModuleExercises} />
-      <Route path="/modules/module1/digital-currencies" component={DigitalCurrenciesSection} />
-      <Route path="/modules/module1/history-of-money" component={HistoryOfMoneySection} />
-      <Route path="/modules/module1/bitcoin" component={BitcoinSection} />
-      <Route path="/modules/module1/altcoins-tokens" component={AltcoinsTokensSection} />
-      <Route path="/modules/module1/crypto-market" component={CryptoMarketSection} />
-      <Route path="/modules/module1/cryptography" component={CryptographySection} />
-      <Route path="/modules/module1/security" component={SecuritySection} />
-      <Route path="/modules/module1/applications" component={PracticalApplicationsSection} />
-      <Route path="/modules/module1/getting-started" component={GettingStartedSection} />
+      <ProtectedRoute path="/modules/module1" component={Module1Landing} />
+      <ProtectedRoute path="/modules/module1/quiz" component={Module1Quiz} />
+      <ProtectedRoute path="/modules/module1/exercises" component={ModuleExercises} />
+      <ProtectedRoute path="/modules/module1/digital-currencies" component={DigitalCurrenciesSection} />
+      <ProtectedRoute path="/modules/module1/history-of-money" component={HistoryOfMoneySection} />
+      <ProtectedRoute path="/modules/module1/bitcoin" component={BitcoinSection} />
+      <ProtectedRoute path="/modules/module1/altcoins-tokens" component={AltcoinsTokensSection} />
+      <ProtectedRoute path="/modules/module1/crypto-market" component={CryptoMarketSection} />
+      <ProtectedRoute path="/modules/module1/cryptography" component={CryptographySection} />
+      <ProtectedRoute path="/modules/module1/security" component={SecuritySection} />
+      <ProtectedRoute path="/modules/module1/applications" component={PracticalApplicationsSection} />
+      <ProtectedRoute path="/modules/module1/getting-started" component={GettingStartedSection} />
       {/* Module 2 Routes */}
-      <Route path="/modules/module2" component={Module2Landing} />
-      <Route path="/modules/module2/bitcoin-fundamentals" component={BitcoinFundamentalsSection} />
-      <Route path="/modules/module2/bitcoin-investment" component={BitcoinInvestmentSection} />
-      <Route path="/modules/module2/security-risk" component={SecurityRiskSection} />
-      <Route path="/modules/module2/exercises" component={Module2Exercises} />
-      <Route path="/modules/module2/quiz" component={Module2Quiz} />
+      <ProtectedRoute path="/modules/module2" component={Module2Landing} />
+      <ProtectedRoute path="/modules/module2/bitcoin-fundamentals" component={BitcoinFundamentalsSection} />
+      <ProtectedRoute path="/modules/module2/bitcoin-investment" component={BitcoinInvestmentSection} />
+      <ProtectedRoute path="/modules/module2/security-risk" component={SecurityRiskSection} />
+      <ProtectedRoute path="/modules/module2/exercises" component={Module2Exercises} />
+      <ProtectedRoute path="/modules/module2/quiz" component={Module2Quiz} />
       {/* Module 3 Routes */}
-      <Route path="/modules/module3" component={Module3} />
-      <Route path="/modules/module3/ethereum-fundamentals" component={EthereumFundamentalsSection} />
-      <Route path="/modules/module3/smart-contracts" component={SmartContractsSection} />
-      <Route path="/modules/module3/investment-value" component={InvestmentValueSection} />
-      <Route path="/modules/module3/security-risks" component={SecurityRisksSection} />
-      <Route path="/modules/module3/exercises" component={Module3Exercises} />
-      <Route path="/modules/module3/quiz" component={Module3Quiz} />
+      <ProtectedRoute path="/modules/module3" component={Module3} />
+      <ProtectedRoute path="/modules/module3/ethereum-fundamentals" component={EthereumFundamentalsSection} />
+      <ProtectedRoute path="/modules/module3/smart-contracts" component={SmartContractsSection} />
+      <ProtectedRoute path="/modules/module3/investment-value" component={InvestmentValueSection} />
+      <ProtectedRoute path="/modules/module3/security-risks" component={SecurityRisksSection} />
+      <ProtectedRoute path="/modules/module3/exercises" component={Module3Exercises} />
+      <ProtectedRoute path="/modules/module3/quiz" component={Module3Quiz} />
       {/* Module 4 Routes */}
-      <Route path="/modules/module4" component={Module4Landing} />
-      <Route path="/modules/module4/digital-vs-traditional" component={DigitalVsTraditionalSection} />
-      <Route path="/wallet-simulator" component={WalletSimulator} />
-      <Route path="/trading-simulator" component={TradingSimulator} />
-      <Route path="/glossary" component={GlossaryPage} />
+      <ProtectedRoute path="/modules/module4" component={Module4Landing} />
+      <ProtectedRoute path="/modules/module4/digital-vs-traditional" component={DigitalVsTraditionalSection} />
       <Route component={NotFound} />
     </Switch>
   );

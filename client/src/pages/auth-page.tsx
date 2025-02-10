@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/use-auth";
 import { insertUserSchema } from "@db/schema";
 import type { InsertUser } from "@db/schema";
 import { useLocation } from "wouter";
+import { Loader2 } from "lucide-react";
 
 export default function AuthPage() {
   const [, setLocation] = useLocation();
@@ -26,6 +26,7 @@ export default function AuthPage() {
     resolver: zodResolver(insertUserSchema),
     defaultValues: {
       username: "",
+      email: "",
       password: "",
     },
   });
@@ -35,18 +36,21 @@ export default function AuthPage() {
       if (isRegisterPage) {
         await registerMutation.mutateAsync(data);
       } else {
-        await loginMutation.mutateAsync(data);
+        const { username, password } = data;
+        await loginMutation.mutateAsync({ username, password });
       }
       setLocation("/");
     } catch (error) {
-      // Error handling is done in the mutations
+      // Error handling is done in mutations
     }
   };
+
+  const isLoading = loginMutation.isPending || registerMutation.isPending;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center p-4">
       <div className="w-full max-w-6xl grid md:grid-cols-2 gap-8 items-center">
-        <Card className="p-8">
+        <Card className="p-8 shadow-lg">
           <h1 className="text-3xl font-bold text-center mb-8 text-blue-900">
             {isRegisterPage ? "Create Account" : "Welcome Back!"}
           </h1>
@@ -57,6 +61,7 @@ export default function AuthPage() {
               <Input
                 {...form.register("username")}
                 placeholder="Enter your username"
+                disabled={isLoading}
               />
               {form.formState.errors.username && (
                 <p className="text-sm text-red-500">
@@ -65,12 +70,30 @@ export default function AuthPage() {
               )}
             </div>
 
+            {isRegisterPage && (
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Email</label>
+                <Input
+                  {...form.register("email")}
+                  type="email"
+                  placeholder="Enter your email"
+                  disabled={isLoading}
+                />
+                {form.formState.errors.email && (
+                  <p className="text-sm text-red-500">
+                    {form.formState.errors.email.message}
+                  </p>
+                )}
+              </div>
+            )}
+
             <div className="space-y-2">
               <label className="text-sm font-medium">Password</label>
               <Input
                 {...form.register("password")}
                 type="password"
                 placeholder="Enter your password"
+                disabled={isLoading}
               />
               {form.formState.errors.password && (
                 <p className="text-sm text-red-500">
@@ -81,10 +104,17 @@ export default function AuthPage() {
 
             <Button 
               type="submit" 
-              className="w-full"
-              disabled={loginMutation.isPending || registerMutation.isPending}
+              className="w-full bg-blue-600 hover:bg-blue-700"
+              disabled={isLoading}
             >
-              {isRegisterPage ? "Register" : "Login"}
+              {isLoading ? (
+                <div className="flex items-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <span>Please wait...</span>
+                </div>
+              ) : (
+                isRegisterPage ? "Register" : "Login"
+              )}
             </Button>
           </form>
 
@@ -92,6 +122,8 @@ export default function AuthPage() {
             <button
               onClick={() => setLocation(isRegisterPage ? "/auth" : "/register")}
               className="text-blue-600 hover:text-blue-800"
+              type="button"
+              disabled={isLoading}
             >
               {isRegisterPage
                 ? "Already have an account? Login"
