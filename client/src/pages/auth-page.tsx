@@ -18,7 +18,7 @@ export default function AuthPage() {
 
   // Redirect if already logged in
   if (user) {
-    setLocation("/");
+    setLocation("/account");
     return null;
   }
 
@@ -44,7 +44,7 @@ export default function AuthPage() {
         const { username, password } = data;
         await loginMutation.mutateAsync({ username, password });
       }
-      setLocation("/");
+      setLocation("/account");
     } catch (error) {
       // Error handling is done in mutations
       console.error('Form submission error:', error);
