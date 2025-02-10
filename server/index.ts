@@ -9,15 +9,6 @@ app.use(express.urlencoded({ extended: false }));
 // Trust proxy - required for secure cookies in production
 app.set('trust proxy', 1);
 
-// Add Content-Security-Policy headers
-app.use((req, res, next) => {
-  res.setHeader(
-    'Content-Security-Policy',
-    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
-  );
-  next();
-});
-
 // Add request logging middleware
 app.use((req, res, next) => {
   const start = Date.now();
@@ -47,41 +38,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// Add health check endpoint
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok' });
-});
-
 (async () => {
   try {
     log("Starting server initialization...");
-    const PORT = 5000;
-
-    // Set up Vite middleware in development
-    if (process.env.NODE_ENV !== 'production') {
-      await setupVite(app);
-    }
-
-    log("Setting up initial middleware...");
     const server = registerRoutes(app);
-
-    // Serve static files in production
-    if (process.env.NODE_ENV === 'production') {
-      app.use(serveStatic());
-    }
-
-    // Start server on port 5000
-    server.listen(PORT, "0.0.0.0", () => {
-      log(`Server successfully started on port ${PORT}`);
-    }).on('error', (error: NodeJS.ErrnoException) => {
-      if (error.code === 'EADDRINUSE') {
-        log(`Port ${PORT} is already in use`);
-        process.exit(1);
-      } else {
-        log(`Failed to start server: ${error.message}`);
-        process.exit(1);
-      }
-    });
 
     // Error handling middleware - should be last
     app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
@@ -89,7 +49,37 @@ app.get('/health', (req, res) => {
       const message = err.message || "Internal Server Error";
       log(`Error: ${message}`);
       res.status(status).json({ message });
+      // Don't throw here, just log
       console.error(err);
+    });
+
+    const isProduction = process.env.NODE_ENV === 'production';
+    const PORT = 5000; // Explicitly set port to 5000
+
+    if (!isProduction) {
+      log("Setting up Vite middleware...");
+      await setupVite(app, server);
+      log("Vite middleware setup complete");
+    } else {
+      log("Setting up static file serving...");
+      serveStatic(app);
+      log("Static file serving setup complete");
+    }
+
+    log(`Attempting to start server on port ${PORT}...`);
+
+    server.listen(PORT, "0.0.0.0", () => {
+      log(`Server is running on port ${PORT}`);
+    });
+
+    // Handle server errors
+    server.on('error', (error: NodeJS.ErrnoException) => {
+      if (error.code === 'EADDRINUSE') {
+        log(`Port ${PORT} is already in use`);
+      } else {
+        log(`Server error: ${error.message}`);
+      }
+      process.exit(1);
     });
 
   } catch (error) {

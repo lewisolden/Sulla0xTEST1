@@ -9,12 +9,6 @@ import { users, type SelectUser, insertUserSchema } from "@db/schema";
 import { db } from "@db";
 import { eq } from "drizzle-orm";
 
-declare global {
-  namespace Express {
-    interface User extends SelectUser {}
-  }
-}
-
 const scryptAsync = promisify(scrypt);
 const crypto = {
   hash: async (password: string) => {
@@ -33,6 +27,12 @@ const crypto = {
     return timingSafeEqual(hashedPasswordBuf, suppliedPasswordBuf);
   },
 };
+
+declare global {
+  namespace Express {
+    interface User extends SelectUser {}
+  }
+}
 
 export function setupAuth(app: Express) {
   const MemoryStore = createMemoryStore(session);
@@ -164,29 +164,21 @@ export function setupAuth(app: Express) {
   app.post("/api/login", (req, res, next) => {
     passport.authenticate("local", (err: any, user: Express.User | false, info: IVerifyOptions) => {
       if (err) {
-        console.error("Login error:", err);
-        return res.status(500).json({ error: "Internal server error during login" });
+        return next(err);
       }
 
       if (!user) {
-        console.log("Login failed:", info.message);
-        return res.status(400).json({ error: info.message ?? "Invalid username or password" });
+        return res.status(400).json({ error: info.message ?? "Login failed" });
       }
 
       req.logIn(user, (err) => {
         if (err) {
-          console.error("Session error:", err);
-          return res.status(500).json({ error: "Failed to create session" });
+          return next(err);
         }
 
-        console.log("Login successful for user:", user.username);
         return res.json({
           message: "Login successful",
-          user: {
-            id: user.id,
-            username: user.username,
-            email: user.email
-          }
+          user: { id: user.id, username: user.username },
         });
       });
     })(req, res, next);
