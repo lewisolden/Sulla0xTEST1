@@ -95,8 +95,13 @@ export default function Curriculum() {
   const { data: enrollments, isLoading: loadingEnrollments } = useQuery({
     queryKey: ['enrollments'],
     queryFn: async () => {
-      const response = await fetch('/api/enrollments');
-      if (!response.ok) throw new Error('Failed to fetch enrollments');
+      const response = await fetch('/api/enrollments', {
+        credentials: 'include'  // Add credentials
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to fetch enrollments');
+      }
       return response.json();
     }
   });
@@ -105,10 +110,14 @@ export default function Curriculum() {
     mutationFn: async (courseId: number) => {
       const response = await fetch('/api/enrollments', {
         method: 'POST',
+        credentials: 'include',  // Add credentials
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ courseId })
       });
-      if (!response.ok) throw new Error('Failed to enroll');
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to enroll');
+      }
       return response.json();
     },
     onSuccess: () => {
@@ -117,7 +126,7 @@ export default function Curriculum() {
         description: "You can now access all course materials.",
       });
     },
-    onError: (error) => {
+    onError: (error: Error) => {
       toast({
         title: "Failed to enroll",
         description: error.message,
