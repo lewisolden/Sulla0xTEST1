@@ -244,18 +244,7 @@ export default function AccountPage() {
             </Card>
 
             {/* Quick Access Tools */}
-            <div className="grid md:grid-cols-3 gap-4">
-              <Card>
-                <CardContent className="pt-6">
-                  <Link href="/trading-simulator">
-                    <Button className="w-full" variant="outline">
-                      <GamepadIcon className="mr-2 h-4 w-4" />
-                      Trading Simulator
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-
+            <div className="grid md:grid-cols-2 gap-4">
               <Card>
                 <CardContent className="pt-6">
                   <Link href="/curriculum">
@@ -269,7 +258,7 @@ export default function AccountPage() {
 
               <Card>
                 <CardContent className="pt-6">
-                  <Link href="/exercises">
+                  <Link href="/modules/module1/exercises">
                     <Button className="w-full" variant="outline">
                       <Brain className="mr-2 h-4 w-4" />
                       Practice Exercises
