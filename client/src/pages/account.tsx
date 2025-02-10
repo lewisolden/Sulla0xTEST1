@@ -7,11 +7,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Link } from "wouter";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function AccountPage() {
   const { user } = useAuth();
   const { progress } = useProgress();
   const [activeTab, setActiveTab] = useState("dashboard");
+  const [fullName, setFullName] = useState(user?.fullName || "");
 
   // Calculate overall progress
   const totalModules = 4; // We have 4 modules
@@ -29,8 +32,8 @@ export default function AccountPage() {
             <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${user.username}`} />
             <AvatarFallback>{user.username[0].toUpperCase()}</AvatarFallback>
           </Avatar>
-          <div>
-            <h1 className="text-2xl font-bold">{user.username}</h1>
+          <div className="space-y-2">
+            <h1 className="text-2xl font-bold">{fullName || user.username}</h1>
             <p className="text-gray-500">{user.email}</p>
           </div>
         </CardContent>
@@ -38,9 +41,10 @@ export default function AccountPage() {
 
       {/* Main Content */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-          <TabsTrigger value="courses">My Courses</TabsTrigger>
+          <TabsTrigger value="learning">Interactive Learning</TabsTrigger>
+          <TabsTrigger value="feedback">Feedback & Reviews</TabsTrigger>
           <TabsTrigger value="profile">Profile Settings</TabsTrigger>
         </TabsList>
 
@@ -88,37 +92,115 @@ export default function AccountPage() {
           </Card>
         </TabsContent>
 
-        {/* Courses Tab */}
-        <TabsContent value="courses">
+        {/* Interactive Learning Tab */}
+        <TabsContent value="learning">
           <Card>
             <CardHeader>
-              <CardTitle>My Courses</CardTitle>
+              <CardTitle>Interactive Learning Tools</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid gap-4 md:grid-cols-2">
-                {/* Module 1 */}
                 <Card>
-                  <CardContent className="p-4">
-                    <h3 className="font-semibold">Module 1: Fundamentals</h3>
-                    <Progress value={75} className="mt-2" />
-                    <Button className="mt-4 w-full" asChild>
-                      <Link href="/modules/module1">Continue</Link>
-                    </Button>
+                  <CardHeader>
+                    <CardTitle className="text-lg">Active Quizzes</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2">
+                      <li className="flex justify-between items-center">
+                        <span>Blockchain Fundamentals</span>
+                        <Button size="sm">Start Quiz</Button>
+                      </li>
+                      <li className="flex justify-between items-center">
+                        <span>Cryptocurrency Basics</span>
+                        <Button size="sm">Continue</Button>
+                      </li>
+                    </ul>
                   </CardContent>
                 </Card>
 
-                {/* Module 2 */}
                 <Card>
-                  <CardContent className="p-4">
-                    <h3 className="font-semibold">Module 2: Blockchain</h3>
-                    <Progress value={30} className="mt-2" />
-                    <Button className="mt-4 w-full" asChild>
-                      <Link href="/modules/module2">Continue</Link>
-                    </Button>
+                  <CardHeader>
+                    <CardTitle className="text-lg">Discussion Forums</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2">
+                      <li className="flex justify-between items-center">
+                        <span>Latest Topics</span>
+                        <Button size="sm" variant="outline">View</Button>
+                      </li>
+                      <li className="flex justify-between items-center">
+                        <span>My Discussions</span>
+                        <Button size="sm" variant="outline">View</Button>
+                      </li>
+                    </ul>
                   </CardContent>
                 </Card>
 
-                {/* Add more modules as needed */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">Live Sessions</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <p className="text-sm text-gray-500">Upcoming live learning sessions</p>
+                      <Button className="w-full">Schedule a Session</Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">Assignments</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <p className="text-sm text-gray-500">Track your assignments and submissions</p>
+                      <Button className="w-full" variant="outline">View Assignments</Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* Feedback Tab */}
+        <TabsContent value="feedback">
+          <Card>
+            <CardHeader>
+              <CardTitle>Course Feedback & Reviews</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-6">
+                <div className="grid gap-4">
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-lg">Your Recent Reviews</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-gray-500 mb-4">Share your thoughts on completed courses</p>
+                      <Button className="w-full">Write a Review</Button>
+                    </CardContent>
+                  </Card>
+
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-lg">Course Ratings</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div className="flex justify-between items-center">
+                          <span>Blockchain Fundamentals</span>
+                          <Button size="sm" variant="outline">Rate Course</Button>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span>Smart Contracts</span>
+                          <Button size="sm" variant="outline">Rate Course</Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
               </div>
             </CardContent>
           </Card>
@@ -131,9 +213,9 @@ export default function AccountPage() {
               <CardTitle>Profile Settings</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="space-y-6">
                 <div>
-                  <h3 className="font-semibold mb-2">Profile Picture</h3>
+                  <h3 className="font-semibold mb-4">Profile Picture</h3>
                   <div className="flex items-center gap-4">
                     <Avatar className="h-20 w-20">
                       <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${user.username}`} />
@@ -143,13 +225,28 @@ export default function AccountPage() {
                   </div>
                 </div>
 
-                <div>
-                  <h3 className="font-semibold mb-2">Account Information</h3>
+                <div className="space-y-4">
                   <div className="space-y-2">
-                    <p>Username: {user.username}</p>
-                    <p>Email: {user.email}</p>
-                    <Button variant="outline">Update Information</Button>
+                    <Label htmlFor="fullName">Full Name</Label>
+                    <Input
+                      id="fullName"
+                      value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      placeholder="Enter your full name"
+                    />
                   </div>
+
+                  <div className="space-y-2">
+                    <Label>Username</Label>
+                    <Input value={user.username} disabled />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label>Email</Label>
+                    <Input value={user.email} disabled />
+                  </div>
+
+                  <Button>Save Changes</Button>
                 </div>
 
                 <div>
