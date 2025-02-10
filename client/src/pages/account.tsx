@@ -7,14 +7,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Link } from "wouter";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 export default function AccountPage() {
   const { user } = useAuth();
   const { progress } = useProgress();
   const [activeTab, setActiveTab] = useState("dashboard");
-  const [fullName, setFullName] = useState(user?.fullName || "");
 
   // Calculate overall progress
   const totalModules = 4; // We have 4 modules
@@ -33,7 +30,7 @@ export default function AccountPage() {
             <AvatarFallback>{user.username[0].toUpperCase()}</AvatarFallback>
           </Avatar>
           <div className="space-y-2">
-            <h1 className="text-2xl font-bold">{fullName || user.username}</h1>
+            <h1 className="text-2xl font-bold">{user.username}</h1>
             <p className="text-gray-500">{user.email}</p>
           </div>
         </CardContent>
@@ -223,30 +220,6 @@ export default function AccountPage() {
                     </Avatar>
                     <Button variant="outline">Change Avatar</Button>
                   </div>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="fullName">Full Name</Label>
-                    <Input
-                      id="fullName"
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      placeholder="Enter your full name"
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label>Username</Label>
-                    <Input value={user.username} disabled />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label>Email</Label>
-                    <Input value={user.email} disabled />
-                  </div>
-
-                  <Button>Save Changes</Button>
                 </div>
 
                 <div>
