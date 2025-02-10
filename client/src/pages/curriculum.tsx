@@ -149,28 +149,15 @@ export default function Curriculum() {
           animate={{ opacity: 1 }}
         >
           <h1 className="text-4xl font-bold text-blue-900 mb-6">
-            Sulla's Curriculum
+            Course Curriculum
           </h1>
           <Card className="p-6 bg-blue-600">
-            <div className="text-center mb-6">
+            <div className="text-center">
               <div className="flex items-center justify-center gap-2 text-xl font-bold text-white">
                 <Lightbulb className="h-6 w-6" />
                 <p>Ready to embark on your learning journey?</p>
               </div>
-              <p className="text-xl font-bold text-white mt-2">
-                Explore our curriculum and discover the power of interactive education today!
-              </p>
             </div>
-          </Card>
-          <Card className="p-6 mt-4">
-            <p className="text-xl text-gray-800 max-w-3xl mx-auto text-justify">
-              Sulla transforms complex technical concepts into engaging, accessible learning experiences.
-              Our innovative platform combines interactive lessons, hands-on simulations, and adaptive learning technology
-              to create a personalized educational journey. Through gamified exercises, real-world applications, and
-              progressive skill building, we ensure that every learner can master new technologies at their own pace.
-              Our comprehensive curriculum features visual learning aids, practical exercises, and instant feedback to
-              help you build confidence and expertise in emerging technologies.
-            </p>
           </Card>
         </motion.div>
 
@@ -227,46 +214,61 @@ export default function Curriculum() {
           </Select>
         </motion.div>
 
-        <motion.h2
-          className="text-3xl font-bold text-blue-800 mb-6 text-center"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          {currentCourse.title}
-        </motion.h2>
-
-        <motion.p
-          className="text-xl text-blue-700 mb-12 text-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          {currentCourse.description}
-        </motion.p>
-
         <motion.div
-          className="mb-8 text-center"
+          className="bg-white rounded-lg shadow-lg p-8 mb-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
+          <h2 className="text-3xl font-bold text-blue-800 mb-4">
+            {currentCourse.title}
+          </h2>
+
+          <p className="text-xl text-blue-700 mb-6">
+            {currentCourse.description}
+          </p>
+
+          <div className="grid md:grid-cols-3 gap-6 mb-8">
+            {currentCourse.modules.map((module) => (
+              <Card key={module.id} className="p-6 bg-blue-50">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="bg-blue-100 p-2 rounded-lg">
+                    <module.icon className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <h3 className="font-semibold text-blue-800">{module.title.split(':')[1]}</h3>
+                </div>
+                <p className="text-blue-600 text-sm mb-4">{module.description}</p>
+                <div className="text-blue-500 text-sm">
+                  {module.sections.length} lessons included
+                </div>
+              </Card>
+            ))}
+          </div>
+
           {loadingEnrollments ? (
-            <p>Loading enrollment status...</p>
+            <div className="text-center">
+              <p>Loading enrollment status...</p>
+            </div>
           ) : isEnrolled ? (
-            <div className="bg-green-100 text-green-800 px-4 py-2 rounded-lg inline-block">
+            <div className="bg-green-100 text-green-800 px-4 py-2 rounded-lg text-center mb-6">
               You are enrolled in this course
             </div>
           ) : (
-            <Button 
-              onClick={handleEnroll}
-              className="bg-blue-600 hover:bg-blue-700"
-              disabled={enrollMutation.isPending}
-            >
-              {enrollMutation.isPending ? "Enrolling..." : "Enroll in Course"}
-            </Button>
+            <div className="text-center">
+              <Button 
+                onClick={handleEnroll}
+                className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-3"
+                disabled={enrollMutation.isPending}
+              >
+                {enrollMutation.isPending ? "Enrolling..." : "Enroll Now"}
+              </Button>
+              <p className="text-gray-600 mt-2">
+                Enroll to access full course content and track your progress
+              </p>
+            </div>
           )}
         </motion.div>
 
-        {isEnrolled ? (
+        {isEnrolled && (
           <>
             <div className="mb-12">
               <PersonalizedPath />
@@ -310,9 +312,9 @@ export default function Curriculum() {
 
                         <div className="mt-6 text-center">
                           <Link href={module.path}>
-                            <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                            <Button className="bg-blue-600 hover:bg-blue-700">
                               Start Learning
-                            </button>
+                            </Button>
                           </Link>
                         </div>
                       </div>
@@ -322,13 +324,6 @@ export default function Curriculum() {
               ))}
             </div>
           </>
-        ) : (
-          <Card className="p-6 text-center">
-            <h3 className="text-xl font-semibold mb-4">Enroll to Access Course Content</h3>
-            <p className="text-gray-600 mb-4">
-              Please enroll in this course to access all learning materials, modules, and interactive content.
-            </p>
-          </Card>
         )}
 
         <motion.div
@@ -339,28 +334,8 @@ export default function Curriculum() {
         >
           <div className="flex items-center gap-4 mb-6">
             <Dumbbell className="h-8 w-8 text-blue-600" />
-            <h2 className="text-2xl font-semibold text-blue-800">Practical Exercises</h2>
+            <h2 className="text-2xl font-semibold text-blue-800">Learning Tools</h2>
           </div>
-          <p className="text-blue-700 mb-6">
-            Put your knowledge into practice with our comprehensive set of interactive exercises and hands-on activities.
-          </p>
-          <div className="text-center">
-            <Link href="/modules/module1/exercises">
-              <button className="bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 transition duration-300 flex items-center gap-2 mx-auto">
-                <Dumbbell className="h-5 w-5" />
-                Start Exercises
-              </button>
-            </Link>
-          </div>
-        </motion.div>
-
-        <motion.div
-          className="mt-12 bg-white shadow-lg rounded-lg p-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.9 }}
-        >
-          <h2 className="text-2xl font-semibold text-blue-800 mb-6">Interactive Learning Tools</h2>
           <div className="grid md:grid-cols-2 gap-6">
             {simulators.map((sim) => (
               <motion.div
@@ -371,26 +346,13 @@ export default function Curriculum() {
                 <h3 className="text-xl font-semibold text-blue-700 mb-2">{sim.title}</h3>
                 <p className="text-blue-600 mb-4">{sim.description}</p>
                 <Link href={sim.path}>
-                  <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                  <Button className="bg-blue-600 hover:bg-blue-700">
                     Launch Simulator
-                  </button>
+                  </Button>
                 </Link>
               </motion.div>
             ))}
           </div>
-        </motion.div>
-
-        <motion.div
-          className="mt-12 text-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-        >
-          <Link href="/modules/module1">
-            <button className="bg-blue-600 text-white px-8 py-3 rounded-lg text-xl hover:bg-blue-700 transition duration-300">
-              Begin Your Learning Path
-            </button>
-          </Link>
         </motion.div>
       </div>
       <Footer />
