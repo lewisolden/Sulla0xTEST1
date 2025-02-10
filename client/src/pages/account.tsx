@@ -51,8 +51,13 @@ export default function AccountPage() {
     if (enrollment.metadata?.lastPath) {
       return enrollment.metadata.lastPath;
     }
-    // Default to the course's first module if no last path is saved
-    return `/modules/${enrollment.courseId}/module1`;
+    // If no lastPath is saved, extract module number from the lastModule or default to module1
+    const moduleMatch = enrollment.metadata?.lastModule?.match(/Module (\d+)/i);
+    if (moduleMatch) {
+      return `/modules/module${moduleMatch[1]}`;
+    }
+    // Default to first module
+    return `/modules/module1`;
   };
 
   if (!user) return null;
