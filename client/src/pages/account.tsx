@@ -37,7 +37,6 @@ export default function AccountPage() {
   const { user } = useAuth();
   const { progress } = useProgress();
   const [activeTab, setActiveTab] = useState("dashboard");
-  const [showNotifications, setShowNotifications] = useState(false);
   const [feedbackType, setFeedbackType] = useState("course");
   const [selectedCourse, setSelectedCourse] = useState("");
   const [rating, setRating] = useState<number>(0);
@@ -82,6 +81,33 @@ export default function AccountPage() {
     return `${hours}h ${remainingMinutes}m`;
   };
 
+  const handleFeedbackSubmit = async () => {
+    try {
+      const response = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: feedbackType,
+          courseId: selectedCourse,
+          rating,
+          feedback: feedbackText,
+        }),
+      });
+
+      if (response.ok) {
+        // Reset form
+        setFeedbackType("course");
+        setSelectedCourse("");
+        setRating(0);
+        setFeedbackText("");
+      }
+    } catch (error) {
+      console.error('Failed to submit feedback:', error);
+    }
+  };
+
   if (!user) return null;
 
   return (
@@ -100,10 +126,9 @@ export default function AccountPage() {
       </Card>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="dashboard">Overview</TabsTrigger>
           <TabsTrigger value="progress">Course Progress</TabsTrigger>
-          <TabsTrigger value="goals">Learning Goals</TabsTrigger>
           <TabsTrigger value="feedback">Feedback</TabsTrigger>
           <TabsTrigger value="profile">Profile</TabsTrigger>
         </TabsList>
@@ -392,127 +417,116 @@ export default function AccountPage() {
         </TabsContent>
 
         <TabsContent value="feedback">
-          <div className="grid gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <MessageSquare className="h-5 w-5" />
-                  Provide Feedback
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  <div className="space-y-4">
-                    <RadioGroup
-                      defaultValue="course"
-                      onValueChange={(value) => setFeedbackType(value)}
-                      className="flex flex-col space-y-1"
-                    >
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="course" id="course" />
-                        <Label htmlFor="course">Course Feedback</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="website" id="website" />
-                        <Label htmlFor="website">Website Improvement</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="feature" id="feature" />
-                        <Label htmlFor="feature">Feature Suggestion</Label>
-                      </div>
-                    </RadioGroup>
-
-                    {feedbackType === "course" && (
-                      <div className="space-y-4">
-                        <div>
-                          <Label>Select Course</Label>
-                          <select
-                            className="w-full p-2 border rounded-md mt-1"
-                            value={selectedCourse}
-                            onChange={(e) => setSelectedCourse(e.target.value)}
-                          >
-                            <option value="">Select a course...</option>
-                            {enrollments?.map((enrollment) => (
-                              <option key={enrollment.id} value={enrollment.courseId}>
-                                {enrollment.course.title}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                        <div>
-                          <Label>Rating</Label>
-                          <div className="flex gap-1 mt-1">
-                            {[1, 2, 3, 4, 5].map((star) => (
-                              <button
-                                key={star}
-                                onClick={() => setRating(star)}
-                                className={`p-1 hover:text-yellow-400 ${
-                                  rating >= star ? "text-yellow-400" : "text-gray-300"
-                                }`}
-                              >
-                                <Star className="h-6 w-6" />
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="space-y-2">
-                      <Label>
-                        {feedbackType === "course"
-                          ? "Course Feedback"
-                          : feedbackType === "website"
-                          ? "Website Improvement Suggestions"
-                          : "New Feature Suggestion"}
-                      </Label>
-                      <Textarea
-                        placeholder="Share your thoughts..."
-                        value={feedbackText}
-                        onChange={(e) => setFeedbackText(e.target.value)}
-                        className="min-h-[100px]"
-                      />
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <MessageSquare className="h-5 w-5" />
+                Provide Feedback
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-6">
+                <div className="space-y-4">
+                  <RadioGroup
+                    defaultValue="course"
+                    onValueChange={(value) => setFeedbackType(value)}
+                    className="flex flex-col space-y-1"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="course" id="course" />
+                      <Label htmlFor="course">Course Feedback</Label>
                     </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="website" id="website" />
+                      <Label htmlFor="website">Website Improvement</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="feature" id="feature" />
+                      <Label htmlFor="feature">Feature Suggestion</Label>
+                    </div>
+                  </RadioGroup>
 
-                    <Button className="w-full">
-                      Submit Feedback
-                    </Button>
+                  {feedbackType === "course" && (
+                    <div className="space-y-4">
+                      <div>
+                        <Label>Select Course</Label>
+                        <select
+                          className="w-full p-2 border rounded-md mt-1"
+                          value={selectedCourse}
+                          onChange={(e) => setSelectedCourse(e.target.value)}
+                        >
+                          <option value="">Select a course...</option>
+                          {enrollments?.map((enrollment) => (
+                            <option key={enrollment.id} value={enrollment.courseId}>
+                              {enrollment.course.title}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div>
+                        <Label>Rating</Label>
+                        <div className="flex gap-1 mt-1">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <button
+                              key={star}
+                              onClick={() => setRating(star)}
+                              className={`p-1 hover:text-yellow-400 ${
+                                rating >= star ? "text-yellow-400" : "text-gray-300"
+                              }`}
+                            >
+                              <Star className="h-6 w-6" />
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="space-y-2">
+                    <Label>
+                      {feedbackType === "course"
+                        ? "Course Feedback"
+                        : feedbackType === "website"
+                        ? "Website Improvement Suggestions"
+                        : "New Feature Suggestion"}
+                    </Label>
+                    <Textarea
+                      placeholder="Share your thoughts..."
+                      value={feedbackText}
+                      onChange={(e) => setFeedbackText(e.target.value)}
+                      className="min-h-[100px]"
+                    />
                   </div>
 
-                  <div className="mt-8">
-                    <h3 className="font-semibold mb-4">Your Previous Feedback</h3>
-                    <div className="space-y-4">
-                      <Card className="p-4 bg-gray-50">
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <p className="font-medium">Course: Blockchain Fundamentals</p>
-                            <div className="flex text-yellow-400 my-1">
-                              <Star className="h-4 w-4 fill-current" />
-                              <Star className="h-4 w-4 fill-current" />
-                              <Star className="h-4 w-4 fill-current" />
-                              <Star className="h-4 w-4 fill-current" />
-                              <Star className="h-4 w-4 text-gray-300" />
-                            </div>
-                            <p className="text-sm text-gray-600">Great course! The interactive exercises were particularly helpful.</p>
+                  <Button className="w-full" onClick={handleFeedbackSubmit}>
+                    Submit Feedback
+                  </Button>
+                </div>
+
+                <div className="mt-8">
+                  <h3 className="font-semibold mb-4">Your Previous Feedback</h3>
+                  <div className="space-y-4">
+                    <Card className="p-4 bg-gray-50">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <p className="font-medium">Course: Blockchain Fundamentals</p>
+                          <div className="flex text-yellow-400 my-1">
+                            <Star className="h-4 w-4 fill-current" />
+                            <Star className="h-4 w-4 fill-current" />
+                            <Star className="h-4 w-4 fill-current" />
+                            <Star className="h-4 w-4 fill-current" />
+                            <Star className="h-4 w-4 text-gray-300" />
                           </div>
-                          <span className="text-sm text-gray-500">2 days ago</span>
+                          <p className="text-sm text-gray-600">Great course! The interactive exercises were particularly helpful.</p>
                         </div>
-                      </Card>
-                      <Card className="p-4 bg-gray-50">
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <p className="font-medium">Feature Suggestion</p>
-                            <p className="text-sm text-gray-600">It would be great to have more practice exercises.</p>
-                          </div>
-                          <span className="text-sm text-gray-500">1 week ago</span>
-                        </div>
-                      </Card>
-                    </div>
+                        <span className="text-sm text-gray-500">2 days ago</span>
+                      </div>
+                    </Card>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
 
         <TabsContent value="profile">
