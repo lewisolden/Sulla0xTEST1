@@ -14,6 +14,7 @@ import Achievements from "@/pages/achievements";
 import AIOverview from "@/pages/ai";
 import Deck from "@/pages/deck";
 import AuthPage from "@/pages/auth-page";
+import AccountPage from "@/pages/account";
 
 // Module 1 Routes
 import Module1Landing from "@/pages/modules/module1";
@@ -71,6 +72,7 @@ function Router() {
       <Route path="/auth" component={AuthPage} />
       <Route path="/register" component={AuthPage} />
       <ProtectedRoute path="/" component={Home} />
+      <ProtectedRoute path="/account" component={AccountPage} />
       <ProtectedRoute path="/curriculum" component={Curriculum} />
       <ProtectedRoute path="/about" component={About} />
       <ProtectedRoute path="/games" component={Games} />
