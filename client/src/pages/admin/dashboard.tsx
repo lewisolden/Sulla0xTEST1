@@ -3,6 +3,8 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "wouter";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { AlertCircle, Users, BookOpen, Trophy, Activity } from "lucide-react";
 
 interface Analytics {
   totalUsers: number;
@@ -10,6 +12,11 @@ interface Analytics {
   totalEnrollments: number;
   completedModules: number;
   achievementsAwarded: number;
+  userActivityData: {
+    date: string;
+    activeUsers: number;
+    completions: number;
+  }[];
 }
 
 export default function AdminDashboard() {
@@ -42,35 +49,88 @@ export default function AdminDashboard() {
 
   return (
     <div className="container mx-auto p-6 space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-        <Button asChild>
-          <Link href="/admin/users">View All Users</Link>
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" asChild>
+            <Link href="/admin/analytics">Detailed Analytics</Link>
+          </Button>
+          <Button asChild>
+            <Link href="/admin/users">Manage Users</Link>
+          </Button>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="p-6">
-          <h3 className="font-semibold text-lg mb-2">Total Users</h3>
-          <p className="text-3xl font-bold">{analytics?.totalUsers || 0}</p>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        <Card className="p-6 hover:shadow-lg transition-shadow">
+          <div className="flex items-center gap-4">
+            <Users className="w-8 h-8 text-primary" />
+            <div>
+              <h3 className="font-semibold text-lg mb-1">Total Users</h3>
+              <p className="text-3xl font-bold">{analytics?.totalUsers || 0}</p>
+            </div>
+          </div>
         </Card>
-        <Card className="p-6">
-          <h3 className="font-semibold text-lg mb-2">Active Users (7d)</h3>
-          <p className="text-3xl font-bold">{analytics?.activeUsers || 0}</p>
+
+        <Card className="p-6 hover:shadow-lg transition-shadow">
+          <div className="flex items-center gap-4">
+            <Activity className="w-8 h-8 text-green-500" />
+            <div>
+              <h3 className="font-semibold text-lg mb-1">Active Users (7d)</h3>
+              <p className="text-3xl font-bold">{analytics?.activeUsers || 0}</p>
+            </div>
+          </div>
         </Card>
-        <Card className="p-6">
-          <h3 className="font-semibold text-lg mb-2">Total Enrollments</h3>
-          <p className="text-3xl font-bold">{analytics?.totalEnrollments || 0}</p>
+
+        <Card className="p-6 hover:shadow-lg transition-shadow">
+          <div className="flex items-center gap-4">
+            <BookOpen className="w-8 h-8 text-blue-500" />
+            <div>
+              <h3 className="font-semibold text-lg mb-1">Total Enrollments</h3>
+              <p className="text-3xl font-bold">{analytics?.totalEnrollments || 0}</p>
+            </div>
+          </div>
         </Card>
-        <Card className="p-6">
-          <h3 className="font-semibold text-lg mb-2">Completed Modules</h3>
-          <p className="text-3xl font-bold">{analytics?.completedModules || 0}</p>
+
+        <Card className="p-6 hover:shadow-lg transition-shadow">
+          <div className="flex items-center gap-4">
+            <AlertCircle className="w-8 h-8 text-yellow-500" />
+            <div>
+              <h3 className="font-semibold text-lg mb-1">Completed Modules</h3>
+              <p className="text-3xl font-bold">{analytics?.completedModules || 0}</p>
+            </div>
+          </div>
         </Card>
-        <Card className="p-6">
-          <h3 className="font-semibold text-lg mb-2">Achievements Awarded</h3>
-          <p className="text-3xl font-bold">{analytics?.achievementsAwarded || 0}</p>
+
+        <Card className="p-6 hover:shadow-lg transition-shadow">
+          <div className="flex items-center gap-4">
+            <Trophy className="w-8 h-8 text-purple-500" />
+            <div>
+              <h3 className="font-semibold text-lg mb-1">Achievements</h3>
+              <p className="text-3xl font-bold">{analytics?.achievementsAwarded || 0}</p>
+            </div>
+          </div>
         </Card>
       </div>
+
+      <Card className="p-6">
+        <h2 className="text-xl font-semibold mb-4">User Activity Trends</h2>
+        <div className="h-[300px] w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              data={analytics?.userActivityData || []}
+              margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="activeUsers" name="Active Users" fill="#4f46e5" />
+              <Bar dataKey="completions" name="Completions" fill="#10b981" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </Card>
     </div>
   );
 }
