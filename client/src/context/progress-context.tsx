@@ -1,23 +1,28 @@
 import { createContext, useContext, ReactNode } from "react";
 
-// Simplified ProgressContext with minimal functionality
 interface ProgressContextType {
   progress: any[];
   isLoading: boolean;
   error: Error | null;
+  updateProgress: (moduleId: number, sectionId: string, completed: boolean) => void;
 }
 
 const ProgressContext = createContext<ProgressContextType | undefined>(undefined);
 
 export function ProgressProvider({ children }: { children: ReactNode }) {
+  // Provide a simple implementation that doesn't cause hook issues
+  const contextValue = {
+    progress: [],
+    isLoading: false,
+    error: null,
+    updateProgress: (moduleId: number, sectionId: string, completed: boolean) => {
+      console.log('Progress update:', { moduleId, sectionId, completed });
+      // Implement actual progress tracking later
+    }
+  };
+
   return (
-    <ProgressContext.Provider
-      value={{
-        progress: [],
-        isLoading: false,
-        error: null,
-      }}
-    >
+    <ProgressContext.Provider value={contextValue}>
       {children}
     </ProgressContext.Provider>
   );
