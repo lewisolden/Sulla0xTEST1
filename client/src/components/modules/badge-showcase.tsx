@@ -8,14 +8,17 @@ interface BadgeShowcaseProps {
 }
 
 export default function BadgeShowcase({ moduleId, showAllBadges = false }: BadgeShowcaseProps) {
-  const { badges } = useProgress();
-  
-  const displayBadges = showAllBadges 
-    ? badges
-    : badges.filter(badge => moduleId 
-      ? badge.id === `module${moduleId}_complete` 
-      : true
-    );
+  const { badges = [] } = useProgress();
+
+  const displayBadges = badges ? (
+    showAllBadges 
+      ? badges
+      : badges.filter(badge => 
+          moduleId 
+            ? badge?.id === `module${moduleId}_complete` 
+            : true
+        )
+  ) : [];
 
   return (
     <motion.div 
@@ -29,7 +32,7 @@ export default function BadgeShowcase({ moduleId, showAllBadges = false }: Badge
       <div className="flex flex-wrap gap-4">
         {displayBadges.map(badge => (
           <BadgeDisplay 
-            key={badge.id}
+            key={badge?.id}
             badge={badge}
             size={showAllBadges ? "md" : "lg"}
           />
