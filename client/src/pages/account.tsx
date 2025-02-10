@@ -9,6 +9,9 @@ import { useProgress } from "@/context/progress-context";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { Clock, Trophy, Zap, Flame, ArrowRight, GamepadIcon, BookOpen, Brain } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { Bell, Bookmark, Target, Calendar as CalendarIcon } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 
 interface Enrollment {
   id: number;
@@ -32,8 +35,9 @@ export default function AccountPage() {
   const { user } = useAuth();
   const { progress } = useProgress();
   const [activeTab, setActiveTab] = useState("dashboard");
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+  const [showNotifications, setShowNotifications] = useState(false);
 
-  // Fetch enrollments data
   const { data: enrollments, isLoading: loadingEnrollments } = useQuery<Enrollment[]>({
     queryKey: ['enrollments'],
     queryFn: async () => {
@@ -43,7 +47,6 @@ export default function AccountPage() {
     }
   });
 
-  // Fetch user metrics
   const { data: metrics, isLoading: loadingMetrics } = useQuery({
     queryKey: ['user-metrics'],
     queryFn: async () => {
@@ -53,7 +56,6 @@ export default function AccountPage() {
     }
   });
 
-  // Calculate overall progress based on actual enrollments
   const totalEnrollments = enrollments?.length || 0;
   const completedEnrollments = enrollments?.filter(e => e.status === 'completed').length || 0;
   const overallProgress = totalEnrollments ? (completedEnrollments / totalEnrollments) * 100 : 0;
@@ -69,7 +71,6 @@ export default function AccountPage() {
     return `/modules/module1`;
   };
 
-  // Format duration in hours
   const formatLearningTime = (minutes: number) => {
     const hours = Math.floor(minutes / 60);
     const remainingMinutes = minutes % 60;
@@ -80,7 +81,6 @@ export default function AccountPage() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
-      {/* Profile Header */}
       <Card className="mb-8">
         <CardContent className="flex items-center gap-6 p-6">
           <Avatar className="h-24 w-24">
@@ -95,17 +95,17 @@ export default function AccountPage() {
       </Card>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-6">
           <TabsTrigger value="dashboard">Overview</TabsTrigger>
           <TabsTrigger value="progress">Course Progress</TabsTrigger>
           <TabsTrigger value="learning">Interactive Tools</TabsTrigger>
-          <TabsTrigger value="profile">Profile Settings</TabsTrigger>
+          <TabsTrigger value="goals">Learning Goals</TabsTrigger>
+          <TabsTrigger value="schedule">Study Schedule</TabsTrigger>
+          <TabsTrigger value="profile">Profile</TabsTrigger>
         </TabsList>
 
-        {/* Overview Tab */}
         <TabsContent value="dashboard">
           <div className="grid gap-6">
-            {/* Quick Stats Section */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <Card className="bg-blue-50">
                 <CardContent className="pt-6">
@@ -172,7 +172,6 @@ export default function AccountPage() {
               </Card>
             </div>
 
-            {/* Course Progress Section */}
             <Card>
               <CardHeader>
                 <CardTitle>Your Learning Journey</CardTitle>
@@ -243,7 +242,6 @@ export default function AccountPage() {
               </CardContent>
             </Card>
 
-            {/* Quick Access Tools */}
             <div className="grid md:grid-cols-2 gap-4">
               <Card>
                 <CardContent className="pt-6">
@@ -270,7 +268,6 @@ export default function AccountPage() {
           </div>
         </TabsContent>
 
-        {/* Course Progress Tab */}
         <TabsContent value="progress">
           <Card>
             <CardHeader>
@@ -278,7 +275,6 @@ export default function AccountPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-6">
-                {/* Course Progress Cards */}
                 {loadingEnrollments ? (
                   <div className="text-center p-4">
                     <p>Loading courses...</p>
@@ -348,7 +344,6 @@ export default function AccountPage() {
           </Card>
         </TabsContent>
 
-        {/* Interactive Learning Tab */}
         <TabsContent value="learning">
           <Card>
             <CardHeader>
@@ -396,74 +391,177 @@ export default function AccountPage() {
           </Card>
         </TabsContent>
 
-        {/* Feedback Tab */}
-        <TabsContent value="feedback">
+
+        <TabsContent value="goals">
           <Card>
             <CardHeader>
-              <CardTitle>Course Feedback & Reviews</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <Target className="h-5 w-5" />
+                Learning Goals
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-6">
-                <div className="grid gap-4">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-lg">Your Recent Reviews</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-gray-500 mb-4">Share your thoughts on completed courses</p>
-                      <Button className="w-full">Write a Review</Button>
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-lg">Course Ratings</CardTitle>
-                    </CardHeader>
-                    <CardContent>
+                <div className="space-y-4">
+                  <h3 className="font-semibold">Current Goals</h3>
+                  <Card className="bg-gradient-to-br from-purple-50 to-purple-100">
+                    <CardContent className="p-4">
                       <div className="space-y-4">
-                        <div className="flex justify-between items-center">
-                          <span>Blockchain Fundamentals</span>
-                          <Button size="sm" variant="outline">Rate Course</Button>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="font-medium">Complete Module 1</p>
+                            <p className="text-sm text-gray-600">Target: 2 weeks</p>
+                          </div>
+                          <Progress value={60} className="w-24" />
                         </div>
-                        <div className="flex justify-between items-center">
-                          <span>Smart Contracts</span>
-                          <Button size="sm" variant="outline">Rate Course</Button>
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="font-medium">Practice Daily</p>
+                            <p className="text-sm text-gray-600">30 minutes/day</p>
+                          </div>
+                          <Progress value={80} className="w-24" />
                         </div>
                       </div>
                     </CardContent>
                   </Card>
                 </div>
+
+                <Button className="w-full">
+                  <Target className="mr-2 h-4 w-4" />
+                  Set New Goal
+                </Button>
               </div>
             </CardContent>
           </Card>
         </TabsContent>
 
-        {/* Profile Settings Tab */}
-        <TabsContent value="profile">
+        <TabsContent value="schedule">
           <Card>
             <CardHeader>
-              <CardTitle>Profile Settings</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <CalendarIcon className="h-5 w-5" />
+                Study Schedule
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <h3 className="font-semibold mb-4">Profile Picture</h3>
-                  <div className="flex items-center gap-4">
-                    <Avatar className="h-20 w-20">
-                      <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${user.username}`} />
-                      <AvatarFallback>{user.username[0].toUpperCase()}</AvatarFallback>
-                    </Avatar>
-                    <Button variant="outline">Change Avatar</Button>
+                  <Calendar
+                    mode="single"
+                    selected={selectedDate}
+                    onSelect={setSelectedDate}
+                    className="rounded-md border"
+                  />
+                </div>
+                <Card className="p-4">
+                  <h3 className="font-semibold mb-4">Upcoming Sessions</h3>
+                  <div className="space-y-4">
+                    <div className="p-3 bg-blue-50 rounded-lg">
+                      <p className="font-medium">Blockchain Fundamentals</p>
+                      <p className="text-sm text-gray-600">Today, 3:00 PM</p>
+                    </div>
+                    <div className="p-3 bg-green-50 rounded-lg">
+                      <p className="font-medium">Smart Contracts Workshop</p>
+                      <p className="text-sm text-gray-600">Tomorrow, 2:00 PM</p>
+                    </div>
                   </div>
-                </div>
-
-                <div>
-                  <h3 className="font-semibold mb-2">Learning Preferences</h3>
-                  <Button variant="outline">Customize Learning Experience</Button>
-                </div>
+                  <Button className="w-full mt-4">
+                    Schedule New Session
+                  </Button>
+                </Card>
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="profile">
+          <div className="grid gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Profile Settings</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  <div>
+                    <h3 className="font-semibold mb-4">Profile Picture</h3>
+                    <div className="flex items-center gap-4">
+                      <Avatar className="h-20 w-20">
+                        <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${user.username}`} />
+                        <AvatarFallback>{user.username[0].toUpperCase()}</AvatarFallback>
+                      </Avatar>
+                      <Button variant="outline">Change Avatar</Button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="font-semibold mb-2">Learning Preferences</h3>
+                    <Button variant="outline">Customize Learning Experience</Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Bookmark className="h-5 w-5" />
+                  Saved Content
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="p-3 bg-blue-50 rounded-lg flex justify-between items-center">
+                    <div>
+                      <p className="font-medium">Blockchain Basics</p>
+                      <p className="text-sm text-gray-600">Module 1, Lesson 3</p>
+                    </div>
+                    <Button variant="outline" size="sm">View</Button>
+                  </div>
+                  <div className="p-3 bg-blue-50 rounded-lg flex justify-between items-center">
+                    <div>
+                      <p className="font-medium">Smart Contracts Guide</p>
+                      <p className="text-sm text-gray-600">Module 2, Lesson 1</p>
+                    </div>
+                    <Button variant="outline" size="sm">View</Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Bell className="h-5 w-5" />
+                  Notification Settings
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium">Course Updates</p>
+                      <p className="text-sm text-gray-600">Get notified about new content</p>
+                    </div>
+                    <Switch />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium">Achievement Alerts</p>
+                      <p className="text-sm text-gray-600">Notifications for new achievements</p>
+                    </div>
+                    <Switch />
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium">Study Reminders</p>
+                      <p className="text-sm text-gray-600">Daily learning reminders</p>
+                    </div>
+                    <Switch />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
       </Tabs>
     </div>
