@@ -25,6 +25,11 @@ export default function Navigation() {
               AI Features
             </span>
           </Link>
+          <Link href="/login">
+            <span className="text-white hover:text-blue-200 transition-colors font-bold px-4 py-2 border border-white rounded-md hover:bg-blue-700">
+              Login
+            </span>
+          </Link>
         </div>
       </div>
     </nav>
