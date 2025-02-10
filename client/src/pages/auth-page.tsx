@@ -34,7 +34,7 @@ export default function AuthPage() {
   const onSubmit = async (data: InsertUser) => {
     try {
       if (isRegisterPage) {
-        // Ensure email is included for registration
+        // Ensure all required fields are included for registration
         await registerMutation.mutateAsync({
           username: data.username,
           email: data.email,
@@ -47,6 +47,7 @@ export default function AuthPage() {
       setLocation("/");
     } catch (error) {
       // Error handling is done in mutations
+      console.error('Form submission error:', error);
     }
   };
 

@@ -30,7 +30,6 @@ const crypto = {
 
 declare global {
   namespace Express {
-    // eslint-disable-next-line @typescript-eslint/no-empty-interface
     interface User extends SelectUser {}
   }
 }
@@ -108,27 +107,41 @@ export function setupAuth(app: Express) {
       if (!result.success) {
         return res
           .status(400)
-          .send("Invalid input: " + result.error.issues.map((issue) => issue.message).join(", "));
+          .json({ error: result.error.issues.map((issue) => issue.message).join(", ") });
       }
 
-      const { username, password } = result.data;
+      const { username, email, password } = result.data;
 
-      const [existingUser] = await db
+      // Check if username already exists
+      const [existingUsername] = await db
         .select()
         .from(users)
         .where(eq(users.username, username))
         .limit(1);
 
-      if (existingUser) {
-        return res.status(400).send("Username already exists");
+      if (existingUsername) {
+        return res.status(400).json({ error: "Username already exists" });
+      }
+
+      // Check if email already exists
+      const [existingEmail] = await db
+        .select()
+        .from(users)
+        .where(eq(users.email, email))
+        .limit(1);
+
+      if (existingEmail) {
+        return res.status(400).json({ error: "Email already exists" });
       }
 
       const hashedPassword = await crypto.hash(password);
 
+      // Insert new user with all required fields
       const [newUser] = await db
         .insert(users)
         .values({
           username,
+          email,
           password: hashedPassword,
         })
         .returning();
@@ -137,12 +150,13 @@ export function setupAuth(app: Express) {
         if (err) {
           return next(err);
         }
-        return res.json({
+        return res.status(201).json({
           message: "Registration successful",
           user: { id: newUser.id, username: newUser.username },
         });
       });
     } catch (error) {
+      console.error("Registration error:", error);
       next(error);
     }
   });
@@ -154,7 +168,7 @@ export function setupAuth(app: Express) {
       }
 
       if (!user) {
-        return res.status(400).send(info.message ?? "Login failed");
+        return res.status(400).json({ error: info.message ?? "Login failed" });
       }
 
       req.logIn(user, (err) => {
@@ -173,16 +187,16 @@ export function setupAuth(app: Express) {
   app.post("/api/logout", (req, res) => {
     req.logout((err) => {
       if (err) {
-        return res.status(500).send("Logout failed");
+        return res.status(500).json({ error: "Logout failed" });
       }
       res.json({ message: "Logout successful" });
     });
   });
 
   app.get("/api/user", (req, res) => {
-    if (req.isAuthenticated()) {
-      return res.json(req.user);
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ error: "Not logged in" });
     }
-    res.status(401).send("Not logged in");
+    res.json(req.user);
   });
 }
