@@ -59,7 +59,7 @@ function ProtectedRoute({ component: Component, ...rest }: any) {
   }
 
   if (!user) {
-    window.location.href = "/auth";
+    window.location.href = "/login";
     return null;
   }
 
@@ -69,7 +69,7 @@ function ProtectedRoute({ component: Component, ...rest }: any) {
 function Router() {
   return (
     <Switch>
-      <Route path="/auth" component={AuthPage} />
+      <Route path="/login" component={AuthPage} />
       <Route path="/register" component={AuthPage} />
       <ProtectedRoute path="/" component={Home} />
       <ProtectedRoute path="/account" component={AccountPage} />

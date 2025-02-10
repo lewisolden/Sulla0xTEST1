@@ -34,7 +34,6 @@ export default function AuthPage() {
   const onSubmit = async (data: InsertUser) => {
     try {
       if (isRegisterPage) {
-        // Ensure all required fields are included for registration
         await registerMutation.mutateAsync({
           username: data.username,
           email: data.email,
@@ -46,7 +45,6 @@ export default function AuthPage() {
       }
       setLocation("/account");
     } catch (error) {
-      // Error handling is done in mutations
       console.error('Form submission error:', error);
     }
   };
@@ -126,7 +124,7 @@ export default function AuthPage() {
 
           <div className="mt-6 text-center">
             <button
-              onClick={() => setLocation(isRegisterPage ? "/auth" : "/register")}
+              onClick={() => setLocation(isRegisterPage ? "/login" : "/register")}
               className="text-blue-600 hover:text-blue-800"
               type="button"
               disabled={isLoading}
