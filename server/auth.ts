@@ -9,6 +9,12 @@ import { users, type SelectUser, insertUserSchema } from "@db/schema";
 import { db } from "@db";
 import { eq } from "drizzle-orm";
 
+declare global {
+  namespace Express {
+    interface User extends SelectUser {}
+  }
+}
+
 const scryptAsync = promisify(scrypt);
 const crypto = {
   hash: async (password: string) => {
