@@ -9,6 +9,7 @@ app.use(express.urlencoded({ extended: false }));
 // Trust proxy - required for secure cookies in production
 app.set('trust proxy', 1);
 
+// Add request logging middleware
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
@@ -40,25 +41,37 @@ app.use((req, res, next) => {
 });
 
 (async () => {
-  const server = registerRoutes(app);
+  try {
+    log("Starting server initialization...");
+    const server = registerRoutes(app);
 
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
+    app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+      const status = err.status || err.statusCode || 500;
+      const message = err.message || "Internal Server Error";
+      log(`Error: ${message}`);
+      res.status(status).json({ message });
+      throw err;
+    });
 
-    res.status(status).json({ message });
-    throw err;
-  });
+    if (app.get("env") === "development") {
+      log("Setting up Vite middleware...");
+      await setupVite(app, server);
+      log("Vite middleware setup complete");
+    } else {
+      log("Setting up static file serving...");
+      serveStatic(app);
+      log("Static file serving setup complete");
+    }
 
-  if (app.get("env") === "development") {
-    await setupVite(app, server);
-  } else {
-    serveStatic(app);
+    // Use port from environment variable or fallback to 3000
+    const PORT = parseInt(process.env.PORT || "3000", 10);
+    log(`Attempting to start server on port ${PORT}...`);
+
+    server.listen(PORT, "0.0.0.0", () => {
+      log(`Server is running on port ${PORT}`);
+    });
+  } catch (error) {
+    log(`Failed to start server: ${error}`);
+    process.exit(1);
   }
-
-  // Use port from environment variable or fallback to 3000
-  const PORT = parseInt(process.env.PORT || "3000", 10);
-  server.listen(PORT, "0.0.0.0", () => {
-    log(`Server is running on port ${PORT}`);
-  });
 })();

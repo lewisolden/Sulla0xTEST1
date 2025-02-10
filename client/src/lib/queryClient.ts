@@ -1,4 +1,4 @@
-import { QueryClient } from "@tanstack/react-query";
+import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
 type GetQueryFnOptions = {
   on401?: "throw" | "returnNull";
@@ -28,8 +28,8 @@ export async function apiRequest(
 }
 
 export function getQueryFn({ on401 = "throw" }: GetQueryFnOptions = {}) {
-  return async ({ queryKey }: { queryKey: string[] }) => {
-    const response = await fetch(queryKey[0], {
+  return async <T>({ queryKey }: { queryKey: readonly unknown[] }) => {
+    const response = await fetch(queryKey[0] as string, {
       credentials: "include",
     });
 
@@ -40,14 +40,14 @@ export function getQueryFn({ on401 = "throw" }: GetQueryFnOptions = {}) {
       throw new Error(await response.text());
     }
 
-    return response.json();
+    return response.json() as Promise<T>;
   };
 }
 
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      queryFn: getQueryFn(),
+      queryFn: getQueryFn() as QueryFunction<unknown, readonly unknown[]>,
       refetchInterval: false,
       refetchOnWindowFocus: false,
       staleTime: Infinity,
