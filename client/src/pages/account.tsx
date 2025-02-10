@@ -51,14 +51,15 @@ export default function AccountPage() {
     if (enrollment.metadata?.lastPath) {
       return enrollment.metadata.lastPath;
     }
-    return '/curriculum';
+    // Default to the course's first module if no last path is saved
+    return `/modules/${enrollment.courseId}/module1`;
   };
 
   if (!user) return null;
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
-      {/* Profile Header remains unchanged */}
+      {/* Profile Header */}
       <Card className="mb-8">
         <CardContent className="flex items-center gap-6 p-6">
           <Avatar className="h-24 w-24">
@@ -73,7 +74,6 @@ export default function AccountPage() {
       </Card>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        {/* TabsList remains unchanged */}
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="dashboard">Overview</TabsTrigger>
           <TabsTrigger value="progress">Course Progress</TabsTrigger>
@@ -100,7 +100,7 @@ export default function AccountPage() {
                 <div className="text-center p-4">
                   <p>Loading your courses...</p>
                 </div>
-              ) : enrollments?.length > 0 ? (
+              ) : enrollments && enrollments.length > 0 ? (
                 <div className="grid gap-4 md:grid-cols-2">
                   {enrollments.map((enrollment) => (
                     <Card key={enrollment.id}>
@@ -152,7 +152,7 @@ export default function AccountPage() {
           </Card>
         </TabsContent>
 
-        {/* Course Progress Tab -  Removed hardcoded module progress cards */}
+        {/* Course Progress Tab */}
         <TabsContent value="progress">
           <Card>
             <CardHeader>
@@ -160,9 +160,7 @@ export default function AccountPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-6">
-                {/* Module Progress Cards - Replaced with dynamic content above */}
-                {/* This section is now handled by the updated Overview Tab */}
-                {/* Achievement Summary remains unchanged */}
+                {/* Achievement Summary */}
                 <Card className="md:col-span-2">
                   <CardHeader>
                     <CardTitle className="text-lg">Learning Achievements</CardTitle>
