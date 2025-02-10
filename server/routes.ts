@@ -5,6 +5,7 @@ import { quizzes, userQuizResponses } from "@db/schema";
 import { eq } from "drizzle-orm";
 import { setupAuth } from "./auth";
 import enrollmentsRouter from "./routes/enrollments";
+import userMetricsRouter from "./routes/user-metrics";
 import path from 'path';
 import { fileURLToPath } from 'url';
 import type { Browser } from 'puppeteer';
@@ -32,6 +33,9 @@ export function registerRoutes(app: Express): Server {
 
   // Register enrollments routes
   app.use(enrollmentsRouter);
+
+  // Register user metrics routes
+  app.use(userMetricsRouter);
 
   // Get quizzes for a specific module
   app.get("/api/modules/:moduleId/quizzes", async (req, res) => {

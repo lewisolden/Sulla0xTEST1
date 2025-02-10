@@ -43,6 +43,16 @@ export default function AccountPage() {
     }
   });
 
+  // Fetch user metrics
+  const { data: metrics, isLoading: loadingMetrics } = useQuery({
+    queryKey: ['user-metrics'],
+    queryFn: async () => {
+      const response = await fetch('/api/user/metrics');
+      if (!response.ok) throw new Error('Failed to fetch user metrics');
+      return response.json();
+    }
+  });
+
   // Calculate overall progress based on actual enrollments
   const totalEnrollments = enrollments?.length || 0;
   const completedEnrollments = enrollments?.filter(e => e.status === 'completed').length || 0;
@@ -57,6 +67,13 @@ export default function AccountPage() {
       return `/modules/module${moduleMatch[1]}`;
     }
     return `/modules/module1`;
+  };
+
+  // Format duration in hours
+  const formatLearningTime = (minutes: number) => {
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    return `${hours}h ${remainingMinutes}m`;
   };
 
   if (!user) return null;
@@ -98,7 +115,9 @@ export default function AccountPage() {
                     </div>
                     <div>
                       <p className="text-sm text-blue-600">Learning Time</p>
-                      <p className="text-2xl font-bold text-blue-900">12.5 hrs</p>
+                      <p className="text-2xl font-bold text-blue-900">
+                        {loadingMetrics ? "..." : formatLearningTime(metrics?.totalLearningMinutes || 0)}
+                      </p>
                     </div>
                   </div>
                 </CardContent>
@@ -112,7 +131,9 @@ export default function AccountPage() {
                     </div>
                     <div>
                       <p className="text-sm text-green-600">Completed Quizzes</p>
-                      <p className="text-2xl font-bold text-green-900">15</p>
+                      <p className="text-2xl font-bold text-green-900">
+                        {loadingMetrics ? "..." : metrics?.completedQuizzes || 0}
+                      </p>
                     </div>
                   </div>
                 </CardContent>
@@ -126,7 +147,9 @@ export default function AccountPage() {
                     </div>
                     <div>
                       <p className="text-sm text-purple-600">Achievement Badges</p>
-                      <p className="text-2xl font-bold text-purple-900">8</p>
+                      <p className="text-2xl font-bold text-purple-900">
+                        {loadingMetrics ? "..." : metrics?.earnedBadges || 0}
+                      </p>
                     </div>
                   </div>
                 </CardContent>
@@ -140,7 +163,9 @@ export default function AccountPage() {
                     </div>
                     <div>
                       <p className="text-sm text-orange-600">Learning Streak</p>
-                      <p className="text-2xl font-bold text-orange-900">5 days</p>
+                      <p className="text-2xl font-bold text-orange-900">
+                        {loadingMetrics ? "..." : `${metrics?.learningStreak || 0} days`}
+                      </p>
                     </div>
                   </div>
                 </CardContent>
@@ -264,28 +289,71 @@ export default function AccountPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-6">
-                {/* Achievement Summary */}
-                <Card className="md:col-span-2">
-                  <CardHeader>
-                    <CardTitle className="text-lg">Learning Achievements</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid gap-4 md:grid-cols-3">
-                      <div className="text-center p-4 bg-blue-50 rounded-lg">
-                        <h3 className="font-semibold">Quizzes Completed</h3>
-                        <p className="text-2xl font-bold text-blue-600">12</p>
-                      </div>
-                      <div className="text-center p-4 bg-green-50 rounded-lg">
-                        <h3 className="font-semibold">Average Score</h3>
-                        <p className="text-2xl font-bold text-green-600">87%</p>
-                      </div>
-                      <div className="text-center p-4 bg-purple-50 rounded-lg">
-                        <h3 className="font-semibold">Badges Earned</h3>
-                        <p className="text-2xl font-bold text-purple-600">5</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                {/* Course Progress Cards */}
+                {loadingEnrollments ? (
+                  <div className="text-center p-4">
+                    <p>Loading courses...</p>
+                  </div>
+                ) : enrollments && enrollments.length > 0 ? (
+                  <div className="grid gap-4">
+                    {enrollments.map((enrollment) => (
+                      <Card key={enrollment.id} className="bg-gradient-to-br from-blue-50 to-blue-100">
+                        <CardHeader>
+                          <CardTitle>{enrollment.course.title}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-4">
+                            <div>
+                              <div className="flex justify-between text-sm mb-2">
+                                <span>Course Progress</span>
+                                <span>{enrollment.progress}%</span>
+                              </div>
+                              <Progress value={enrollment.progress} />
+                            </div>
+                            <div className="space-y-2">
+                              <p className="text-sm text-gray-600">
+                                Status: {enrollment.status.charAt(0).toUpperCase() + enrollment.status.slice(1)}
+                              </p>
+                              <p className="text-sm text-gray-600">
+                                Enrolled: {new Date(enrollment.enrolledAt).toLocaleDateString()}
+                              </p>
+                              {enrollment.metadata?.lastModule && (
+                                <p className="text-sm text-gray-600">
+                                  Last Activity: {enrollment.metadata.lastModule}
+                                  {enrollment.metadata.lastTopic && ` - ${enrollment.metadata.lastTopic}`}
+                                </p>
+                              )}
+                              {loadingMetrics ? null : (
+                                <div className="grid grid-cols-2 gap-4 mt-4">
+                                  <div className="bg-blue-50 p-3 rounded-lg">
+                                    <p className="text-sm text-blue-600">Quiz Score</p>
+                                    <p className="font-semibold">{metrics?.courseMetrics?.[enrollment.courseId]?.averageQuizScore || 0}%</p>
+                                  </div>
+                                  <div className="bg-green-50 p-3 rounded-lg">
+                                    <p className="text-sm text-green-600">Time Spent</p>
+                                    <p className="font-semibold">{formatLearningTime(metrics?.courseMetrics?.[enrollment.courseId]?.timeSpent || 0)}</p>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                            <Button className="w-full" asChild>
+                              <Link href={getContinueLearningPath(enrollment)}>
+                                Continue Learning <ArrowRight className="ml-2 h-4 w-4" />
+                              </Link>
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center p-4">
+                    <p className="text-gray-500">You haven't enrolled in any courses yet.</p>
+                    <Button className="mt-4" asChild>
+                      <Link href="/curriculum">Browse Courses</Link>
+                    </Button>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
