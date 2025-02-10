@@ -7,7 +7,7 @@ const router = Router();
 
 // Handle course enrollment
 router.post("/api/enrollments", async (req, res) => {
-  if (!req.session?.userId) {
+  if (!req.user?.id) {
     return res.status(401).json({ error: "Unauthorized", message: "Please log in to enroll in courses" });
   }
 
@@ -17,11 +17,10 @@ router.post("/api/enrollments", async (req, res) => {
   }
 
   try {
-    const userId = parseInt(req.session.userId, 10);
     // Check if user is already enrolled
     const existingEnrollment = await db.query.courseEnrollments.findFirst({
       where: and(
-        eq(courseEnrollments.userId, userId),
+        eq(courseEnrollments.userId, req.user.id),
         eq(courseEnrollments.courseId, courseId)
       ),
     });
@@ -35,7 +34,7 @@ router.post("/api/enrollments", async (req, res) => {
 
     // Create new enrollment
     const newEnrollment = await db.insert(courseEnrollments).values({
-      userId: userId,
+      userId: req.user.id,
       courseId: courseId,
       status: 'active',
       progress: 0
@@ -53,14 +52,13 @@ router.post("/api/enrollments", async (req, res) => {
 
 // Get user enrollments
 router.get("/api/enrollments", async (req, res) => {
-  if (!req.session?.userId) {
+  if (!req.user?.id) {
     return res.status(401).json({ error: "Unauthorized", message: "Please log in to view enrollments" });
   }
 
   try {
-    const userId = parseInt(req.session.userId, 10);
     const userEnrollments = await db.query.courseEnrollments.findMany({
-      where: eq(courseEnrollments.userId, userId),
+      where: eq(courseEnrollments.userId, req.user.id),
       with: {
         course: true
       }
