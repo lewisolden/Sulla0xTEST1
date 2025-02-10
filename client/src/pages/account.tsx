@@ -147,6 +147,30 @@ export default function AccountPage() {
                     </CardContent>
                   </Card>
 
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-lg">Module 3: Ethereum & Smart Contracts</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div>
+                          <div className="flex justify-between text-sm mb-2">
+                            <span>Course Completion</span>
+                            <span>30%</span>
+                          </div>
+                          <Progress value={30} />
+                        </div>
+                        <div className="space-y-2">
+                          <p className="text-sm text-gray-500">Quiz Scores: 88%</p>
+                          <p className="text-sm text-gray-500">Time Spent: 1.5 hours</p>
+                        </div>
+                        <Button className="w-full" asChild>
+                          <Link href="/modules/module3">Continue Learning</Link>
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+
                   {/* Achievement Summary */}
                   <Card className="md:col-span-2">
                     <CardHeader>
