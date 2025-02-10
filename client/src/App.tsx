@@ -18,6 +18,8 @@ import AccountPage from "@/pages/account";
 import AdminDashboard from "@/pages/admin/dashboard";
 import AdminUsers from "@/pages/admin/users";
 import AdminLogin from "@/pages/admin/login";
+import AdminAnalytics from "@/pages/admin/analytics"; //New import
+
 
 // Module 1 Routes
 import Module1Landing from "@/pages/modules/module1";
@@ -81,6 +83,7 @@ function Router() {
       <Route path="/admin/login" component={AdminLogin} />
       <ProtectedRoute path="/admin" component={AdminDashboard} adminOnly />
       <ProtectedRoute path="/admin/users" component={AdminUsers} adminOnly />
+      <ProtectedRoute path="/admin/analytics" component={AdminAnalytics} adminOnly /> {/* New Route */}
 
       {/* Regular routes */}
       <Route path="/login" component={AuthPage} />
