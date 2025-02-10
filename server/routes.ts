@@ -1,9 +1,9 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { db } from "@db";
-import { quizzes, userQuizResponses } from "@db/schema";
-import { eq } from "drizzle-orm";
-import { setupAuth } from "./auth";
+import { quizzes, userQuizResponses, users, courseEnrollments, moduleProgress, achievements, userAchievements } from "@db/schema";
+import { eq, count, sql } from "drizzle-orm";
+import { setupAuth, requireAdmin } from "./auth";
 import enrollmentsRouter from "./routes/enrollments";
 import userMetricsRouter from "./routes/user-metrics";
 import path from 'path';
@@ -83,6 +83,132 @@ export function registerRoutes(app: Express): Server {
       });
     } catch (error) {
       res.status(500).json({ message: "Failed to process answer" });
+    }
+  });
+
+  // Admin routes
+  // Get user analytics
+  app.get("/api/admin/analytics/users", requireAdmin, async (req, res) => {
+    try {
+      const [userCount] = await db
+        .select({ count: count() })
+        .from(users);
+
+      const [activeUsers] = await db
+        .select({ count: count() })
+        .from(users)
+        .where(sql`${users.lastActivity} > NOW() - INTERVAL '7 days'`);
+
+      const [enrollmentCount] = await db
+        .select({ count: count() })
+        .from(courseEnrollments);
+
+      const [completedModules] = await db
+        .select({ count: count() })
+        .from(moduleProgress)
+        .where(eq(moduleProgress.completed, true));
+
+      const [achievementsAwarded] = await db
+        .select({ count: count() })
+        .from(userAchievements);
+
+      res.json({
+        totalUsers: userCount.count,
+        activeUsers: activeUsers.count,
+        totalEnrollments: enrollmentCount.count,
+        completedModules: completedModules.count,
+        achievementsAwarded: achievementsAwarded.count,
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch analytics" });
+    }
+  });
+
+  // Get user list with pagination
+  app.get("/api/admin/users", requireAdmin, async (req, res) => {
+    try {
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+      const offset = (page - 1) * limit;
+
+      const usersList = await db
+        .select({
+          id: users.id,
+          username: users.username,
+          email: users.email,
+          lastActivity: users.lastActivity,
+          enrollmentCount: sql<number>`(
+            SELECT COUNT(*) 
+            FROM ${courseEnrollments} 
+            WHERE ${courseEnrollments.userId} = ${users.id}
+          )`,
+          completedModules: sql<number>`(
+            SELECT COUNT(*) 
+            FROM ${moduleProgress} 
+            WHERE ${moduleProgress.userId} = ${users.id} 
+            AND ${moduleProgress.completed} = true
+          )`,
+        })
+        .from(users)
+        .limit(limit)
+        .offset(offset);
+
+      const [totalCount] = await db
+        .select({ count: count() })
+        .from(users);
+
+      res.json({
+        users: usersList,
+        pagination: {
+          total: totalCount.count,
+          page,
+          pageSize: limit,
+          totalPages: Math.ceil(totalCount.count / limit),
+        },
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch users" });
+    }
+  });
+
+  // Get specific user details
+  app.get("/api/admin/users/:userId", requireAdmin, async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+
+      const [user] = await db
+        .select()
+        .from(users)
+        .where(eq(users.id, userId))
+        .limit(1);
+
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      const enrollments = await db
+        .select()
+        .from(courseEnrollments)
+        .where(eq(courseEnrollments.userId, userId));
+
+      const progress = await db
+        .select()
+        .from(moduleProgress)
+        .where(eq(moduleProgress.userId, userId));
+
+      const achievements = await db
+        .select()
+        .from(userAchievements)
+        .where(eq(userAchievements.userId, userId));
+
+      res.json({
+        user,
+        enrollments,
+        progress,
+        achievements,
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch user details" });
     }
   });
 

@@ -5,7 +5,7 @@ import session from "express-session";
 import createMemoryStore from "memorystore";
 import { scrypt, randomBytes, timingSafeEqual } from "crypto";
 import { promisify } from "util";
-import { users, type SelectUser, insertUserSchema } from "@db/schema";
+import { users, adminUsers, type SelectUser, type SelectAdminUser, insertUserSchema, insertAdminUserSchema } from "@db/schema";
 import { db } from "@db";
 import { eq } from "drizzle-orm";
 
@@ -31,8 +31,28 @@ const crypto = {
 declare global {
   namespace Express {
     interface User extends SelectUser {}
+    interface AdminUser extends SelectAdminUser {}
   }
 }
+
+// Middleware to check if user is an admin
+export const requireAdmin = async (req: any, res: any, next: any) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ error: "Not authenticated" });
+  }
+
+  const [admin] = await db
+    .select()
+    .from(adminUsers)
+    .where(eq(adminUsers.id, req.user.id))
+    .limit(1);
+
+  if (!admin) {
+    return res.status(403).json({ error: "Not authorized" });
+  }
+
+  next();
+};
 
 export function setupAuth(app: Express) {
   const MemoryStore = createMemoryStore(session);
@@ -61,46 +81,101 @@ export function setupAuth(app: Express) {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  passport.use(
-    new LocalStrategy(async (username, password, done) => {
-      try {
-        const [user] = await db
-          .select()
-          .from(users)
-          .where(eq(users.username, username))
-          .limit(1);
-
-        if (!user) {
-          return done(null, false, { message: "Incorrect username." });
-        }
-        const isMatch = await crypto.compare(password, user.password);
-        if (!isMatch) {
-          return done(null, false, { message: "Incorrect password." });
-        }
-        return done(null, user);
-      } catch (err) {
-        return done(err);
-      }
-    })
-  );
-
-  passport.serializeUser((user, done) => {
-    done(null, user.id);
-  });
-
-  passport.deserializeUser(async (id: number, done) => {
+  // Regular user authentication strategy
+  passport.use('local', new LocalStrategy(async (username, password, done) => {
     try {
       const [user] = await db
         .select()
         .from(users)
-        .where(eq(users.id, id))
+        .where(eq(users.username, username))
         .limit(1);
-      done(null, user);
+
+      if (!user) {
+        return done(null, false, { message: "Incorrect username." });
+      }
+      const isMatch = await crypto.compare(password, user.password);
+      if (!isMatch) {
+        return done(null, false, { message: "Incorrect password." });
+      }
+      return done(null, user);
+    } catch (err) {
+      return done(err);
+    }
+  }));
+
+  // Admin authentication strategy
+  passport.use('admin-local', new LocalStrategy(async (username, password, done) => {
+    try {
+      const [admin] = await db
+        .select()
+        .from(adminUsers)
+        .where(eq(adminUsers.username, username))
+        .limit(1);
+
+      if (!admin) {
+        return done(null, false, { message: "Incorrect admin username." });
+      }
+      const isMatch = await crypto.compare(password, admin.password);
+      if (!isMatch) {
+        return done(null, false, { message: "Incorrect admin password." });
+      }
+      return done(null, admin);
+    } catch (err) {
+      return done(err);
+    }
+  }));
+
+  passport.serializeUser((user: any, done) => {
+    done(null, { id: user.id, isAdmin: !!user.role });
+  });
+
+  passport.deserializeUser(async (data: { id: number, isAdmin: boolean }, done) => {
+    try {
+      if (data.isAdmin) {
+        const [admin] = await db
+          .select()
+          .from(adminUsers)
+          .where(eq(adminUsers.id, data.id))
+          .limit(1);
+        done(null, admin);
+      } else {
+        const [user] = await db
+          .select()
+          .from(users)
+          .where(eq(users.id, data.id))
+          .limit(1);
+        done(null, user);
+      }
     } catch (err) {
       done(err);
     }
   });
 
+  // Admin login route
+  app.post("/api/admin/login", (req, res, next) => {
+    passport.authenticate("admin-local", (err: any, admin: Express.AdminUser | false, info: IVerifyOptions) => {
+      if (err) {
+        return next(err);
+      }
+
+      if (!admin) {
+        return res.status(400).json({ error: info.message ?? "Admin login failed" });
+      }
+
+      req.logIn(admin, (err) => {
+        if (err) {
+          return next(err);
+        }
+
+        return res.json({
+          message: "Admin login successful",
+          admin: { id: admin.id, username: admin.username, role: admin.role },
+        });
+      });
+    })(req, res, next);
+  });
+
+  // Regular authentication routes remain unchanged
   app.post("/api/register", async (req, res, next) => {
     try {
       const result = insertUserSchema.safeParse(req.body);
@@ -112,7 +187,6 @@ export function setupAuth(app: Express) {
 
       const { username, email, password } = result.data;
 
-      // Check if username already exists
       const [existingUsername] = await db
         .select()
         .from(users)
@@ -123,7 +197,6 @@ export function setupAuth(app: Express) {
         return res.status(400).json({ error: "Username already exists" });
       }
 
-      // Check if email already exists
       const [existingEmail] = await db
         .select()
         .from(users)
@@ -136,7 +209,6 @@ export function setupAuth(app: Express) {
 
       const hashedPassword = await crypto.hash(password);
 
-      // Insert new user with all required fields
       const [newUser] = await db
         .insert(users)
         .values({
@@ -198,5 +270,49 @@ export function setupAuth(app: Express) {
       return res.status(401).json({ error: "Not logged in" });
     }
     res.json(req.user);
+  });
+
+  // New admin registration route (protected)
+  app.post("/api/admin/register", requireAdmin, async (req, res, next) => {
+    try {
+      const result = insertAdminUserSchema.safeParse(req.body);
+      if (!result.success) {
+        return res
+          .status(400)
+          .json({ error: result.error.issues.map((issue) => issue.message).join(", ") });
+      }
+
+      const { username, email, password, role = 'admin' } = result.data;
+
+      const [existingUsername] = await db
+        .select()
+        .from(adminUsers)
+        .where(eq(adminUsers.username, username))
+        .limit(1);
+
+      if (existingUsername) {
+        return res.status(400).json({ error: "Admin username already exists" });
+      }
+
+      const hashedPassword = await crypto.hash(password);
+
+      const [newAdmin] = await db
+        .insert(adminUsers)
+        .values({
+          username,
+          email,
+          password: hashedPassword,
+          role,
+        })
+        .returning();
+
+      res.status(201).json({
+        message: "Admin registration successful",
+        admin: { id: newAdmin.id, username: newAdmin.username, role: newAdmin.role },
+      });
+    } catch (error) {
+      console.error("Admin registration error:", error);
+      next(error);
+    }
   });
 }

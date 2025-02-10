@@ -210,3 +210,23 @@ export type InsertCourse = typeof courses.$inferInsert;
 export type SelectCourse = typeof courses.$inferSelect;
 export type InsertCourseEnrollment = typeof courseEnrollments.$inferInsert;
 export type SelectCourseEnrollment = typeof courseEnrollments.$inferSelect;
+
+export const adminUsers = pgTable("admin_users", {
+  id: serial("id").primaryKey(),
+  username: text("username").unique().notNull(),
+  email: text("email").unique().notNull(),
+  password: text("password").notNull(),
+  role: text("role").notNull().default('admin'),
+  lastLogin: timestamp("last_login").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const adminUserRelations = relations(adminUsers, ({ many }) => ({
+  userManagement: many(users),
+}));
+
+export const insertAdminUserSchema = createInsertSchema(adminUsers);
+export const selectAdminUserSchema = createSelectSchema(adminUsers);
+
+export type InsertAdminUser = typeof adminUsers.$inferInsert;
+export type SelectAdminUser = typeof adminUsers.$inferSelect;

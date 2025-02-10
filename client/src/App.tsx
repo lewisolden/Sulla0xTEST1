@@ -15,6 +15,9 @@ import AIOverview from "@/pages/ai";
 import Deck from "@/pages/deck";
 import AuthPage from "@/pages/auth-page";
 import AccountPage from "@/pages/account";
+import AdminDashboard from "@/pages/admin/dashboard";
+import AdminUsers from "@/pages/admin/users";
+import AdminLogin from "@/pages/admin/login";
 
 // Module 1 Routes
 import Module1Landing from "@/pages/modules/module1";
@@ -51,7 +54,7 @@ import Navigation from "@/components/layout/navigation";
 import TradingSimulator from "@/pages/trading-simulator";
 import GlossaryPage from "@/pages/glossary";
 
-function ProtectedRoute({ component: Component, ...rest }: any) {
+function ProtectedRoute({ component: Component, adminOnly = false, ...rest }: any) {
   const { user, isLoading } = useAuth();
 
   if (isLoading) {
@@ -59,7 +62,12 @@ function ProtectedRoute({ component: Component, ...rest }: any) {
   }
 
   if (!user) {
-    window.location.href = "/login";
+    window.location.href = adminOnly ? "/admin/login" : "/login";
+    return null;
+  }
+
+  if (adminOnly && user.role !== 'admin') {
+    window.location.href = "/";
     return null;
   }
 
@@ -69,6 +77,12 @@ function ProtectedRoute({ component: Component, ...rest }: any) {
 function Router() {
   return (
     <Switch>
+      {/* Admin routes */}
+      <Route path="/admin/login" component={AdminLogin} />
+      <ProtectedRoute path="/admin" component={AdminDashboard} adminOnly />
+      <ProtectedRoute path="/admin/users" component={AdminUsers} adminOnly />
+
+      {/* Regular routes */}
       <Route path="/login" component={AuthPage} />
       <Route path="/register" component={AuthPage} />
       <ProtectedRoute path="/" component={Home} />
