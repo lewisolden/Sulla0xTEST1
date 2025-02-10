@@ -16,12 +16,6 @@ export default function AuthPage() {
   const isRegisterPage = location === "/register";
   const { loginMutation, registerMutation, user } = useAuth();
 
-  // Redirect if already logged in
-  if (user) {
-    setLocation("/account");
-    return null;
-  }
-
   const form = useForm<InsertUser>({
     resolver: zodResolver(insertUserSchema),
     defaultValues: {
@@ -30,6 +24,12 @@ export default function AuthPage() {
       password: "",
     },
   });
+
+  // Redirect if already logged in - moved after hook declarations
+  if (user) {
+    setTimeout(() => setLocation("/account"), 0);
+    return null;
+  }
 
   const onSubmit = async (data: InsertUser) => {
     try {
