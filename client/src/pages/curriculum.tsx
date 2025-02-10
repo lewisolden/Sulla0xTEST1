@@ -106,7 +106,11 @@ export default function Curriculum() {
       try {
         const response = await fetch('/api/enrollments', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          credentials: 'include',
           body: JSON.stringify({ courseId })
         });
 
@@ -146,7 +150,9 @@ export default function Curriculum() {
   );
 
   const handleEnroll = () => {
-    enrollMutation.mutate(currentCourse.id);
+    const courseIdNumber = Number(currentCourse.id);
+    console.log('Enrolling in course:', courseIdNumber);
+    enrollMutation.mutate(courseIdNumber);
   };
 
   return (

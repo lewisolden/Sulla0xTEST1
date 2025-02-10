@@ -27,7 +27,7 @@ async function getBrowser() {
 }
 
 export function registerRoutes(app: Express): Server {
-  // Set up authentication routes
+  // Set up authentication routes first
   setupAuth(app);
 
   // Register enrollments routes
