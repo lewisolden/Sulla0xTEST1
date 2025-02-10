@@ -7,22 +7,33 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Link } from "wouter";
+import { useQuery } from "@tanstack/react-query";
 
 export default function AccountPage() {
   const { user } = useAuth();
   const { progress } = useProgress();
   const [activeTab, setActiveTab] = useState("dashboard");
 
-  // Calculate overall progress
-  const totalModules = 4; // We have 4 modules
-  const completedModules = progress.filter(p => p.completed).length;
-  const overallProgress = (completedModules / totalModules) * 100;
+  // Fetch enrollments data
+  const { data: enrollments, isLoading: loadingEnrollments } = useQuery({
+    queryKey: ['enrollments'],
+    queryFn: async () => {
+      const response = await fetch('/api/enrollments');
+      if (!response.ok) throw new Error('Failed to fetch enrollments');
+      return response.json();
+    }
+  });
+
+  // Calculate overall progress based on actual enrollments
+  const totalEnrollments = enrollments?.length || 0;
+  const completedEnrollments = enrollments?.filter(e => e.status === 'completed').length || 0;
+  const overallProgress = totalEnrollments ? (completedEnrollments / totalEnrollments) * 100 : 0;
 
   if (!user) return null;
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
-      {/* Profile Header */}
+      {/* Profile Header remains unchanged */}
       <Card className="mb-8">
         <CardContent className="flex items-center gap-6 p-6">
           <Avatar className="h-24 w-24">
@@ -36,8 +47,8 @@ export default function AccountPage() {
         </CardContent>
       </Card>
 
-      {/* Main Content */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
+        {/* TabsList remains unchanged */}
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="dashboard">Overview</TabsTrigger>
           <TabsTrigger value="progress">Course Progress</TabsTrigger>
@@ -60,36 +71,55 @@ export default function AccountPage() {
                 <Progress value={overallProgress} />
               </div>
 
-              <div className="grid gap-4 md:grid-cols-2">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Recent Activity</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-gray-500">Continue where you left off</p>
-                    <Button className="mt-4" asChild>
-                      <Link href="/curriculum">Resume Learning</Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">Achievements</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-gray-500">View your earned badges and certificates</p>
-                    <Button className="mt-4" variant="outline" asChild>
-                      <Link href="/achievements">View Achievements</Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-              </div>
+              {loadingEnrollments ? (
+                <div className="text-center p-4">
+                  <p>Loading your courses...</p>
+                </div>
+              ) : enrollments?.length > 0 ? (
+                <div className="grid gap-4 md:grid-cols-2">
+                  {enrollments.map((enrollment) => (
+                    <Card key={enrollment.id}>
+                      <CardHeader>
+                        <CardTitle className="text-lg">{enrollment.course.title}</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-4">
+                          <div>
+                            <div className="flex justify-between text-sm mb-2">
+                              <span>Course Progress</span>
+                              <span>{enrollment.progress}%</span>
+                            </div>
+                            <Progress value={enrollment.progress} />
+                          </div>
+                          <div className="space-y-2">
+                            <p className="text-sm text-gray-500">
+                              Status: {enrollment.status.charAt(0).toUpperCase() + enrollment.status.slice(1)}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              Enrolled: {new Date(enrollment.enrolledAt).toLocaleDateString()}
+                            </p>
+                          </div>
+                          <Button className="w-full" asChild>
+                            <Link href="/curriculum">Continue Learning</Link>
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center p-4">
+                  <p className="text-gray-500">You haven't enrolled in any courses yet.</p>
+                  <Button className="mt-4" asChild>
+                    <Link href="/curriculum">Browse Courses</Link>
+                  </Button>
+                </div>
+              )}
             </CardContent>
           </Card>
         </TabsContent>
 
-        {/* Course Progress Tab */}
+        {/* Course Progress Tab -  Removed hardcoded module progress cards */}
         <TabsContent value="progress">
           <Card>
             <CardHeader>
@@ -97,103 +127,30 @@ export default function AccountPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-6">
-                {/* Module Progress Cards */}
-                <div className="grid gap-4 md:grid-cols-2">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-lg">Module 1: Blockchain Fundamentals</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        <div>
-                          <div className="flex justify-between text-sm mb-2">
-                            <span>Course Completion</span>
-                            <span>75%</span>
-                          </div>
-                          <Progress value={75} />
-                        </div>
-                        <div className="space-y-2">
-                          <p className="text-sm text-gray-500">Quiz Scores: 85%</p>
-                          <p className="text-sm text-gray-500">Time Spent: 4.5 hours</p>
-                        </div>
-                        <Button className="w-full" asChild>
-                          <Link href="/modules/module1">Continue Learning</Link>
-                        </Button>
+                {/* Module Progress Cards - Replaced with dynamic content above */}
+                {/* This section is now handled by the updated Overview Tab */}
+                {/* Achievement Summary remains unchanged */}
+                <Card className="md:col-span-2">
+                  <CardHeader>
+                    <CardTitle className="text-lg">Learning Achievements</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid gap-4 md:grid-cols-3">
+                      <div className="text-center p-4 bg-blue-50 rounded-lg">
+                        <h3 className="font-semibold">Quizzes Completed</h3>
+                        <p className="text-2xl font-bold text-blue-600">12</p>
                       </div>
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-lg">Module 2: Smart Contracts</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        <div>
-                          <div className="flex justify-between text-sm mb-2">
-                            <span>Course Completion</span>
-                            <span>45%</span>
-                          </div>
-                          <Progress value={45} />
-                        </div>
-                        <div className="space-y-2">
-                          <p className="text-sm text-gray-500">Quiz Scores: 90%</p>
-                          <p className="text-sm text-gray-500">Time Spent: 2.5 hours</p>
-                        </div>
-                        <Button className="w-full" asChild>
-                          <Link href="/modules/module2">Continue Learning</Link>
-                        </Button>
+                      <div className="text-center p-4 bg-green-50 rounded-lg">
+                        <h3 className="font-semibold">Average Score</h3>
+                        <p className="text-2xl font-bold text-green-600">87%</p>
                       </div>
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-lg">Module 3: Ethereum & Smart Contracts</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        <div>
-                          <div className="flex justify-between text-sm mb-2">
-                            <span>Course Completion</span>
-                            <span>30%</span>
-                          </div>
-                          <Progress value={30} />
-                        </div>
-                        <div className="space-y-2">
-                          <p className="text-sm text-gray-500">Quiz Scores: 88%</p>
-                          <p className="text-sm text-gray-500">Time Spent: 1.5 hours</p>
-                        </div>
-                        <Button className="w-full" asChild>
-                          <Link href="/modules/module3">Continue Learning</Link>
-                        </Button>
+                      <div className="text-center p-4 bg-purple-50 rounded-lg">
+                        <h3 className="font-semibold">Badges Earned</h3>
+                        <p className="text-2xl font-bold text-purple-600">5</p>
                       </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Achievement Summary */}
-                  <Card className="md:col-span-2">
-                    <CardHeader>
-                      <CardTitle className="text-lg">Learning Achievements</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="grid gap-4 md:grid-cols-3">
-                        <div className="text-center p-4 bg-blue-50 rounded-lg">
-                          <h3 className="font-semibold">Quizzes Completed</h3>
-                          <p className="text-2xl font-bold text-blue-600">12</p>
-                        </div>
-                        <div className="text-center p-4 bg-green-50 rounded-lg">
-                          <h3 className="font-semibold">Average Score</h3>
-                          <p className="text-2xl font-bold text-green-600">87%</p>
-                        </div>
-                        <div className="text-center p-4 bg-purple-50 rounded-lg">
-                          <h3 className="font-semibold">Badges Earned</h3>
-                          <p className="text-2xl font-bold text-purple-600">5</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
             </CardContent>
           </Card>
