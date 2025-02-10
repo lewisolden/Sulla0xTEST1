@@ -18,6 +18,9 @@ const crypto = {
   },
   compare: async (suppliedPassword: string, storedPassword: string) => {
     const [hashedPassword, salt] = storedPassword.split(".");
+    if (!hashedPassword || !salt) {
+      return false;
+    }
     const hashedPasswordBuf = Buffer.from(hashedPassword, "hex");
     const suppliedPasswordBuf = (await scryptAsync(
       suppliedPassword,
@@ -175,7 +178,7 @@ export function setupAuth(app: Express) {
     })(req, res, next);
   });
 
-  // Regular authentication routes remain unchanged
+  // Regular authentication routes
   app.post("/api/register", async (req, res, next) => {
     try {
       const result = insertUserSchema.safeParse(req.body);
