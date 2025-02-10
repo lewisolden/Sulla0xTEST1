@@ -28,11 +28,9 @@ app.use((req, res, next) => {
       if (capturedJsonResponse) {
         logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
       }
-
       if (logLine.length > 80) {
         logLine = logLine.slice(0, 79) + "…";
       }
-
       log(logLine);
     }
   });
@@ -45,15 +43,20 @@ app.use((req, res, next) => {
     log("Starting server initialization...");
     const server = registerRoutes(app);
 
+    // Error handling middleware - should be last
     app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
       const status = err.status || err.statusCode || 500;
       const message = err.message || "Internal Server Error";
       log(`Error: ${message}`);
       res.status(status).json({ message });
-      throw err;
+      // Don't throw here, just log
+      console.error(err);
     });
 
-    if (app.get("env") === "development") {
+    const isProduction = process.env.NODE_ENV === 'production';
+    const PORT = 5000; // Explicitly set port to 5000
+
+    if (!isProduction) {
       log("Setting up Vite middleware...");
       await setupVite(app, server);
       log("Vite middleware setup complete");
@@ -63,15 +66,25 @@ app.use((req, res, next) => {
       log("Static file serving setup complete");
     }
 
-    // Use port from environment variable or fallback to 3000
-    const PORT = parseInt(process.env.PORT || "3000", 10);
     log(`Attempting to start server on port ${PORT}...`);
 
     server.listen(PORT, "0.0.0.0", () => {
       log(`Server is running on port ${PORT}`);
     });
+
+    // Handle server errors
+    server.on('error', (error: NodeJS.ErrnoException) => {
+      if (error.code === 'EADDRINUSE') {
+        log(`Port ${PORT} is already in use`);
+      } else {
+        log(`Server error: ${error.message}`);
+      }
+      process.exit(1);
+    });
+
   } catch (error) {
     log(`Failed to start server: ${error}`);
+    console.error(error);
     process.exit(1);
   }
 })();
