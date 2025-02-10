@@ -1,6 +1,8 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import session from "express-session";
+import MemoryStore from "memorystore";
 
 const app = express();
 app.use(express.json());
@@ -8,6 +10,23 @@ app.use(express.urlencoded({ extended: false }));
 
 // Trust proxy - required for secure cookies in production
 app.set('trust proxy', 1);
+
+// Session configuration
+const SessionStore = MemoryStore(session);
+app.use(
+  session({
+    cookie: {
+      maxAge: 86400000, // 24 hours
+      secure: process.env.NODE_ENV === "production",
+    },
+    secret: process.env.SESSION_SECRET || 'development_secret',
+    resave: false,
+    saveUninitialized: false,
+    store: new SessionStore({
+      checkPeriod: 86400000 // prune expired entries every 24h
+    })
+  })
+);
 
 // Add request logging middleware
 app.use((req, res, next) => {
