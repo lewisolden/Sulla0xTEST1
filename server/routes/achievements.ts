@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { db } from "@db";
 import { achievements, userAchievements, moduleProgress } from "@db/schema";
-import { eq, and } from "drizzle-orm";
+import { eq, and, sql } from "drizzle-orm";
 
 const router = Router();
 
@@ -25,8 +25,9 @@ router.get("/api/achievements/earned", async (req, res) => {
   }
 
   try {
+    const userId = parseInt(req.session.userId, 10);
     const earnedAchievements = await db.query.userAchievements.findMany({
-      where: eq(userAchievements.userId, req.session.userId),
+      where: sql`${userAchievements.userId} = ${userId}`,
       with: {
         achievement: true
       }
@@ -45,42 +46,36 @@ router.post("/api/achievements/check-module-completion", async (req, res) => {
   }
 
   const { moduleId } = req.body;
+  const userId = parseInt(req.session.userId, 10);
 
   try {
     // Get all sections for this module
     const moduleSections = await db.query.moduleProgress.findMany({
-      where: and(
-        eq(moduleProgress.userId, req.session.userId),
-        eq(moduleProgress.moduleId, moduleId)
-      )
+      where: sql`${moduleProgress.userId} = ${userId} AND ${moduleProgress.moduleId} = ${moduleId}`
     });
 
     // Check if all sections are completed
     const allCompleted = moduleSections.every(section => section.completed);
 
     if (allCompleted) {
-      // Find or create module completion achievement
+      // Find module completion achievement
       const moduleAchievement = await db.query.achievements.findFirst({
-        where: and(
-          eq(achievements.type, 'certificate'),
-          eq(achievements.criteria.moduleId, moduleId)
-        )
+        where: sql`${achievements.type} = 'certificate' AND 
+                  (${achievements.criteria}->>'moduleId')::int = ${moduleId}`
       });
 
       if (moduleAchievement) {
         // Check if user already has this achievement
         const existingAward = await db.query.userAchievements.findFirst({
-          where: and(
-            eq(userAchievements.userId, req.session.userId),
-            eq(userAchievements.achievementId, moduleAchievement.id)
-          )
+          where: sql`${userAchievements.userId} = ${userId} AND 
+                    ${userAchievements.achievementId} = ${moduleAchievement.id}`
         });
 
         if (!existingAward) {
           // Award the achievement
           const newAward = await db.insert(userAchievements).values({
-            userId: req.session.userId,
-            achievementId: moduleAchievement.id,
+            user_id: userId,
+            achievement_id: moduleAchievement.id,
             metadata: {
               type: 'course',
               awardedAt: new Date().toISOString(),
@@ -122,14 +117,13 @@ router.post("/api/achievements/:achievementId/award", async (req, res) => {
   }
 
   const { achievementId } = req.params;
+  const userId = parseInt(req.session.userId, 10);
 
   try {
     // Check if user already has this achievement
     const existingAward = await db.query.userAchievements.findFirst({
-      where: and(
-        eq(userAchievements.userId, req.session.userId),
-        eq(userAchievements.achievementId, parseInt(achievementId))
-      )
+      where: sql`${userAchievements.userId} = ${userId} AND 
+                ${userAchievements.achievementId} = ${parseInt(achievementId, 10)}`
     });
 
     if (existingAward) {
@@ -138,8 +132,8 @@ router.post("/api/achievements/:achievementId/award", async (req, res) => {
 
     // Award the achievement
     const newAward = await db.insert(userAchievements).values({
-      userId: req.session.userId,
-      achievementId: parseInt(achievementId),
+      user_id: userId,
+      achievement_id: parseInt(achievementId, 10),
       metadata: {
         awardedAt: new Date().toISOString(),
         nftMetadata: {

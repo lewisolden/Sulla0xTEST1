@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { db } from "@db";
 import { moduleProgress } from "@db/schema";
-import { eq } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 import OpenAI from "openai";
 import { Request, Response } from "express";
 
@@ -33,9 +33,10 @@ router.get("/api/learning-path/recommendations", async (req: Request, res: Respo
   }
 
   try {
+    const userId = parseInt(req.session.userId, 10);
     // Get user's progress data
     const userProgress = await db.query.moduleProgress.findMany({
-      where: eq(moduleProgress.userId, req.session.userId),
+      where: sql`${moduleProgress.userId} = ${userId}`
     });
 
     // Get quiz results - for now we'll mock this until we implement the quiz results table
