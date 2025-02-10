@@ -12,6 +12,7 @@ import WalletSimulator from "@/pages/wallet-simulator";
 import Achievements from "@/pages/achievements";
 import AIOverview from "@/pages/ai";
 import Deck from "@/pages/deck";
+import AuthPage from "@/pages/auth-page";
 // Module 1 Routes
 import Module1Landing from "@/pages/modules/module1";
 import Module1Quiz from "@/pages/modules/module1/quiz";
@@ -51,6 +52,8 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/register" component={AuthPage} />
+      <Route path="/auth" component={AuthPage} />
       <Route path="/curriculum" component={Curriculum} />
       <Route path="/about" component={About} />
       <Route path="/games" component={Games} />

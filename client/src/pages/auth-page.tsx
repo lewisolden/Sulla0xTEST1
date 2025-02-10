@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card } from "@/components/ui/card";
@@ -11,10 +11,10 @@ import type { InsertUser } from "@db/schema";
 import { useLocation } from "wouter";
 
 export default function AuthPage() {
-  const [isLogin, setIsLogin] = useState(true);
-  const { toast } = useToast();
-  const { loginMutation, registerMutation, user } = useAuth();
   const [, setLocation] = useLocation();
+  const [location] = useLocation();
+  const isRegisterPage = location === "/register";
+  const { loginMutation, registerMutation, user } = useAuth();
 
   // Redirect if already logged in
   if (user) {
@@ -32,10 +32,10 @@ export default function AuthPage() {
 
   const onSubmit = async (data: InsertUser) => {
     try {
-      if (isLogin) {
-        await loginMutation.mutateAsync(data);
-      } else {
+      if (isRegisterPage) {
         await registerMutation.mutateAsync(data);
+      } else {
+        await loginMutation.mutateAsync(data);
       }
       setLocation("/");
     } catch (error) {
@@ -48,7 +48,7 @@ export default function AuthPage() {
       <div className="w-full max-w-6xl grid md:grid-cols-2 gap-8 items-center">
         <Card className="p-8">
           <h1 className="text-3xl font-bold text-center mb-8 text-blue-900">
-            {isLogin ? "Welcome Back!" : "Create Account"}
+            {isRegisterPage ? "Create Account" : "Welcome Back!"}
           </h1>
 
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -84,18 +84,18 @@ export default function AuthPage() {
               className="w-full"
               disabled={loginMutation.isPending || registerMutation.isPending}
             >
-              {isLogin ? "Login" : "Register"}
+              {isRegisterPage ? "Register" : "Login"}
             </Button>
           </form>
 
           <div className="mt-6 text-center">
             <button
-              onClick={() => setIsLogin(!isLogin)}
+              onClick={() => setLocation(isRegisterPage ? "/auth" : "/register")}
               className="text-blue-600 hover:text-blue-800"
             >
-              {isLogin
-                ? "Don't have an account? Register"
-                : "Already have an account? Login"}
+              {isRegisterPage
+                ? "Already have an account? Login"
+                : "Don't have an account? Register"}
             </button>
           </div>
         </Card>
