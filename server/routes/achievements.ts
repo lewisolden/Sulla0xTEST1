@@ -74,8 +74,8 @@ router.post("/api/achievements/check-module-completion", async (req, res) => {
         if (!existingAward) {
           // Award the achievement
           const newAward = await db.insert(userAchievements).values({
-            user_id: userId,
-            achievement_id: moduleAchievement.id,
+            userId: userId,
+            achievementId: moduleAchievement.id,
             metadata: {
               type: 'course',
               awardedAt: new Date().toISOString(),
@@ -132,8 +132,8 @@ router.post("/api/achievements/:achievementId/award", async (req, res) => {
 
     // Award the achievement
     const newAward = await db.insert(userAchievements).values({
-      user_id: userId,
-      achievement_id: parseInt(achievementId, 10),
+      userId: userId,
+      achievementId: parseInt(achievementId, 10),
       metadata: {
         awardedAt: new Date().toISOString(),
         nftMetadata: {
