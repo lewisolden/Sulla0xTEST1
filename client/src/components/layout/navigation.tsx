@@ -26,7 +26,7 @@ export default function Navigation() {
             </span>
           </Link>
           <Link href="/login">
-            <span className="text-white hover:text-blue-200 transition-colors font-bold px-4 py-2 border border-white rounded-md hover:bg-blue-700">
+            <span className="bg-white text-blue-600 hover:bg-blue-50 transition-colors font-bold px-4 py-2 rounded-md">
               Login
             </span>
           </Link>
