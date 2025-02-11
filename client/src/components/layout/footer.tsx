@@ -43,7 +43,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="text-center mt-8 border-t border-blue-700 pt-4">
-        <p>&copy; 2024 Sulla. All Rights Reserved.</p>
+        <p>© 2025 Sulla. All Rights Reserved.</p>
       </div>
     </footer>
   );
