@@ -8,6 +8,7 @@ import { promisify } from "util";
 import { users, adminUsers, type SelectUser, type SelectAdminUser, insertUserSchema, insertAdminUserSchema } from "@db/schema";
 import { db } from "@db";
 import { eq } from "drizzle-orm";
+import { sendWelcomeEmail } from './services/email';
 
 const scryptAsync = promisify(scrypt);
 
@@ -218,6 +219,9 @@ export function setupAuth(app: Express) {
           password: await hashPassword(password),
         })
         .returning();
+
+      // Send welcome email
+      await sendWelcomeEmail(email, username);
 
       req.login({ ...newUser, role: 'user' }, (err) => {
         if (err) {

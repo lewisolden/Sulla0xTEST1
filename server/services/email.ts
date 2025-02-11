@@ -1,0 +1,61 @@
+import { Resend } from 'resend';
+
+let resend: Resend;
+
+// Initialize Resend with API key
+function initializeResend() {
+  if (!process.env.RESEND_API_KEY) {
+    throw new Error('RESEND_API_KEY environment variable must be set');
+  }
+  resend = new Resend(process.env.RESEND_API_KEY);
+}
+
+interface EmailParams {
+  to: string;
+  subject: string;
+  text?: string;
+  html?: string;
+}
+
+export async function sendWelcomeEmail(email: string, username: string) {
+  try {
+    if (!resend) {
+      initializeResend();
+    }
+
+    const response = await resend.emails.send({
+      from: process.env.EMAIL_FROM || 'onboarding@sulla.edu',
+      to: email,
+      subject: 'Welcome to Sulla Learning Platform!',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+          <h1 style="color: #3b82f6; text-align: center;">Welcome to Sulla!</h1>
+          <p style="font-size: 16px;">Dear ${username},</p>
+          <p style="font-size: 16px;">Thank you for joining Sulla - your gateway to mastering blockchain technology!</p>
+          <p style="font-size: 16px;">Here's what you can expect:</p>
+          <ul style="font-size: 16px;">
+            <li>Interactive learning experiences</li>
+            <li>Expert-led content</li>
+            <li>Practical projects</li>
+            <li>Progress tracking</li>
+          </ul>
+          <p style="font-size: 16px;">Ready to start your journey? Click the button below:</p>
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${process.env.APP_URL}/modules/module1" 
+               style="background-color: #3b82f6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">
+              Start Learning
+            </a>
+          </div>
+          <p style="font-size: 14px; color: #666; text-align: center;">
+            If you have any questions, feel free to reply to this email.
+          </p>
+        </div>
+      `
+    });
+
+    return true;
+  } catch (error) {
+    console.error('Failed to send welcome email:', error);
+    return false;
+  }
+}
