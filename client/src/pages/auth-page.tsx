@@ -9,12 +9,14 @@ import { insertUserSchema } from "@db/schema";
 import type { InsertUser } from "@db/schema";
 import { useLocation } from "wouter";
 import { Loader2, Blocks, GraduationCap, Brain, Lightbulb } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function AuthPage() {
   const [, setLocation] = useLocation();
   const [location] = useLocation();
   const isRegisterPage = location === "/register";
   const { loginMutation, registerMutation, user } = useAuth();
+  const { toast } = useToast();
 
   const form = useForm<InsertUser>({
     resolver: zodResolver(insertUserSchema),
@@ -34,18 +36,34 @@ export default function AuthPage() {
   const onSubmit = async (data: InsertUser) => {
     try {
       if (isRegisterPage) {
-        await registerMutation.mutateAsync({
+        const response = await registerMutation.mutateAsync({
           username: data.username,
           email: data.email,
           password: data.password,
         });
+
+        // Show registration status toast immediately after response
+        toast({
+          title: "Registration Status",
+          description: response.emailStatus?.note || "Welcome to Sulla! Email notifications are enabled.",
+          variant: response.emailStatus?.sent ? "default" : "destructive",
+        });
       } else {
         const { username, password } = data;
         await loginMutation.mutateAsync({ username, password });
+        toast({
+          title: "Login Successful",
+          description: "Welcome back to Sulla!",
+        });
       }
       setLocation("/account");
     } catch (error) {
       console.error('Form submission error:', error);
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "An error occurred",
+        variant: "destructive",
+      });
     }
   };
 
