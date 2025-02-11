@@ -1,7 +1,6 @@
 import { Link } from "wouter";
 import { BookOpen, GraduationCap, Zap, Brain, Target, Trophy, Code, Gamepad2, Wallet, Dumbbell, ArrowRight } from "lucide-react";
 import ModuleCard from "@/components/modules/module-card";
-import Footer from "@/components/layout/footer";
 import { motion } from "framer-motion";
 
 const Button = ({ children, className }: { children: React.ReactNode; className?: string }) => (
@@ -283,8 +282,6 @@ export default function Home() {
           </motion.div>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 }
