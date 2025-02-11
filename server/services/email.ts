@@ -3,28 +3,43 @@ import mailgun from 'mailgun-js';
 let mg: mailgun.Mailgun;
 
 function initializeMailgun() {
-  if (!process.env.MAILGUN_API_KEY || !process.env.MAILGUN_DOMAIN) {
-    console.error('MAILGUN_API_KEY and MAILGUN_DOMAIN environment variables must be set');
-    throw new Error('Required Mailgun environment variables are not set');
+  try {
+    if (!process.env.MAILGUN_API_KEY || !process.env.MAILGUN_DOMAIN) {
+      console.error('Missing required environment variables:', {
+        hasApiKey: !!process.env.MAILGUN_API_KEY,
+        hasDomain: !!process.env.MAILGUN_DOMAIN
+      });
+      throw new Error('Required Mailgun environment variables are not set');
+    }
+
+    // Ensure API key has the required prefix
+    const apiKey = process.env.MAILGUN_API_KEY.startsWith('key-') 
+      ? process.env.MAILGUN_API_KEY 
+      : `key-${process.env.MAILGUN_API_KEY}`;
+
+    console.log('Initializing Mailgun client with:', {
+      domain: process.env.MAILGUN_DOMAIN,
+      apiKeyPresent: true,
+      apiKeyFormat: apiKey.substring(0, 6) + '...'  // Log only the prefix for security
+    });
+
+    mg = mailgun({
+      apiKey,
+      domain: process.env.MAILGUN_DOMAIN,
+      host: 'api.eu.mailgun.net'  // Using EU endpoint for better deliverability
+    });
+
+    return true;
+  } catch (error) {
+    console.error('Error initializing Mailgun:', error);
+    return false;
   }
-
-  console.log('Initializing Mailgun client with:', {
-    domain: process.env.MAILGUN_DOMAIN,
-    apiKeyPresent: !!process.env.MAILGUN_API_KEY,
-  });
-
-  mg = mailgun({
-    apiKey: process.env.MAILGUN_API_KEY,
-    domain: process.env.MAILGUN_DOMAIN,
-    host: 'api.mailgun.net'
-  });
 }
 
 export async function sendTestEmail(toEmail?: string) {
   try {
-    if (!mg) {
-      console.log('Initializing Mailgun client...');
-      initializeMailgun();
+    if (!mg && !initializeMailgun()) {
+      throw new Error('Failed to initialize Mailgun client');
     }
 
     const recipientEmail = toEmail || 'lewis@sullacrypto.com';
@@ -53,7 +68,7 @@ export async function sendTestEmail(toEmail?: string) {
       `
     };
 
-    const response = await new Promise((resolve, reject) => {
+    const result = await new Promise((resolve, reject) => {
       mg.messages().send(data, (error: any, body: any) => {
         if (error) {
           console.error('Mailgun API error:', {
@@ -72,7 +87,7 @@ export async function sendTestEmail(toEmail?: string) {
     });
 
     console.log('Test email sent successfully:', {
-      response,
+      result,
       recipient: recipientEmail
     });
     return true;
@@ -97,8 +112,8 @@ export async function sendWelcomeEmail(email: string, username: string) {
       initializeMailgun();
     }
 
-    const recipientEmail = process.env.NODE_ENV === 'production' 
-      ? email 
+    const recipientEmail = process.env.NODE_ENV === 'production'
+      ? email
       : 'lewis@sullacrypto.com';
 
     const senderEmail = `Sulla Learning <mailgun@${process.env.MAILGUN_DOMAIN}>`;
@@ -152,7 +167,7 @@ export async function sendWelcomeEmail(email: string, username: string) {
                       </ul>
 
                       <div style="text-align: center; margin: 40px 0;">
-                        <a href="${appUrl}/modules/module1" 
+                        <a href="${appUrl}/modules/module1"
                            style="display: inline-block; background-color: #3b82f6; color: white; padding: 15px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 16px;">
                           Start Your First Module
                         </a>
