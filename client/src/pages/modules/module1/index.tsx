@@ -80,14 +80,18 @@ export default function Module1() {
   const handleStartLearning = async () => {
     if (!isEnrolled) {
       try {
+        // First enroll the user
         await enroll();
-        toast({
-          title: "Successfully enrolled!",
-          description: "You can now start learning about cryptocurrency.",
-        });
+        // Wait for query invalidation
+        await queryClient.invalidateQueries({ queryKey: ['enrollments'] });
+        // Then navigate
         setLocation("/modules/module1/digital-currencies");
       } catch (error) {
-        // Error is already handled by the mutation
+        toast({
+          title: "Enrollment Failed",
+          description: "Please try again later.",
+          variant: "destructive",
+        });
         return;
       }
     } else {
@@ -136,10 +140,14 @@ export default function Module1() {
                       </div>
                     ) : (
                       <div className="space-y-4 w-full max-w-md">
-                        {isEnrolled && (
+                        {isEnrolled ? (
                           <p className="text-green-600 font-semibold flex items-center justify-center gap-2">
                             <CheckCircle className="h-5 w-5" />
                             You're enrolled in this course
+                          </p>
+                        ) : (
+                          <p className="text-center text-gray-600">
+                            Click Start First Topic to enroll and begin learning
                           </p>
                         )}
                         <Button
