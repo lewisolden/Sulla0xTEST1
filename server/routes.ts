@@ -33,6 +33,24 @@ export function registerRoutes(app: Express): Server {
   // Mount API router first
   app.use("/api", apiRouter);
 
+  // Add email test endpoint
+  app.get("/api/email/test", async (req, res) => {
+    try {
+      const result = await sendTestEmail();
+      if (result.sent) {
+        res.json({ success: true, messageId: result.messageId });
+      } else {
+        res.status(500).json({ success: false, error: result.error });
+      }
+    } catch (error) {
+      console.error("Error sending test email:", error);
+      res.status(500).json({ 
+        success: false, 
+        error: error instanceof Error ? error.message : "Unknown error occurred" 
+      });
+    }
+  });
+
   // Set up authentication routes
   setupAuth(app);
 
