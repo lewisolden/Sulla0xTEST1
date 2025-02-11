@@ -7,7 +7,7 @@ import { useProgress } from "@/context/progress-context";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Dumbbell, BookOpen, Shield, Brain, Wallet, AlertCircle, CheckCircle } from "lucide-react";
+import { Dumbbell, BookOpen, Shield, Brain, Wallet, AlertCircle, CheckCircle, Loader2 } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { moduleTopics, type ModuleTopic } from "@/lib/module-data";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -51,14 +51,17 @@ export default function Module1() {
   );
 
   // Mutation for enrolling
-  const { mutate: enroll, isPending: isEnrolling } = useMutation({
+  const { mutateAsync: enroll, isPending: isEnrolling } = useMutation({
     mutationFn: async () => {
       const response = await fetch('/api/enrollments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ courseId: 1 })
       });
-      if (!response.ok) throw new Error('Failed to enroll');
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to enroll');
+      }
       return response.json();
     },
     onSuccess: () => {
@@ -68,10 +71,10 @@ export default function Module1() {
         description: "You can now start learning about cryptocurrency.",
       });
     },
-    onError: () => {
+    onError: (error: Error) => {
       toast({
         title: "Failed to enroll",
-        description: "Please try again later.",
+        description: error.message || "Please try again later.",
         variant: "destructive",
       });
     }
@@ -80,19 +83,10 @@ export default function Module1() {
   const handleStartLearning = async () => {
     if (!isEnrolled) {
       try {
-        // First enroll the user
         await enroll();
-        // Wait for query invalidation
-        await queryClient.invalidateQueries({ queryKey: ['enrollments'] });
-        // Then navigate
         setLocation("/modules/module1/digital-currencies");
-      } catch (error) {
-        toast({
-          title: "Enrollment Failed",
-          description: "Please try again later.",
-          variant: "destructive",
-        });
-        return;
+      } catch {
+        // Error is handled by mutation callbacks
       }
     } else {
       setLocation("/modules/module1/digital-currencies");
@@ -156,7 +150,14 @@ export default function Module1() {
                           className="w-full bg-blue-600 hover:bg-blue-700"
                           disabled={isEnrolling}
                         >
-                          {isEnrolling ? "Enrolling..." : "Start First Topic"}
+                          {isEnrolling ? (
+                            <div className="flex items-center gap-2">
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                              <span>Enrolling...</span>
+                            </div>
+                          ) : (
+                            "Start First Topic"
+                          )}
                         </Button>
                       </div>
                     )}
