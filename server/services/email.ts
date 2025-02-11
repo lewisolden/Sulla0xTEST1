@@ -10,12 +10,19 @@ function initializeResend() {
   }
 
   const apiKey = process.env.RESEND_API_KEY;
-  console.log('Initializing Resend client...', {
+  console.log('Initializing Resend client with configuration:', {
     keyLength: apiKey.length,
-    keyPrefix: apiKey.substring(0, 4) + '...'
+    keyPrefix: apiKey.substring(0, 4) + '...',
+    keyValid: apiKey.startsWith('re_'),
+    environment: process.env.NODE_ENV || 'development'
   });
 
+  if (!apiKey.startsWith('re_')) {
+    throw new Error('Invalid Resend API key format. Key should start with "re_"');
+  }
+
   resend = new Resend(apiKey);
+  console.log('Resend client initialized successfully');
 }
 
 export async function sendTestEmail() {
@@ -25,64 +32,60 @@ export async function sendTestEmail() {
       initializeResend();
     }
 
-    const testEmail = {
-      from: 'onboarding@resend.dev', // Using Resend's verified domain
-      to: 'lewis@sullacrypto.com',
-      subject: 'Test Email from Sulla Platform',
-      html: `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <meta charset="utf-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        </head>
-        <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f7ff;">
-          <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
-            <div style="background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-              <h1 style="color: #1e3a8a; margin: 0 0 20px;">Test Email</h1>
-              <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
-                This is a test email from the Sulla Learning Platform.
-              </p>
-              <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
-                If you receive this, the email service is working correctly.
-              </p>
-              <p style="color: #6b7280; font-size: 14px; margin: 20px 0 0;">
-                Time sent: ${new Date().toISOString()}
-              </p>
-            </div>
-          </div>
-        </body>
-        </html>
-      `,
-      replyTo: 'support@resend.dev'
-    };
+    // During testing, we can only send to this email
+    const testRecipient = 'lewis@sullacrypto.com';
+    const fromEmail = 'noreply@updates.sullacrypto.com';
 
     console.log('Attempting to send test email with configuration:', {
-      from: testEmail.from,
-      to: testEmail.to,
-      subject: testEmail.subject
+      to: testRecipient,
+      from: fromEmail,
+      timestamp: new Date().toISOString()
     });
 
-    const { data, error } = await resend.emails.send(testEmail);
+    // Send a very simple email first to test basic functionality
+    const { data, error } = await resend.emails.send({
+      from: fromEmail,
+      to: testRecipient,
+      subject: 'Sulla Test Email - ' + new Date().toISOString(),
+      html: '<p>This is a test email from Sulla Platform sent at: ' + new Date().toLocaleString() + '</p>',
+      text: 'This is a test email from Sulla Platform sent at: ' + new Date().toLocaleString(),
+      headers: {
+        'X-Entity-Ref-ID': new Date().getTime().toString(),
+        'X-Mailgun-Track': 'yes',
+        'X-Mailgun-Track-Clicks': 'yes',
+        'X-Mailgun-Track-Opens': 'yes'
+      },
+      tags: [
+        { name: 'email_type', value: 'test_email' },
+        { name: 'environment', value: process.env.NODE_ENV || 'development' }
+      ]
+    });
 
     if (error) {
       console.error('Failed to send test email:', {
-        error: error.message,
-        code: error.statusCode,
-        details: error
+        errorMessage: error.message,
+        errorCode: error.statusCode,
+        errorDetails: JSON.stringify(error),
+        timestamp: new Date().toISOString()
       });
       return { success: false, error };
     }
 
     console.log('Test email sent successfully:', {
       messageId: data?.id,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      to: testRecipient,
+      from: fromEmail,
+      environment: process.env.NODE_ENV || 'development'
     });
     return { success: true, messageId: data?.id };
+
   } catch (error) {
-    console.error('Error sending test email:', {
+    console.error('Error in sendTestEmail:', {
       error: error instanceof Error ? error.message : 'Unknown error',
-      stack: error instanceof Error ? error.stack : undefined
+      stack: error instanceof Error ? error.stack : undefined,
+      type: error instanceof Error ? error.name : typeof error,
+      timestamp: new Date().toISOString()
     });
     return { success: false, error };
   }
@@ -95,87 +98,44 @@ export async function sendWelcomeEmail(email: string, username: string) {
       initializeResend();
     }
 
-    const fromEmail = 'onboarding@resend.dev'; // Using Resend's verified domain
-    const appUrl = process.env.APP_URL || 'http://localhost:5000';
+    // During testing/development, only send to the verified email
+    const recipient = process.env.NODE_ENV === 'production' ? email : 'lewis@sullacrypto.com';
+    const fromEmail = 'noreply@updates.sullacrypto.com';
 
     console.log('Attempting to send welcome email:', {
-      to: email,
+      to: recipient,
       from: fromEmail,
-      subject: 'Welcome to Sulla Learning Platform!'
+      subject: 'Welcome to Sulla Learning Platform!',
+      environment: process.env.NODE_ENV || 'development'
     });
 
     const { data, error } = await resend.emails.send({
       from: fromEmail,
-      to: email,
-      replyTo: 'support@resend.dev',
+      to: recipient,
+      replyTo: 'support@updates.sullacrypto.com',
       subject: 'Welcome to Sulla Learning Platform!',
       html: `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <meta charset="utf-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Welcome to Sulla!</title>
-        </head>
-        <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f7ff;">
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
-            <tr>
-              <td style="padding: 30px 0; text-align: center; background-color: #3b82f6;">
-                <h1 style="color: white; margin: 0; font-size: 36px;">SULLA</h1>
-                <p style="color: white; margin: 10px 0 0; font-size: 18px;">Your Journey to Web3 Mastery</p>
-              </td>
-            </tr>
-          </table>
-
-          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
-            <tr>
-              <td style="padding: 30px;">
-                <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="margin: 0 auto; background-color: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                  <tr>
-                    <td style="padding: 40px;">
-                      <h2 style="color: #1e3a8a; margin: 0 0 20px;">Welcome to Sulla, ${username}!</h2>
-                      <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
-                        Your journey into blockchain technology begins now. We're excited to have you join our community of learners passionate about mastering Web3 technologies.
-                      </p>
-
-                      <h3 style="color: #2563eb; margin: 30px 0 15px;">What's Next?</h3>
-                      <ul style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 30px; padding-left: 20px;">
-                        <li style="margin-bottom: 10px;">✨ Explore interactive learning modules</li>
-                        <li style="margin-bottom: 10px;">📚 Access expert-curated content</li>
-                        <li style="margin-bottom: 10px;">💡 Work on practical projects</li>
-                        <li style="margin-bottom: 10px;">📊 Track your progress</li>
-                      </ul>
-
-                      <div style="text-align: center; margin: 40px 0;">
-                        <a href="${appUrl}/modules/module1" 
-                           style="display: inline-block; background-color: #3b82f6; color: white; padding: 15px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 16px;">
-                          Start Your First Module
-                        </a>
-                      </div>
-
-                      <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 30px 0 20px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
-                        Need help getting started? Reply to this email or reach out to our support team. We're here to help!
-                      </p>
-                    </td>
-                  </tr>
-                </table>
-
-                <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="margin: 20px auto 0;">
-                  <tr>
-                    <td style="padding: 20px; text-align: center; color: #6b7280; font-size: 14px;">
-                      <p style="margin: 0 0 10px;">© ${new Date().getFullYear()} Sulla Learning Platform. All rights reserved.</p>
-                      <p style="margin: 0;">
-                        You received this email because you signed up for Sulla Learning Platform.
-                      </p>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
-        </body>
-        </html>
-      `
+        <div style="font-family: Arial, sans-serif; padding: 20px; background-color: #f4f7ff;">
+          <h1 style="color: #1e3a8a; margin: 0 0 20px;">Welcome to Sulla, ${username}!</h1>
+          <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
+            Your journey into blockchain technology begins now. We're excited to have you join our community of learners passionate about mastering Web3 technologies.
+          </p>
+          <p style="color: #6b7280; font-size: 14px; margin: 20px 0 0;">
+            Note: During testing, emails are only sent to verified addresses.
+          </p>
+        </div>
+      `,
+      text: `Welcome to Sulla, ${username}!\n\nYour journey into blockchain technology begins now. We're excited to have you join our community of learners passionate about mastering Web3 technologies.`,
+      headers: {
+        'X-Entity-Ref-ID': new Date().getTime().toString(),
+        'X-Mailgun-Track': 'yes',
+        'X-Mailgun-Track-Clicks': 'yes',
+        'X-Mailgun-Track-Opens': 'yes'
+      },
+      tags: [
+        { name: 'email_type', value: 'welcome_email' },
+        { name: 'environment', value: process.env.NODE_ENV || 'development' }
+      ]
     });
 
     if (error) {
@@ -188,7 +148,9 @@ export async function sendWelcomeEmail(email: string, username: string) {
 
     console.log('Welcome email sent successfully:', {
       messageId: data?.id,
-      to: email
+      to: recipient,
+      from: fromEmail,
+      environment: process.env.NODE_ENV || 'development'
     });
     return { success: true, messageId: data?.id };
 
