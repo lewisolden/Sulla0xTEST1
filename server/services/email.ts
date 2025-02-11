@@ -38,28 +38,71 @@ export async function sendWelcomeEmail(email: string, username: string) {
       to: email,
       subject: 'Welcome to Sulla Learning Platform!',
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h1 style="color: #3b82f6; text-align: center;">Welcome to Sulla!</h1>
-          <p style="font-size: 16px;">Dear ${username},</p>
-          <p style="font-size: 16px;">Thank you for joining Sulla - your gateway to mastering blockchain technology!</p>
-          <p style="font-size: 16px;">Here's what you can expect:</p>
-          <ul style="font-size: 16px;">
-            <li>Interactive learning experiences</li>
-            <li>Expert-led content</li>
-            <li>Practical projects</li>
-            <li>Progress tracking</li>
-          </ul>
-          <p style="font-size: 16px;">Ready to start your journey? Click the button below:</p>
-          <div style="text-align: center; margin: 30px 0;">
-            <a href="${appUrl}/modules/module1" 
-               style="background-color: #3b82f6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">
-              Start Learning
-            </a>
-          </div>
-          <p style="font-size: 14px; color: #666; text-align: center;">
-            If you have any questions, feel free to reply to this email.
-          </p>
-        </div>
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Welcome to Sulla!</title>
+        </head>
+        <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f7ff;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+            <tr>
+              <td style="padding: 30px 0; text-align: center; background-color: #3b82f6;">
+                <h1 style="color: white; margin: 0; font-size: 36px;">SULLA</h1>
+                <p style="color: white; margin: 10px 0 0; font-size: 18px;">Your Journey to Web3 Mastery</p>
+              </td>
+            </tr>
+          </table>
+
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+            <tr>
+              <td style="padding: 30px;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="margin: 0 auto; background-color: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                  <tr>
+                    <td style="padding: 40px;">
+                      <h2 style="color: #1e3a8a; margin: 0 0 20px;">Welcome to Sulla, ${username}!</h2>
+                      <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
+                        Your journey into blockchain technology begins now. We're excited to have you join our community of learners passionate about mastering Web3 technologies.
+                      </p>
+
+                      <h3 style="color: #2563eb; margin: 30px 0 15px;">What's Next?</h3>
+                      <ul style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 30px; padding-left: 20px;">
+                        <li style="margin-bottom: 10px;">✨ Explore interactive learning modules</li>
+                        <li style="margin-bottom: 10px;">📚 Access expert-curated content</li>
+                        <li style="margin-bottom: 10px;">💡 Work on practical projects</li>
+                        <li style="margin-bottom: 10px;">📊 Track your progress</li>
+                      </ul>
+
+                      <div style="text-align: center; margin: 40px 0;">
+                        <a href="${appUrl}/modules/module1" 
+                           style="display: inline-block; background-color: #3b82f6; color: white; padding: 15px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 16px;">
+                          Start Your First Module
+                        </a>
+                      </div>
+
+                      <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 30px 0 20px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+                        Need help getting started? Reply to this email or reach out to our support team. We're here to help!
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="margin: 20px auto 0;">
+                  <tr>
+                    <td style="padding: 20px; text-align: center; color: #6b7280; font-size: 14px;">
+                      <p style="margin: 0 0 10px;">© 2025 Sulla Learning Platform. All rights reserved.</p>
+                      <p style="margin: 0;">
+                        Our address: 123 Blockchain Street, Crypto City, CC 12345
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </body>
+        </html>
       `
     });
 
