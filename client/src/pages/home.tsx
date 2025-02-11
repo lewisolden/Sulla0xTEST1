@@ -74,22 +74,8 @@ export default function Home() {
             </h2>
             <p className="text-xl text-blue-100 mb-8">
               Join thousands of learners mastering blockchain technology with our interactive platform. 
-              Create your free account today and unlock:
+              Create your free account today and start learning!
             </p>
-            <div className="grid md:grid-cols-3 gap-6 mb-8">
-              <div className="bg-blue-800/30 p-6 rounded-lg">
-                <Trophy className="w-8 h-8 text-blue-300 mx-auto mb-4" />
-                <p className="text-blue-100">Track Your Progress</p>
-              </div>
-              <div className="bg-blue-800/30 p-6 rounded-lg">
-                <Brain className="w-8 h-8 text-blue-300 mx-auto mb-4" />
-                <p className="text-blue-100">Personalized Learning</p>
-              </div>
-              <div className="bg-blue-800/30 p-6 rounded-lg">
-                <Gamepad2 className="w-8 h-8 text-blue-300 mx-auto mb-4" />
-                <p className="text-blue-100">Interactive Games</p>
-              </div>
-            </div>
             <Link href="/register">
               <button className="bg-white text-blue-700 px-12 py-4 rounded-lg hover:bg-blue-50 transition duration-300 font-semibold text-lg inline-flex items-center gap-2">
                 Register Now
