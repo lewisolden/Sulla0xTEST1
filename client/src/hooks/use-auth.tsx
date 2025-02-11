@@ -10,7 +10,11 @@ type AuthContextType = {
   error: Error | null;
   loginMutation: UseMutationResult<SelectUser, Error, LoginData>;
   logoutMutation: UseMutationResult<void, Error, void>;
-  registerMutation: UseMutationResult<SelectUser, Error, InsertUser>;
+  registerMutation: UseMutationResult<
+    { user: SelectUser; emailStatus?: { sent: boolean; note?: string } },
+    Error,
+    InsertUser
+  >;
 };
 
 type LoginData = Pick<InsertUser, "username" | "password">;
@@ -27,7 +31,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     queryKey: ["/api/user"],
     queryFn: getQueryFn({ on401: "returnNull" }) as QueryFunction<SelectUser | null>,
     staleTime: Infinity,
-    cacheTime: Infinity,
   });
 
   const loginMutation = useMutation({
@@ -35,8 +38,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const res = await apiRequest("POST", "/api/login", credentials);
       return res.json();
     },
-    onSuccess: (user: SelectUser) => {
-      queryClient.setQueryData(["/api/user"], user);
+    onSuccess: (data: { user: SelectUser }) => {
+      queryClient.setQueryData(["/api/user"], data.user);
     },
     onError: (error: Error) => {
       toast({
@@ -50,10 +53,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const registerMutation = useMutation({
     mutationFn: async (newUser: InsertUser) => {
       const res = await apiRequest("POST", "/api/register", newUser);
-      return res.json();
+      const data = await res.json();
+      return data;
     },
-    onSuccess: (user: SelectUser) => {
-      queryClient.setQueryData(["/api/user"], user);
+    onSuccess: (data: { user: SelectUser; emailStatus?: { sent: boolean; note?: string } }) => {
+      queryClient.setQueryData(["/api/user"], data.user);
     },
     onError: (error: Error) => {
       toast({

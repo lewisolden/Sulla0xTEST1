@@ -9,12 +9,14 @@ import { insertUserSchema } from "@db/schema";
 import type { InsertUser } from "@db/schema";
 import { useLocation } from "wouter";
 import { Loader2, Blocks, GraduationCap, Brain, Lightbulb } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function AuthPage() {
   const [, setLocation] = useLocation();
   const [location] = useLocation();
   const isRegisterPage = location === "/register";
   const { loginMutation, registerMutation, user } = useAuth();
+  const { toast } = useToast();
 
   const form = useForm<InsertUser>({
     resolver: zodResolver(insertUserSchema),
@@ -34,10 +36,17 @@ export default function AuthPage() {
   const onSubmit = async (data: InsertUser) => {
     try {
       if (isRegisterPage) {
-        await registerMutation.mutateAsync({
+        const response = await registerMutation.mutateAsync({
           username: data.username,
           email: data.email,
           password: data.password,
+        });
+
+        // Show toast with registration status and email info
+        toast({
+          title: "Registration successful",
+          description: response.emailStatus?.note || "Welcome to Sulla!",
+          variant: response.emailStatus?.sent ? "default" : "destructive",
         });
       } else {
         const { username, password } = data;
