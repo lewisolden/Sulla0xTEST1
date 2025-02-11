@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import Footer from "@/components/layout/footer";
 import { BookOpen, Brain, Trophy, Zap, Globe, Shield, Users, Terminal, Rocket, ChartLine } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
@@ -123,7 +122,6 @@ export default function About() {
           </Card>
         </motion.div>
       </div>
-      <Footer />
     </div>
   );
 }

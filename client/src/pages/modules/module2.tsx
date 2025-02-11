@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
-import Footer from "@/components/layout/footer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useProgress } from "@/context/progress-context";
 import { Link } from "wouter";
@@ -250,7 +249,6 @@ export default function Module2() {
           </TabsContent>
         </Tabs>
       </div>
-      <Footer />
     </div>
   );
 }

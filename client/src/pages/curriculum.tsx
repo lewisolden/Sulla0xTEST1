@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 import { BookOpen, GraduationCap, Zap, Gamepad2, CreditCard, Dumbbell, Lightbulb } from "lucide-react";
 import { motion } from "framer-motion";
-import Footer from "@/components/layout/footer";
+//import Footer from "@/components/layout/footer"; //Removed as per instructions
 import { PersonalizedPath } from "@/components/learning/personalized-path";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
@@ -371,7 +371,6 @@ export default function Curriculum() {
           </div>
         </motion.div>
       </div>
-      <Footer />
     </div>
   );
 }
