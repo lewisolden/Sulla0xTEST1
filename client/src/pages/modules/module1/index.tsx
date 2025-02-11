@@ -51,7 +51,7 @@ export default function Module1() {
   );
 
   // Mutation for enrolling
-  const { mutate, isPending: isEnrolling } = useMutation({
+  const { mutate: enroll, isPending: isEnrolling } = useMutation({
     mutationFn: async () => {
       const response = await fetch('/api/enrollments', {
         method: 'POST',
@@ -66,7 +66,12 @@ export default function Module1() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['enrollments'] });
-      setLocation("/modules/module1/digital-currencies");
+      toast({
+        title: "Successfully enrolled!",
+        description: "You can now start learning about cryptocurrency.",
+      });
+      // Refresh the page after successful enrollment
+      window.location.reload();
     },
     onError: (error: Error) => {
       toast({
@@ -77,12 +82,8 @@ export default function Module1() {
     }
   });
 
-  const handleStartLearning = () => {
-    if (!isEnrolled) {
-      mutate();
-    } else {
-      setLocation("/modules/module1/digital-currencies");
-    }
+  const handleContinueLearning = () => {
+    setLocation("/modules/module1/digital-currencies");
   };
 
   return (
@@ -127,30 +128,41 @@ export default function Module1() {
                     ) : (
                       <div className="space-y-4 w-full max-w-md">
                         {isEnrolled ? (
-                          <p className="text-green-600 font-semibold flex items-center justify-center gap-2">
-                            <CheckCircle className="h-5 w-5" />
-                            You're enrolled in this course
-                          </p>
+                          <>
+                            <p className="text-green-600 font-semibold flex items-center justify-center gap-2">
+                              <CheckCircle className="h-5 w-5" />
+                              You're enrolled in this course
+                            </p>
+                            <Button
+                              onClick={handleContinueLearning}
+                              size="lg"
+                              className="w-full bg-blue-600 hover:bg-blue-700"
+                            >
+                              Continue Learning
+                            </Button>
+                          </>
                         ) : (
-                          <p className="text-center text-gray-600">
-                            Click Start First Topic to enroll and begin learning
-                          </p>
+                          <>
+                            <p className="text-center text-gray-600">
+                              Enroll now to start your learning journey
+                            </p>
+                            <Button
+                              onClick={() => enroll()}
+                              size="lg"
+                              className="w-full bg-green-600 hover:bg-green-700"
+                              disabled={isEnrolling}
+                            >
+                              {isEnrolling ? (
+                                <div className="flex items-center gap-2">
+                                  <Loader2 className="h-4 w-4 animate-spin" />
+                                  <span>Enrolling...</span>
+                                </div>
+                              ) : (
+                                "Enroll Now"
+                              )}
+                            </Button>
+                          </>
                         )}
-                        <Button
-                          onClick={handleStartLearning}
-                          size="lg"
-                          className="w-full bg-blue-600 hover:bg-blue-700"
-                          disabled={isEnrolling}
-                        >
-                          {isEnrolling ? (
-                            <div className="flex items-center gap-2">
-                              <Loader2 className="h-4 w-4 animate-spin" />
-                              <span>Enrolling...</span>
-                            </div>
-                          ) : (
-                            "Start First Topic"
-                          )}
-                        </Button>
                       </div>
                     )}
                   </div>
