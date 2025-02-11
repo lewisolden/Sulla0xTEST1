@@ -38,7 +38,10 @@ export async function sendTestEmail() {
     });
 
     if (error) {
-      console.error('Failed to send test email:', error);
+      console.error('Failed to send test email:', {
+        message: error.message,
+        type: typeof error
+      });
       return false;
     }
 
@@ -144,8 +147,8 @@ export async function sendWelcomeEmail(email: string, username: string) {
 
     if (error) {
       console.error('Failed to send welcome email:', {
-        error: error.message,
-        code: error.statusCode,
+        message: error.message,
+        type: typeof error
       });
       return false;
     }
