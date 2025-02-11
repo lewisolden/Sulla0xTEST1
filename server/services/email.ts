@@ -19,7 +19,7 @@ export async function sendTestEmail() {
       initializeResend();
     }
 
-    const fromEmail = process.env.RESEND_FROM_EMAIL || 'learning@sulla.com';
+    const fromEmail = 'noreply@mail.sullacrypto.com';
 
     console.log('Attempting to send test email...', {
       from: fromEmail,
@@ -44,21 +44,17 @@ export async function sendTestEmail() {
 
     if (error) {
       console.error('Failed to send test email:', error);
-      return {
-        sent: false,
-        error: error.message,
-      };
+      return false;
     }
 
-    return {
-      sent: true,
-    };
+    console.log('Test email sent successfully:', {
+      messageId: data?.id,
+      timestamp: new Date().toISOString()
+    });
+    return true;
   } catch (error) {
     console.error('Error sending test email:', error);
-    return {
-      sent: false,
-      error: error instanceof Error ? error.message : 'Unknown error occurred',
-    };
+    return false;
   }
 }
 
@@ -69,30 +65,14 @@ export async function sendWelcomeEmail(email: string, username: string) {
       initializeResend();
     }
 
-    const fromEmail = process.env.RESEND_FROM_EMAIL || 'learning@sulla.com';
+    const fromEmail = 'noreply@mail.sullacrypto.com';
     const appUrl = process.env.APP_URL || 'http://localhost:5000';
 
-    // Log attempt to help with debugging
     console.log('Attempting to send welcome email:', {
       to: email,
       from: fromEmail,
-      subject: 'Welcome to Sulla Learning Platform!',
-      testMode: !process.env.RESEND_DOMAIN,
-      isVerifiedEmail: email === 'lewis@sullacrypto.com'
+      subject: 'Welcome to Sulla Learning Platform!'
     });
-
-    // In test mode, return gracefully if email is not verified
-    if (!process.env.RESEND_DOMAIN && email !== 'lewis@sullacrypto.com') {
-      console.log('Skipping welcome email - email not verified:', {
-        email,
-        testMode: true,
-        reason: 'Email address not in verified recipients list'
-      });
-      return {
-        sent: false,
-        note: "Your account is ready! Note: Welcome emails are currently limited to verified addresses only. Full email functionality will be enabled soon."
-      };
-    }
 
     const { data, error } = await resend.emails.send({
       from: fromEmail,
@@ -148,17 +128,6 @@ export async function sendWelcomeEmail(email: string, username: string) {
                     </td>
                   </tr>
                 </table>
-
-                <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="margin: 20px auto 0;">
-                  <tr>
-                    <td style="padding: 20px; text-align: center; color: #6b7280; font-size: 14px;">
-                      <p style="margin: 0 0 10px;">© 2025 Sulla Learning Platform. All rights reserved.</p>
-                      <p style="margin: 0;">
-                        Our address: 123 Blockchain Street, Crypto City, CC 12345
-                      </p>
-                    </td>
-                  </tr>
-                </table>
               </td>
             </tr>
           </table>
@@ -171,7 +140,7 @@ export async function sendWelcomeEmail(email: string, username: string) {
       console.error('Failed to send welcome email:', error);
       return {
         sent: false,
-        note: "Your account is ready! Note: Email sending is temporarily unavailable. Please start exploring the platform!"
+        note: "Your account is ready! Note: Email sending is temporarily unavailable."
       };
     }
 
