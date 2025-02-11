@@ -19,7 +19,11 @@ export async function sendTestEmail(toEmail?: string) {
       initializeResend();
     }
 
-    const recipientEmail = toEmail || 'lewis@sullacrypto.com';
+    // In test mode, we can only send to verified email
+    const recipientEmail = process.env.NODE_ENV === 'production' 
+      ? (toEmail || 'lewis@sullacrypto.com')
+      : 'lewis@sullacrypto.com';
+
     console.log('Attempting to send test email to:', recipientEmail);
 
     const { data, error } = await resend.emails.send({
@@ -65,18 +69,23 @@ export async function sendWelcomeEmail(email: string, username: string) {
       initializeResend();
     }
 
+    // In test mode, we can only send to verified email
+    const recipientEmail = process.env.NODE_ENV === 'production' 
+      ? email 
+      : 'lewis@sullacrypto.com';
+
     const fromEmail = 'onboarding@resend.dev'; // Using Resend's verified domain
     const appUrl = process.env.APP_URL || 'http://localhost:5000';
 
     console.log('Attempting to send welcome email:', {
-      to: email,
+      to: recipientEmail,
       from: fromEmail,
       subject: 'Welcome to Sulla Learning Platform!'
     });
 
     const { data, error } = await resend.emails.send({
       from: fromEmail,
-      to: email,
+      to: recipientEmail,
       subject: 'Welcome to Sulla Learning Platform!',
       html: `
         <!DOCTYPE html>
@@ -157,7 +166,7 @@ export async function sendWelcomeEmail(email: string, username: string) {
 
     console.log('Welcome email sent successfully:', {
       messageId: data?.id,
-      to: email
+      to: recipientEmail
     });
     return true;
 
