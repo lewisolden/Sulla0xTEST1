@@ -161,8 +161,8 @@ export function setupAuth(app: Express) {
       }
 
       if (!admin) {
-        return res.status(401).json({ 
-          error: info?.message || "Invalid username or password" 
+        return res.status(401).json({
+          error: info?.message || "Invalid username or password"
         });
       }
 
@@ -194,8 +194,8 @@ export function setupAuth(app: Express) {
     try {
       const result = insertUserSchema.safeParse(req.body);
       if (!result.success) {
-        return res.status(400).json({ 
-          error: result.error.issues.map((issue) => issue.message).join(", ") 
+        return res.status(400).json({
+          error: result.error.issues.map((issue) => issue.message).join(", ")
         });
       }
 
@@ -221,7 +221,7 @@ export function setupAuth(app: Express) {
         .returning();
 
       // Send welcome email and handle the result
-      const emailSent = await sendWelcomeEmail(email, username);
+      const emailStatus = await sendWelcomeEmail(email, username);
 
       req.login({ ...newUser, role: 'user' }, (err) => {
         if (err) {
@@ -231,9 +231,9 @@ export function setupAuth(app: Express) {
           message: "Registration successful",
           user: { id: newUser.id, username: newUser.username, role: 'user' },
           emailStatus: {
-            sent: emailSent,
-            note: process.env.NODE_ENV !== 'production' 
-              ? "In testing mode, welcome emails are only sent to verified email addresses." 
+            sent: emailStatus.success,
+            note: process.env.NODE_ENV !== 'production'
+              ? "Note: Welcome emails are only delivered to verified email addresses in testing mode."
               : undefined
           }
         });

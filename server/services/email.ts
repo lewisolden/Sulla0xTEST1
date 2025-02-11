@@ -8,8 +8,14 @@ function initializeResend() {
     console.error('RESEND_API_KEY environment variable is not set');
     throw new Error('RESEND_API_KEY environment variable must be set');
   }
-  console.log('Initializing Resend client...');
-  resend = new Resend(process.env.RESEND_API_KEY);
+
+  const apiKey = process.env.RESEND_API_KEY;
+  console.log('Initializing Resend client...', {
+    keyLength: apiKey.length,
+    keyPrefix: apiKey.substring(0, 4) + '...'
+  });
+
+  resend = new Resend(apiKey);
 }
 
 export async function sendTestEmail() {
@@ -19,26 +25,52 @@ export async function sendTestEmail() {
       initializeResend();
     }
 
-    console.log('Attempting to send test email with default Resend domain...');
-    const { data, error } = await resend.emails.send({
-      from: 'onboarding@resend.dev',
+    const testEmail = {
+      from: 'onboarding@resend.dev', // Using Resend's verified domain
       to: 'lewis@sullacrypto.com',
       subject: 'Test Email from Sulla Platform',
       html: `
         <!DOCTYPE html>
         <html>
-        <body>
-          <h1>Test Email</h1>
-          <p>This is a test email from the Sulla Learning Platform.</p>
-          <p>If you receive this, the email service is working correctly.</p>
-          <p>Time sent: ${new Date().toISOString()}</p>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        </head>
+        <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f7ff;">
+          <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+            <div style="background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+              <h1 style="color: #1e3a8a; margin: 0 0 20px;">Test Email</h1>
+              <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
+                This is a test email from the Sulla Learning Platform.
+              </p>
+              <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
+                If you receive this, the email service is working correctly.
+              </p>
+              <p style="color: #6b7280; font-size: 14px; margin: 20px 0 0;">
+                Time sent: ${new Date().toISOString()}
+              </p>
+            </div>
+          </div>
         </body>
         </html>
-      `
+      `,
+      replyTo: 'support@resend.dev'
+    };
+
+    console.log('Attempting to send test email with configuration:', {
+      from: testEmail.from,
+      to: testEmail.to,
+      subject: testEmail.subject
     });
 
+    const { data, error } = await resend.emails.send(testEmail);
+
     if (error) {
-      console.error('Failed to send test email:', error);
+      console.error('Failed to send test email:', {
+        error: error.message,
+        code: error.statusCode,
+        details: error
+      });
       return { success: false, error };
     }
 
@@ -48,7 +80,10 @@ export async function sendTestEmail() {
     });
     return { success: true, messageId: data?.id };
   } catch (error) {
-    console.error('Error sending test email:', error);
+    console.error('Error sending test email:', {
+      error: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined
+    });
     return { success: false, error };
   }
 }
@@ -60,7 +95,7 @@ export async function sendWelcomeEmail(email: string, username: string) {
       initializeResend();
     }
 
-    const fromEmail = 'onboarding@resend.dev'; // Using Resend's default verified domain
+    const fromEmail = 'onboarding@resend.dev'; // Using Resend's verified domain
     const appUrl = process.env.APP_URL || 'http://localhost:5000';
 
     console.log('Attempting to send welcome email:', {
@@ -72,6 +107,7 @@ export async function sendWelcomeEmail(email: string, username: string) {
     const { data, error } = await resend.emails.send({
       from: fromEmail,
       to: email,
+      replyTo: 'support@resend.dev',
       subject: 'Welcome to Sulla Learning Platform!',
       html: `
         <!DOCTYPE html>
