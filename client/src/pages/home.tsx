@@ -62,30 +62,6 @@ export default function Home() {
         </motion.div>
       </div>
 
-      {/* Registration CTA Section */}
-      <section className="py-16 bg-white/5 backdrop-blur-sm">
-        <div className="container mx-auto px-4">
-          <motion.div 
-            className="max-w-4xl mx-auto text-center"
-            {...fadeInUp}
-          >
-            <h2 className="text-3xl font-bold text-white mb-6">
-              Ready to Start Your Blockchain Journey?
-            </h2>
-            <p className="text-xl text-blue-100 mb-8">
-              Join thousands of learners mastering blockchain technology with our interactive platform. 
-              Create your free account today and start learning!
-            </p>
-            <Link href="/register">
-              <button className="bg-white text-blue-700 px-12 py-4 rounded-lg hover:bg-blue-50 transition duration-300 font-semibold text-lg inline-flex items-center gap-2">
-                Register Now
-                <ArrowRight className="w-5 h-5" />
-              </button>
-            </Link>
-          </motion.div>
-        </div>
-      </section>
-
       {/* Why Choose Sulla Section */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
@@ -148,6 +124,30 @@ export default function Home() {
               </Link>
             </motion.div>
           </div>
+        </div>
+      </section>
+
+      {/* Registration CTA Section */}
+      <section className="py-16 bg-blue-600">
+        <div className="container mx-auto px-4">
+          <motion.div 
+            className="max-w-4xl mx-auto text-center"
+            {...fadeInUp}
+          >
+            <h2 className="text-3xl font-bold text-white mb-6">
+              Ready to Start Your Blockchain Journey?
+            </h2>
+            <p className="text-xl text-blue-100 mb-8">
+              Join thousands of learners mastering blockchain technology with our interactive platform. 
+              Create your free account today and start learning!
+            </p>
+            <Link href="/register">
+              <button className="bg-white text-blue-700 px-12 py-4 rounded-lg hover:bg-blue-50 transition duration-300 font-semibold text-lg inline-flex items-center gap-2">
+                Register Now
+                <ArrowRight className="w-5 h-5" />
+              </button>
+            </Link>
+          </motion.div>
         </div>
       </section>
 
