@@ -93,6 +93,9 @@ export default function AdminUsers() {
     }
   };
 
+  const allUsersSelected = data?.users && data.users.length > 0 && 
+    data.users.length === selectedUsers.length;
+
   return (
     <div className="container mx-auto p-6 space-y-6">
       <div className="flex justify-between items-center">
@@ -152,14 +155,13 @@ export default function AdminUsers() {
                 <input
                   type="checkbox"
                   onChange={(e) => {
-                    setSelectedUsers(
-                      e.target.checked ? (data?.users.map((u) => u.id) || []) : []
-                    );
+                    if (data?.users) {
+                      setSelectedUsers(
+                        e.target.checked ? data.users.map((u) => u.id) : []
+                      );
+                    }
                   }}
-                  checked={
-                    data?.users.length === selectedUsers.length &&
-                    selectedUsers.length > 0
-                  }
+                  checked={allUsersSelected}
                 />
               </TableHead>
               <TableHead>Username</TableHead>
@@ -177,8 +179,14 @@ export default function AdminUsers() {
                   Loading...
                 </TableCell>
               </TableRow>
+            ) : !data?.users || data.users.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={7} className="text-center py-4">
+                  No users found
+                </TableCell>
+              </TableRow>
             ) : (
-              data?.users.map((user) => (
+              data.users.map((user) => (
                 <TableRow key={user.id}>
                   <TableCell>
                     <input
@@ -220,27 +228,29 @@ export default function AdminUsers() {
           </TableBody>
         </Table>
 
-        <div className="flex justify-between items-center p-4">
-          <Button
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
-            disabled={page === 1 || isLoading}
-          >
-            Previous
-          </Button>
-          <span>
-            Page {page} of {data?.pagination.totalPages || 1}
-          </span>
-          <Button
-            onClick={() => setPage((p) => p + 1)}
-            disabled={
-              !data?.pagination.totalPages ||
-              page === data.pagination.totalPages ||
-              isLoading
-            }
-          >
-            Next
-          </Button>
-        </div>
+        {data?.pagination && (
+          <div className="flex justify-between items-center p-4">
+            <Button
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={page === 1 || isLoading}
+            >
+              Previous
+            </Button>
+            <span>
+              Page {page} of {data.pagination.totalPages || 1}
+            </span>
+            <Button
+              onClick={() => setPage((p) => p + 1)}
+              disabled={
+                !data.pagination.totalPages ||
+                page === data.pagination.totalPages ||
+                isLoading
+              }
+            >
+              Next
+            </Button>
+          </div>
+        )}
       </Card>
     </div>
   );
