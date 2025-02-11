@@ -39,17 +39,26 @@ export async function sendTestEmail() {
 
     if (error) {
       console.error('Failed to send test email:', error);
-      return false;
+      return {
+        sent: false,
+        error: error.message,
+      };
     }
 
     console.log('Test email sent successfully:', {
       messageId: data?.id,
       timestamp: new Date().toISOString()
     });
-    return true;
+    return {
+      sent: true,
+      messageId: data?.id,
+    };
   } catch (error) {
     console.error('Error sending test email:', error);
-    return false;
+    return {
+      sent: false,
+      error: error instanceof Error ? error.message : 'Unknown error occurred',
+    };
   }
 }
 
