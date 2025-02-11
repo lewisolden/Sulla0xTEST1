@@ -183,7 +183,7 @@ export default function AuthPage() {
             Sulla
           </h2>
           <p className="text-xl text-blue-700 leading-relaxed max-w-lg mx-auto">
-            Master blockchain technology through interactive learning experiences. From fundamentals to advanced smart contracts, your journey to Web3 expertise starts here.
+            Discover blockchain technology through our interactive learning platform. From fundamentals to advanced concepts, we'll guide you through the world of cryptocurrency and digital finance.
           </p>
 
           <div className="grid grid-cols-3 gap-6 mt-12">
@@ -197,7 +197,7 @@ export default function AuthPage() {
               <div className="p-3 bg-blue-100 rounded-full">
                 <GraduationCap className="h-6 w-6 text-blue-600" />
               </div>
-              <span className="text-sm text-blue-700">Expert-Led Content</span>
+              <span className="text-sm text-blue-700">Structured Curriculum</span>
             </div>
             <div className="flex flex-col items-center space-y-2">
               <div className="p-3 bg-blue-100 rounded-full">
