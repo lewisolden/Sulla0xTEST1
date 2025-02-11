@@ -14,6 +14,9 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
+import { LogOut } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 interface Enrollment {
   id: number;
@@ -34,13 +37,14 @@ interface Enrollment {
 }
 
 export default function AccountPage() {
-  const { user } = useAuth();
+  const { user, logoutMutation } = useAuth();
   const { progress } = useProgress();
   const [activeTab, setActiveTab] = useState("dashboard");
   const [feedbackType, setFeedbackType] = useState("course");
   const [selectedCourse, setSelectedCourse] = useState("");
   const [rating, setRating] = useState<number>(0);
   const [feedbackText, setFeedbackText] = useState("");
+  const { toast } = useToast();
 
   const { data: enrollments, isLoading: loadingEnrollments } = useQuery<Enrollment[]>({
     queryKey: ['enrollments'],
@@ -105,6 +109,22 @@ export default function AccountPage() {
       }
     } catch (error) {
       console.error('Failed to submit feedback:', error);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logoutMutation.mutateAsync();
+      toast({
+        title: "Logged out successfully",
+        description: "You have been logged out of your account.",
+      });
+    } catch (error) {
+      toast({
+        title: "Logout failed",
+        description: "Failed to log out. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -552,6 +572,27 @@ export default function AccountPage() {
                   <div>
                     <h3 className="font-semibold mb-2">Learning Preferences</h3>
                     <Button variant="outline">Customize Learning Experience</Button>
+                  </div>
+
+                  <div className="pt-4 border-t">
+                    <Button
+                      variant="destructive"
+                      className="w-full"
+                      onClick={handleLogout}
+                      disabled={logoutMutation.isPending}
+                    >
+                      {logoutMutation.isPending ? (
+                        <div className="flex items-center gap-2">
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          <span>Logging out...</span>
+                        </div>
+                      ) : (
+                        <>
+                          <LogOut className="mr-2 h-4 w-4" />
+                          Logout
+                        </>
+                      )}
+                    </Button>
                   </div>
                 </div>
               </CardContent>
