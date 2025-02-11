@@ -164,7 +164,7 @@ export async function sendWelcomeEmail(email: string, username: string) {
                       </ul>
 
                       <div style="text-align: center; margin: 40px 0;">
-                        <a href="${appUrl}/modules/module1" 
+                        <a href="${appUrl}/curriculum" 
                            style="display: inline-block; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; padding: 16px 32px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 18px; transition: all 0.3s ease;">
                           Start Your Journey Now
                         </a>
@@ -178,9 +178,7 @@ export async function sendWelcomeEmail(email: string, username: string) {
                         <p style="color: #6b7280; font-size: 14px;">
                           Follow us for updates and tips:
                           <br>
-                          <a href="#" style="color: #3b82f6; text-decoration: none; margin: 0 10px;">Twitter</a> | 
-                          <a href="#" style="color: #3b82f6; text-decoration: none; margin: 0 10px;">LinkedIn</a> | 
-                          <a href="#" style="color: #3b82f6; text-decoration: none; margin: 0 10px;">Discord</a>
+                          <a href="#" style="color: #3b82f6; text-decoration: none; margin: 0 10px;">Twitter</a>
                         </p>
                       </div>
                     </td>
