@@ -19,19 +19,16 @@ export async function sendTestEmail() {
       initializeResend();
     }
 
-    // In test mode, we can only send to verified emails
-    const testRecipient = 'lewis@sullacrypto.com'; // This is the only allowed recipient in test mode
-    const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
+    const fromEmail = process.env.RESEND_FROM_EMAIL || 'learning@sulla.com';
 
-    console.log('Attempting to send test email with default Resend domain...', {
+    console.log('Attempting to send test email...', {
       from: fromEmail,
-      to: testRecipient,
       timestamp: new Date().toISOString()
     });
 
     const { data, error } = await resend.emails.send({
       from: fromEmail,
-      to: testRecipient,
+      to: 'lewis@sullacrypto.com',  // Using the verified email for testing
       subject: 'Test Email from Sulla Platform',
       html: `
         <!DOCTYPE html>
@@ -39,7 +36,6 @@ export async function sendTestEmail() {
         <body>
           <h1>Test Email</h1>
           <p>This is a test email from the Sulla Learning Platform.</p>
-          <p>Note: To send emails to other recipients, please verify a domain at resend.com/domains</p>
           <p>Time sent: ${new Date().toISOString()}</p>
         </body>
         </html>
@@ -58,9 +54,9 @@ export async function sendTestEmail() {
       messageId: data?.id,
       timestamp: new Date().toISOString()
     });
+
     return {
       sent: true,
-      messageId: data?.id,
     };
   } catch (error) {
     console.error('Error sending test email:', error);
@@ -78,15 +74,26 @@ export async function sendWelcomeEmail(email: string, username: string) {
       initializeResend();
     }
 
-    const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
+    // In test mode, we can only send to verified emails
+    const fromEmail = process.env.RESEND_FROM_EMAIL || 'learning@sulla.com';
     const appUrl = process.env.APP_URL || 'http://localhost:5000';
 
     // Log attempt to help with debugging
     console.log('Attempting to send welcome email:', {
       to: email,
       from: fromEmail,
-      subject: 'Welcome to Sulla Learning Platform!'
+      subject: 'Welcome to Sulla Learning Platform!',
+      testMode: !process.env.RESEND_DOMAIN
     });
+
+    // In test mode, return gracefully if email is not verified
+    if (!process.env.RESEND_DOMAIN && email !== 'lewis@sullacrypto.com') {
+      console.log('Skipping welcome email in test mode for unverified email:', email);
+      return {
+        sent: false,
+        note: "Welcome! Email notifications will be enabled once domain verification is complete."
+      };
+    }
 
     const { data, error } = await resend.emails.send({
       from: fromEmail,
@@ -162,13 +169,10 @@ export async function sendWelcomeEmail(email: string, username: string) {
     });
 
     if (error) {
-      console.error('Failed to send welcome email:', {
-        error: error.message,
-        code: error.statusCode,
-      });
+      console.error('Failed to send welcome email:', error);
       return {
         sent: false,
-        note: "Failed to send welcome email. You can still access your account."
+        note: "Your account is ready! Email notifications will be enabled soon."
       };
     }
 
@@ -176,24 +180,17 @@ export async function sendWelcomeEmail(email: string, username: string) {
       messageId: data?.id,
       to: email
     });
+
     return {
       sent: true,
       note: "Welcome email sent successfully! Check your inbox for getting started instructions."
     };
 
   } catch (error) {
-    if (error instanceof Error) {
-      console.error('Failed to send welcome email:', {
-        error: error.message,
-        stack: error.stack,
-        name: error.name
-      });
-    } else {
-      console.error('Failed to send welcome email with unknown error:', error);
-    }
+    console.error('Error sending welcome email:', error);
     return {
       sent: false,
-      note: "Could not send welcome email, but your account is ready to use."
+      note: "Your account is ready! We'll enable email notifications soon."
     };
   }
 }
