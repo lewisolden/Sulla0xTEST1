@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import Footer from "@/components/layout/footer";
 import { Progress } from "@/components/ui/progress";
@@ -11,6 +12,7 @@ import { useScrollTop } from "@/hooks/useScrollTop";
 import { moduleTopics, type ModuleTopic } from "@/lib/module-data";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
+import { useLocation } from "wouter";
 
 interface Enrollment {
   id: number;
@@ -23,6 +25,7 @@ export default function Module1() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { progress } = useProgress();
+  const [, setLocation] = useLocation();
   const moduleProgress = progress.filter(p => p.moduleId === 1);
   const completedSections = moduleProgress.filter(p => p.completed).length;
   const progressPercentage = (completedSections / moduleTopics.length) * 100;
@@ -74,24 +77,30 @@ export default function Module1() {
     }
   });
 
+  const handleStartLearning = async () => {
+    if (!isEnrolled) {
+      try {
+        await enroll();
+        toast({
+          title: "Successfully enrolled!",
+          description: "You can now start learning about cryptocurrency.",
+        });
+        setLocation("/modules/module1/digital-currencies");
+      } catch (error) {
+        // Error is already handled by the mutation
+        return;
+      }
+    } else {
+      setLocation("/modules/module1/digital-currencies");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-4xl font-bold text-blue-900">
-            Module 1: Understanding Cryptocurrency
-          </h1>
-          {!isLoadingEnrollments && !isEnrolled && (
-            <Button
-              onClick={() => enroll()}
-              size="lg"
-              className="bg-green-600 hover:bg-green-700"
-              disabled={isEnrolling}
-            >
-              {isEnrolling ? "Enrolling..." : "Enroll in This Course"}
-            </Button>
-          )}
-        </div>
+        <h1 className="text-4xl font-bold text-blue-900 mb-6">
+          Module 1: Understanding Cryptocurrency
+        </h1>
 
         <div className="mb-8">
           <Progress value={progressPercentage} className="w-full" />
@@ -120,47 +129,26 @@ export default function Module1() {
                     and how they differ from traditional money systems.
                   </p>
 
-                  <h3 className="text-xl font-semibold mt-8 mb-4">Learning Objectives</h3>
-                  <ul className="list-disc pl-6 space-y-2 text-gray-700">
-                    <li>Understand the fundamental differences between traditional and digital currencies</li>
-                    <li>Grasp the core concepts of cryptocurrency, including decentralization and digital scarcity</li>
-                    <li>Learn essential security principles and best practices</li>
-                    <li>Explore practical applications and use cases of cryptocurrency</li>
-                    <li>Develop skills for safe participation in the cryptocurrency ecosystem</li>
-                  </ul>
-
                   <div className="mt-8 flex flex-col items-center gap-4">
                     {isLoadingEnrollments ? (
                       <div className="animate-pulse">
                         <div className="h-10 w-32 bg-gray-200 rounded"></div>
                       </div>
-                    ) : isEnrolled ? (
-                      <div className="space-y-4 w-full max-w-md">
-                        <p className="text-green-600 font-semibold flex items-center justify-center gap-2">
-                          <CheckCircle className="h-5 w-5" />
-                          You're enrolled in this course
-                        </p>
-                        <Link href="/modules/module1/digital-currencies">
-                          <Button
-                            size="lg"
-                            className="w-full bg-blue-600 hover:bg-blue-700"
-                          >
-                            Start First Topic
-                          </Button>
-                        </Link>
-                      </div>
                     ) : (
                       <div className="space-y-4 w-full max-w-md">
-                        <p className="text-center text-gray-600">
-                          Enroll now to start your learning journey
-                        </p>
+                        {isEnrolled && (
+                          <p className="text-green-600 font-semibold flex items-center justify-center gap-2">
+                            <CheckCircle className="h-5 w-5" />
+                            You're enrolled in this course
+                          </p>
+                        )}
                         <Button
-                          onClick={() => enroll()}
+                          onClick={handleStartLearning}
                           size="lg"
-                          className="w-full bg-green-600 hover:bg-green-700"
+                          className="w-full bg-blue-600 hover:bg-blue-700"
                           disabled={isEnrolling}
                         >
-                          {isEnrolling ? "Enrolling..." : "Enroll in This Course"}
+                          {isEnrolling ? "Enrolling..." : "Start First Topic"}
                         </Button>
                       </div>
                     )}
@@ -169,7 +157,6 @@ export default function Module1() {
               </CardContent>
             </Card>
           </TabsContent>
-
           <TabsContent value="content">
             <div className="grid gap-6">
               {topicsWithProgress.map((topic) => (
@@ -202,7 +189,6 @@ export default function Module1() {
               ))}
             </div>
           </TabsContent>
-
           <TabsContent value="exercises">
             <Card>
               <CardContent className="pt-6">
@@ -256,7 +242,6 @@ export default function Module1() {
               </CardContent>
             </Card>
           </TabsContent>
-
           <TabsContent value="quiz">
             <Card>
               <CardContent className="pt-6">
