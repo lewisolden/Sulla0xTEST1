@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { BookOpen, GraduationCap, Zap, Brain, Target, Trophy, Code, Gamepad2, Wallet, Dumbbell } from "lucide-react";
+import { BookOpen, GraduationCap, Zap, Brain, Target, Trophy, Code, Gamepad2, Wallet, Dumbbell, ArrowRight } from "lucide-react";
 import ModuleCard from "@/components/modules/module-card";
 import Footer from "@/components/layout/footer";
 import { motion } from "framer-motion";
@@ -9,7 +9,6 @@ const Button = ({ children, className }: { children: React.ReactNode; className?
     {children}
   </button>
 );
-
 
 export default function Home() {
   const fadeInUp = {
@@ -62,6 +61,44 @@ export default function Home() {
           </Link>
         </motion.div>
       </div>
+
+      {/* Registration CTA Section */}
+      <section className="py-16 bg-white/5 backdrop-blur-sm">
+        <div className="container mx-auto px-4">
+          <motion.div 
+            className="max-w-4xl mx-auto text-center"
+            {...fadeInUp}
+          >
+            <h2 className="text-3xl font-bold text-white mb-6">
+              Ready to Start Your Blockchain Journey?
+            </h2>
+            <p className="text-xl text-blue-100 mb-8">
+              Join thousands of learners mastering blockchain technology with our interactive platform. 
+              Create your free account today and unlock:
+            </p>
+            <div className="grid md:grid-cols-3 gap-6 mb-8">
+              <div className="bg-blue-800/30 p-6 rounded-lg">
+                <Trophy className="w-8 h-8 text-blue-300 mx-auto mb-4" />
+                <p className="text-blue-100">Track Your Progress</p>
+              </div>
+              <div className="bg-blue-800/30 p-6 rounded-lg">
+                <Brain className="w-8 h-8 text-blue-300 mx-auto mb-4" />
+                <p className="text-blue-100">Personalized Learning</p>
+              </div>
+              <div className="bg-blue-800/30 p-6 rounded-lg">
+                <Gamepad2 className="w-8 h-8 text-blue-300 mx-auto mb-4" />
+                <p className="text-blue-100">Interactive Games</p>
+              </div>
+            </div>
+            <Link href="/register">
+              <button className="bg-white text-blue-700 px-12 py-4 rounded-lg hover:bg-blue-50 transition duration-300 font-semibold text-lg inline-flex items-center gap-2">
+                Register Now
+                <ArrowRight className="w-5 h-5" />
+              </button>
+            </Link>
+          </motion.div>
+        </div>
+      </section>
 
       {/* Why Choose Sulla Section */}
       <section className="py-16 bg-white">
