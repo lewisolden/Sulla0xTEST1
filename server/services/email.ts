@@ -66,7 +66,11 @@ export async function sendWelcomeEmail(email: string, username: string) {
       initializeResend();
     }
 
-    const fromEmail = 'welcome@updates.sullacrypto.com';
+    const fromEmail = {
+      name: 'Sulla',
+      email: 'welcome@updates.sullacrypto.com'
+    };
+
     const appUrl = process.env.APP_URL || 'http://localhost:5000';
 
     console.log('Attempting to send welcome email:', {
@@ -76,7 +80,7 @@ export async function sendWelcomeEmail(email: string, username: string) {
     });
 
     const { data, error } = await resend.emails.send({
-      from: fromEmail,
+      from: `${fromEmail.name} <${fromEmail.email}>`,
       to: email,
       subject: 'Welcome to Sulla Learning Platform!',
       html: `
