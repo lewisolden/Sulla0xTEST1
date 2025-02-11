@@ -51,7 +51,7 @@ export default function Module1() {
   );
 
   // Mutation for enrolling
-  const { mutateAsync: enroll, isPending: isEnrolling } = useMutation({
+  const { mutate, isPending: isEnrolling } = useMutation({
     mutationFn: async () => {
       const response = await fetch('/api/enrollments', {
         method: 'POST',
@@ -66,10 +66,7 @@ export default function Module1() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['enrollments'] });
-      toast({
-        title: "Successfully enrolled!",
-        description: "You can now start learning about cryptocurrency.",
-      });
+      setLocation("/modules/module1/digital-currencies");
     },
     onError: (error: Error) => {
       toast({
@@ -80,14 +77,9 @@ export default function Module1() {
     }
   });
 
-  const handleStartLearning = async () => {
+  const handleStartLearning = () => {
     if (!isEnrolled) {
-      try {
-        await enroll();
-        setLocation("/modules/module1/digital-currencies");
-      } catch {
-        // Error is handled by mutation callbacks
-      }
+      mutate();
     } else {
       setLocation("/modules/module1/digital-currencies");
     }
