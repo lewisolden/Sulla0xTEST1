@@ -8,7 +8,7 @@ type AuthContextType = {
   user: SelectUser | null;
   isLoading: boolean;
   error: Error | null;
-  loginMutation: UseMutationResult<SelectUser, Error, LoginData>;
+  loginMutation: UseMutationResult<{ user: SelectUser }, Error, LoginData>;
   logoutMutation: UseMutationResult<void, Error, void>;
   registerMutation: UseMutationResult<
     { user: SelectUser; emailStatus?: { sent: boolean; note?: string } },
@@ -36,7 +36,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const loginMutation = useMutation({
     mutationFn: async (credentials: LoginData) => {
       const res = await apiRequest("POST", "/api/login", credentials);
-      return res.json();
+      const data = await res.json();
+      return data;
     },
     onSuccess: (data: { user: SelectUser }) => {
       queryClient.setQueryData(["/api/user"], data.user);
@@ -58,6 +59,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     },
     onSuccess: (data: { user: SelectUser; emailStatus?: { sent: boolean; note?: string } }) => {
       queryClient.setQueryData(["/api/user"], data.user);
+      if (data.emailStatus?.note) {
+        toast({
+          title: "Registration successful",
+          description: data.emailStatus.note,
+          variant: data.emailStatus.sent ? "default" : "destructive",
+        });
+      }
     },
     onError: (error: Error) => {
       toast({
