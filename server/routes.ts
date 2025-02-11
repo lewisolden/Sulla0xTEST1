@@ -7,6 +7,7 @@ import { setupAuth, requireAdmin } from "./auth";
 import enrollmentsRouter from "./routes/enrollments";
 import userMetricsRouter from "./routes/user-metrics";
 import apiRouter from "./routes/api";
+import adminRouter from "./routes/admin";
 import path from 'path';
 import { fileURLToPath } from 'url';
 import type { Browser } from 'puppeteer';
@@ -32,6 +33,9 @@ async function getBrowser() {
 export function registerRoutes(app: Express): Server {
   // Mount API router first
   app.use("/api", apiRouter);
+
+  // Mount admin routes
+  app.use("/api/admin", adminRouter);
 
   // Add email test endpoint
   app.get("/api/email/test", async (req, res) => {
