@@ -29,7 +29,8 @@ export async function sendWelcomeEmail(email: string, username: string) {
       return false;
     }
 
-    const fromEmail = process.env.EMAIL_FROM || 'onboarding@sulla.edu';
+    // Use Resend's default verified domain
+    const fromEmail = 'onboarding@resend.dev';
     console.log('Attempting to send welcome email:', {
       to: email,
       from: fromEmail,
