@@ -43,12 +43,12 @@ export default function Module1() {
   });
 
   // Determine if user is enrolled in this course
-  const isEnrolled = enrollments?.some((enrollment: Enrollment) => 
+  const isEnrolled = enrollments?.some((enrollment: Enrollment) =>
     enrollment.courseId === 1 && enrollment.status === 'active'
   );
 
   // Mutation for enrolling
-  const { mutate: enroll } = useMutation({
+  const { mutate: enroll, isPending: isEnrolling } = useMutation({
     mutationFn: async () => {
       const response = await fetch('/api/enrollments', {
         method: 'POST',
@@ -77,9 +77,21 @@ export default function Module1() {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold text-blue-900 mb-6">
-          Module 1: Understanding Cryptocurrency
-        </h1>
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-4xl font-bold text-blue-900">
+            Module 1: Understanding Cryptocurrency
+          </h1>
+          {!isLoadingEnrollments && !isEnrolled && (
+            <Button
+              onClick={() => enroll()}
+              size="lg"
+              className="bg-green-600 hover:bg-green-700"
+              disabled={isEnrolling}
+            >
+              {isEnrolling ? "Enrolling..." : "Enroll in This Course"}
+            </Button>
+          )}
+        </div>
 
         <div className="mb-8">
           <Progress value={progressPercentage} className="w-full" />
@@ -87,19 +99,6 @@ export default function Module1() {
             Progress: {Math.round(progressPercentage)}%
           </p>
         </div>
-
-        {/* Add enrollment button here, before the tabs */}
-        {!isLoadingEnrollments && !isEnrolled && (
-          <div className="mb-6">
-            <Button 
-              onClick={() => enroll()}
-              size="lg"
-              className="bg-green-600 hover:bg-green-700"
-            >
-              Enroll in This Course
-            </Button>
-          </div>
-        )}
 
         <Tabs defaultValue="overview" className="space-y-4">
           <TabsList>
@@ -115,9 +114,9 @@ export default function Module1() {
                 <div className="prose max-w-none">
                   <h2 className="text-2xl font-semibold mb-4">Welcome to Module 1</h2>
                   <p className="text-gray-700 mb-6">
-                    In today's rapidly evolving financial landscape, cryptocurrency represents a revolutionary 
-                    approach to money and value transfer. This module will introduce you to the fundamental 
-                    concepts of cryptocurrency, helping you understand what makes digital currencies unique 
+                    In today's rapidly evolving financial landscape, cryptocurrency represents a revolutionary
+                    approach to money and value transfer. This module will introduce you to the fundamental
+                    concepts of cryptocurrency, helping you understand what makes digital currencies unique
                     and how they differ from traditional money systems.
                   </p>
 
@@ -136,22 +135,34 @@ export default function Module1() {
                         <div className="h-10 w-32 bg-gray-200 rounded"></div>
                       </div>
                     ) : isEnrolled ? (
-                      <>
-                        <p className="text-green-600 font-semibold flex items-center gap-2">
+                      <div className="space-y-4 w-full max-w-md">
+                        <p className="text-green-600 font-semibold flex items-center justify-center gap-2">
                           <CheckCircle className="h-5 w-5" />
                           You're enrolled in this course
                         </p>
                         <Link href="/modules/module1/digital-currencies">
-                          <Button 
+                          <Button
                             size="lg"
-                            className="bg-blue-600 hover:bg-blue-700"
+                            className="w-full bg-blue-600 hover:bg-blue-700"
                           >
                             Start First Topic
                           </Button>
                         </Link>
-                      </>
+                      </div>
                     ) : (
-                      <></> // Removed redundant enrollment button
+                      <div className="space-y-4 w-full max-w-md">
+                        <p className="text-center text-gray-600">
+                          Enroll now to start your learning journey
+                        </p>
+                        <Button
+                          onClick={() => enroll()}
+                          size="lg"
+                          className="w-full bg-green-600 hover:bg-green-700"
+                          disabled={isEnrolling}
+                        >
+                          {isEnrolling ? "Enrolling..." : "Enroll in This Course"}
+                        </Button>
+                      </div>
                     )}
                   </div>
                 </div>
@@ -258,13 +269,13 @@ export default function Module1() {
                   </p>
                   <div className="mt-8 flex justify-center">
                     <Link href="/modules/module1/quiz">
-                      <Button 
+                      <Button
                         size="lg"
                         className="bg-green-600 hover:bg-green-700"
                         disabled={progressPercentage < 100}
                       >
-                        {progressPercentage < 100 
-                          ? "Complete all topics to unlock quiz" 
+                        {progressPercentage < 100
+                          ? "Complete all topics to unlock quiz"
                           : "Take Module Quiz"
                         }
                       </Button>
