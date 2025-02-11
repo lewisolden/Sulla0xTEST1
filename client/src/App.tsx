@@ -57,6 +57,7 @@ import TradingSimulator from "@/pages/trading-simulator";
 import GlossaryPage from "@/pages/glossary";
 
 
+
 function ProtectedRoute({ component: Component, adminOnly = false, publicAccess = false, ...rest }: any) {
   const { user, isLoading } = useAuth();
 
@@ -73,7 +74,9 @@ function ProtectedRoute({ component: Component, adminOnly = false, publicAccess 
     return null;
   }
 
-  if (adminOnly && user.role !== 'admin') {
+  // Check if the user has the required role for admin routes
+  const userRole = (user as any).role;
+  if (adminOnly && userRole !== 'admin') {
     window.location.href = "/";
     return null;
   }

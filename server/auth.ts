@@ -29,11 +29,16 @@ async function verifyPassword(supplied: string, stored: string) {
 
 declare global {
   namespace Express {
-    interface User extends Partial<SelectUser & SelectAdminUser> {}
+    interface User extends Partial<SelectUser & SelectAdminUser> {
+      role?: 'user' | 'admin';
+    }
   }
 }
 
 export const requireAdmin = async (req: any, res: any, next: any) => {
+  console.log('Admin check - isAuthenticated:', req.isAuthenticated());
+  console.log('Admin check - user:', req.user);
+
   if (!req.isAuthenticated()) {
     return res.status(401).json({ error: "Not authenticated" });
   }
@@ -43,6 +48,8 @@ export const requireAdmin = async (req: any, res: any, next: any) => {
     .from(adminUsers)
     .where(eq(adminUsers.id, req.user.id))
     .limit(1);
+
+  console.log('Admin check - admin record:', admin);
 
   if (!admin) {
     return res.status(403).json({ error: "Not authorized" });
@@ -120,19 +127,19 @@ export function setupAuth(app: Express) {
         return done(null, false, { message: "Incorrect password." });
       }
 
-      return done(null, admin);
+      return done(null, { ...admin, role: 'admin' });
     } catch (err) {
       return done(err);
     }
   }));
 
   passport.serializeUser((user: Express.User, done) => {
-    done(null, { id: user.id, isAdmin: user.role === 'admin' });
+    done(null, { id: user.id, role: user.role });
   });
 
-  passport.deserializeUser(async (data: { id: number, isAdmin: boolean }, done) => {
+  passport.deserializeUser(async (data: { id: number, role?: string }, done) => {
     try {
-      if (data.isAdmin) {
+      if (data.role === 'admin') {
         const [admin] = await db
           .select()
           .from(adminUsers)

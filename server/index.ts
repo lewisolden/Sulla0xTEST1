@@ -1,6 +1,7 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import { setupAuth } from "./auth";
 
 const app = express();
 
@@ -29,6 +30,9 @@ app.use((req, res, next) => {
   next();
 });
 
+let server: any = null;
+const PORT = process.env.PORT || 5000;
+
 (async () => {
   try {
     log("Starting server initialization...");
@@ -38,8 +42,11 @@ app.use((req, res, next) => {
       log("Warning: RESEND_API_KEY environment variable is not set");
     }
 
-    // Register routes first
-    const server = registerRoutes(app);
+    // Setup authentication first
+    setupAuth(app);
+
+    // Then register routes
+    server = registerRoutes(app);
 
     // Add catch-all handler for API routes that aren't found
     app.use('/api/*', (req, res) => {
@@ -56,7 +63,6 @@ app.use((req, res, next) => {
     });
 
     const isProduction = process.env.NODE_ENV === 'production';
-    const PORT = 5000;
 
     // Set up Vite or static file serving AFTER API routes
     if (!isProduction) {
@@ -69,11 +75,29 @@ app.use((req, res, next) => {
       log("Static file serving setup complete");
     }
 
-    log(`Attempting to start server on port ${PORT}...`);
+    // Function to try starting the server on a given port
+    const tryStartServer = (port: number): Promise<void> => {
+      return new Promise((resolve, reject) => {
+        try {
+          server.listen(port, "0.0.0.0", () => {
+            log(`Server is running on port ${port}`);
+            resolve();
+          }).on('error', (err: any) => {
+            if (err.code === 'EADDRINUSE') {
+              log(`Port ${port} is in use, will try next port`);
+              resolve(tryStartServer(port + 1));
+            } else {
+              reject(err);
+            }
+          });
+        } catch (error) {
+          reject(error);
+        }
+      });
+    };
 
-    server.listen(PORT, "0.0.0.0", () => {
-      log(`Server is running on port ${PORT}`);
-    });
+    // Start the server
+    await tryStartServer(Number(PORT));
 
   } catch (error) {
     log(`Failed to start server: ${error}`);
