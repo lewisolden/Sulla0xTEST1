@@ -1,35 +1,39 @@
-import { Resend } from 'resend';
+import mailgun from 'mailgun-js';
 
-let resend: Resend;
-const SENDER_EMAIL = 'noreply@updates.sullacrypto.com';
+let mg: mailgun.Mailgun;
 
-// Initialize Resend with API key
-function initializeResend() {
-  if (!process.env.RESEND_API_KEY) {
-    console.error('RESEND_API_KEY environment variable is not set');
-    throw new Error('RESEND_API_KEY environment variable must be set');
+// Initialize Mailgun with API key
+function initializeMailgun() {
+  if (!process.env.MAILGUN_API_KEY || !process.env.MAILGUN_DOMAIN) {
+    console.error('MAILGUN_API_KEY and MAILGUN_DOMAIN environment variables must be set');
+    throw new Error('Required Mailgun environment variables are not set');
   }
-  console.log('Initializing Resend client with API key length:', process.env.RESEND_API_KEY.length);
-  resend = new Resend(process.env.RESEND_API_KEY);
+
+  console.log('Initializing Mailgun client...');
+  mg = mailgun({
+    apiKey: process.env.MAILGUN_API_KEY,
+    domain: process.env.MAILGUN_DOMAIN
+  });
 }
 
 export async function sendTestEmail(toEmail?: string) {
   try {
-    if (!resend) {
-      console.log('Initializing Resend client...');
-      initializeResend();
+    if (!mg) {
+      console.log('Initializing Mailgun client...');
+      initializeMailgun();
     }
 
     const recipientEmail = toEmail || 'lewis@sullacrypto.com';
+    const senderEmail = `Sulla Learning <noreply@${process.env.MAILGUN_DOMAIN}>`;
 
     console.log('Attempting to send test email:', {
       to: recipientEmail,
-      from: SENDER_EMAIL,
+      from: senderEmail,
       timestamp: new Date().toISOString()
     });
 
-    const { data, error } = await resend.emails.send({
-      from: SENDER_EMAIL,
+    const data = {
+      from: senderEmail,
       to: recipientEmail,
       subject: 'Test Email from Sulla Platform',
       html: `
@@ -43,21 +47,17 @@ export async function sendTestEmail(toEmail?: string) {
         </body>
         </html>
       `
+    };
+
+    const response = await new Promise((resolve, reject) => {
+      mg.messages().send(data, (error, body) => {
+        if (error) reject(error);
+        else resolve(body);
+      });
     });
 
-    if (error) {
-      console.error('Failed to send test email:', {
-        error: JSON.stringify(error),
-        errorType: typeof error,
-        errorMessage: error.message,
-        errorName: error.name
-      });
-      return false;
-    }
-
     console.log('Test email sent successfully:', {
-      messageId: data?.id,
-      timestamp: new Date().toISOString(),
+      response,
       recipient: recipientEmail
     });
     return true;
@@ -77,25 +77,26 @@ export async function sendTestEmail(toEmail?: string) {
 
 export async function sendWelcomeEmail(email: string, username: string) {
   try {
-    if (!resend) {
-      console.log('Initializing Resend client...');
-      initializeResend();
+    if (!mg) {
+      console.log('Initializing Mailgun client...');
+      initializeMailgun();
     }
 
     const recipientEmail = process.env.NODE_ENV === 'production' 
       ? email 
       : 'lewis@sullacrypto.com';
 
+    const senderEmail = `Sulla Learning <noreply@${process.env.MAILGUN_DOMAIN}>`;
     const appUrl = process.env.APP_URL || 'http://localhost:5000';
 
     console.log('Attempting to send welcome email:', {
       to: recipientEmail,
-      from: SENDER_EMAIL,
+      from: senderEmail,
       subject: 'Welcome to Sulla Learning Platform!'
     });
 
-    const { data, error } = await resend.emails.send({
-      from: SENDER_EMAIL,
+    const data = {
+      from: senderEmail,
       to: recipientEmail,
       subject: 'Welcome to Sulla Learning Platform!',
       html: `
@@ -165,18 +166,17 @@ export async function sendWelcomeEmail(email: string, username: string) {
         </body>
         </html>
       `
+    };
+
+    const response = await new Promise((resolve, reject) => {
+      mg.messages().send(data, (error, body) => {
+        if (error) reject(error);
+        else resolve(body);
+      });
     });
 
-    if (error) {
-      console.error('Failed to send welcome email:', {
-        message: error.message,
-        type: typeof error
-      });
-      return false;
-    }
-
     console.log('Welcome email sent successfully:', {
-      messageId: data?.id,
+      response,
       to: recipientEmail
     });
     return true;

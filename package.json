@@ -60,6 +60,7 @@
     "input-otp": "^1.2.4",
     "jspdf": "^2.5.2",
     "lucide-react": "^0.453.0",
+    "mailgun-js": "^0.22.0",
     "memorystore": "^1.6.7",
     "mermaid": "^11.4.1",
     "openai": "^4.82.0",
