@@ -2,17 +2,21 @@ import mailgun from 'mailgun-js';
 
 let mg: mailgun.Mailgun;
 
-// Initialize Mailgun with API key
 function initializeMailgun() {
   if (!process.env.MAILGUN_API_KEY || !process.env.MAILGUN_DOMAIN) {
     console.error('MAILGUN_API_KEY and MAILGUN_DOMAIN environment variables must be set');
     throw new Error('Required Mailgun environment variables are not set');
   }
 
-  console.log('Initializing Mailgun client...');
+  console.log('Initializing Mailgun client with:', {
+    domain: process.env.MAILGUN_DOMAIN,
+    apiKeyPresent: !!process.env.MAILGUN_API_KEY,
+  });
+
   mg = mailgun({
     apiKey: process.env.MAILGUN_API_KEY,
-    domain: process.env.MAILGUN_DOMAIN
+    domain: process.env.MAILGUN_DOMAIN,
+    host: 'api.mailgun.net'
   });
 }
 
@@ -24,7 +28,7 @@ export async function sendTestEmail(toEmail?: string) {
     }
 
     const recipientEmail = toEmail || 'lewis@sullacrypto.com';
-    const senderEmail = `Sulla Learning <noreply@${process.env.MAILGUN_DOMAIN}>`;
+    const senderEmail = `Sulla Learning <mailgun@${process.env.MAILGUN_DOMAIN}>`;
 
     console.log('Attempting to send test email:', {
       to: recipientEmail,
@@ -50,9 +54,20 @@ export async function sendTestEmail(toEmail?: string) {
     };
 
     const response = await new Promise((resolve, reject) => {
-      mg.messages().send(data, (error, body) => {
-        if (error) reject(error);
-        else resolve(body);
+      mg.messages().send(data, (error: any, body: any) => {
+        if (error) {
+          console.error('Mailgun API error:', {
+            message: error.message,
+            stack: error.stack,
+            details: error.toString(),
+            statusCode: error.statusCode,
+            response: error.response
+          });
+          reject(error);
+        } else {
+          console.log('Mailgun API response:', body);
+          resolve(body);
+        }
       });
     });
 
@@ -86,7 +101,7 @@ export async function sendWelcomeEmail(email: string, username: string) {
       ? email 
       : 'lewis@sullacrypto.com';
 
-    const senderEmail = `Sulla Learning <noreply@${process.env.MAILGUN_DOMAIN}>`;
+    const senderEmail = `Sulla Learning <mailgun@${process.env.MAILGUN_DOMAIN}>`;
     const appUrl = process.env.APP_URL || 'http://localhost:5000';
 
     console.log('Attempting to send welcome email:', {
@@ -169,9 +184,20 @@ export async function sendWelcomeEmail(email: string, username: string) {
     };
 
     const response = await new Promise((resolve, reject) => {
-      mg.messages().send(data, (error, body) => {
-        if (error) reject(error);
-        else resolve(body);
+      mg.messages().send(data, (error: any, body: any) => {
+        if (error) {
+          console.error('Mailgun API error:', {
+            message: error.message,
+            stack: error.stack,
+            details: error.toString(),
+            statusCode: error.statusCode,
+            response: error.response
+          });
+          reject(error);
+        } else {
+          console.log('Mailgun API response:', body);
+          resolve(body);
+        }
       });
     });
 
