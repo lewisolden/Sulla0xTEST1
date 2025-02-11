@@ -19,8 +19,8 @@ export async function sendTestEmail() {
       initializeResend();
     }
 
-    // Use the exact email format for testing
-    const fromEmail = 'test@mail.sullacrypto.com';
+    // Use the new domain for sending emails
+    const fromEmail = 'test@updates.sullacrypto.com';
 
     console.log('Attempting to send test email...', {
       from: fromEmail,
@@ -66,7 +66,7 @@ export async function sendWelcomeEmail(email: string, username: string) {
       initializeResend();
     }
 
-    const fromEmail = 'test@mail.sullacrypto.com';
+    const fromEmail = 'welcome@updates.sullacrypto.com';
     const appUrl = process.env.APP_URL || 'http://localhost:5000';
 
     console.log('Attempting to send welcome email:', {

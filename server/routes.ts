@@ -37,9 +37,12 @@ export function registerRoutes(app: Express): Server {
   app.get("/api/email/test", async (req, res) => {
     try {
       const result = await sendTestEmail();
-      if (result.sent) {
+      console.log('Test email result:', result);
+
+      if (result.success) {
         res.json({ 
           success: true,
+          messageId: result.messageId,
           message: "Test email sent successfully to verified test recipient."
         });
       } else {
