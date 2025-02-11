@@ -22,7 +22,7 @@ export async function sendTestEmail() {
     console.log('Attempting to send test email with default Resend domain...');
     const { data, error } = await resend.emails.send({
       from: 'onboarding@resend.dev',
-      to: 'delivered@resend.dev',
+      to: 'lewis@sullacrypto.com',
       subject: 'Test Email from Sulla Platform',
       html: `
         <!DOCTYPE html>
