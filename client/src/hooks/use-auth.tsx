@@ -23,6 +23,7 @@ export const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
+
   const {
     data: user,
     error,
@@ -41,6 +42,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     },
     onSuccess: (data: { user: SelectUser }) => {
       queryClient.setQueryData(["/api/user"], data.user);
+      toast({
+        title: "Login successful",
+        description: "Welcome back!",
+      });
     },
     onError: (error: Error) => {
       toast({
@@ -59,13 +64,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     },
     onSuccess: (data: { user: SelectUser; emailStatus?: { sent: boolean; note?: string } }) => {
       queryClient.setQueryData(["/api/user"], data.user);
-      if (data.emailStatus?.note) {
-        toast({
-          title: "Registration successful",
-          description: data.emailStatus.note,
-          variant: data.emailStatus.sent ? "default" : "destructive",
-        });
-      }
+
+      // Always show a registration success toast
+      const description = data.emailStatus?.note || 
+        (data.emailStatus?.sent 
+          ? "Welcome email sent successfully!"
+          : "Registration successful, but welcome email could not be sent.");
+
+      toast({
+        title: "Welcome to Sulla!",
+        description,
+        variant: data.emailStatus?.sent ? "default" : "destructive",
+      });
     },
     onError: (error: Error) => {
       toast({
@@ -82,6 +92,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     },
     onSuccess: () => {
       queryClient.setQueryData(["/api/user"], null);
+      toast({
+        title: "Logged out",
+        description: "You have been successfully logged out.",
+      });
     },
     onError: (error: Error) => {
       toast({
