@@ -3,25 +3,19 @@ import { sendTestEmail } from '../services/email';
 
 const router = Router();
 
-// Test email endpoint with improved error handling
+// Test email endpoint
 router.post("/test-email", async (req, res) => {
   try {
-    console.log('Test email endpoint called with body:', req.body);
-    const { email } = req.body;
-
-    if (!email) {
-      return res.status(400).json({ error: "Email address is required" });
-    }
-
-    const success = await sendTestEmail(email);
+    console.log('Test email endpoint called');
+    const success = await sendTestEmail();
     if (success) {
       res.json({ message: "Test email sent successfully" });
     } else {
-      res.status(500).json({ error: "Failed to send test email. Please check Mailgun configuration." });
+      res.status(500).json({ error: "Failed to send test email" });
     }
   } catch (error) {
     console.error("Error in test email endpoint:", error);
-    res.status(500).json({ error: "Internal server error", details: error instanceof Error ? error.message : 'Unknown error' });
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 

@@ -1,118 +1,161 @@
-import mailgun from 'mailgun-js';
+import { Resend } from 'resend';
 
-let mg: mailgun.Mailgun;
+let resend: Resend;
 
-function initializeMailgun() {
+// Initialize Resend with API key
+function initializeResend() {
+  if (!process.env.RESEND_API_KEY) {
+    console.error('RESEND_API_KEY environment variable is not set');
+    throw new Error('RESEND_API_KEY environment variable must be set');
+  }
+  console.log('Initializing Resend client...');
+  resend = new Resend(process.env.RESEND_API_KEY);
+}
+
+export async function sendTestEmail() {
   try {
-    const apiKey = process.env.MAILGUN_API_KEY;
-    const domain = process.env.MAILGUN_DOMAIN;
+    if (!resend) {
+      console.log('Initializing Resend client...');
+      initializeResend();
+    }
 
-    if (!apiKey || !domain) {
-      console.error('Missing Mailgun credentials');
+    console.log('Attempting to send test email with default Resend domain...');
+    const { data, error } = await resend.emails.send({
+      from: 'onboarding@resend.dev',
+      to: 'lewis@sullacrypto.com',
+      subject: 'Test Email from Sulla Platform',
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <body>
+          <h1>Test Email</h1>
+          <p>This is a test email from the Sulla Learning Platform.</p>
+          <p>If you receive this, the email service is working correctly.</p>
+          <p>Time sent: ${new Date().toISOString()}</p>
+        </body>
+        </html>
+      `
+    });
+
+    if (error) {
+      console.error('Failed to send test email:', error);
       return false;
     }
 
-    console.log('Initializing Mailgun with:', {
-      domain,
-      hasApiKey: !!apiKey,
-      endpoint: 'api.eu.mailgun.net'
+    console.log('Test email sent successfully:', {
+      messageId: data?.id,
+      timestamp: new Date().toISOString()
     });
-
-    mg = mailgun({
-      apiKey,
-      domain,
-      host: 'api.eu.mailgun.net'
-    });
-
     return true;
   } catch (error) {
-    console.error('Mailgun initialization error:', error);
-    return false;
-  }
-}
-
-export async function sendTestEmail(toEmail?: string) {
-  try {
-    if (!mg && !initializeMailgun()) {
-      throw new Error('Failed to initialize Mailgun');
-    }
-
-    const recipientEmail = toEmail || 'lewis@sullacrypto.com';
-
-    console.log('Sending test email to:', recipientEmail);
-
-    const data = {
-      from: `Sulla Learning <noreply@${process.env.MAILGUN_DOMAIN}>`,
-      to: recipientEmail,
-      subject: 'Test Email from Sulla Platform',
-      text: 'This is a test email from the Sulla Learning Platform.',
-      html: `
-        <h1>Test Email</h1>
-        <p>This is a test email from the Sulla Learning Platform.</p>
-        <p>Time sent: ${new Date().toISOString()}</p>
-      `
-    };
-
-    const result = await new Promise((resolve, reject) => {
-      mg.messages().send(data, (error: any, body: any) => {
-        if (error) {
-          console.error('Email send error:', {
-            status: error.statusCode,
-            message: error.message,
-            details: error.details
-          });
-          reject(error);
-        } else {
-          resolve(body);
-        }
-      });
-    });
-
-    console.log('Email sent successfully:', result);
-    return true;
-  } catch (error) {
-    console.error('Failed to send email:', error);
+    console.error('Error sending test email:', error);
     return false;
   }
 }
 
 export async function sendWelcomeEmail(email: string, username: string) {
   try {
-    if (!mg && !initializeMailgun()) {
-      throw new Error('Failed to initialize Mailgun');
+    if (!resend) {
+      console.log('Initializing Resend client...');
+      initializeResend();
     }
 
-    const data = {
-      from: `Sulla Learning <noreply@${process.env.MAILGUN_DOMAIN}>`,
+    const fromEmail = 'onboarding@resend.dev'; // Using Resend's verified domain
+    const appUrl = process.env.APP_URL || 'http://localhost:5000';
+
+    console.log('Attempting to send welcome email:', {
+      to: email,
+      from: fromEmail,
+      subject: 'Welcome to Sulla Learning Platform!'
+    });
+
+    const { data, error } = await resend.emails.send({
+      from: fromEmail,
       to: email,
       subject: 'Welcome to Sulla Learning Platform!',
       html: `
-        <h1>Welcome to Sulla, ${username}!</h1>
-        <p>Thank you for joining our learning platform.</p>
-        <p>Start your learning journey today!</p>
-      `
-    };
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Welcome to Sulla!</title>
+        </head>
+        <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f7ff;">
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+            <tr>
+              <td style="padding: 30px 0; text-align: center; background-color: #3b82f6;">
+                <h1 style="color: white; margin: 0; font-size: 36px;">SULLA</h1>
+                <p style="color: white; margin: 10px 0 0; font-size: 18px;">Your Journey to Web3 Mastery</p>
+              </td>
+            </tr>
+          </table>
 
-    const response = await new Promise((resolve, reject) => {
-      mg.messages().send(data, (error: any, body: any) => {
-        if (error) {
-          console.error('Mailgun API error:', {
-            message: error.message,
-            stack: error.stack,
-            details: error.toString(),
-            statusCode: error.statusCode,
-            response: error.response
-          });
-          reject(error);
-        } else {
-          console.log('Mailgun API response:', body);
-          resolve(body);
-        }
-      });
+          <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">
+            <tr>
+              <td style="padding: 30px;">
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="margin: 0 auto; background-color: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                  <tr>
+                    <td style="padding: 40px;">
+                      <h2 style="color: #1e3a8a; margin: 0 0 20px;">Welcome to Sulla, ${username}!</h2>
+                      <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 20px;">
+                        Your journey into blockchain technology begins now. We're excited to have you join our community of learners passionate about mastering Web3 technologies.
+                      </p>
+
+                      <h3 style="color: #2563eb; margin: 30px 0 15px;">What's Next?</h3>
+                      <ul style="color: #374151; font-size: 16px; line-height: 1.6; margin: 0 0 30px; padding-left: 20px;">
+                        <li style="margin-bottom: 10px;">✨ Explore interactive learning modules</li>
+                        <li style="margin-bottom: 10px;">📚 Access expert-curated content</li>
+                        <li style="margin-bottom: 10px;">💡 Work on practical projects</li>
+                        <li style="margin-bottom: 10px;">📊 Track your progress</li>
+                      </ul>
+
+                      <div style="text-align: center; margin: 40px 0;">
+                        <a href="${appUrl}/modules/module1" 
+                           style="display: inline-block; background-color: #3b82f6; color: white; padding: 15px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 16px;">
+                          Start Your First Module
+                        </a>
+                      </div>
+
+                      <p style="color: #374151; font-size: 16px; line-height: 1.6; margin: 30px 0 20px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+                        Need help getting started? Reply to this email or reach out to our support team. We're here to help!
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+
+                <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="margin: 20px auto 0;">
+                  <tr>
+                    <td style="padding: 20px; text-align: center; color: #6b7280; font-size: 14px;">
+                      <p style="margin: 0 0 10px;">© 2025 Sulla Learning Platform. All rights reserved.</p>
+                      <p style="margin: 0;">
+                        Our address: 123 Blockchain Street, Crypto City, CC 12345
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </body>
+        </html>
+      `
     });
 
-    console.log('Welcome email sent successfully:', { response, to: email });
+    if (error) {
+      console.error('Failed to send welcome email:', {
+        error: error.message,
+        code: error.statusCode,
+      });
+      return false;
+    }
+
+    console.log('Welcome email sent successfully:', {
+      messageId: data?.id,
+      to: email
+    });
     return true;
+
   } catch (error) {
     if (error instanceof Error) {
       console.error('Failed to send welcome email:', {
