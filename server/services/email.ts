@@ -24,27 +24,18 @@ export async function sendWelcomeEmail(email: string, username: string) {
       initializeResend();
     }
 
-    if (!process.env.APP_URL) {
-      console.error('APP_URL environment variable is not set');
-      return false;
-    }
-
-    // In development/testing, only send to verified email
-    const allowedTestEmail = 'lewis@sullacrypto.com';
-    const recipientEmail = process.env.NODE_ENV === 'production' ? email : allowedTestEmail;
-
-    // Use Resend's default verified domain for testing
-    const fromEmail = 'onboarding@resend.dev';
+    const fromEmail = process.env.EMAIL_FROM || 'onboarding@resend.dev';
+    const appUrl = process.env.APP_URL || 'http://localhost:5000';
 
     console.log('Attempting to send welcome email:', {
-      to: recipientEmail,
+      to: email,
       from: fromEmail,
       subject: 'Welcome to Sulla Learning Platform!'
     });
 
-    const emailParams = {
+    const { data, error } = await resend.emails.send({
       from: fromEmail,
-      to: recipientEmail,
+      to: email,
       subject: 'Welcome to Sulla Learning Platform!',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -60,7 +51,7 @@ export async function sendWelcomeEmail(email: string, username: string) {
           </ul>
           <p style="font-size: 16px;">Ready to start your journey? Click the button below:</p>
           <div style="text-align: center; margin: 30px 0;">
-            <a href="${process.env.APP_URL}/modules/module1" 
+            <a href="${appUrl}/modules/module1" 
                style="background-color: #3b82f6; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">
               Start Learning
             </a>
@@ -70,23 +61,22 @@ export async function sendWelcomeEmail(email: string, username: string) {
           </p>
         </div>
       `
-    };
+    });
 
-    console.log('Sending email with Resend...');
-    const response = await resend.emails.send(emailParams);
-    console.log('Resend API response:', JSON.stringify(response, null, 2));
-
-    // Check for specific error responses from Resend
-    if (response.error) {
-      console.error('Resend API error:', {
-        statusCode: response.error.statusCode,
-        message: response.error.message,
-        name: response.error.name
+    if (error) {
+      console.error('Failed to send welcome email:', {
+        error: error.message,
+        code: error.statusCode,
       });
       return false;
     }
 
+    console.log('Welcome email sent successfully:', {
+      messageId: data?.id,
+      to: email
+    });
     return true;
+
   } catch (error) {
     if (error instanceof Error) {
       console.error('Failed to send welcome email:', {

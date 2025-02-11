@@ -18,6 +18,15 @@ export default function AuthPage() {
   const { loginMutation, registerMutation, user } = useAuth();
   const { toast } = useToast();
 
+  // Immediately show a visible notification when the component mounts
+  useState(() => {
+    console.log("AuthPage mounted, showing initial toast");
+    toast({
+      title: isRegisterPage ? "Registration Page" : "Login Page",
+      description: "Welcome to Sulla Learning Platform!",
+    });
+  }, []);
+
   const form = useForm<InsertUser>({
     resolver: zodResolver(insertUserSchema),
     defaultValues: {
@@ -27,7 +36,6 @@ export default function AuthPage() {
     },
   });
 
-  // Redirect if already logged in
   if (user) {
     setTimeout(() => setLocation("/account"), 0);
     return null;
@@ -35,6 +43,12 @@ export default function AuthPage() {
 
   const onSubmit = async (data: InsertUser) => {
     try {
+      console.log("Form submitted, attempting to show toast");
+      toast({
+        title: "Processing",
+        description: isRegisterPage ? "Creating your account..." : "Logging you in...",
+      });
+
       if (isRegisterPage) {
         const response = await registerMutation.mutateAsync({
           username: data.username,
@@ -42,18 +56,21 @@ export default function AuthPage() {
           password: data.password,
         });
 
-        // Show registration status toast immediately after response
+        console.log("Registration completed, showing success toast");
         toast({
           title: "Registration Status",
           description: response.emailStatus?.note || "Welcome to Sulla! Email notifications are enabled.",
           variant: response.emailStatus?.sent ? "default" : "destructive",
+          duration: 5000,
         });
       } else {
         const { username, password } = data;
         await loginMutation.mutateAsync({ username, password });
+        console.log("Login completed, showing success toast");
         toast({
           title: "Login Successful",
           description: "Welcome back to Sulla!",
+          duration: 5000,
         });
       }
       setLocation("/account");
@@ -63,6 +80,7 @@ export default function AuthPage() {
         title: "Error",
         description: error instanceof Error ? error.message : "An error occurred",
         variant: "destructive",
+        duration: 5000,
       });
     }
   };

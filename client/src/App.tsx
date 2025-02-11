@@ -142,7 +142,7 @@ function App() {
         <ProgressProvider>
           <Navigation />
           <Router />
-          <Toaster />
+          <Toaster className="fixed inset-0 z-50 pointer-events-none flex flex-col items-end gap-2 px-4 py-6" />
         </ProgressProvider>
       </AuthProvider>
     </QueryClientProvider>
