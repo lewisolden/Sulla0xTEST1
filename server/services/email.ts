@@ -1,6 +1,7 @@
 import { Resend } from 'resend';
 
 let resend: Resend;
+const SENDER_EMAIL = 'noreply@updates.sullacrypto.com';
 
 // Initialize Resend with API key
 function initializeResend() {
@@ -19,17 +20,16 @@ export async function sendTestEmail(toEmail?: string) {
       initializeResend();
     }
 
-    // In test mode, we can only send to verified email
     const recipientEmail = toEmail || 'lewis@sullacrypto.com';
 
     console.log('Attempting to send test email:', {
       to: recipientEmail,
-      from: 'onboarding@resend.dev',
+      from: SENDER_EMAIL,
       timestamp: new Date().toISOString()
     });
 
     const { data, error } = await resend.emails.send({
-      from: 'onboarding@resend.dev',
+      from: SENDER_EMAIL,
       to: recipientEmail,
       subject: 'Test Email from Sulla Platform',
       html: `
@@ -82,22 +82,20 @@ export async function sendWelcomeEmail(email: string, username: string) {
       initializeResend();
     }
 
-    // In test mode, we can only send to verified email
     const recipientEmail = process.env.NODE_ENV === 'production' 
       ? email 
       : 'lewis@sullacrypto.com';
 
-    const fromEmail = 'onboarding@resend.dev'; // Using Resend's verified domain
     const appUrl = process.env.APP_URL || 'http://localhost:5000';
 
     console.log('Attempting to send welcome email:', {
       to: recipientEmail,
-      from: fromEmail,
+      from: SENDER_EMAIL,
       subject: 'Welcome to Sulla Learning Platform!'
     });
 
     const { data, error } = await resend.emails.send({
-      from: fromEmail,
+      from: SENDER_EMAIL,
       to: recipientEmail,
       subject: 'Welcome to Sulla Learning Platform!',
       html: `
