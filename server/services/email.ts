@@ -19,12 +19,14 @@ export async function sendTestEmail() {
       initializeResend();
     }
 
+    // In test mode, we can only send to verified emails
+    const testRecipient = 'lewis@sullacrypto.com'; // This is the only allowed recipient in test mode
     const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
 
     console.log('Attempting to send test email with default Resend domain...');
     const { data, error } = await resend.emails.send({
       from: fromEmail,
-      to: 'lewis@lpolden.com', // Updated test email recipient
+      to: testRecipient,
       subject: 'Test Email from Sulla Platform',
       html: `
         <!DOCTYPE html>
@@ -32,7 +34,7 @@ export async function sendTestEmail() {
         <body>
           <h1>Test Email</h1>
           <p>This is a test email from the Sulla Learning Platform.</p>
-          <p>If you receive this, the email service is working correctly.</p>
+          <p>Note: To send emails to other recipients, please verify a domain at resend.com/domains</p>
           <p>Time sent: ${new Date().toISOString()}</p>
         </body>
         </html>
