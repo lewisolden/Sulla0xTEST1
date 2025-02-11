@@ -18,8 +18,9 @@ import AccountPage from "@/pages/account";
 import AdminDashboard from "@/pages/admin/dashboard";
 import AdminUsers from "@/pages/admin/users";
 import AdminLogin from "@/pages/admin/login";
-import AdminAnalytics from "@/pages/admin/analytics"; //New import
-
+import AdminAnalytics from "@/pages/admin/analytics";
+import Navigation from "@/components/layout/navigation";
+import Footer from "@/components/layout/footer";
 
 // Module 1 Routes
 import Module1Landing from "@/pages/modules/module1";
@@ -52,12 +53,16 @@ import Module3Exercises from "@/pages/modules/module3/exercises";
 // Module 4 Routes
 import Module4Landing from "@/pages/modules/module4";
 import DigitalVsTraditionalSection from "@/pages/modules/module4/digital-vs-traditional";
-import Navigation from "@/components/layout/navigation";
 import TradingSimulator from "@/pages/trading-simulator";
 import GlossaryPage from "@/pages/glossary";
 
-function ProtectedRoute({ component: Component, adminOnly = false, ...rest }: any) {
+
+function ProtectedRoute({ component: Component, adminOnly = false, publicAccess = false, ...rest }: any) {
   const { user, isLoading } = useAuth();
+
+  if (publicAccess) {
+    return <Component {...rest} />;
+  }
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -79,26 +84,31 @@ function ProtectedRoute({ component: Component, adminOnly = false, ...rest }: an
 function Router() {
   return (
     <Switch>
+      {/* Public routes */}
+      <Route path="/" component={() => <ProtectedRoute component={Home} publicAccess={true} />} />
+      <Route path="/curriculum" component={() => <ProtectedRoute component={Curriculum} publicAccess={true} />} />
+      <Route path="/about" component={() => <ProtectedRoute component={About} publicAccess={true} />} />
+      <Route path="/ai" component={() => <ProtectedRoute component={AIOverview} publicAccess={true} />} />
+
+      {/* Authentication routes */}
+      <Route path="/login" component={AuthPage} />
+      <Route path="/register" component={AuthPage} />
+
       {/* Admin routes */}
       <Route path="/admin/login" component={AdminLogin} />
       <ProtectedRoute path="/admin" component={AdminDashboard} adminOnly />
       <ProtectedRoute path="/admin/users" component={AdminUsers} adminOnly />
-      <ProtectedRoute path="/admin/analytics" component={AdminAnalytics} adminOnly /> {/* New Route */}
+      <ProtectedRoute path="/admin/analytics" component={AdminAnalytics} adminOnly />
 
-      {/* Regular routes */}
-      <Route path="/login" component={AuthPage} />
-      <Route path="/register" component={AuthPage} />
-      <ProtectedRoute path="/" component={Home} />
+      {/* Protected routes */}
       <ProtectedRoute path="/account" component={AccountPage} />
-      <ProtectedRoute path="/curriculum" component={Curriculum} />
-      <ProtectedRoute path="/about" component={About} />
       <ProtectedRoute path="/games" component={Games} />
       <ProtectedRoute path="/achievements" component={Achievements} />
-      <ProtectedRoute path="/ai" component={AIOverview} />
       <ProtectedRoute path="/deck" component={Deck} />
       <ProtectedRoute path="/wallet-simulator" component={WalletSimulator} />
       <ProtectedRoute path="/trading-simulator" component={TradingSimulator} />
       <ProtectedRoute path="/glossary" component={GlossaryPage} />
+
       {/* Module 1 Routes */}
       <ProtectedRoute path="/modules/module1" component={Module1Landing} />
       <ProtectedRoute path="/modules/module1/quiz" component={Module1Quiz} />
@@ -140,9 +150,14 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <ProgressProvider>
-          <Navigation />
-          <Router />
-          <Toaster className="fixed inset-0 z-50 pointer-events-none flex flex-col items-end gap-2 px-4 py-6" />
+          <div className="min-h-screen flex flex-col">
+            <Navigation />
+            <main className="flex-grow">
+              <Router />
+            </main>
+            <Footer />
+          </div>
+          <Toaster />
         </ProgressProvider>
       </AuthProvider>
     </QueryClientProvider>
