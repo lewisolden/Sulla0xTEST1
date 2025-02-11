@@ -23,7 +23,12 @@ export async function sendTestEmail() {
     const testRecipient = 'lewis@sullacrypto.com'; // This is the only allowed recipient in test mode
     const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
 
-    console.log('Attempting to send test email with default Resend domain...');
+    console.log('Attempting to send test email with default Resend domain...', {
+      from: fromEmail,
+      to: testRecipient,
+      timestamp: new Date().toISOString()
+    });
+
     const { data, error } = await resend.emails.send({
       from: fromEmail,
       to: testRecipient,
@@ -76,6 +81,7 @@ export async function sendWelcomeEmail(email: string, username: string) {
     const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
     const appUrl = process.env.APP_URL || 'http://localhost:5000';
 
+    // Log attempt to help with debugging
     console.log('Attempting to send welcome email:', {
       to: email,
       from: fromEmail,
