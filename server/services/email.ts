@@ -19,7 +19,8 @@ export async function sendTestEmail() {
       initializeResend();
     }
 
-    const fromEmail = 'noreply@mail.sullacrypto.com';
+    // Use the exact email format for testing
+    const fromEmail = 'test@mail.sullacrypto.com';
 
     console.log('Attempting to send test email...', {
       from: fromEmail,
@@ -28,33 +29,33 @@ export async function sendTestEmail() {
 
     const { data, error } = await resend.emails.send({
       from: fromEmail,
-      to: 'lewis@sullacrypto.com',  // Using the verified email for testing
+      to: 'lewis@sullacrypto.com',
       subject: 'Test Email from Sulla Platform',
-      html: `
-        <!DOCTYPE html>
-        <html>
-        <body>
-          <h1>Test Email</h1>
-          <p>This is a test email from the Sulla Learning Platform.</p>
-          <p>Time sent: ${new Date().toISOString()}</p>
-        </body>
-        </html>
-      `
+      html: '<h1>Test Email</h1><p>This is a test email from Sulla Platform.</p>'
     });
 
     if (error) {
       console.error('Failed to send test email:', error);
-      return false;
+      return {
+        success: false,
+        error: error
+      };
     }
 
     console.log('Test email sent successfully:', {
       messageId: data?.id,
       timestamp: new Date().toISOString()
     });
-    return true;
+    return {
+      success: true,
+      messageId: data?.id
+    };
   } catch (error) {
     console.error('Error sending test email:', error);
-    return false;
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error occurred'
+    };
   }
 }
 
@@ -65,7 +66,7 @@ export async function sendWelcomeEmail(email: string, username: string) {
       initializeResend();
     }
 
-    const fromEmail = 'noreply@mail.sullacrypto.com';
+    const fromEmail = 'test@mail.sullacrypto.com';
     const appUrl = process.env.APP_URL || 'http://localhost:5000';
 
     console.log('Attempting to send welcome email:', {
