@@ -129,6 +129,7 @@ export default function Curriculum() {
         title: "Successfully enrolled!",
         description: "You can now access all course materials.",
       });
+      window.location.reload();
     },
     onError: (error: Error) => {
       toast({

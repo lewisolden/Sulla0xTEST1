@@ -6,8 +6,10 @@ import { useProgress } from "@/context/progress-context";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Dumbbell, BookOpen, Shield, Brain, Wallet } from "lucide-react";
+import { Dumbbell, BookOpen, Shield, Brain, Wallet, CheckCircle, Loader2 } from "lucide-react";
 import { useEffect } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
 
 const moduleTopics = [
   {
@@ -54,19 +56,60 @@ const moduleTopics = [
 
 export default function Module1() {
   const { progress } = useProgress();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  // Fetch enrollment status
+  const { data: enrollments = [], isLoading: isLoadingEnrollments } = useQuery({
+    queryKey: ['enrollments'],
+    queryFn: async () => {
+      const response = await fetch('/api/enrollments');
+      if (!response.ok) throw new Error('Failed to fetch enrollments');
+      return response.json();
+    }
+  });
+
+  const isEnrolled = enrollments.some((enrollment: any) => enrollment.courseId === 1);
+
+  // Enrollment mutation
+  const enrollMutation = useMutation({
+    mutationFn: async () => {
+      const response = await fetch('/api/enrollments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ courseId: 1 })
+      });
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.message || 'Failed to enroll');
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "Successfully enrolled!",
+        description: "You can now access all course materials.",
+      });
+      window.location.reload();
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Failed to enroll",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  });
+
   const moduleProgress = progress.filter(p => p.moduleId === 1);
   const completedSections = moduleProgress.filter(p => p.completed).length;
   const progressPercentage = (completedSections / moduleTopics.length) * 100;
 
-  // Add useEffect for auto-scrolling
   useEffect(() => {
-    // Immediate scroll
     window.scrollTo(0, 0);
-    // Double-check scroll position after mount
-    requestAnimationFrame(() => {
-      window.scrollTo(0, 0);
-    });
-  }, []); // Empty dependency array means this runs once on mount
+  }, []);
 
   const topicsWithProgress = moduleTopics.map(topic => ({
     ...topic,
@@ -79,6 +122,47 @@ export default function Module1() {
         <h1 className="text-4xl font-bold text-blue-900 mb-6">
           Module 1: Understanding Cryptocurrency
         </h1>
+
+        {/* Enrollment Status Section */}
+        <Card className="mb-8">
+          <CardContent className="py-6">
+            <div className="flex flex-col items-center gap-4">
+              {isLoadingEnrollments ? (
+                <Loader2 className="h-6 w-6 animate-spin" />
+              ) : isEnrolled ? (
+                <div className="flex flex-col items-center gap-2">
+                  <div className="flex items-center gap-2 text-green-600">
+                    <CheckCircle className="h-5 w-5" />
+                    <span className="font-medium">You're enrolled in this course</span>
+                  </div>
+                  <Link href="/modules/module1/digital-currencies">
+                    <Button className="bg-blue-600 hover:bg-blue-700">
+                      Continue Learning
+                    </Button>
+                  </Link>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center gap-2">
+                  <p className="text-gray-600">Enroll now to start your learning journey</p>
+                  <Button
+                    onClick={() => enrollMutation.mutate()}
+                    disabled={enrollMutation.isPending}
+                    className="bg-green-600 hover:bg-green-700"
+                  >
+                    {enrollMutation.isPending ? (
+                      <div className="flex items-center gap-2">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        <span>Enrolling...</span>
+                      </div>
+                    ) : (
+                      "Enroll Now"
+                    )}
+                  </Button>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
 
         <div className="mb-8">
           <Progress value={progressPercentage} className="w-full" />
@@ -99,9 +183,9 @@ export default function Module1() {
                 <div className="prose max-w-none">
                   <h2 className="text-2xl font-semibold mb-4">Welcome to Module 1</h2>
                   <p className="text-gray-700 mb-6">
-                    In today's rapidly evolving financial landscape, cryptocurrency represents a revolutionary 
-                    approach to money and value transfer. This module will introduce you to the fundamental 
-                    concepts of cryptocurrency, helping you understand what makes digital currencies unique 
+                    In today's rapidly evolving financial landscape, cryptocurrency represents a revolutionary
+                    approach to money and value transfer. This module will introduce you to the fundamental
+                    concepts of cryptocurrency, helping you understand what makes digital currencies unique
                     and how they differ from traditional money systems.
                   </p>
 
@@ -116,7 +200,7 @@ export default function Module1() {
 
                   <div className="mt-8 flex justify-center">
                     <Link href="/modules/module1/digital-currencies">
-                      <Button 
+                      <Button
                         size="lg"
                         className="bg-blue-600 hover:bg-blue-700"
                       >
@@ -228,13 +312,13 @@ export default function Module1() {
                   </p>
                   <div className="mt-8 flex justify-center">
                     <Link href="/modules/module1/quiz">
-                      <Button 
+                      <Button
                         size="lg"
                         className="bg-green-600 hover:bg-green-700"
                         disabled={progressPercentage < 100}
                       >
-                        {progressPercentage < 100 
-                          ? "Complete all topics to unlock quiz" 
+                        {progressPercentage < 100
+                          ? "Complete all topics to unlock quiz"
                           : "Take Module Quiz"
                         }
                       </Button>
