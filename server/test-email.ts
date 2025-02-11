@@ -3,8 +3,10 @@ import { sendTestEmail } from './services/email';
 async function runTest() {
   console.log('Starting email test with enhanced logging...');
   try {
+    // Get the test recipient from command line argument if provided
+    const testRecipient = process.argv[2];
     console.log('Attempting to send test email...');
-    const result = await sendTestEmail();
+    const result = await sendTestEmail(testRecipient);
 
     if (result.success) {
       console.log('API Response successful:', {
