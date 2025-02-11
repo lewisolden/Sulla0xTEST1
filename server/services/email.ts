@@ -29,17 +29,22 @@ export async function sendWelcomeEmail(email: string, username: string) {
       return false;
     }
 
-    // Use Resend's default verified domain
+    // In development/testing, only send to verified email
+    const allowedTestEmail = 'lewis@sullacrypto.com';
+    const recipientEmail = process.env.NODE_ENV === 'production' ? email : allowedTestEmail;
+
+    // Use Resend's default verified domain for testing
     const fromEmail = 'onboarding@resend.dev';
+
     console.log('Attempting to send welcome email:', {
-      to: email,
+      to: recipientEmail,
       from: fromEmail,
       subject: 'Welcome to Sulla Learning Platform!'
     });
 
     const emailParams = {
       from: fromEmail,
-      to: email,
+      to: recipientEmail,
       subject: 'Welcome to Sulla Learning Platform!',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">

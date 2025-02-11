@@ -222,9 +222,6 @@ export function setupAuth(app: Express) {
 
       // Send welcome email and handle the result
       const emailSent = await sendWelcomeEmail(email, username);
-      if (!emailSent) {
-        console.warn(`Failed to send welcome email to ${email}`);
-      }
 
       req.login({ ...newUser, role: 'user' }, (err) => {
         if (err) {
@@ -233,7 +230,12 @@ export function setupAuth(app: Express) {
         return res.status(201).json({
           message: "Registration successful",
           user: { id: newUser.id, username: newUser.username, role: 'user' },
-          emailStatus: emailSent ? 'sent' : 'failed'
+          emailStatus: {
+            sent: emailSent,
+            note: process.env.NODE_ENV !== 'production' 
+              ? "In testing mode, welcome emails are only sent to verified email addresses." 
+              : undefined
+          }
         });
       });
     } catch (error) {
