@@ -69,6 +69,17 @@ export async function sendWelcomeEmail(email: string, username: string) {
     console.log('Sending email with Resend...');
     const response = await resend.emails.send(emailParams);
     console.log('Resend API response:', JSON.stringify(response, null, 2));
+
+    // Check for specific error responses from Resend
+    if (response.error) {
+      console.error('Resend API error:', {
+        statusCode: response.error.statusCode,
+        message: response.error.message,
+        name: response.error.name
+      });
+      return false;
+    }
+
     return true;
   } catch (error) {
     if (error instanceof Error) {
