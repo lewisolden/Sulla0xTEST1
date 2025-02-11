@@ -20,11 +20,24 @@ interface EmailParams {
 export async function sendWelcomeEmail(email: string, username: string) {
   try {
     if (!resend) {
+      console.log('Initializing Resend client...');
       initializeResend();
     }
 
-    const response = await resend.emails.send({
-      from: process.env.EMAIL_FROM || 'onboarding@sulla.edu',
+    if (!process.env.APP_URL) {
+      console.error('APP_URL environment variable is not set');
+      return false;
+    }
+
+    const fromEmail = process.env.EMAIL_FROM || 'onboarding@sulla.edu';
+    console.log('Attempting to send welcome email:', {
+      to: email,
+      from: fromEmail,
+      subject: 'Welcome to Sulla Learning Platform!'
+    });
+
+    const emailParams = {
+      from: fromEmail,
       to: email,
       subject: 'Welcome to Sulla Learning Platform!',
       html: `
@@ -51,11 +64,22 @@ export async function sendWelcomeEmail(email: string, username: string) {
           </p>
         </div>
       `
-    });
+    };
 
+    console.log('Sending email with Resend...');
+    const response = await resend.emails.send(emailParams);
+    console.log('Resend API response:', JSON.stringify(response, null, 2));
     return true;
   } catch (error) {
-    console.error('Failed to send welcome email:', error);
+    if (error instanceof Error) {
+      console.error('Failed to send welcome email:', {
+        error: error.message,
+        stack: error.stack,
+        name: error.name
+      });
+    } else {
+      console.error('Failed to send welcome email with unknown error:', error);
+    }
     return false;
   }
 }
