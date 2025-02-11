@@ -8,7 +8,7 @@ function initializeResend() {
     console.error('RESEND_API_KEY environment variable is not set');
     throw new Error('RESEND_API_KEY environment variable must be set');
   }
-  console.log('Initializing Resend client...');
+  console.log('Initializing Resend client with API key length:', process.env.RESEND_API_KEY.length);
   resend = new Resend(process.env.RESEND_API_KEY);
 }
 
@@ -20,11 +20,13 @@ export async function sendTestEmail(toEmail?: string) {
     }
 
     // In test mode, we can only send to verified email
-    const recipientEmail = process.env.NODE_ENV === 'production' 
-      ? (toEmail || 'lewis@sullacrypto.com')
-      : 'lewis@sullacrypto.com';
+    const recipientEmail = toEmail || 'lewis@sullacrypto.com';
 
-    console.log('Attempting to send test email to:', recipientEmail);
+    console.log('Attempting to send test email:', {
+      to: recipientEmail,
+      from: 'onboarding@resend.dev',
+      timestamp: new Date().toISOString()
+    });
 
     const { data, error } = await resend.emails.send({
       from: 'onboarding@resend.dev',
@@ -45,19 +47,30 @@ export async function sendTestEmail(toEmail?: string) {
 
     if (error) {
       console.error('Failed to send test email:', {
-        message: error.message,
-        type: typeof error
+        error: JSON.stringify(error),
+        errorType: typeof error,
+        errorMessage: error.message,
+        errorName: error.name
       });
       return false;
     }
 
     console.log('Test email sent successfully:', {
       messageId: data?.id,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      recipient: recipientEmail
     });
     return true;
   } catch (error) {
-    console.error('Error sending test email:', error);
+    if (error instanceof Error) {
+      console.error('Error sending test email:', {
+        name: error.name,
+        message: error.message,
+        stack: error.stack
+      });
+    } else {
+      console.error('Unknown error sending test email:', error);
+    }
     return false;
   }
 }
