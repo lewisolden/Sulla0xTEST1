@@ -6,10 +6,12 @@ import { eq, count, sql } from "drizzle-orm";
 import { setupAuth, requireAdmin } from "./auth";
 import enrollmentsRouter from "./routes/enrollments";
 import userMetricsRouter from "./routes/user-metrics";
+import apiRouter from "./routes/api";
 import path from 'path';
 import { fileURLToPath } from 'url';
 import type { Browser } from 'puppeteer';
 import puppeteer from 'puppeteer';
+import { sendTestEmail } from './services/email';
 
 // ES Module path handling
 const __filename = fileURLToPath(import.meta.url);
@@ -28,190 +30,17 @@ async function getBrowser() {
 }
 
 export function registerRoutes(app: Express): Server {
-  // Set up authentication routes first
+  // Mount API router first
+  app.use("/api", apiRouter);
+
+  // Set up authentication routes
   setupAuth(app);
 
-  // Register enrollments routes
+  // Register other routes
   app.use(enrollmentsRouter);
-
-  // Register user metrics routes
   app.use(userMetricsRouter);
 
-  // Get quizzes for a specific module
-  app.get("/api/modules/:moduleId/quizzes", async (req, res) => {
-    try {
-      const moduleId = parseInt(req.params.moduleId);
-      const moduleQuizzes = await db.query.quizzes.findMany({
-        where: eq(quizzes.moduleId, moduleId),
-        orderBy: (quizzes) => quizzes.order,
-      });
-      res.json(moduleQuizzes);
-    } catch (error) {
-      res.status(500).json({ message: "Failed to fetch quizzes" });
-    }
-  });
-
-  // Submit a quiz answer
-  app.post("/api/modules/:moduleId/quizzes/:quizId/answer", async (req, res) => {
-    try {
-      const quizId = parseInt(req.params.quizId);
-      const { answer } = req.body;
-
-      const quiz = await db.query.quizzes.findFirst({
-        where: eq(quizzes.id, quizId),
-      });
-
-      if (!quiz) {
-        return res.status(404).json({ message: "Quiz not found" });
-      }
-
-      const isCorrect = answer === quiz.correctAnswer;
-
-      // Store response if user is authenticated
-      if (req.user) {
-        await db.insert(userQuizResponses).values({
-          userId: req.user.id,
-          quizId,
-          selectedAnswer: answer,
-          isCorrect,
-        });
-      }
-
-      res.json({
-        isCorrect,
-        explanation: quiz.explanation,
-      });
-    } catch (error) {
-      res.status(500).json({ message: "Failed to process answer" });
-    }
-  });
-
-  // Admin routes
-  // Get user analytics
-  app.get("/api/admin/analytics/users", requireAdmin, async (req, res) => {
-    try {
-      const [userCount] = await db
-        .select({ count: count() })
-        .from(users);
-
-      const [activeUsers] = await db
-        .select({ count: count() })
-        .from(users)
-        .where(sql`${users.lastActivity} > NOW() - INTERVAL '7 days'`);
-
-      const [enrollmentCount] = await db
-        .select({ count: count() })
-        .from(courseEnrollments);
-
-      const [completedModules] = await db
-        .select({ count: count() })
-        .from(moduleProgress)
-        .where(eq(moduleProgress.completed, true));
-
-      const [achievementsAwarded] = await db
-        .select({ count: count() })
-        .from(userAchievements);
-
-      res.json({
-        totalUsers: userCount.count,
-        activeUsers: activeUsers.count,
-        totalEnrollments: enrollmentCount.count,
-        completedModules: completedModules.count,
-        achievementsAwarded: achievementsAwarded.count,
-      });
-    } catch (error) {
-      res.status(500).json({ message: "Failed to fetch analytics" });
-    }
-  });
-
-  // Get user list with pagination
-  app.get("/api/admin/users", requireAdmin, async (req, res) => {
-    try {
-      const page = parseInt(req.query.page as string) || 1;
-      const limit = parseInt(req.query.limit as string) || 10;
-      const offset = (page - 1) * limit;
-
-      const usersList = await db
-        .select({
-          id: users.id,
-          username: users.username,
-          email: users.email,
-          lastActivity: users.lastActivity,
-          enrollmentCount: sql<number>`(
-            SELECT COUNT(*) 
-            FROM ${courseEnrollments} 
-            WHERE ${courseEnrollments.userId} = ${users.id}
-          )`,
-          completedModules: sql<number>`(
-            SELECT COUNT(*) 
-            FROM ${moduleProgress} 
-            WHERE ${moduleProgress.userId} = ${users.id} 
-            AND ${moduleProgress.completed} = true
-          )`,
-        })
-        .from(users)
-        .limit(limit)
-        .offset(offset);
-
-      const [totalCount] = await db
-        .select({ count: count() })
-        .from(users);
-
-      res.json({
-        users: usersList,
-        pagination: {
-          total: totalCount.count,
-          page,
-          pageSize: limit,
-          totalPages: Math.ceil(totalCount.count / limit),
-        },
-      });
-    } catch (error) {
-      res.status(500).json({ message: "Failed to fetch users" });
-    }
-  });
-
-  // Get specific user details
-  app.get("/api/admin/users/:userId", requireAdmin, async (req, res) => {
-    try {
-      const userId = parseInt(req.params.userId);
-
-      const [user] = await db
-        .select()
-        .from(users)
-        .where(eq(users.id, userId))
-        .limit(1);
-
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
-      }
-
-      const enrollments = await db
-        .select()
-        .from(courseEnrollments)
-        .where(eq(courseEnrollments.userId, userId));
-
-      const progress = await db
-        .select()
-        .from(moduleProgress)
-        .where(eq(moduleProgress.userId, userId));
-
-      const achievements = await db
-        .select()
-        .from(userAchievements)
-        .where(eq(userAchievements.userId, userId));
-
-      res.json({
-        user,
-        enrollments,
-        progress,
-        achievements,
-      });
-    } catch (error) {
-      res.status(500).json({ message: "Failed to fetch user details" });
-    }
-  });
-
+  // Create and return the HTTP server
   const httpServer = createServer(app);
   return httpServer;
 }

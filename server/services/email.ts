@@ -5,16 +5,52 @@ let resend: Resend;
 // Initialize Resend with API key
 function initializeResend() {
   if (!process.env.RESEND_API_KEY) {
+    console.error('RESEND_API_KEY environment variable is not set');
     throw new Error('RESEND_API_KEY environment variable must be set');
   }
+  console.log('Initializing Resend client...');
   resend = new Resend(process.env.RESEND_API_KEY);
 }
 
-interface EmailParams {
-  to: string;
-  subject: string;
-  text?: string;
-  html?: string;
+export async function sendTestEmail() {
+  try {
+    if (!resend) {
+      console.log('Initializing Resend client...');
+      initializeResend();
+    }
+
+    console.log('Attempting to send test email with default Resend domain...');
+    const { data, error } = await resend.emails.send({
+      from: 'onboarding@resend.dev',
+      to: 'lewis@sullacrypto.com',
+      subject: 'Test Email from Sulla Platform',
+      html: `
+        <!DOCTYPE html>
+        <html>
+        <body>
+          <h1>Test Email</h1>
+          <p>This is a test email from the Sulla Learning Platform.</p>
+          <p>If you receive this, the email service is working correctly.</p>
+          <p>Time sent: ${new Date().toISOString()}</p>
+        </body>
+        </html>
+      `
+    });
+
+    if (error) {
+      console.error('Failed to send test email:', error);
+      return false;
+    }
+
+    console.log('Test email sent successfully:', {
+      messageId: data?.id,
+      timestamp: new Date().toISOString()
+    });
+    return true;
+  } catch (error) {
+    console.error('Error sending test email:', error);
+    return false;
+  }
 }
 
 export async function sendWelcomeEmail(email: string, username: string) {
@@ -24,7 +60,7 @@ export async function sendWelcomeEmail(email: string, username: string) {
       initializeResend();
     }
 
-    const fromEmail = process.env.EMAIL_FROM || 'onboarding@resend.dev';
+    const fromEmail = 'onboarding@resend.dev'; // Using Resend's verified domain
     const appUrl = process.env.APP_URL || 'http://localhost:5000';
 
     console.log('Attempting to send welcome email:', {
