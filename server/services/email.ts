@@ -60,7 +60,7 @@ export async function sendWelcomeEmail(email: string, username: string) {
       initializeResend();
     }
 
-    const fromEmail = 'onboarding@resend.dev'; // Using Resend's verified domain
+    const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
     const appUrl = process.env.APP_URL || 'http://localhost:5000';
 
     console.log('Attempting to send welcome email:', {
@@ -147,14 +147,20 @@ export async function sendWelcomeEmail(email: string, username: string) {
         error: error.message,
         code: error.statusCode,
       });
-      return false;
+      return {
+        sent: false,
+        note: "Failed to send welcome email. You can still access your account."
+      };
     }
 
     console.log('Welcome email sent successfully:', {
       messageId: data?.id,
       to: email
     });
-    return true;
+    return {
+      sent: true,
+      note: "Welcome email sent successfully! Check your inbox for getting started instructions."
+    };
 
   } catch (error) {
     if (error instanceof Error) {
@@ -166,6 +172,9 @@ export async function sendWelcomeEmail(email: string, username: string) {
     } else {
       console.error('Failed to send welcome email with unknown error:', error);
     }
-    return false;
+    return {
+      sent: false,
+      note: "Could not send welcome email, but your account is ready to use."
+    };
   }
 }
