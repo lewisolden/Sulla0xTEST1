@@ -50,11 +50,6 @@ export async function sendTestEmail() {
       };
     }
 
-    console.log('Test email sent successfully:', {
-      messageId: data?.id,
-      timestamp: new Date().toISOString()
-    });
-
     return {
       sent: true,
     };
@@ -74,7 +69,6 @@ export async function sendWelcomeEmail(email: string, username: string) {
       initializeResend();
     }
 
-    // In test mode, we can only send to verified emails
     const fromEmail = process.env.RESEND_FROM_EMAIL || 'learning@sulla.com';
     const appUrl = process.env.APP_URL || 'http://localhost:5000';
 
@@ -83,15 +77,20 @@ export async function sendWelcomeEmail(email: string, username: string) {
       to: email,
       from: fromEmail,
       subject: 'Welcome to Sulla Learning Platform!',
-      testMode: !process.env.RESEND_DOMAIN
+      testMode: !process.env.RESEND_DOMAIN,
+      isVerifiedEmail: email === 'lewis@sullacrypto.com'
     });
 
     // In test mode, return gracefully if email is not verified
     if (!process.env.RESEND_DOMAIN && email !== 'lewis@sullacrypto.com') {
-      console.log('Skipping welcome email in test mode for unverified email:', email);
+      console.log('Skipping welcome email - email not verified:', {
+        email,
+        testMode: true,
+        reason: 'Email address not in verified recipients list'
+      });
       return {
         sent: false,
-        note: "Welcome! Email notifications will be enabled once domain verification is complete."
+        note: "Your account is ready! Note: Welcome emails are currently limited to verified addresses only. Full email functionality will be enabled soon."
       };
     }
 
@@ -172,7 +171,7 @@ export async function sendWelcomeEmail(email: string, username: string) {
       console.error('Failed to send welcome email:', error);
       return {
         sent: false,
-        note: "Your account is ready! Email notifications will be enabled soon."
+        note: "Your account is ready! Note: Email sending is temporarily unavailable. Please start exploring the platform!"
       };
     }
 
@@ -190,7 +189,7 @@ export async function sendWelcomeEmail(email: string, username: string) {
     console.error('Error sending welcome email:', error);
     return {
       sent: false,
-      note: "Your account is ready! We'll enable email notifications soon."
+      note: "Your account is ready! Note: Email notifications will be enabled soon."
     };
   }
 }

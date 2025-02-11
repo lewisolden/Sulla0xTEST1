@@ -38,15 +38,23 @@ export function registerRoutes(app: Express): Server {
     try {
       const result = await sendTestEmail();
       if (result.sent) {
-        res.json({ success: true, messageId: result.messageId });
+        res.json({ 
+          success: true,
+          message: "Test email sent successfully to verified test recipient."
+        });
       } else {
-        res.status(500).json({ success: false, error: result.error });
+        res.status(500).json({ 
+          success: false, 
+          error: result.error,
+          message: "Failed to send test email. Make sure you have configured Resend API correctly."
+        });
       }
     } catch (error) {
       console.error("Error sending test email:", error);
       res.status(500).json({ 
         success: false, 
-        error: error instanceof Error ? error.message : "Unknown error occurred" 
+        error: error instanceof Error ? error.message : "Unknown error occurred",
+        message: "An unexpected error occurred while sending the test email."
       });
     }
   });
