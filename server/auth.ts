@@ -221,7 +221,7 @@ export function setupAuth(app: Express) {
         .returning();
 
       // Send welcome email and handle the result
-      const emailSent = await sendWelcomeEmail(email, username);
+      const emailResult = await sendWelcomeEmail(email, username);
 
       req.login({ ...newUser, role: 'user' }, (err) => {
         if (err) {
@@ -231,10 +231,10 @@ export function setupAuth(app: Express) {
           message: "Registration successful",
           user: { id: newUser.id, username: newUser.username, role: 'user' },
           emailStatus: {
-            sent: emailSent,
+            sent: emailResult.sent,
             note: process.env.NODE_ENV !== 'production' 
               ? "In testing mode, welcome emails are only sent to verified email addresses." 
-              : undefined
+              : emailResult.note
           }
         });
       });
