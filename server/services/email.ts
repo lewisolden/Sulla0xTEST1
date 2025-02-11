@@ -22,7 +22,7 @@ export async function sendTestEmail() {
     console.log('Attempting to send test email with default Resend domain...');
     const { data, error } = await resend.emails.send({
       from: 'onboarding@resend.dev',
-      to: 'lewis@sullacrypto.com',
+      to: 'delivered@resend.dev',
       subject: 'Test Email from Sulla Platform',
       html: `
         <!DOCTYPE html>
@@ -39,17 +39,17 @@ export async function sendTestEmail() {
 
     if (error) {
       console.error('Failed to send test email:', error);
-      return false;
+      return { success: false, error };
     }
 
     console.log('Test email sent successfully:', {
       messageId: data?.id,
       timestamp: new Date().toISOString()
     });
-    return true;
+    return { success: true, messageId: data?.id };
   } catch (error) {
     console.error('Error sending test email:', error);
-    return false;
+    return { success: false, error };
   }
 }
 
@@ -60,7 +60,7 @@ export async function sendWelcomeEmail(email: string, username: string) {
       initializeResend();
     }
 
-    const fromEmail = 'onboarding@resend.dev'; // Using Resend's verified domain
+    const fromEmail = 'onboarding@resend.dev'; // Using Resend's default verified domain
     const appUrl = process.env.APP_URL || 'http://localhost:5000';
 
     console.log('Attempting to send welcome email:', {
@@ -127,9 +127,9 @@ export async function sendWelcomeEmail(email: string, username: string) {
                 <table role="presentation" width="600" cellspacing="0" cellpadding="0" border="0" style="margin: 20px auto 0;">
                   <tr>
                     <td style="padding: 20px; text-align: center; color: #6b7280; font-size: 14px;">
-                      <p style="margin: 0 0 10px;">© 2025 Sulla Learning Platform. All rights reserved.</p>
+                      <p style="margin: 0 0 10px;">© ${new Date().getFullYear()} Sulla Learning Platform. All rights reserved.</p>
                       <p style="margin: 0;">
-                        Our address: 123 Blockchain Street, Crypto City, CC 12345
+                        You received this email because you signed up for Sulla Learning Platform.
                       </p>
                     </td>
                   </tr>
@@ -145,16 +145,16 @@ export async function sendWelcomeEmail(email: string, username: string) {
     if (error) {
       console.error('Failed to send welcome email:', {
         error: error.message,
-        code: error.statusCode,
+        details: error
       });
-      return false;
+      return { success: false, error };
     }
 
     console.log('Welcome email sent successfully:', {
       messageId: data?.id,
       to: email
     });
-    return true;
+    return { success: true, messageId: data?.id };
 
   } catch (error) {
     if (error instanceof Error) {
@@ -166,6 +166,6 @@ export async function sendWelcomeEmail(email: string, username: string) {
     } else {
       console.error('Failed to send welcome email with unknown error:', error);
     }
-    return false;
+    return { success: false, error };
   }
 }
