@@ -6,8 +6,9 @@ const router = Router();
 // Test email endpoint
 router.post("/test-email", async (req, res) => {
   try {
-    console.log('Test email endpoint called');
-    const success = await sendTestEmail();
+    console.log('Test email endpoint called with body:', req.body);
+    const { email } = req.body;
+    const success = await sendTestEmail(email);
     if (success) {
       res.json({ message: "Test email sent successfully" });
     } else {

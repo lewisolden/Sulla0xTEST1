@@ -12,17 +12,19 @@ function initializeResend() {
   resend = new Resend(process.env.RESEND_API_KEY);
 }
 
-export async function sendTestEmail() {
+export async function sendTestEmail(toEmail?: string) {
   try {
     if (!resend) {
       console.log('Initializing Resend client...');
       initializeResend();
     }
 
-    console.log('Attempting to send test email with default Resend domain...');
+    const recipientEmail = toEmail || 'lewis@sullacrypto.com';
+    console.log('Attempting to send test email to:', recipientEmail);
+
     const { data, error } = await resend.emails.send({
       from: 'onboarding@resend.dev',
-      to: 'lewis@sullacrypto.com',
+      to: recipientEmail,
       subject: 'Test Email from Sulla Platform',
       html: `
         <!DOCTYPE html>
