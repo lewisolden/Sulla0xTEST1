@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Link, useLocation } from "wouter";
+import { Link, useLocation as useLocationWouter } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -45,7 +45,7 @@ export default function DeepLearning() {
   const { updateProgress } = useProgress();
   const [showQuiz, setShowQuiz] = useState(false);
   const [readingProgress, setReadingProgress] = useState(0);
-  const [, setLocation] = useLocation();
+  const [, setLocation] = useLocationWouter();
 
   useEffect(() => {
     const handleScroll = () => {
