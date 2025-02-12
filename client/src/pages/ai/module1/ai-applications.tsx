@@ -334,9 +334,9 @@ export default function AIApplications() {
                     >
                       Back to Content
                     </Button>
-                    <Link href="/ai/module1">
+                    <Link href="/modules/module1/quiz">
                       <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
-                        Complete Module <ArrowRight className="h-4 w-4" />
+                        Take Module Quiz <ArrowRight className="h-4 w-4" />
                       </Button>
                     </Link>
                   </div>
