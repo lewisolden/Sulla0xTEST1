@@ -4,6 +4,7 @@ import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useProgress } from "@/context/progress-context";
 import {
   ArrowLeft,
@@ -13,7 +14,9 @@ import {
   Puzzle,
   Blocks,
   Lock,
-  CheckCircle2
+  CheckCircle2,
+  Target,
+  GraduationCap
 } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 
@@ -25,9 +28,34 @@ interface Topic {
   href: string;
 }
 
+interface LearningObjective {
+  id: number;
+  text: string;
+}
+
 export default function AIModule3() {
   useScrollTop();
   const { progress } = useProgress();
+  const [activeTab, setActiveTab] = useState("overview");
+
+  const learningObjectives: LearningObjective[] = [
+    {
+      id: 1,
+      text: "Understand deep learning architectures and their applications in modern AI systems"
+    },
+    {
+      id: 2,
+      text: "Master the fundamentals of reinforcement learning and its role in AI development"
+    },
+    {
+      id: 3,
+      text: "Explore generative AI technologies and their impact on content creation"
+    },
+    {
+      id: 4,
+      text: "Analyze emerging trends and future developments in artificial intelligence"
+    }
+  ];
 
   const topics: Topic[] = [
     {
@@ -91,65 +119,97 @@ export default function AIModule3() {
                 </h1>
               </div>
 
-              <div className="mb-8">
-                <p className="text-gray-600 mb-4">
-                  Explore advanced concepts in artificial intelligence, from deep learning
-                  to generative AI. This module covers cutting-edge techniques and their
-                  real-world applications.
-                </p>
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm text-gray-600">
-                    <span>Progress</span>
-                    <span>{Math.round(progressValue)}% Complete</span>
+              <Tabs defaultValue="overview" className="space-y-4" value={activeTab} onValueChange={setActiveTab}>
+                <TabsList>
+                  <TabsTrigger value="overview">Overview</TabsTrigger>
+                  <TabsTrigger value="objectives">Learning Objectives</TabsTrigger>
+                  <TabsTrigger value="content">Module Content</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="overview" className="space-y-4">
+                  <div className="prose max-w-none">
+                    <p className="text-gray-600 text-lg leading-relaxed">
+                      Dive deep into advanced concepts in artificial intelligence, from neural networks 
+                      to cutting-edge generative AI. This module explores the latest developments in AI 
+                      technology and their practical applications in solving complex real-world problems.
+                    </p>
                   </div>
-                  <Progress value={progressValue} className="h-2" />
-                </div>
-              </div>
 
-              <div className="grid md:grid-cols-2 gap-4">
-                {topics.map((topic, index) => {
-                  const Icon = topic.icon;
-                  const isCompleted = progress.some(
-                    p => p.moduleId === 3 && p.sectionId === topic.id && p.completed
-                  );
+                  <div className="mt-6">
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm text-gray-600">
+                        <span>Progress</span>
+                        <span>{Math.round(progressValue)}% Complete</span>
+                      </div>
+                      <Progress value={progressValue} className="h-2" />
+                    </div>
+                  </div>
+                </TabsContent>
 
-                  return (
-                    <motion.div
-                      key={topic.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                    >
-                      <Link href={topic.href}>
-                        <Card className="cursor-pointer hover:bg-gray-50 transition-colors">
-                          <CardContent className="pt-6">
-                            <div className="flex items-start gap-4">
-                              <div className="rounded-full p-2 bg-blue-100">
-                                <Icon className="h-6 w-6 text-blue-600" />
-                              </div>
-                              <div className="flex-1">
-                                <div className="flex items-center justify-between">
-                                  <h3 className="font-semibold text-lg">
-                                    {topic.title}
-                                  </h3>
-                                  {isCompleted ? (
-                                    <CheckCircle2 className="h-5 w-5 text-green-500" />
-                                  ) : (
-                                    <Lock className="h-5 w-5 text-gray-400" />
-                                  )}
+                <TabsContent value="objectives" className="space-y-4">
+                  <div className="prose max-w-none">
+                    <h2 className="flex items-center gap-2 text-xl font-semibold text-blue-800">
+                      <Target className="h-5 w-5" />
+                      Learning Objectives
+                    </h2>
+                    <ul className="space-y-3 mt-4">
+                      {learningObjectives.map((objective) => (
+                        <li key={objective.id} className="flex items-start gap-3">
+                          <GraduationCap className="h-5 w-5 text-blue-600 mt-1" />
+                          <span className="text-gray-700">{objective.text}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="content" className="space-y-4">
+                  <div className="grid md:grid-cols-2 gap-4">
+                    {topics.map((topic, index) => {
+                      const Icon = topic.icon;
+                      const isCompleted = progress.some(
+                        p => p.moduleId === 3 && p.sectionId === topic.id && p.completed
+                      );
+
+                      return (
+                        <motion.div
+                          key={topic.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                        >
+                          <Link href={topic.href}>
+                            <Card className="cursor-pointer hover:bg-gray-50 transition-colors">
+                              <CardContent className="pt-6">
+                                <div className="flex items-start gap-4">
+                                  <div className="rounded-full p-2 bg-blue-100">
+                                    <Icon className="h-6 w-6 text-blue-600" />
+                                  </div>
+                                  <div className="flex-1">
+                                    <div className="flex items-center justify-between">
+                                      <h3 className="font-semibold text-lg">
+                                        {topic.title}
+                                      </h3>
+                                      {isCompleted ? (
+                                        <CheckCircle2 className="h-5 w-5 text-green-500" />
+                                      ) : (
+                                        <Lock className="h-5 w-5 text-gray-400" />
+                                      )}
+                                    </div>
+                                    <p className="text-gray-600 text-sm mt-1">
+                                      {topic.description}
+                                    </p>
+                                  </div>
                                 </div>
-                                <p className="text-gray-600 text-sm mt-1">
-                                  {topic.description}
-                                </p>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </Link>
-                    </motion.div>
-                  );
-                })}
-              </div>
+                              </CardContent>
+                            </Card>
+                          </Link>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </TabsContent>
+              </Tabs>
 
               <div className="mt-8 flex justify-end">
                 <Link href="/ai/module3/deep-learning">
