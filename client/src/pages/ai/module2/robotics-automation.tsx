@@ -8,124 +8,137 @@ import { useProgress } from "@/context/progress-context";
 import { 
   ArrowLeft,
   ArrowRight,
-  Camera,
-  Eye,
-  Scan,
-  Box,
+  Bot,
+  Cog,
+  Factory,
+  Workflow,
   Check,
   X,
   RefreshCcw,
-  Focus
+  Play,
+  Pause,
+  RotateCcw
 } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 
-// Image Processing Demo Component
-const ImageProcessingDemo = () => {
-  const [brightness, setBrightness] = useState(100);
-  const [contrast, setContrast] = useState(100);
+// Robot Arm Simulation Component
+const RobotArmSimulation = () => {
+  const [isRunning, setIsRunning] = useState(false);
+  const [angle1, setAngle1] = useState(0);
+  const [angle2, setAngle2] = useState(0);
+  
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isRunning) {
+      interval = setInterval(() => {
+        setAngle1(prev => (prev + 2) % 360);
+        setAngle2(prev => (prev + 3) % 360);
+      }, 50);
+    }
+    return () => clearInterval(interval);
+  }, [isRunning]);
   
   return (
     <div className="space-y-4">
       <div className="bg-blue-50 p-6 rounded-lg">
-        <div className="aspect-video bg-gradient-to-r from-blue-200 to-blue-300 rounded-lg mb-4"
-             style={{
-               filter: `brightness(${brightness}%) contrast(${contrast}%)`
-             }}>
-          <div className="h-full w-full flex items-center justify-center">
-            <Camera className="w-12 h-12 text-blue-600" />
-          </div>
+        <div className="aspect-video bg-gradient-to-r from-blue-200 to-blue-300 rounded-lg relative">
+          <motion.div
+            className="absolute left-1/2 top-1/2 w-40 h-2 bg-gray-700 origin-left"
+            style={{ rotate: angle1 }}
+          >
+            <motion.div
+              className="absolute right-0 w-32 h-2 bg-gray-800 origin-left"
+              style={{ rotate: angle2 }}
+            >
+              <div className="absolute right-0 w-4 h-4 bg-red-500 rounded-full" />
+            </motion.div>
+          </motion.div>
         </div>
-        <div className="space-y-4">
-          <div>
-            <label className="text-sm font-medium mb-2 block">Brightness</label>
-            <Slider
-              value={[brightness]}
-              onValueChange={(value) => setBrightness(value[0])}
-              min={0}
-              max={200}
-              step={1}
-            />
-          </div>
-          <div>
-            <label className="text-sm font-medium mb-2 block">Contrast</label>
-            <Slider
-              value={[contrast]}
-              onValueChange={(value) => setContrast(value[0])}
-              min={0}
-              max={200}
-              step={1}
-            />
-          </div>
+        <div className="flex justify-center gap-4 mt-4">
+          <Button
+            onClick={() => setIsRunning(!isRunning)}
+            className="gap-2"
+          >
+            {isRunning ? (
+              <>
+                <Pause className="w-4 h-4" /> Pause
+              </>
+            ) : (
+              <>
+                <Play className="w-4 h-4" /> Start
+              </>
+            )}
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => {
+              setAngle1(0);
+              setAngle2(0);
+            }}
+            className="gap-2"
+          >
+            <RotateCcw className="w-4 h-4" /> Reset
+          </Button>
         </div>
       </div>
     </div>
   );
 };
 
-// Object Detection Animation
-const ObjectDetectionDemo = () => {
-  const [scanning, setScanning] = useState(false);
-  const [detectedObjects, setDetectedObjects] = useState<string[]>([]);
+// Assembly Line Animation
+const AssemblyLineSimulation = () => {
+  const [isRunning, setIsRunning] = useState(false);
+  const [items, setItems] = useState<number[]>([]);
 
   useEffect(() => {
-    if (scanning) {
-      const objects = ["Person", "Car", "Dog", "Tree", "Building"];
-      setDetectedObjects([]);
-      objects.forEach((obj, index) => {
-        setTimeout(() => {
-          setDetectedObjects(prev => [...prev, obj]);
-        }, index * 1000);
-      });
-      setTimeout(() => setScanning(false), objects.length * 1000);
+    let interval: NodeJS.Timeout;
+    if (isRunning) {
+      interval = setInterval(() => {
+        setItems(prev => {
+          const newItems = [...prev];
+          if (newItems.length < 5) {
+            newItems.push(Date.now());
+          } else {
+            newItems.shift();
+            newItems.push(Date.now());
+          }
+          return newItems;
+        });
+      }, 2000);
     }
-  }, [scanning]);
+    return () => clearInterval(interval);
+  }, [isRunning]);
 
   return (
     <div className="space-y-4">
       <div className="bg-blue-50 p-6 rounded-lg">
-        <div className="relative aspect-video bg-gradient-to-r from-blue-200 to-blue-300 rounded-lg">
-          {scanning && (
-            <motion.div
-              className="absolute inset-0 border-2 border-blue-500 rounded-lg"
-              animate={{
-                scale: [1, 1.02, 1],
-                opacity: [1, 0.5, 1],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
-          )}
-          <div className="absolute inset-0 flex flex-wrap gap-2 p-4">
-            {detectedObjects.map((obj, index) => (
+        <div className="h-32 bg-gradient-to-r from-blue-200 to-blue-300 rounded-lg relative overflow-hidden">
+          <div className="absolute inset-y-0 left-0 w-full flex items-center">
+            {items.map((id, index) => (
               <motion.div
-                key={obj}
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="bg-blue-600 text-white px-2 py-1 rounded text-sm"
+                key={id}
+                className="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center text-white"
+                initial={{ x: -50, opacity: 0 }}
+                animate={{ x: index * 100, opacity: 1 }}
+                exit={{ x: 600, opacity: 0 }}
               >
-                {obj}
+                {index + 1}
               </motion.div>
             ))}
           </div>
         </div>
         <Button
-          className="mt-4 w-full"
-          onClick={() => setScanning(true)}
-          disabled={scanning}
+          onClick={() => setIsRunning(!isRunning)}
+          className="mt-4 gap-2"
         >
-          {scanning ? (
-            <span className="flex items-center gap-2">
-              <RefreshCcw className="w-4 h-4 animate-spin" />
-              Scanning...
-            </span>
+          {isRunning ? (
+            <>
+              <Pause className="w-4 h-4" /> Stop Assembly
+            </>
           ) : (
-            <span className="flex items-center gap-2">
-              <Scan className="w-4 h-4" />
-              Start Detection
-            </span>
+            <>
+              <Play className="w-4 h-4" /> Start Assembly
+            </>
           )}
         </Button>
       </div>
@@ -133,14 +146,14 @@ const ObjectDetectionDemo = () => {
   );
 };
 
-// CV Pipeline Visualization
-const CVPipelineVisualization = () => {
+// Automation Pipeline Visualization
+const AutomationPipelineVisualization = () => {
   const [activeStep, setActiveStep] = useState(0);
   const steps = [
-    { title: "Image Input", icon: Camera },
-    { title: "Preprocessing", icon: Focus },
-    { title: "Feature Extraction", icon: Box },
-    { title: "Classification", icon: Eye }
+    { title: "Input", icon: Factory },
+    { title: "Processing", icon: Cog },
+    { title: "Assembly", icon: Bot },
+    { title: "Quality Check", icon: Workflow }
   ];
 
   useEffect(() => {
@@ -187,7 +200,7 @@ const CVPipelineVisualization = () => {
   );
 };
 
-export default function ComputerVision() {
+export default function RoboticsAutomation() {
   useScrollTop();
   const [showQuiz, setShowQuiz] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -202,37 +215,37 @@ export default function ComputerVision() {
 
   const questions = [
     {
-      question: "Which of these is a common preprocessing step in computer vision?",
+      question: "Which component is essential for a robot to interact with its environment?",
       options: [
-        "Data encryption",
-        "Image resizing",
-        "Network configuration",
-        "Database indexing"
+        "Social media interface",
+        "Sensors and actuators",
+        "Web browser",
+        "Email client"
       ],
       correct: 1,
-      explanation: "Image resizing is a crucial preprocessing step in computer vision to ensure consistent input sizes for neural networks and improve processing efficiency."
+      explanation: "Sensors and actuators are crucial for robots to perceive and interact with their environment. Sensors gather data about the surroundings, while actuators enable physical movement and manipulation."
     },
     {
-      question: "What is the primary goal of object detection in computer vision?",
+      question: "What is the primary benefit of industrial automation?",
       options: [
-        "To compress images",
-        "To identify and locate objects in images",
-        "To create 3D models",
-        "To enhance image quality"
+        "Reduced social interaction",
+        "Increased production efficiency",
+        "More paperwork",
+        "Higher energy consumption"
       ],
       correct: 1,
-      explanation: "Object detection aims to identify and locate specific objects within an image, often by drawing bounding boxes around detected objects."
+      explanation: "Industrial automation primarily increases production efficiency by enabling consistent, high-speed operations with minimal errors and reduced downtime."
     },
     {
-      question: "Which technology is NOT typically used in computer vision applications?",
+      question: "Which of these is NOT typically a component of an automated manufacturing system?",
       options: [
-        "Convolutional Neural Networks",
-        "Sound Processing",
-        "Feature Extraction",
-        "Image Segmentation"
+        "Robotic arms",
+        "Conveyor belts",
+        "Social media manager",
+        "Quality control sensors"
       ],
-      correct: 1,
-      explanation: "Sound Processing is primarily used in audio applications, not computer vision. The other options are core computer vision technologies."
+      correct: 2,
+      explanation: "A social media manager is not a component of automated manufacturing systems. The other options are common components that handle physical operations and quality control."
     }
   ];
 
@@ -259,7 +272,7 @@ export default function ComputerVision() {
       } else {
         setShowResults(true);
         updateProgress('ai-module2', {
-          sectionId: 'computer-vision',
+          sectionId: 'robotics-automation',
           completed: true,
           score: Math.round((score / questions.length) * 100)
         });
@@ -383,7 +396,7 @@ export default function ComputerVision() {
                   </p>
                   <p className="text-gray-600 mb-6">
                     {score === questions.length
-                      ? "Perfect score! You've mastered computer vision concepts!"
+                      ? "Perfect score! You've mastered robotics and automation concepts!"
                       : "Great effort! Review the content and try again to improve your score."}
                   </p>
                   <div className="flex justify-center gap-4">
@@ -398,7 +411,7 @@ export default function ComputerVision() {
                     >
                       Back to Content
                     </Button>
-                    <Link href="/ai/module2/robotics-automation">
+                    <Link href="/ai/module2/ai-ethics">
                       <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
                         Next Topic <ArrowRight className="h-4 w-4" />
                       </Button>
@@ -432,9 +445,9 @@ export default function ComputerVision() {
               transition={{ duration: 0.5 }}
             >
               <div className="flex items-center gap-4 mb-6">
-                <Eye className="h-10 w-10 text-blue-600" />
+                <Bot className="h-10 w-10 text-blue-600" />
                 <h1 className="text-3xl font-bold text-blue-800">
-                  Computer Vision
+                  Robotics and Automation
                 </h1>
               </div>
 
@@ -446,15 +459,16 @@ export default function ComputerVision() {
                   className="mb-8"
                 >
                   <h2 className="text-2xl font-semibold text-blue-700 mb-4">
-                    Understanding Computer Vision
+                    Understanding Robotics and Automation
                   </h2>
                   <p className="text-gray-700 mb-4">
-                    Computer Vision is a field of artificial intelligence that enables
-                    computers to interpret and understand visual information from the
-                    world. Through computer vision, machines can process, analyze, and
-                    understand images and videos in ways similar to human vision.
+                    Robotics and automation represent the intersection of artificial
+                    intelligence and physical systems. These technologies enable
+                    machines to perform complex tasks with precision, efficiency, and
+                    consistency, transforming industries from manufacturing to
+                    healthcare.
                   </p>
-                  <CVPipelineVisualization />
+                  <AutomationPipelineVisualization />
                 </motion.section>
 
                 <motion.section
@@ -464,14 +478,14 @@ export default function ComputerVision() {
                   className="mb-8"
                 >
                   <h2 className="text-2xl font-semibold text-blue-700 mb-4">
-                    Image Processing Demo
+                    Robotic Arm Simulation
                   </h2>
                   <p className="text-gray-700 mb-4">
-                    Experiment with basic image processing techniques by adjusting
-                    brightness and contrast. These fundamental operations are essential
-                    in preparing images for computer vision tasks.
+                    Experience how robotic arms operate in industrial settings. This
+                    simulation demonstrates basic movement patterns and control
+                    systems used in manufacturing and assembly processes.
                   </p>
-                  <ImageProcessingDemo />
+                  <RobotArmSimulation />
                 </motion.section>
 
                 <motion.section
@@ -481,14 +495,14 @@ export default function ComputerVision() {
                   className="mb-8"
                 >
                   <h2 className="text-2xl font-semibold text-blue-700 mb-4">
-                    Object Detection
+                    Assembly Line Automation
                   </h2>
                   <p className="text-gray-700 mb-4">
-                    Object detection is a key computer vision task that involves
-                    identifying and locating objects within images. Watch the demo
-                    below to see how AI can detect multiple objects in real-time.
+                    Modern assembly lines combine robotics, sensors, and AI to
+                    achieve high-speed, precise production. Watch this simulation of
+                    an automated assembly line in action.
                   </p>
-                  <ObjectDetectionDemo />
+                  <AssemblyLineSimulation />
                 </motion.section>
 
                 <motion.section
@@ -503,20 +517,20 @@ export default function ComputerVision() {
                   <div className="grid md:grid-cols-2 gap-4">
                     {[
                       {
-                        title: "Facial Recognition",
-                        desc: "Identifying and verifying people's identities"
+                        title: "Industrial Manufacturing",
+                        desc: "Automated assembly lines and quality control"
                       },
                       {
-                        title: "Autonomous Vehicles",
-                        desc: "Processing visual data for self-driving cars"
+                        title: "Healthcare",
+                        desc: "Surgical robots and automated diagnostics"
                       },
                       {
-                        title: "Medical Imaging",
-                        desc: "Analyzing medical scans for diagnosis"
+                        title: "Logistics",
+                        desc: "Warehouse automation and package sorting"
                       },
                       {
-                        title: "Quality Control",
-                        desc: "Automated inspection in manufacturing"
+                        title: "Agriculture",
+                        desc: "Automated harvesting and crop monitoring"
                       }
                     ].map((item, index) => (
                       <motion.div
@@ -543,7 +557,7 @@ export default function ComputerVision() {
                 >
                   Take Topic Quiz
                 </Button>
-                <Link href="/ai/module2/robotics-automation">
+                <Link href="/ai/module2/ai-ethics">
                   <Button className="gap-2">
                     Next Topic <ArrowRight className="h-4 w-4" />
                   </Button>

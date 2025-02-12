@@ -33,6 +33,7 @@ import AIModule1Quiz from "@/pages/ai/module1/quiz";
 import AIModule2 from "@/pages/ai/module2";
 import NaturalLanguageProcessing from "@/pages/ai/module2/natural-language-processing";
 import ComputerVision from "@/pages/ai/module2/computer-vision";
+import RoboticsAutomation from "@/pages/ai/module2/robotics-automation";
 
 // Module 1 Routes
 import Module1Landing from "@/pages/modules/module1";
@@ -68,6 +69,7 @@ import Module4Landing from "@/pages/modules/module4";
 import DigitalVsTraditionalSection from "@/pages/modules/module4/digital-vs-traditional";
 import TradingSimulator from "@/pages/trading-simulator";
 import GlossaryPage from "@/pages/glossary";
+
 
 
 function ProtectedRoute({ component: Component, adminOnly = false, publicAccess = false, ...rest }: any) {
@@ -113,6 +115,7 @@ function Router() {
       <Route path="/ai/module2" component={() => <ProtectedRoute component={AIModule2} publicAccess={true} />} />
       <Route path="/ai/module2/natural-language-processing" component={() => <ProtectedRoute component={NaturalLanguageProcessing} publicAccess={true} />} />
       <Route path="/ai/module2/computer-vision" component={() => <ProtectedRoute component={ComputerVision} publicAccess={true} />} />
+      <Route path="/ai/module2/robotics-automation" component={() => <ProtectedRoute component={RoboticsAutomation} publicAccess={true} />} />
 
       {/* Authentication routes */}
       <Route path="/login" component={AuthPage} />
