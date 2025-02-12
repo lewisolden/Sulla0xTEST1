@@ -6,6 +6,7 @@ import { eq, count, sql } from "drizzle-orm";
 import { setupAuth, requireAdmin } from "./auth";
 import enrollmentsRouter from "./routes/enrollments";
 import userMetricsRouter from "./routes/user-metrics";
+import progressRouter from "./routes/progress";
 import apiRouter from "./routes/api";
 import adminRouter from "./routes/admin";
 import path from 'path';
@@ -36,6 +37,9 @@ export function registerRoutes(app: Express): Server {
 
   // Mount admin routes
   app.use("/api/admin", adminRouter);
+
+  // Add progress routes
+  app.use(progressRouter);
 
   // Add email test endpoint
   app.get("/api/email/test", async (req, res) => {
