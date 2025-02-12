@@ -6,8 +6,9 @@ export default function DoubleSpendDiagram() {
 
   useEffect(() => {
     if (diagramRef.current) {
+      // Initialize mermaid with specific configuration
       mermaid.initialize({
-        startOnLoad: true,
+        startOnLoad: false,
         theme: 'default',
         securityLevel: 'loose',
         sequence: {
@@ -20,7 +21,6 @@ export default function DoubleSpendDiagram() {
           boxTextMargin: 5,
           noteMargin: 10,
           messageMargin: 35,
-          mirrorActors: true,
         },
       });
 
@@ -28,23 +28,39 @@ export default function DoubleSpendDiagram() {
     participant User
     participant Network
     participant Blockchain
-    User-&gt;Network: Submit Transaction
-    Network-&gt;Network: Verify No Previous Spend
-    Network-&gt;Blockchain: Add to Block
-    Blockchain-&gt;Network: Confirm Transaction
-    Network-&gt;User: Transaction Complete`;
+    User->>Network: Submit Transaction
+    Network->>Network: Verify No Previous Spend
+    Network->>Blockchain: Add to Block
+    Blockchain->>Network: Confirm Transaction
+    Network->>User: Transaction Complete`;
 
-      mermaid.render('doublespend-diagram', diagram).then(({ svg }) => {
-        if (diagramRef.current) {
-          diagramRef.current.innerHTML = svg;
-        }
-      });
+      // Clear the container first
+      diagramRef.current.innerHTML = '';
+
+      // Use mermaid render method
+      try {
+        mermaid.render('doublespend-diagram', diagram)
+          .then(({ svg }) => {
+            if (diagramRef.current) {
+              diagramRef.current.innerHTML = svg;
+            }
+          })
+          .catch(error => {
+            console.error('Mermaid rendering error:', error);
+            // Fallback content if rendering fails
+            if (diagramRef.current) {
+              diagramRef.current.innerHTML = '<p>Error rendering diagram</p>';
+            }
+          });
+      } catch (error) {
+        console.error('Mermaid initialization error:', error);
+      }
     }
   }, []);
 
   return (
     <div className="my-8 bg-white p-4 rounded-lg shadow">
-      <div ref={diagramRef} className="mermaid-diagram" />
+      <div ref={diagramRef} className="mermaid-diagram w-full overflow-x-auto" />
     </div>
   );
 }
