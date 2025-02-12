@@ -8,6 +8,7 @@ import enrollmentsRouter from "./routes/enrollments";
 import userMetricsRouter from "./routes/user-metrics";
 import apiRouter from "./routes/api";
 import adminRouter from "./routes/admin";
+import learningPathRouter from "./routes/learning-path"; // Import learning path router
 import path from 'path';
 import { fileURLToPath } from 'url';
 import type { Browser } from 'puppeteer';
@@ -36,6 +37,9 @@ export function registerRoutes(app: Express): Server {
 
   // Mount admin routes
   app.use("/api/admin", adminRouter);
+
+  // Add learning path routes
+  app.use(learningPathRouter);
 
   // Add email test endpoint
   app.get("/api/email/test", async (req, res) => {
