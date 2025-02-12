@@ -122,11 +122,11 @@ export default function AIModule3() {
               <Tabs defaultValue="overview" className="space-y-4" value={activeTab} onValueChange={setActiveTab}>
                 <TabsList>
                   <TabsTrigger value="overview">Overview</TabsTrigger>
-                  <TabsTrigger value="objectives">Learning Objectives</TabsTrigger>
-                  <TabsTrigger value="content">Module Content</TabsTrigger>
+                  <TabsTrigger value="topics">Topics</TabsTrigger>
+                  <TabsTrigger value="quiz">Quiz</TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="overview" className="space-y-4">
+                <TabsContent value="overview" className="space-y-6">
                   <div className="prose max-w-none">
                     <p className="text-gray-600 text-lg leading-relaxed">
                       Dive deep into advanced concepts in artificial intelligence, from neural networks 
@@ -144,18 +144,16 @@ export default function AIModule3() {
                       <Progress value={progressValue} className="h-2" />
                     </div>
                   </div>
-                </TabsContent>
 
-                <TabsContent value="objectives" className="space-y-4">
-                  <div className="prose max-w-none">
-                    <h2 className="flex items-center gap-2 text-xl font-semibold text-blue-800">
+                  <div className="mt-8">
+                    <h2 className="flex items-center gap-2 text-xl font-semibold text-blue-800 mb-4">
                       <Target className="h-5 w-5" />
                       Learning Objectives
                     </h2>
-                    <ul className="space-y-3 mt-4">
+                    <ul className="space-y-3">
                       {learningObjectives.map((objective) => (
                         <li key={objective.id} className="flex items-start gap-3">
-                          <GraduationCap className="h-5 w-5 text-blue-600 mt-1" />
+                          <GraduationCap className="h-5 w-5 text-blue-600 mt-1 flex-shrink-0" />
                           <span className="text-gray-700">{objective.text}</span>
                         </li>
                       ))}
@@ -163,7 +161,7 @@ export default function AIModule3() {
                   </div>
                 </TabsContent>
 
-                <TabsContent value="content" className="space-y-4">
+                <TabsContent value="topics" className="space-y-4">
                   <div className="grid md:grid-cols-2 gap-4">
                     {topics.map((topic, index) => {
                       const Icon = topic.icon;
@@ -207,6 +205,23 @@ export default function AIModule3() {
                         </motion.div>
                       );
                     })}
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="quiz" className="space-y-4">
+                  <div className="text-center py-8">
+                    <h3 className="text-xl font-semibold mb-4">Module Quiz</h3>
+                    <p className="text-gray-600 mb-6">
+                      Complete all topics to unlock the final module quiz
+                    </p>
+                    <Link href="/ai/module3/quiz">
+                      <Button 
+                        disabled={completedTopics < topics.length}
+                        className="gap-2"
+                      >
+                        Start Quiz <ArrowRight className="h-4 w-4" />
+                      </Button>
+                    </Link>
                   </div>
                 </TabsContent>
               </Tabs>
