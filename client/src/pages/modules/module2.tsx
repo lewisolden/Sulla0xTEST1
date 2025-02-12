@@ -63,38 +63,24 @@ const moduleTopics = [
 
 export default function Module2() {
   useScrollTop();
-  const { metrics, isLoading } = useProgress();
-  const moduleId = 2;
-
-  // Calculate completed sections based on course progress
-  const completedSections = Object.keys(metrics.courseProgress).filter(
-    courseId => courseId === moduleId.toString()
-  ).length;
-
+  const { progress = [] } = useProgress();
+  const moduleProgress = (progress || []).filter(p => p?.moduleId === 2);
+  const completedSections = moduleProgress.filter(p => p?.completed).length;
   const progressPercentage = (completedSections / moduleTopics.length) * 100;
 
   // Check if quiz is completed
-  const isQuizCompleted = metrics.completedQuizzes > 0 && 
-    metrics.courseProgress[moduleId] >= 100;
-
+  const isQuizCompleted = moduleProgress.some(p => p?.sectionId === "module2-quiz" && p?.completed);
   // Check if all topics are completed
   const allTopicsCompleted = moduleTopics.every(topic => 
-    metrics.courseProgress[moduleId] >= (topic.id === moduleTopics[moduleTopics.length - 1].id ? 100 : 75)
+    moduleProgress.some(p => p?.sectionId === topic.id && p?.completed)
   );
-
   // Module is complete when all topics and quiz are done
   const isModuleComplete = allTopicsCompleted && isQuizCompleted;
 
   const topicsWithProgress = moduleTopics.map(topic => ({
     ...topic,
-    completed: metrics.courseProgress[moduleId] >= (
-      topic.id === moduleTopics[moduleTopics.length - 1].id ? 100 : 75
-    )
+    completed: moduleProgress.some(p => p?.sectionId === topic.id && p?.completed)
   }));
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="min-h-screen bg-background">
