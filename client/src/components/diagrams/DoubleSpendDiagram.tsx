@@ -1,73 +1,88 @@
-import { useEffect, useRef } from 'react';
+import { motion } from "framer-motion";
+import { User, Network, Database, ArrowRight } from "lucide-react";
 
 export default function DoubleSpendDiagram() {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        delayChildren: 0.3,
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1
+    }
+  };
+
+  const steps = [
+    {
+      title: "Transaction Submission",
+      description: "User submits transaction to network",
+      icon: User
+    },
+    {
+      title: "Network Verification",
+      description: "Network checks for double spend attempts",
+      icon: Network
+    },
+    {
+      title: "Blockchain Addition",
+      description: "Transaction added to blockchain after verification",
+      icon: Database
+    }
+  ];
+
   return (
     <div className="my-8 bg-white p-6 rounded-lg shadow-lg">
-      <div className="flex justify-center items-center w-full">
-        <svg
-          viewBox="0 0 800 400"
-          className="w-full max-w-3xl"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          {/* Participants */}
-          <g className="participants">
-            {/* User */}
-            <rect x="100" y="40" width="120" height="50" rx="6" fill="#e3f2fd" stroke="#1e88e5" strokeWidth="2"/>
-            <text x="160" y="70" textAnchor="middle" fill="#1e88e5" fontSize="16" fontWeight="500">User</text>
-            <line x1="160" y1="90" x2="160" y2="340" stroke="#e3f2fd" strokeWidth="1" strokeDasharray="4"/>
+      <motion.div
+        className="space-y-8"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <h3 className="text-xl font-semibold text-blue-800 text-center mb-6">
+          Double Spend Prevention Flow
+        </h3>
 
-            {/* Network */}
-            <rect x="340" y="40" width="120" height="50" rx="6" fill="#e3f2fd" stroke="#1e88e5" strokeWidth="2"/>
-            <text x="400" y="70" textAnchor="middle" fill="#1e88e5" fontSize="16" fontWeight="500">Network</text>
-            <line x1="400" y1="90" x2="400" y2="340" stroke="#e3f2fd" strokeWidth="1" strokeDasharray="4"/>
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          {steps.map((step, index) => (
+            <div key={index} className="flex items-center gap-4">
+              <motion.div
+                variants={itemVariants}
+                className="relative"
+              >
+                <div className="bg-blue-100 p-4 rounded-lg">
+                  <div className="flex flex-col items-center text-center gap-2">
+                    <div className="p-3 bg-blue-500 rounded-full text-white">
+                      <step.icon className="w-6 h-6" />
+                    </div>
+                    <h4 className="font-semibold text-blue-800">{step.title}</h4>
+                    <p className="text-sm text-gray-600 max-w-[200px]">
+                      {step.description}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
 
-            {/* Blockchain */}
-            <rect x="580" y="40" width="120" height="50" rx="6" fill="#e3f2fd" stroke="#1e88e5" strokeWidth="2"/>
-            <text x="640" y="70" textAnchor="middle" fill="#1e88e5" fontSize="16" fontWeight="500">Blockchain</text>
-            <line x1="640" y1="90" x2="640" y2="340" stroke="#e3f2fd" strokeWidth="1" strokeDasharray="4"/>
-          </g>
-
-          {/* Arrows and Labels */}
-          <g className="arrows">
-            {/* Submit Transaction */}
-            <line x1="160" y1="120" x2="400" y2="120" stroke="#1e88e5" strokeWidth="2" markerEnd="url(#arrowhead)"/>
-            <text x="280" y="110" textAnchor="middle" fill="#424242" fontSize="14">1. Submit Transaction</text>
-
-            {/* Verify No Previous Spend */}
-            <path d="M 400,140 Q 460,170 400,200" fill="none" stroke="#1e88e5" strokeWidth="2" markerEnd="url(#arrowhead)"/>
-            <text x="500" y="170" textAnchor="middle" fill="#424242" fontSize="14">2. Verify No Previous Spend</text>
-
-            {/* Add to Block */}
-            <line x1="400" y1="220" x2="640" y2="220" stroke="#1e88e5" strokeWidth="2" markerEnd="url(#arrowhead)"/>
-            <text x="520" y="210" textAnchor="middle" fill="#424242" fontSize="14">3. Add to Block</text>
-
-            {/* Confirm Transaction */}
-            <line x1="640" y1="260" x2="400" y2="260" stroke="#1e88e5" strokeWidth="2" markerEnd="url(#arrowhead)"/>
-            <text x="520" y="250" textAnchor="middle" fill="#424242" fontSize="14">4. Confirm Transaction</text>
-
-            {/* Transaction Complete */}
-            <line x1="400" y1="300" x2="160" y2="300" stroke="#1e88e5" strokeWidth="2" markerEnd="url(#arrowhead)"/>
-            <text x="280" y="290" textAnchor="middle" fill="#424242" fontSize="14">5. Transaction Complete</text>
-          </g>
-
-          {/* Arrow Marker Definition */}
-          <defs>
-            <marker
-              id="arrowhead"
-              markerWidth="10"
-              markerHeight="7"
-              refX="9"
-              refY="3.5"
-              orient="auto"
-            >
-              <polygon points="0 0, 10 3.5, 0 7" fill="#1e88e5"/>
-            </marker>
-          </defs>
-        </svg>
-      </div>
-      <div className="mt-6 text-sm text-gray-600 text-center font-medium">
-        Double Spend Prevention Flow Diagram
-      </div>
+              {index < steps.length - 1 && (
+                <motion.div
+                  variants={itemVariants}
+                  className="hidden md:block"
+                >
+                  <ArrowRight className="w-6 h-6 text-blue-400" />
+                </motion.div>
+              )}
+            </div>
+          ))}
+        </div>
+      </motion.div>
     </div>
   );
 }
