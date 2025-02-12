@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { useProgress } from "@/context/progress-context";
+import { useToast } from "@/hooks/use-toast";
 
 interface Question {
   question: string;
@@ -76,25 +77,70 @@ export const SecurityQuiz = () => {
   const [score, setScore] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
   const { updateProgress } = useProgress();
+  const { toast } = useToast();
+
+  const submitQuizProgress = async (finalScore: number) => {
+    try {
+      const response = await fetch('/api/learning-path/progress', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          moduleId: 1, // Security module ID
+          courseId: 1, // Course 1: Introduction to Cryptocurrency
+          sectionId: 'security',
+          timeSpent: 0, // Add actual time tracking if needed
+          quizScore: (finalScore / questions.length) * 100
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to update progress');
+      }
+
+      const result = await response.json();
+
+      if (result.success) {
+        toast({
+          title: "Quiz Progress Saved",
+          description: result.message || "Your quiz progress has been recorded",
+        });
+      }
+    } catch (error) {
+      console.error('Failed to submit quiz progress:', error);
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to save quiz progress",
+        variant: "destructive",
+      });
+    }
+  };
 
   const handleAnswerSelect = (answerIndex: number) => {
     setSelectedAnswer(answerIndex);
     setShowExplanation(true);
   };
 
-  const handleNextQuestion = () => {
-    if (selectedAnswer === questions[currentQuestion].correctAnswer) {
-      setScore(score + 1);
-    }
+  const handleNextQuestion = async () => {
+    const isCorrect = selectedAnswer === questions[currentQuestion].correctAnswer;
+    const newScore = score + (isCorrect ? 1 : 0);
 
     if (currentQuestion < questions.length - 1) {
+      setScore(newScore);
       setCurrentQuestion(currentQuestion + 1);
       setSelectedAnswer(null);
       setShowExplanation(false);
     } else {
+      setScore(newScore);
       setShowResult(true);
       const passThreshold = questions.length * 0.7; // 70% to pass
-      updateProgress(1, 'security', score >= passThreshold);
+      updateProgress(1, 'security', newScore >= passThreshold);
+
+      // Submit quiz progress
+      await submitQuizProgress(newScore);
     }
   };
 
@@ -141,7 +187,7 @@ export const SecurityQuiz = () => {
             Question {currentQuestion + 1} of {questions.length}
           </h2>
           <span className="text-sm text-gray-500">
-            Score: {score}/{currentQuestion}
+            Score: {score}/{currentQuestion +1}
           </span>
         </div>
 

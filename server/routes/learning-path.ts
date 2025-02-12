@@ -7,14 +7,20 @@ const router = Router();
 
 // Update module progress
 router.post("/api/learning-path/progress", async (req, res) => {
-  if (!req.session?.userId) {
-    console.error("[Learning Path] No user session found");
-    return res.status(401).json({ error: "Unauthorized" });
+  // Check authentication
+  if (!req.isAuthenticated()) {
+    console.error("[Learning Path] Unauthenticated request");
+    return res.status(401).json({ error: "Unauthorized - Please log in" });
+  }
+
+  const userId = req.user?.id;
+  if (!userId) {
+    console.error("[Learning Path] No user ID in authenticated session");
+    return res.status(401).json({ error: "Invalid session" });
   }
 
   try {
     const { moduleId, courseId, sectionId, timeSpent, completed, quizScore } = req.body;
-    const userId = parseInt(req.session.userId, 10);
 
     console.log("[Learning Path] Progress update request:", {
       userId,
@@ -61,7 +67,7 @@ router.post("/api/learning-path/progress", async (req, res) => {
             userId,
             moduleId: parseInt(moduleId, 10),
             courseId: parseInt(courseId, 10),
-            quizId: parseInt(moduleId, 10), // Using moduleId as quizId for now
+            quizId: parseInt(moduleId, 10),
             isCorrect: isQuizPassed,
             selectedAnswer: "quiz_completed",
             timeSpent: timeSpent || 0,
@@ -81,7 +87,7 @@ router.post("/api/learning-path/progress", async (req, res) => {
             score: quizScore,
             lastAccessed: new Date(),
             completedAt: isQuizPassed ? new Date() : null,
-            aiRecommendations: null // Initialize empty recommendations
+            aiRecommendations: null
           })
           .onConflictDoUpdate({
             target: [moduleProgress.userId, moduleProgress.moduleId, moduleProgress.sectionId],
@@ -117,7 +123,10 @@ router.post("/api/learning-path/progress", async (req, res) => {
         });
 
         console.log("[Learning Path] Transaction completed successfully:", result);
-        res.json({ success: true });
+        res.json({ 
+          success: true,
+          message: isQuizPassed ? "Quiz completed successfully!" : "Quiz submitted but did not pass threshold"
+        });
 
       } catch (dbError) {
         console.error("[Learning Path] Database operation failed:", dbError);

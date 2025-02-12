@@ -144,7 +144,14 @@ const Module1Quiz = () => {
     } else {
       setShowResult(true);
       const finalScore = score + (isCorrect ? 1 : 0);
-      handleQuizCompletion(finalScore, quizQuestions.length);
+      handleQuizCompletion(finalScore, quizQuestions.length).catch(error => {
+        console.error('Failed to complete quiz:', error);
+        toast({
+          title: "Error",
+          description: "Failed to save quiz progress. Please try again.",
+          variant: "destructive",
+        });
+      });
     }
   };
 
