@@ -24,23 +24,35 @@ export default function DoubleSpendDiagram() {
         },
       });
 
-      mermaid.init(undefined, diagramRef.current);
+      const diagram = `
+      sequenceDiagram
+          participant U as User
+          participant B as Blockchain Network
+          participant V as Validators
+
+          U->>B: Submit Transaction
+          B->>V: Check Transaction
+          V->>V: Verify No Previous Spend
+          Note over V: Consensus Process
+          V->>B: Confirm Valid
+          B->>U: Transaction Complete
+      `;
+
+      try {
+        mermaid.render('double-spend-diagram', diagram, (svgCode) => {
+          if (diagramRef.current) {
+            diagramRef.current.innerHTML = svgCode;
+          }
+        });
+      } catch (error) {
+        console.error('Error rendering Mermaid diagram:', error);
+      }
     }
   }, []);
 
   return (
-    <div className="my-8 bg-white p-4 rounded-lg shadow" ref={diagramRef}>
-      {`
-      sequenceDiagram
-          participant User
-          participant Network
-          participant Blockchain
-          User->>Network: Submit Transaction
-          Network->>Network: Verify No Previous Spend
-          Network->>Blockchain: Add to Block
-          Blockchain->>Network: Confirm Transaction
-          Network->>User: Transaction Complete
-      `}
+    <div className="my-8 bg-white p-4 rounded-lg shadow-lg">
+      <div ref={diagramRef} className="flex justify-center" />
     </div>
   );
 }
