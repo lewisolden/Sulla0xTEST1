@@ -56,6 +56,7 @@ import DigitalVsTraditionalSection from "@/pages/modules/module4/digital-vs-trad
 import TradingSimulator from "@/pages/trading-simulator";
 import GlossaryPage from "@/pages/glossary";
 import AIModule1 from "@/pages/ai/module1";
+import AIIntroduction from "@/pages/ai/module1/introduction";
 
 function ProtectedRoute({ component: Component, adminOnly = false, publicAccess = false, ...rest }: any) {
   const { user, isLoading } = useAuth();
@@ -92,6 +93,7 @@ function Router() {
       <Route path="/about" component={() => <ProtectedRoute component={About} publicAccess={true} />} />
       <Route path="/ai" component={() => <ProtectedRoute component={AIOverview} publicAccess={true} />} />
       <Route path="/ai/module1" component={() => <ProtectedRoute component={AIModule1} publicAccess={true} />} />
+      <Route path="/ai/module1/introduction" component={() => <ProtectedRoute component={AIIntroduction} publicAccess={true} />} />
 
       {/* Authentication routes */}
       <Route path="/login" component={AuthPage} />
