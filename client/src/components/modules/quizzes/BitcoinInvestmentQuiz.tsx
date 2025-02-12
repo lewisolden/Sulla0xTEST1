@@ -1,204 +1,148 @@
-import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { useProgress } from "@/context/progress-context";
-import { motion } from "framer-motion";
+import React, { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
 
 const questions = [
   {
-    id: "q1",
-    question: "What is considered a 'low-risk' way to invest in Bitcoin?",
-    options: {
-      0: "Trading with high leverage",
-      1: "Bitcoin ETFs and regulated investment products",
-      2: "Day trading on unregulated exchanges",
-      3: "Lending Bitcoin to anonymous borrowers"
-    },
-    correct: 1,
-    explanation: "Bitcoin ETFs and regulated investment products are considered lower risk because they're overseen by financial regulators and often come with institutional-grade security measures."
+    question: "What is a key characteristic of Bitcoin as an investment asset?",
+    options: [
+      "Low volatility and stable returns",
+      "High volatility with potential for significant gains or losses",
+      "Guaranteed returns similar to bonds",
+      "Regular dividend payments"
+    ],
+    correctAnswer: 1
   },
   {
-    id: "q2",
-    question: "Which of the following is a key characteristic that makes Bitcoin valuable as a store of value?",
-    options: {
-      0: "Unlimited supply",
-      1: "Centralized control",
-      2: "Fixed maximum supply of 21 million coins",
-      3: "Ability to be created at will"
-    },
-    correct: 2,
-    explanation: "Bitcoin's fixed maximum supply of 21 million coins is a key characteristic that makes it valuable as a store of value, similar to precious metals like gold."
+    question: "Which of the following is a recommended Bitcoin investment strategy?",
+    options: [
+      "Investing all savings at once",
+      "Dollar-cost averaging (DCA)",
+      "Day trading with leverage",
+      "Waiting for the price to drop to zero"
+    ],
+    correctAnswer: 1
   },
   {
-    id: "q3",
-    question: "Before investing in Bitcoin, what's the most important financial consideration?",
-    options: {
-      0: "Only invest what you can afford to lose",
-      1: "Borrow money to buy more Bitcoin",
-      2: "Invest all your savings",
-      3: "Ignore your current financial situation"
-    },
-    correct: 0,
-    explanation: "It's crucial to only invest what you can afford to lose in Bitcoin due to its volatile nature. This helps manage risk and protect your financial wellbeing."
+    question: "What is a Bitcoin ETF?",
+    options: [
+      "A digital wallet for storing Bitcoin",
+      "A mining pool for Bitcoin",
+      "An investment fund that tracks Bitcoin's price",
+      "A Bitcoin exchange platform"
+    ],
+    correctAnswer: 2
   },
   {
-    id: "q4",
-    question: "What advantage do Bitcoin ETFs offer to traditional investors?",
-    options: {
-      0: "Complete anonymity",
-      1: "Zero fees",
-      2: "Guaranteed returns",
-      3: "Familiar investment structure through regular brokerage accounts"
-    },
-    correct: 3,
-    explanation: "Bitcoin ETFs offer a familiar investment structure through regular brokerage accounts, making it easier for traditional investors to gain exposure to Bitcoin without managing private keys or dealing with cryptocurrency exchanges."
+    question: "Which factor should NOT be considered when investing in Bitcoin?",
+    options: [
+      "Your risk tolerance",
+      "Market sentiment",
+      "Technical analysis",
+      "Guaranteed quick profits"
+    ],
+    correctAnswer: 3
+  },
+  {
+    question: "What is the primary purpose of holding Bitcoin long-term?",
+    options: [
+      "Store of value and potential appreciation",
+      "Daily trading profits",
+      "Mining rewards",
+      "Network validation rights"
+    ],
+    correctAnswer: 0
   }
 ];
 
-export default function BitcoinInvestmentQuiz() {
+interface Props {
+  onComplete?: () => void;
+}
+
+export const BitcoinInvestmentQuiz: React.FC<Props> = ({ onComplete }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-  const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
-  const [showExplanation, setShowExplanation] = useState(false);
-  const { updateProgress } = useProgress();
+  const [showResults, setShowResults] = useState(false);
+  const { toast } = useToast();
 
-  const handleAnswerSelect = (optionIndex: number) => {
-    setSelectedAnswer(optionIndex);
-    setShowExplanation(true);
+  const handleAnswerSelect = (value: string) => {
+    setSelectedAnswer(parseInt(value));
   };
 
-  const moveToNextQuestion = () => {
-    const isCorrect = selectedAnswer === questions[currentQuestion].correct;
-    
-    if (isCorrect) {
-      setScore(prev => prev + 1);
+  const handleNextQuestion = () => {
+    if (selectedAnswer === null) {
+      toast({
+        title: "Please select an answer",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (selectedAnswer === questions[currentQuestion].correctAnswer) {
+      setScore(score + 1);
     }
 
     if (currentQuestion < questions.length - 1) {
-      setCurrentQuestion(prev => prev + 1);
+      setCurrentQuestion(currentQuestion + 1);
       setSelectedAnswer(null);
-      setShowExplanation(false);
     } else {
-      setShowResult(true);
-      const passThreshold = questions.length * 0.6;
-      updateProgress(2, 'bitcoin-investment-quiz', score >= passThreshold);
+      setShowResults(true);
+      if (onComplete) {
+        onComplete();
+      }
     }
   };
 
-  const restartQuiz = () => {
-    setCurrentQuestion(0);
-    setSelectedAnswer(null);
-    setShowResult(false);
-    setScore(0);
-    setShowExplanation(false);
-  };
-
-  if (showResult) {
+  if (showResults) {
     return (
-      <Card>
-        <CardContent className="p-8 text-center">
-          <h2 className="text-3xl font-bold mb-4 text-blue-800">
-            Quiz Completed!
-          </h2>
-          <p className="text-xl mb-4">
-            You scored {score} out of {questions.length}
-          </p>
-          {score >= questions.length * 0.6 ? (
-            <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-4">
-              <p className="text-green-700">
-                🎉 Congratulations! You've passed the Bitcoin Investment quiz!
-              </p>
-            </div>
-          ) : (
-            <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4">
-              <p className="text-red-700">
-                You didn't pass this time. Review the content and try again.
-              </p>
-            </div>
-          )}
-          <Button 
-            onClick={restartQuiz}
-            variant="outline"
-            className="mt-4"
-          >
-            Restart Quiz
-          </Button>
-        </CardContent>
+      <Card className="p-6">
+        <h2 className="text-2xl font-bold mb-4">Quiz Complete!</h2>
+        <p className="text-lg mb-4">
+          You scored {score} out of {questions.length} questions correctly.
+        </p>
+        <p className="text-sm text-gray-600">
+          {score >= 4 
+            ? "Excellent! You have a strong understanding of Bitcoin investment concepts."
+            : score >= 3
+            ? "Good job! Keep learning about Bitcoin investment strategies."
+            : "Consider reviewing the material to better understand Bitcoin investments."}
+        </p>
       </Card>
     );
   }
 
-  const currentQuizQuestion = questions[currentQuestion];
-
   return (
-    <Card>
-      <CardContent className="p-8">
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-blue-800 mb-4">
-            Bitcoin Investment Quiz
-            <span className="text-sm ml-4 text-gray-600">
-              Question {currentQuestion + 1} of {questions.length}
-            </span>
-          </h2>
+    <Card className="p-6">
+      <h2 className="text-xl font-semibold mb-4">
+        Question {currentQuestion + 1} of {questions.length}
+      </h2>
+      <p className="mb-6">{questions[currentQuestion].question}</p>
 
-          <div className="bg-blue-50 rounded-lg p-4 mb-6">
-            <p className="text-lg text-gray-700">
-              {currentQuizQuestion.question}
-            </p>
+      <RadioGroup
+        value={selectedAnswer?.toString()}
+        onValueChange={handleAnswerSelect}
+        className="space-y-4"
+      >
+        {questions[currentQuestion].options.map((option, index) => (
+          <div key={index} className="flex items-center space-x-2">
+            <RadioGroupItem value={index.toString()} id={`option-${index}`} />
+            <Label htmlFor={`option-${index}`}>{option}</Label>
           </div>
+        ))}
+      </RadioGroup>
 
-          <div className="grid gap-4">
-            {Object.entries(currentQuizQuestion.options).map(([key, value], index) => (
-              <Button
-                key={key}
-                onClick={() => handleAnswerSelect(parseInt(key))}
-                className={`
-                  w-full p-4 h-auto whitespace-normal text-left justify-start
-                  ${selectedAnswer === null 
-                    ? 'bg-gray-100 hover:bg-blue-100 text-gray-700' 
-                    : index === currentQuizQuestion.correct 
-                      ? 'bg-green-200 text-gray-700' 
-                      : selectedAnswer === index 
-                        ? 'bg-red-200 text-gray-700' 
-                        : 'bg-gray-100 text-gray-700'}
-                `}
-                disabled={selectedAnswer !== null}
-                variant="ghost"
-              >
-                {value}
-              </Button>
-            ))}
-          </div>
-
-          {showExplanation && (
-            <div className={`
-              mt-6 p-4 rounded-lg
-              ${selectedAnswer === currentQuizQuestion.correct 
-                ? 'bg-green-100 border-l-4 border-green-500' 
-                : 'bg-red-100 border-l-4 border-red-500'}
-            `}>
-              <h3 className="font-bold mb-2">
-                {selectedAnswer === currentQuizQuestion.correct 
-                  ? '✅ Correct!' 
-                  : '❌ Incorrect'}
-              </h3>
-              <p>{currentQuizQuestion.explanation}</p>
-            </div>
-          )}
-
-          {selectedAnswer !== null && (
-            <Button
-              onClick={moveToNextQuestion}
-              className="mt-6 w-full"
-            >
-              {currentQuestion < questions.length - 1 
-                ? 'Next Question' 
-                : 'Finish Quiz'}
-            </Button>
-          )}
-        </div>
-      </CardContent>
+      <Button
+        onClick={handleNextQuestion}
+        className="mt-6"
+      >
+        {currentQuestion === questions.length - 1 ? "Finish Quiz" : "Next Question"}
+      </Button>
     </Card>
   );
-}
+};
+
+export default BitcoinInvestmentQuiz;
