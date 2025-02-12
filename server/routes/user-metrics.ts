@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { db } from "@db";
 import { courseEnrollments, moduleProgress, userQuizResponses, userAchievements } from "@db/schema";
-import { eq, and, count, sum, desc } from "drizzle-orm";
+import { eq, and, count, sum, desc, sql } from "drizzle-orm";
 
 const router = Router();
 
@@ -13,15 +13,19 @@ router.get("/api/user/metrics", async (req, res) => {
   try {
     const userId = req.user.id;
 
-    // Fetch all the metrics in parallel
+    // Fetch all metrics in parallel for better performance
     const [
-      quizzes,
-      badges,
-      learningTime,
+      quizMetrics,
+      badgeCount,
+      learningTimeResult,
+      moduleProgressData,
       courseMetrics
     ] = await Promise.all([
-      // Get completed quizzes count
-      db.select({ count: count() })
+      // Get quiz metrics (completed count and average score)
+      db.select({
+        completed: count(),
+        totalCorrect: count(userQuizResponses.isCorrect)
+      })
         .from(userQuizResponses)
         .where(eq(userQuizResponses.userId, userId)),
 
@@ -37,46 +41,46 @@ router.get("/api/user/metrics", async (req, res) => {
         .from(moduleProgress)
         .where(eq(moduleProgress.userId, userId)),
 
+      // Get module progress for learning streak calculation
+      db.query.moduleProgress.findMany({
+        where: eq(moduleProgress.userId, userId),
+        columns: {
+          lastAccessed: true,
+        },
+        orderBy: [desc(moduleProgress.lastAccessed)],
+        limit: 30, // Check last 30 days for streak
+      }),
+
       // Get course-specific metrics
       db.query.courseEnrollments.findMany({
         where: eq(courseEnrollments.userId, userId),
         columns: {
           courseId: true,
           progress: true,
+          lastAccessedAt: true
         }
       })
     ]);
 
-    // Calculate learning streak from module progress
-    const recentActivity = await db.query.moduleProgress.findMany({
-      where: eq(moduleProgress.userId, userId),
-      columns: {
-        lastAccessed: true,
-      },
-      orderBy: (mp) => [desc(mp.lastAccessed)],
-      limit: 7,
-    });
-
-    // Calculate streak based on consecutive days of activity
+    // Calculate learning streak
     let streak = 0;
-    if (recentActivity.length > 0) {
-      const today = new Date();
-      const activityDates = new Set(
-        recentActivity.map(a => 
-          new Date(a.lastAccessed).toISOString().split('T')[0]
-        )
-      );
+    const today = new Date();
+    const activityDates = new Set(
+      moduleProgressData
+        .filter(mp => mp.lastAccessed)
+        .map(mp => new Date(mp.lastAccessed).toISOString().split('T')[0])
+    );
 
-      for (let i = 0; i < 7; i++) {
-        const date = new Date(today);
-        date.setDate(date.getDate() - i);
-        const dateStr = date.toISOString().split('T')[0];
+    // Check consecutive days backwards from today
+    for (let i = 0; i < 30; i++) {
+      const date = new Date(today);
+      date.setDate(date.getDate() - i);
+      const dateStr = date.toISOString().split('T')[0];
 
-        if (activityDates.has(dateStr)) {
-          streak++;
-        } else if (streak > 0) {
-          break;
-        }
+      if (activityDates.has(dateStr)) {
+        streak++;
+      } else if (streak > 0) {
+        break;
       }
     }
 
@@ -86,16 +90,49 @@ router.get("/api/user/metrics", async (req, res) => {
         cm.courseId,
         {
           progress: cm.progress || 0,
-          timeSpent: 0, 
-          averageQuizScore: 0, 
+          timeSpent: 0, // Will be calculated from module_progress
+          averageQuizScore: 0, // Will be calculated from quiz_responses
         }
       ])
     );
 
+    // Calculate per-course metrics
+    for (const courseId of Object.keys(transformedCourseMetrics)) {
+      const [courseQuizzes, courseTime] = await Promise.all([
+        // Get course quiz performance
+        db.select({
+          correct: count(userQuizResponses.isCorrect),
+          total: count()
+        })
+          .from(userQuizResponses)
+          .where(and(
+            eq(userQuizResponses.userId, userId),
+            sql`quiz_id IN (SELECT id FROM quizzes WHERE module_id IN (SELECT jsonb_array_elements_text(modules)::int FROM courses WHERE id = ${courseId}))`
+          )),
+
+        // Get course time spent
+        db.select({
+          total: sum(moduleProgress.timeSpent).mapWith(Number)
+        })
+          .from(moduleProgress)
+          .where(and(
+            eq(moduleProgress.userId, userId),
+            sql`module_id IN (SELECT jsonb_array_elements_text(modules)::int FROM courses WHERE id = ${courseId})`
+          ))
+      ]);
+
+      transformedCourseMetrics[courseId] = {
+        ...transformedCourseMetrics[courseId],
+        timeSpent: courseTime[0]?.total || 0,
+        averageQuizScore: courseQuizzes[0]?.total ? 
+          Math.round((courseQuizzes[0].correct / courseQuizzes[0].total) * 100) : 0
+      };
+    }
+
     res.json({
-      completedQuizzes: quizzes[0]?.count || 0,
-      earnedBadges: badges[0]?.count || 0,
-      totalLearningMinutes: learningTime[0]?.totalMinutes || 0,
+      completedQuizzes: quizMetrics[0]?.completed || 0,
+      earnedBadges: badgeCount[0]?.count || 0,
+      totalLearningMinutes: learningTimeResult[0]?.totalMinutes || 0,
       learningStreak: streak,
       courseMetrics: transformedCourseMetrics
     });
