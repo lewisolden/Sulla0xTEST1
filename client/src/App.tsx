@@ -22,6 +22,18 @@ import AdminAnalytics from "@/pages/admin/analytics";
 import Navigation from "@/components/layout/navigation";
 import Footer from "@/components/layout/footer";
 
+// AI Module imports
+import AIModule1 from "@/pages/ai/module1";
+import AIIntroduction from "@/pages/ai/module1/introduction";
+import AIHowItWorks from "@/pages/ai/module1/how-ai-works";
+import AIApplications from "@/pages/ai/module1/ai-applications";
+import AIMLBasics from "@/pages/ai/module1/machine-learning-basics";
+import AINeuralNetworks from "@/pages/ai/module1/neural-networks";
+import AIModule1Quiz from "@/pages/ai/module1/quiz";
+import AIModule2 from "@/pages/ai/module2";
+import NaturalLanguageProcessing from "@/pages/ai/module2/natural-language-processing";
+import ComputerVision from "@/pages/ai/module2/computer-vision";
+
 // Module 1 Routes
 import Module1Landing from "@/pages/modules/module1";
 import Module1Quiz from "@/pages/modules/module1/quiz";
@@ -35,18 +47,6 @@ import CryptographySection from "@/pages/modules/module1/cryptography";
 import SecuritySection from "@/pages/modules/module1/security";
 import PracticalApplicationsSection from "@/pages/modules/module1/applications";
 import GettingStartedSection from "@/pages/modules/module1/getting-started";
-
-// AI Module imports
-import AIModule1 from "@/pages/ai/module1";
-import AIIntroduction from "@/pages/ai/module1/introduction";
-import AIHowItWorks from "@/pages/ai/module1/how-ai-works";
-import AIApplications from "@/pages/ai/module1/ai-applications";
-import AIMLBasics from "@/pages/ai/module1/machine-learning-basics";
-import AINeuralNetworks from "@/pages/ai/module1/neural-networks";
-import AIModule1Quiz from "@/pages/ai/module1/quiz";
-import AIModule2 from "@/pages/ai/module2";
-import NaturalLanguageProcessing from "@/pages/ai/module2/natural-language-processing";
-import ComputerVision from "@/pages/ai/module2/computer-vision";
 
 // Module 2 Routes
 import Module2Landing from "@/pages/modules/module2";
@@ -70,7 +70,6 @@ import TradingSimulator from "@/pages/trading-simulator";
 import GlossaryPage from "@/pages/glossary";
 
 
-
 function ProtectedRoute({ component: Component, adminOnly = false, publicAccess = false, ...rest }: any) {
   const { user, isLoading } = useAuth();
 
@@ -87,7 +86,6 @@ function ProtectedRoute({ component: Component, adminOnly = false, publicAccess 
     return null;
   }
 
-  // Check if the user has the required role for admin routes
   const userRole = (user as any).role;
   if (adminOnly && userRole !== 'admin') {
     window.location.href = "/";
@@ -112,7 +110,6 @@ function Router() {
       <Route path="/ai/module1/machine-learning-basics" component={() => <ProtectedRoute component={AIMLBasics} publicAccess={true} />} />
       <Route path="/ai/module1/neural-networks" component={() => <ProtectedRoute component={AINeuralNetworks} publicAccess={true} />} />
       <Route path="/ai/module1/quiz" component={() => <ProtectedRoute component={AIModule1Quiz} publicAccess={true} />} />
-      {/* Add AI Module 2 route */}
       <Route path="/ai/module2" component={() => <ProtectedRoute component={AIModule2} publicAccess={true} />} />
       <Route path="/ai/module2/natural-language-processing" component={() => <ProtectedRoute component={NaturalLanguageProcessing} publicAccess={true} />} />
       <Route path="/ai/module2/computer-vision" component={() => <ProtectedRoute component={ComputerVision} publicAccess={true} />} />
@@ -128,13 +125,13 @@ function Router() {
       <ProtectedRoute path="/admin/analytics" component={AdminAnalytics} adminOnly />
 
       {/* Protected routes */}
-      <ProtectedRoute path="/account" component={AccountPage} />
-      <ProtectedRoute path="/games" component={Games} />
-      <ProtectedRoute path="/achievements" component={Achievements} />
-      <ProtectedRoute path="/deck" component={Deck} />
-      <ProtectedRoute path="/wallet-simulator" component={WalletSimulator} />
-      <ProtectedRoute path="/trading-simulator" component={TradingSimulator} />
-      <ProtectedRoute path="/glossary" component={GlossaryPage} />
+      <Route path="/account" component={() => <ProtectedRoute component={AccountPage} />} />
+      <Route path="/games" component={() => <ProtectedRoute component={Games} />} />
+      <Route path="/achievements" component={() => <ProtectedRoute component={Achievements} />} />
+      <Route path="/deck" component={() => <ProtectedRoute component={Deck} />} />
+      <Route path="/wallet-simulator" component={() => <ProtectedRoute component={WalletSimulator} />} />
+      <Route path="/trading-simulator" component={() => <ProtectedRoute component={TradingSimulator} />} />
+      <Route path="/glossary" component={() => <ProtectedRoute component={GlossaryPage} />} />
 
       {/* Module 1 Routes */}
       <ProtectedRoute path="/modules/module1" component={Module1Landing} />
