@@ -46,6 +46,7 @@ import AINeuralNetworks from "@/pages/ai/module1/neural-networks";
 import AIModule1Quiz from "@/pages/ai/module1/quiz";
 import AIModule2 from "@/pages/ai/module2";
 import NaturalLanguageProcessing from "@/pages/ai/module2/natural-language-processing";
+import ComputerVision from "@/pages/ai/module2/computer-vision";
 
 // Module 2 Routes
 import Module2Landing from "@/pages/modules/module2";
@@ -114,6 +115,7 @@ function Router() {
       {/* Add AI Module 2 route */}
       <Route path="/ai/module2" component={() => <ProtectedRoute component={AIModule2} publicAccess={true} />} />
       <Route path="/ai/module2/natural-language-processing" component={() => <ProtectedRoute component={NaturalLanguageProcessing} publicAccess={true} />} />
+      <Route path="/ai/module2/computer-vision" component={() => <ProtectedRoute component={ComputerVision} publicAccess={true} />} />
 
       {/* Authentication routes */}
       <Route path="/login" component={AuthPage} />
