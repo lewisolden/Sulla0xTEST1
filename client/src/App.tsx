@@ -41,6 +41,8 @@ import DeepLearning from "@/pages/ai/module3/deep-learning";
 import ReinforcementLearning from "@/pages/ai/module3/reinforcement-learning";
 import GenerativeAI from "@/pages/ai/module3/generative-ai";
 import FutureAI from "@/pages/ai/module3/future-ai";
+import AIModule3Quiz from "@/pages/ai/module3/quiz";
+
 
 // Module 1 Routes
 import Module1Landing from "@/pages/modules/module1";
@@ -130,6 +132,7 @@ function Router() {
       <Route path="/ai/module3/reinforcement-learning" component={() => <ProtectedRoute component={ReinforcementLearning} publicAccess={true} />} />
       <Route path="/ai/module3/generative-ai" component={() => <ProtectedRoute component={GenerativeAI} publicAccess={true} />} />
       <Route path="/ai/module3/future-ai" component={() => <ProtectedRoute component={FutureAI} publicAccess={true} />} />
+      <Route path="/ai/module3/quiz" component={() => <ProtectedRoute component={AIModule3Quiz} publicAccess={true} />} />
 
 
       {/* Authentication routes */}
