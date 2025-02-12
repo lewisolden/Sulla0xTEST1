@@ -197,7 +197,7 @@ export default function AIApplications() {
           score: Math.round((score / questions.length) * 100),
           totalSections: 3,
           currentSection: 3,
-          nextModule: null
+          nextModule: 'module1-quiz'
         });
       }
     }, 2000);
@@ -334,11 +334,12 @@ export default function AIApplications() {
                     >
                       Back to Content
                     </Button>
-                    <Link href="/modules/module1/quiz">
+                    <Link href="/ai/module1/quiz">
                       <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
                         Take Module Quiz <ArrowRight className="h-4 w-4" />
                       </Button>
                     </Link>
+
                   </div>
                 </motion.div>
               )}
@@ -506,9 +507,9 @@ export default function AIApplications() {
                 >
                   Take Topic Quiz
                 </Button>
-                <Link href="/ai/module1">
+                <Link href="/ai/module1/quiz">
                   <Button className="gap-2">
-                    Next Topic <ArrowRight className="h-4 w-4" />
+                    Module Quiz <ArrowRight className="h-4 w-4" />
                   </Button>
                 </Link>
               </div>
