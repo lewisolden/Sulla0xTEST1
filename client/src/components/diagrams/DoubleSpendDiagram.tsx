@@ -24,23 +24,27 @@ export default function DoubleSpendDiagram() {
         },
       });
 
-      mermaid.init(undefined, diagramRef.current);
+      const diagram = `sequenceDiagram
+    participant User
+    participant Network
+    participant Blockchain
+    User-&gt;Network: Submit Transaction
+    Network-&gt;Network: Verify No Previous Spend
+    Network-&gt;Blockchain: Add to Block
+    Blockchain-&gt;Network: Confirm Transaction
+    Network-&gt;User: Transaction Complete`;
+
+      mermaid.render('doublespend-diagram', diagram).then(({ svg }) => {
+        if (diagramRef.current) {
+          diagramRef.current.innerHTML = svg;
+        }
+      });
     }
   }, []);
 
   return (
-    <div className="my-8 bg-white p-4 rounded-lg shadow" ref={diagramRef}>
-      {`
-      sequenceDiagram
-          participant User
-          participant Network
-          participant Blockchain
-          User->>Network: Submit Transaction
-          Network->>Network: Verify No Previous Spend
-          Network->>Blockchain: Add to Block
-          Blockchain->>Network: Confirm Transaction
-          Network->>User: Transaction Complete
-      `}
+    <div className="my-8 bg-white p-4 rounded-lg shadow">
+      <div ref={diagramRef} className="mermaid-diagram" />
     </div>
   );
 }

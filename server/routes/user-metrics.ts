@@ -90,8 +90,8 @@ router.get("/api/user/metrics", async (req, res) => {
         cm.courseId,
         {
           progress: cm.progress || 0,
-          timeSpent: 0, // Will be calculated from module_progress
-          averageQuizScore: 0, // Will be calculated from quiz_responses
+          timeSpent: 0, // Will be calculated below
+          averageQuizScore: 0, // Will be calculated below
         }
       ])
     );
@@ -107,7 +107,14 @@ router.get("/api/user/metrics", async (req, res) => {
           .from(userQuizResponses)
           .where(and(
             eq(userQuizResponses.userId, userId),
-            sql`quiz_id IN (SELECT id FROM quizzes WHERE module_id IN (SELECT jsonb_array_elements_text(modules)::int FROM courses WHERE id = ${courseId}))`
+            sql`quiz_id IN (
+              SELECT id FROM quizzes 
+              WHERE module_id IN (
+                SELECT CAST(jsonb_array_elements_text(modules) AS INTEGER) 
+                FROM courses 
+                WHERE id = ${courseId}
+              )
+            )`
           )),
 
         // Get course time spent
@@ -117,7 +124,11 @@ router.get("/api/user/metrics", async (req, res) => {
           .from(moduleProgress)
           .where(and(
             eq(moduleProgress.userId, userId),
-            sql`module_id IN (SELECT jsonb_array_elements_text(modules)::int FROM courses WHERE id = ${courseId})`
+            sql`module_id IN (
+              SELECT CAST(jsonb_array_elements_text(modules) AS INTEGER)
+              FROM courses 
+              WHERE id = ${courseId}
+            )`
           ))
       ]);
 
