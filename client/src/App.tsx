@@ -60,6 +60,7 @@ import AIIntroduction from "@/pages/ai/module1/introduction";
 import AIHowItWorks from "@/pages/ai/module1/how-ai-works";
 import AIApplications from "@/pages/ai/module1/ai-applications";
 import AIMLBasics from "@/pages/ai/module1/machine-learning-basics";
+import AINeuralNetworks from "@/pages/ai/module1/neural-networks";
 
 function ProtectedRoute({ component: Component, adminOnly = false, publicAccess = false, ...rest }: any) {
   const { user, isLoading } = useAuth();
@@ -100,6 +101,7 @@ function Router() {
       <Route path="/ai/module1/how-ai-works" component={() => <ProtectedRoute component={AIHowItWorks} publicAccess={true} />} />
       <Route path="/ai/module1/ai-applications" component={() => <ProtectedRoute component={AIApplications} publicAccess={true} />} />
       <Route path="/ai/module1/machine-learning-basics" component={() => <ProtectedRoute component={AIMLBasics} publicAccess={true} />} />
+      <Route path="/ai/module1/neural-networks" component={() => <ProtectedRoute component={AINeuralNetworks} publicAccess={true} />} />
 
       {/* Authentication routes */}
       <Route path="/login" component={AuthPage} />

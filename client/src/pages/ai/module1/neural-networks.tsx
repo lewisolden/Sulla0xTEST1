@@ -8,18 +8,17 @@ import {
   ArrowLeft,
   ArrowRight,
   Brain,
-  Database,
-  GitBranch,
   Network,
-  Target,
-  TrendingUp,
+  Layers,
+  GitBranch,
+  Activity,
   Check,
   X
 } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 
-// Algorithm Card Component
-const AlgorithmCard = ({
+// Neural Network Layer Card Component
+const LayerCard = ({
   title,
   description,
   icon: Icon,
@@ -76,7 +75,7 @@ const AlgorithmCard = ({
   );
 };
 
-export default function MachineLearningBasics() {
+export default function NeuralNetworks() {
   useScrollTop();
   const [showQuiz, setShowQuiz] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -91,37 +90,37 @@ export default function MachineLearningBasics() {
 
   const questions = [
     {
-      question: "What is Machine Learning?",
+      question: "What is a neural network?",
       options: [
-        "A programming language",
-        "A type of computer hardware",
-        "A method of teaching computers to learn from data",
-        "A database management system"
+        "A computer networking protocol",
+        "A biological brain structure",
+        "A machine learning model inspired by the human brain",
+        "A type of computer hardware"
       ],
       correct: 2,
-      explanation: "Machine Learning is a method of data analysis that automates analytical model building, allowing computers to learn and improve from experience without being explicitly programmed."
+      explanation: "Neural networks are machine learning models inspired by the structure and function of biological neural networks in the human brain."
     },
     {
-      question: "Which of the following is NOT a type of machine learning?",
+      question: "Which of these is NOT a typical layer in a neural network?",
       options: [
-        "Supervised Learning",
-        "Unsupervised Learning",
-        "Manual Learning",
-        "Reinforcement Learning"
+        "Input Layer",
+        "Hidden Layer",
+        "Storage Layer",
+        "Output Layer"
       ],
       correct: 2,
-      explanation: "Manual Learning is not a type of machine learning. The main types are Supervised Learning, Unsupervised Learning, and Reinforcement Learning."
+      explanation: "Neural networks typically consist of input layers, hidden layers, and output layers. Storage layers are not a standard component."
     },
     {
-      question: "What is the primary purpose of supervised learning?",
+      question: "What is the purpose of activation functions in neural networks?",
       options: [
-        "To find hidden patterns in unlabeled data",
-        "To learn from trial and error",
-        "To predict outputs based on labeled training data",
-        "To create random data patterns"
+        "To store data",
+        "To introduce non-linearity",
+        "To connect to the internet",
+        "To save the model"
       ],
-      correct: 2,
-      explanation: "Supervised learning uses labeled training data to learn patterns and make predictions on new, unseen data based on those patterns."
+      correct: 1,
+      explanation: "Activation functions introduce non-linearity into the network, allowing it to learn complex patterns and relationships in the data."
     }
   ];
 
@@ -149,12 +148,12 @@ export default function MachineLearningBasics() {
         setShowResults(true);
         updateProgress({
           moduleId: 'ai-module1',
-          sectionId: 'machine-learning-basics',
+          sectionId: 'neural-networks',
           completed: true,
           score: Math.round((score / questions.length) * 100),
           totalSections: 5,
-          currentSection: 4,
-          nextModule: 'neural-networks'
+          currentSection: 5,
+          nextModule: 'module1-quiz'
         });
       }
     }, 2000);
@@ -187,7 +186,9 @@ export default function MachineLearningBasics() {
                     <div className="w-full bg-gray-200 h-2 rounded-full">
                       <div
                         className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                        style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
+                        style={{
+                          width: `${((currentQuestion + 1) / questions.length) * 100}%`,
+                        }}
                       />
                     </div>
                   </div>
@@ -270,7 +271,7 @@ export default function MachineLearningBasics() {
                   </p>
                   <p className="text-gray-600 mb-6">
                     {score === questions.length
-                      ? "Perfect score! You've mastered the basics of Machine Learning!"
+                      ? "Perfect score! You've mastered Neural Networks!"
                       : "Great effort! Review the content and try again to improve your score."}
                   </p>
                   <div className="flex justify-center gap-4">
@@ -285,9 +286,9 @@ export default function MachineLearningBasics() {
                     >
                       Back to Content
                     </Button>
-                    <Link href="/ai/module1/neural-networks">
+                    <Link href="/ai/module1/quiz">
                       <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
-                        Next Topic: Neural Networks <ArrowRight className="h-4 w-4" />
+                        Take Module Quiz <ArrowRight className="h-4 w-4" />
                       </Button>
                     </Link>
                   </div>
@@ -319,9 +320,9 @@ export default function MachineLearningBasics() {
               transition={{ duration: 0.5 }}
             >
               <div className="flex items-center gap-4 mb-6">
-                <Brain className="h-10 w-10 text-blue-600" />
+                <Network className="h-10 w-10 text-blue-600" />
                 <h1 className="text-3xl font-bold text-blue-800">
-                  Machine Learning Basics
+                  Neural Networks
                 </h1>
               </div>
 
@@ -333,10 +334,10 @@ export default function MachineLearningBasics() {
                   className="mb-8"
                 >
                   <h2 className="text-2xl font-semibold text-blue-700 mb-4">
-                    Understanding Machine Learning
+                    Understanding Neural Networks
                   </h2>
                   <p className="text-gray-700 mb-6">
-                    Machine Learning is a subset of artificial intelligence that enables systems to learn and improve from experience. Unlike traditional programming where rules are explicitly defined, machine learning algorithms can learn patterns from data and make decisions with minimal human intervention.
+                    Neural networks are computing systems inspired by biological neural networks in human brains. They consist of interconnected nodes (neurons) organized in layers that can learn patterns from data.
                   </p>
                 </motion.section>
 
@@ -347,54 +348,54 @@ export default function MachineLearningBasics() {
                   className="mb-8"
                 >
                   <h2 className="text-2xl font-semibold text-blue-700 mb-4">
-                    Types of Machine Learning
+                    Network Architecture
                   </h2>
                   <div className="grid md:grid-cols-2 gap-6">
-                    <AlgorithmCard
-                      title="Supervised Learning"
-                      description="Learning from labeled data to make predictions"
-                      icon={Target}
+                    <LayerCard
+                      title="Input Layer"
+                      description="Receives and processes initial data"
+                      icon={Network}
                       examples={[
-                        "Image Classification",
-                        "Spam Detection",
-                        "Price Prediction",
-                        "Disease Diagnosis"
+                        "Image pixels",
+                        "Text embeddings",
+                        "Numerical features",
+                        "Sensor data"
                       ]}
                       delay={0.6}
                     />
-                    <AlgorithmCard
-                      title="Unsupervised Learning"
-                      description="Finding patterns in unlabeled data"
-                      icon={Database}
+                    <LayerCard
+                      title="Hidden Layers"
+                      description="Processes and transforms data through multiple stages"
+                      icon={Layers}
                       examples={[
-                        "Customer Segmentation",
-                        "Anomaly Detection",
-                        "Pattern Recognition",
-                        "Feature Learning"
+                        "Feature extraction",
+                        "Pattern recognition",
+                        "Representation learning",
+                        "Data transformation"
                       ]}
                       delay={0.7}
                     />
-                    <AlgorithmCard
-                      title="Reinforcement Learning"
-                      description="Learning through trial and error interactions"
-                      icon={GitBranch}
+                    <LayerCard
+                      title="Output Layer"
+                      description="Produces final predictions or outputs"
+                      icon={Activity}
                       examples={[
-                        "Game AI",
-                        "Robot Navigation",
-                        "Resource Management",
-                        "Autonomous Systems"
+                        "Classification results",
+                        "Regression values",
+                        "Generated content",
+                        "Decision scores"
                       ]}
                       delay={0.8}
                     />
-                    <AlgorithmCard
-                      title="Deep Learning"
-                      description="Learning through neural networks with multiple layers"
-                      icon={Network}
+                    <LayerCard
+                      title="Activation Functions"
+                      description="Introduces non-linearity into the network"
+                      icon={GitBranch}
                       examples={[
-                        "Natural Language Processing",
-                        "Computer Vision",
-                        "Speech Recognition",
-                        "Generative AI"
+                        "ReLU",
+                        "Sigmoid",
+                        "Tanh",
+                        "Softmax"
                       ]}
                       delay={0.9}
                     />
@@ -408,34 +409,26 @@ export default function MachineLearningBasics() {
                   className="mb-8"
                 >
                   <h2 className="text-2xl font-semibold text-blue-700 mb-4">
-                    The Machine Learning Process
+                    Training Process
                   </h2>
                   <div className="bg-blue-50 rounded-lg p-6">
                     <ol className="space-y-4">
                       {[
                         {
-                          title: "Data Collection",
-                          desc: "Gathering relevant data for training"
+                          title: "Forward Propagation",
+                          desc: "Data flows through the network from input to output"
                         },
                         {
-                          title: "Data Preparation",
-                          desc: "Cleaning and preprocessing the data"
+                          title: "Loss Calculation",
+                          desc: "Measuring prediction errors"
                         },
                         {
-                          title: "Model Selection",
-                          desc: "Choosing appropriate algorithms"
+                          title: "Backpropagation",
+                          desc: "Error signals flow backwards to update weights"
                         },
                         {
-                          title: "Training",
-                          desc: "Teaching the model using training data"
-                        },
-                        {
-                          title: "Evaluation",
-                          desc: "Testing the model's performance"
-                        },
-                        {
-                          title: "Deployment",
-                          desc: "Implementing the model in real-world applications"
+                          title: "Weight Updates",
+                          desc: "Network parameters are adjusted to minimize errors"
                         }
                       ].map((step, index) => (
                         <motion.li
@@ -461,50 +454,6 @@ export default function MachineLearningBasics() {
                     </ol>
                   </div>
                 </motion.section>
-
-                <motion.section
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1.8 }}
-                  className="mb-8"
-                >
-                  <h2 className="text-2xl font-semibold text-blue-700 mb-4">
-                    Applications and Impact
-                  </h2>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    {[
-                      {
-                        title: "Healthcare",
-                        desc: "Disease prediction and medical imaging analysis"
-                      },
-                      {
-                        title: "Finance",
-                        desc: "Fraud detection and algorithmic trading"
-                      },
-                      {
-                        title: "Transportation",
-                        desc: "Autonomous vehicles and traffic prediction"
-                      },
-                      {
-                        title: "Entertainment",
-                        desc: "Content recommendations and gaming AI"
-                      }
-                    ].map((item, index) => (
-                      <motion.div
-                        key={item.title}
-                        className="bg-blue-50 p-4 rounded-lg"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 2 + index * 0.2 }}
-                      >
-                        <h3 className="font-semibold text-blue-800 mb-2">
-                          {item.title}
-                        </h3>
-                        <p className="text-gray-700 text-sm">{item.desc}</p>
-                      </motion.div>
-                    ))}
-                  </div>
-                </motion.section>
               </div>
 
               <div className="mt-8 flex justify-between items-center">
@@ -514,9 +463,9 @@ export default function MachineLearningBasics() {
                 >
                   Take Topic Quiz
                 </Button>
-                <Link href="/ai/module1/neural-networks">
+                <Link href="/ai/module1/quiz">
                   <Button className="gap-2">
-                    Next Topic: Neural Networks <ArrowRight className="h-4 w-4" />
+                    Module Quiz <ArrowRight className="h-4 w-4" />
                   </Button>
                 </Link>
               </div>
