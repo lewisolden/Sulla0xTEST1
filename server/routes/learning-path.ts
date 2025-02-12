@@ -1,26 +1,11 @@
 import { Router } from "express";
 import { db } from "@db";
-import { moduleProgress } from "@db/schema";
-import { sql } from "drizzle-orm";
+import { moduleProgress, userQuizResponses } from "@db/schema";
+import { sql, eq, and } from "drizzle-orm";
 import OpenAI from "openai";
-import { eq } from 'drizzle-orm';
-
 
 const router = Router();
 const openai = new OpenAI();
-
-interface LearningRecommendation {
-  nextTopic: string;
-  reason: string;
-  suggestedResources: string[];
-  difficulty: "beginner" | "intermediate" | "advanced";
-}
-
-interface QuizResult {
-  topicId: string;
-  score: number;
-  courseId: number;
-}
 
 // Update module progress
 router.post("/api/learning-path/progress", async (req, res) => {
@@ -29,27 +14,73 @@ router.post("/api/learning-path/progress", async (req, res) => {
   }
 
   try {
-    const { moduleId, courseId, timeSpent, completed } = req.body;
+    const { moduleId, courseId, sectionId, timeSpent, completed, quizScore } = req.body;
     const userId = parseInt(req.session.userId, 10);
 
+    // Insert or update module progress
     await db
       .insert(moduleProgress)
       .values({
         userId,
         moduleId: parseInt(moduleId, 10),
         courseId: parseInt(courseId, 10),
+        sectionId,
         timeSpent: timeSpent || 0,
         completed: completed || false,
-        lastAccessed: new Date()
+        score: quizScore,
+        lastAccessed: new Date(),
+        completedAt: completed ? new Date() : null
       })
       .onConflictDoUpdate({
-        target: [moduleProgress.userId, moduleProgress.moduleId],
+        target: [moduleProgress.userId, moduleProgress.moduleId, moduleProgress.sectionId],
         set: {
           timeSpent: sql`${moduleProgress.timeSpent} + ${timeSpent || 0}`,
           completed: completed || sql`${moduleProgress.completed}`,
-          lastAccessed: new Date()
+          score: quizScore || sql`${moduleProgress.score}`,
+          lastAccessed: new Date(),
+          completedAt: completed ? new Date() : sql`${moduleProgress.completedAt}`
         }
       });
+
+    // If this was a quiz completion, record the response
+    if (quizScore !== undefined) {
+      await db.insert(userQuizResponses).values({
+        userId,
+        moduleId: parseInt(moduleId, 10),
+        courseId: parseInt(courseId, 10),
+        quizId: parseInt(moduleId, 10), // Assuming quiz IDs match module IDs for now
+        isCorrect: quizScore >= 60, // Pass threshold
+        selectedAnswer: "quiz_completed", // We'll store actual answers later
+        timeSpent: timeSpent || 0,
+        answeredAt: new Date()
+      });
+    }
+
+    // Check if all sections in the module are completed
+    if (completed) {
+      const moduleSections = await db.query.moduleProgress.findMany({
+        where: and(
+          eq(moduleProgress.userId, userId),
+          eq(moduleProgress.moduleId, parseInt(moduleId, 10))
+        )
+      });
+
+      const allSectionsCompleted = moduleSections.every(section => section.completed);
+
+      if (allSectionsCompleted) {
+        // Update the module's overall completion status
+        await db
+          .update(moduleProgress)
+          .set({
+            completed: true,
+            completedAt: new Date()
+          })
+          .where(and(
+            eq(moduleProgress.userId, userId),
+            eq(moduleProgress.moduleId, parseInt(moduleId, 10))
+          ));
+      }
+    }
 
     res.json({ success: true });
   } catch (error) {
@@ -80,9 +111,9 @@ router.get("/api/learning-path/recommendations", async (req, res) => {
       score: sql`AVG(CASE WHEN is_correct THEN 1 ELSE 0 END)`.mapWith(Number),
       courseId: userQuizResponses.courseId
     })
-    .from(userQuizResponses)
-    .where(eq(userQuizResponses.userId, userId))
-    .groupBy(userQuizResponses.moduleId, userQuizResponses.courseId);
+      .from(userQuizResponses)
+      .where(eq(userQuizResponses.userId, userId))
+      .groupBy(userQuizResponses.moduleId, userQuizResponses.courseId);
 
 
     // Analyze user's learning pattern
