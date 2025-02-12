@@ -6,12 +6,12 @@ import { eq, and, count, sum, desc, sql } from "drizzle-orm";
 const router = Router();
 
 router.get("/api/user/metrics", async (req, res) => {
-  if (!req.user?.id) {
+  if (!req.session?.userId) {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
   try {
-    const userId = req.user.id;
+    const userId = parseInt(req.session.userId, 10);
 
     // Fetch all metrics in parallel for better performance
     const [
@@ -85,60 +85,40 @@ router.get("/api/user/metrics", async (req, res) => {
     }
 
     // Transform course metrics
-    const transformedCourseMetrics = Object.fromEntries(
-      courseMetrics.map(cm => [
-        cm.courseId,
-        {
+    const transformedCourseMetrics = await Promise.all(
+      courseMetrics.map(async (cm) => {
+        const [courseQuizzes, courseTime] = await Promise.all([
+          // Get course quiz performance
+          db.select({
+            correct: count(userQuizResponses.isCorrect),
+            total: count()
+          })
+            .from(userQuizResponses)
+            .where(and(
+              eq(userQuizResponses.userId, userId),
+              eq(userQuizResponses.courseId, cm.courseId)
+            )),
+
+          // Get course time spent
+          db.select({
+            total: sum(moduleProgress.timeSpent).mapWith(Number)
+          })
+            .from(moduleProgress)
+            .where(and(
+              eq(moduleProgress.userId, userId),
+              eq(moduleProgress.courseId, cm.courseId)
+            ))
+        ]);
+
+        return {
+          courseId: cm.courseId,
           progress: cm.progress || 0,
-          timeSpent: 0, // Will be calculated below
-          averageQuizScore: 0, // Will be calculated below
-        }
-      ])
+          timeSpent: courseTime[0]?.total || 0,
+          averageQuizScore: courseQuizzes[0]?.total ? 
+            Math.round((courseQuizzes[0].correct / courseQuizzes[0].total) * 100) : 0
+        };
+      })
     );
-
-    // Calculate per-course metrics
-    for (const courseId of Object.keys(transformedCourseMetrics)) {
-      const [courseQuizzes, courseTime] = await Promise.all([
-        // Get course quiz performance
-        db.select({
-          correct: count(userQuizResponses.isCorrect),
-          total: count()
-        })
-          .from(userQuizResponses)
-          .where(and(
-            eq(userQuizResponses.userId, userId),
-            sql`quiz_id IN (
-              SELECT id FROM quizzes 
-              WHERE module_id IN (
-                SELECT CAST(jsonb_array_elements_text(modules) AS INTEGER) 
-                FROM courses 
-                WHERE id = ${courseId}
-              )
-            )`
-          )),
-
-        // Get course time spent
-        db.select({
-          total: sum(moduleProgress.timeSpent).mapWith(Number)
-        })
-          .from(moduleProgress)
-          .where(and(
-            eq(moduleProgress.userId, userId),
-            sql`module_id IN (
-              SELECT CAST(jsonb_array_elements_text(modules) AS INTEGER)
-              FROM courses 
-              WHERE id = ${courseId}
-            )`
-          ))
-      ]);
-
-      transformedCourseMetrics[courseId] = {
-        ...transformedCourseMetrics[courseId],
-        timeSpent: courseTime[0]?.total || 0,
-        averageQuizScore: courseQuizzes[0]?.total ? 
-          Math.round((courseQuizzes[0].correct / courseQuizzes[0].total) * 100) : 0
-      };
-    }
 
     res.json({
       completedQuizzes: quizMetrics[0]?.completed || 0,
