@@ -8,7 +8,7 @@ const router = Router();
 // Helper function to calculate course progress
 async function updateCourseProgress(tx: any, userId: number, courseId: number) {
   // Get total sections for the course
-  const totalSections = 4; // Module 1 has 4 sections
+  const totalSections = 4; // Module 1 has 4 sections: Digital Currencies, Security, Practical Applications, Getting Started
 
   // Count completed sections
   const completedSections = await tx
@@ -22,7 +22,7 @@ async function updateCourseProgress(tx: any, userId: number, courseId: number) {
       )
     );
 
-  // Calculate progress percentage
+  // Calculate progress percentage (25% per completed section)
   const progressPercentage = Math.round((completedSections[0].count / totalSections) * 100);
 
   // Update course enrollment progress
