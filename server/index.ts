@@ -2,6 +2,7 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { setupAuth } from "./auth";
+import { db } from "@db";
 
 const app = express();
 
@@ -37,9 +38,13 @@ const PORT = process.env.PORT || 5000;
   try {
     log("Starting server initialization...");
 
-    // Check for required environment variables
-    if (!process.env.RESEND_API_KEY) {
-      log("Warning: RESEND_API_KEY environment variable is not set");
+    // Verify database connection
+    try {
+      await db.select().from('users').limit(1);
+      log("Database connection verified");
+    } catch (error) {
+      log("Database connection failed:", error);
+      process.exit(1);
     }
 
     // Setup authentication first

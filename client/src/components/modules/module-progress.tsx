@@ -5,12 +5,20 @@ import { motion } from "framer-motion";
 interface ModuleProgressProps {
   moduleId: number;
   totalSections: number;
+  courseId?: number;
 }
 
-export default function ModuleProgress({ moduleId, totalSections }: ModuleProgressProps) {
+export default function ModuleProgress({ moduleId, totalSections, courseId = 1 }: ModuleProgressProps) {
   const { progress, isLoading } = useProgress();
-  const moduleProgress = progress.filter(p => p.moduleId === moduleId);
-  const completedSections = moduleProgress.filter(p => p.completed).length;
+
+  // Filter progress for this specific module and course
+  const moduleProgress = progress.filter(p => 
+    p.moduleId === moduleId && 
+    p.courseId === courseId && 
+    p.completed
+  );
+
+  const completedSections = moduleProgress.length;
   const progressPercentage = (completedSections / totalSections) * 100;
 
   return (

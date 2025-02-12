@@ -12,7 +12,7 @@ async function updateCourseProgress(tx: any, userId: number, courseId: number) {
   const totalModules = 3; // Course has 3 modules
   const totalSections = sectionsPerModule * totalModules; // Total 12 sections
 
-  // Count completed sections across all modules
+  // Count completed sections across all modules for this course
   const completedSections = await tx
     .select({ count: sql<number>`cast(count(*) as integer)` })
     .from(moduleProgress)
@@ -26,6 +26,12 @@ async function updateCourseProgress(tx: any, userId: number, courseId: number) {
 
   // Calculate progress percentage (each section is worth ~8.33%)
   const progressPercentage = Math.round((completedSections[0].count / totalSections) * 100);
+
+  console.log(`[Progress Update] User ${userId}, Course ${courseId}:`, {
+    completedSections: completedSections[0].count,
+    totalSections,
+    progressPercentage
+  });
 
   // Update course enrollment progress
   await tx
@@ -88,7 +94,8 @@ router.post("/api/learning-path/progress", async (req, res) => {
             where: and(
               eq(moduleProgress.userId, userId),
               eq(moduleProgress.moduleId, parseInt(moduleId, 10)),
-              eq(moduleProgress.sectionId, sectionId)
+              eq(moduleProgress.sectionId, sectionId),
+              eq(moduleProgress.courseId, parseInt(courseId, 10))
             )
           });
 
@@ -100,13 +107,14 @@ router.post("/api/learning-path/progress", async (req, res) => {
                 completed: isQuizPassed,
                 score: quizScore,
                 lastAccessed: new Date(),
-                completedAt: isQuizPassed ? new Date() : existingProgress.completedAt,
+                completedAt: isQuizPassed ? new Date() : null,
                 timeSpent: existingProgress.timeSpent + (timeSpent || 0)
               })
               .where(and(
                 eq(moduleProgress.userId, userId),
                 eq(moduleProgress.moduleId, parseInt(moduleId, 10)),
-                eq(moduleProgress.sectionId, sectionId)
+                eq(moduleProgress.sectionId, sectionId),
+                eq(moduleProgress.courseId, parseInt(courseId, 10))
               ))
               .returning();
           } else {
@@ -136,7 +144,7 @@ router.post("/api/learning-path/progress", async (req, res) => {
           return { progressUpdate, courseProgress: updatedProgress };
         });
 
-        console.log("[Learning Path] Transaction completed successfully:", result);
+        console.log("[Learning Path] Quiz completion transaction successful:", result);
         res.json({
           success: true,
           message: isQuizPassed ? "Quiz completed successfully!" : "Quiz submitted but did not pass threshold",
@@ -161,7 +169,8 @@ router.post("/api/learning-path/progress", async (req, res) => {
             where: and(
               eq(moduleProgress.userId, userId),
               eq(moduleProgress.moduleId, parseInt(moduleId, 10)),
-              eq(moduleProgress.sectionId, sectionId)
+              eq(moduleProgress.sectionId, sectionId),
+              eq(moduleProgress.courseId, parseInt(courseId, 10))
             )
           });
 
@@ -178,7 +187,8 @@ router.post("/api/learning-path/progress", async (req, res) => {
               .where(and(
                 eq(moduleProgress.userId, userId),
                 eq(moduleProgress.moduleId, parseInt(moduleId, 10)),
-                eq(moduleProgress.sectionId, sectionId)
+                eq(moduleProgress.sectionId, sectionId),
+                eq(moduleProgress.courseId, parseInt(courseId, 10))
               ))
               .returning();
           } else {
