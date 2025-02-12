@@ -3,6 +3,7 @@ import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { setupAuth } from "./auth";
 import { db } from "@db";
+import { users } from "@db/schema";
 
 const app = express();
 
@@ -40,10 +41,10 @@ const PORT = process.env.PORT || 5000;
 
     // Verify database connection
     try {
-      await db.select().from('users').limit(1);
+      await db.select().from(users).limit(1);
       log("Database connection verified");
     } catch (error) {
-      log("Database connection failed:", error);
+      log("Database connection failed:", error instanceof Error ? error.message : String(error));
       process.exit(1);
     }
 
@@ -105,7 +106,7 @@ const PORT = process.env.PORT || 5000;
     await tryStartServer(Number(PORT));
 
   } catch (error) {
-    log(`Failed to start server: ${error}`);
+    log(`Failed to start server: ${error instanceof Error ? error.message : String(error)}`);
     console.error(error);
     process.exit(1);
   }
