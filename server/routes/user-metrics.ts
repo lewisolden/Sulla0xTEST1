@@ -21,7 +21,21 @@ router.get("/api/user/metrics", async (req, res) => {
   try {
     console.log("[User Metrics] Fetching metrics for user:", userId);
 
-    // Fetch module progress metrics first
+    // Calculate total learning time from all module progress records
+    const [totalTimeResult] = await db
+      .select({ 
+        total: sql<number>`COALESCE(SUM(CASE 
+          WHEN ${moduleProgress.timeSpent} IS NULL THEN 5 
+          WHEN ${moduleProgress.timeSpent} = 0 THEN 5 
+          ELSE ${moduleProgress.timeSpent} 
+        END), 0)::integer`
+      })
+      .from(moduleProgress)
+      .where(eq(moduleProgress.userId, userId));
+
+    console.log("[User Metrics] Total learning time result:", totalTimeResult);
+
+    // Fetch module progress data for other metrics
     const moduleProgressData = await db.query.moduleProgress.findMany({
       where: eq(moduleProgress.userId, userId),
       orderBy: [desc(moduleProgress.lastAccessed)],
@@ -42,11 +56,6 @@ router.get("/api/user/metrics", async (req, res) => {
     const [badgeCount] = await db.select({ count: count() })
       .from(userAchievements)
       .where(eq(userAchievements.userId, userId));
-
-    // Calculate total learning time from module progress
-    const totalLearningMinutes = moduleProgressData.reduce((acc, curr) => {
-      return acc + (curr.timeSpent || 0);
-    }, 0);
 
     // Calculate learning streak
     let streak = 0;
@@ -85,13 +94,27 @@ router.get("/api/user/metrics", async (req, res) => {
     // Transform course metrics with progress data
     const transformedCourseMetrics = await Promise.all(
       courseMetrics.map(async (enrollment) => {
+        // Calculate course-specific time spent
+        const [courseTimeResult] = await db
+          .select({ 
+            total: sql<number>`COALESCE(SUM(CASE 
+              WHEN ${moduleProgress.timeSpent} IS NULL THEN 5 
+              WHEN ${moduleProgress.timeSpent} = 0 THEN 5 
+              ELSE ${moduleProgress.timeSpent} 
+            END), 0)::integer` 
+          })
+          .from(moduleProgress)
+          .where(and(
+            eq(moduleProgress.userId, userId),
+            eq(moduleProgress.courseId, enrollment.courseId)
+          ));
+
         // Get course-specific module progress
         const courseProgress = moduleProgressData.filter(
           mp => mp.courseId === enrollment.courseId
         );
 
-        // Calculate course-specific metrics
-        const courseTimeSpent = courseProgress.reduce((acc, curr) => acc + (curr.timeSpent || 0), 0);
+        // Calculate course-specific quiz metrics
         const courseQuizzes = courseProgress.filter(mp => mp.score !== null);
         const courseQuizScore = courseQuizzes.length > 0
           ? Math.round(courseQuizzes.reduce((acc, curr) => acc + (curr.score || 0), 0) / courseQuizzes.length)
@@ -101,7 +124,7 @@ router.get("/api/user/metrics", async (req, res) => {
           courseId: enrollment.courseId,
           title: enrollment.course.title,
           progress: enrollment.progress || 0,
-          timeSpent: courseTimeSpent,
+          timeSpent: courseTimeResult.total,
           quizScore: courseQuizScore
         };
       })
@@ -113,7 +136,7 @@ router.get("/api/user/metrics", async (req, res) => {
         ? Math.round((quizMetrics.totalScore / quizMetrics.completed))
         : 0,
       earnedBadges: badgeCount?.count || 0,
-      totalLearningMinutes: totalLearningMinutes,
+      totalLearningMinutes: totalTimeResult.total,
       learningStreak: streak,
       courses: transformedCourseMetrics
     };
