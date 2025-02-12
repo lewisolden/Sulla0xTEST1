@@ -66,30 +66,48 @@ router.post("/api/learning-path/progress", async (req, res) => {
             });
           }
 
-          // Update module progress
-          console.log("[Learning Path] Updating module progress");
-          const [progressUpdate] = await tx.insert(moduleProgress).values({
-            userId,
-            moduleId: parseInt(moduleId, 10),
-            courseId: parseInt(courseId, 10),
-            sectionId,
-            timeSpent: timeSpent || 0,
-            completed: isQuizPassed,
-            score: quizScore,
-            lastAccessed: new Date(),
-            completedAt: isQuizPassed ? new Date() : null
-          })
-          .onConflictDoUpdate({
-            target: [moduleProgress.userId, moduleProgress.moduleId, moduleProgress.sectionId],
-            set: {
-              completed: isQuizPassed,
-              score: quizScore,
-              lastAccessed: new Date(),
-              completedAt: isQuizPassed ? new Date() : sql`${moduleProgress.completedAt}`,
-              timeSpent: sql`${moduleProgress.timeSpent} + ${timeSpent || 0}`
-            }
-          })
-          .returning();
+          // Check if progress record exists
+          const existingProgress = await tx.query.moduleProgress.findFirst({
+            where: and(
+              eq(moduleProgress.userId, userId),
+              eq(moduleProgress.moduleId, parseInt(moduleId, 10)),
+              eq(moduleProgress.sectionId, sectionId)
+            )
+          });
+
+          let progressUpdate;
+          if (existingProgress) {
+            // Update existing record
+            [progressUpdate] = await tx.update(moduleProgress)
+              .set({
+                completed: isQuizPassed,
+                score: quizScore,
+                lastAccessed: new Date(),
+                completedAt: isQuizPassed ? new Date() : existingProgress.completedAt,
+                timeSpent: existingProgress.timeSpent + (timeSpent || 0)
+              })
+              .where(and(
+                eq(moduleProgress.userId, userId),
+                eq(moduleProgress.moduleId, parseInt(moduleId, 10)),
+                eq(moduleProgress.sectionId, sectionId)
+              ))
+              .returning();
+          } else {
+            // Insert new record
+            [progressUpdate] = await tx.insert(moduleProgress)
+              .values({
+                userId,
+                moduleId: parseInt(moduleId, 10),
+                courseId: parseInt(courseId, 10),
+                sectionId,
+                timeSpent: timeSpent || 0,
+                completed: isQuizPassed,
+                score: quizScore,
+                lastAccessed: new Date(),
+                completedAt: isQuizPassed ? new Date() : null
+              })
+              .returning();
+          }
 
           if (isQuizPassed) {
             console.log("[Learning Path] Updating course enrollment progress");
@@ -124,26 +142,47 @@ router.post("/api/learning-path/progress", async (req, res) => {
       // Regular progress update (non-quiz)
       try {
         console.log("[Learning Path] Processing regular progress update");
-        const regularUpdate = await db.insert(moduleProgress).values({
-          userId,
-          moduleId: parseInt(moduleId, 10),
-          courseId: parseInt(courseId, 10),
-          sectionId,
-          timeSpent: timeSpent || 0,
-          completed: completed || false,
-          lastAccessed: new Date(),
-          completedAt: completed ? new Date() : null
-        })
-        .onConflictDoUpdate({
-          target: [moduleProgress.userId, moduleProgress.moduleId, moduleProgress.sectionId],
-          set: {
-            completed: completed || sql`${moduleProgress.completed}`,
-            lastAccessed: new Date(),
-            completedAt: completed ? new Date() : sql`${moduleProgress.completedAt}`,
-            timeSpent: sql`${moduleProgress.timeSpent} + ${timeSpent || 0}`
-          }
-        })
-        .returning();
+
+        // Check if progress record exists
+        const existingProgress = await db.query.moduleProgress.findFirst({
+          where: and(
+            eq(moduleProgress.userId, userId),
+            eq(moduleProgress.moduleId, parseInt(moduleId, 10)),
+            eq(moduleProgress.sectionId, sectionId)
+          )
+        });
+
+        let regularUpdate;
+        if (existingProgress) {
+          // Update existing record
+          [regularUpdate] = await db.update(moduleProgress)
+            .set({
+              completed: completed || existingProgress.completed,
+              lastAccessed: new Date(),
+              completedAt: completed ? new Date() : existingProgress.completedAt,
+              timeSpent: existingProgress.timeSpent + (timeSpent || 0)
+            })
+            .where(and(
+              eq(moduleProgress.userId, userId),
+              eq(moduleProgress.moduleId, parseInt(moduleId, 10)),
+              eq(moduleProgress.sectionId, sectionId)
+            ))
+            .returning();
+        } else {
+          // Insert new record
+          [regularUpdate] = await db.insert(moduleProgress)
+            .values({
+              userId,
+              moduleId: parseInt(moduleId, 10),
+              courseId: parseInt(courseId, 10),
+              sectionId,
+              timeSpent: timeSpent || 0,
+              completed: completed || false,
+              lastAccessed: new Date(),
+              completedAt: completed ? new Date() : null
+            })
+            .returning();
+        }
 
         console.log("[Learning Path] Regular progress updated:", regularUpdate);
         res.json({ success: true });
