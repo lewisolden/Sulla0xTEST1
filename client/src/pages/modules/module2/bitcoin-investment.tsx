@@ -167,27 +167,101 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
+            className="mt-8"
           >
-            <h3 className="text-2xl font-semibold text-blue-600">Investment Considerations for Beginners</h3>
-            <p>Before investing, ask yourself:</p>
-            <ul className="list-disc pl-5 space-y-3">
-              <li>
-                <strong>Risk Assessment</strong>
-                <ul className="list-disc pl-5 space-y-1">
-                  <li>How much can I afford to lose?</li>
-                  <li>Does this fit my financial plan?</li>
-                  <li>Do I have an emergency fund?</li>
+            <h2 className="text-3xl font-bold text-blue-700">Metcalfe's Law and Bitcoin</h2>
+            <p className="text-gray-700 mb-4">
+              Metcalfe's law states that the value of a network is proportional to the square of the number of connected users. This principle has profound implications for Bitcoin's adoption and value proposition.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+              <Card className="p-4 bg-blue-50">
+                <h4 className="font-semibold text-blue-800 mb-2">Internet Growth</h4>
+                <ul className="text-sm space-y-1">
+                  <li>1995: 16 million users</li>
+                  <li>2000: 400 million users</li>
+                  <li>2023: 5.3 billion users</li>
                 </ul>
-              </li>
-              <li>
-                <strong>Timeline Considerations</strong>
-                <ul className="list-disc pl-5 space-y-1">
-                  <li>Am I investing for short or long term?</li>
-                  <li>Can I hold through market downturns?</li>
-                  <li>When might I need this money?</li>
+              </Card>
+              <Card className="p-4 bg-blue-50">
+                <h4 className="font-semibold text-blue-800 mb-2">Mobile Phones</h4>
+                <ul className="text-sm space-y-1">
+                  <li>1990: 11 million users</li>
+                  <li>2000: 740 million users</li>
+                  <li>2023: 7.3 billion users</li>
                 </ul>
-              </li>
-            </ul>
+              </Card>
+              <Card className="p-4 bg-blue-50">
+                <h4 className="font-semibold text-blue-800 mb-2">Bitcoin Wallets</h4>
+                <ul className="text-sm space-y-1">
+                  <li>2013: 3 million users</li>
+                  <li>2018: 32 million users</li>
+                  <li>2023: 425+ million users</li>
+                </ul>
+              </Card>
+            </div>
+
+            <div className="bg-blue-50 p-6 rounded-lg mb-8">
+              <h4 className="font-semibold text-blue-800 mb-2">Network Effect Implications</h4>
+              <ul className="list-disc pl-5 space-y-2">
+                <li>As more users adopt Bitcoin, its utility as a payment network increases exponentially</li>
+                <li>Growing adoption leads to increased liquidity and price stability</li>
+                <li>Network effects create a positive feedback loop for adoption</li>
+                <li>Similar adoption curve to early internet and mobile phone growth</li>
+              </ul>
+            </div>
+          </motion.section>
+
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
+            className="mt-8"
+          >
+            <h2 className="text-3xl font-bold text-blue-700">Value Comparisons</h2>
+            <p className="text-gray-700 mb-4">
+              To understand Bitcoin's value in context, let's compare what $100,000 gets you across different investment vehicles:
+            </p>
+
+            <div className="space-y-4">
+              <Card className="p-4">
+                <h4 className="font-semibold text-blue-800 mb-2">Gold</h4>
+                <div className="flex justify-between items-center">
+                  <span>$100,000 ≈ 1.6 kilograms of gold</span>
+                  <span className="text-sm text-gray-600">(Based on ~$2,000/oz)</span>
+                </div>
+              </Card>
+
+              <Card className="p-4">
+                <h4 className="font-semibold text-blue-800 mb-2">S&P 500 Index Fund</h4>
+                <div className="flex justify-between items-center">
+                  <span>$100,000 ≈ 200 shares</span>
+                  <span className="text-sm text-gray-600">(Based on ~$500/share)</span>
+                </div>
+              </Card>
+
+              <Card className="p-4">
+                <h4 className="font-semibold text-blue-800 mb-2">Real Estate</h4>
+                <div className="flex justify-between items-center">
+                  <span>$100,000 ≈ 20% down payment on $500,000 property</span>
+                  <span className="text-sm text-gray-600">(Typical down payment)</span>
+                </div>
+              </Card>
+
+              <Card className="p-4">
+                <h4 className="font-semibold text-blue-800 mb-2">Bitcoin</h4>
+                <div className="flex justify-between items-center">
+                  <span>$100,000 ≈ 2.5 BTC</span>
+                  <span className="text-sm text-gray-600">(Based on ~$40,000/BTC)</span>
+                </div>
+              </Card>
+            </div>
+
+            <div className="bg-yellow-50 p-4 rounded-lg mt-4">
+              <p className="text-sm text-yellow-800">
+                Note: These values are approximate and subject to market fluctuations. Always verify current market prices before making investment decisions.
+              </p>
+            </div>
           </motion.section>
 
           <motion.section
