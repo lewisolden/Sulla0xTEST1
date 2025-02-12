@@ -251,17 +251,18 @@ export default function BitcoinInvestmentSection() {
               <Card className="p-4">
                 <h4 className="font-semibold text-blue-800 mb-2">Bitcoin</h4>
                 <div className="flex justify-between items-center">
-                  <span>$100,000 ≈ 2.5 BTC</span>
-                  <span className="text-sm text-gray-600">(Based on ~$40,000/BTC)</span>
+                  <span>$100,000 ≈ 1 BTC</span>
+                  <span className="text-sm text-gray-600">(Based on ~$100,000/BTC)</span>
                 </div>
               </Card>
+
+              <div className="bg-yellow-50 p-4 rounded-lg mt-4">
+                <p className="text-sm text-yellow-800">
+                  Note: These values are approximate and subject to market fluctuations. Always verify current market prices before making investment decisions.
+                </p>
+              </div>
             </div>
 
-            <div className="bg-yellow-50 p-4 rounded-lg mt-4">
-              <p className="text-sm text-yellow-800">
-                Note: These values are approximate and subject to market fluctuations. Always verify current market prices before making investment decisions.
-              </p>
-            </div>
           </motion.section>
 
           <motion.section
