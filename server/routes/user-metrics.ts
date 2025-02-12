@@ -3,6 +3,12 @@ import { db } from "@db";
 import { courseEnrollments, moduleProgress, userQuizResponses, userAchievements } from "@db/schema";
 import { eq, and, count, sum, desc, sql } from "drizzle-orm";
 
+declare module "express-session" {
+  interface Session {
+    userId: string;
+  }
+}
+
 const router = Router();
 
 router.get("/api/user/metrics", async (req, res) => {
@@ -24,7 +30,7 @@ router.get("/api/user/metrics", async (req, res) => {
       // Get quiz metrics (completed count and average score)
       db.select({
         completed: count(),
-        totalCorrect: count(userQuizResponses.isCorrect)
+        totalCorrect: sum(sql`CASE WHEN ${userQuizResponses.isCorrect} THEN 1 ELSE 0 END`).mapWith(Number)
       })
         .from(userQuizResponses)
         .where(eq(userQuizResponses.userId, userId)),
@@ -44,40 +50,39 @@ router.get("/api/user/metrics", async (req, res) => {
       // Get module progress for learning streak calculation
       db.query.moduleProgress.findMany({
         where: eq(moduleProgress.userId, userId),
-        columns: {
-          lastAccessed: true,
-        },
         orderBy: [desc(moduleProgress.lastAccessed)],
-        limit: 30, // Check last 30 days for streak
       }),
 
       // Get course-specific metrics
       db.query.courseEnrollments.findMany({
         where: eq(courseEnrollments.userId, userId),
-        columns: {
-          courseId: true,
-          progress: true,
-          lastAccessedAt: true
-        }
+        with: {
+          course: true,
+        },
       })
     ]);
 
     // Calculate learning streak
     let streak = 0;
     const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
     const activityDates = new Set(
       moduleProgressData
         .filter(mp => mp.lastAccessed)
-        .map(mp => new Date(mp.lastAccessed).toISOString().split('T')[0])
+        .map(mp => {
+          const date = new Date(mp.lastAccessed);
+          date.setHours(0, 0, 0, 0);
+          return date.getTime();
+        })
     );
 
     // Check consecutive days backwards from today
     for (let i = 0; i < 30; i++) {
-      const date = new Date(today);
-      date.setDate(date.getDate() - i);
-      const dateStr = date.toISOString().split('T')[0];
+      const checkDate = new Date(today);
+      checkDate.setDate(checkDate.getDate() - i);
 
-      if (activityDates.has(dateStr)) {
+      if (activityDates.has(checkDate.getTime())) {
         streak++;
       } else if (streak > 0) {
         break;
@@ -86,46 +91,49 @@ router.get("/api/user/metrics", async (req, res) => {
 
     // Transform course metrics
     const transformedCourseMetrics = await Promise.all(
-      courseMetrics.map(async (cm) => {
-        const [courseQuizzes, courseTime] = await Promise.all([
-          // Get course quiz performance
+      courseMetrics.map(async (enrollment) => {
+        // Get course quiz performance
+        const [quizStats, timeStats] = await Promise.all([
           db.select({
-            correct: count(userQuizResponses.isCorrect),
+            correct: sum(sql`CASE WHEN ${userQuizResponses.isCorrect} THEN 1 ELSE 0 END`).mapWith(Number),
             total: count()
           })
             .from(userQuizResponses)
             .where(and(
               eq(userQuizResponses.userId, userId),
-              eq(userQuizResponses.courseId, cm.courseId)
+              eq(userQuizResponses.courseId, enrollment.courseId)
             )),
 
           // Get course time spent
           db.select({
-            total: sum(moduleProgress.timeSpent).mapWith(Number)
+            totalTime: sum(moduleProgress.timeSpent).mapWith(Number)
           })
             .from(moduleProgress)
             .where(and(
               eq(moduleProgress.userId, userId),
-              eq(moduleProgress.courseId, cm.courseId)
+              eq(moduleProgress.courseId, enrollment.courseId)
             ))
         ]);
 
         return {
-          courseId: cm.courseId,
-          progress: cm.progress || 0,
-          timeSpent: courseTime[0]?.total || 0,
-          averageQuizScore: courseQuizzes[0]?.total ? 
-            Math.round((courseQuizzes[0].correct / courseQuizzes[0].total) * 100) : 0
+          courseId: enrollment.courseId,
+          title: enrollment.course.title,
+          progress: enrollment.progress || 0,
+          timeSpent: timeStats[0]?.totalTime || 0,
+          quizScore: quizStats[0]?.total ? 
+            Math.round((quizStats[0].correct / quizStats[0].total) * 100) : 0
         };
       })
     );
 
     res.json({
       completedQuizzes: quizMetrics[0]?.completed || 0,
+      quizAccuracy: quizMetrics[0]?.totalCorrect ? 
+        Math.round((quizMetrics[0].totalCorrect / quizMetrics[0].completed) * 100) : 0,
       earnedBadges: badgeCount[0]?.count || 0,
       totalLearningMinutes: learningTimeResult[0]?.totalMinutes || 0,
       learningStreak: streak,
-      courseMetrics: transformedCourseMetrics
+      courses: transformedCourseMetrics
     });
 
   } catch (error) {

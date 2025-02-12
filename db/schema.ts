@@ -38,10 +38,11 @@ export const moduleProgress = pgTable("module_progress", {
   id: serial("id").primaryKey(),
   userId: integer("user_id").references(() => users.id).notNull(),
   moduleId: integer("module_id").notNull(),
+  courseId: integer("course_id").references(() => courses.id), 
   sectionId: text("section_id").notNull(),
   completed: boolean("completed").default(false).notNull(),
   score: integer("score"),
-  timeSpent: integer("time_spent"),
+  timeSpent: integer("time_spent").default(0),
   lastAccessed: timestamp("last_accessed").defaultNow().notNull(),
   completedAt: timestamp("completed_at"),
   aiRecommendations: jsonb("ai_recommendations"),
@@ -62,6 +63,8 @@ export const userQuizResponses = pgTable("user_quiz_responses", {
   id: serial("id").primaryKey(),
   userId: integer("user_id").references(() => users.id).notNull(),
   quizId: integer("quiz_id").references(() => quizzes.id).notNull(),
+  courseId: integer("course_id").references(() => courses.id), 
+  moduleId: integer("module_id"), 
   selectedAnswer: text("selected_answer").notNull(),
   isCorrect: boolean("is_correct").notNull(),
   timeSpent: integer("time_spent"),
@@ -122,6 +125,10 @@ export const moduleProgressRelations = relations(moduleProgress, ({ one }) => ({
     fields: [moduleProgress.userId],
     references: [users.id],
   }),
+  course: one(courses, {
+    fields: [moduleProgress.courseId],
+    references: [courses.id],
+  }),
 }));
 
 export const quizzesRelations = relations(quizzes, ({ many }) => ({
@@ -136,6 +143,10 @@ export const userQuizResponsesRelations = relations(userQuizResponses, ({ one })
   quiz: one(quizzes, {
     fields: [userQuizResponses.quizId],
     references: [quizzes.id],
+  }),
+  course: one(courses, {
+    fields: [userQuizResponses.courseId],
+    references: [courses.id],
   }),
 }));
 
