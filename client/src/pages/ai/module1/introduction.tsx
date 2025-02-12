@@ -4,7 +4,7 @@ import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useProgress } from "@/context/progress-context";
-import { ArrowLeft, ArrowRight, Brain, Cpu, Network, Lightbulb, History, Code, Check } from "lucide-react";
+import { ArrowLeft, ArrowRight, Brain, Cpu, Network, Lightbulb, History, Code, Check, X } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 
 const TimelineItem = ({ year, title, description, delay }: { year: string; title: string; description: string; delay: number }) => (
@@ -43,6 +43,12 @@ const AITypeCard = ({ title, description, icon: Icon, delay }: { title: string; 
   </motion.div>
 );
 
+interface AnswerState {
+  selectedAnswer: number | null;
+  isCorrect: boolean;
+  showExplanation: boolean;
+}
+
 export default function AIIntroduction() {
   useScrollTop();
   const { progress, updateProgress } = useProgress();
@@ -50,6 +56,11 @@ export default function AIIntroduction() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [showResults, setShowResults] = useState(false);
+  const [answerState, setAnswerState] = useState<AnswerState>({
+    selectedAnswer: null,
+    isCorrect: false,
+    showExplanation: false
+  });
 
   const questions = [
     {
@@ -89,21 +100,34 @@ export default function AIIntroduction() {
 
   const handleAnswer = (selectedIndex: number) => {
     const isCorrect = selectedIndex === questions[currentQuestion].correct;
-    if (isCorrect) {
-      setScore(score + 1);
-    }
+    setAnswerState({
+      selectedAnswer: selectedIndex,
+      isCorrect,
+      showExplanation: true
+    });
 
-    if (currentQuestion < questions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
-    } else {
-      setShowResults(true);
-      updateProgress({
-        moduleId: 'ai-module1',
-        sectionId: 'ai-introduction',
-        completed: true,
-        score: Math.round((score / questions.length) * 100)
-      });
-    }
+    setTimeout(() => {
+      if (isCorrect) {
+        setScore(score + 1);
+      }
+
+      if (currentQuestion < questions.length - 1) {
+        setCurrentQuestion(currentQuestion + 1);
+        setAnswerState({
+          selectedAnswer: null,
+          isCorrect: false,
+          showExplanation: false
+        });
+      } else {
+        setShowResults(true);
+        updateProgress({
+          moduleId: 'ai-module1',
+          sectionId: 'ai-introduction',
+          completed: true,
+          score: Math.round((score / questions.length) * 100)
+        });
+      }
+    }, 2000);
   };
 
   if (showQuiz) {
@@ -141,24 +165,66 @@ export default function AIIntroduction() {
 
                   <p className="text-lg mb-6">{questions[currentQuestion].question}</p>
                   <div className="grid gap-3">
-                    {questions[currentQuestion].options.map((option, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.5, delay: index * 0.1 }}
-                      >
-                        <Button
-                          variant="outline"
-                          className="w-full justify-start text-left hover:bg-blue-50"
-                          onClick={() => handleAnswer(index)}
+                    {questions[currentQuestion].options.map((option, index) => {
+                      const isSelected = answerState.selectedAnswer === index;
+                      const isCorrect = index === questions[currentQuestion].correct;
+
+                      return (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.5, delay: index * 0.1 }}
                         >
-                          <span className="mr-4">{String.fromCharCode(65 + index)}.</span>
-                          {option}
-                        </Button>
-                      </motion.div>
-                    ))}
+                          <Button
+                            variant="outline"
+                            className={`w-full justify-start text-left p-4 relative ${
+                              isSelected
+                                ? isCorrect
+                                  ? 'bg-green-100 border-green-500 hover:bg-green-100'
+                                  : 'bg-red-100 border-red-500 hover:bg-red-100'
+                                : 'hover:bg-blue-50'
+                            }`}
+                            onClick={() => !answerState.showExplanation && handleAnswer(index)}
+                            disabled={answerState.showExplanation}
+                          >
+                            <div className="flex items-center gap-4">
+                              <span>{String.fromCharCode(65 + index)}.</span>
+                              <span>{option}</span>
+                              {isSelected && (
+                                <div className="absolute right-4">
+                                  {isCorrect ? (
+                                    <Check className="h-5 w-5 text-green-600" />
+                                  ) : (
+                                    <X className="h-5 w-5 text-red-600" />
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          </Button>
+                        </motion.div>
+                      );
+                    })}
                   </div>
+
+                  {answerState.showExplanation && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className={`mt-4 p-4 rounded-lg ${
+                        answerState.isCorrect ? 'bg-green-100' : 'bg-red-100'
+                      }`}
+                    >
+                      <p className={`font-semibold ${
+                        answerState.isCorrect ? 'text-green-800' : 'text-red-800'
+                      }`}>
+                        {answerState.isCorrect ? 'Correct!' : 'Incorrect.'}
+                      </p>
+                      <p className="mt-2 text-gray-700">
+                        {questions[currentQuestion].explanation}
+                      </p>
+                    </motion.div>
+                  )}
                 </motion.div>
               ) : (
                 <motion.div 
