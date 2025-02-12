@@ -600,9 +600,9 @@ export default function AIEthics() {
                 >
                   Take Topic Quiz
                 </Button>
-                <Link href="/ai/module2">
+                <Link href="/ai/module2/quiz">
                   <Button className="gap-2">
-                    Complete Module <ArrowRight className="h-4 w-4" />
+                    Module Quiz <ArrowRight className="h-4 w-4" />
                   </Button>
                 </Link>
               </div>
