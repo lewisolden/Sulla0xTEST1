@@ -14,20 +14,18 @@ import { useNavigate } from "@/hooks/useNavigate";
 import MoneyEvolutionTimeline from "@/components/diagrams/MoneyEvolutionTimeline";
 
 export default function DigitalCurrenciesSection() {
-  // Force scroll to top on mount
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    // Double-check scroll position after mount
-    requestAnimationFrame(() => {
-      window.scrollTo(0, 0);
-    });
-  }, []); // Empty dependency array means this runs once on mount
-
   const navigate = useNavigate();
+  const { updateProgress, metrics } = useProgress();
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showQuiz, setShowQuiz] = useState(false);
-  const { updateProgress } = useProgress();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
+    });
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -36,17 +34,19 @@ export default function DigitalCurrenciesSection() {
       const scrollPercent = (scrollTop / scrollHeight) * 100;
       setScrollProgress(scrollPercent);
 
-      if (scrollPercent > 95) {
+      if (scrollPercent > 95 && !isFullyRead) {
         setIsFullyRead(true);
-        updateProgress(1, 'digital-currencies', true);
+        // Update progress for the digital currencies section
+        updateProgress(1, 'digital-currencies', true).catch(error => {
+          console.error('Failed to update progress:', error);
+        });
       }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [updateProgress]);
+  }, [updateProgress, isFullyRead]);
 
-  // Enhanced animation variants
   const pageVariants = {
     initial: { opacity: 0, y: 20 },
     enter: { 
