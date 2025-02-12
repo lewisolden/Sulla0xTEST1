@@ -2,52 +2,52 @@ import { useEffect, useRef } from 'react';
 
 export default function DoubleSpendDiagram() {
   return (
-    <div className="my-8 bg-white p-4 rounded-lg shadow-lg">
-      <div className="flex justify-center items-center min-h-[200px] w-full">
+    <div className="my-8 bg-white p-6 rounded-lg shadow-lg">
+      <div className="flex justify-center items-center w-full">
         <svg
-          viewBox="0 0 800 300"
-          className="w-full max-w-2xl"
+          viewBox="0 0 800 400"
+          className="w-full max-w-3xl"
           xmlns="http://www.w3.org/2000/svg"
         >
           {/* Participants */}
           <g className="participants">
             {/* User */}
-            <rect x="50" y="20" width="120" height="40" rx="5" fill="#e3f2fd" stroke="#1e88e5" strokeWidth="2"/>
-            <text x="110" y="45" textAnchor="middle" fill="#1e88e5" fontSize="14">User</text>
-            <line x1="110" y1="60" x2="110" y2="260" stroke="#e3f2fd" strokeWidth="1" strokeDasharray="4"/>
+            <rect x="100" y="40" width="120" height="50" rx="6" fill="#e3f2fd" stroke="#1e88e5" strokeWidth="2"/>
+            <text x="160" y="70" textAnchor="middle" fill="#1e88e5" fontSize="16" fontWeight="500">User</text>
+            <line x1="160" y1="90" x2="160" y2="340" stroke="#e3f2fd" strokeWidth="1" strokeDasharray="4"/>
 
             {/* Network */}
-            <rect x="340" y="20" width="120" height="40" rx="5" fill="#e3f2fd" stroke="#1e88e5" strokeWidth="2"/>
-            <text x="400" y="45" textAnchor="middle" fill="#1e88e5" fontSize="14">Network</text>
-            <line x1="400" y1="60" x2="400" y2="260" stroke="#e3f2fd" strokeWidth="1" strokeDasharray="4"/>
+            <rect x="340" y="40" width="120" height="50" rx="6" fill="#e3f2fd" stroke="#1e88e5" strokeWidth="2"/>
+            <text x="400" y="70" textAnchor="middle" fill="#1e88e5" fontSize="16" fontWeight="500">Network</text>
+            <line x1="400" y1="90" x2="400" y2="340" stroke="#e3f2fd" strokeWidth="1" strokeDasharray="4"/>
 
             {/* Blockchain */}
-            <rect x="630" y="20" width="120" height="40" rx="5" fill="#e3f2fd" stroke="#1e88e5" strokeWidth="2"/>
-            <text x="690" y="45" textAnchor="middle" fill="#1e88e5" fontSize="14">Blockchain</text>
-            <line x1="690" y1="60" x2="690" y2="260" stroke="#e3f2fd" strokeWidth="1" strokeDasharray="4"/>
+            <rect x="580" y="40" width="120" height="50" rx="6" fill="#e3f2fd" stroke="#1e88e5" strokeWidth="2"/>
+            <text x="640" y="70" textAnchor="middle" fill="#1e88e5" fontSize="16" fontWeight="500">Blockchain</text>
+            <line x1="640" y1="90" x2="640" y2="340" stroke="#e3f2fd" strokeWidth="1" strokeDasharray="4"/>
           </g>
 
           {/* Arrows and Labels */}
           <g className="arrows">
             {/* Submit Transaction */}
-            <line x1="110" y1="80" x2="400" y2="100" stroke="#1e88e5" strokeWidth="2" markerEnd="url(#arrowhead)"/>
-            <text x="255" y="85" textAnchor="middle" fill="#424242" fontSize="12">1. Submit Transaction</text>
+            <line x1="160" y1="120" x2="400" y2="120" stroke="#1e88e5" strokeWidth="2" markerEnd="url(#arrowhead)"/>
+            <text x="280" y="110" textAnchor="middle" fill="#424242" fontSize="14">1. Submit Transaction</text>
 
             {/* Verify No Previous Spend */}
-            <path d="M 400,120 Q 450,140 400,160" fill="none" stroke="#1e88e5" strokeWidth="2" markerEnd="url(#arrowhead)"/>
-            <text x="480" y="145" textAnchor="middle" fill="#424242" fontSize="12">2. Verify No Previous Spend</text>
+            <path d="M 400,140 Q 460,170 400,200" fill="none" stroke="#1e88e5" strokeWidth="2" markerEnd="url(#arrowhead)"/>
+            <text x="500" y="170" textAnchor="middle" fill="#424242" fontSize="14">2. Verify No Previous Spend</text>
 
             {/* Add to Block */}
-            <line x1="400" y1="180" x2="690" y2="200" stroke="#1e88e5" strokeWidth="2" markerEnd="url(#arrowhead)"/>
-            <text x="545" y="185" textAnchor="middle" fill="#424242" fontSize="12">3. Add to Block</text>
+            <line x1="400" y1="220" x2="640" y2="220" stroke="#1e88e5" strokeWidth="2" markerEnd="url(#arrowhead)"/>
+            <text x="520" y="210" textAnchor="middle" fill="#424242" fontSize="14">3. Add to Block</text>
 
             {/* Confirm Transaction */}
-            <line x1="690" y1="220" x2="400" y2="240" stroke="#1e88e5" strokeWidth="2" markerEnd="url(#arrowhead)"/>
-            <text x="545" y="225" textAnchor="middle" fill="#424242" fontSize="12">4. Confirm Transaction</text>
+            <line x1="640" y1="260" x2="400" y2="260" stroke="#1e88e5" strokeWidth="2" markerEnd="url(#arrowhead)"/>
+            <text x="520" y="250" textAnchor="middle" fill="#424242" fontSize="14">4. Confirm Transaction</text>
 
             {/* Transaction Complete */}
-            <line x1="400" y1="260" x2="110" y2="240" stroke="#1e88e5" strokeWidth="2" markerEnd="url(#arrowhead)"/>
-            <text x="255" y="265" textAnchor="middle" fill="#424242" fontSize="12">5. Transaction Complete</text>
+            <line x1="400" y1="300" x2="160" y2="300" stroke="#1e88e5" strokeWidth="2" markerEnd="url(#arrowhead)"/>
+            <text x="280" y="290" textAnchor="middle" fill="#424242" fontSize="14">5. Transaction Complete</text>
           </g>
 
           {/* Arrow Marker Definition */}
@@ -65,7 +65,7 @@ export default function DoubleSpendDiagram() {
           </defs>
         </svg>
       </div>
-      <div className="mt-4 text-sm text-gray-600 text-center">
+      <div className="mt-6 text-sm text-gray-600 text-center font-medium">
         Double Spend Prevention Flow Diagram
       </div>
     </div>
