@@ -18,6 +18,7 @@ router.get("/api/user/metrics", async (req, res) => {
 
   try {
     const userId = parseInt(req.session.userId, 10);
+    console.log("[User Metrics] Fetching metrics for user:", userId);
 
     // Fetch all metrics in parallel for better performance
     const [
@@ -33,24 +34,39 @@ router.get("/api/user/metrics", async (req, res) => {
         totalCorrect: sum(sql`CASE WHEN ${userQuizResponses.isCorrect} THEN 1 ELSE 0 END`).mapWith(Number)
       })
         .from(userQuizResponses)
-        .where(eq(userQuizResponses.userId, userId)),
+        .where(eq(userQuizResponses.userId, userId))
+        .then(result => {
+          console.log("[User Metrics] Quiz metrics raw result:", result);
+          return result;
+        }),
 
       // Get earned badges count
       db.select({ count: count() })
         .from(userAchievements)
-        .where(eq(userAchievements.userId, userId)),
+        .where(eq(userAchievements.userId, userId))
+        .then(result => {
+          console.log("[User Metrics] Badge count raw result:", result);
+          return result;
+        }),
 
       // Get total learning time from module progress
       db.select({ 
         totalMinutes: sum(moduleProgress.timeSpent).mapWith(Number) 
       })
         .from(moduleProgress)
-        .where(eq(moduleProgress.userId, userId)),
+        .where(eq(moduleProgress.userId, userId))
+        .then(result => {
+          console.log("[User Metrics] Learning time raw result:", result);
+          return result;
+        }),
 
       // Get module progress for learning streak calculation
       db.query.moduleProgress.findMany({
         where: eq(moduleProgress.userId, userId),
         orderBy: [desc(moduleProgress.lastAccessed)],
+      }).then(result => {
+        console.log("[User Metrics] Module progress raw result:", result);
+        return result;
       }),
 
       // Get course-specific metrics
@@ -59,6 +75,9 @@ router.get("/api/user/metrics", async (req, res) => {
         with: {
           course: true,
         },
+      }).then(result => {
+        console.log("[User Metrics] Course metrics raw result:", result);
+        return result;
       })
     ]);
 
@@ -89,6 +108,8 @@ router.get("/api/user/metrics", async (req, res) => {
       }
     }
 
+    console.log("[User Metrics] Calculated learning streak:", streak);
+
     // Transform course metrics
     const transformedCourseMetrics = await Promise.all(
       courseMetrics.map(async (enrollment) => {
@@ -102,7 +123,11 @@ router.get("/api/user/metrics", async (req, res) => {
             .where(and(
               eq(userQuizResponses.userId, userId),
               eq(userQuizResponses.courseId, enrollment.courseId)
-            )),
+            ))
+            .then(result => {
+              console.log("[User Metrics] Course quiz stats:", { courseId: enrollment.courseId, result });
+              return result;
+            }),
 
           // Get course time spent
           db.select({
@@ -113,6 +138,10 @@ router.get("/api/user/metrics", async (req, res) => {
               eq(moduleProgress.userId, userId),
               eq(moduleProgress.courseId, enrollment.courseId)
             ))
+            .then(result => {
+              console.log("[User Metrics] Course time stats:", { courseId: enrollment.courseId, result });
+              return result;
+            })
         ]);
 
         return {
@@ -126,18 +155,21 @@ router.get("/api/user/metrics", async (req, res) => {
       })
     );
 
-    res.json({
+    const response = {
       completedQuizzes: quizMetrics[0]?.completed || 0,
-      quizAccuracy: quizMetrics[0]?.totalCorrect ? 
+      quizAccuracy: quizMetrics[0]?.completed && quizMetrics[0]?.totalCorrect ? 
         Math.round((quizMetrics[0].totalCorrect / quizMetrics[0].completed) * 100) : 0,
       earnedBadges: badgeCount[0]?.count || 0,
       totalLearningMinutes: learningTimeResult[0]?.totalMinutes || 0,
       learningStreak: streak,
       courses: transformedCourseMetrics
-    });
+    };
+
+    console.log("[User Metrics] Final response:", response);
+    res.json(response);
 
   } catch (error) {
-    console.error("Error fetching user metrics:", error);
+    console.error("[User Metrics] Error fetching user metrics:", error);
     res.status(500).json({ error: "Failed to fetch user metrics" });
   }
 });

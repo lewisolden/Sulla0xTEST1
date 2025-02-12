@@ -17,76 +17,103 @@ router.post("/api/learning-path/progress", async (req, res) => {
     const { moduleId, courseId, sectionId, timeSpent, completed, quizScore } = req.body;
     const userId = parseInt(req.session.userId, 10);
 
-    console.log("Received progress update:", { moduleId, courseId, sectionId, completed, quizScore });
+    console.log("[Learning Path] Progress update request:", {
+      userId,
+      moduleId,
+      courseId,
+      sectionId,
+      timeSpent,
+      completed,
+      quizScore
+    });
 
     // If this is a quiz completion
     if (quizScore !== undefined) {
       const isQuizPassed = quizScore >= 60; // Pass threshold
+      console.log("[Learning Path] Processing quiz completion:", { isQuizPassed, quizScore });
 
-      // Record quiz response
-      await db.insert(userQuizResponses).values({
-        userId,
-        moduleId: parseInt(moduleId, 10),
-        courseId: parseInt(courseId, 10),
-        quizId: parseInt(moduleId, 10),
-        isCorrect: isQuizPassed,
-        selectedAnswer: "quiz_completed",
-        timeSpent: timeSpent || 0,
-        answeredAt: new Date()
-      });
-
-      // Update section progress
-      await db
-        .insert(moduleProgress)
-        .values({
+      try {
+        // Record quiz response
+        const quizResponse = await db.insert(userQuizResponses).values({
           userId,
           moduleId: parseInt(moduleId, 10),
           courseId: parseInt(courseId, 10),
-          sectionId,
+          quizId: parseInt(moduleId, 10),
+          isCorrect: isQuizPassed,
+          selectedAnswer: "quiz_completed",
           timeSpent: timeSpent || 0,
-          completed: isQuizPassed,
-          score: quizScore,
-          lastAccessed: new Date(),
-          completedAt: isQuizPassed ? new Date() : null
-        })
-        .onConflictDoUpdate({
-          target: [moduleProgress.userId, moduleProgress.moduleId, moduleProgress.sectionId],
-          set: {
+          answeredAt: new Date()
+        }).returning();
+
+        console.log("[Learning Path] Quiz response recorded:", quizResponse);
+
+        // Update section progress
+        const progressUpdate = await db
+          .insert(moduleProgress)
+          .values({
+            userId,
+            moduleId: parseInt(moduleId, 10),
+            courseId: parseInt(courseId, 10),
+            sectionId,
+            timeSpent: timeSpent || 0,
             completed: isQuizPassed,
             score: quizScore,
             lastAccessed: new Date(),
-            completedAt: isQuizPassed ? new Date() : sql`${moduleProgress.completedAt}`,
-            timeSpent: sql`${moduleProgress.timeSpent} + ${timeSpent || 0}`
-          }
+            completedAt: isQuizPassed ? new Date() : null
+          })
+          .onConflictDoUpdate({
+            target: [moduleProgress.userId, moduleProgress.moduleId, moduleProgress.sectionId],
+            set: {
+              completed: isQuizPassed,
+              score: quizScore,
+              lastAccessed: new Date(),
+              completedAt: isQuizPassed ? new Date() : sql`${moduleProgress.completedAt}`,
+              timeSpent: sql`${moduleProgress.timeSpent} + ${timeSpent || 0}`
+            }
+          })
+          .returning();
+
+        console.log("[Learning Path] Progress updated:", progressUpdate);
+
+        // Check if all sections in the module are completed
+        const moduleSections = await db.query.moduleProgress.findMany({
+          where: and(
+            eq(moduleProgress.userId, userId),
+            eq(moduleProgress.moduleId, parseInt(moduleId, 10)),
+            eq(moduleProgress.courseId, parseInt(courseId, 10))
+          )
         });
 
-      // Check if all sections in the module are completed
-      const moduleSections = await db.query.moduleProgress.findMany({
-        where: and(
-          eq(moduleProgress.userId, userId),
-          eq(moduleProgress.moduleId, parseInt(moduleId, 10)),
-          eq(moduleProgress.courseId, parseInt(courseId, 10))
-        )
-      });
+        console.log("[Learning Path] Module sections status:", moduleSections);
 
-      const allSectionsCompleted = moduleSections.every(section => section.completed);
+        const allSectionsCompleted = moduleSections.every(section => section.completed);
+        console.log("[Learning Path] All sections completed:", allSectionsCompleted);
 
-      if (allSectionsCompleted) {
-        // Update course enrollment progress
-        await db
-          .update(courseEnrollments)
-          .set({
-            progress: sql`LEAST(${courseEnrollments.progress} + 1, 100)`,
-            lastAccessedAt: new Date()
-          })
-          .where(and(
-            eq(courseEnrollments.userId, userId),
-            eq(courseEnrollments.courseId, parseInt(courseId, 10))
-          ));
+        if (allSectionsCompleted) {
+          // Update course enrollment progress
+          const enrollmentUpdate = await db
+            .update(courseEnrollments)
+            .set({
+              progress: sql`LEAST(${courseEnrollments.progress} + 1, 100)`,
+              lastAccessedAt: new Date()
+            })
+            .where(and(
+              eq(courseEnrollments.userId, userId),
+              eq(courseEnrollments.courseId, parseInt(courseId, 10))
+            ))
+            .returning();
+
+          console.log("[Learning Path] Course enrollment updated:", enrollmentUpdate);
+        }
+      } catch (dbError) {
+        console.error("[Learning Path] Database operation failed:", dbError);
+        throw dbError;
       }
     } else {
       // Regular progress update (non-quiz)
-      await db
+      console.log("[Learning Path] Processing regular progress update");
+
+      const regularUpdate = await db
         .insert(moduleProgress)
         .values({
           userId,
@@ -106,12 +133,15 @@ router.post("/api/learning-path/progress", async (req, res) => {
             completedAt: completed ? new Date() : sql`${moduleProgress.completedAt}`,
             timeSpent: sql`${moduleProgress.timeSpent} + ${timeSpent || 0}`
           }
-        });
+        })
+        .returning();
+
+      console.log("[Learning Path] Regular progress updated:", regularUpdate);
     }
 
     res.json({ success: true });
   } catch (error) {
-    console.error("Error updating progress:", error);
+    console.error("[Learning Path] Error updating progress:", error);
     res.status(500).json({ error: "Failed to update progress" });
   }
 });
@@ -131,17 +161,14 @@ router.get("/api/learning-path/recommendations", async (req, res) => {
     });
 
     // Get quiz results for completed modules
-    //  Assuming a table named 'userQuizResponses' exists with columns: userId, moduleId, courseId, is_correct
-    const userQuizResponses = db.userQuizResponses; // Replace with your actual table name
-    const quizResults: QuizResult[] = await db.select({
+    const quizResults = await db.select({
       topicId: userQuizResponses.moduleId,
-      score: sql`AVG(CASE WHEN is_correct THEN 1 ELSE 0 END)`.mapWith(Number),
+      score: sql`AVG(CASE WHEN ${userQuizResponses.isCorrect} THEN 1 ELSE 0 END)`.mapWith(Number),
       courseId: userQuizResponses.courseId
     })
       .from(userQuizResponses)
       .where(eq(userQuizResponses.userId, userId))
       .groupBy(userQuizResponses.moduleId, userQuizResponses.courseId);
-
 
     // Analyze user's learning pattern
     const completedModules = userProgress.filter(p => p.completed).length;
@@ -181,7 +208,7 @@ router.get("/api/learning-path/recommendations", async (req, res) => {
       throw new Error("No recommendation generated");
     }
 
-    const recommendation: LearningRecommendation = JSON.parse(completion.choices[0].message.content);
+    const recommendation = JSON.parse(completion.choices[0].message.content);
 
     res.json({
       userStats: {
