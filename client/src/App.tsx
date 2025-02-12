@@ -35,6 +35,17 @@ import CryptographySection from "@/pages/modules/module1/cryptography";
 import SecuritySection from "@/pages/modules/module1/security";
 import PracticalApplicationsSection from "@/pages/modules/module1/applications";
 import GettingStartedSection from "@/pages/modules/module1/getting-started";
+
+// AI Module imports
+import AIModule1 from "@/pages/ai/module1";
+import AIIntroduction from "@/pages/ai/module1/introduction";
+import AIHowItWorks from "@/pages/ai/module1/how-ai-works";
+import AIApplications from "@/pages/ai/module1/ai-applications";
+import AIMLBasics from "@/pages/ai/module1/machine-learning-basics";
+import AINeuralNetworks from "@/pages/ai/module1/neural-networks";
+import AIModule1Quiz from "@/pages/ai/module1/quiz";
+import AIModule2 from "@/pages/ai/module2";
+
 // Module 2 Routes
 import Module2Landing from "@/pages/modules/module2";
 import BitcoinFundamentalsSection from "@/pages/modules/module2/bitcoin-fundamentals";
@@ -55,13 +66,7 @@ import Module4Landing from "@/pages/modules/module4";
 import DigitalVsTraditionalSection from "@/pages/modules/module4/digital-vs-traditional";
 import TradingSimulator from "@/pages/trading-simulator";
 import GlossaryPage from "@/pages/glossary";
-import AIModule1 from "@/pages/ai/module1";
-import AIIntroduction from "@/pages/ai/module1/introduction";
-import AIHowItWorks from "@/pages/ai/module1/how-ai-works";
-import AIApplications from "@/pages/ai/module1/ai-applications";
-import AIMLBasics from "@/pages/ai/module1/machine-learning-basics";
-import AINeuralNetworks from "@/pages/ai/module1/neural-networks";
-import AIModule1Quiz from "@/pages/ai/module1/quiz";
+
 
 function ProtectedRoute({ component: Component, adminOnly = false, publicAccess = false, ...rest }: any) {
   const { user, isLoading } = useAuth();
@@ -104,6 +109,8 @@ function Router() {
       <Route path="/ai/module1/machine-learning-basics" component={() => <ProtectedRoute component={AIMLBasics} publicAccess={true} />} />
       <Route path="/ai/module1/neural-networks" component={() => <ProtectedRoute component={AINeuralNetworks} publicAccess={true} />} />
       <Route path="/ai/module1/quiz" component={() => <ProtectedRoute component={AIModule1Quiz} publicAccess={true} />} />
+      {/* Add AI Module 2 route */}
+      <Route path="/ai/module2" component={() => <ProtectedRoute component={AIModule2} publicAccess={true} />} />
 
       {/* Authentication routes */}
       <Route path="/login" component={AuthPage} />
