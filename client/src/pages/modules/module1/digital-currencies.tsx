@@ -323,14 +323,9 @@ export default function DigitalCurrenciesSection() {
               <motion.p variants={sectionVariants} className="mt-4">
                 One of cryptocurrency's most significant achievements is solving the "double-spending" problem for digital money. In traditional digital systems, preventing someone from copying and reusing digital money required central authorities to track all transactions. Cryptocurrency solves this through its blockchain and network consensus mechanism.
               </motion.p>
-              <motion.div
-                className="mt-6"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-              >
+              <div className="mt-6">
                 <DoubleSpendDiagram />
-              </motion.div>
+              </div>
             </motion.div>
           </motion.section>
 
