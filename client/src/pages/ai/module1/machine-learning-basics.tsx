@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,20 +8,18 @@ import {
   ArrowLeft,
   ArrowRight,
   Brain,
-  MessageSquare,
-  Image as ImageIcon,
-  Car,
-  Stethoscope,
-  Bot,
-  ShieldCheck,
-  Code2,
+  Database,
+  GitBranch,
+  Network,
+  Target,
+  TrendingUp,
   Check,
   X
 } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 
-// Interactive AI Application Card Component
-const ApplicationCard = ({
+// Algorithm Card Component
+const AlgorithmCard = ({
   title,
   description,
   icon: Icon,
@@ -38,7 +36,7 @@ const ApplicationCard = ({
 
   return (
     <motion.div
-      className="bg-white rounded-lg shadow-lg p-6 relative overflow-hidden"
+      className="bg-white rounded-lg shadow-lg p-6"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay }}
@@ -52,74 +50,33 @@ const ApplicationCard = ({
         <h3 className="text-xl font-semibold text-blue-800">{title}</h3>
       </div>
       <p className="text-gray-600 mb-4">{description}</p>
-      <AnimatePresence>
-        {isHovered && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="bg-blue-50 rounded-lg p-4 mt-4"
-          >
-            <h4 className="font-semibold text-blue-700 mb-2">Examples:</h4>
-            <ul className="list-disc list-inside text-blue-600">
-              {examples.map((example, index) => (
-                <motion.li
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.1 * index }}
-                >
-                  {example}
-                </motion.li>
-              ))}
-            </ul>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {isHovered && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          exit={{ opacity: 0, height: 0 }}
+          className="bg-blue-50 rounded-lg p-4"
+        >
+          <h4 className="font-semibold text-blue-700 mb-2">Examples:</h4>
+          <ul className="list-disc list-inside text-blue-600">
+            {examples.map((example, index) => (
+              <motion.li
+                key={index}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 * index }}
+              >
+                {example}
+              </motion.li>
+            ))}
+          </ul>
+        </motion.div>
+      )}
     </motion.div>
   );
 };
 
-// AI Impact Visualization Component
-const ImpactVisualization = () => {
-  const [activeSection, setActiveSection] = useState(0);
-  const sections = [
-    { title: "Business", value: 85 },
-    { title: "Healthcare", value: 78 },
-    { title: "Education", value: 72 },
-    { title: "Transportation", value: 68 },
-    { title: "Entertainment", value: 65 }
-  ];
-
-  return (
-    <div className="space-y-4">
-      {sections.map((section, index) => (
-        <motion.div
-          key={section.title}
-          className="relative"
-          onHoverStart={() => setActiveSection(index)}
-        >
-          <div className="flex justify-between items-center mb-2">
-            <span className="font-medium text-blue-800">{section.title}</span>
-            <span className="text-blue-600">{section.value}%</span>
-          </div>
-          <div className="h-4 bg-blue-100 rounded-full overflow-hidden">
-            <motion.div
-              className="h-full bg-blue-600"
-              initial={{ width: 0 }}
-              animate={{
-                width: `${section.value}%`,
-                transition: { duration: 1, delay: index * 0.2 }
-              }}
-            />
-          </div>
-        </motion.div>
-      ))}
-    </div>
-  );
-};
-
-export default function AIApplications() {
+export default function MachineLearningBasics() {
   useScrollTop();
   const [showQuiz, setShowQuiz] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -134,37 +91,37 @@ export default function AIApplications() {
 
   const questions = [
     {
-      question: "Which AI application is primarily used in autonomous vehicles?",
+      question: "What is Machine Learning?",
       options: [
-        "Natural Language Processing",
-        "Computer Vision",
-        "Audio Processing",
-        "Quantum Computing"
-      ],
-      correct: 1,
-      explanation: "Computer Vision is crucial for autonomous vehicles as it helps them perceive and understand their environment through visual data from cameras and sensors."
-    },
-    {
-      question: "What is the main application of Natural Language Processing (NLP)?",
-      options: [
-        "Image Recognition",
-        "Financial Trading",
-        "Language Translation and Understanding",
-        "Robot Control"
+        "A programming language",
+        "A type of computer hardware",
+        "A method of teaching computers to learn from data",
+        "A database management system"
       ],
       correct: 2,
-      explanation: "Natural Language Processing (NLP) is primarily used for tasks involving human language, such as translation, chatbots, and text analysis."
+      explanation: "Machine Learning is a method of data analysis that automates analytical model building, allowing computers to learn and improve from experience without being explicitly programmed."
     },
     {
-      question: "In healthcare, AI is commonly used for:",
+      question: "Which of the following is NOT a type of machine learning?",
       options: [
-        "Social Media Management",
-        "Game Development",
-        "Weather Forecasting",
-        "Disease Diagnosis and Treatment Planning"
+        "Supervised Learning",
+        "Unsupervised Learning",
+        "Manual Learning",
+        "Reinforcement Learning"
       ],
-      correct: 3,
-      explanation: "AI in healthcare is primarily used for disease diagnosis, treatment planning, and analyzing medical images to assist healthcare professionals."
+      correct: 2,
+      explanation: "Manual Learning is not a type of machine learning. The main types are Supervised Learning, Unsupervised Learning, and Reinforcement Learning."
+    },
+    {
+      question: "What is the primary purpose of supervised learning?",
+      options: [
+        "To find hidden patterns in unlabeled data",
+        "To learn from trial and error",
+        "To predict outputs based on labeled training data",
+        "To create random data patterns"
+      ],
+      correct: 2,
+      explanation: "Supervised learning uses labeled training data to learn patterns and make predictions on new, unseen data based on those patterns."
     }
   ];
 
@@ -192,12 +149,12 @@ export default function AIApplications() {
         setShowResults(true);
         updateProgress({
           moduleId: 'ai-module1',
-          sectionId: 'ai-applications',
+          sectionId: 'machine-learning-basics',
           completed: true,
           score: Math.round((score / questions.length) * 100),
           totalSections: 4,
-          currentSection: 3,
-          nextModule: 'machine-learning-basics'
+          currentSection: 4,
+          nextModule: 'module1-quiz'
         });
       }
     }, 2000);
@@ -230,9 +187,7 @@ export default function AIApplications() {
                     <div className="w-full bg-gray-200 h-2 rounded-full">
                       <div
                         className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                        style={{
-                          width: `${((currentQuestion + 1) / questions.length) * 100}%`,
-                        }}
+                        style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
                       />
                     </div>
                   </div>
@@ -259,9 +214,7 @@ export default function AIApplications() {
                                   : "bg-red-100 border-red-500 hover:bg-red-100"
                                 : "hover:bg-blue-50"
                             }`}
-                            onClick={() =>
-                              !answerState.showExplanation && handleAnswer(index)
-                            }
+                            onClick={() => !answerState.showExplanation && handleAnswer(index)}
                             disabled={answerState.showExplanation}
                           >
                             <div className="flex items-center gap-4">
@@ -291,11 +244,9 @@ export default function AIApplications() {
                         answerState.isCorrect ? "bg-green-100" : "bg-red-100"
                       }`}
                     >
-                      <p
-                        className={`font-semibold ${
-                          answerState.isCorrect ? "text-green-800" : "text-red-800"
-                        }`}
-                      >
+                      <p className={`font-semibold ${
+                        answerState.isCorrect ? "text-green-800" : "text-red-800"
+                      }`}>
                         {answerState.isCorrect ? "Correct!" : "Incorrect."}
                       </p>
                       <p className="mt-2 text-gray-700">
@@ -319,7 +270,7 @@ export default function AIApplications() {
                   </p>
                   <p className="text-gray-600 mb-6">
                     {score === questions.length
-                      ? "Perfect score! You've mastered AI applications!"
+                      ? "Perfect score! You've mastered the basics of Machine Learning!"
                       : "Great effort! Review the content and try again to improve your score."}
                   </p>
                   <div className="flex justify-center gap-4">
@@ -334,9 +285,9 @@ export default function AIApplications() {
                     >
                       Back to Content
                     </Button>
-                    <Link href="/ai/module1/machine-learning-basics">
+                    <Link href="/ai/module1/quiz">
                       <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
-                        Next Topic: Machine Learning <ArrowRight className="h-4 w-4" />
+                        Take Module Quiz <ArrowRight className="h-4 w-4" />
                       </Button>
                     </Link>
                   </div>
@@ -370,7 +321,7 @@ export default function AIApplications() {
               <div className="flex items-center gap-4 mb-6">
                 <Brain className="h-10 w-10 text-blue-600" />
                 <h1 className="text-3xl font-bold text-blue-800">
-                  AI Applications in the Real World
+                  Machine Learning Basics
                 </h1>
               </div>
 
@@ -382,104 +333,161 @@ export default function AIApplications() {
                   className="mb-8"
                 >
                   <h2 className="text-2xl font-semibold text-blue-700 mb-4">
-                    Key Application Areas
+                    Understanding Machine Learning
+                  </h2>
+                  <p className="text-gray-700 mb-6">
+                    Machine Learning is a subset of artificial intelligence that enables systems to learn and improve from experience. Unlike traditional programming where rules are explicitly defined, machine learning algorithms can learn patterns from data and make decisions with minimal human intervention.
+                  </p>
+                </motion.section>
+
+                <motion.section
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4 }}
+                  className="mb-8"
+                >
+                  <h2 className="text-2xl font-semibold text-blue-700 mb-4">
+                    Types of Machine Learning
                   </h2>
                   <div className="grid md:grid-cols-2 gap-6">
-                    <ApplicationCard
-                      title="Natural Language Processing"
-                      description="AI systems that understand, interpret, and generate human language"
-                      icon={MessageSquare}
+                    <AlgorithmCard
+                      title="Supervised Learning"
+                      description="Learning from labeled data to make predictions"
+                      icon={Target}
                       examples={[
-                        "Language Translation",
-                        "Chatbots and Virtual Assistants",
-                        "Text Analysis and Generation",
-                        "Speech Recognition"
-                      ]}
-                      delay={0.3}
-                    />
-                    <ApplicationCard
-                      title="Computer Vision"
-                      description="Systems that can understand and process visual information"
-                      icon={ImageIcon}
-                      examples={[
-                        "Facial Recognition",
-                        "Object Detection",
-                        "Medical Image Analysis",
-                        "Autonomous Vehicles"
-                      ]}
-                      delay={0.4}
-                    />
-                    <ApplicationCard
-                      title="Robotics"
-                      description="AI-powered machines that can perform physical tasks"
-                      icon={Bot}
-                      examples={[
-                        "Manufacturing Automation",
-                        "Warehouse Operations",
-                        "Surgical Robots",
-                        "Home Assistance Robots"
-                      ]}
-                      delay={0.5}
-                    />
-                    <ApplicationCard
-                      title="Healthcare"
-                      description="AI applications in medical diagnosis and treatment"
-                      icon={Stethoscope}
-                      examples={[
-                        "Disease Diagnosis",
-                        "Drug Discovery",
-                        "Patient Care Planning",
-                        "Medical Image Analysis"
+                        "Image Classification",
+                        "Spam Detection",
+                        "Price Prediction",
+                        "Disease Diagnosis"
                       ]}
                       delay={0.6}
                     />
+                    <AlgorithmCard
+                      title="Unsupervised Learning"
+                      description="Finding patterns in unlabeled data"
+                      icon={Database}
+                      examples={[
+                        "Customer Segmentation",
+                        "Anomaly Detection",
+                        "Pattern Recognition",
+                        "Feature Learning"
+                      ]}
+                      delay={0.7}
+                    />
+                    <AlgorithmCard
+                      title="Reinforcement Learning"
+                      description="Learning through trial and error interactions"
+                      icon={GitBranch}
+                      examples={[
+                        "Game AI",
+                        "Robot Navigation",
+                        "Resource Management",
+                        "Autonomous Systems"
+                      ]}
+                      delay={0.8}
+                    />
+                    <AlgorithmCard
+                      title="Deep Learning"
+                      description="Learning through neural networks with multiple layers"
+                      icon={Network}
+                      examples={[
+                        "Natural Language Processing",
+                        "Computer Vision",
+                        "Speech Recognition",
+                        "Generative AI"
+                      ]}
+                      delay={0.9}
+                    />
                   </div>
                 </motion.section>
 
                 <motion.section
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.7 }}
+                  transition={{ delay: 1 }}
                   className="mb-8"
                 >
                   <h2 className="text-2xl font-semibold text-blue-700 mb-4">
-                    Industry Impact
+                    The Machine Learning Process
                   </h2>
-                  <div className="bg-white p-6 rounded-lg shadow-inner">
-                    <p className="text-gray-700 mb-6">
-                      AI's impact across different industries continues to grow,
-                      transforming how businesses operate and deliver value to customers.
-                    </p>
-                    <ImpactVisualization />
+                  <div className="bg-blue-50 rounded-lg p-6">
+                    <ol className="space-y-4">
+                      {[
+                        {
+                          title: "Data Collection",
+                          desc: "Gathering relevant data for training"
+                        },
+                        {
+                          title: "Data Preparation",
+                          desc: "Cleaning and preprocessing the data"
+                        },
+                        {
+                          title: "Model Selection",
+                          desc: "Choosing appropriate algorithms"
+                        },
+                        {
+                          title: "Training",
+                          desc: "Teaching the model using training data"
+                        },
+                        {
+                          title: "Evaluation",
+                          desc: "Testing the model's performance"
+                        },
+                        {
+                          title: "Deployment",
+                          desc: "Implementing the model in real-world applications"
+                        }
+                      ].map((step, index) => (
+                        <motion.li
+                          key={index}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 1.2 + index * 0.1 }}
+                          className="flex items-start gap-4"
+                        >
+                          <div className="bg-blue-100 p-2 rounded-full">
+                            <span className="text-blue-600 font-semibold">
+                              {index + 1}
+                            </span>
+                          </div>
+                          <div>
+                            <h3 className="font-semibold text-blue-800">
+                              {step.title}
+                            </h3>
+                            <p className="text-gray-600">{step.desc}</p>
+                          </div>
+                        </motion.li>
+                      ))}
+                    </ol>
                   </div>
                 </motion.section>
 
                 <motion.section
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 0.9 }}
+                  transition={{ delay: 1.8 }}
                   className="mb-8"
                 >
                   <h2 className="text-2xl font-semibold text-blue-700 mb-4">
-                    Emerging Trends
+                    Applications and Impact
                   </h2>
                   <div className="grid md:grid-cols-2 gap-4">
                     {[
                       {
-                        title: "Edge AI",
-                        desc: "AI processing on local devices for faster response times"
+                        title: "Healthcare",
+                        desc: "Disease prediction and medical imaging analysis"
                       },
                       {
-                        title: "AutoML",
-                        desc: "Automated machine learning model development"
+                        title: "Finance",
+                        desc: "Fraud detection and algorithmic trading"
                       },
                       {
-                        title: "Explainable AI",
-                        desc: "Making AI decisions more transparent and interpretable"
+                        title: "Transportation",
+                        desc: "Autonomous vehicles and traffic prediction"
                       },
                       {
-                        title: "AI Ethics",
-                        desc: "Ensuring responsible and fair AI development"
+                        title: "Entertainment",
+                        desc: "Content recommendations and gaming AI"
                       }
                     ].map((item, index) => (
                       <motion.div
@@ -487,7 +495,7 @@ export default function AIApplications() {
                         className="bg-blue-50 p-4 rounded-lg"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 1.1 + index * 0.2 }}
+                        transition={{ delay: 2 + index * 0.2 }}
                       >
                         <h3 className="font-semibold text-blue-800 mb-2">
                           {item.title}
@@ -506,9 +514,9 @@ export default function AIApplications() {
                 >
                   Take Topic Quiz
                 </Button>
-                <Link href="/ai/module1/machine-learning-basics">
+                <Link href="/ai/module1/quiz">
                   <Button className="gap-2">
-                    Next Topic: Machine Learning <ArrowRight className="h-4 w-4" />
+                    Module Quiz <ArrowRight className="h-4 w-4" />
                   </Button>
                 </Link>
               </div>
