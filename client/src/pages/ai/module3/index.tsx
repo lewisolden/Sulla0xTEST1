@@ -17,11 +17,19 @@ import {
 } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 
+interface Topic {
+  id: string;
+  title: string;
+  description: string;
+  icon: any;
+  href: string;
+}
+
 export default function AIModule3() {
   useScrollTop();
-  const { getModuleProgress } = useProgress();
+  const { progress } = useProgress();
 
-  const topics = [
+  const topics: Topic[] = [
     {
       id: "deep-learning",
       title: "Deep Learning",
@@ -52,11 +60,11 @@ export default function AIModule3() {
     }
   ];
 
-  const moduleProgress = getModuleProgress("ai-module3");
-  const completedTopics = topics.filter(topic => 
-    moduleProgress?.find(p => p.sectionId === topic.id)?.completed
+  const completedTopics = progress.filter(
+    (p) => p.moduleId === 3 && topics.some(t => t.id === p.sectionId) && p.completed
   ).length;
-  const progress = (completedTopics / topics.length) * 100;
+
+  const progressValue = (completedTopics / topics.length) * 100;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -92,18 +100,18 @@ export default function AIModule3() {
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm text-gray-600">
                     <span>Progress</span>
-                    <span>{Math.round(progress)}% Complete</span>
+                    <span>{Math.round(progressValue)}% Complete</span>
                   </div>
-                  <Progress value={progress} className="h-2" />
+                  <Progress value={progressValue} className="h-2" />
                 </div>
               </div>
 
               <div className="grid md:grid-cols-2 gap-4">
                 {topics.map((topic, index) => {
                   const Icon = topic.icon;
-                  const isCompleted = moduleProgress?.find(
-                    p => p.sectionId === topic.id
-                  )?.completed;
+                  const isCompleted = progress.some(
+                    p => p.moduleId === 3 && p.sectionId === topic.id && p.completed
+                  );
 
                   return (
                     <motion.div

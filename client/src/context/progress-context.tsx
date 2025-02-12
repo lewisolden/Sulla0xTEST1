@@ -1,4 +1,4 @@
-import { createContext, useContext, ReactNode, useState, useEffect } from "react";
+import { createContext, useContext, ReactNode, useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 
 interface ProgressData {
@@ -15,12 +15,12 @@ interface ProgressContextType {
   isLoading: boolean;
   error: Error | null;
   updateProgress: (moduleId: number, sectionId: string, completed: boolean, courseId?: number, timeSpent?: number, quizScore?: number) => void;
+  getModuleProgress: (moduleId: number) => { completed: boolean; total: number };
 }
 
 const ProgressContext = createContext<ProgressContextType | undefined>(undefined);
 
 export function ProgressProvider({ children }: { children: ReactNode }) {
-  // Fetch progress data
   const { data, isLoading, error } = useQuery({
     queryKey: ['/api/learning-path/progress'],
     queryFn: async () => {
@@ -30,7 +30,6 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     }
   });
 
-  // Progress update mutation
   const mutation = useMutation({
     mutationFn: async (progressData: ProgressData) => {
       const response = await fetch('/api/learning-path/progress', {
@@ -40,7 +39,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
           moduleId: progressData.moduleId,
           sectionId: progressData.sectionId,
           completed: progressData.completed,
-          courseId: progressData.courseId || 1, // Default to course 1 if not specified
+          courseId: progressData.courseId || 1,
           timeSpent: progressData.timeSpent,
           quizScore: progressData.quizScore
         })
@@ -76,11 +75,27 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const getModuleProgress = (moduleId: number) => {
+    if (!data?.progress) {
+      return { completed: 0, total: 0 };
+    }
+
+    const moduleProgress = data.progress.filter(
+      (item: ProgressData) => item.moduleId === moduleId
+    );
+
+    return {
+      completed: moduleProgress.filter((item: ProgressData) => item.completed).length,
+      total: moduleProgress.length || 0
+    };
+  };
+
   const contextValue = {
     progress: data?.progress || [],
     isLoading,
     error: error as Error | null,
-    updateProgress
+    updateProgress,
+    getModuleProgress
   };
 
   return (
