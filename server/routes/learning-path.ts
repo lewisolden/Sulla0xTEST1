@@ -5,6 +5,43 @@ import { sql, eq, and } from "drizzle-orm";
 
 const router = Router();
 
+// Helper function to calculate course progress
+async function updateCourseProgress(tx: any, userId: number, courseId: number) {
+  // Get total sections for the course
+  const totalSections = 4; // Module 1 has 4 sections
+
+  // Count completed sections
+  const completedSections = await tx
+    .select({ count: sql<number>`cast(count(*) as integer)` })
+    .from(moduleProgress)
+    .where(
+      and(
+        eq(moduleProgress.userId, userId),
+        eq(moduleProgress.courseId, courseId),
+        eq(moduleProgress.completed, true)
+      )
+    );
+
+  // Calculate progress percentage
+  const progressPercentage = Math.round((completedSections[0].count / totalSections) * 100);
+
+  // Update course enrollment progress
+  await tx
+    .update(courseEnrollments)
+    .set({
+      progress: progressPercentage,
+      lastAccessedAt: new Date()
+    })
+    .where(
+      and(
+        eq(courseEnrollments.userId, userId),
+        eq(courseEnrollments.courseId, courseId)
+      )
+    );
+
+  return progressPercentage;
+}
+
 // Update module progress
 router.post("/api/learning-path/progress", async (req, res) => {
   try {
@@ -44,28 +81,6 @@ router.post("/api/learning-path/progress", async (req, res) => {
       try {
         // Start transaction for quiz completion
         const result = await db.transaction(async (tx) => {
-          console.log("[Learning Path] Starting transaction");
-
-          // First check if user is enrolled, if not, enroll them
-          const enrollment = await tx.query.courseEnrollments.findFirst({
-            where: and(
-              eq(courseEnrollments.userId, userId),
-              eq(courseEnrollments.courseId, parseInt(courseId, 10))
-            )
-          });
-
-          if (!enrollment) {
-            console.log("[Learning Path] Creating new enrollment");
-            await tx.insert(courseEnrollments).values({
-              userId,
-              courseId: parseInt(courseId, 10),
-              status: 'active',
-              progress: 0,
-              enrolledAt: new Date(),
-              lastAccessedAt: new Date()
-            });
-          }
-
           // Check if progress record exists
           const existingProgress = await tx.query.moduleProgress.findFirst({
             where: and(
@@ -109,33 +124,28 @@ router.post("/api/learning-path/progress", async (req, res) => {
               .returning();
           }
 
-          if (isQuizPassed) {
-            console.log("[Learning Path] Updating course enrollment progress");
-            await tx.update(courseEnrollments)
-              .set({
-                progress: sql`LEAST(${courseEnrollments.progress} + 1, 100)`,
-                lastAccessedAt: new Date()
-              })
-              .where(and(
-                eq(courseEnrollments.userId, userId),
-                eq(courseEnrollments.courseId, parseInt(courseId, 10))
-              ));
-          }
+          // Update course progress
+          const updatedProgress = await updateCourseProgress(
+            tx,
+            userId,
+            parseInt(courseId, 10)
+          );
 
-          return { progressUpdate };
+          return { progressUpdate, courseProgress: updatedProgress };
         });
 
         console.log("[Learning Path] Transaction completed successfully:", result);
-        res.json({ 
+        res.json({
           success: true,
-          message: isQuizPassed ? "Quiz completed successfully!" : "Quiz submitted but did not pass threshold"
+          message: isQuizPassed ? "Quiz completed successfully!" : "Quiz submitted but did not pass threshold",
+          progress: result.courseProgress
         });
 
       } catch (dbError) {
         console.error("[Learning Path] Database operation failed:", dbError);
-        res.status(500).json({ 
-          error: "Failed to update progress", 
-          details: dbError instanceof Error ? dbError.message : 'Unknown error' 
+        res.status(500).json({
+          error: "Failed to update progress",
+          details: dbError instanceof Error ? dbError.message : 'Unknown error'
         });
       }
     } else {
@@ -143,52 +153,66 @@ router.post("/api/learning-path/progress", async (req, res) => {
       try {
         console.log("[Learning Path] Processing regular progress update");
 
-        // Check if progress record exists
-        const existingProgress = await db.query.moduleProgress.findFirst({
-          where: and(
-            eq(moduleProgress.userId, userId),
-            eq(moduleProgress.moduleId, parseInt(moduleId, 10)),
-            eq(moduleProgress.sectionId, sectionId)
-          )
-        });
-
-        let regularUpdate;
-        if (existingProgress) {
-          // Update existing record
-          [regularUpdate] = await db.update(moduleProgress)
-            .set({
-              completed: completed || existingProgress.completed,
-              lastAccessed: new Date(),
-              completedAt: completed ? new Date() : existingProgress.completedAt,
-              timeSpent: existingProgress.timeSpent + (timeSpent || 0)
-            })
-            .where(and(
+        const result = await db.transaction(async (tx) => {
+          // Check if progress record exists
+          const existingProgress = await tx.query.moduleProgress.findFirst({
+            where: and(
               eq(moduleProgress.userId, userId),
               eq(moduleProgress.moduleId, parseInt(moduleId, 10)),
               eq(moduleProgress.sectionId, sectionId)
-            ))
-            .returning();
-        } else {
-          // Insert new record
-          [regularUpdate] = await db.insert(moduleProgress)
-            .values({
-              userId,
-              moduleId: parseInt(moduleId, 10),
-              courseId: parseInt(courseId, 10),
-              sectionId,
-              timeSpent: timeSpent || 0,
-              completed: completed || false,
-              lastAccessed: new Date(),
-              completedAt: completed ? new Date() : null
-            })
-            .returning();
-        }
+            )
+          });
 
-        console.log("[Learning Path] Regular progress updated:", regularUpdate);
-        res.json({ success: true });
+          let progressUpdate;
+          if (existingProgress) {
+            // Update existing record
+            [progressUpdate] = await tx.update(moduleProgress)
+              .set({
+                completed: completed || existingProgress.completed,
+                lastAccessed: new Date(),
+                completedAt: completed ? new Date() : existingProgress.completedAt,
+                timeSpent: existingProgress.timeSpent + (timeSpent || 0)
+              })
+              .where(and(
+                eq(moduleProgress.userId, userId),
+                eq(moduleProgress.moduleId, parseInt(moduleId, 10)),
+                eq(moduleProgress.sectionId, sectionId)
+              ))
+              .returning();
+          } else {
+            // Insert new record
+            [progressUpdate] = await tx.insert(moduleProgress)
+              .values({
+                userId,
+                moduleId: parseInt(moduleId, 10),
+                courseId: parseInt(courseId, 10),
+                sectionId,
+                timeSpent: timeSpent || 0,
+                completed: completed || false,
+                lastAccessed: new Date(),
+                completedAt: completed ? new Date() : null
+              })
+              .returning();
+          }
+
+          // Update course progress
+          const updatedProgress = await updateCourseProgress(
+            tx,
+            userId,
+            parseInt(courseId, 10)
+          );
+
+          return { progressUpdate, courseProgress: updatedProgress };
+        });
+
+        console.log("[Learning Path] Regular progress updated:", result);
+        res.json({
+          success: true,
+          progress: result.courseProgress
+        });
       } catch (error) {
         console.error("[Learning Path] Error in regular progress update:", error);
-        res.status(500).json({ 
+        res.status(500).json({
           error: "Failed to update progress",
           details: error instanceof Error ? error.message : 'Unknown error'
         });
