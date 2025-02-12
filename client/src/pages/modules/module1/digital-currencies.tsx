@@ -36,36 +36,13 @@ export default function DigitalCurrenciesSection() {
 
       if (scrollPercent > 95 && !isFullyRead) {
         setIsFullyRead(true);
-        // Update progress for the digital currencies section
-        updateProgress(1, 'digital-currencies', true).catch(error => {
-          console.error('Failed to update progress:', error);
-        });
+        updateProgress(1, 'digital-currencies', true).catch(console.error);
       }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [updateProgress, isFullyRead]);
-
-  const pageVariants = {
-    initial: { opacity: 0, y: 20 },
-    enter: { 
-      opacity: 1, 
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: [0.6, -0.05, 0.01, 0.99],
-        staggerChildren: 0.2
-      }
-    },
-    exit: { 
-      opacity: 0, 
-      y: -20,
-      transition: {
-        duration: 0.4
-      }
-    }
-  };
 
   const sectionVariants = {
     hidden: { 
@@ -131,7 +108,24 @@ export default function DigitalCurrenciesSection() {
           initial="initial"
           animate="enter"
           exit="exit"
-          variants={pageVariants}
+          variants={{
+            initial: { opacity: 0, y: 20 },
+            enter: { 
+              opacity: 1, 
+              y: 0,
+              transition: {
+                duration: 0.8,
+                ease: [0.6, -0.05, 0.01, 0.99],
+              }
+            },
+            exit: { 
+              opacity: 0, 
+              y: -20,
+              transition: {
+                duration: 0.4
+              }
+            }
+          }}
           className="container mx-auto px-4 py-8"
         >
           <motion.div
