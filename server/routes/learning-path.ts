@@ -24,13 +24,14 @@ async function updateCourseProgress(tx: any, userId: number, courseId: number) {
       )
     );
 
-  // Calculate progress percentage (each section is worth ~8.33%)
+  // Calculate progress percentage (each section is worth 8.33%)
   const progressPercentage = Math.round((completedSections[0].count / totalSections) * 100);
 
   console.log(`[Progress Update] User ${userId}, Course ${courseId}:`, {
     completedSections: completedSections[0].count,
     totalSections,
-    progressPercentage
+    progressPercentage,
+    sectionWeight: (100 / totalSections).toFixed(2) + '%'
   });
 
   // Update course enrollment progress
@@ -84,7 +85,14 @@ router.post("/api/learning-path/progress", async (req, res) => {
     // If this is a quiz completion
     if (quizScore !== undefined) {
       const isQuizPassed = quizScore >= 60; // Pass threshold
-      console.log("[Learning Path] Processing quiz completion:", { isQuizPassed, quizScore });
+      console.log("[Learning Path] Processing quiz completion:", { 
+        isQuizPassed, 
+        quizScore,
+        userId,
+        moduleId,
+        sectionId,
+        courseId
+      });
 
       try {
         // Start transaction for quiz completion
@@ -101,7 +109,7 @@ router.post("/api/learning-path/progress", async (req, res) => {
 
           let progressUpdate;
           if (existingProgress) {
-            // Update existing record
+            // Update existing record with quiz results
             [progressUpdate] = await tx.update(moduleProgress)
               .set({
                 completed: isQuizPassed,
@@ -118,7 +126,7 @@ router.post("/api/learning-path/progress", async (req, res) => {
               ))
               .returning();
           } else {
-            // Insert new record
+            // Insert new record with quiz results
             [progressUpdate] = await tx.insert(moduleProgress)
               .values({
                 userId,
@@ -134,7 +142,7 @@ router.post("/api/learning-path/progress", async (req, res) => {
               .returning();
           }
 
-          // Update course progress
+          // Update course progress considering all sections
           const updatedProgress = await updateCourseProgress(
             tx,
             userId,
