@@ -1,7 +1,5 @@
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
-import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ArrowLeft, ArrowRight } from "lucide-react";
@@ -11,26 +9,17 @@ import BitcoinInvestmentQuiz from "@/components/modules/quizzes/BitcoinInvestmen
 export default function BitcoinInvestment() {
   useScrollTop();
   const [showQuiz, setShowQuiz] = useState(false);
-  const { updateProgress } = useProgress();
-
-  const handleQuizComplete = () => {
-    updateProgress(2, 'bitcoin-investment-quiz', true);
-  };
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-6"
-        >
+        <div className="mb-6">
           <Link href="/modules/module2">
             <Button variant="ghost" className="gap-2">
               <ArrowLeft className="h-4 w-4" /> Back to Module Overview
             </Button>
           </Link>
-        </motion.div>
+        </div>
 
         <h1 className="text-3xl font-bold mb-6">Bitcoin Investment</h1>
 
@@ -66,7 +55,7 @@ export default function BitcoinInvestment() {
                 <Button onClick={() => setShowQuiz(true)}>Start Quiz</Button>
               </div>
             ) : (
-              <BitcoinInvestmentQuiz onQuizComplete={handleQuizComplete} />
+              <BitcoinInvestmentQuiz />
             )}
           </Card>
         </div>
