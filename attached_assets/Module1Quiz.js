@@ -1,31 +1,63 @@
 import React, { useState } from 'react';
+import { useToast } from "@/hooks/use-toast";
 
 const Module1Quiz = () => {
+  const { toast } = useToast();
   const handleQuizCompletion = async (score, totalQuestions) => {
     try {
-      // First update the quiz progress
+      const quizData = {
+        moduleId: 1,
+        courseId: 1, 
+        sectionId: 'module-1-quiz',
+        completed: true,
+        quizScore: Math.round((score / totalQuestions) * 100),
+        timeSpent: 0 
+      };
+
+      console.log('Submitting quiz completion:', quizData);
+
       const response = await fetch('/api/learning-path/progress', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          moduleId: 1,
-          courseId: 1,
-          sectionId: 'module-1-quiz',
-          completed: true,
-          quizScore: Math.round((score / totalQuestions) * 100),
-          timeSpent: 0
-        }),
+        credentials: 'include',
+        body: JSON.stringify(quizData),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to update progress');
+        const errorData = await response.json();
+        toast({
+          title: "Quiz submission failed",
+          description: errorData.error || 'Failed to update progress',
+          variant: "destructive",
+        });
+        throw new Error(errorData.error || 'Failed to update progress');
       }
 
-      console.log(`Quiz completed: Score ${score}/${totalQuestions}`);
+      const result = await response.json();
+      console.log('Quiz progress updated:', result);
+
+      // Refresh user metrics after quiz completion
+      const metricsResponse = await fetch('/api/user/metrics', {
+        credentials: 'include',
+      });
+
+      if (!metricsResponse.ok) {
+        console.error('Failed to refresh metrics');
+      }
+
+      toast({
+        title: "Quiz completed!",
+        description: "Your progress has been saved.",
+      });
     } catch (error) {
       console.error('Error updating progress:', error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to submit quiz",
+        variant: "destructive",
+      });
     }
   };
 

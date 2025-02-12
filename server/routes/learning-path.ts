@@ -2,14 +2,13 @@ import { Router } from "express";
 import { db } from "@db";
 import { moduleProgress, userQuizResponses, courseEnrollments } from "@db/schema";
 import { sql, eq, and } from "drizzle-orm";
-import OpenAI from "openai";
 
 const router = Router();
-const openai = new OpenAI();
 
 // Update module progress
 router.post("/api/learning-path/progress", async (req, res) => {
   if (!req.session?.userId) {
+    console.error("[Learning Path] No user session found");
     return res.status(401).json({ error: "Unauthorized" });
   }
 
@@ -33,24 +32,46 @@ router.post("/api/learning-path/progress", async (req, res) => {
       console.log("[Learning Path] Processing quiz completion:", { isQuizPassed, quizScore });
 
       try {
-        // Record quiz response
-        const quizResponse = await db.insert(userQuizResponses).values({
-          userId,
-          moduleId: parseInt(moduleId, 10),
-          courseId: parseInt(courseId, 10),
-          quizId: parseInt(moduleId, 10),
-          isCorrect: isQuizPassed,
-          selectedAnswer: "quiz_completed",
-          timeSpent: timeSpent || 0,
-          answeredAt: new Date()
-        }).returning();
+        // Start transaction for quiz completion
+        const result = await db.transaction(async (tx) => {
+          // First check if user is enrolled, if not, enroll them
+          let enrollment = await tx.query.courseEnrollments.findFirst({
+            where: and(
+              eq(courseEnrollments.userId, userId),
+              eq(courseEnrollments.courseId, parseInt(courseId, 10))
+            )
+          });
 
-        console.log("[Learning Path] Quiz response recorded:", quizResponse);
+          if (!enrollment) {
+            console.log("[Learning Path] User not enrolled, creating enrollment");
+            const [newEnrollment] = await tx.insert(courseEnrollments).values({
+              userId,
+              courseId: parseInt(courseId, 10),
+              status: 'active',
+              progress: 0,
+              enrolledAt: new Date(),
+              lastAccessedAt: new Date()
+            }).returning();
+            enrollment = newEnrollment;
+            console.log("[Learning Path] Created new enrollment:", enrollment);
+          }
 
-        // Update section progress
-        const progressUpdate = await db
-          .insert(moduleProgress)
-          .values({
+          // Record quiz response
+          const [quizResponse] = await tx.insert(userQuizResponses).values({
+            userId,
+            moduleId: parseInt(moduleId, 10),
+            courseId: parseInt(courseId, 10),
+            quizId: parseInt(moduleId, 10), // Using moduleId as quizId for now
+            isCorrect: isQuizPassed,
+            selectedAnswer: "quiz_completed",
+            timeSpent: timeSpent || 0,
+            answeredAt: new Date()
+          }).returning();
+
+          console.log("[Learning Path] Quiz response recorded:", quizResponse);
+
+          // Update module progress
+          const [progressUpdate] = await tx.insert(moduleProgress).values({
             userId,
             moduleId: parseInt(moduleId, 10),
             courseId: parseInt(courseId, 10),
@@ -59,7 +80,8 @@ router.post("/api/learning-path/progress", async (req, res) => {
             completed: isQuizPassed,
             score: quizScore,
             lastAccessed: new Date(),
-            completedAt: isQuizPassed ? new Date() : null
+            completedAt: isQuizPassed ? new Date() : null,
+            aiRecommendations: null // Initialize empty recommendations
           })
           .onConflictDoUpdate({
             target: [moduleProgress.userId, moduleProgress.moduleId, moduleProgress.sectionId],
@@ -73,155 +95,68 @@ router.post("/api/learning-path/progress", async (req, res) => {
           })
           .returning();
 
-        console.log("[Learning Path] Progress updated:", progressUpdate);
+          console.log("[Learning Path] Progress updated:", progressUpdate);
 
-        // Check if all sections in the module are completed
-        const moduleSections = await db.query.moduleProgress.findMany({
-          where: and(
-            eq(moduleProgress.userId, userId),
-            eq(moduleProgress.moduleId, parseInt(moduleId, 10)),
-            eq(moduleProgress.courseId, parseInt(courseId, 10))
-          )
+          // Update course enrollment progress if quiz is passed
+          if (isQuizPassed) {
+            const [enrollmentUpdate] = await tx.update(courseEnrollments)
+              .set({
+                progress: sql`LEAST(${courseEnrollments.progress} + 1, 100)`,
+                lastAccessedAt: new Date()
+              })
+              .where(and(
+                eq(courseEnrollments.userId, userId),
+                eq(courseEnrollments.courseId, parseInt(courseId, 10))
+              ))
+              .returning();
+
+            console.log("[Learning Path] Course enrollment updated:", enrollmentUpdate);
+          }
+
+          return { quizResponse, progressUpdate };
         });
 
-        console.log("[Learning Path] Module sections status:", moduleSections);
+        console.log("[Learning Path] Transaction completed successfully:", result);
+        res.json({ success: true });
 
-        const allSectionsCompleted = moduleSections.every(section => section.completed);
-        console.log("[Learning Path] All sections completed:", allSectionsCompleted);
-
-        if (allSectionsCompleted) {
-          // Update course enrollment progress
-          const enrollmentUpdate = await db
-            .update(courseEnrollments)
-            .set({
-              progress: sql`LEAST(${courseEnrollments.progress} + 1, 100)`,
-              lastAccessedAt: new Date()
-            })
-            .where(and(
-              eq(courseEnrollments.userId, userId),
-              eq(courseEnrollments.courseId, parseInt(courseId, 10))
-            ))
-            .returning();
-
-          console.log("[Learning Path] Course enrollment updated:", enrollmentUpdate);
-        }
       } catch (dbError) {
         console.error("[Learning Path] Database operation failed:", dbError);
-        throw dbError;
+        res.status(500).json({ 
+          error: "Failed to update progress", 
+          details: dbError instanceof Error ? dbError.message : 'Unknown error' 
+        });
       }
     } else {
       // Regular progress update (non-quiz)
       console.log("[Learning Path] Processing regular progress update");
 
-      const regularUpdate = await db
-        .insert(moduleProgress)
-        .values({
-          userId,
-          moduleId: parseInt(moduleId, 10),
-          courseId: parseInt(courseId, 10),
-          sectionId,
-          timeSpent: timeSpent || 0,
-          completed: completed || false,
+      const regularUpdate = await db.insert(moduleProgress).values({
+        userId,
+        moduleId: parseInt(moduleId, 10),
+        courseId: parseInt(courseId, 10),
+        sectionId,
+        timeSpent: timeSpent || 0,
+        completed: completed || false,
+        lastAccessed: new Date(),
+        completedAt: completed ? new Date() : null
+      })
+      .onConflictDoUpdate({
+        target: [moduleProgress.userId, moduleProgress.moduleId, moduleProgress.sectionId],
+        set: {
+          completed: completed || sql`${moduleProgress.completed}`,
           lastAccessed: new Date(),
-          completedAt: completed ? new Date() : null
-        })
-        .onConflictDoUpdate({
-          target: [moduleProgress.userId, moduleProgress.moduleId, moduleProgress.sectionId],
-          set: {
-            completed: completed || sql`${moduleProgress.completed}`,
-            lastAccessed: new Date(),
-            completedAt: completed ? new Date() : sql`${moduleProgress.completedAt}`,
-            timeSpent: sql`${moduleProgress.timeSpent} + ${timeSpent || 0}`
-          }
-        })
-        .returning();
+          completedAt: completed ? new Date() : sql`${moduleProgress.completedAt}`,
+          timeSpent: sql`${moduleProgress.timeSpent} + ${timeSpent || 0}`
+        }
+      })
+      .returning();
 
       console.log("[Learning Path] Regular progress updated:", regularUpdate);
+      res.json({ success: true });
     }
-
-    res.json({ success: true });
   } catch (error) {
     console.error("[Learning Path] Error updating progress:", error);
     res.status(500).json({ error: "Failed to update progress" });
-  }
-});
-
-// Get personalized learning recommendations
-router.get("/api/learning-path/recommendations", async (req, res) => {
-  if (!req.session?.userId) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
-
-  try {
-    const userId = parseInt(req.session.userId, 10);
-
-    // Get user's progress data
-    const userProgress = await db.query.moduleProgress.findMany({
-      where: sql`${moduleProgress.userId} = ${userId}`
-    });
-
-    // Get quiz results for completed modules
-    const quizResults = await db.select({
-      topicId: userQuizResponses.moduleId,
-      score: sql`AVG(CASE WHEN ${userQuizResponses.isCorrect} THEN 1 ELSE 0 END)`.mapWith(Number),
-      courseId: userQuizResponses.courseId
-    })
-      .from(userQuizResponses)
-      .where(eq(userQuizResponses.userId, userId))
-      .groupBy(userQuizResponses.moduleId, userQuizResponses.courseId);
-
-    // Analyze user's learning pattern
-    const completedModules = userProgress.filter(p => p.completed).length;
-    const averageQuizScore = quizResults.reduce((acc, q) => acc + q.score, 0) / quizResults.length;
-    const strugglingTopics = quizResults
-      .filter(q => q.score < 0.7) // Less than 70% correct
-      .map(q => q.topicId);
-
-    // Generate AI recommendations using OpenAI
-    const prompt = `As a cryptocurrency education expert, provide a personalized learning recommendation based on the following user data:
-      - Completed modules: ${completedModules}
-      - Average quiz score: ${averageQuizScore}
-      - Struggling topics: ${strugglingTopics.join(", ")}
-
-      Generate a recommendation that includes:
-      1. The next topic they should focus on
-      2. Why this topic is recommended
-      3. Additional resources that could help
-      4. Appropriate difficulty level
-
-      Format the response as a JSON object with the following structure:
-      {
-        "nextTopic": "topic name",
-        "reason": "explanation",
-        "suggestedResources": ["resource1", "resource2"],
-        "difficulty": "beginner|intermediate|advanced"
-      }`;
-
-    const completion = await openai.chat.completions.create({
-      messages: [{ role: "user", content: prompt }],
-      model: "gpt-3.5-turbo",
-      temperature: 0.7,
-      response_format: { type: "json_object" }
-    });
-
-    if (!completion.choices[0].message.content) {
-      throw new Error("No recommendation generated");
-    }
-
-    const recommendation = JSON.parse(completion.choices[0].message.content);
-
-    res.json({
-      userStats: {
-        completedModules,
-        averageQuizScore,
-        strugglingTopics
-      },
-      recommendation
-    });
-
-  } catch (error) {
-    console.error("Error generating learning recommendations:", error);
-    res.status(500).json({ error: "Failed to generate learning recommendations" });
   }
 });
 
