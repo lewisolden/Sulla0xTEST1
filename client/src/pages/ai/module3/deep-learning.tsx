@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
-import { ArrowLeft, Brain, Network, Layers, Cpu } from "lucide-react";
+import { ArrowLeft, ArrowRight, Brain, Network, Layers, Cpu } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { DeepLearningQuiz } from "@/components/quizzes/DeepLearningQuiz";
 
@@ -17,31 +17,25 @@ const NeuralNetworkDiagram = () => (
         <polygon points="0 0, 10 3.5, 0 7" fill="#4B5563" />
       </marker>
     </defs>
-    {/* Input Layer */}
     {[0, 1, 2, 3].map((i) => (
       <g key={`input-${i}`}>
         <circle cx="100" cy={100 + i * 60} r="20" fill="#93C5FD" />
         <text x="100" y={100 + i * 60} textAnchor="middle" dy=".3em" fill="white">x{i+1}</text>
       </g>
     ))}
-    {/* Hidden Layer */}
     {[0, 1, 2, 3, 4].map((i) => (
       <g key={`hidden-${i}`}>
         <circle cx="400" cy={80 + i * 60} r="20" fill="#60A5FA" />
         <text x="400" y={80 + i * 60} textAnchor="middle" dy=".3em" fill="white">h{i+1}</text>
       </g>
     ))}
-    {/* Output Layer */}
     {[0, 1, 2].map((i) => (
       <g key={`output-${i}`}>
         <circle cx="700" cy={140 + i * 60} r="20" fill="#2563EB" />
         <text x="700" y={140 + i * 60} textAnchor="middle" dy=".3em" fill="white">y{i+1}</text>
       </g>
     ))}
-    {/* Connections */}
     <g className="connections" stroke="#4B5563" strokeWidth="1" markerEnd="url(#arrowhead)">
-      {/* Add connection lines between layers */}
-      {/* These would be generated programmatically in a full implementation */}
     </g>
   </svg>
 );
@@ -51,6 +45,7 @@ export default function DeepLearning() {
   const { updateProgress } = useProgress();
   const [showQuiz, setShowQuiz] = useState(false);
   const [readingProgress, setReadingProgress] = useState(0);
+  const [, setLocation] = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,7 +53,7 @@ export default function DeepLearning() {
       const maxHeight = document.documentElement.scrollHeight - window.innerHeight;
       const progress = (scrolled / maxHeight) * 100;
       setReadingProgress(progress);
-      
+
       if (progress > 90) {
         updateProgress(3, 'deep-learning', true);
       }
@@ -68,10 +63,13 @@ export default function DeepLearning() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [updateProgress]);
 
+  const handleQuizCompletion = () => {
+    setLocation("/ai/module3/reinforcement-learning");
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
-        {/* Progress Bar */}
         <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
           <div 
             className="h-full bg-blue-600 transition-all duration-300"
@@ -79,10 +77,15 @@ export default function DeepLearning() {
           />
         </div>
 
-        <div className="mb-6">
+        <div className="mb-6 flex justify-between items-center">
           <Link href="/ai/module3">
             <Button variant="ghost" className="gap-2">
               <ArrowLeft className="h-4 w-4" /> Back to Module 3
+            </Button>
+          </Link>
+          <Link href="/ai/module3/reinforcement-learning">
+            <Button variant="ghost" className="gap-2">
+              Next: Reinforcement Learning <ArrowRight className="h-4 w-4" />
             </Button>
           </Link>
         </div>
@@ -224,7 +227,7 @@ export default function DeepLearning() {
 
               {showQuiz && (
                 <div className="mt-8">
-                  <DeepLearningQuiz />
+                  <DeepLearningQuiz onComplete={handleQuizCompletion} />
                 </div>
               )}
             </CardContent>

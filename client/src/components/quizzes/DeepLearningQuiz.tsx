@@ -10,7 +10,11 @@ interface QuizQuestion {
   explanation: string;
 }
 
-export function DeepLearningQuiz() {
+interface DeepLearningQuizProps {
+  onComplete?: () => void;
+}
+
+export function DeepLearningQuiz({ onComplete }: DeepLearningQuizProps) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
@@ -83,7 +87,7 @@ export function DeepLearningQuiz() {
 
   const moveToNextQuestion = () => {
     const isCorrect = selectedAnswer === quizQuestions[currentQuestion].correctAnswer;
-    
+
     if (isCorrect) {
       setScore(prev => prev + 1);
     }
@@ -95,7 +99,11 @@ export function DeepLearningQuiz() {
     } else {
       setShowResult(true);
       const passThreshold = quizQuestions.length * 0.6;
-      updateProgress(3, 'deep-learning-quiz', score >= passThreshold);
+      const passed = score >= passThreshold;
+      updateProgress(3, 'deep-learning-quiz', passed);
+      if (passed && onComplete) {
+        setTimeout(onComplete, 2000); // Give user time to see results before navigation
+      }
     }
   };
 
@@ -129,7 +137,7 @@ export function DeepLearningQuiz() {
             </p>
           </div>
         )}
-        <Button 
+        <Button
           onClick={restartQuiz}
           variant="outline"
           className="mt-4"
@@ -151,7 +159,7 @@ export function DeepLearningQuiz() {
             Question {currentQuestion + 1} of {quizQuestions.length}
           </span>
         </h2>
-        
+
         <div className="bg-blue-50 rounded-lg p-4 mb-6">
           <p className="text-lg text-gray-700">
             {currentQuizQuestion.question}
@@ -165,12 +173,12 @@ export function DeepLearningQuiz() {
               onClick={() => handleAnswerSelect(index)}
               className={`
                 w-full p-4 h-auto whitespace-normal text-left justify-start
-                ${selectedAnswer === null 
-                  ? 'bg-gray-100 hover:bg-blue-100 text-gray-700' 
-                  : index === currentQuizQuestion.correctAnswer 
-                    ? 'bg-green-200 text-gray-700' 
-                    : selectedAnswer === index 
-                      ? 'bg-red-200 text-gray-700' 
+                ${selectedAnswer === null
+                  ? 'bg-gray-100 hover:bg-blue-100 text-gray-700'
+                  : index === currentQuizQuestion.correctAnswer
+                    ? 'bg-green-200 text-gray-700'
+                    : selectedAnswer === index
+                      ? 'bg-red-200 text-gray-700'
                       : 'bg-gray-100 text-gray-700'}
               `}
               disabled={selectedAnswer !== null}
@@ -184,13 +192,13 @@ export function DeepLearningQuiz() {
         {showExplanation && (
           <div className={`
             mt-6 p-4 rounded-lg
-            ${selectedAnswer === currentQuizQuestion.correctAnswer 
-              ? 'bg-green-100 border-l-4 border-green-500' 
+            ${selectedAnswer === currentQuizQuestion.correctAnswer
+              ? 'bg-green-100 border-l-4 border-green-500'
               : 'bg-red-100 border-l-4 border-red-500'}
           `}>
             <h3 className="font-bold mb-2">
-              {selectedAnswer === currentQuizQuestion.correctAnswer 
-                ? '✅ Correct!' 
+              {selectedAnswer === currentQuizQuestion.correctAnswer
+                ? '✅ Correct!'
                 : '❌ Incorrect'}
             </h3>
             <p>{currentQuizQuestion.explanation}</p>
@@ -202,8 +210,8 @@ export function DeepLearningQuiz() {
             onClick={moveToNextQuestion}
             className="mt-6 w-full"
           >
-            {currentQuestion < quizQuestions.length - 1 
-              ? 'Next Question' 
+            {currentQuestion < quizQuestions.length - 1
+              ? 'Next Question'
               : 'Finish Quiz'}
           </Button>
         )}
