@@ -57,6 +57,7 @@ import TradingSimulator from "@/pages/trading-simulator";
 import GlossaryPage from "@/pages/glossary";
 import AIModule1 from "@/pages/ai/module1";
 import AIIntroduction from "@/pages/ai/module1/introduction";
+import AIHowItWorks from "@/pages/ai/module1/how-ai-works";
 
 function ProtectedRoute({ component: Component, adminOnly = false, publicAccess = false, ...rest }: any) {
   const { user, isLoading } = useAuth();
@@ -94,6 +95,7 @@ function Router() {
       <Route path="/ai" component={() => <ProtectedRoute component={AIOverview} publicAccess={true} />} />
       <Route path="/ai/module1" component={() => <ProtectedRoute component={AIModule1} publicAccess={true} />} />
       <Route path="/ai/module1/introduction" component={() => <ProtectedRoute component={AIIntroduction} publicAccess={true} />} />
+      <Route path="/ai/module1/how-ai-works" component={() => <ProtectedRoute component={AIHowItWorks} publicAccess={true} />} />
 
       {/* Authentication routes */}
       <Route path="/login" component={AuthPage} />

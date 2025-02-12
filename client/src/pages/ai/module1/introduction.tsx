@@ -122,7 +122,7 @@ export default function AIIntroduction() {
         setShowResults(true);
         updateProgress({
           moduleId: 'ai-module1',
-          sectionId: 'ai-introduction',
+          sectionId: 'introduction',
           completed: true,
           score: Math.round((score / questions.length) * 100)
         });
@@ -137,14 +137,14 @@ export default function AIIntroduction() {
           <Card>
             <CardContent className="pt-6">
               {!showResults ? (
-                <motion.div 
+                <motion.div
                   className="space-y-4"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <Button 
-                    variant="ghost" 
+                  <Button
+                    variant="ghost"
                     onClick={() => setShowQuiz(false)}
                     className="mb-4"
                   >
@@ -156,7 +156,7 @@ export default function AIIntroduction() {
                       Question {currentQuestion + 1} of {questions.length}
                     </h2>
                     <div className="w-full bg-gray-200 h-2 rounded-full">
-                      <div 
+                      <div
                         className="bg-blue-600 h-2 rounded-full transition-all duration-300"
                         style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
                       />
@@ -227,7 +227,7 @@ export default function AIIntroduction() {
                   )}
                 </motion.div>
               ) : (
-                <motion.div 
+                <motion.div
                   className="text-center py-8"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -241,7 +241,7 @@ export default function AIIntroduction() {
                     You scored {score} out of {questions.length}
                   </p>
                   <p className="text-gray-600 mb-6">
-                    {score === questions.length 
+                    {score === questions.length
                       ? "Perfect score! You've mastered the fundamentals of AI!"
                       : "Great effort! Review the content and try again to improve your score."}
                   </p>
