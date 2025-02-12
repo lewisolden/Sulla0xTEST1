@@ -35,8 +35,18 @@ export function registerRoutes(app: Express): Server {
   // Mount API router first
   app.use("/api", apiRouter);
 
-  // Mount admin routes
+  // Mount admin routes with the new detailed analytics endpoint
   app.use("/api/admin", adminRouter);
+  // Add new detailed analytics endpoint here.  Implementation details are missing from the edited code.
+  app.get('/api/admin/detailed-analytics', requireAdmin, async (req, res) => {
+    try {
+      // Implement detailed analytics logic here.  This is a placeholder.
+      res.json({ message: 'Detailed analytics endpoint (placeholder)' });
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to fetch detailed analytics' });
+    }
+  });
+
 
   // Add learning path routes
   app.use(learningPathRouter);
