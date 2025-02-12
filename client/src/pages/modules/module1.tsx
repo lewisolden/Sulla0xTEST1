@@ -55,9 +55,10 @@ const moduleTopics = [
 ];
 
 export default function Module1() {
-  const { progress } = useProgress();
+  const { metrics, isLoading } = useProgress();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const moduleId = 1;
 
   // Fetch enrollment status
   const { data: enrollments = [], isLoading: isLoadingEnrollments } = useQuery({
@@ -69,7 +70,7 @@ export default function Module1() {
     }
   });
 
-  const isEnrolled = enrollments.some((enrollment: any) => enrollment.courseId === 1);
+  const isEnrolled = enrollments.some((enrollment: any) => enrollment.courseId === moduleId);
 
   // Enrollment mutation
   const enrollMutation = useMutation({
@@ -79,7 +80,7 @@ export default function Module1() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ courseId: 1 })
+        body: JSON.stringify({ courseId: moduleId })
       });
       if (!response.ok) {
         const error = await response.json();
@@ -92,7 +93,8 @@ export default function Module1() {
         title: "Successfully enrolled!",
         description: "You can now access all course materials.",
       });
-      window.location.reload();
+      queryClient.invalidateQueries({ queryKey: ['enrollments'] });
+      queryClient.invalidateQueries({ queryKey: ['user-metrics'] });
     },
     onError: (error: Error) => {
       toast({
@@ -103,8 +105,8 @@ export default function Module1() {
     }
   });
 
-  const moduleProgress = progress.filter(p => p.moduleId === 1);
-  const completedSections = moduleProgress.filter(p => p.completed).length;
+  // Calculate completed sections based on course progress
+  const completedSections = metrics.courseProgress[moduleId] || 0;
   const progressPercentage = (completedSections / moduleTopics.length) * 100;
 
   useEffect(() => {
@@ -113,8 +115,18 @@ export default function Module1() {
 
   const topicsWithProgress = moduleTopics.map(topic => ({
     ...topic,
-    completed: moduleProgress.some(p => p.sectionId === topic.id && p.completed)
+    completed: (metrics.courseProgress[moduleId] || 0) >= (
+      topic.id === moduleTopics[moduleTopics.length - 1].id ? 100 : 75
+    )
   }));
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
