@@ -21,12 +21,13 @@ router.get("/api/user/metrics", async (req, res) => {
       courseMetrics,
       recentActivity
     ] = await Promise.all([
-      // Get completed quizzes count
+      // Get completed quizzes count by checking module progress with quiz sections
       db.select({ count: count() })
-        .from(userQuizResponses)
+        .from(moduleProgress)
         .where(and(
-          eq(userQuizResponses.userId, userId),
-          eq(userQuizResponses.isCorrect, true)
+          eq(moduleProgress.userId, userId),
+          sql`${moduleProgress.sectionId} LIKE 'quiz-%'`,
+          eq(moduleProgress.completed, true)
         )),
 
       // Get earned badges count

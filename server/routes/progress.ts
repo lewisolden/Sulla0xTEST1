@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { db } from "@db";
-import { moduleProgress } from "@db/schema";
+import { moduleProgress, courseEnrollments } from "@db/schema";
 import { eq, and, sql } from "drizzle-orm";
 
 const router = Router();
@@ -30,6 +30,7 @@ router.post("/api/progress/update", async (req, res) => {
         .set({
           completed,
           lastAccessed: new Date(),
+          completedAt: completed ? new Date() : null
         })
         .where(and(
           eq(moduleProgress.userId, userId),
@@ -44,6 +45,7 @@ router.post("/api/progress/update", async (req, res) => {
         sectionId,
         completed,
         lastAccessed: new Date(),
+        completedAt: completed ? new Date() : null,
         timeSpent: 0,
       });
     }
@@ -59,6 +61,18 @@ router.post("/api/progress/update", async (req, res) => {
     const completedSections = allSections.filter(section => section.completed).length;
     const totalSections = allSections.length;
     const progress = Math.round((completedSections / totalSections) * 100);
+
+    // Update course enrollment progress
+    await db.update(courseEnrollments)
+      .set({
+        progress,
+        lastAccessedAt: new Date(),
+        completedAt: progress === 100 ? new Date() : undefined
+      })
+      .where(and(
+        eq(courseEnrollments.userId, userId),
+        eq(courseEnrollments.courseId, moduleId)
+      ));
 
     res.json({
       success: true,
@@ -84,9 +98,10 @@ router.post("/api/progress/quiz-complete", async (req, res) => {
     await db.insert(moduleProgress).values({
       userId,
       moduleId,
-      sectionId: quizId,
+      sectionId: `quiz-${quizId}`,
       completed: true,
       lastAccessed: new Date(),
+      completedAt: new Date(),
       score: 100, // Quiz is considered passed
       timeSpent: 0,
     }).onConflictDoUpdate({
@@ -94,9 +109,33 @@ router.post("/api/progress/quiz-complete", async (req, res) => {
       set: {
         completed: true,
         lastAccessed: new Date(),
+        completedAt: new Date(),
         score: 100,
       }
     });
+
+    // Update course enrollment progress after quiz completion
+    const allSections = await db.query.moduleProgress.findMany({
+      where: and(
+        eq(moduleProgress.userId, userId),
+        eq(moduleProgress.moduleId, moduleId)
+      )
+    });
+
+    const completedSections = allSections.filter(section => section.completed).length;
+    const totalSections = allSections.length;
+    const progress = Math.round((completedSections / totalSections) * 100);
+
+    await db.update(courseEnrollments)
+      .set({
+        progress,
+        lastAccessedAt: new Date(),
+        completedAt: progress === 100 ? new Date() : undefined
+      })
+      .where(and(
+        eq(courseEnrollments.userId, userId),
+        eq(courseEnrollments.courseId, moduleId)
+      ));
 
     res.json({ success: true });
   } catch (error) {
