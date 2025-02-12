@@ -36,7 +36,8 @@ import ComputerVision from "@/pages/ai/module2/computer-vision";
 import RoboticsAutomation from "@/pages/ai/module2/robotics-automation";
 import AIEthics from "@/pages/ai/module2/ai-ethics";
 import AIModule2Quiz from "@/pages/ai/module2/quiz";
-import AIModule3 from "@/pages/ai/module3"; // Added import
+import AIModule3 from "@/pages/ai/module3";
+import DeepLearning from "@/pages/ai/module3/deep-learning";
 
 // Module 1 Routes
 import Module1Landing from "@/pages/modules/module1";
@@ -121,7 +122,8 @@ function Router() {
       <Route path="/ai/module2/robotics-automation" component={() => <ProtectedRoute component={RoboticsAutomation} publicAccess={true} />} />
       <Route path="/ai/module2/ai-ethics" component={() => <ProtectedRoute component={AIEthics} publicAccess={true} />} />
       <Route path="/ai/module2/quiz" component={() => <ProtectedRoute component={AIModule2Quiz} publicAccess={true} />} />
-      <Route path="/ai/module3" component={() => <ProtectedRoute component={AIModule3} publicAccess={true} />} /> {/* Added route */}
+      <Route path="/ai/module3" component={() => <ProtectedRoute component={AIModule3} publicAccess={true} />} />
+      <Route path="/ai/module3/deep-learning" component={() => <ProtectedRoute component={DeepLearning} publicAccess={true} />} />
 
 
       {/* Authentication routes */}
