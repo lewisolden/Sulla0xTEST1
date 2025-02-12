@@ -1,7 +1,6 @@
 import { Link } from "wouter";
-import { BookOpen, GraduationCap, Zap, Gamepad2, CreditCard, Dumbbell, Lightbulb } from "lucide-react";
+import { BookOpen, GraduationCap, Zap, Gamepad2, CreditCard, Dumbbell, Lightbulb, Brain, Code, Globe } from "lucide-react";
 import { motion } from "framer-motion";
-//import Footer from "@/components/layout/footer"; //Removed as per instructions
 import { PersonalizedPath } from "@/components/learning/personalized-path";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
@@ -66,6 +65,54 @@ const courses = [
           "Module Quiz"
         ],
         path: "/modules/module3"
+      }
+    ]
+  },
+  {
+    id: 2,
+    title: "Course 2: Introduction to AI",
+    description: "A comprehensive introduction to artificial intelligence, machine learning, and their real-world applications.",
+    subject: "ai",
+    level: "beginner",
+    modules: [
+      {
+        id: 1,
+        icon: Brain,
+        title: "Module 1: Foundations of AI",
+        description: "Learn the fundamental concepts of AI, machine learning, and neural networks.",
+        sections: [
+          "Topic 1.1 - Introduction to Artificial Intelligence",
+          "Topic 1.2 - How AI Works",
+          "Topic 1.3 - Machine Learning Basics",
+          "Topic 1.4 - Neural Networks and Deep Learning"
+        ],
+        path: "/ai/module1"
+      },
+      {
+        id: 2,
+        icon: Code,
+        title: "Module 2: AI Technologies and Applications",
+        description: "Explore practical AI applications and implementation strategies.",
+        sections: [
+          "Topic 2.1 - Natural Language Processing",
+          "Topic 2.2 - Computer Vision",
+          "Topic 2.3 - AI Tools and Platforms",
+          "Topic 2.4 - Practical AI Implementation"
+        ],
+        path: "/ai/module2"
+      },
+      {
+        id: 3,
+        icon: Globe,
+        title: "Module 3: AI Impact and Future",
+        description: "Understand AI's impact on society and future opportunities.",
+        sections: [
+          "Topic 3.1 - Ethics and Responsibility",
+          "Topic 3.2 - AI in Industry",
+          "Topic 3.3 - Future of AI",
+          "Topic 3.4 - AI Career Paths"
+        ],
+        path: "/ai/module3"
       }
     ]
   }
