@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { db } from "@db";
-import { moduleProgress, userQuizResponses } from "@db/schema";
+import { moduleProgress, userQuizResponses, courseEnrollments } from "@db/schema";
 import { sql, eq, and } from "drizzle-orm";
 import OpenAI from "openai";
 
@@ -17,69 +17,96 @@ router.post("/api/learning-path/progress", async (req, res) => {
     const { moduleId, courseId, sectionId, timeSpent, completed, quizScore } = req.body;
     const userId = parseInt(req.session.userId, 10);
 
-    // Insert or update module progress
-    await db
-      .insert(moduleProgress)
-      .values({
-        userId,
-        moduleId: parseInt(moduleId, 10),
-        courseId: parseInt(courseId, 10),
-        sectionId,
-        timeSpent: timeSpent || 0,
-        completed: completed || false,
-        score: quizScore,
-        lastAccessed: new Date(),
-        completedAt: completed ? new Date() : null
-      })
-      .onConflictDoUpdate({
-        target: [moduleProgress.userId, moduleProgress.moduleId, moduleProgress.sectionId],
-        set: {
-          timeSpent: sql`${moduleProgress.timeSpent} + ${timeSpent || 0}`,
-          completed: completed || sql`${moduleProgress.completed}`,
-          score: quizScore || sql`${moduleProgress.score}`,
-          lastAccessed: new Date(),
-          completedAt: completed ? new Date() : sql`${moduleProgress.completedAt}`
-        }
-      });
+    console.log("Received progress update:", { moduleId, courseId, sectionId, completed, quizScore });
 
-    // If this was a quiz completion, record the response
+    // If this is a quiz completion
     if (quizScore !== undefined) {
+      const isQuizPassed = quizScore >= 60; // Pass threshold
+
+      // Record quiz response
       await db.insert(userQuizResponses).values({
         userId,
         moduleId: parseInt(moduleId, 10),
         courseId: parseInt(courseId, 10),
-        quizId: parseInt(moduleId, 10), // Assuming quiz IDs match module IDs for now
-        isCorrect: quizScore >= 60, // Pass threshold
-        selectedAnswer: "quiz_completed", // We'll store actual answers later
+        quizId: parseInt(moduleId, 10),
+        isCorrect: isQuizPassed,
+        selectedAnswer: "quiz_completed",
         timeSpent: timeSpent || 0,
         answeredAt: new Date()
       });
-    }
 
-    // Check if all sections in the module are completed
-    if (completed) {
+      // Update section progress
+      await db
+        .insert(moduleProgress)
+        .values({
+          userId,
+          moduleId: parseInt(moduleId, 10),
+          courseId: parseInt(courseId, 10),
+          sectionId,
+          timeSpent: timeSpent || 0,
+          completed: isQuizPassed,
+          score: quizScore,
+          lastAccessed: new Date(),
+          completedAt: isQuizPassed ? new Date() : null
+        })
+        .onConflictDoUpdate({
+          target: [moduleProgress.userId, moduleProgress.moduleId, moduleProgress.sectionId],
+          set: {
+            completed: isQuizPassed,
+            score: quizScore,
+            lastAccessed: new Date(),
+            completedAt: isQuizPassed ? new Date() : sql`${moduleProgress.completedAt}`,
+            timeSpent: sql`${moduleProgress.timeSpent} + ${timeSpent || 0}`
+          }
+        });
+
+      // Check if all sections in the module are completed
       const moduleSections = await db.query.moduleProgress.findMany({
         where: and(
           eq(moduleProgress.userId, userId),
-          eq(moduleProgress.moduleId, parseInt(moduleId, 10))
+          eq(moduleProgress.moduleId, parseInt(moduleId, 10)),
+          eq(moduleProgress.courseId, parseInt(courseId, 10))
         )
       });
 
       const allSectionsCompleted = moduleSections.every(section => section.completed);
 
       if (allSectionsCompleted) {
-        // Update the module's overall completion status
+        // Update course enrollment progress
         await db
-          .update(moduleProgress)
+          .update(courseEnrollments)
           .set({
-            completed: true,
-            completedAt: new Date()
+            progress: sql`LEAST(${courseEnrollments.progress} + 1, 100)`,
+            lastAccessedAt: new Date()
           })
           .where(and(
-            eq(moduleProgress.userId, userId),
-            eq(moduleProgress.moduleId, parseInt(moduleId, 10))
+            eq(courseEnrollments.userId, userId),
+            eq(courseEnrollments.courseId, parseInt(courseId, 10))
           ));
       }
+    } else {
+      // Regular progress update (non-quiz)
+      await db
+        .insert(moduleProgress)
+        .values({
+          userId,
+          moduleId: parseInt(moduleId, 10),
+          courseId: parseInt(courseId, 10),
+          sectionId,
+          timeSpent: timeSpent || 0,
+          completed: completed || false,
+          lastAccessed: new Date(),
+          completedAt: completed ? new Date() : null
+        })
+        .onConflictDoUpdate({
+          target: [moduleProgress.userId, moduleProgress.moduleId, moduleProgress.sectionId],
+          set: {
+            completed: completed || sql`${moduleProgress.completed}`,
+            lastAccessed: new Date(),
+            completedAt: completed ? new Date() : sql`${moduleProgress.completedAt}`,
+            timeSpent: sql`${moduleProgress.timeSpent} + ${timeSpent || 0}`
+          }
+        });
     }
 
     res.json({ success: true });

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 const Module1Quiz = () => {
   const handleQuizCompletion = async (score, totalQuestions) => {
     try {
+      // First update the quiz progress
       const response = await fetch('/api/learning-path/progress', {
         method: 'POST',
         headers: {
@@ -22,7 +23,7 @@ const Module1Quiz = () => {
         throw new Error('Failed to update progress');
       }
 
-      console.log(`Progress updated: Score ${score}/${totalQuestions}`);
+      console.log(`Quiz completed: Score ${score}/${totalQuestions}`);
     } catch (error) {
       console.error('Error updating progress:', error);
     }
