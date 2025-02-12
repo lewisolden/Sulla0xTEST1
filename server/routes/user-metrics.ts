@@ -20,66 +20,32 @@ router.get("/api/user/metrics", async (req, res) => {
     const userId = parseInt(req.session.userId, 10);
     console.log("[User Metrics] Fetching metrics for user:", userId);
 
-    // Fetch all metrics in parallel for better performance
-    const [
-      quizMetrics,
-      badgeCount,
-      learningTimeResult,
-      moduleProgressData,
-      courseMetrics
-    ] = await Promise.all([
-      // Get quiz metrics (completed count and average score)
-      db.select({
-        completed: count(),
-        totalCorrect: sum(sql`CASE WHEN ${userQuizResponses.isCorrect} THEN 1 ELSE 0 END`).mapWith(Number)
-      })
-        .from(userQuizResponses)
-        .where(eq(userQuizResponses.userId, userId))
-        .then(result => {
-          console.log("[User Metrics] Quiz metrics raw result:", result);
-          return result;
-        }),
+    // Fetch module progress metrics first
+    const moduleProgressData = await db.query.moduleProgress.findMany({
+      where: eq(moduleProgress.userId, userId),
+      orderBy: [desc(moduleProgress.lastAccessed)],
+    });
 
-      // Get earned badges count
-      db.select({ count: count() })
-        .from(userAchievements)
-        .where(eq(userAchievements.userId, userId))
-        .then(result => {
-          console.log("[User Metrics] Badge count raw result:", result);
-          return result;
-        }),
+    console.log("[User Metrics] Module progress data:", moduleProgressData);
 
-      // Get total learning time from module progress
-      db.select({ 
-        totalMinutes: sum(moduleProgress.timeSpent).mapWith(Number) 
-      })
-        .from(moduleProgress)
-        .where(eq(moduleProgress.userId, userId))
-        .then(result => {
-          console.log("[User Metrics] Learning time raw result:", result);
-          return result;
-        }),
+    // Calculate quiz metrics from module progress
+    const quizMetrics = moduleProgressData.reduce((acc, curr) => {
+      if (curr.score !== null) { // This is a quiz completion
+        acc.completed++;
+        acc.totalScore += curr.score;
+      }
+      return acc;
+    }, { completed: 0, totalScore: 0 });
 
-      // Get module progress for learning streak calculation
-      db.query.moduleProgress.findMany({
-        where: eq(moduleProgress.userId, userId),
-        orderBy: [desc(moduleProgress.lastAccessed)],
-      }).then(result => {
-        console.log("[User Metrics] Module progress raw result:", result);
-        return result;
-      }),
+    // Get earned badges count
+    const [badgeCount] = await db.select({ count: count() })
+      .from(userAchievements)
+      .where(eq(userAchievements.userId, userId));
 
-      // Get course-specific metrics
-      db.query.courseEnrollments.findMany({
-        where: eq(courseEnrollments.userId, userId),
-        with: {
-          course: true,
-        },
-      }).then(result => {
-        console.log("[User Metrics] Course metrics raw result:", result);
-        return result;
-      })
-    ]);
+    // Calculate total learning time from module progress
+    const totalLearningMinutes = moduleProgressData.reduce((acc, curr) => {
+      return acc + (curr.timeSpent || 0);
+    }, 0);
 
     // Calculate learning streak
     let streak = 0;
@@ -100,7 +66,6 @@ router.get("/api/user/metrics", async (req, res) => {
     for (let i = 0; i < 30; i++) {
       const checkDate = new Date(today);
       checkDate.setDate(checkDate.getDate() - i);
-
       if (activityDates.has(checkDate.getTime())) {
         streak++;
       } else if (streak > 0) {
@@ -108,59 +73,46 @@ router.get("/api/user/metrics", async (req, res) => {
       }
     }
 
-    console.log("[User Metrics] Calculated learning streak:", streak);
+    // Get course metrics
+    const courseMetrics = await db.query.courseEnrollments.findMany({
+      where: eq(courseEnrollments.userId, userId),
+      with: {
+        course: true,
+      },
+    });
 
-    // Transform course metrics
+    // Transform course metrics with progress data
     const transformedCourseMetrics = await Promise.all(
       courseMetrics.map(async (enrollment) => {
-        // Get course quiz performance
-        const [quizStats, timeStats] = await Promise.all([
-          db.select({
-            correct: sum(sql`CASE WHEN ${userQuizResponses.isCorrect} THEN 1 ELSE 0 END`).mapWith(Number),
-            total: count()
-          })
-            .from(userQuizResponses)
-            .where(and(
-              eq(userQuizResponses.userId, userId),
-              eq(userQuizResponses.courseId, enrollment.courseId)
-            ))
-            .then(result => {
-              console.log("[User Metrics] Course quiz stats:", { courseId: enrollment.courseId, result });
-              return result;
-            }),
+        // Get course-specific module progress
+        const courseProgress = moduleProgressData.filter(
+          mp => mp.courseId === enrollment.courseId
+        );
 
-          // Get course time spent
-          db.select({
-            totalTime: sum(moduleProgress.timeSpent).mapWith(Number)
-          })
-            .from(moduleProgress)
-            .where(and(
-              eq(moduleProgress.userId, userId),
-              eq(moduleProgress.courseId, enrollment.courseId)
-            ))
-            .then(result => {
-              console.log("[User Metrics] Course time stats:", { courseId: enrollment.courseId, result });
-              return result;
-            })
-        ]);
+        // Calculate course-specific metrics
+        const courseTimeSpent = courseProgress.reduce((acc, curr) => acc + (curr.timeSpent || 0), 0);
+        const courseQuizzes = courseProgress.filter(mp => mp.score !== null);
+        const courseQuizScore = courseQuizzes.length > 0
+          ? Math.round(courseQuizzes.reduce((acc, curr) => acc + (curr.score || 0), 0) / courseQuizzes.length)
+          : 0;
 
         return {
           courseId: enrollment.courseId,
           title: enrollment.course.title,
           progress: enrollment.progress || 0,
-          timeSpent: timeStats[0]?.totalTime || 0,
-          quizScore: quizStats[0]?.total ? 
-            Math.round((quizStats[0].correct / quizStats[0].total) * 100) : 0
+          timeSpent: courseTimeSpent,
+          quizScore: courseQuizScore
         };
       })
     );
 
     const response = {
-      completedQuizzes: quizMetrics[0]?.completed || 0,
-      quizAccuracy: quizMetrics[0]?.completed && quizMetrics[0]?.totalCorrect ? 
-        Math.round((quizMetrics[0].totalCorrect / quizMetrics[0].completed) * 100) : 0,
-      earnedBadges: badgeCount[0]?.count || 0,
-      totalLearningMinutes: learningTimeResult[0]?.totalMinutes || 0,
+      completedQuizzes: quizMetrics.completed,
+      quizAccuracy: quizMetrics.completed > 0
+        ? Math.round((quizMetrics.totalScore / quizMetrics.completed))
+        : 0,
+      earnedBadges: badgeCount?.count || 0,
+      totalLearningMinutes: totalLearningMinutes,
       learningStreak: streak,
       courses: transformedCourseMetrics
     };
