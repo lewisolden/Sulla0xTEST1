@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useProgress } from "@/context/progress-context";
 
 const ConsensusMechanismsQuiz = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -6,10 +7,7 @@ const ConsensusMechanismsQuiz = () => {
   const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
-
-  const updateProgress = (moduleId, sectionId, completed) => {
-    console.log(`Progress updated: Module ${moduleId}, Section ${sectionId}, Completed: ${completed}`);
-  };
+  const { updateProgress } = useProgress();
 
   const quizQuestions = [
     {
@@ -76,7 +74,7 @@ const ConsensusMechanismsQuiz = () => {
 
   const moveToNextQuestion = () => {
     const isCorrect = selectedAnswer === quizQuestions[currentQuestion].correctAnswer;
-    
+
     if (isCorrect) {
       setScore(prev => prev + 1);
     }
@@ -88,7 +86,8 @@ const ConsensusMechanismsQuiz = () => {
     } else {
       setShowResult(true);
       const passThreshold = quizQuestions.length * 0.6;
-      updateProgress(2, 'consensus-mechanisms-quiz', score >= passThreshold);
+      const finalScore = ((score + (isCorrect ? 1 : 0)) / quizQuestions.length) * 100;
+      updateProgress(2, 'consensus-mechanisms-quiz', finalScore >= 60, finalScore);
     }
   };
 
