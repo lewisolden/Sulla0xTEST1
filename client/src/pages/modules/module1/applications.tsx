@@ -349,7 +349,7 @@ const PracticalApplicationsQuiz = () => {
   };
 
   const moveToNextQuestion = () => {
-    const isCorrect = selectedAnswer === questions[currentQuestion].correct;
+    const isCorrect = selectedAnswer === questions[currentQuestion].correctAnswer;
 
     if (isCorrect) {
       setScore(prev => prev + 1);
@@ -437,7 +437,7 @@ const PracticalApplicationsQuiz = () => {
                   w-full p-4 h-auto whitespace-normal text-left justify-start
                   ${selectedAnswer === null 
                     ? 'bg-gray-100 hover:bg-blue-100 text-gray-700' 
-                    : index === currentQuizQuestion.correct 
+                    : index === currentQuizQuestion.correctAnswer 
                       ? 'bg-green-200 text-gray-700' 
                       : selectedAnswer === index 
                         ? 'bg-red-200 text-gray-700' 
@@ -454,12 +454,12 @@ const PracticalApplicationsQuiz = () => {
           {showExplanation && (
             <div className={`
               mt-6 p-4 rounded-lg
-              ${selectedAnswer === currentQuizQuestion.correct 
+              ${selectedAnswer === currentQuizQuestion.correctAnswer 
                 ? 'bg-green-100 border-l-4 border-green-500' 
                 : 'bg-red-100 border-l-4 border-red-500'}
             `}>
               <h3 className="font-bold mb-2">
-                {selectedAnswer === currentQuizQuestion.correct 
+                {selectedAnswer === currentQuizQuestion.correctAnswer 
                   ? '✅ Correct!' 
                   : '❌ Incorrect'}
               </h3>
@@ -489,50 +489,50 @@ const questions = [
       id: "q1",
       question: "Which of the following best describes how blockchain technology promotes financial inclusion?",
       options: {
-        a: "By requiring users to have traditional bank accounts",
-        b: "By enabling access to financial services without traditional banking infrastructure",
-        c: "By eliminating the need for money completely",
-        d: "By making all transactions free"
+        0: "By requiring users to have traditional bank accounts",
+        1: "By enabling access to financial services without traditional banking infrastructure",
+        2: "By eliminating the need for money completely",
+        3: "By making all transactions free"
       },
-      correct: 1,
+      correctAnswer: 1,  // Changed from 'correct' to 'correctAnswer' to match the validation logic
       explanation: "Blockchain technology promotes financial inclusion by allowing people to access financial services without requiring traditional banking infrastructure. This is particularly important for the unbanked and underbanked populations who may not have access to conventional banking services but can participate in the global economy through blockchain-based solutions."
     },
     {
       id: "q2",
       question: "What is a key advantage of blockchain-based payments over traditional banking systems?",
       options: {
-        a: "They require more intermediaries",
-        b: "They only work during banking hours",
-        c: "They enable near-instant settlement 24/7",
-        d: "They are only available in developed countries"
+        0: "They require more intermediaries",
+        1: "They only work during banking hours",
+        2: "They enable near-instant settlement 24/7",
+        3: "They are only available in developed countries"
       },
-      correct: 2,
+      correctAnswer: 2,
       explanation: "Blockchain-based payments operate 24/7 and enable near-instant settlement of transactions. Unlike traditional banking systems that may take days to process payments and operate only during business hours, blockchain networks operate continuously and can validate transactions within minutes or even seconds."
     },
     {
       id: "q3",
       question: "How do smart contracts enhance payment systems?",
       options: {
-        a: "By requiring manual verification for every transaction",
-        b: "By automating payments based on predefined conditions",
-        c: "By increasing transaction fees",
-        d: "By slowing down transaction processing"
+        0: "By requiring manual verification for every transaction",
+        1: "By automating payments based on predefined conditions",
+        2: "By increasing transaction fees",
+        3: "By slowing down transaction processing"
       },
-      correct: 1,
+      correctAnswer: 1,
       explanation: "Smart contracts enhance payment systems by automating transactions based on predefined conditions. This automation eliminates the need for manual intervention, reduces the risk of human error, and enables complex financial arrangements to execute automatically when specific criteria are met."
     },
     {
       id: "q4",
       question: "Which of these is NOT a typical investment opportunity in the blockchain space?",
       options: {
-        a: "Digital asset trading",
-        b: "Yield farming",
-        c: "Risk-free guaranteed returns",
-        d: "Tokenized real-world assets"
+        0: "Digital asset trading",
+        1: "Yield farming",
+        2: "Risk-free guaranteed returns",
+        3: "Tokenized real-world assets"
       },
-      correct: 2,
+      correctAnswer: 2,
       explanation: "Risk-free guaranteed returns is NOT a legitimate investment opportunity in the blockchain space. While blockchain offers various investment opportunities like digital asset trading, yield farming, and tokenized assets, all investments carry risks. Claims of guaranteed returns are often associated with scams or fraudulent schemes."
     }
-  ];
+];
 
 export default PracticalApplicationsSection;
