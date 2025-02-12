@@ -14,7 +14,8 @@ import {
   Network, 
   Globe,
   Bot,
-  Binary
+  Binary,
+  ArrowRight
 } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { FutureAIQuiz } from "@/components/quizzes/FutureAIQuiz";
@@ -145,8 +146,8 @@ export default function FutureAI() {
   }, [updateProgress]);
 
   const handleQuizCompletion = () => {
-    // This is the last page in the module
-    setLocation("/ai/module3");
+    // Navigate to the module quiz after completing the Future AI quiz
+    setLocation("/ai/module3/quiz");
   };
 
   return (
@@ -163,6 +164,11 @@ export default function FutureAI() {
           <Link href="/ai/module3/generative-ai">
             <Button variant="ghost" className="gap-2">
               <ArrowLeft className="h-4 w-4" /> Back to Generative AI
+            </Button>
+          </Link>
+          <Link href="/ai/module3/quiz">
+            <Button variant="ghost" className="gap-2">
+              Take Module Quiz <ArrowRight className="h-4 w-4" />
             </Button>
           </Link>
         </div>
@@ -311,6 +317,14 @@ export default function FutureAI() {
                 >
                   Take Quiz
                 </Button>
+                <Link href="/ai/module3/quiz">
+                  <Button 
+                    variant="outline"
+                    className="w-full gap-2"
+                  >
+                    Take Module Quiz <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </Link>
               </div>
 
               {showQuiz && (
