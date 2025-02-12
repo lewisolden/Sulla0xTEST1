@@ -3,21 +3,22 @@ import { db } from "@db";
 import { courseEnrollments, moduleProgress, userQuizResponses, userAchievements } from "@db/schema";
 import { eq, and, count, sum, desc, sql } from "drizzle-orm";
 
-declare module "express-session" {
-  interface Session {
-    userId: string;
-  }
-}
-
 const router = Router();
 
 router.get("/api/user/metrics", async (req, res) => {
-  if (!req.session?.userId) {
-    return res.status(401).json({ error: "Unauthorized" });
+  // Check authentication using isAuthenticated()
+  if (!req.isAuthenticated()) {
+    console.error("[User Metrics] Unauthenticated request");
+    return res.status(401).json({ error: "Unauthorized - Please log in" });
+  }
+
+  const userId = req.user?.id;
+  if (!userId) {
+    console.error("[User Metrics] No user ID in authenticated session");
+    return res.status(401).json({ error: "Invalid session" });
   }
 
   try {
-    const userId = parseInt(req.session.userId, 10);
     console.log("[User Metrics] Fetching metrics for user:", userId);
 
     // Fetch module progress metrics first
