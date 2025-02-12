@@ -216,7 +216,16 @@ export default function DeepLearning() {
                 </section>
               </div>
 
-              <div className="mt-8">
+              <div className="mt-8 space-y-4">
+                <Link href="/ai/module3/reinforcement-learning">
+                  <Button 
+                    className="w-full gap-2"
+                    variant="outline"
+                  >
+                    Next Topic: Reinforcement Learning <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </Link>
+
                 <Button 
                   onClick={() => setShowQuiz(true)}
                   className="w-full"
