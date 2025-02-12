@@ -251,9 +251,9 @@ export default function AIModule2Quiz() {
                       Review Module
                     </Button>
                   </Link>
-                  <Link href="/curriculum">
+                  <Link href="/ai/module3">
                     <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
-                      Return to Curriculum <ArrowRight className="h-4 w-4" />
+                      Start Module 3 <ArrowRight className="h-4 w-4" />
                     </Button>
                   </Link>
                 </div>
