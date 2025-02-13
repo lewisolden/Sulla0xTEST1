@@ -20,6 +20,8 @@ import {
   Book,
   GitBranch,
   BrainCircuit,
+  LineChart,
+  PieChart,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -500,6 +502,107 @@ export const futureFinanceSlide = (
                   <div>
                     <h4 className="text-xl font-semibold text-blue-300 mb-2">{module.title}</h4>
                     <p className="text-blue-100">{module.description}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </Card>
+      </div>
+    </motion.div>
+  </Slide>
+);
+
+// Add after the futureFinanceSlide export
+export const backendArchitectureSlide = (
+  <Slide key="backend-architecture">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div className="flex items-center gap-4 mb-8">
+        <div className="p-3 bg-blue-500/20 rounded-lg">
+          <Network className="w-8 h-8 text-blue-400" />
+        </div>
+        <h2 className="text-4xl font-bold text-blue-400">Platform Architecture</h2>
+      </div>
+      <div className="space-y-6">
+        <Card className="bg-blue-900/30 p-6 mb-8">
+          <h3 className="text-2xl font-semibold text-blue-300 mb-4">Intelligent Learning Infrastructure</h3>
+          <div className="space-y-4">
+            {[
+              {
+                title: "Progress Tracking Engine",
+                description: "Real-time monitoring of user engagement, completion rates, and performance metrics",
+                icon: BarChart
+              },
+              {
+                title: "AI-Powered Analytics",
+                description: "Machine learning algorithms analyze learning patterns to optimize content delivery",
+                icon: BrainCircuit
+              },
+              {
+                title: "Adaptive Assessment System",
+                description: "Dynamic difficulty adjustment based on user performance and learning speed",
+                icon: Target
+              }
+            ].map((feature, index) => (
+              <motion.div
+                key={index}
+                initial={{ x: -50, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: index * 0.2 }}
+                className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="p-2 bg-blue-400/20 rounded-full mt-1">
+                    <feature.icon className="w-5 h-5 text-blue-400" />
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-semibold text-blue-300 mb-2">{feature.title}</h4>
+                    <p className="text-blue-100">{feature.description}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </Card>
+
+        <Card className="bg-blue-900/30 p-6">
+          <h3 className="text-2xl font-semibold text-blue-300 mb-4">Admin Dashboard & Analytics</h3>
+          <div className="space-y-4">
+            {[
+              {
+                title: "Comprehensive Analytics",
+                description: "Monitor user engagement, content effectiveness, and learning outcomes",
+                icon: LineChart
+              },
+              {
+                title: "AI Model Training",
+                description: "User interaction data feeds back into our AI systems for continuous improvement",
+                icon: Brain
+              },
+              {
+                title: "Performance Insights",
+                description: "Detailed metrics on user progress, struggle points, and success rates",
+                icon: PieChart
+              }
+            ].map((feature, index) => (
+              <motion.div
+                key={index}
+                initial={{ x: -50, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: index * 0.2 }}
+                className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="p-2 bg-blue-400/20 rounded-full mt-1">
+                    <feature.icon className="w-5 h-5 text-blue-400" />
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-semibold text-blue-300 mb-2">{feature.title}</h4>
+                    <p className="text-blue-100">{feature.description}</p>
                   </div>
                 </div>
               </motion.div>

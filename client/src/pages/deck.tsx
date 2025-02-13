@@ -619,6 +619,84 @@ const futureFinanceSlide = <Slide key="future-finance">
   </motion.div>
 </Slide>;
 
+const backendArchitectureSlide = <Slide key="backend-architecture">
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <div className="flex items-center gap-4 mb-8">
+      <div className="p-3 bg-blue-500/20 rounded-lg">
+        <Network className="w-8 h-8 text-blue-400" />
+      </div>
+      <h2 className="text-4xl font-bold text-blue-400">Backend Architecture</h2>
+    </div>
+    <p className="text-xl text-blue-200 mb-8">
+      Sulla's robust backend architecture is designed for scalability and security.
+    </p>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.3 }}
+        className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+      >
+        <div className="flex items-center gap-3 mb-4">
+          <Terminal className="w-6 h-6 text-blue-400" />
+          <h3 className="text-xl font-semibold text-blue-300">Node.js</h3>
+        </div>
+        <p className="text-blue-100">
+          High-performance, scalable, and event-driven architecture for real-time data processing.
+        </p>
+      </motion.div>
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.4 }}
+        className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+      >
+        <div className="flex items-center gap-3 mb-4">
+          <Building className="w-6 h-6 text-blue-400" />
+          <h3 className="text-xl font-semibold text-blue-300">PostgreSQL</h3>
+        </div>
+        <p className="text-blue-100">
+          Robust, open-source relational database for secure data management and efficient querying.
+        </p>
+      </motion.div>
+    </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <Code className="w-6 h-6 text-blue-400" />
+            <h3 className="text-xl font-semibold text-blue-300">TypeScript</h3>
+          </div>
+          <p className="text-blue-100">
+            Statically-typed language for improved code maintainability and reduced errors.
+          </p>
+        </motion.div>
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.6 }}
+          className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <Blocks className="w-6 h-6 text-blue-400" />
+            <h3 className="text-xl font-semibold text-blue-300">Blockchain Integration</h3>
+          </div>
+          <p className="text-blue-100">
+            Secure and efficient integration with blockchain technology for NFT certifications.
+          </p>
+        </motion.div>
+      </div>
+  </motion.div>
+</Slide>;
+
 const roadmapSlide = <Slide key="roadmap">
   <motion.div
     initial={{ opacity: 0 }}
@@ -665,7 +743,7 @@ const roadmapSlide = <Slide key="roadmap">
         </motion.div>
       ))}
     </div>
-  </motion.div>
+  </</motion.div>
 </Slide>;
 
 const whatIsBuiltSlide = <Slide key="whats-built">
@@ -753,7 +831,8 @@ const whatIsBuiltSlide = <Slide key="whats-built">
   </motion.div>
 </Slide>;
 
-const goToMarketSlide = <Slide key="go-to-market"><motion.div
+const goToMarketSlide = <Slide key="go-to-market">
+  <motion.div
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     transition={{ duration: 0.5 }}
@@ -840,7 +919,8 @@ const growthExpansionSlide = <Slide key="growth-expansion">
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.2 }}
-        className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg">
+        className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+      >
         <h3 className="text-2xl font-semibold text-blue-300 mb-4">Phase 3: Monetization & Scaling (12-18 Months)</h3>
         <ul className="space-y-3">
           {[
@@ -1142,50 +1222,40 @@ const financialSlide = <Slide key="financial">
     </Card>
 
     <div className="overflow-x-auto">
-      <table className="min-w-full bg-gradient-to-br from-blue-900/30 to-purple-900/30 rounded-lg">
-        <thead className="border-b border-blue-400/30">
-          <tr>
-            <th className="px-4 py-3 text-left text-blue-300">Year</th>
-            <th className="px-4 py-3 text-left text-blue-300">Users</th>
-            <th className="px-4 py-3 text-left text-blue-300">Revenue</th>
-            <th className="px-4 py-3 text-left text-blue-300">Expenses</th>
-            <th className="px-4 py-3 text-left text-blue-300">Net Profit</th>
+      <table className="w-full">
+        <thead>
+          <tr className="bg-blue-900/30">
+            <th className="px-4 py-3 text-left text-blue-300">Metric</th>
+            <th className="px-4 py-3 text-left text-blue-300">Year 1</th>
+            <th className="px-4 py-3 text-left text-blue-300">Year 2</th>
+            <th className="px-4 py-3 text-left text-blue-300">Year 3</th>
+            <th className="px-4 py-3 text-left text-blue-300">Year 4</th>
+            <th className="px-4 py-3 text-left text-blue-300">Year 5</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-blue-400/30">
+        <tbody>
           <tr>
-            <td className="px-4 py-3 text-blue-100">Year 1</td>
-            <td className="px-4 py-3 text-blue-100">100K+ users</td>
+            <td className="px-4 py-3 text-blue-100 font-semibold">Revenue</td>
             <td className="px-4 py-3 text-blue-100">$0 (User Growth Focus)</td>
-            <td className="px-4 py-3 text-blue-100">$400K - $500K</td>
-            <td className="px-4 py-3 text-red-400">($400K - $500K) Loss</td>
-          </tr>
-          <tr>
-            <td className="px-4 py-3 text-blue-100">Year 2</td>
-            <td className="px-4 py-3 text-blue-100">500K+ users</td>
             <td className="px-4 py-3 text-blue-100">$500K</td>
-            <td className="px-4 py-3 text-blue-100">$1.2M</td>
-            <td className="px-4 py-3 text-red-400">($700K) Loss</td>
-          </tr>
-          <tr>
-            <td className="px-4 py-3 text-blue-100">Year 3</td>
-            <td className="px-4 py-3 text-blue-100">1M+ users</td>
             <td className="px-4 py-3 text-blue-100">$2M - $5M</td>
-            <td className="px-4 py-3 text-blue-100">$3M</td>
-            <td className="px-4 py-3 text-green-400">Break-even to $2M Profit</td>
-          </tr>
-          <tr>
-            <td className="px-4 py-3 text-blue-100">Year 4</td>
-            <td className="px-4 py-3 text-blue-100">2.5M+ users</td>
             <td className="px-4 py-3 text-blue-100">$10M+</td>
-            <td className="px-4 py-3 text-blue-100">$6M</td>
-            <td className="px-4 py-3 text-green-400">$4M+ Profit</td>
+            <td className="px-4 py-3 text-blue-100">$20M+</td>
           </tr>
           <tr>
-            <td className="px-4 py-3 text-blue-100">Year 5</td>
-            <td className="px-4 py-3 text-blue-100">5M+ users</td>
-            <td className="px-4 py-3 text-blue-100">$20M+</td>
+            <td className="px-4 py-3 text-blue-100 font-semibold">Expenses</td>
+            <td className="px-4 py-3 text-blue-100">$400K - $500K</td>
+            <td className="px-4 py-3 text-blue-100">$1.2M</td>
+            <td className="px-4 py-3 text-blue-100">$3M</td>
+            <td className="px-4 py-3 text-blue-100">$6M</td>
             <td className="px-4 py-3 text-blue-100">$10M</td>
+          </tr>
+          <tr>
+            <td className="px-4 py-3 text-blue-100 font-semibold">Net Profit</td>
+            <td className="px-4 py-3 text-red-400">($400K - $500K) Loss</td>
+            <td className="px-4 py-3 text-red-400">($700K) Loss</td>
+            <td className="px-4 py-3 text-green-400">Break-even to $2M Profit</td>
+            <td className="px-4 py-3 text-green-400">$4M+ Profit</td>
             <td className="px-4 py-3 text-green-400">$10M+ Profit</td>
           </tr>
         </tbody>
@@ -1312,9 +1382,9 @@ const financialModelSlide = <Slide key="financial-model">
 
     <div className="overflow-x-auto mt-8">
       <h3 className="text-2xl font-semibold text-blue-300 mb-4">Projected Financial Breakdown (Year 2-5)</h3>
-      <table className="min-w-full bg-gradient-to-br from-blue-900/30 to-purple-900/30 rounded-lg">
-        <thead className="border-b border-blue-400/30">
-          <tr>
+      <table className="w-full">
+        <thead>
+          <tr className="bg-blue-900/30">
             <th className="px-4 py-3 text-left text-blue-300">Category</th>
             <th className="px-4 py-3 text-left text-blue-300">Year 2</th>
             <th className="px-4 py-3 text-left text-blue-300">Year 3</th>
@@ -1322,7 +1392,7 @@ const financialModelSlide = <Slide key="financial-model">
             <th className="px-4 py-3 text-left text-blue-300">Year 5</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-blue-400/30">
+        <tbody>
           <tr>
             <td className="px-4 py-3 text-blue-100 font-semibold">Revenue</td>
             <td className="px-4 py-3 text-blue-100">$500K</td>
@@ -1340,7 +1410,7 @@ const financialModelSlide = <Slide key="financial-model">
           <tr>
             <td className="px-4 py-3 text-blue-100 font-semibold">Tech & Development</td>
             <td className="px-4 py-3 text-blue-100">$300K</td>
-            <td className="px-4 py-3 text-blue-100">$1M</td>
+            <td className="px-4 py-3 text-blue-10">$1M</td>
             <td className="px-4 py-3 text-blue-100">$2M</td>
             <td className="px-4 py-3 text-blue-100">$4M</td>
           </tr>
@@ -1489,6 +1559,7 @@ const slides = [
   productOverviewSlide,
   interactiveToolsSlide,
   futureFinanceSlide,
+  backendArchitectureSlide,
   roadmapSlide,
   whatIsBuiltSlide,
   goToMarketSlide,
@@ -1500,7 +1571,7 @@ const slides = [
   fundingNarrativeSlide,
   fundingBreakdownSlide,
   teamSlide,
-  joinUsSlide
+  joinUsSlide,
 ];
 
 const DeckPage: React.FC = () => {
