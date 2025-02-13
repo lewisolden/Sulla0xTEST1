@@ -128,21 +128,19 @@ router.post("/api/learning-path/progress", async (req, res) => {
       });
 
       try {
-        // Start transaction for quiz completion
         const result = await db.transaction(async (tx) => {
           // Check if progress record exists
           const existingProgress = await tx.query.moduleProgress.findFirst({
             where: and(
               eq(moduleProgress.userId, userId),
-              eq(moduleProgress.moduleId, parseInt(moduleId, 10)),
+              eq(moduleProgress.moduleId, moduleId),
               eq(moduleProgress.sectionId, sectionId),
-              eq(moduleProgress.courseId, parseInt(courseId, 10))
+              eq(moduleProgress.courseId, courseId)
             )
           });
 
           let progressUpdate;
           if (existingProgress) {
-            // Update existing record with quiz results
             [progressUpdate] = await tx.update(moduleProgress)
               .set({
                 completed: isQuizPassed,
@@ -153,18 +151,17 @@ router.post("/api/learning-path/progress", async (req, res) => {
               })
               .where(and(
                 eq(moduleProgress.userId, userId),
-                eq(moduleProgress.moduleId, parseInt(moduleId, 10)),
+                eq(moduleProgress.moduleId, moduleId),
                 eq(moduleProgress.sectionId, sectionId),
-                eq(moduleProgress.courseId, parseInt(courseId, 10))
+                eq(moduleProgress.courseId, courseId)
               ))
               .returning();
           } else {
-            // Insert new record with quiz results
             [progressUpdate] = await tx.insert(moduleProgress)
               .values({
                 userId,
-                moduleId: parseInt(moduleId, 10),
-                courseId: parseInt(courseId, 10),
+                moduleId,
+                courseId,
                 sectionId,
                 timeSpent: timeSpent || 0,
                 completed: isQuizPassed,
@@ -175,11 +172,11 @@ router.post("/api/learning-path/progress", async (req, res) => {
               .returning();
           }
 
-          // Update course progress considering all sections
+          // Update course progress
           const updatedProgress = await updateCourseProgress(
             tx,
             userId,
-            parseInt(courseId, 10)
+            courseId
           );
 
           return { progressUpdate, courseProgress: updatedProgress };
@@ -279,12 +276,12 @@ router.post("/api/learning-path/progress", async (req, res) => {
 
 // Helper function to calculate course progress
 async function updateCourseProgress(tx: any, userId: number, courseId: number) {
-  // Total sections across all modules
-  const sectionsPerModule = 4; // Each module has 4 sections
-  const totalModules = 3; // Course has 3 modules
-  const totalSections = sectionsPerModule * totalModules; // Total 12 sections
+  // Updated section counting logic for AI course
+  const sectionsPerModule = courseId === 2 ? 5 : 4; // AI course has 5 sections per module
+  const totalModules = courseId === 2 ? 3 : 3; // Both courses have 3 modules
+  const totalSections = sectionsPerModule * totalModules;
 
-  // Count completed sections across all modules for this course
+  // Count completed sections
   const completedSections = await tx
     .select({ count: sql<number>`cast(count(*) as integer)` })
     .from(moduleProgress)
@@ -296,7 +293,7 @@ async function updateCourseProgress(tx: any, userId: number, courseId: number) {
       )
     );
 
-  // Calculate progress percentage (each section is worth 8.33%)
+  // Calculate progress percentage
   const progressPercentage = Math.round((completedSections[0].count / totalSections) * 100);
 
   console.log(`[Progress Update] User ${userId}, Course ${courseId}:`, {

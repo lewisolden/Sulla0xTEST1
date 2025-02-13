@@ -105,14 +105,15 @@ export default function ModuleQuiz() {
         });
       } else {
         setShowResults(true);
+        // Updated progress tracking for AI course
+        const finalScore = ((score + (isCorrect ? 1 : 0)) / questions.length) * 100;
         updateProgress({
-          moduleId: 'ai-module1',
+          moduleId: 1,
           sectionId: 'module1-quiz',
-          completed: true,
-          score: Math.round((score / questions.length) * 100),
-          totalSections: 6,
-          currentSection: 6,
-          nextModule: 'ai-module2'
+          courseId: 2, // AI course ID
+          completed: finalScore >= 60,
+          score: finalScore,
+          timeSpent: 300 // Estimated time in seconds
         });
       }
     }, 2000);
