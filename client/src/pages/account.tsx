@@ -75,19 +75,7 @@ export default function AccountPage() {
                         enrollment.metadata?.lastPath?.includes('/ai/');
 
       if (isAICourse) {
-        console.log('[Account] AI course detected, checking last accessed route');
-
-        // Default to module1 if no progress context or last route
-        if (!getLastAccessedRoute) {
-          console.log('[Account] No progress context, defaulting to /ai/module1');
-          return '/ai/module1';
-        }
-
-        // Get the last accessed route from progress context
-        const lastRoute = getLastAccessedRoute('ai');
-        console.log('[Account] Last accessed AI route:', lastRoute);
-
-        return lastRoute || '/ai/module1';
+        return '/ai/module1';
       }
 
       // Fall back to existing logic for other courses
@@ -101,7 +89,7 @@ export default function AccountPage() {
       return `/modules/module1`;
     } catch (error) {
       console.error('[Account] Error in getContinueLearningPath:', error);
-      return '/ai/module1'; // Safe fallback for AI courses
+      return '/modules/module1';
     }
   };
 
