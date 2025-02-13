@@ -1,10 +1,10 @@
 import React from 'react';
-import {
+import { 
   Brain, 
-  Trophy,
-  Dumbbell,
-  Target,
-  Rocket,
+  Trophy, 
+  Dumbbell, 
+  Target, 
+  Rocket, 
   Globe,
   BookOpen,
   GraduationCap,
@@ -16,12 +16,7 @@ import {
   Lightbulb,
   Wallet,
   Network,
-  Code,
-  Monitor,
-  Database,
-  BarChart2,
-  BrainCircuit,
-  Sparkles
+  Code
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -245,102 +240,16 @@ export const modulesSlide = (
 
 export const roadmapSlide = (
   <Slide key="roadmap">
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="flex items-center gap-4 mb-8">
-        <div className="p-3 bg-blue-500/20 rounded-lg">
-          <Code className="w-8 h-8 text-blue-400" />
+    <h2 className="text-2xl font-bold mb-4">Roadmap</h2>
+    <div className="space-y-4">
+      <div className="bg-blue-100 rounded-lg shadow p-4">
+        <div className="flex items-center mb-2">
+          <Target className="w-6 h-6 mr-2 text-blue-500" />
+          <h3 className="font-bold text-lg">2025 Milestones</h3>
         </div>
-        <h2 className="text-4xl font-bold text-blue-400">Technical Infrastructure</h2>
+        <p>Platform launch and initial user acquisition.</p>
       </div>
-      <div className="space-y-6">
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
-        >
-          <h3 className="text-2xl font-semibold text-blue-300 mb-4">Backend Architecture</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="bg-blue-900/30 p-4 rounded-lg">
-              <div className="flex items-center gap-3 mb-2">
-                <Monitor className="w-5 h-5 text-blue-400" />
-                <span className="text-blue-200">Next.js + TypeScript Frontend</span>
-              </div>
-              <ul className="text-blue-100 ml-8 list-disc">
-                <li>Server-side rendering</li>
-                <li>Real-time progress updates</li>
-                <li>Interactive learning modules</li>
-              </ul>
-            </div>
-            <div className="bg-blue-900/30 p-4 rounded-lg">
-              <div className="flex items-center gap-3 mb-2">
-                <Database className="w-5 h-5 text-blue-400" />
-                <span className="text-blue-200">PostgreSQL Database</span>
-              </div>
-              <ul className="text-blue-100 ml-8 list-disc">
-                <li>Learning progress data</li>
-                <li>User behavior analytics</li>
-                <li>Content management</li>
-              </ul>
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
-        >
-          <h3 className="text-2xl font-semibold text-blue-300 mb-4">Learning Progress System</h3>
-          <div className="space-y-3">
-            <div className="flex items-center gap-3 bg-blue-900/30 p-4 rounded-lg">
-              <Brain className="w-5 h-5 text-blue-400" />
-              <div>
-                <span className="text-blue-200 font-semibold">Adaptive Learning Engine</span>
-                <p className="text-blue-100">Real-time skill assessment and content adaptation</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 bg-blue-900/30 p-4 rounded-lg">
-              <BarChart2 className="w-5 h-5 text-blue-400" />
-              <div>
-                <span className="text-blue-200 font-semibold">Progress Analytics</span>
-                <p className="text-blue-100">Comprehensive learning metrics and achievement tracking</p>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.6 }}
-          className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
-        >
-          <h3 className="text-2xl font-semibold text-blue-300 mb-4">AI Capabilities</h3>
-          <div className="space-y-3">
-            <div className="flex items-center gap-3 bg-blue-900/30 p-4 rounded-lg">
-              <BrainCircuit className="w-5 h-5 text-blue-400" />
-              <div>
-                <span className="text-blue-200 font-semibold">Data Collection</span>
-                <p className="text-blue-100">Comprehensive user interaction and performance metrics</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3 bg-blue-900/30 p-4 rounded-lg">
-              <Sparkles className="w-5 h-5 text-blue-400" />
-              <div>
-                <span className="text-blue-200 font-semibold">AI-Powered Features</span>
-                <p className="text-blue-100">Personalized learning paths and content recommendations</p>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-    </motion.div>
+    </div>
   </Slide>
 );
 
