@@ -14,7 +14,15 @@ import {
   Cpu, 
   Zap,
   Binary,
-  Code
+  Code,
+  Eye,
+  MessageSquare,
+  Mic,
+  Check,
+  Database,
+  Calculator,
+  RefreshCcw,
+  Repeat
 } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { DeepLearningQuiz } from "@/components/quizzes/DeepLearningQuiz";
@@ -54,7 +62,7 @@ const InteractiveNeuralNetwork = () => {
 
       {/* Connections */}
       <g className="connections">
-        {neurons.input.map((_, i) => 
+        {neurons.input.map((_, i) =>
           neurons.hidden.map((_, j) => (
             <motion.path
               key={`ih-${i}-${j}`}
@@ -71,7 +79,7 @@ const InteractiveNeuralNetwork = () => {
             />
           ))
         )}
-        {neurons.hidden.map((_, i) => 
+        {neurons.hidden.map((_, i) =>
           neurons.output.map((_, j) => (
             <motion.path
               key={`ho-${i}-${j}`}
@@ -192,7 +200,7 @@ export default function DeepLearning() {
       <ParticleBackground />
       <div className="max-w-4xl mx-auto">
         <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
-          <div 
+          <div
             className="h-full bg-blue-600 transition-all duration-300"
             style={{ width: `${readingProgress}%` }}
           />
@@ -235,9 +243,9 @@ export default function DeepLearning() {
                   </h2>
                   <div className="bg-gradient-to-br from-gray-50 to-blue-50 p-6 rounded-xl border border-blue-100">
                     <p className="text-gray-700 leading-relaxed">
-                      Deep learning is a subset of machine learning that uses artificial neural networks 
-                      with multiple layers (deep neural networks) to progressively extract higher-level 
-                      features from raw input. For example, in image processing, lower layers might identify 
+                      Deep learning is a subset of machine learning that uses artificial neural networks
+                      with multiple layers (deep neural networks) to progressively extract higher-level
+                      features from raw input. For example, in image processing, lower layers might identify
                       edges, while higher layers might identify concepts relevant to human understanding.
                     </p>
                   </div>
@@ -291,7 +299,7 @@ export default function DeepLearning() {
                           Layers and Neurons
                         </h3>
                         <p className="text-gray-600">
-                          Each layer contains neurons that process inputs and pass outputs 
+                          Each layer contains neurons that process inputs and pass outputs
                           to the next layer through activation functions.
                         </p>
                       </CardContent>
@@ -303,7 +311,7 @@ export default function DeepLearning() {
                           Backpropagation
                         </h3>
                         <p className="text-gray-600">
-                          The process of adjusting weights based on the error gradient 
+                          The process of adjusting weights based on the error gradient
                           to minimize prediction errors.
                         </p>
                       </CardContent>
@@ -316,37 +324,64 @@ export default function DeepLearning() {
                     <Zap className="h-6 w-6" />
                     Applications
                   </h2>
-                  <div className="space-y-4">
+                  <div className="grid md:grid-cols-3 gap-6">
                     {[
                       {
                         title: "Computer Vision",
                         desc: "Image recognition, object detection, and image generation using convolutional neural networks (CNNs).",
-                        gradient: "from-blue-500 to-indigo-500"
+                        gradient: "from-blue-500 to-indigo-500",
+                        icon: Eye,
+                        examples: ["Object Detection", "Face Recognition", "Image Generation"]
                       },
                       {
                         title: "Natural Language Processing",
-                        desc: "Language translation, text generation, and sentiment analysis using transformers and recurrent neural networks (RNNs).",
-                        gradient: "from-indigo-500 to-purple-500"
+                        desc: "Language translation, text generation, and sentiment analysis using transformers and RNNs.",
+                        gradient: "from-indigo-500 to-purple-500",
+                        icon: MessageSquare,
+                        examples: ["Translation", "Chat Bots", "Text Analysis"]
                       },
                       {
                         title: "Speech Recognition",
                         desc: "Converting spoken language to text and generating human-like speech using deep neural networks.",
-                        gradient: "from-purple-500 to-pink-500"
+                        gradient: "from-purple-500 to-pink-500",
+                        icon: Mic,
+                        examples: ["Voice Commands", "Audio Transcription", "Text-to-Speech"]
                       }
                     ].map((app, i) => (
                       <motion.div
                         key={i}
-                        className="bg-gradient-to-r p-[2px] rounded-xl"
-                        style={{
-                          backgroundImage: `linear-gradient(to right, var(--tw-gradient-stops))`,
-                        }}
+                        className="group relative"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: i * 0.1 }}
                       >
-                        <div className="bg-white rounded-xl p-4">
-                          <h3 className="text-lg font-semibold mb-2">{app.title}</h3>
-                          <p className="text-gray-700">{app.desc}</p>
+                        <div className={`absolute inset-0 bg-gradient-to-r ${app.gradient} rounded-xl opacity-50 blur-xl group-hover:opacity-75 transition-opacity duration-300`} />
+                        <div className="relative bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-blue-100 group-hover:border-blue-300">
+                          <div className="mb-4">
+                            <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${app.gradient} flex items-center justify-center`}>
+                              <app.icon className="w-6 h-6 text-white" />
+                            </div>
+                          </div>
+                          <h3 className="text-xl font-semibold mb-2 bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-200 bg-clip-text text-transparent">
+                            {app.title}
+                          </h3>
+                          <p className="text-gray-600 dark:text-gray-300 mb-4">
+                            {app.desc}
+                          </p>
+                          <div className="space-y-2">
+                            {app.examples.map((example, j) => (
+                              <motion.div
+                                key={j}
+                                className="flex items-center gap-2"
+                                initial={{ opacity: 0, x: -10 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ delay: i * 0.1 + j * 0.1 }}
+                              >
+                                <Check className="w-4 h-4 text-green-500" />
+                                <span className="text-sm text-gray-600 dark:text-gray-300">{example}</span>
+                              </motion.div>
+                            ))}
+                          </div>
                         </div>
                       </motion.div>
                     ))}
@@ -354,32 +389,104 @@ export default function DeepLearning() {
                 </section>
 
                 <section className="mb-8">
-                  <h2 className="text-2xl font-semibold text-blue-700 mb-4">
+                  <h2 className="text-2xl font-semibold text-blue-700 mb-4 flex items-center gap-2">
+                    <Binary className="h-6 w-6" />
                     Training Process
                   </h2>
-                  <ol className="list-decimal pl-6 space-y-4 text-gray-700">
-                    <li>
-                      <strong>Data Preparation:</strong> Collect and preprocess training data
-                    </li>
-                    <li>
-                      <strong>Forward Pass:</strong> Input data flows through the network
-                    </li>
-                    <li>
-                      <strong>Loss Calculation:</strong> Compare predictions with actual values
-                    </li>
-                    <li>
-                      <strong>Backpropagation:</strong> Calculate gradients and update weights
-                    </li>
-                    <li>
-                      <strong>Iteration:</strong> Repeat process until model converges
-                    </li>
-                  </ol>
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-indigo-500/5 rounded-xl" />
+                    <div className="relative p-6 rounded-xl border border-blue-100">
+                      <div className="grid gap-6">
+                        {[
+                          {
+                            step: 1,
+                            title: "Data Preparation",
+                            desc: "Collect and preprocess training data",
+                            icon: Database,
+                            gradient: "from-blue-500 to-cyan-500"
+                          },
+                          {
+                            step: 2,
+                            title: "Forward Pass",
+                            desc: "Input data flows through the network",
+                            icon: ArrowRight,
+                            gradient: "from-cyan-500 to-teal-500"
+                          },
+                          {
+                            step: 3,
+                            title: "Loss Calculation",
+                            desc: "Compare predictions with actual values",
+                            icon: Calculator,
+                            gradient: "from-teal-500 to-green-500"
+                          },
+                          {
+                            step: 4,
+                            title: "Backpropagation",
+                            desc: "Calculate gradients and update weights",
+                            icon: RefreshCcw,
+                            gradient: "from-green-500 to-emerald-500"
+                          },
+                          {
+                            step: 5,
+                            title: "Iteration",
+                            desc: "Repeat process until model converges",
+                            icon: Repeat,
+                            gradient: "from-emerald-500 to-blue-500"
+                          }
+                        ].map((step, i) => (
+                          <motion.div
+                            key={i}
+                            className="relative group"
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: i * 0.1 }}
+                          >
+                            <div className="flex items-start gap-4 p-4 rounded-lg bg-white dark:bg-gray-800 border border-blue-100 group-hover:border-blue-300 transition-all duration-300">
+                              <div className={`flex-shrink-0 w-12 h-12 rounded-lg bg-gradient-to-br ${step.gradient} flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
+                                <step.icon className="w-6 h-6 text-white" />
+                              </div>
+                              <div className="flex-grow">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <span className="text-sm font-medium text-blue-600 dark:text-blue-400">
+                                    Step {step.step}
+                                  </span>
+                                  <div className="h-px flex-grow bg-gradient-to-r from-blue-200 to-transparent" />
+                                </div>
+                                <h3 className="font-semibold text-gray-900 dark:text-white mb-1">
+                                  {step.title}
+                                </h3>
+                                <p className="text-gray-600 dark:text-gray-300 text-sm">
+                                  {step.desc}
+                                </p>
+                              </div>
+                              <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <ArrowRight className="w-5 h-5 text-blue-500" />
+                              </div>
+                            </div>
+                            {i < 4 && (
+                              <div className="absolute left-6 bottom-0 w-px h-6 bg-gradient-to-b from-blue-500 to-transparent" />
+                            )}
+                          </motion.div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
                 </section>
+
+                <section className="mb-8">
+                  <h2 className="text-2xl font-semibold text-blue-700 mb-4">
+                    Conclusion
+                  </h2>
+                  <p className="text-gray-700 leading-relaxed">
+                    This module provided a foundational understanding of deep learning, its architecture, key concepts, and applications.  Further exploration into specific areas, like computer vision or natural language processing, will provide deeper insights and enable the development of more advanced applications.
+                  </p>
+                </section>
+
               </div>
 
               <div className="mt-8 space-y-4">
                 <Link href="/ai/module3/reinforcement-learning">
-                  <Button 
+                  <Button
                     className="w-full gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white"
                     variant="outline"
                   >
@@ -387,7 +494,7 @@ export default function DeepLearning() {
                   </Button>
                 </Link>
 
-                <Button 
+                <Button
                   onClick={() => setShowQuiz(true)}
                   className="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white"
                 >
@@ -396,7 +503,7 @@ export default function DeepLearning() {
               </div>
 
               {showQuiz && (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="mt-8"
