@@ -25,7 +25,7 @@ export default function Home() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          Master Cryptocurrency & Blockchain Technology
+          Master Blockchain, AI & Emerging Technologies
         </motion.h1>
         <motion.p 
           className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto"
@@ -33,7 +33,7 @@ export default function Home() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
         >
-          Sulla is your comprehensive learning platform designed to demystify the complex world of digital currencies and blockchain innovation.
+          Sulla is your comprehensive learning platform designed to demystify the complex world of digital currencies, artificial intelligence, and emerging blockchain technologies.
         </motion.p>
 
         <motion.div 
@@ -212,43 +212,21 @@ export default function Home() {
             className="text-3xl font-bold text-blue-900 text-center mb-8"
             {...fadeInUp}
           >
-            Your Journey into the Future of Finance
+            Begin Your Learning Journey
           </motion.h2>
 
-          <motion.h3 
-            className="text-2xl font-bold text-blue-800 text-center mb-4"
-            {...fadeInUp}
-            transition={{ delay: 0.1 }}
-          >
-            Course 1: Introduction to Cryptocurrency
-          </motion.h3>
-
-          <motion.p
-            className="text-xl text-blue-700 mb-12 text-center max-w-3xl mx-auto"
-            {...fadeInUp}
-            transition={{ delay: 0.2 }}
-          >
-            A comprehensive introduction to cryptocurrency, blockchain technology, and digital finance through interactive learning experiences.
-          </motion.p>
-
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8">
             <ModuleCard
               icon={BookOpen}
-              title="Module 1: Understanding Cryptocurrency"
+              title="Course 1: Introduction to Cryptocurrency"
               description="Master the fundamentals of cryptocurrency through interactive learning and practical exercises."
               link="/modules/module1"
             />
             <ModuleCard
-              icon={GraduationCap}
-              title="Module 2: Bitcoin Fundamentals"
-              description="Deep dive into Bitcoin, investment strategies, and security considerations."
+              icon={Brain}
+              title="Course 2: Introduction to Artificial Intelligence"
+              description="Explore the fundamentals of AI, machine learning, and their real-world applications through hands-on learning."
               link="/modules/module2"
-            />
-            <ModuleCard
-              icon={Zap}
-              title="Module 3: Ethereum & Smart Contracts"
-              description="Explore Ethereum, smart contracts, and their practical applications."
-              link="/modules/module3"
             />
           </div>
         </div>
@@ -261,14 +239,14 @@ export default function Home() {
             className="text-3xl font-bold mb-6"
             {...fadeInUp}
           >
-            Start Your Blockchain Journey Today
+            Start Your Technology Journey Today
           </motion.h2>
           <motion.p 
             className="text-xl max-w-2xl mx-auto mb-8"
             {...fadeInUp}
             transition={{ delay: 0.2 }}
           >
-            Join thousands of learners mastering blockchain technology and cryptocurrency
+            Join thousands of learners mastering blockchain technology, artificial intelligence, and emerging technologies
           </motion.p>
           <motion.div
             {...fadeInUp}
