@@ -12,9 +12,9 @@ import {
   productSlide1,                // 8
   productSlide2,                // 9
   modulesSlide,                 // 10
-  futureFinanceSlide,           // 11
+  roadmapSlide,                 // 11
   platformInfrastructureSlide,  // 12
-  roadmapSlide,                 // 13
+  futureFinanceSlide,           // 13
   progressSlide,                // 14
   gtmSlide1,                    // 15
   gtmSlide2,                    // 16
@@ -41,9 +41,9 @@ const PitchDeck: React.FC = () => {
     productSlide1,                // 8
     productSlide2,                // 9
     modulesSlide,                 // 10
-    futureFinanceSlide,           // 11
+    roadmapSlide,                 // 11
     platformInfrastructureSlide,  // 12
-    roadmapSlide,                 // 13
+    futureFinanceSlide,           // 13
     progressSlide,                // 14
     gtmSlide1,                    // 15
     gtmSlide2,                    // 16
