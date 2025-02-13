@@ -7,28 +7,30 @@ import { useProgress } from "@/context/progress-context";
 import { ArrowLeft, ArrowRight, Brain, Cpu, Network, Lightbulb, History, Code, Check, X } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 
-const TimelineItem = ({ year, title, description, delay }: { year: string; title: string; description: string; delay: number }) => (
+const TimelineItem = ({ year, title, description, delay, color }: { year: string; title: string; description: string; delay: number; color: string }) => (
   <motion.div
-    className="flex gap-4 mb-6"
+    className="flex gap-4 mb-8"
     initial={{ opacity: 0, x: -20 }}
     animate={{ opacity: 1, x: 0 }}
     transition={{ duration: 0.5, delay }}
   >
-    <div className="w-24 flex-shrink-0">
-      <div className="bg-blue-100 rounded-lg p-2 text-center">
-        <span className="text-blue-800 font-semibold">{year}</span>
+    <div className="w-32 flex-shrink-0">
+      <div className={`${color} rounded-lg p-3 text-center transform transition-all duration-300 hover:scale-105 shadow-md`}>
+        <span className="text-white font-bold text-lg">{year}</span>
       </div>
     </div>
-    <div>
-      <h4 className="font-semibold text-blue-800">{title}</h4>
-      <p className="text-gray-600 text-sm">{description}</p>
+    <div className="flex-1">
+      <div className={`${color} bg-opacity-10 rounded-lg p-4 transform transition-all duration-300 hover:scale-102 shadow-sm`}>
+        <h4 className="font-semibold text-blue-800 text-lg mb-2">{title}</h4>
+        <p className="text-gray-700">{description}</p>
+      </div>
     </div>
   </motion.div>
 );
 
 const AITypeCard = ({ title, description, icon: Icon, delay }: { title: string; description: string; icon: any; delay: number }) => (
   <motion.div
-    className="bg-white rounded-lg shadow-lg p-6"
+    className="bg-white rounded-lg shadow-lg p-6 transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5, delay }}
@@ -39,7 +41,7 @@ const AITypeCard = ({ title, description, icon: Icon, delay }: { title: string; 
       </div>
       <h3 className="text-xl font-semibold text-blue-800">{title}</h3>
     </div>
-    <p className="text-gray-600">{description}</p>
+    <p className="text-gray-600 leading-relaxed">{description}</p>
   </motion.div>
 );
 
@@ -134,7 +136,7 @@ export default function AIIntroduction() {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
-          <Card>
+          <Card className="border-2 border-blue-100">
             <CardContent className="pt-6">
               {!showResults ? (
                 <motion.div
@@ -283,18 +285,24 @@ export default function AIIntroduction() {
           </Link>
         </div>
 
-        <Card>
+        <Card className="border-2 border-blue-100">
           <CardContent className="pt-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
+              className="space-y-8"
             >
-              <div className="flex items-center gap-4 mb-6">
-                <Brain className="h-10 w-10 text-blue-600" />
-                <h1 className="text-3xl font-bold text-blue-800">
-                  Introduction to Artificial Intelligence
-                </h1>
+              <div className="flex items-center gap-4 mb-8 bg-blue-50 p-6 rounded-lg">
+                <Brain className="h-12 w-12 text-blue-600" />
+                <div>
+                  <h1 className="text-3xl font-bold text-blue-800 mb-2">
+                    Introduction to Artificial Intelligence
+                  </h1>
+                  <p className="text-gray-600">
+                    Explore the fundamentals and evolution of AI technology
+                  </p>
+                </div>
               </div>
 
               <div className="prose max-w-none">
@@ -302,28 +310,32 @@ export default function AIIntroduction() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.2 }}
+                  className="mb-12"
                 >
                   <h2 className="text-2xl font-semibold text-blue-700 mb-4 flex items-center gap-2">
                     <Lightbulb className="h-6 w-6" />
                     What is Artificial Intelligence?
                   </h2>
-                  <p className="mb-6 text-gray-700">
-                    Artificial Intelligence (AI) refers to the simulation of human intelligence in machines programmed
-                    to think and learn like humans. The term encompasses a wide range of technologies and approaches
-                    aimed at making computers perform tasks that typically require human intelligence.
-                  </p>
+                  <div className="bg-gradient-to-r from-blue-50 to-white p-6 rounded-lg">
+                    <p className="text-gray-700 leading-relaxed">
+                      Artificial Intelligence (AI) refers to the simulation of human intelligence in machines programmed
+                      to think and learn like humans. The term encompasses a wide range of technologies and approaches
+                      aimed at making computers perform tasks that typically require human intelligence.
+                    </p>
+                  </div>
                 </motion.div>
 
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4 }}
+                  className="mb-12"
                 >
-                  <h2 className="text-2xl font-semibold text-blue-700 mb-4 flex items-center gap-2">
+                  <h2 className="text-2xl font-semibold text-blue-700 mb-6 flex items-center gap-2">
                     <Cpu className="h-6 w-6" />
                     Types of AI
                   </h2>
-                  <div className="grid md:grid-cols-2 gap-6 mb-8">
+                  <div className="grid md:grid-cols-2 gap-6">
                     <AITypeCard
                       title="Narrow AI (ANI)"
                       description="Designed for specific tasks like facial recognition or playing chess. Currently the most common form of AI."
@@ -343,47 +355,54 @@ export default function AIIntroduction() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1 }}
+                  className="mb-12"
                 >
-                  <h2 className="text-2xl font-semibold text-blue-700 mb-4 flex items-center gap-2">
+                  <h2 className="text-2xl font-semibold text-blue-700 mb-6 flex items-center gap-2">
                     <History className="h-6 w-6" />
                     Historical Development
                   </h2>
-                  <div className="bg-blue-50 rounded-lg p-6 mb-8">
+                  <div className="bg-gradient-to-br from-blue-50 to-white rounded-lg p-8">
                     <TimelineItem
                       year="1950s"
                       title="Birth of AI"
-                      description="AI emerges as an academic discipline, with the historic Dartmouth Conference."
+                      description="AI emerges as an academic discipline, with the historic Dartmouth Conference defining the field."
                       delay={1.2}
+                      color="bg-purple-500"
                     />
                     <TimelineItem
                       year="1960s"
                       title="Early NLP"
-                      description="First attempts at natural language processing and expert systems."
+                      description="First breakthroughs in natural language processing and the development of early expert systems."
                       delay={1.4}
+                      color="bg-blue-500"
                     />
                     <TimelineItem
                       year="1980s"
                       title="Neural Networks"
-                      description="Development of neural networks and expert systems gains momentum."
+                      description="Revival of neural networks research and significant advances in expert systems development."
                       delay={1.6}
+                      color="bg-green-500"
                     />
                     <TimelineItem
                       year="2000s"
                       title="Big Data"
-                      description="Big data and machine learning revolution begins."
+                      description="The rise of big data and machine learning revolutionizes AI capabilities and applications."
                       delay={1.8}
+                      color="bg-yellow-500"
                     />
                     <TimelineItem
                       year="2010s"
                       title="Deep Learning"
-                      description="Major breakthroughs in deep learning and neural networks."
+                      description="Breakthrough achievements in deep learning and neural networks transform AI possibilities."
                       delay={2}
+                      color="bg-red-500"
                     />
                     <TimelineItem
                       year="2020s"
                       title="AI Acceleration"
-                      description="Large language models and widespread AI adoption."
+                      description="Rapid advancement in large language models and widespread AI adoption across industries."
                       delay={2.2}
+                      color="bg-indigo-500"
                     />
                   </div>
                 </motion.div>
@@ -392,34 +411,36 @@ export default function AIIntroduction() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 2.4 }}
+                  className="mb-12"
                 >
-                  <h2 className="text-2xl font-semibold text-blue-700 mb-4 flex items-center gap-2">
+                  <h2 className="text-2xl font-semibold text-blue-700 mb-6 flex items-center gap-2">
                     <Network className="h-6 w-6" />
                     Current State of AI Technology
                   </h2>
-                  <div className="grid md:grid-cols-2 gap-4 mb-8">
+                  <div className="grid md:grid-cols-2 gap-6">
                     {[
-                      { title: "Language Processing", desc: "Advanced text analysis and generation" },
-                      { title: "Computer Vision", desc: "Image and video understanding" },
-                      { title: "Robotics", desc: "Autonomous systems and automation" },
-                      { title: "Decision Making", desc: "Complex problem-solving and strategy" }
+                      { title: "Language Processing", desc: "Advanced text analysis and generation", icon: "🗣️" },
+                      { title: "Computer Vision", desc: "Image and video understanding", icon: "👁️" },
+                      { title: "Robotics", desc: "Autonomous systems and automation", icon: "🤖" },
+                      { title: "Decision Making", desc: "Complex problem-solving and strategy", icon: "🧠" }
                     ].map((item, index) => (
                       <motion.div
                         key={item.title}
-                        className="bg-blue-50 p-4 rounded-lg"
+                        className="bg-white p-6 rounded-lg shadow-md border border-blue-100 hover:shadow-lg transition-all duration-300"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 2.6 + index * 0.2 }}
                       >
-                        <h3 className="font-semibold text-blue-800 mb-2">{item.title}</h3>
-                        <p className="text-gray-700 text-sm">{item.desc}</p>
+                        <div className="text-4xl mb-4">{item.icon}</div>
+                        <h3 className="font-semibold text-blue-800 text-xl mb-2">{item.title}</h3>
+                        <p className="text-gray-600">{item.desc}</p>
                       </motion.div>
                     ))}
                   </div>
                 </motion.div>
               </div>
 
-              <div className="mt-8 flex justify-between items-center">
+              <div className="mt-12 flex justify-between items-center">
                 <Button
                   onClick={() => setShowQuiz(true)}
                   className="gap-2 bg-blue-600 hover:bg-blue-700"
