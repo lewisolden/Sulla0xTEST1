@@ -20,9 +20,9 @@ import {
   Book,
   GitBranch,
   BrainCircuit,
-  LineChart, // Added
-  BarChart2, // Added
-  Database, // Added
+  LineChart,
+  BarChart2,
+  Database,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 

@@ -45,16 +45,16 @@ const PitchDeck: React.FC = () => {
     roadmapSlide,                  // 11
     progressSlide,                 // 12
     platformInfrastructureSlide,   // 13
-    gtmSlide1,                     // 14
-    gtmSlide2,                     // 15
-    tokenSlide,                    // 16
-    tractionSlide,                 // 17
-    financialSlide,                // 18
-    financialModelSlide,           // 19
-    fundingNarrativeSlide,         // 20
-    fundingBreakdownSlide,         // 21
-    teamSlide,                     // 22
-    ctaSlide,                      // 23
+    futureFinanceSlide,            // 14
+    gtmSlide1,                     // 15
+    gtmSlide2,                     // 16
+    tokenSlide,                    // 17
+    tractionSlide,                 // 18
+    financialSlide,                // 19
+    financialModelSlide,           // 20
+    fundingNarrativeSlide,         // 21
+    fundingBreakdownSlide,         // 22
+    teamSlide,                     // 23
   ];
 
   const handleDownloadPDF = async () => {
