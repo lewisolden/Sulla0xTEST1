@@ -32,8 +32,18 @@ app.use((req, res, next) => {
   next();
 });
 
+const PORT = process.env.PORT || 5000;
 let server: any = null;
-const PORT = 5001;
+
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received, shutting down gracefully');
+  if (server) {
+    server.close(() => {
+      console.log('Server closed');
+      process.exit(0);
+    });
+  }
+});
 
 (async () => {
   try {
@@ -81,9 +91,30 @@ const PORT = 5001;
       log("Static file serving setup complete");
     }
 
-    server.listen(PORT, "0.0.0.0", () => {
-      log(`Server is running on port ${PORT}`);
+    // Create a promise that resolves when the server starts listening
+    const startServer = new Promise((resolve, reject) => {
+      try {
+        server.listen(PORT, "0.0.0.0", () => {
+          log(`Server is running on port ${PORT}`);
+          resolve(true);
+        });
+
+        server.on('error', (error: Error) => {
+          log(`Failed to start server: ${error.message}`);
+          reject(error);
+        });
+      } catch (error) {
+        reject(error);
+      }
     });
+
+    // Wait for server to start with a timeout
+    await Promise.race([
+      startServer,
+      new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Server startup timed out')), 30000)
+      )
+    ]);
 
   } catch (error) {
     log(`Failed to start server: ${error instanceof Error ? error.message : String(error)}`);
