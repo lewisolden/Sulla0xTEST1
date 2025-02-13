@@ -93,7 +93,7 @@ const slides = [
   },
   {
     id: 2,
-    title: "Technical Architecture",
+    title: "Technical Architecture: Building a Robust Foundation",
     content: (
       <div className="space-y-8">
         <div className="mb-8">
@@ -190,7 +190,7 @@ const slides = [
   },
   {
     id: 3,
-    title: "Data Storage & Management",
+    title: "Data Storage & Management: Secure & Scalable Infrastructure",
     content: (
       <div className="space-y-8">
         <div className="grid grid-cols-2 gap-8">
@@ -259,7 +259,7 @@ const slides = [
   },
   {
     id: 4,
-    title: "AI Integration",
+    title: "AI Integration: Powering Smart Learning",
     content: (
       <div className="space-y-8">
         <div className="grid grid-cols-2 gap-8">
@@ -328,7 +328,7 @@ const slides = [
   },
   {
     id: 5,
-    title: "Adaptive Learning System",
+    title: "Adaptive Learning System: Personalized Education at Scale",
     content: (
       <div className="space-y-8">
         <div className="grid grid-cols-2 gap-8">
@@ -397,7 +397,7 @@ const slides = [
   },
   {
     id: 6,
-    title: "User Progress Tracking",
+    title: "User Progress Tracking: Comprehensive Learning Analytics",
     content: (
       <div className="space-y-8">
         <div className="grid grid-cols-2 gap-8">
@@ -466,7 +466,7 @@ const slides = [
   },
   {
     id: 7,
-    title: "Content Management",
+    title: "Content Management: Streamlined Course Creation",
     content: (
       <div className="space-y-8">
         <div className="grid grid-cols-2 gap-8">
@@ -535,7 +535,7 @@ const slides = [
   },
   {
     id: 8,
-    title: "Future Capabilities",
+    title: "Future Capabilities: Next-Generation Learning",
     content: (
       <div className="space-y-8">
         <div className="grid grid-cols-2 gap-8">
@@ -549,8 +549,7 @@ const slides = [
                 <Zap className="w-5 h-5 text-blue-400 mt-1" />
                 <div>
                   <h4 className="font-medium text-gray-200">Advanced AI Tutoring</h4>
-                  <p className="text-sm text-gray-400">One-on-one AI tutoring sessions with natural language understanding</p>
-                </div>
+                  <p className="text-sm text-gray-400">One-on-one AI tutoring sessions with natural language understanding</p></div>
               </li>
               <li className="flex items-start space-x-3">
                 <Globe className="w-5 h-5 text-blue-400 mt-1" />
@@ -604,7 +603,7 @@ const slides = [
   },
   {
     id: 9,
-    title: "Quiz & Assessment Engine",
+    title: "Quiz & Assessment Engine: Interactive Evaluation System",
     content: (
       <div className="space-y-8">
         <div className="grid grid-cols-2 gap-8">
@@ -673,7 +672,7 @@ const slides = [
   },
   {
     id: 10,
-    title: "Course Creation System",
+    title: "Course Creation System: Empowering Educators",
     content: (
       <div className="space-y-8">
         <div className="grid grid-cols-2 gap-8">
@@ -742,34 +741,74 @@ const slides = [
   },
   {
     id: 11,
-    title: "Future Capabilities",
+    title: "Future Roadmap: Innovation & Growth",
     content: (
-      <div className="space-y-6">
-        <h3 className="text-2xl font-semibold text-blue-700">Roadmap & Vision</h3>
-        <div className="grid grid-cols-1 gap-4">
-          <Card className="p-4 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
-            <h4 className="font-bold mb-2 text-gray-200">Upcoming Features</h4>
-            <ul className="list-disc pl-4 text-gray-400">
-              <li>Advanced AI Tutoring</li>
-              <li>VR/AR Integration</li>
-              <li>Blockchain Certificates</li>
-              <li>Peer Learning Networks</li>
-              <li>Real-time Collaboration</li>
+      <div className="space-y-8">
+        <div className="grid grid-cols-2 gap-8">
+          <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
+            <div className="flex items-center space-x-4 mb-6">
+              <Rocket className="w-8 h-8 text-blue-400" />
+              <h3 className="text-xl font-semibold text-gray-200">Platform Evolution</h3>
+            </div>
+            <ul className="space-y-4">
+              <li className="flex items-start space-x-3">
+                <Cpu className="w-5 h-5 text-blue-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">Advanced AI Capabilities</h4>
+                  <p className="text-sm text-gray-400">Integration of cutting-edge language models and neural networks for enhanced learning assistance</p>
+                </div>
+              </li>
+              <li className="flex items-start space-x-3">
+                <Globe className="w-5 h-5 text-blue-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">Global Learning Network</h4>
+                  <p className="text-sm text-gray-400">Expanded international reach with multilingual support and cultural adaptation</p>
+                </div>
+              </li>
+              <li className="flex items-start space-x-3">
+                <Layers className="w-5 h-5 text-blue-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">Blockchain Integration</h4>
+                  <p className="text-sm text-gray-400">Decentralized credential verification and secure digital certificates</p>
+                </div>
+              </li>
             </ul>
           </Card>
-          <Card className="p-4 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
-            <h4 className="font-bold mb-2 text-gray-200">Technology Evolution</h4>
-            <ul className="list-disc pl-4 text-gray-400">
-              <li>Enhanced AI Models</li>
-              <li>Improved Analytics</li>
-              <li>Mobile Applications</li>
-              <li>API Ecosystem</li>
+
+          <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
+            <div className="flex items-center space-x-4 mb-6">
+              <Target className="w-8 h-8 text-purple-400" />
+              <h3 className="text-xl font-semibold text-gray-200">Future Initiatives</h3>
+            </div>
+            <ul className="space-y-4">
+              <li className="flex items-start space-x-3">
+                <Smartphone className="w-5 h-5 text-purple-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">Mobile-First Experience</h4>
+                  <p className="text-sm text-gray-400">Native mobile applications with offline learning capabilities and synchronization</p>
+                </div>
+              </li>
+              <li className="flex items-start space-x-3">
+                <MessageSquare className="w-5 h-5 text-purple-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">Community Features</h4>
+                  <p className="text-sm text-gray-400">Peer-to-peer learning networks and collaborative study groups</p>
+                </div>
+              </li>
+              <li className="flex items-start space-x-3">
+                <Award className="w-5 h-5 text-purple-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">Industry Partnerships</h4>
+                  <p className="text-sm text-gray-400">Strategic collaborations for recognized certifications and job placement</p>
+                </div>
+              </li>
             </ul>
           </Card>
         </div>
       </div>
     )
   }
+
 ];
 
 const TechnologyDeck = () => {
