@@ -305,7 +305,7 @@ export default function AccountPage() {
               </CardContent>
             </Card>
 
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-3 gap-4"> {/* Changed to md:grid-cols-3 */}
               <Card>
                 <CardContent className="pt-6">
                   <Link href="/curriculum">
@@ -323,6 +323,17 @@ export default function AccountPage() {
                     <Button className="w-full" variant="outline">
                       <Brain className="mr-2 h-4 w-4" />
                       Practice Exercises
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardContent className="pt-6">
+                  <Link href="/glossary">
+                    <Button className="w-full" variant="outline">
+                      <BookOpen className="mr-2 h-4 w-4" />
+                      Glossary
                     </Button>
                   </Link>
                 </CardContent>
