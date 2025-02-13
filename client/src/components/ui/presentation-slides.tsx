@@ -1,10 +1,10 @@
 import React from 'react';
-import { 
-  Brain, 
-  Trophy, 
-  Dumbbell, 
-  Target, 
-  Rocket, 
+import {
+  Brain,
+  Trophy,
+  Dumbbell,
+  Target,
+  Rocket,
   Globe,
   BookOpen,
   GraduationCap,
@@ -16,7 +16,10 @@ import {
   Lightbulb,
   Wallet,
   Network,
-  Code
+  Code,
+  Database,
+  BrainCircuit,
+  LineChart,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -394,6 +397,101 @@ export const ctaSlide = (
     >
       <Logo className="text-white mx-auto mb-8 h-16 w-auto" />
       <h2 className="text-3xl mb-8">Join the Future of Crypto Education</h2>
+    </motion.div>
+  </Slide>
+);
+
+
+// Add this new slide after the goToMarketSlide and before growthExpansionSlide
+export const technicalBackendSlide = (
+  <Slide key="technical-backend">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div className="flex items-center gap-4 mb-8">
+        <div className="p-3 bg-purple-500/20 rounded-lg">
+          <Code className="w-8 h-8 text-purple-400" />
+        </div>
+        <h2 className="text-4xl font-bold text-blue-400">Technical Infrastructure</h2>
+      </div>
+      <div className="space-y-6">
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+        >
+          <h3 className="text-2xl font-semibold text-blue-300 mb-4">Learning Progress Tracking</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-blue-900/30 p-4 rounded-lg">
+              <div className="flex items-center gap-3 mb-2">
+                <BarChart className="w-5 h-5 text-blue-400" />
+                <h4 className="text-lg font-semibold text-blue-300">Analytics Engine</h4>
+              </div>
+              <p className="text-blue-100">Real-time tracking of completion rates, time spent, and engagement metrics</p>
+            </div>
+            <div className="bg-blue-900/30 p-4 rounded-lg">
+              <div className="flex items-center gap-3 mb-2">
+                <Brain className="w-5 h-5 text-blue-400" />
+                <h4 className="text-lg font-semibold text-blue-300">Adaptive Learning</h4>
+              </div>
+              <p className="text-blue-100">Dynamic difficulty adjustment based on performance data</p>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+        >
+          <h3 className="text-2xl font-semibold text-blue-300 mb-4">Data Infrastructure</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-blue-900/30 p-4 rounded-lg">
+              <div className="flex items-center gap-3 mb-2">
+                <Database className="w-5 h-5 text-blue-400" />
+                <h4 className="text-lg font-semibold text-blue-300">PostgreSQL Backend</h4>
+              </div>
+              <p className="text-blue-100">Scalable database architecture for user profiles and learning data</p>
+            </div>
+            <div className="bg-blue-900/30 p-4 rounded-lg">
+              <div className="flex items-center gap-3 mb-2">
+                <Shield className="w-5 h-5 text-blue-400" />
+                <h4 className="text-lg font-semibold text-blue-300">Security</h4>
+              </div>
+              <p className="text-blue-100">End-to-end encryption and GDPR-compliant data handling</p>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.6 }}
+          className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+        >
+          <h3 className="text-2xl font-semibold text-blue-300 mb-4">AI Capabilities</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-blue-900/30 p-4 rounded-lg">
+              <div className="flex items-center gap-3 mb-2">
+                <BrainCircuit className="w-5 h-5 text-blue-400" />
+                <h4 className="text-lg font-semibold text-blue-300">Machine Learning Pipeline</h4>
+              </div>
+              <p className="text-blue-100">Automated content recommendations and personalized learning paths</p>
+            </div>
+            <div className="bg-blue-900/30 p-4 rounded-lg">
+              <div className="flex items-center gap-3 mb-2">
+                <LineChart className="w-5 h-5 text-blue-400" />
+                <h4 className="text-lg font-semibold text-blue-300">Predictive Analytics</h4>
+              </div>
+              <p className="text-blue-100">Learning outcome predictions and early intervention suggestions</p>
+            </div>
+          </div>
+        </motion.div>
+      </div>
     </motion.div>
   </Slide>
 );

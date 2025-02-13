@@ -15,6 +15,7 @@ import {
   roadmapSlide,
   progressSlide,
   gtmSlide1,
+  technicalBackendSlide, // New slide at position 13
   gtmSlide2,
   tokenSlide,
   tractionSlide,
@@ -43,6 +44,7 @@ const PitchDeck: React.FC = () => {
     roadmapSlide,
     progressSlide,
     gtmSlide1,
+    technicalBackendSlide, // New slide at position 13
     gtmSlide2,
     tokenSlide,
     tractionSlide,
