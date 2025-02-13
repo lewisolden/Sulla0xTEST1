@@ -263,14 +263,44 @@ export const progressSlide = (
           <Trophy className="w-6 h-6 mr-2 text-green-500" />
           <h3 className="font-bold text-lg">Key Achievements</h3>
         </div>
-        <p>Development milestones and early partnerships.</p>
+        <ul className="list-disc pl-6">
+          <li>Successful MVP launch with initial user testing</li>
+          <li>Integration of AI-powered learning tools</li>
+          <li>Strategic partnerships with blockchain projects</li>
+        </ul>
       </div>
       <div className="bg-blue-100 rounded-lg shadow p-4">
         <div className="flex items-center mb-2">
           <Code className="w-6 h-6 mr-2 text-blue-500" />
           <h3 className="font-bold text-lg">Technical Stack</h3>
         </div>
-        <p>Next.js, TypeScript, PostgreSQL, and AI integration capabilities.</p>
+        <ul className="list-disc pl-6">
+          <li>Next.js & TypeScript frontend for robust UI</li>
+          <li>PostgreSQL database with advanced analytics</li>
+          <li>AI/ML pipeline for personalized learning</li>
+        </ul>
+      </div>
+      <div className="bg-purple-100 rounded-lg shadow p-4">
+        <div className="flex items-center mb-2">
+          <Database className="w-6 h-6 mr-2 text-purple-500" />
+          <h3 className="font-bold text-lg">Data Collection</h3>
+        </div>
+        <ul className="list-disc pl-6">
+          <li>User interaction tracking & analysis</li>
+          <li>Learning pattern recognition</li>
+          <li>Progress metrics & performance data</li>
+        </ul>
+      </div>
+      <div className="bg-indigo-100 rounded-lg shadow p-4">
+        <div className="flex items-center mb-2">
+          <Brain className="w-6 h-6 mr-2 text-indigo-500" />
+          <h3 className="font-bold text-lg">AI Capabilities</h3>
+        </div>
+        <ul className="list-disc pl-6">
+          <li>Adaptive learning pathways</li>
+          <li>Content recommendation engine</li>
+          <li>Performance prediction models</li>
+        </ul>
       </div>
     </div>
   </Slide>
