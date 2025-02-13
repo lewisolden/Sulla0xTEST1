@@ -511,20 +511,106 @@ export default function AIApplications() {
                     ))}
                   </div>
                 </motion.section>
-              </div>
 
-              <div className="mt-12 flex justify-between items-center">
-                <Button
-                  onClick={() => setShowQuiz(true)}
-                  className="gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white"
+                <motion.section
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.1 }}
+                  className="mb-12"
                 >
-                  Take Topic Quiz
-                </Button>
-                <Link href="/ai/module1/machine-learning-basics">
-                  <Button className="gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
-                    Next Topic: Machine Learning <ArrowRight className="h-4 w-4" />
+                  <h2 className="text-2xl font-semibold text-blue-700 mb-6 flex items-center gap-2">
+                    <Bot className="h-6 w-6" />
+                    Popular AI Platforms
+                  </h2>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {[
+                      {
+                        title: "ChatGPT",
+                        desc: "OpenAI's advanced language model capable of human-like conversations, coding assistance, and creative writing",
+                        url: "https://chat.openai.com",
+                        gradient: "bg-gradient-to-br from-teal-500 to-teal-700"
+                      },
+                      {
+                        title: "DALL-E",
+                        desc: "OpenAI's AI system that creates realistic images and art from natural language descriptions",
+                        url: "https://openai.com/dall-e-3",
+                        gradient: "bg-gradient-to-br from-fuchsia-500 to-fuchsia-700"
+                      },
+                      {
+                        title: "Midjourney",
+                        desc: "AI-powered tool that generates high-quality images from text descriptions, known for artistic and creative outputs",
+                        url: "https://www.midjourney.com",
+                        gradient: "bg-gradient-to-br from-purple-500 to-purple-700"
+                      },
+                      {
+                        title: "Claude",
+                        desc: "Anthropic's AI assistant known for detailed analysis, writing, and coding with strong ethical considerations",
+                        url: "https://www.anthropic.com/claude",
+                        gradient: "bg-gradient-to-br from-blue-500 to-blue-700"
+                      },
+                      {
+                        title: "Google Gemini",
+                        desc: "Google's multimodal AI model that can understand and process text, images, and code simultaneously",
+                        url: "https://gemini.google.com",
+                        gradient: "bg-gradient-to-br from-red-500 to-red-700"
+                      },
+                      {
+                        title: "DeepSeek",
+                        desc: "Advanced language model focused on coding and technical tasks with deep understanding of software development",
+                        url: "https://deepseek.ai",
+                        gradient: "bg-gradient-to-br from-cyan-500 to-cyan-700"
+                      },
+                      {
+                        title: "LLaMA",
+                        desc: "Meta's open-source large language model foundation, enabling customized AI applications",
+                        url: "https://ai.meta.com/llama",
+                        gradient: "bg-gradient-to-br from-indigo-500 to-indigo-700"
+                      },
+                      {
+                        title: "DeepMind",
+                        desc: "Google's AI research company known for breakthrough achievements in AI, including AlphaGo and protein folding",
+                        url: "https://deepmind.google",
+                        gradient: "bg-gradient-to-br from-emerald-500 to-emerald-700"
+                      }
+                    ].map((platform, index) => (
+                      <motion.div
+                        key={platform.title}
+                        className={`${platform.gradient} p-6 rounded-xl text-white transform transition-all duration-300 hover:scale-105 hover:shadow-xl border border-white/10`}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 1.3 + index * 0.1 }}
+                      >
+                        <h3 className="font-semibold text-xl mb-2">
+                          {platform.title}
+                        </h3>
+                        <p className="text-white/90 mb-4">{platform.desc}</p>
+                        <a
+                          href={platform.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm transition-colors duration-200"
+                        >
+                          Visit Platform
+                          <ArrowRight className="h-4 w-4" />
+                        </a>
+                      </motion.div>
+                    ))}
+                  </div>
+                </motion.section>
+
+                <div className="mt-12 flex justify-between items-center">
+                  <Button
+                    onClick={() => setShowQuiz(true)}
+                    className="gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white"
+                  >
+                    Take Topic Quiz
                   </Button>
-                </Link>
+                  <Link href="/ai/module1/machine-learning-basics">
+                    <Button className="gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
+                      Next Topic: Machine Learning <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </motion.div>
           </CardContent>
