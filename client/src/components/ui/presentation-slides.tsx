@@ -1,10 +1,10 @@
 import React from 'react';
-import {
-  Brain,
-  Trophy,
-  Dumbbell,
-  Target,
-  Rocket,
+import { 
+  Brain, 
+  Trophy, 
+  Dumbbell, 
+  Target, 
+  Rocket, 
   Globe,
   BookOpen,
   GraduationCap,
@@ -16,19 +16,9 @@ import {
   Lightbulb,
   Wallet,
   Network,
-  Code,
-  Book,
-  GitBranch,
-  BrainCircuit,
-  LineChart,
-  PieChart,
+  Code
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-
-// Assuming Card component is defined elsewhere, or can be added.  If not defined, replace with a suitable alternative.
-const Card: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = '' }) => (
-  <div className={`rounded-lg shadow ${className}`}>{children}</div>
-);
 
 // Slide Component
 const Slide: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = '' }) => (
@@ -108,22 +98,22 @@ export const solutionSlide1 = (
   <Slide key="solution1">
     <h2 className="text-2xl font-bold mb-4">Our Solution</h2>
     <p className="mb-4">
-      Sulla provides a comprehensive education platform combining cutting-edge AI technology with expert-crafted content.
+      Sulla provides an engaging and practical crypto education platform with a focus on hands-on learning and community engagement.
     </p>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div className="bg-green-100 rounded-lg shadow p-4">
         <div className="flex items-center mb-2">
-          <BrainCircuit className="w-6 h-6 mr-2 text-green-500" />
-          <h3 className="font-bold text-lg">AI-Powered Learning</h3>
+          <Rocket className="w-6 h-6 mr-2 text-green-500" />
+          <h3 className="font-bold text-lg">Interactive Learning Modules</h3>
         </div>
-        <p>Personalized learning paths powered by advanced AI algorithms</p>
+        <p>Our platform features gamified modules that combine theory with practical exercises.</p>
       </div>
       <div className="bg-green-100 rounded-lg shadow p-4">
         <div className="flex items-center mb-2">
           <Globe className="w-6 h-6 mr-2 text-green-500" />
-          <h3 className="font-bold text-lg">Comprehensive Curriculum</h3>
+          <h3 className="font-bold text-lg">Community-Driven Platform</h3>
         </div>
-        <p>From blockchain fundamentals to advanced AI concepts</p>
+        <p>Users can collaborate, share insights, and learn from each other.</p>
       </div>
     </div>
   </Slide>
@@ -209,16 +199,9 @@ export const productSlide1 = (
       <div className="bg-purple-100 rounded-lg shadow p-4">
         <div className="flex items-center mb-2">
           <Rocket className="w-6 h-6 mr-2 text-purple-500" />
-          <h3 className="font-bold text-lg">Dual Learning Tracks</h3>
+          <h3 className="font-bold text-lg">Interactive Learning</h3>
         </div>
-        <p>Comprehensive courses in both Cryptocurrency and Artificial Intelligence</p>
-      </div>
-      <div className="bg-purple-100 rounded-lg shadow p-4">
-        <div className="flex items-center mb-2">
-          <BrainCircuit className="w-6 h-6 mr-2 text-purple-500" />
-          <h3 className="font-bold text-lg">AI-Enhanced Learning</h3>
-        </div>
-        <p>Advanced AI algorithms adapt content to your learning style</p>
+        <p>Gamified courses that make learning engaging and fun.</p>
       </div>
     </div>
   </Slide>
@@ -239,7 +222,7 @@ export const productSlide2 = (
   </Slide>
 );
 
-// Other slides exports
+// Other slides exports (basic structure for completeness)
 export const modulesSlide = (
   <Slide key="modules">
     <h2 className="text-2xl font-bold mb-4">Our Modules</h2>
@@ -411,205 +394,6 @@ export const ctaSlide = (
     >
       <Logo className="text-white mx-auto mb-8 h-16 w-auto" />
       <h2 className="text-3xl mb-8">Join the Future of Crypto Education</h2>
-    </motion.div>
-  </Slide>
-);
-
-export const futureFinanceSlide = (
-  <Slide key="future-finance">
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="flex items-center gap-4 mb-8">
-        <div className="p-3 bg-green-500/20 rounded-lg">
-          <Book className="w-8 h-8 text-green-400" />
-        </div>
-        <h2 className="text-4xl font-bold text-blue-400">Two Revolutionary Learning Paths</h2>
-      </div>
-      <div className="space-y-6">
-        <Card className="bg-blue-900/30 p-6 mb-8">
-          <h3 className="text-2xl font-semibold text-blue-300 mb-4">Course 1: Introduction to Cryptocurrency</h3>
-          <div className="space-y-4">
-            {[
-              {
-                title: "Module 1: Understanding Cryptocurrency",
-                description: "Master the fundamentals of digital assets and blockchain technology"
-              },
-              {
-                title: "Module 2: Bitcoin Fundamentals",
-                description: "Deep dive into Bitcoin, cryptocurrency markets, and investment strategies"
-              },
-              {
-                title: "Module 3: Ethereum & Smart Contracts",
-                description: "Explore Ethereum, smart contracts, and decentralized applications"
-              }
-            ].map((module, index) => (
-              <motion.div
-                key={index}
-                initial={{ x: -50, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: index * 0.2 }}
-                className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="p-2 bg-blue-400/20 rounded-full mt-1">
-                    <GitBranch className="w-5 h-5 text-blue-400" />
-                  </div>
-                  <div>
-                    <h4 className="text-xl font-semibold text-blue-300 mb-2">{module.title}</h4>
-                    <p className="text-blue-100">{module.description}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </Card>
-
-        <Card className="bg-blue-900/30 p-6">
-          <h3 className="text-2xl font-semibold text-blue-300 mb-4">Course 2: Introduction to AI</h3>
-          <div className="space-y-4">
-            {[
-              {
-                title: "Module 1: AI Fundamentals",
-                description: "Understanding core concepts of artificial intelligence, machine learning, and neural networks"
-              },
-              {
-                title: "Module 2: AI Applications",
-                description: "Explore real-world applications of AI in various industries, from healthcare to finance"
-              },
-              {
-                title: "Module 3: Future of AI",
-                description: "Discover emerging AI technologies, ethics, and the future landscape of artificial intelligence"
-              },
-              {
-                title: "Module 4: Hands-on AI Projects",
-                description: "Build practical AI applications using modern tools and frameworks"
-              }
-            ].map((module, index) => (
-              <motion.div
-                key={index}
-                initial={{ x: -50, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: index * 0.2 }}
-                className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="p-2 bg-blue-400/20 rounded-full mt-1">
-                    <BrainCircuit className="w-5 h-5 text-blue-400" />
-                  </div>
-                  <div>
-                    <h4 className="text-xl font-semibold text-blue-300 mb-2">{module.title}</h4>
-                    <p className="text-blue-100">{module.description}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </Card>
-      </div>
-    </motion.div>
-  </Slide>
-);
-
-// Add after the futureFinanceSlide export
-export const backendArchitectureSlide = (
-  <Slide key="backend-architecture">
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="flex items-center gap-4 mb-8">
-        <div className="p-3 bg-blue-500/20 rounded-lg">
-          <Network className="w-8 h-8 text-blue-400" />
-        </div>
-        <h2 className="text-4xl font-bold text-blue-400">Platform Architecture</h2>
-      </div>
-      <div className="space-y-6">
-        <Card className="bg-blue-900/30 p-6 mb-8">
-          <h3 className="text-2xl font-semibold text-blue-300 mb-4">Intelligent Learning Infrastructure</h3>
-          <div className="space-y-4">
-            {[
-              {
-                title: "Progress Tracking Engine",
-                description: "Real-time monitoring of user engagement, completion rates, and performance metrics",
-                icon: BarChart
-              },
-              {
-                title: "AI-Powered Analytics",
-                description: "Machine learning algorithms analyze learning patterns to optimize content delivery",
-                icon: BrainCircuit
-              },
-              {
-                title: "Adaptive Assessment System",
-                description: "Dynamic difficulty adjustment based on user performance and learning speed",
-                icon: Target
-              }
-            ].map((feature, index) => (
-              <motion.div
-                key={index}
-                initial={{ x: -50, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: index * 0.2 }}
-                className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="p-2 bg-blue-400/20 rounded-full mt-1">
-                    <feature.icon className="w-5 h-5 text-blue-400" />
-                  </div>
-                  <div>
-                    <h4 className="text-xl font-semibold text-blue-300 mb-2">{feature.title}</h4>
-                    <p className="text-blue-100">{feature.description}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </Card>
-
-        <Card className="bg-blue-900/30 p-6">
-          <h3 className="text-2xl font-semibold text-blue-300 mb-4">Admin Dashboard & Analytics</h3>
-          <div className="space-y-4">
-            {[
-              {
-                title: "Comprehensive Analytics",
-                description: "Monitor user engagement, content effectiveness, and learning outcomes",
-                icon: LineChart
-              },
-              {
-                title: "AI Model Training",
-                description: "User interaction data feeds back into our AI systems for continuous improvement",
-                icon: Brain
-              },
-              {
-                title: "Performance Insights",
-                description: "Detailed metrics on user progress, struggle points, and success rates",
-                icon: PieChart
-              }
-            ].map((feature, index) => (
-              <motion.div
-                key={index}
-                initial={{ x: -50, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: index * 0.2 }}
-                className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="p-2 bg-blue-400/20 rounded-full mt-1">
-                    <feature.icon className="w-5 h-5 text-blue-400" />
-                  </div>
-                  <div>
-                    <h4 className="text-xl font-semibold text-blue-300 mb-2">{feature.title}</h4>
-                    <p className="text-blue-100">{feature.description}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </Card>
-      </div>
     </motion.div>
   </Slide>
 );
