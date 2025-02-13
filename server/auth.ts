@@ -58,6 +58,16 @@ export const requireAdmin = async (req: any, res: any, next: any) => {
   next();
 };
 
+const PUBLIC_ROUTES = [
+  '/deck',
+  '/api/register',
+  '/api/login'
+];
+
+function isPublicRoute(path: string): boolean {
+  return PUBLIC_ROUTES.some(route => path.startsWith(route));
+}
+
 export function setupAuth(app: Express) {
   const MemoryStore = createMemoryStore(session);
   const isProduction = process.env.NODE_ENV === 'production';
@@ -84,6 +94,18 @@ export function setupAuth(app: Express) {
   app.use(session(sessionSettings));
   app.use(passport.initialize());
   app.use(passport.session());
+
+  // Add middleware to check for public routes
+  app.use((req, res, next) => {
+    if (isPublicRoute(req.path) || req.isAuthenticated()) {
+      return next();
+    }
+    if (req.path.startsWith('/api/')) {
+      return res.status(401).json({ error: "Not authenticated" });
+    }
+    // For non-API routes, allow the request to continue to be handled by the client-side router
+    next();
+  });
 
   // Regular user strategy
   passport.use('local', new LocalStrategy(async (username, password, done) => {
@@ -168,8 +190,8 @@ export function setupAuth(app: Express) {
       }
 
       if (!admin) {
-        return res.status(401).json({ 
-          error: info?.message || "Invalid username or password" 
+        return res.status(401).json({
+          error: info?.message || "Invalid username or password"
         });
       }
 
@@ -201,8 +223,8 @@ export function setupAuth(app: Express) {
     try {
       const result = insertUserSchema.safeParse(req.body);
       if (!result.success) {
-        return res.status(400).json({ 
-          error: result.error.issues.map((issue) => issue.message).join(", ") 
+        return res.status(400).json({
+          error: result.error.issues.map((issue) => issue.message).join(", ")
         });
       }
 
@@ -239,8 +261,8 @@ export function setupAuth(app: Express) {
           user: { id: newUser.id, username: newUser.username, role: 'user' },
           emailStatus: {
             sent: emailResult.sent,
-            note: process.env.NODE_ENV !== 'production' 
-              ? "In testing mode, welcome emails are only sent to verified email addresses." 
+            note: process.env.NODE_ENV !== 'production'
+              ? "In testing mode, welcome emails are only sent to verified email addresses."
               : emailResult.note
           }
         });
