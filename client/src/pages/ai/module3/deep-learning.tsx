@@ -48,6 +48,9 @@ export default function DeepLearning() {
   const [, setLocation] = useLocationWouter();
 
   useEffect(() => {
+    // Track this page as the last accessed route when component mounts
+    updateProgress(3, 'deep-learning', false, 3, 0, undefined, '/ai/module3/deep-learning', 'ai');
+
     const handleScroll = () => {
       const scrolled = window.scrollY;
       const maxHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -55,7 +58,7 @@ export default function DeepLearning() {
       setReadingProgress(progress);
 
       if (progress > 90) {
-        updateProgress(3, 'deep-learning', true);
+        updateProgress(3, 'deep-learning', true, 3, Date.now(), undefined, '/ai/module3/deep-learning', 'ai');
       }
     };
 

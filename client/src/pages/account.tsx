@@ -38,7 +38,7 @@ interface Enrollment {
 
 export default function AccountPage() {
   const { user, logoutMutation } = useAuth();
-  const { progress } = useProgress();
+  const { progress, getLastAccessedRoute } = useProgress();
   const [activeTab, setActiveTab] = useState("dashboard");
   const [feedbackType, setFeedbackType] = useState("course");
   const [selectedCourse, setSelectedCourse] = useState("");
@@ -69,6 +69,19 @@ export default function AccountPage() {
   const overallProgress = totalEnrollments ? (completedEnrollments / totalEnrollments) * 100 : 0;
 
   const getContinueLearningPath = (enrollment: Enrollment) => {
+    // Check if this is an AI course
+    const isAICourse = enrollment.course.title.toLowerCase().includes('ai') ||
+                      enrollment.metadata?.lastPath?.includes('/ai/');
+
+    if (isAICourse) {
+      // Get the last accessed route from progress context
+      const lastRoute = getLastAccessedRoute('ai');
+      if (lastRoute) {
+        return lastRoute;
+      }
+    }
+
+    // Fall back to existing logic for other courses
     if (enrollment.metadata?.lastPath) {
       return enrollment.metadata.lastPath;
     }

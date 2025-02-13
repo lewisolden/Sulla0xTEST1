@@ -20,15 +20,15 @@ const RLProcessDiagram = () => (
     {/* Agent */}
     <circle cx="400" cy="200" r="50" fill="#93C5FD" />
     <text x="400" y="200" textAnchor="middle" dy=".3em" fill="white" fontSize="16">Agent</text>
-    
+
     {/* Environment */}
     <rect x="600" y="150" width="100" height="100" rx="10" fill="#60A5FA" />
     <text x="650" y="200" textAnchor="middle" dy=".3em" fill="white" fontSize="16">Environment</text>
-    
+
     {/* State */}
     <rect x="100" y="150" width="100" height="100" rx="10" fill="#2563EB" />
     <text x="150" y="200" textAnchor="middle" dy=".3em" fill="white" fontSize="16">State</text>
-    
+
     {/* Arrows */}
     <g className="connections" stroke="#4B5563" strokeWidth="2" markerEnd="url(#arrowhead)">
       <path d="M 450,180 C 500,180 550,180 590,180" fill="none" />
@@ -36,7 +36,7 @@ const RLProcessDiagram = () => (
       <path d="M 200,180 C 250,180 300,180 350,180" fill="none" />
       <path d="M 350,220 C 300,220 250,220 200,220" fill="none" />
     </g>
-    
+
     {/* Labels */}
     <text x="520" y="170" textAnchor="middle" fill="#4B5563">Action</text>
     <text x="520" y="240" textAnchor="middle" fill="#4B5563">Reward</text>
@@ -53,6 +53,9 @@ export default function ReinforcementLearning() {
   const [, setLocation] = useLocation();
 
   useEffect(() => {
+    // Track this page as the last accessed route when component mounts
+    updateProgress(3, 'reinforcement-learning', false, 3, 0, undefined, '/ai/module3/reinforcement-learning', 'ai');
+
     const handleScroll = () => {
       const scrolled = window.scrollY;
       const maxHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -60,7 +63,7 @@ export default function ReinforcementLearning() {
       setReadingProgress(progress);
 
       if (progress > 90) {
-        updateProgress(3, 'reinforcement-learning', true);
+        updateProgress(3, 'reinforcement-learning', true, 3, Date.now(), undefined, '/ai/module3/reinforcement-learning', 'ai');
       }
     };
 
@@ -76,7 +79,7 @@ export default function ReinforcementLearning() {
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
         <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
-          <div 
+          <div
             className="h-full bg-blue-600 transition-all duration-300"
             style={{ width: `${readingProgress}%` }}
           />
@@ -115,9 +118,9 @@ export default function ReinforcementLearning() {
                     Introduction to Reinforcement Learning
                   </h2>
                   <p className="text-gray-700 leading-relaxed">
-                    Reinforcement learning (RL) is a type of machine learning where an agent learns to 
-                    make decisions by interacting with an environment. Unlike supervised learning, 
-                    the agent learns through trial and error, receiving rewards or penalties for its actions. 
+                    Reinforcement learning (RL) is a type of machine learning where an agent learns to
+                    make decisions by interacting with an environment. Unlike supervised learning,
+                    the agent learns through trial and error, receiving rewards or penalties for its actions.
                     This approach mirrors how humans and animals naturally learn through experience.
                   </p>
                 </section>
@@ -152,7 +155,7 @@ export default function ReinforcementLearning() {
                         Policy Learning
                       </h3>
                       <p className="text-gray-600">
-                        The strategy that defines how an agent selects actions in different states 
+                        The strategy that defines how an agent selects actions in different states
                         to maximize expected rewards.
                       </p>
                     </Card>
@@ -162,7 +165,7 @@ export default function ReinforcementLearning() {
                         Value Functions
                       </h3>
                       <p className="text-gray-600">
-                        Estimates of future rewards that help the agent evaluate the desirability 
+                        Estimates of future rewards that help the agent evaluate the desirability
                         of states and actions.
                       </p>
                     </Card>
@@ -177,21 +180,21 @@ export default function ReinforcementLearning() {
                     <div className="bg-blue-50 p-4 rounded-lg">
                       <h3 className="text-lg font-semibold mb-2">Game Playing</h3>
                       <p className="text-gray-700">
-                        Training AI agents to master complex games like chess, Go, and video games 
+                        Training AI agents to master complex games like chess, Go, and video games
                         through self-play and exploration.
                       </p>
                     </div>
                     <div className="bg-blue-50 p-4 rounded-lg">
                       <h3 className="text-lg font-semibold mb-2">Robotics</h3>
                       <p className="text-gray-700">
-                        Teaching robots to perform tasks like manipulation, navigation, and 
+                        Teaching robots to perform tasks like manipulation, navigation, and
                         assembly through trial and error.
                       </p>
                     </div>
                     <div className="bg-blue-50 p-4 rounded-lg">
                       <h3 className="text-lg font-semibold mb-2">Resource Management</h3>
                       <p className="text-gray-700">
-                        Optimizing system resources, energy consumption, and network routing 
+                        Optimizing system resources, energy consumption, and network routing
                         through learned policies.
                       </p>
                     </div>
@@ -209,7 +212,7 @@ export default function ReinforcementLearning() {
                         Deep RL
                       </h3>
                       <p className="text-gray-600">
-                        Combining deep learning with reinforcement learning to handle complex 
+                        Combining deep learning with reinforcement learning to handle complex
                         state spaces and learn sophisticated policies.
                       </p>
                     </Card>
@@ -219,7 +222,7 @@ export default function ReinforcementLearning() {
                         Multi-Agent RL
                       </h3>
                       <p className="text-gray-600">
-                        Systems where multiple agents learn simultaneously, either competing 
+                        Systems where multiple agents learn simultaneously, either competing
                         or cooperating to achieve their goals.
                       </p>
                     </Card>
@@ -229,7 +232,7 @@ export default function ReinforcementLearning() {
 
               <div className="mt-8 space-y-4">
                 <Link href="/ai/module3/generative-ai">
-                  <Button 
+                  <Button
                     className="w-full gap-2"
                     variant="outline"
                   >
@@ -237,7 +240,7 @@ export default function ReinforcementLearning() {
                   </Button>
                 </Link>
 
-                <Button 
+                <Button
                   onClick={() => setShowQuiz(true)}
                   className="w-full"
                 >

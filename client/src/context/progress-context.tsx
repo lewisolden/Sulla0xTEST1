@@ -8,14 +8,17 @@ interface ProgressData {
   courseId: number;
   timeSpent?: number;
   quizScore?: number;
+  lastAccessedRoute?: string; // Added to track last accessed route
+  courseName?: string; // Added to identify course type
 }
 
 interface ProgressContextType {
   progress: ProgressData[];
   isLoading: boolean;
   error: Error | null;
-  updateProgress: (moduleId: number, sectionId: string, completed: boolean, courseId?: number, timeSpent?: number, quizScore?: number) => void;
+  updateProgress: (moduleId: number, sectionId: string, completed: boolean, courseId?: number, timeSpent?: number, quizScore?: number, lastAccessedRoute?: string, courseName?: string) => void;
   getModuleProgress: (moduleId: number) => { completed: boolean; total: number };
+  getLastAccessedRoute: (courseName: string) => string | null; // New function to get last accessed route
 }
 
 const ProgressContext = createContext<ProgressContextType | undefined>(undefined);
@@ -41,7 +44,9 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
           completed: progressData.completed,
           courseId: progressData.courseId || 1,
           timeSpent: progressData.timeSpent,
-          quizScore: progressData.quizScore
+          quizScore: progressData.quizScore,
+          lastAccessedRoute: progressData.lastAccessedRoute,
+          courseName: progressData.courseName
         })
       });
 
@@ -59,7 +64,9 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     completed: boolean,
     courseId: number = 1,
     timeSpent?: number,
-    quizScore?: number
+    quizScore?: number,
+    lastAccessedRoute?: string,
+    courseName?: string
   ) => {
     try {
       await mutation.mutateAsync({
@@ -68,7 +75,9 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         completed,
         courseId,
         timeSpent,
-        quizScore
+        quizScore,
+        lastAccessedRoute,
+        courseName
       });
     } catch (error) {
       console.error('Failed to update progress:', error);
@@ -90,12 +99,27 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     };
   };
 
+  // New function to get the last accessed route for a specific course
+  const getLastAccessedRoute = (courseName: string): string | null => {
+    if (!data?.progress) return null;
+
+    const courseProgress = data.progress
+      .filter((item: ProgressData) => item.courseName === courseName)
+      .sort((a, b) => {
+        // Sort by timeSpent to get the most recent
+        return (b.timeSpent || 0) - (a.timeSpent || 0);
+      });
+
+    return courseProgress[0]?.lastAccessedRoute || null;
+  };
+
   const contextValue = {
     progress: data?.progress || [],
     isLoading,
     error: error as Error | null,
     updateProgress,
-    getModuleProgress
+    getModuleProgress,
+    getLastAccessedRoute
   };
 
   return (
