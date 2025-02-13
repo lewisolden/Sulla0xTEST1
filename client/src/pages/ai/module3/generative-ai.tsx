@@ -157,7 +157,7 @@ const GANDiagram = () => (
   </svg>
 );
 
-// Interactive Example Card Component
+// Interactive Example Card Component without hover effect
 const ExampleCard = ({ title, description, icon: Icon, examples, delay }: {
   title: string;
   description: string;
@@ -165,20 +165,15 @@ const ExampleCard = ({ title, description, icon: Icon, examples, delay }: {
   examples: string[];
   delay: number;
 }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay }}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
       className="relative"
     >
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-xl blur-lg transform transition-all duration-300"
-           style={{ scale: isHovered ? 1.1 : 1 }} />
-      <Card className="relative border-blue-200 hover:border-blue-400 transition-all duration-300">
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-xl blur-lg" />
+      <Card className="relative border-blue-200 transition-all duration-300">
         <CardContent className="p-6">
           <div className="flex items-start gap-4">
             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
@@ -189,29 +184,37 @@ const ExampleCard = ({ title, description, icon: Icon, examples, delay }: {
                 {title}
               </h3>
               <p className="text-gray-600 mt-2">{description}</p>
-              <motion.div
-                className="mt-4 flex flex-wrap gap-2"
-                initial="hidden"
-                animate={isHovered ? "visible" : "hidden"}
-                variants={{
-                  hidden: { opacity: 0, y: 10 },
-                  visible: { opacity: 1, y: 0 },
-                }}
-              >
-                {examples.map((example, i) => (
-                  <motion.span
-                    key={i}
-                    className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
-                    variants={{
-                      hidden: { opacity: 0, x: -10 },
-                      visible: { opacity: 1, x: 0 },
-                    }}
-                    transition={{ delay: i * 0.1 }}
-                  >
-                    {example}
-                  </motion.span>
-                ))}
-              </motion.div>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {examples.map((example, i) => {
+                  const links: { [key: string]: string } = {
+                    "DALL-E": "https://openai.com/dall-e-3",
+                    "Stable Diffusion": "https://stability.ai/stable-diffusion",
+                    "Midjourney": "https://www.midjourney.com",
+                    "GPT-4": "https://openai.com/gpt-4",
+                    "Claude": "https://anthropic.com/claude",
+                    "LLaMA": "https://ai.meta.com/llama",
+                    "MusicLM": "https://google-research.github.io/seanet/musiclm/examples",
+                    "AudioCraft": "https://audiocraft.metademolab.com",
+                    "Bark": "https://github.com/suno-ai/bark",
+                    "Runway": "https://runwayml.com",
+                    "Gen-2": "https://research.runwayml.com/gen2",
+                    "ModelScope": "https://modelscope.cn/studios/damo/ModelScopeGPT"
+                  };
+
+                  return (
+                    <a
+                      key={i}
+                      href={links[example]}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm hover:bg-blue-200 transition-colors duration-200 flex items-center gap-1"
+                    >
+                      {example}
+                      <ArrowRight className="h-3 w-3" />
+                    </a>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </CardContent>
