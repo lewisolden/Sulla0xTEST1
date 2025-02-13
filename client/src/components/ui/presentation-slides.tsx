@@ -153,7 +153,7 @@ export const solutionSlide2 = (
 );
 
 export const futureFinanceSlide = (
-  <Slide key="future-finance">
+  <Slide key="future-finance" className="bg-purple-100">
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -163,11 +163,11 @@ export const futureFinanceSlide = (
         <div className="p-3 bg-green-500/20 rounded-lg">
           <Book className="w-8 h-8 text-green-400" />
         </div>
-        <h2 className="text-4xl font-bold text-green-400">Two Revolutionary Learning Paths</h2>
+        <h2 className="text-4xl font-bold text-green-400">Future of Finance</h2>
       </div>
       <div className="space-y-6">
         <Card className="bg-blue-900/30 p-6 mb-8">
-          <h3 className="text-2xl font-semibold text-blue-300 mb-4">Course 1: Introduction to Cryptocurrency</h3>
+          <h3 className="text-2xl font-semibold text-blue-300 mb-4">Revolutionary Learning Path</h3>
           <div className="space-y-4">
             {[
               {
@@ -193,48 +193,6 @@ export const futureFinanceSlide = (
                 <div className="flex items-start gap-4">
                   <div className="p-2 bg-blue-400/20 rounded-full mt-1">
                     <GitBranch className="w-5 h-5 text-blue-400" />
-                  </div>
-                  <div>
-                    <h4 className="text-xl font-semibold text-blue-300 mb-2">{module.title}</h4>
-                    <p className="text-blue-100">{module.description}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </Card>
-
-        <Card className="bg-blue-900/30 p-6">
-          <h3 className="text-2xl font-semibold text-blue-300 mb-4">Course 2: Introduction to AI</h3>
-          <div className="space-y-4">
-            {[
-              {
-                title: "Module 1: AI Fundamentals",
-                description: "Understanding core concepts of artificial intelligence, machine learning, and neural networks"
-              },
-              {
-                title: "Module 2: AI Applications",
-                description: "Explore real-world applications of AI in various industries, from healthcare to finance"
-              },
-              {
-                title: "Module 3: Future of AI",
-                description: "Discover emerging AI technologies, ethics, and the future landscape of artificial intelligence"
-              },
-              {
-                title: "Module 4: Hands-on AI Projects",
-                description: "Build practical AI applications using modern tools and frameworks"
-              }
-            ].map((module, index) => (
-              <motion.div
-                key={index}
-                initial={{ x: -50, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: index * 0.2 }}
-                className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="p-2 bg-blue-400/20 rounded-full mt-1">
-                    <BrainCircuit className="w-5 h-5 text-blue-400" />
                   </div>
                   <div>
                     <h4 className="text-xl font-semibold text-blue-300 mb-2">{module.title}</h4>

@@ -30,6 +30,7 @@ import {
 const PitchDeck: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  // Define slides array in exact order
   const slides = [
     titleSlide,                    // 1
     problemSlide,                  // 2
