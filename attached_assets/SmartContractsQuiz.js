@@ -8,7 +8,29 @@ const SmartContractsQuiz = () => {
   const [showExplanation, setShowExplanation] = useState(false);
 
   const updateProgress = (moduleId, sectionId, completed) => {
-    console.log(`Progress updated: Module ${moduleId}, Section ${sectionId}, Completed: ${completed}`);
+    try {
+      // Update to include courseId for proper tracking
+      const progressData = {
+        moduleId,
+        sectionId,
+        completed,
+        courseId: 1, // 1 for Blockchain course, 2 for AI course
+        timeSpent: Math.floor(Date.now() / 1000), // Track time spent
+        quizScore: score,
+        lastAccessedRoute: '/modules/module2/smart-contracts-quiz'
+      };
+
+      // Call the progress update endpoint
+      fetch('/api/learning-path/progress', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(progressData),
+      });
+    } catch (error) {
+      console.error('Failed to update progress:', error);
+    }
   };
 
   const quizQuestions = [
@@ -76,7 +98,7 @@ const SmartContractsQuiz = () => {
 
   const moveToNextQuestion = () => {
     const isCorrect = selectedAnswer === quizQuestions[currentQuestion].correctAnswer;
-    
+
     if (isCorrect) {
       setScore(prev => prev + 1);
     }
@@ -123,7 +145,7 @@ const SmartContractsQuiz = () => {
               </p>
             </div>
           )}
-          <button 
+          <button
             onClick={restartQuiz}
             className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
           >
@@ -146,7 +168,7 @@ const SmartContractsQuiz = () => {
               Question {currentQuestion + 1} of {quizQuestions.length}
             </span>
           </h2>
-          
+
           <div className="bg-blue-50 rounded-lg p-4 mb-6">
             <p className="text-lg text-gray-700">
               {currentQuizQuestion.question}
@@ -160,12 +182,12 @@ const SmartContractsQuiz = () => {
                 onClick={() => handleAnswerSelect(index)}
                 className={`
                   w-full p-4 rounded-lg text-left transition-all duration-300
-                  ${selectedAnswer === null 
-                    ? 'bg-gray-100 hover:bg-blue-100' 
-                    : index === currentQuizQuestion.correctAnswer 
-                      ? 'bg-green-200' 
-                      : selectedAnswer === index 
-                        ? 'bg-red-200' 
+                  ${selectedAnswer === null
+                    ? 'bg-gray-100 hover:bg-blue-100'
+                    : index === currentQuizQuestion.correctAnswer
+                      ? 'bg-green-200'
+                      : selectedAnswer === index
+                        ? 'bg-red-200'
                         : 'bg-gray-100'}
                 `}
                 disabled={selectedAnswer !== null}
@@ -178,13 +200,13 @@ const SmartContractsQuiz = () => {
           {showExplanation && (
             <div className={`
               mt-6 p-4 rounded-lg
-              ${selectedAnswer === currentQuizQuestion.correctAnswer 
-                ? 'bg-green-100 border-l-4 border-green-500' 
+              ${selectedAnswer === currentQuizQuestion.correctAnswer
+                ? 'bg-green-100 border-l-4 border-green-500'
                 : 'bg-red-100 border-l-4 border-red-500'}
             `}>
               <h3 className="font-bold mb-2">
-                {selectedAnswer === currentQuizQuestion.correctAnswer 
-                  ? '✅ Correct!' 
+                {selectedAnswer === currentQuizQuestion.correctAnswer
+                  ? '✅ Correct!'
                   : '❌ Incorrect'}
               </h3>
               <p>{currentQuizQuestion.explanation}</p>
@@ -196,8 +218,8 @@ const SmartContractsQuiz = () => {
               onClick={moveToNextQuestion}
               className="mt-6 w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600"
             >
-              {currentQuestion < quizQuestions.length - 1 
-                ? 'Next Question' 
+              {currentQuestion < quizQuestions.length - 1
+                ? 'Next Question'
                 : 'Finish Quiz'}
             </button>
           )}

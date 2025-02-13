@@ -1,5 +1,5 @@
 import { createContext, useContext, ReactNode, useState } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface ProgressData {
   moduleId: number;
@@ -8,22 +8,23 @@ interface ProgressData {
   courseId: number;
   timeSpent?: number;
   quizScore?: number;
-  lastAccessedRoute?: string; // Added to track last accessed route
-  courseName?: string; // Added to identify course type
+  lastAccessedRoute?: string;
+  courseName?: string;
 }
 
 interface ProgressContextType {
   progress: ProgressData[];
   isLoading: boolean;
   error: Error | null;
-  updateProgress: (moduleId: number, sectionId: string, completed: boolean, courseId?: number, timeSpent?: number, quizScore?: number, lastAccessedRoute?: string, courseName?: string) => void;
-  getModuleProgress: (moduleId: number) => { completed: boolean; total: number };
-  getLastAccessedRoute: (courseName: string) => string | null; // New function to get last accessed route
+  updateProgress: (moduleId: number, sectionId: string, completed: boolean, courseId: number, timeSpent?: number, quizScore?: number, lastAccessedRoute?: string, courseName?: string) => void;
+  getModuleProgress: (moduleId: number, courseId?: number) => { completed: boolean; total: number };
+  getLastAccessedRoute: (courseName: string) => string | null;
 }
 
 const ProgressContext = createContext<ProgressContextType | undefined>(undefined);
 
 export function ProgressProvider({ children }: { children: ReactNode }) {
+  const queryClient = useQueryClient();
   const { data, isLoading, error } = useQuery({
     queryKey: ['/api/learning-path/progress'],
     queryFn: async () => {
@@ -38,16 +39,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       const response = await fetch('/api/learning-path/progress', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          moduleId: progressData.moduleId,
-          sectionId: progressData.sectionId,
-          completed: progressData.completed,
-          courseId: progressData.courseId || 1,
-          timeSpent: progressData.timeSpent,
-          quizScore: progressData.quizScore,
-          lastAccessedRoute: progressData.lastAccessedRoute,
-          courseName: progressData.courseName
-        })
+        body: JSON.stringify(progressData)
       });
 
       if (!response.ok) {
@@ -55,6 +47,10 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         throw new Error(error.message || 'Failed to update progress');
       }
       return response.json();
+    },
+    onSuccess: () => {
+      // Invalidate and refetch progress data
+      queryClient.invalidateQueries({ queryKey: ['/api/learning-path/progress'] });
     }
   });
 
@@ -62,7 +58,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     moduleId: number,
     sectionId: string,
     completed: boolean,
-    courseId: number = 1,
+    courseId: number,
     timeSpent?: number,
     quizScore?: number,
     lastAccessedRoute?: string,
@@ -84,13 +80,14 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const getModuleProgress = (moduleId: number) => {
+  const getModuleProgress = (moduleId: number, courseId?: number) => {
     if (!data?.progress) {
       return { completed: 0, total: 0 };
     }
 
     const moduleProgress = data.progress.filter(
-      (item: ProgressData) => item.moduleId === moduleId
+      (item: ProgressData) => item.moduleId === moduleId && 
+      (courseId ? item.courseId === courseId : true)
     );
 
     return {
@@ -99,14 +96,12 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     };
   };
 
-  // New function to get the last accessed route for a specific course
   const getLastAccessedRoute = (courseName: string): string | null => {
     if (!data?.progress) return null;
 
     const courseProgress = data.progress
       .filter((item: ProgressData) => item.courseName === courseName)
-      .sort((a, b) => {
-        // Sort by timeSpent to get the most recent
+      .sort((a: ProgressData, b: ProgressData) => {
         return (b.timeSpent || 0) - (a.timeSpent || 0);
       });
 
