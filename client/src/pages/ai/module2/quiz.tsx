@@ -109,23 +109,31 @@ export default function AIModule2Quiz() {
         const finalScore = ((score + (isCorrect ? 1 : 0)) / questions.length) * 100;
         const passed = finalScore >= 60;
 
-        // Update progress for AI Module 2
-        updateProgress('ai-module2', 'module2-quiz', passed);
-
-        // Make API call to update server-side progress
-        fetch('/api/progress', {
+        // Make API call to update progress
+        fetch('/api/learning-path/progress', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            moduleId: 'ai-module2',
+            moduleId: 2, // Module 2
             sectionId: 'module2-quiz',
+            courseId: 2, // AI Course
             completed: passed,
             score: finalScore,
-            courseId: 2 // AI Course
+            timeSpent: 300 // 5 minutes in seconds
           })
-        }).catch(console.error);
+        }).catch(error => {
+          console.error('Failed to update progress:', error);
+        });
+
+        // Update local progress context
+        updateProgress({
+          moduleId: 2,
+          sectionId: 'module2-quiz',
+          completed: passed,
+          score: finalScore
+        });
       }
     }, 2000);
   };
