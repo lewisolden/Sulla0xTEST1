@@ -163,7 +163,7 @@ export const futureFinanceSlide = (
         <div className="p-3 bg-green-500/20 rounded-lg">
           <Book className="w-8 h-8 text-green-400" />
         </div>
-        <h2 className="text-4xl font-bold text-blue-400">Two Revolutionary Learning Paths</h2>
+        <h2 className="text-4xl font-bold text-green-400">Two Revolutionary Learning Paths</h2>
       </div>
       <div className="space-y-6">
         <Card className="bg-blue-900/30 p-6 mb-8">
