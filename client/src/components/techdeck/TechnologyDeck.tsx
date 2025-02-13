@@ -95,58 +95,93 @@ const slides = [
     id: 2,
     title: "Technical Architecture",
     content: (
-      <div className="space-y-6">
+      <div className="space-y-8">
         <div className="mb-8">
           {/* Architecture Diagram */}
-          <div className="relative h-64 bg-gray-50 rounded-lg p-4 border-2 border-blue-200">
-            <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-32 p-2 bg-blue-100 rounded text-center">
-              <Layout className="w-6 h-6 mx-auto mb-2 text-blue-600" />
-              Frontend
+          <div className="relative h-64 bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg p-4 border border-gray-700">
+            <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-32 p-2 bg-blue-900/50 rounded text-center">
+              <Layout className="w-6 h-6 mx-auto mb-2 text-blue-400" />
+              <span className="text-gray-200">Frontend</span>
             </div>
-            <div className="absolute top-24 left-1/4 transform -translate-x-1/2 w-32 p-2 bg-green-100 rounded text-center">
-              <Server className="w-6 h-6 mx-auto mb-2 text-green-600" />
-              API Layer
+            <div className="absolute top-24 left-1/4 transform -translate-x-1/2 w-32 p-2 bg-green-900/50 rounded text-center">
+              <Server className="w-6 h-6 mx-auto mb-2 text-green-400" />
+              <span className="text-gray-200">API Layer</span>
             </div>
-            <div className="absolute top-24 right-1/4 transform translate-x-1/2 w-32 p-2 bg-purple-100 rounded text-center">
-              <Database className="w-6 h-6 mx-auto mb-2 text-purple-600" />
-              Database
+            <div className="absolute top-24 right-1/4 transform translate-x-1/2 w-32 p-2 bg-purple-900/50 rounded text-center">
+              <Database className="w-6 h-6 mx-auto mb-2 text-purple-400" />
+              <span className="text-gray-200">Database</span>
             </div>
-            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-32 p-2 bg-orange-100 rounded text-center">
-              <Shield className="w-6 h-6 mx-auto mb-2 text-orange-600" />
-              Security
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-32 p-2 bg-orange-900/50 rounded text-center">
+              <Shield className="w-6 h-6 mx-auto mb-2 text-orange-400" />
+              <span className="text-gray-200">Security</span>
             </div>
             {/* Connection Lines */}
             <svg className="absolute inset-0 w-full h-full" style={{ pointerEvents: 'none' }}>
-              <line x1="50%" y1="20%" x2="25%" y2="40%" stroke="#93C5FD" strokeWidth="2" />
-              <line x1="50%" y1="20%" x2="75%" y2="40%" stroke="#93C5FD" strokeWidth="2" />
-              <line x1="25%" y1="40%" x2="50%" y2="60%" stroke="#93C5FD" strokeWidth="2" />
-              <line x1="75%" y1="40%" x2="50%" y2="60%" stroke="#93C5FD" strokeWidth="2" />
+              <line x1="50%" y1="20%" x2="25%" y2="40%" stroke="#404040" strokeWidth="2" />
+              <line x1="50%" y1="20%" x2="75%" y2="40%" stroke="#404040" strokeWidth="2" />
+              <line x1="25%" y1="40%" x2="50%" y2="60%" stroke="#404040" strokeWidth="2" />
+              <line x1="75%" y1="40%" x2="50%" y2="60%" stroke="#404040" strokeWidth="2" />
             </svg>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-4">
-          <Card className="p-4 hover:shadow-lg transition-all">
-            <h4 className="font-bold mb-2 flex items-center">
-              <Code className="w-5 h-5 mr-2 text-blue-600" />
-              Frontend Stack
-            </h4>
-            <ul className="list-disc pl-4 space-y-1 text-sm">
-              <li>Next.js with TypeScript</li>
-              <li>Tailwind CSS</li>
-              <li>Framer Motion</li>
-              <li>Shadcn UI Components</li>
+        <div className="grid grid-cols-2 gap-8">
+          <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
+            <div className="flex items-center space-x-4 mb-6">
+              <Code className="w-8 h-8 text-blue-400" />
+              <h3 className="text-xl font-semibold text-gray-200">Frontend Architecture</h3>
+            </div>
+            <ul className="space-y-4">
+              <li className="flex items-start space-x-3">
+                <Layout className="w-5 h-5 text-blue-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">Next.js with TypeScript</h4>
+                  <p className="text-sm text-gray-400">Server-side rendering and static generation capabilities for optimal performance</p>
+                </div>
+              </li>
+              <li className="flex items-start space-x-3">
+                <Layers className="w-5 h-5 text-blue-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">Component Architecture</h4>
+                  <p className="text-sm text-gray-400">Modular design with reusable UI components and consistent theming</p>
+                </div>
+              </li>
+              <li className="flex items-start space-x-3">
+                <Network className="w-5 h-5 text-blue-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">State Management</h4>
+                  <p className="text-sm text-gray-400">Centralized state handling with React Query for efficient data synchronization</p>
+                </div>
+              </li>
             </ul>
           </Card>
-          <Card className="p-4 hover:shadow-lg transition-all">
-            <h4 className="font-bold mb-2 flex items-center">
-              <Server className="w-5 h-5 mr-2 text-green-600" />
-              Backend Stack
-            </h4>
-            <ul className="list-disc pl-4 space-y-1 text-sm">
-              <li>PostgreSQL Database</li>
-              <li>Express.js API</li>
-              <li>Drizzle ORM</li>
-              <li>WebSocket Support</li>
+
+          <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
+            <div className="flex items-center space-x-4 mb-6">
+              <Server className="w-8 h-8 text-purple-400" />
+              <h3 className="text-xl font-semibold text-gray-200">Backend Infrastructure</h3>
+            </div>
+            <ul className="space-y-4">
+              <li className="flex items-start space-x-3">
+                <Database className="w-5 h-5 text-purple-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">PostgreSQL Database</h4>
+                  <p className="text-sm text-gray-400">Robust data persistence with advanced querying capabilities</p>
+                </div>
+              </li>
+              <li className="flex items-start space-x-3">
+                <Shield className="w-5 h-5 text-purple-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">Security Layer</h4>
+                  <p className="text-sm text-gray-400">Enterprise-grade authentication and authorization systems</p>
+                </div>
+              </li>
+              <li className="flex items-start space-x-3">
+                <GitBranch className="w-5 h-5 text-purple-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">API Integration</h4>
+                  <p className="text-sm text-gray-400">RESTful endpoints with real-time WebSocket capabilities</p>
+                </div>
+              </li>
             </ul>
           </Card>
         </div>
@@ -157,53 +192,65 @@ const slides = [
     id: 3,
     title: "Data Storage & Management",
     content: (
-      <div className="space-y-6">
-        <div className="mb-8">
-          {/* Data Flow Diagram */}
-          <div className="relative h-48 bg-gray-50 rounded-lg p-4 border-2 border-blue-200">
-            <div className="grid grid-cols-3 gap-4 h-full">
-              <div className="flex flex-col items-center justify-center">
-                <Users className="w-8 h-8 text-blue-600 mb-2" />
-                <div className="text-sm font-medium">User Data</div>
-              </div>
-              <div className="flex flex-col items-center justify-center">
-                <Database className="w-8 h-8 text-purple-600 mb-2" />
-                <div className="text-sm font-medium">Secure Storage</div>
-              </div>
-              <div className="flex flex-col items-center justify-center">
-                <Brain className="w-8 h-8 text-green-600 mb-2" />
-                <div className="text-sm font-medium">AI Analysis</div>
-              </div>
+      <div className="space-y-8">
+        <div className="grid grid-cols-2 gap-8">
+          <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
+            <div className="flex items-center space-x-4 mb-6">
+              <Database className="w-8 h-8 text-blue-400" />
+              <h3 className="text-xl font-semibold text-gray-200">Data Architecture</h3>
             </div>
-            <svg className="absolute inset-0 w-full h-full" style={{ pointerEvents: 'none' }}>
-              <line x1="33%" y1="50%" x2="66%" y2="50%" stroke="#93C5FD" strokeWidth="2" />
-            </svg>
-          </div>
-        </div>
-        <div className="grid grid-cols-1 gap-4">
-          <Card className="p-4 hover:shadow-lg transition-all">
-            <h4 className="font-bold mb-2 flex items-center">
-              <Database className="w-5 h-5 mr-2 text-purple-600" />
-              Database Schema
-            </h4>
-            <ul className="list-disc pl-4 space-y-1 text-sm">
-              <li>User Profiles & Authentication</li>
-              <li>Learning Progress Tracking</li>
-              <li>Course Content Management</li>
-              <li>Assessment Results</li>
-              <li>AI Interaction History</li>
+            <ul className="space-y-4">
+              <li className="flex items-start space-x-3">
+                <Users className="w-5 h-5 text-blue-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">User Data Management</h4>
+                  <p className="text-sm text-gray-400">Secure storage of user profiles, preferences, and learning progress</p>
+                </div>
+              </li>
+              <li className="flex items-start space-x-3">
+                <Shield className="w-5 h-5 text-blue-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">Data Security</h4>
+                  <p className="text-sm text-gray-400">End-to-end encryption and secure data transmission protocols</p>
+                </div>
+              </li>
+              <li className="flex items-start space-x-3">
+                <Workflow className="w-5 h-5 text-blue-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">Data Flow Control</h4>
+                  <p className="text-sm text-gray-400">Optimized data routing and caching strategies</p>
+                </div>
+              </li>
             </ul>
           </Card>
-          <Card className="p-4 hover:shadow-lg transition-all">
-            <h4 className="font-bold mb-2 flex items-center">
-              <Shield className="w-5 h-5 mr-2 text-orange-600" />
-              Data Security
-            </h4>
-            <ul className="list-disc pl-4 space-y-1 text-sm">
-              <li>Encrypted User Data</li>
-              <li>Regular Backups</li>
-              <li>Access Control</li>
-              <li>GDPR Compliance</li>
+
+          <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
+            <div className="flex items-center space-x-4 mb-6">
+              <Brain className="w-8 h-8 text-purple-400" />
+              <h3 className="text-xl font-semibold text-gray-200">Analytics Engine</h3>
+            </div>
+            <ul className="space-y-4">
+              <li className="flex items-start space-x-3">
+                <ChartBar className="w-5 h-5 text-purple-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">Learning Analytics</h4>
+                  <p className="text-sm text-gray-400">Real-time processing of user interaction and learning patterns</p>
+                </div>
+              </li>
+              <li className="flex items-start space-x-3">
+                <Target className="w-5 h-5 text-purple-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">Performance Tracking</h4>
+                  <p className="text-sm text-gray-400">Comprehensive metrics for learning progress and engagement</p>
+                </div>
+              </li>
+              <li className="flex items-start space-x-3">
+                <Network className="w-5 h-5 text-purple-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">Data Integration</h4>
+                  <p className="text-sm text-gray-400">Seamless connection with AI models and external learning resources</p>
+                </div>
+              </li>
             </ul>
           </Card>
         </div>
@@ -508,7 +555,7 @@ const slides = [
               <li className="flex items-start space-x-3">
                 <Globe className="w-5 h-5 text-blue-400 mt-1" />
                 <div>
-                  <h4 className="font-medium text-gray-200">Global Learning Network</h4>
+                  <h4 className="font-medium textgray-200">Global Learning Network</h4>
                   <p className="text-sm text-gray-400">Collaborative learning platform connecting students worldwide</p>
                 </div>
               </li>
@@ -559,26 +606,65 @@ const slides = [
     id: 9,
     title: "Quiz & Assessment Engine",
     content: (
-      <div className="space-y-6">
-        <h3 className="text-2xl font-semibold text-blue-700">Interactive Assessments</h3>
-        <div className="grid grid-cols-1 gap-4">
-          <Card className="p-4 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
-            <h4 className="font-bold mb-2 text-gray-200">Quiz Features</h4>
-            <ul className="list-disc pl-4 text-gray-400">
-              <li>Multiple Question Types</li>
-              <li>Adaptive Difficulty</li>
-              <li>Instant Feedback</li>
-              <li>Progress Tracking</li>
-              <li>Performance Analytics</li>
+      <div className="space-y-8">
+        <div className="grid grid-cols-2 gap-8">
+          <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
+            <div className="flex items-center space-x-4 mb-6">
+              <Edit className="w-8 h-8 text-blue-400" />
+              <h3 className="text-xl font-semibold text-gray-200">Assessment Features</h3>
+            </div>
+            <ul className="space-y-4">
+              <li className="flex items-start space-x-3">
+                <Blocks className="w-5 h-5 text-blue-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">Multiple Question Types</h4>
+                  <p className="text-sm text-gray-400">Support for MCQ, coding challenges, and interactive problem-solving</p>
+                </div>
+              </li>
+              <li className="flex items-start space-x-3">
+                <Sliders className="w-5 h-5 text-blue-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">Adaptive Difficulty</h4>
+                  <p className="text-sm text-gray-400">Dynamic adjustment of question complexity based on performance</p>
+                </div>
+              </li>
+              <li className="flex items-start space-x-3">
+                <MessageSquare className="w-5 h-5 text-blue-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">Instant Feedback</h4>
+                  <p className="text-sm text-gray-400">Real-time evaluation and detailed explanation of answers</p>
+                </div>
+              </li>
             </ul>
           </Card>
-          <Card className="p-4 bg-gradient-to-br from-gray-900 to-gray-800 border-gray700">
-            <h4 className="font-bold mb-2 text-gray-200">Technical Implementation</h4>
-            <ul className="list-disc pl-4 text-gray-400">
-              <li>React Components</li>
-              <li>State Management</li>
-              <li>Score Calculation</li>
-              <li>Data Persistence</li>
+
+          <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
+            <div className="flex items-center space-x-4 mb-6">
+              <BarChart className="w-8 h-8 text-purple-400" />
+              <h3 className="text-xl font-semibold text-gray-200">Performance Analytics</h3>
+            </div>
+            <ul className="space-y-4">
+              <li className="flex items-start space-x-3">
+                <Timer className="w-5 h-5 text-purple-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">Progress Tracking</h4>
+                  <p className="text-sm text-gray-400">Detailed monitoring of completion rates and assessment scores</p>
+                </div>
+              </li>
+              <li className="flex items-start space-x-3">
+                <LineChart className="w-5 h-5 text-purple-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">Score Analysis</h4>
+                  <p className="text-sm text-gray-400">Comprehensive analytics of performance trends and learning gaps</p>
+                </div>
+              </li>
+              <li className="flex items-start space-x-3">
+                <Brain className="w-5 h-5 text-purple-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">AI-Powered Insights</h4>
+                  <p className="text-sm text-gray-400">Intelligent recommendations based on assessment performance</p>
+                </div>
+              </li>
             </ul>
           </Card>
         </div>
@@ -589,25 +675,65 @@ const slides = [
     id: 10,
     title: "Course Creation System",
     content: (
-      <div className="space-y-6">
-        <h3 className="text-2xl font-semibold text-blue-700">Content Management</h3>
-        <div className="grid grid-cols-2 gap-4">
-          <Card className="p-4 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
-            <h4 className="font-bold mb-2 text-gray-200">Content Types</h4>
-            <ul className="list-disc pl-4 text-gray-400">
-              <li>Text & Media</li>
-              <li>Interactive Elements</li>
-              <li>Assessments</li>
-              <li>Practice Exercises</li>
+      <div className="space-y-8">
+        <div className="grid grid-cols-2 gap-8">
+          <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
+            <div className="flex items-center space-x-4 mb-6">
+              <FileText className="w-8 h-8 text-blue-400" />
+              <h3 className="text-xl font-semibold text-gray-200">Content Creation</h3>
+            </div>
+            <ul className="space-y-4">
+              <li className="flex items-start space-x-3">
+                <Edit className="w-5 h-5 text-blue-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">Rich Media Support</h4>
+                  <p className="text-sm text-gray-400">Comprehensive editor for text, images, videos, and interactive elements</p>
+                </div>
+              </li>
+              <li className="flex items-start space-x-3">
+                <Layout className="w-5 h-5 text-blue-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">Interactive Components</h4>
+                  <p className="text-sm text-gray-400">Drag-and-drop interface for creating engaging learning materials</p>
+                </div>
+              </li>
+              <li className="flex items-start space-x-3">
+                <Blocks className="w-5 h-5 text-blue-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">Module Organization</h4>
+                  <p className="text-sm text-gray-400">Structured course layout with customizable learning paths</p>
+                </div>
+              </li>
             </ul>
           </Card>
-          <Card className="p-4 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
-            <h4 className="font-bold mb-2 text-gray-200">Creation Tools</h4>
-            <ul className="list-disc pl-4 text-gray-400">
-              <li>Rich Text Editor</li>
-              <li>Media Upload</li>
-              <li>Quiz Builder</li>
-              <li>Course Structuring</li>
+
+          <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
+            <div className="flex items-center space-x-4 mb-6">
+              <Settings className="w-8 h-8 text-purple-400" />
+              <h3 className="text-xl font-semibold text-gray-200">Course Management</h3>
+            </div>
+            <ul className="space-y-4">
+              <li className="flex items-start space-x-3">
+                <GitBranch className="w-5 h-5 text-purple-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">Version Control</h4>
+                  <p className="text-sm text-gray-400">Track and manage content revisions with full history</p>
+                </div>
+              </li>
+              <li className="flex items-start space-x-3">
+                <Users className="w-5 h-5 text-purple-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">Collaboration Tools</h4>
+                  <p className="text-sm text-gray-400">Multi-user editing and review workflows for content creation</p>
+                </div>
+              </li>
+              <li className="flex items-start space-x-3">
+                <Gauge className="w-5 h-5 text-purple-400 mt-1" />
+                <div>
+                  <h4 className="font-medium text-gray-200">Quality Assurance</h4>
+                  <p className="text-sm text-gray-400">Automated content validation and accessibility checking</p>
+                </div>
+              </li>
             </ul>
           </Card>
         </div>
