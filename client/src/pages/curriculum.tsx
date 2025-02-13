@@ -10,6 +10,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { useLocation } from "wouter";
+import { Progress } from "@/components/ui/progress";
 
 const subjects = [
   { id: "crypto", name: "Cryptocurrency" },
@@ -142,6 +143,7 @@ export default function Curriculum() {
   const [selectedLevel, setSelectedLevel] = useState<string>("beginner");
   const { toast } = useToast();
   const [location] = useLocation();
+  const [coursesProgress, setCoursesProgress] = useState<{[key: string]: number}>({});
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -160,6 +162,25 @@ export default function Curriculum() {
       return response.json();
     }
   });
+
+  const { data: progressData, isLoading: loadingProgress } = useQuery({
+    queryKey: ['course-progress'],
+    queryFn: async () => {
+      const response = await fetch('/api/enrollments/progress');
+      if (!response.ok) throw new Error('Failed to fetch course progress');
+      return response.json();
+    }
+  });
+
+  useEffect(() => {
+    if (progressData) {
+      const progressMap = progressData.reduce((acc: {[key: string]: number}, curr: any) => {
+        acc[curr.courseId] = curr.progress || 0;
+        return acc;
+      }, {});
+      setCoursesProgress(progressMap);
+    }
+  }, [progressData]);
 
   const enrollMutation = useMutation({
     mutationFn: async (courseId: number) => {
@@ -302,6 +323,19 @@ export default function Curriculum() {
           <p className="text-xl text-blue-700 mb-6">
             {currentCourse.description}
           </p>
+
+          {!loadingProgress && progressData && (
+            <div className="mb-6">
+              <div className="flex justify-between text-sm text-blue-600 mb-2">
+                <span>Course Progress</span>
+                <span>{Math.round(coursesProgress[currentCourse.id] || 0)}%</span>
+              </div>
+              <Progress 
+                value={coursesProgress[currentCourse.id] || 0} 
+                className="h-2 bg-blue-100"
+              />
+            </div>
+          )}
 
           <div className="grid md:grid-cols-3 gap-6 mb-8">
             {currentCourse.modules.map((module) => (
