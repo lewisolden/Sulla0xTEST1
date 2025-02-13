@@ -24,44 +24,48 @@ const AlgorithmCard = ({
   description,
   icon: Icon,
   examples,
-  delay
+  delay,
+  gradient = "bg-gradient-to-br from-blue-500 to-blue-700"
 }: {
   title: string;
   description: string;
   icon: any;
   examples: string[];
   delay: number;
+  gradient?: string;
 }) => {
   return (
     <motion.div
-      className="bg-white rounded-lg shadow-lg p-6 transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+      className={`rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1 relative overflow-hidden ${gradient}`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay }}
     >
-      <div className="flex items-center gap-3 mb-4">
-        <div className="bg-blue-100 p-3 rounded-full">
-          <Icon className="h-6 w-6 text-blue-600" />
+      <div className="relative z-10">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="bg-white/20 backdrop-blur-sm p-3 rounded-xl">
+            <Icon className="h-6 w-6 text-white" />
+          </div>
+          <h3 className="text-xl font-semibold text-white">{title}</h3>
         </div>
-        <h3 className="text-xl font-semibold text-blue-800">{title}</h3>
-      </div>
-      <p className="text-gray-600 mb-6 leading-relaxed">{description}</p>
-      <div className="bg-blue-50 rounded-lg p-4">
-        <h4 className="font-semibold text-blue-700 mb-3">Key Applications:</h4>
-        <ul className="space-y-2">
-          {examples.map((example, index) => (
-            <motion.li
-              key={index}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 * index }}
-              className="flex items-center gap-2 text-blue-600"
-            >
-              <div className="h-1.5 w-1.5 bg-blue-400 rounded-full"></div>
-              <span>{example}</span>
-            </motion.li>
-          ))}
-        </ul>
+        <p className="text-white/90 mb-6 leading-relaxed">{description}</p>
+        <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+          <h4 className="font-semibold text-white mb-3">Key Applications:</h4>
+          <ul className="space-y-2">
+            {examples.map((example, index) => (
+              <motion.li
+                key={index}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 * index }}
+                className="flex items-center gap-2 text-white/90"
+              >
+                <div className="h-1.5 w-1.5 bg-white rounded-full"></div>
+                <span>{example}</span>
+              </motion.li>
+            ))}
+          </ul>
+        </div>
       </div>
     </motion.div>
   );
@@ -310,13 +314,13 @@ export default function MachineLearningBasics() {
               transition={{ duration: 0.5 }}
               className="space-y-8"
             >
-              <div className="flex items-center gap-4 mb-8 bg-blue-50 p-6 rounded-lg">
-                <Brain className="h-12 w-12 text-blue-600" />
+              <div className="flex items-center gap-4 mb-8 bg-gradient-to-br from-blue-600 to-purple-600 p-8 rounded-xl text-white">
+                <Brain className="h-12 w-12" />
                 <div>
-                  <h1 className="text-3xl font-bold text-blue-800 mb-2">
+                  <h1 className="text-3xl font-bold mb-2">
                     Machine Learning Basics
                   </h1>
-                  <p className="text-gray-600">
+                  <p className="text-white/90">
                     Discover the foundational concepts of machine learning and its various applications
                   </p>
                 </div>
@@ -333,7 +337,7 @@ export default function MachineLearningBasics() {
                     <Brain className="h-6 w-6" />
                     Understanding Machine Learning
                   </h2>
-                  <div className="bg-gradient-to-r from-blue-50 to-white p-6 rounded-lg">
+                  <div className="bg-gradient-to-r from-blue-50 to-white p-6 rounded-lg shadow-inner">
                     <p className="text-gray-700 leading-relaxed">
                       Machine Learning is a subset of artificial intelligence that enables systems to learn and improve from experience. Unlike traditional programming where rules are explicitly defined, machine learning algorithms can learn patterns from data and make decisions with minimal human intervention.
                     </p>
@@ -362,6 +366,7 @@ export default function MachineLearningBasics() {
                         "Disease Diagnosis"
                       ]}
                       delay={0.6}
+                      gradient="bg-gradient-to-br from-blue-500 to-blue-700"
                     />
                     <AlgorithmCard
                       title="Unsupervised Learning"
@@ -374,6 +379,7 @@ export default function MachineLearningBasics() {
                         "Feature Learning"
                       ]}
                       delay={0.7}
+                      gradient="bg-gradient-to-br from-purple-500 to-purple-700"
                     />
                     <AlgorithmCard
                       title="Reinforcement Learning"
@@ -386,6 +392,7 @@ export default function MachineLearningBasics() {
                         "Autonomous Systems"
                       ]}
                       delay={0.8}
+                      gradient="bg-gradient-to-br from-indigo-500 to-indigo-700"
                     />
                     <AlgorithmCard
                       title="Deep Learning"
@@ -398,6 +405,7 @@ export default function MachineLearningBasics() {
                         "Generative AI"
                       ]}
                       delay={0.9}
+                      gradient="bg-gradient-to-br from-cyan-500 to-cyan-700"
                     />
                   </div>
                 </motion.section>
@@ -412,7 +420,7 @@ export default function MachineLearningBasics() {
                     <TrendingUp className="h-6 w-6" />
                     The Machine Learning Process
                   </h2>
-                  <div className="bg-gradient-to-br from-blue-50 to-white rounded-lg p-8">
+                  <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg p-8 text-white">
                     <ol className="space-y-6">
                       {[
                         {
@@ -447,16 +455,16 @@ export default function MachineLearningBasics() {
                           transition={{ delay: 1.2 + index * 0.1 }}
                           className="flex items-start gap-4"
                         >
-                          <div className="flex items-center justify-center bg-blue-100 h-8 w-8 rounded-full shrink-0">
-                            <span className="text-blue-600 font-semibold">
+                          <div className="flex items-center justify-center bg-white/20 backdrop-blur-sm h-8 w-8 rounded-full shrink-0">
+                            <span className="text-white font-semibold">
                               {index + 1}
                             </span>
                           </div>
                           <div>
-                            <h3 className="font-semibold text-blue-800 text-lg">
+                            <h3 className="font-semibold text-white text-lg">
                               {step.title}
                             </h3>
-                            <p className="text-gray-600">{step.desc}</p>
+                            <p className="text-white/80">{step.desc}</p>
                           </div>
                         </motion.li>
                       ))}
@@ -478,36 +486,40 @@ export default function MachineLearningBasics() {
                       {
                         title: "Healthcare",
                         desc: "Disease prediction and medical imaging analysis",
-                        icon: "🏥"
+                        icon: "🏥",
+                        gradient: "bg-gradient-to-br from-emerald-500 to-emerald-700"
                       },
                       {
                         title: "Finance",
                         desc: "Fraud detection and algorithmic trading",
-                        icon: "💰"
+                        icon: "💰",
+                        gradient: "bg-gradient-to-br from-amber-500 to-amber-700"
                       },
                       {
                         title: "Transportation",
                         desc: "Autonomous vehicles and traffic prediction",
-                        icon: "🚗"
+                        icon: "🚗",
+                        gradient: "bg-gradient-to-br from-rose-500 to-rose-700"
                       },
                       {
                         title: "Entertainment",
                         desc: "Content recommendations and gaming AI",
-                        icon: "🎮"
+                        icon: "🎮",
+                        gradient: "bg-gradient-to-br from-violet-500 to-violet-700"
                       }
                     ].map((item, index) => (
                       <motion.div
                         key={item.title}
-                        className="bg-white p-6 rounded-lg shadow-md border border-blue-100 hover:shadow-lg transition-all duration-300"
+                        className={`${item.gradient} p-6 rounded-xl text-white shadow-md transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1`}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 2 + index * 0.2 }}
                       >
                         <div className="text-4xl mb-4">{item.icon}</div>
-                        <h3 className="font-semibold text-blue-800 text-xl mb-2">
+                        <h3 className="font-semibold text-xl mb-2">
                           {item.title}
                         </h3>
-                        <p className="text-gray-600">{item.desc}</p>
+                        <p className="text-white/90">{item.desc}</p>
                       </motion.div>
                     ))}
                   </div>
@@ -517,12 +529,12 @@ export default function MachineLearningBasics() {
               <div className="mt-12 flex justify-between items-center">
                 <Button
                   onClick={() => setShowQuiz(true)}
-                  className="gap-2 bg-blue-600 hover:bg-blue-700"
+                  className="gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white"
                 >
                   Take Topic Quiz
                 </Button>
                 <Link href="/ai/module1/neural-networks">
-                  <Button className="gap-2">
+                  <Button className="gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
                     Next Topic: Neural Networks <ArrowRight className="h-4 w-4" />
                   </Button>
                 </Link>
