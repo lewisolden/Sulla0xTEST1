@@ -17,7 +17,6 @@ import {
 } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 
-// Neural Network Layer Card Component
 const LayerCard = ({
   title,
   description,
@@ -31,16 +30,12 @@ const LayerCard = ({
   examples: string[];
   delay: number;
 }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
   return (
     <motion.div
-      className="bg-white rounded-lg shadow-lg p-6"
+      className="bg-white rounded-lg shadow-lg p-6 transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay }}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
     >
       <div className="flex items-center gap-3 mb-4">
         <div className="bg-blue-100 p-3 rounded-full">
@@ -48,29 +43,24 @@ const LayerCard = ({
         </div>
         <h3 className="text-xl font-semibold text-blue-800">{title}</h3>
       </div>
-      <p className="text-gray-600 mb-4">{description}</p>
-      {isHovered && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          exit={{ opacity: 0, height: 0 }}
-          className="bg-blue-50 rounded-lg p-4"
-        >
-          <h4 className="font-semibold text-blue-700 mb-2">Examples:</h4>
-          <ul className="list-disc list-inside text-blue-600">
-            {examples.map((example, index) => (
-              <motion.li
-                key={index}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.1 * index }}
-              >
-                {example}
-              </motion.li>
-            ))}
-          </ul>
-        </motion.div>
-      )}
+      <p className="text-gray-600 mb-6 leading-relaxed">{description}</p>
+      <div className="bg-blue-50 rounded-lg p-4">
+        <h4 className="font-semibold text-blue-700 mb-3">Key Features:</h4>
+        <ul className="space-y-2">
+          {examples.map((example, index) => (
+            <motion.li
+              key={index}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 * index }}
+              className="flex items-center gap-2 text-blue-600"
+            >
+              <div className="h-1.5 w-1.5 bg-blue-400 rounded-full"></div>
+              <span>{example}</span>
+            </motion.li>
+          ))}
+        </ul>
+      </div>
     </motion.div>
   );
 };
@@ -312,18 +302,24 @@ export default function NeuralNetworks() {
           </Link>
         </div>
 
-        <Card>
+        <Card className="border-2 border-blue-100">
           <CardContent className="pt-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
+              className="space-y-8"
             >
-              <div className="flex items-center gap-4 mb-6">
-                <Network className="h-10 w-10 text-blue-600" />
-                <h1 className="text-3xl font-bold text-blue-800">
-                  Neural Networks
-                </h1>
+              <div className="flex items-center gap-4 mb-8 bg-blue-50 p-6 rounded-lg">
+                <Network className="h-12 w-12 text-blue-600" />
+                <div>
+                  <h1 className="text-3xl font-bold text-blue-800 mb-2">
+                    Neural Networks
+                  </h1>
+                  <p className="text-gray-600">
+                    Understanding the architecture and functionality of artificial neural networks
+                  </p>
+                </div>
               </div>
 
               <div className="prose max-w-none">
@@ -331,23 +327,27 @@ export default function NeuralNetworks() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.2 }}
-                  className="mb-8"
+                  className="mb-12"
                 >
-                  <h2 className="text-2xl font-semibold text-blue-700 mb-4">
+                  <h2 className="text-2xl font-semibold text-blue-700 mb-4 flex items-center gap-2">
+                    <Brain className="h-6 w-6" />
                     Understanding Neural Networks
                   </h2>
-                  <p className="text-gray-700 mb-6">
-                    Neural networks are computing systems inspired by biological neural networks in human brains. They consist of interconnected nodes (neurons) organized in layers that can learn patterns from data.
-                  </p>
+                  <div className="bg-gradient-to-r from-blue-50 to-white p-6 rounded-lg">
+                    <p className="text-gray-700 leading-relaxed">
+                      Neural networks are computing systems inspired by biological neural networks in human brains. They consist of interconnected nodes (neurons) organized in layers that can learn patterns from data.
+                    </p>
+                  </div>
                 </motion.section>
 
                 <motion.section
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4 }}
-                  className="mb-8"
+                  className="mb-12"
                 >
-                  <h2 className="text-2xl font-semibold text-blue-700 mb-4">
+                  <h2 className="text-2xl font-semibold text-blue-700 mb-6 flex items-center gap-2">
+                    <Layers className="h-6 w-6" />
                     Network Architecture
                   </h2>
                   <div className="grid md:grid-cols-2 gap-6">
@@ -406,13 +406,14 @@ export default function NeuralNetworks() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1 }}
-                  className="mb-8"
+                  className="mb-12"
                 >
-                  <h2 className="text-2xl font-semibold text-blue-700 mb-4">
+                  <h2 className="text-2xl font-semibold text-blue-700 mb-4 flex items-center gap-2">
+                    <Activity className="h-6 w-6" />
                     Training Process
                   </h2>
-                  <div className="bg-blue-50 rounded-lg p-6">
-                    <ol className="space-y-4">
+                  <div className="bg-gradient-to-br from-blue-50 to-white rounded-lg p-8">
+                    <ol className="space-y-6">
                       {[
                         {
                           title: "Forward Propagation",
@@ -438,13 +439,13 @@ export default function NeuralNetworks() {
                           transition={{ delay: 1.2 + index * 0.1 }}
                           className="flex items-start gap-4"
                         >
-                          <div className="bg-blue-100 p-2 rounded-full">
+                          <div className="flex items-center justify-center bg-blue-100 h-8 w-8 rounded-full shrink-0">
                             <span className="text-blue-600 font-semibold">
                               {index + 1}
                             </span>
                           </div>
                           <div>
-                            <h3 className="font-semibold text-blue-800">
+                            <h3 className="font-semibold text-blue-800 text-lg">
                               {step.title}
                             </h3>
                             <p className="text-gray-600">{step.desc}</p>
@@ -456,7 +457,7 @@ export default function NeuralNetworks() {
                 </motion.section>
               </div>
 
-              <div className="mt-8 flex justify-between items-center">
+              <div className="mt-12 flex justify-between items-center">
                 <Button
                   onClick={() => setShowQuiz(true)}
                   className="gap-2 bg-blue-600 hover:bg-blue-700"
