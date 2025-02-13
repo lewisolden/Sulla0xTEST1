@@ -5,9 +5,85 @@ import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, ArrowRight, TrendingUp, ShieldCheck, PieChart } from "lucide-react";
+import { 
+  ArrowLeft, 
+  ArrowRight, 
+  TrendingUp, 
+  ShieldCheck, 
+  PieChart,
+  Landmark,
+  Coins,
+  LineChart,
+  DollarSign,
+  Scale,
+  Lock,
+  BarChart4,
+  Building2
+} from "lucide-react";
 import { SecurityDiagram } from "@/components/diagrams/SecurityDiagram";
 import BitcoinInvestmentQuiz from "@/components/modules/quizzes/BitcoinInvestmentQuiz";
+
+const RiskCard = ({ title, description, features, icon: Icon, color }: any) => (
+  <motion.div
+    whileHover={{ scale: 1.02 }}
+    className={`p-6 rounded-xl shadow-lg ${color}`}
+  >
+    <div className="flex items-center gap-3 mb-4">
+      <div className="p-3 bg-white/10 rounded-lg">
+        <Icon className="w-6 h-6 text-white" />
+      </div>
+      <h3 className="text-xl font-semibold text-white">{title}</h3>
+    </div>
+    <p className="text-white/90 mb-4">{description}</p>
+    <ul className="space-y-2">
+      {features.map((feature: string, index: number) => (
+        <motion.li
+          key={index}
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: index * 0.1 }}
+          className="flex items-center gap-2 text-white/80"
+        >
+          <div className="h-1.5 w-1.5 bg-white rounded-full" />
+          <span>{feature}</span>
+        </motion.li>
+      ))}
+    </ul>
+  </motion.div>
+);
+
+const ComparisonCard = ({ title, value, details, icon: Icon }: any) => (
+  <motion.div
+    whileHover={{ scale: 1.02 }}
+    className="p-6 bg-white rounded-xl shadow-lg border border-gray-200"
+  >
+    <div className="flex items-center gap-3 mb-4">
+      <div className="p-3 bg-blue-100 rounded-lg">
+        <Icon className="w-6 h-6 text-blue-600" />
+      </div>
+      <div>
+        <h4 className="font-semibold text-gray-800">{title}</h4>
+        <p className="text-blue-600 font-semibold">{value}</p>
+      </div>
+    </div>
+    <p className="text-gray-600 text-sm">{details}</p>
+  </motion.div>
+);
+
+const MarketMetric = ({ label, value, change, delay }: any) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ delay }}
+    className="bg-gradient-to-br from-blue-500 to-blue-600 p-6 rounded-xl text-white"
+  >
+    <h4 className="text-white/80 mb-2">{label}</h4>
+    <div className="text-2xl font-bold mb-2">{value}</div>
+    <div className={`text-sm ${change >= 0 ? 'text-green-300' : 'text-red-300'}`}>
+      {change >= 0 ? '↑' : '↓'} {Math.abs(change)}%
+    </div>
+  </motion.div>
+);
 
 export default function BitcoinInvestmentSection() {
   useScrollTop();
@@ -26,7 +102,14 @@ export default function BitcoinInvestmentSection() {
 
       if (scrollPercent > 95) {
         setIsFullyRead(true);
-        updateProgress(2, 'bitcoin-investment', true);
+        updateProgress({
+          moduleId: 2,
+          sectionId: 'bitcoin-investment',
+          completed: true,
+          score: 100,
+          totalSections: 8,
+          currentSection: 3
+        });
       }
     };
 
@@ -34,29 +117,69 @@ export default function BitcoinInvestmentSection() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [updateProgress]);
 
-  const contentVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
-  };
-
   const riskLevels = [
     {
-      title: "Low Risk",
-      description: "Bitcoin ETFs and regulated investment products",
-      color: "bg-green-100 hover:bg-green-200",
-      textColor: "text-green-700"
+      title: "Conservative",
+      description: "Lower risk, regulated investment products",
+      icon: ShieldCheck,
+      color: "bg-gradient-to-br from-green-500 to-green-600",
+      features: [
+        "Bitcoin ETFs",
+        "Regulated investment funds",
+        "Long-term holding strategy",
+        "Dollar-cost averaging"
+      ]
     },
     {
-      title: "Medium Risk",
-      description: "Direct Bitcoin purchases through established exchanges",
-      color: "bg-yellow-100 hover:bg-yellow-200",
-      textColor: "text-yellow-700"
+      title: "Moderate",
+      description: "Balanced approach with direct exposure",
+      icon: Scale,
+      color: "bg-gradient-to-br from-blue-500 to-blue-600",
+      features: [
+        "Direct Bitcoin purchases",
+        "Multiple exchange accounts",
+        "Hardware wallet storage",
+        "Regular portfolio rebalancing"
+      ]
     },
     {
-      title: "High Risk",
-      description: "Trading with leverage or new crypto assets",
-      color: "bg-red-100 hover:bg-red-200",
-      textColor: "text-red-700"
+      title: "Aggressive",
+      description: "Higher risk, active trading strategy",
+      icon: TrendingUp,
+      color: "bg-gradient-to-br from-purple-500 to-purple-600",
+      features: [
+        "Margin trading",
+        "Derivatives",
+        "Short-term trading",
+        "Multiple cryptocurrencies"
+      ]
+    }
+  ];
+
+  const comparisons = [
+    {
+      title: "Gold",
+      value: "$100,000 ≈ 1.6 kg",
+      details: "Traditional store of value, limited supply, physical storage needed",
+      icon: Landmark
+    },
+    {
+      title: "S&P 500",
+      value: "$100,000 ≈ 200 shares",
+      details: "Diverse market exposure, dividend potential, regulated market",
+      icon: BarChart4
+    },
+    {
+      title: "Real Estate",
+      value: "$100,000 ≈ 20% down payment",
+      details: "Tangible asset, rental income potential, higher entry barrier",
+      icon: Building2
+    },
+    {
+      title: "Bitcoin",
+      value: "$100,000 ≈ 1 BTC",
+      details: "Digital scarcity, global accessibility, high volatility",
+      icon: Coins
     }
   ];
 
@@ -68,7 +191,7 @@ export default function BitcoinInvestmentSection() {
         animate={{ scaleX: scrollProgress / 100 }}
         style={{ transformOrigin: "left" }}
       >
-        <div className="h-full bg-blue-600" />
+        <div className="h-full bg-gradient-to-r from-blue-500 to-purple-500" />
       </motion.div>
 
       <div className="max-w-4xl mx-auto">
@@ -84,203 +207,91 @@ export default function BitcoinInvestmentSection() {
           </Link>
         </motion.div>
 
-        <motion.h1
-          className="text-4xl font-bold text-blue-800 mb-6"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          2.2 Bitcoin as an Investment
-        </motion.h1>
-
-        <div className="prose lg:prose-xl text-gray-700 space-y-6">
-          <motion.section
-            variants={contentVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <h2 className="text-3xl font-bold text-blue-700">Investment Security</h2>
-            <SecurityDiagram />
-          </motion.section>
-
-          <motion.section
-            variants={contentVariants}
-            initial="hidden"
-            animate="visible"
-            className="mt-12"
-          >
-            <h2 className="text-3xl font-bold text-blue-700">Risk Assessment</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
-              {riskLevels.map((level) => (
-                <motion.div
-                  key={level.title}
-                  className={`${level.color} p-6 rounded-lg cursor-pointer`}
-                  whileHover={{ scale: 1.02 }}
-                  onClick={() => setSelectedRisk(level.title)}
-                  animate={{
-                    scale: selectedRisk === level.title ? 1.02 : 1,
-                    borderWidth: selectedRisk === level.title ? 2 : 0,
-                    borderColor: selectedRisk === level.title ? '#4F46E5' : 'transparent'
-                  }}
-                >
-                  <h3 className={`text-xl font-semibold ${level.textColor} mb-2`}>
-                    {level.title}
-                  </h3>
-                  <p className="text-gray-700">{level.description}</p>
-                </motion.div>
-              ))}
+          <div className="flex items-center gap-4 mb-8 bg-gradient-to-br from-blue-600 to-purple-600 p-8 rounded-xl text-white">
+            <DollarSign className="h-12 w-12" />
+            <div>
+              <h1 className="text-3xl font-bold mb-2">
+                Bitcoin as an Investment
+              </h1>
+              <p className="text-white/90">
+                Understanding Bitcoin's value proposition and investment strategies
+              </p>
             </div>
-          </motion.section>
+          </div>
 
+          <div className="grid md:grid-cols-3 gap-6 mb-8">
+            <MarketMetric
+              label="Market Cap"
+              value="$1.2T"
+              change={5.2}
+              delay={0.1}
+            />
+            <MarketMetric
+              label="24h Volume"
+              value="$48.5B"
+              change={-2.1}
+              delay={0.2}
+            />
+            <MarketMetric
+              label="Dominance"
+              value="52%"
+              change={0.8}
+              delay={0.3}
+            />
+          </div>
 
-          <motion.section
-            variants={contentVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <h2 className="text-3xl font-bold text-blue-700">Bitcoin's Value</h2>
-            <h3 className="text-2xl font-semibold text-blue-600">Store of Value Properties</h3>
-            <p>
-              Bitcoin is often called "digital gold" because it shares key characteristics:
-            </p>
-            <ul className="list-disc pl-5 space-y-2">
-              <li>
-                <strong>Scarcity</strong>
-                <ul className="list-disc pl-5 space-y-1">
-                  <li>Fixed supply of 21 million coins</li>
-                  <li>Predictable issuance schedule</li>
-                  <li>Cannot be artificially inflated</li>
-                </ul>
-              </li>
-              <li>
-                <strong>Durability</strong>
-                <ul className="list-disc pl-5 space-y-1">
-                  <li>Digital nature prevents degradation</li>
-                  <li>Network redundancy ensures availability</li>
-                  <li>Recoverable through backups</li>
-                </ul>
-              </li>
-            </ul>
-          </motion.section>
+          <div className="prose lg:prose-xl text-gray-700 space-y-6">
+            <motion.section
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              <h2 className="text-3xl font-bold text-blue-700 flex items-center gap-2">
+                <Lock className="h-6 w-6" />
+                Investment Security
+              </h2>
+              <SecurityDiagram />
+            </motion.section>
 
-          <motion.section
-            variants={contentVariants}
-            initial="hidden"
-            animate="visible"
-            className="mt-8"
-          >
-            <h2 className="text-3xl font-bold text-blue-700">Metcalfe's Law and Bitcoin</h2>
-            <p className="text-gray-700 mb-4">
-              Metcalfe's law states that the value of a network is proportional to the square of the number of connected users. This principle has profound implications for Bitcoin's adoption and value proposition.
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-              <Card className="p-4 bg-blue-50">
-                <h4 className="font-semibold text-blue-800 mb-2">Internet Growth</h4>
-                <ul className="text-sm space-y-1">
-                  <li>1995: 16 million users</li>
-                  <li>2000: 400 million users</li>
-                  <li>2023: 5.3 billion users</li>
-                </ul>
-              </Card>
-              <Card className="p-4 bg-blue-50">
-                <h4 className="font-semibold text-blue-800 mb-2">Mobile Phones</h4>
-                <ul className="text-sm space-y-1">
-                  <li>1990: 11 million users</li>
-                  <li>2000: 740 million users</li>
-                  <li>2023: 7.3 billion users</li>
-                </ul>
-              </Card>
-              <Card className="p-4 bg-blue-50">
-                <h4 className="font-semibold text-blue-800 mb-2">Bitcoin Wallets</h4>
-                <ul className="text-sm space-y-1">
-                  <li>2013: 3 million users</li>
-                  <li>2018: 32 million users</li>
-                  <li>2023: 425+ million users</li>
-                </ul>
-              </Card>
-            </div>
-
-            <div className="bg-blue-50 p-6 rounded-lg mb-8">
-              <h4 className="font-semibold text-blue-800 mb-2">Network Effect Implications</h4>
-              <ul className="list-disc pl-5 space-y-2">
-                <li>As more users adopt Bitcoin, its utility as a payment network increases exponentially</li>
-                <li>Growing adoption leads to increased liquidity and price stability</li>
-                <li>Network effects create a positive feedback loop for adoption</li>
-                <li>Similar adoption curve to early internet and mobile phone growth</li>
-              </ul>
-            </div>
-          </motion.section>
-
-          <motion.section
-            variants={contentVariants}
-            initial="hidden"
-            animate="visible"
-            className="mt-8"
-          >
-            <h2 className="text-3xl font-bold text-blue-700">Value Comparisons</h2>
-            <p className="text-gray-700 mb-4">
-              To understand Bitcoin's value in context, let's compare what $100,000 gets you across different investment vehicles:
-            </p>
-
-            <div className="space-y-4">
-              <Card className="p-4">
-                <h4 className="font-semibold text-blue-800 mb-2">Gold</h4>
-                <div className="flex justify-between items-center">
-                  <span>$100,000 ≈ 1.6 kilograms of gold</span>
-                  <span className="text-sm text-gray-600">(Based on ~$2,000/oz)</span>
-                </div>
-              </Card>
-
-              <Card className="p-4">
-                <h4 className="font-semibold text-blue-800 mb-2">S&P 500 Index Fund</h4>
-                <div className="flex justify-between items-center">
-                  <span>$100,000 ≈ 200 shares</span>
-                  <span className="text-sm text-gray-600">(Based on ~$500/share)</span>
-                </div>
-              </Card>
-
-              <Card className="p-4">
-                <h4 className="font-semibold text-blue-800 mb-2">Real Estate</h4>
-                <div className="flex justify-between items-center">
-                  <span>$100,000 ≈ 20% down payment on $500,000 property</span>
-                  <span className="text-sm text-gray-600">(Typical down payment)</span>
-                </div>
-              </Card>
-
-              <Card className="p-4">
-                <h4 className="font-semibold text-blue-800 mb-2">Bitcoin</h4>
-                <div className="flex justify-between items-center">
-                  <span>$100,000 ≈ 1 BTC</span>
-                  <span className="text-sm text-gray-600">(Based on ~$100,000/BTC)</span>
-                </div>
-              </Card>
-
-              <div className="bg-yellow-50 p-4 rounded-lg mt-4">
-                <p className="text-sm text-yellow-800">
-                  Note: These values are approximate and subject to market fluctuations. Always verify current market prices before making investment decisions.
-                </p>
+            <motion.section
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="mt-12"
+            >
+              <h2 className="text-3xl font-bold text-blue-700 flex items-center gap-2">
+                <PieChart className="h-6 w-6" />
+                Risk Assessment
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
+                {riskLevels.map((level, index) => (
+                  <RiskCard key={level.title} {...level} />
+                ))}
               </div>
-            </div>
+            </motion.section>
 
-          </motion.section>
-
-          <motion.section
-            variants={contentVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <h2 className="text-3xl font-bold text-blue-700">Bitcoin ETFs Explained</h2>
-            <p>
-              For beginners, a Bitcoin ETF is like buying Bitcoin through your regular brokerage account:
-            </p>
-            <ul className="list-disc pl-5 space-y-2">
-              <li>Trades like a normal stock</li>
-              <li>No need to manage private keys</li>
-              <li>Regulated and familiar structure</li>
-              <li>Professional management</li>
-            </ul>
-          </motion.section>
+            <motion.section
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+              className="mt-12"
+            >
+              <h2 className="text-3xl font-bold text-blue-700 flex items-center gap-2">
+                <LineChart className="h-6 w-6" />
+                Value Comparisons
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                {comparisons.map((comparison, index) => (
+                  <ComparisonCard key={comparison.title} {...comparison} />
+                ))}
+              </div>
+            </motion.section>
+          </div>
 
           {isFullyRead && (
             <motion.div
@@ -298,7 +309,7 @@ export default function BitcoinInvestmentSection() {
               <div className="flex flex-col space-y-4">
                 <Button
                   onClick={() => setShowQuiz(!showQuiz)}
-                  className="w-full bg-purple-600 hover:bg-purple-700"
+                  className="w-full bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white"
                   size="lg"
                 >
                   {showQuiz ? "Hide Quiz" : "Take Topic Quiz"}
@@ -312,7 +323,7 @@ export default function BitcoinInvestmentSection() {
                   </Link>
 
                   <Link href="/modules/module2/security-risk">
-                    <Button className="w-full md:w-auto bg-blue-600 hover:bg-blue-700">
+                    <Button className="w-full md:w-auto bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white">
                       Next: Security and Risk Management <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>
@@ -331,7 +342,7 @@ export default function BitcoinInvestmentSection() {
               )}
             </motion.div>
           )}
-        </div>
+        </motion.div>
       </div>
     </div>
   );
