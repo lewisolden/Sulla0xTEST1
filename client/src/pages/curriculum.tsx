@@ -104,13 +104,13 @@ const courses = [
       {
         id: 3,
         icon: Globe,
-        title: "Module 3: AI Impact and Future",
-        description: "Understand AI's impact on society and future opportunities.",
+        title: "Module 3: Advanced AI Concepts",
+        description: "Understand advanced AI concepts and their applications.",
         sections: [
-          "Topic 3.1 - Ethics and Responsibility",
-          "Topic 3.2 - AI in Industry",
-          "Topic 3.3 - Future of AI",
-          "Topic 3.4 - AI Career Paths"
+          "Topic 3.1 - Deep Learning",
+          "Topic 3.2 - Reinforcement Learning",
+          "Topic 3.3 - Generative AI",
+          "Topic 3.4 - Future of AI"
         ],
         path: "/ai/module3"
       }
