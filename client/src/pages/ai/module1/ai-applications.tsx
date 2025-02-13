@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -34,16 +34,12 @@ const ApplicationCard = ({
   examples: string[];
   delay: number;
 }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
   return (
     <motion.div
       className="bg-white rounded-lg shadow-lg p-6 relative overflow-hidden"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay }}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
     >
       <div className="flex items-center gap-3 mb-4">
         <div className="bg-blue-100 p-3 rounded-full">
@@ -52,30 +48,21 @@ const ApplicationCard = ({
         <h3 className="text-xl font-semibold text-blue-800">{title}</h3>
       </div>
       <p className="text-gray-600 mb-4">{description}</p>
-      <AnimatePresence>
-        {isHovered && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="bg-blue-50 rounded-lg p-4 mt-4"
-          >
-            <h4 className="font-semibold text-blue-700 mb-2">Examples:</h4>
-            <ul className="list-disc list-inside text-blue-600">
-              {examples.map((example, index) => (
-                <motion.li
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.1 * index }}
-                >
-                  {example}
-                </motion.li>
-              ))}
-            </ul>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div className="bg-blue-50 rounded-lg p-4">
+        <h4 className="font-semibold text-blue-700 mb-2">Examples:</h4>
+        <ul className="list-disc list-inside text-blue-600">
+          {examples.map((example, index) => (
+            <motion.li
+              key={index}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 * index }}
+            >
+              {example}
+            </motion.li>
+          ))}
+        </ul>
+      </div>
     </motion.div>
   );
 };
