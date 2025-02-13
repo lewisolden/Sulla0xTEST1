@@ -12,6 +12,7 @@ import { BlockchainIcon, DecentralizationIcon, WalletIcon, SecurityIcon } from "
 import TransactionFlowDiagram from "@/components/diagrams/TransactionFlowDiagram";
 import { useNavigate } from "@/hooks/useNavigate";
 import MoneyEvolutionTimeline from "@/components/diagrams/MoneyEvolutionTimeline";
+import DigitalCurrencyFeatures from "@/components/diagrams/DigitalCurrencyFeatures";
 
 export default function DigitalCurrenciesSection() {
   // Force scroll to top on mount
@@ -193,9 +194,20 @@ export default function DigitalCurrenciesSection() {
                 >
                   In today's rapidly evolving financial landscape, cryptocurrency represents a revolutionary approach to money and value transfer. Before diving into specific cryptocurrencies or technical details, it's essential to understand what makes digital currencies unique and how they differ from traditional money systems.
                 </motion.p>
+
+                {/* Add DigitalCurrencyFeatures component for visual engagement */}
+                <motion.div
+                  variants={cardVariants}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                  className="my-8"
+                >
+                  <DigitalCurrencyFeatures />
+                </motion.div>
               </motion.section>
 
-              {/* Understanding Traditional Money vs. Cryptocurrency */}
+              {/* Update the Traditional Money vs. Cryptocurrency section with better visuals */}
               <motion.section
                 variants={sectionVariants}
                 initial="hidden"
@@ -204,12 +216,60 @@ export default function DigitalCurrenciesSection() {
                 className="mb-12"
               >
                 <h2 className="text-3xl font-bold text-blue-700">Understanding Traditional Money vs. Cryptocurrency</h2>
-                <motion.p variants={listItemVariants} className="mt-4">
-                  Think about the cash in your wallet or the money in your bank account. Traditional money exists in two main forms: physical cash and digital bank balances. Physical cash offers immediate, tangible transactions but comes with limitations like physical degradation, security risks, and geographical restrictions. Digital bank money, while more convenient for many transactions, relies entirely on banks and financial institutions as intermediaries.
-                </motion.p>
-                <motion.p variants={listItemVariants} className="mt-4">
-                  Cryptocurrency introduces a fundamentally different approach. It exists purely as digital information, but unlike the numbers in your bank account, it doesn't represent a claim on a bank or institution. Instead, cryptocurrency operates through a decentralized network of computers, using advanced cryptography to ensure security and verify transactions.
-                </motion.p>
+
+                <div className="grid md:grid-cols-2 gap-6 mt-6">
+                  <motion.div
+                    variants={cardVariants}
+                    whileHover="hover"
+                    className="p-6 bg-white rounded-lg shadow-md border-l-4 border-blue-500"
+                  >
+                    <h3 className="text-xl font-semibold text-blue-600 mb-4">Traditional Money</h3>
+                    <motion.ul variants={sectionVariants} className="space-y-2">
+                      {[
+                        "Physical cash for tangible transactions",
+                        "Requires banks as intermediaries",
+                        "Limited by geographical boundaries",
+                        "Controlled by central authorities",
+                        "Subject to traditional banking hours"
+                      ].map((item, index) => (
+                        <motion.li
+                          key={index}
+                          variants={listItemVariants}
+                          className="flex items-center gap-2"
+                        >
+                          <span className="h-2 w-2 bg-blue-500 rounded-full" />
+                          {item}
+                        </motion.li>
+                      ))}
+                    </motion.ul>
+                  </motion.div>
+
+                  <motion.div
+                    variants={cardVariants}
+                    whileHover="hover"
+                    className="p-6 bg-white rounded-lg shadow-md border-l-4 border-purple-500"
+                  >
+                    <h3 className="text-xl font-semibold text-purple-600 mb-4">Cryptocurrency</h3>
+                    <motion.ul variants={sectionVariants} className="space-y-2">
+                      {[
+                        "Digital-native transactions",
+                        "Peer-to-peer without intermediaries",
+                        "Global accessibility 24/7",
+                        "Decentralized governance",
+                        "Programmable money features"
+                      ].map((item, index) => (
+                        <motion.li
+                          key={index}
+                          variants={listItemVariants}
+                          className="flex items-center gap-2"
+                        >
+                          <span className="h-2 w-2 bg-purple-500 rounded-full" />
+                          {item}
+                        </motion.li>
+                      ))}
+                    </motion.ul>
+                  </motion.div>
+                </div>
               </motion.section>
 
               {/* The Evolution of Money */}
