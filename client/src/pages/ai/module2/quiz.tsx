@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
@@ -92,13 +92,13 @@ export default function AIModule2Quiz() {
       showExplanation: true,
     });
 
-    setTimeout(() => {
-      if (isCorrect) {
-        setScore(score + 1);
-      }
+    if (isCorrect) {
+      setScore(prev => prev + 1);
+    }
 
+    setTimeout(() => {
       if (currentQuestion < questions.length - 1) {
-        setCurrentQuestion(currentQuestion + 1);
+        setCurrentQuestion(prev => prev + 1);
         setAnswerState({
           selectedAnswer: null,
           isCorrect: false,
@@ -106,11 +106,26 @@ export default function AIModule2Quiz() {
         });
       } else {
         setShowResults(true);
-        updateProgress('ai-module2', {
-          sectionId: 'module2-quiz',
-          completed: true,
-          score: Math.round((score / questions.length) * 100)
-        });
+        const finalScore = ((score + (isCorrect ? 1 : 0)) / questions.length) * 100;
+        const passed = finalScore >= 60;
+
+        // Update progress for AI Module 2
+        updateProgress('ai-module2', 'module2-quiz', passed);
+
+        // Make API call to update server-side progress
+        fetch('/api/progress', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            moduleId: 'ai-module2',
+            sectionId: 'module2-quiz',
+            completed: passed,
+            score: finalScore,
+            courseId: 2 // AI Course
+          })
+        }).catch(console.error);
       }
     }, 2000);
   };
