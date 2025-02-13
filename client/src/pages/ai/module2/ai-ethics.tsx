@@ -16,11 +16,50 @@ import {
   X,
   RefreshCcw,
   Lock,
-  Eye
+  Eye,
+  Brain,
+  Network
 } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 
-// Ethical Decision Simulator
+// Particle Animation Component
+const ParticleBackground = () => {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {Array.from({ length: 50 }).map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute w-2 h-2 bg-blue-500/20 rounded-full"
+          initial={{
+            x: Math.random() * window.innerWidth,
+            y: Math.random() * window.innerHeight,
+          }}
+          animate={{
+            x: [
+              Math.random() * window.innerWidth,
+              Math.random() * window.innerWidth,
+              Math.random() * window.innerWidth,
+            ],
+            y: [
+              Math.random() * window.innerHeight,
+              Math.random() * window.innerHeight,
+              Math.random() * window.innerHeight,
+            ],
+            scale: [0.5, 1, 0.5],
+            opacity: [0.2, 0.5, 0.2],
+          }}
+          transition={{
+            duration: 10 + Math.random() * 20,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+// Enhanced Ethical Decision Simulator
 const EthicalDecisionSimulator = () => {
   const [scenario, setScenario] = useState(0);
   const [decision, setDecision] = useState<number | null>(null);
@@ -30,36 +69,44 @@ const EthicalDecisionSimulator = () => {
     {
       title: "Facial Recognition Deployment",
       description: "A city wants to implement facial recognition for public safety. How would you proceed?",
+      icon: Eye,
       options: [
         {
           text: "Deploy widely with minimal restrictions",
-          impact: "Increased security but significant privacy concerns and potential misuse of data"
+          impact: "Increased security but significant privacy concerns and potential misuse of data",
+          color: "from-red-500 to-orange-500"
         },
         {
           text: "Limited deployment with strict oversight",
-          impact: "Balance between security and privacy, with transparent governance"
+          impact: "Balance between security and privacy, with transparent governance",
+          color: "from-green-500 to-emerald-500"
         },
         {
           text: "Focus on alternative solutions",
-          impact: "Preserves privacy but may miss security benefits of the technology"
+          impact: "Preserves privacy but may miss security benefits of the technology",
+          color: "from-blue-500 to-indigo-500"
         }
       ]
     },
     {
       title: "AI in Healthcare Decisions",
       description: "An AI system is being developed to prioritize patient care. What approach should be taken?",
+      icon: Brain,
       options: [
         {
           text: "Pure efficiency-based decisions",
-          impact: "Maximizes resource utilization but may perpetuate existing biases"
+          impact: "Maximizes resource utilization but may perpetuate existing biases",
+          color: "from-purple-500 to-pink-500"
         },
         {
           text: "Balanced approach with human oversight",
-          impact: "Slower but more equitable decisions with human judgment"
+          impact: "Slower but more equitable decisions with human judgment",
+          color: "from-cyan-500 to-blue-500"
         },
         {
           text: "Advisory role only",
-          impact: "Safer but doesn't fully utilize AI capabilities"
+          impact: "Safer but doesn't fully utilize AI capabilities",
+          color: "from-yellow-500 to-orange-500"
         }
       ]
     }
@@ -76,21 +123,32 @@ const EthicalDecisionSimulator = () => {
     setShowImpact(false);
   };
 
+  const currentScenario = scenarios[scenario];
+  const Icon = currentScenario.icon;
+
   return (
     <div className="space-y-4">
-      <div className="bg-blue-50 p-6 rounded-lg">
+      <div className="bg-gradient-to-br from-gray-900/90 to-blue-900/90 p-8 rounded-xl backdrop-blur-sm border border-blue-500/20 shadow-xl">
         <motion.div
           key={scenario}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="space-y-4"
+          className="space-y-6"
         >
-          <h3 className="text-xl font-semibold text-blue-800">
-            {scenarios[scenario].title}
-          </h3>
-          <p className="text-gray-700 mb-4">{scenarios[scenario].description}</p>
-          <div className="space-y-3">
-            {scenarios[scenario].options.map((option, index) => (
+          <div className="flex items-center gap-4 mb-6">
+            <div className="p-4 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl shadow-lg">
+              <Icon className="w-8 h-8 text-white" />
+            </div>
+            <div>
+              <h3 className="text-2xl font-bold text-white mb-2">
+                {currentScenario.title}
+              </h3>
+              <p className="text-blue-200">{currentScenario.description}</p>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            {currentScenario.options.map((option, index) => (
               <motion.div
                 key={index}
                 initial={{ x: -20, opacity: 0 }}
@@ -98,32 +156,45 @@ const EthicalDecisionSimulator = () => {
                 transition={{ delay: index * 0.1 }}
               >
                 <Button
-                  variant={decision === index ? "default" : "outline"}
-                  className="w-full text-left justify-start p-4"
-                  onClick={() => handleDecision(index)}
+                  variant="outline"
+                  className={`w-full text-left justify-start p-6 relative overflow-hidden group transition-all duration-300 
+                    ${decision === index ? 'border-blue-500' : 'border-blue-800'} 
+                    hover:border-blue-400`}
+                  onClick={() => !showImpact && handleDecision(index)}
                   disabled={showImpact}
                 >
-                  {option.text}
+                  <div className="relative z-10">
+                    <div className="flex items-center gap-4">
+                      <span className="text-lg">{option.text}</span>
+                    </div>
+                  </div>
+                  <div className={`absolute inset-0 bg-gradient-to-r ${option.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300
+                    ${decision === index ? 'opacity-20' : ''}`} />
                 </Button>
                 {showImpact && decision === index && (
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mt-2 p-3 bg-blue-100 rounded-md text-sm text-blue-800"
+                    className={`mt-3 p-4 rounded-lg bg-gradient-to-r ${option.color} bg-opacity-10 border border-blue-500/20`}
                   >
-                    Impact: {option.impact}
+                    <p className="text-blue-200">{option.impact}</p>
                   </motion.div>
                 )}
               </motion.div>
             ))}
           </div>
           {showImpact && (
-            <Button
-              onClick={nextScenario}
-              className="mt-4 w-full"
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
             >
-              Next Scenario
-            </Button>
+              <Button
+                onClick={nextScenario}
+                className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white"
+              >
+                Next Scenario
+              </Button>
+            </motion.div>
           )}
         </motion.div>
       </div>
@@ -131,7 +202,7 @@ const EthicalDecisionSimulator = () => {
   );
 };
 
-// Bias Visualization Component
+// Enhanced Bias Visualization Demo
 const BiasVisualizationDemo = () => {
   const [biasLevel, setBiasLevel] = useState(50);
   const [showingEffect, setShowingEffect] = useState(false);
@@ -143,9 +214,9 @@ const BiasVisualizationDemo = () => {
 
   return (
     <div className="space-y-4">
-      <div className="bg-blue-50 p-6 rounded-lg">
+      <div className="bg-gradient-to-br from-gray-900/90 to-blue-900/90 p-8 rounded-xl backdrop-blur-sm border border-blue-500/20 shadow-xl">
         <div className="mb-6">
-          <label className="text-sm font-medium mb-2 block">
+          <label className="text-lg font-medium mb-3 block text-blue-200">
             Dataset Bias Level
           </label>
           <Slider
@@ -154,32 +225,41 @@ const BiasVisualizationDemo = () => {
             min={0}
             max={100}
             step={1}
+            className="py-4"
           />
         </div>
-        <div className="aspect-video bg-gradient-to-r from-blue-200 to-blue-300 rounded-lg relative overflow-hidden">
+        <div className="aspect-video bg-gradient-to-br from-gray-800 to-blue-900 rounded-xl relative overflow-hidden border border-blue-500/20">
           <div className="absolute inset-0 flex items-center justify-center">
             {showingEffect ? (
               <motion.div
-                className="grid grid-cols-5 gap-2 p-4"
+                className="grid grid-cols-8 gap-3 p-6"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
               >
-                {Array.from({ length: 25 }).map((_, i) => (
+                {Array.from({ length: 64 }).map((_, i) => (
                   <motion.div
                     key={i}
                     className={`w-4 h-4 rounded-full ${
-                      i < (25 * biasLevel) / 100
-                        ? "bg-red-500"
-                        : "bg-green-500"
+                      i < (64 * biasLevel) / 100
+                        ? "bg-gradient-to-r from-red-500 to-pink-500"
+                        : "bg-gradient-to-r from-green-500 to-emerald-500"
                     }`}
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ delay: i * 0.02 }}
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ 
+                      delay: i * 0.01,
+                      type: "spring",
+                      stiffness: 200,
+                      damping: 10
+                    }}
                   />
                 ))}
               </motion.div>
             ) : (
-              <Button onClick={startVisualization}>
+              <Button
+                onClick={startVisualization}
+                className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white"
+              >
                 Visualize Bias Effect
               </Button>
             )}
@@ -190,49 +270,92 @@ const BiasVisualizationDemo = () => {
   );
 };
 
-// Ethics Framework Visualization
+// Enhanced Ethics Framework Visualization
 const EthicsFrameworkVisualization = () => {
   const [activeStep, setActiveStep] = useState(0);
   const steps = [
-    { title: "Fairness", icon: Scale },
-    { title: "Privacy", icon: Lock },
-    { title: "Transparency", icon: Eye },
-    { title: "Accountability", icon: Shield }
+    { 
+      title: "Fairness",
+      icon: Scale,
+      description: "Ensuring equal treatment and opportunities",
+      color: "from-blue-500 to-indigo-600"
+    },
+    { 
+      title: "Privacy",
+      icon: Lock,
+      description: "Protecting sensitive information",
+      color: "from-purple-500 to-pink-600"
+    },
+    { 
+      title: "Transparency",
+      icon: Eye,
+      description: "Clear and understandable AI decisions",
+      color: "from-green-500 to-emerald-600"
+    },
+    { 
+      title: "Accountability",
+      icon: Shield,
+      description: "Taking responsibility for AI outcomes",
+      color: "from-orange-500 to-red-600"
+    }
   ];
 
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveStep((prev) => (prev + 1) % steps.length);
-    }, 2000);
+    }, 3000);
     return () => clearInterval(timer);
   }, []);
 
   return (
-    <div className="w-full py-8">
-      <div className="flex justify-between relative">
+    <div className="w-full py-12 bg-gradient-to-br from-gray-900/90 to-blue-900/90 rounded-xl backdrop-blur-sm border border-blue-500/20 shadow-xl">
+      <div className="flex justify-between relative px-8">
         {steps.map((step, index) => {
           const Icon = step.icon;
+          const isActive = index === activeStep;
           return (
             <motion.div
               key={index}
               className={`flex flex-col items-center z-10 ${
-                index === activeStep ? "text-blue-600" : "text-gray-400"
+                isActive ? "text-white" : "text-blue-300"
               }`}
               animate={{
-                scale: index === activeStep ? 1.1 : 1,
-                opacity: index === activeStep ? 1 : 0.7,
+                scale: isActive ? 1.1 : 1,
+                opacity: isActive ? 1 : 0.7,
               }}
             >
-              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center mb-2 border-2 border-current">
-                <Icon className="w-6 h-6" />
-              </div>
-              <span className="text-sm font-medium">{step.title}</span>
+              <motion.div
+                className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${
+                  isActive ? step.color : "from-gray-700 to-gray-800"
+                } flex items-center justify-center mb-4 shadow-lg ${
+                  isActive ? "shadow-blue-500/30" : ""
+                }`}
+                animate={{
+                  rotate: isActive ? [0, 10, -10, 0] : 0,
+                }}
+                transition={{
+                  duration: 0.5,
+                  ease: "easeInOut",
+                }}
+              >
+                <Icon className={`w-10 h-10 ${isActive ? "text-white" : "text-gray-400"}`} />
+              </motion.div>
+              <span className="text-lg font-semibold mb-2">{step.title}</span>
+              <span className="text-sm text-center max-w-[150px] text-blue-200">
+                {step.description}
+              </span>
+              {isActive && (
+                <motion.div
+                  className="w-2 h-2 bg-blue-500 rounded-full mt-4"
+                  layoutId="indicator"
+                />
+              )}
             </motion.div>
           );
         })}
-        <div className="absolute top-6 left-0 w-full h-0.5 bg-gray-200">
+        <div className="absolute top-10 left-0 w-full h-1 bg-gray-800">
           <motion.div
-            className="h-full bg-blue-600"
+            className="h-full bg-gradient-to-r from-blue-500 to-indigo-600"
             animate={{
               width: `${((activeStep + 1) / steps.length) * 100}%`,
             }}
@@ -474,7 +597,8 @@ export default function AIEthics() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 relative">
+      <ParticleBackground /> {/* Added Particle Background */}
       <div className="max-w-4xl mx-auto">
         <div className="mb-6">
           <Link href="/ai/module2">
