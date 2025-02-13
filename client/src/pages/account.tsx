@@ -69,27 +69,40 @@ export default function AccountPage() {
   const overallProgress = totalEnrollments ? (completedEnrollments / totalEnrollments) * 100 : 0;
 
   const getContinueLearningPath = (enrollment: Enrollment) => {
-    // Check if this is an AI course
-    const isAICourse = enrollment.course.title.toLowerCase().includes('ai') ||
-                      enrollment.metadata?.lastPath?.includes('/ai/');
+    try {
+      // Check if this is an AI course
+      const isAICourse = enrollment.course.title.toLowerCase().includes('ai') ||
+                        enrollment.metadata?.lastPath?.includes('/ai/');
 
-    if (isAICourse) {
-      // Get the last accessed route from progress context
-      const lastRoute = getLastAccessedRoute('ai');
-      if (lastRoute) {
-        return lastRoute;
+      if (isAICourse) {
+        console.log('[Account] AI course detected, checking last accessed route');
+
+        // Default to module1 if no progress context or last route
+        if (!getLastAccessedRoute) {
+          console.log('[Account] No progress context, defaulting to /ai/module1');
+          return '/ai/module1';
+        }
+
+        // Get the last accessed route from progress context
+        const lastRoute = getLastAccessedRoute('ai');
+        console.log('[Account] Last accessed AI route:', lastRoute);
+
+        return lastRoute || '/ai/module1';
       }
-    }
 
-    // Fall back to existing logic for other courses
-    if (enrollment.metadata?.lastPath) {
-      return enrollment.metadata.lastPath;
+      // Fall back to existing logic for other courses
+      if (enrollment.metadata?.lastPath) {
+        return enrollment.metadata.lastPath;
+      }
+      const moduleMatch = enrollment.metadata?.lastModule?.match(/Module (\d+)/i);
+      if (moduleMatch) {
+        return `/modules/module${moduleMatch[1]}`;
+      }
+      return `/modules/module1`;
+    } catch (error) {
+      console.error('[Account] Error in getContinueLearningPath:', error);
+      return '/ai/module1'; // Safe fallback for AI courses
     }
-    const moduleMatch = enrollment.metadata?.lastModule?.match(/Module (\d+)/i);
-    if (moduleMatch) {
-      return `/modules/module${moduleMatch[1]}`;
-    }
-    return `/modules/module1`;
   };
 
   const formatLearningTime = (minutes: number) => {
