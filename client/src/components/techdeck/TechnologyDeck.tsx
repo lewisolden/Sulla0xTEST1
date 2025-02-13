@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card";
 const slides = [
   {
     id: 1,
-    title: "Sulla - Technology Overview",
+    title: "Sulla - Next-Generation Learning Platform",
     content: (
       <div className="space-y-8">
         <motion.div
@@ -808,7 +808,6 @@ const slides = [
       </div>
     )
   }
-
 ];
 
 const TechnologyDeck = () => {
