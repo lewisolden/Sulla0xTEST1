@@ -5,13 +5,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
-import { 
-  ArrowLeft, 
-  Brain, 
-  Lightbulb, 
-  Cpu, 
-  Shield, 
-  Network, 
+import {
+  ArrowLeft,
+  Brain,
+  Lightbulb,
+  Cpu,
+  Shield,
+  Network,
   Globe,
   Bot,
   Binary,
@@ -292,6 +292,26 @@ const AGIArchitectureDiagram = () => {
   );
 };
 
+const FutureCard = ({ icon: Icon, title, description, gradient }: any) => (
+    <motion.div
+      className={`rounded-xl shadow-lg p-6 relative overflow-hidden ${gradient}`}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      whileHover={{ y: -5, transition: { duration: 0.2 } }}
+    >
+      <div className="relative z-10">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="bg-white/20 backdrop-blur-sm p-3 rounded-xl">
+            <Icon className="h-6 w-6 text-white" />
+          </div>
+          <h3 className="text-xl font-semibold text-white">{title}</h3>
+        </div>
+        <p className="text-white/90 leading-relaxed">{description}</p>
+      </div>
+    </motion.div>
+  );
+
 export default function FutureAI() {
   useScrollTop();
   const { updateProgress } = useProgress();
@@ -327,25 +347,6 @@ export default function FutureAI() {
     setLocation("/ai/module3/quiz");
   };
 
-  const FutureCard = ({ icon: Icon, title, description, gradient }: any) => (
-    <motion.div
-      className={`rounded-xl shadow-lg p-6 relative overflow-hidden ${gradient}`}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      whileHover={{ y: -5, transition: { duration: 0.2 } }}
-    >
-      <div className="relative z-10">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="bg-white/20 backdrop-blur-sm p-3 rounded-xl">
-            <Icon className="h-6 w-6 text-white" />
-          </div>
-          <h3 className="text-xl font-semibold text-white">{title}</h3>
-        </div>
-        <p className="text-white/90 leading-relaxed">{description}</p>
-      </div>
-    </motion.div>
-  );
 
   if (showQuiz) {
     return (
@@ -508,29 +509,29 @@ export default function FutureAI() {
                   </h2>
                   <div className="space-y-4">
                     <motion.div
-                      className="bg-gradient-to-r from-slate-900 to-blue-900 p-6 rounded-xl text-white"
+                      className="bg-gradient-to-r from-slate-800/95 to-blue-800/95 backdrop-blur-sm p-6 rounded-xl border border-blue-400/20"
                       whileHover={{ scale: 1.02 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+                      <h3 className="text-lg font-semibold mb-2 flex items-center gap-2 text-blue-100">
                         <Globe className="h-5 w-5" />
                         AI Safety and Alignment
                       </h3>
-                      <p className="text-blue-100">
+                      <p className="text-gray-100 leading-relaxed">
                         Ensuring advanced AI systems remain aligned with human values and operate
                         within ethical boundaries is crucial for beneficial AI development.
                       </p>
                     </motion.div>
                     <motion.div
-                      className="bg-gradient-to-r from-blue-900 to-indigo-900 p-6 rounded-xl text-white"
+                      className="bg-gradient-to-r from-blue-800/95 to-indigo-800/95 backdrop-blur-sm p-6 rounded-xl border border-indigo-400/20"
                       whileHover={{ scale: 1.02 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <h3 className="text-lg font-semibold mb-2 flex items-center gap-2">
+                      <h3 className="text-lg font-semibold mb-2 flex items-center gap-2 text-blue-100">
                         <Lightbulb className="h-5 w-5" />
                         Societal Impact
                       </h3>
-                      <p className="text-blue-100">
+                      <p className="text-gray-100 leading-relaxed">
                         Managing the economic and social implications of widespread AI adoption
                         requires careful consideration and proactive planning.
                       </p>
