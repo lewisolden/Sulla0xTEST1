@@ -149,7 +149,7 @@ function Router() {
       <Route path="/account" component={() => <ProtectedRoute component={AccountPage} />} />
       <Route path="/games" component={() => <ProtectedRoute component={Games} />} />
       <Route path="/achievements" component={() => <ProtectedRoute component={Achievements} />} />
-      <Route path="/deck" component={() => <ProtectedRoute component={Deck} />} />
+      <Route path="/deck" component={() => <ProtectedRoute component={Deck} publicAccess={true} />} />
       <Route path="/wallet-simulator" component={() => <ProtectedRoute component={WalletSimulator} />} />
       <Route path="/trading-simulator" component={() => <ProtectedRoute component={TradingSimulator} />} />
       <Route path="/glossary" component={() => <ProtectedRoute component={GlossaryPage} />} />
