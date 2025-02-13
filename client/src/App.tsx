@@ -78,7 +78,7 @@ import Module4Landing from "@/pages/modules/module4";
 import DigitalVsTraditionalSection from "@/pages/modules/module4/digital-vs-traditional";
 import TradingSimulator from "@/pages/trading-simulator";
 import GlossaryPage from "@/pages/glossary";
-
+import TechDeckPage from "@/pages/techdeck";
 
 
 function ProtectedRoute({ component: Component, adminOnly = false, publicAccess = false, ...rest }: any) {
@@ -153,6 +153,7 @@ function Router() {
       <Route path="/wallet-simulator" component={() => <ProtectedRoute component={WalletSimulator} />} />
       <Route path="/trading-simulator" component={() => <ProtectedRoute component={TradingSimulator} />} />
       <Route path="/glossary" component={() => <ProtectedRoute component={GlossaryPage} />} />
+      <Route path="/techdeck" component={() => <ProtectedRoute component={TechDeckPage} publicAccess={true} />} />
 
       {/* Module 1 Routes */}
       <ProtectedRoute path="/modules/module1" component={Module1Landing} />
