@@ -5,9 +5,11 @@ import { PersonalizedPath } from "@/components/learning/personalized-path";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
+import { useScrollTop } from "@/hooks/useScrollTop";
+import { useLocation } from "wouter";
 
 const subjects = [
   { id: "crypto", name: "Cryptocurrency" },
@@ -134,10 +136,21 @@ const simulators = [
 ];
 
 export default function Curriculum() {
+  useScrollTop();
   const [selectedSubject, setSelectedSubject] = useState<string>("crypto");
   const [selectedCourse, setSelectedCourse] = useState<string>("1");
   const [selectedLevel, setSelectedLevel] = useState<string>("beginner");
   const { toast } = useToast();
+  const [location] = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const subject = params.get('subject');
+    if (subject && (subject === 'crypto' || subject === 'ai')) {
+      setSelectedSubject(subject);
+      setSelectedCourse(subject === 'crypto' ? '1' : '2');
+    }
+  }, [location]);
 
   const { data: enrollments, isLoading: loadingEnrollments } = useQuery({
     queryKey: ['enrollments'],

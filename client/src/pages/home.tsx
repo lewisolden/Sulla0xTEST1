@@ -216,20 +216,20 @@ export default function Home() {
           </motion.h2>
 
           <div className="grid md:grid-cols-2 gap-8">
-            <Link href="/curriculum">
+            <Link href="/curriculum?subject=crypto">
               <ModuleCard
                 icon={BookOpen}
                 title="Course 1: Introduction to Cryptocurrency"
                 description="Master the fundamentals of cryptocurrency through interactive learning and practical exercises."
-                link="/curriculum"
+                link="/curriculum?subject=crypto"
               />
             </Link>
-            <Link href="/curriculum">
+            <Link href="/curriculum?subject=ai">
               <ModuleCard
                 icon={Brain}
                 title="Course 2: Introduction to Artificial Intelligence"
                 description="Explore the fundamentals of AI, machine learning, and their real-world applications through hands-on learning."
-                link="/curriculum"
+                link="/curriculum?subject=ai"
               />
             </Link>
           </div>
