@@ -12,6 +12,7 @@ import { BlockchainIcon, DecentralizationIcon, WalletIcon, SecurityIcon } from "
 import TransactionFlowDiagram from "@/components/diagrams/TransactionFlowDiagram";
 import { useNavigate } from "@/hooks/useNavigate";
 import MoneyEvolutionTimeline from "@/components/diagrams/MoneyEvolutionTimeline";
+import DigitalCurrencyFeatures from "@/components/diagrams/DigitalCurrencyFeatures";
 
 export default function DigitalCurrenciesSection() {
   // Force scroll to top on mount
@@ -134,12 +135,16 @@ export default function DigitalCurrenciesSection() {
           variants={pageVariants}
           className="container mx-auto px-4 py-8"
         >
+          {/* Enhanced progress bar with smoother animation */}
           <motion.div
             className="fixed top-0 left-0 w-full h-1 bg-gray-300 z-50"
             initial={{ scaleX: 0 }}
             animate={{ 
               scaleX: scrollProgress / 100,
-              transition: { duration: 0.2 }
+              transition: { 
+                duration: 0.3,
+                ease: "easeInOut"
+              }
             }}
             style={{ transformOrigin: "left" }}
           >
@@ -147,6 +152,7 @@ export default function DigitalCurrenciesSection() {
           </motion.div>
 
           <div className="max-w-4xl mx-auto">
+            {/* Back button with enhanced animation */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -164,6 +170,7 @@ export default function DigitalCurrenciesSection() {
               </Button>
             </motion.div>
 
+            {/* Title with enhanced animation */}
             <motion.h1
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -174,8 +181,18 @@ export default function DigitalCurrenciesSection() {
               }}
               className="text-4xl font-bold text-blue-800 mb-6"
             >
-              Module 1: Understanding Cryptocurrency
+              Understanding Digital Currencies
             </motion.h1>
+
+            {/* Add DigitalCurrencyFeatures component */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              className="mb-12"
+            >
+              <DigitalCurrencyFeatures />
+            </motion.div>
 
             <div className="prose lg:prose-xl text-gray-700 space-y-6">
               {/* Introduction Section */}
