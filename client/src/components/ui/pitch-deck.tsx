@@ -2,29 +2,29 @@ import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
-  titleSlide,
-  problemSlide,
-  solutionSlide1,
-  solutionSlide2,
-  missionSlide,
-  marketSlide1,
-  marketSlide2,
-  productSlide1,
-  productSlide2,
-  modulesSlide,
-  roadmapSlide,
-  progressSlide,
-  futureFinanceSlide,
-  platformInfrastructureSlide,
-  gtmSlide1,
-  gtmSlide2,
-  tokenSlide,
-  tractionSlide,
-  financialSlide,
-  financialModelSlide,
-  fundingNarrativeSlide,
-  teamSlide,
-  ctaSlide,
+  titleSlide,                    // 1
+  problemSlide,                  // 2
+  solutionSlide1,               // 3
+  solutionSlide2,               // 4
+  missionSlide,                 // 5
+  marketSlide1,                 // 6
+  marketSlide2,                 // 7
+  productSlide1,                // 8
+  productSlide2,                // 9
+  modulesSlide,                 // 10
+  futureFinanceSlide,           // 11
+  platformInfrastructureSlide,  // 12
+  roadmapSlide,                 // 13
+  progressSlide,                // 14
+  gtmSlide1,                    // 15
+  gtmSlide2,                    // 16
+  tokenSlide,                   // 17
+  tractionSlide,                // 18
+  financialSlide,               // 19
+  financialModelSlide,          // 20
+  fundingNarrativeSlide,        // 21
+  teamSlide,                    // 22
+  ctaSlide,                     // 23
 } from './presentation-slides';
 
 const PitchDeck: React.FC = () => {
@@ -33,27 +33,27 @@ const PitchDeck: React.FC = () => {
   const slides = [
     titleSlide,                    // 1
     problemSlide,                  // 2
-    solutionSlide1,                // 3
-    solutionSlide2,                // 4
-    missionSlide,                  // 5
-    marketSlide1,                  // 6
-    marketSlide2,                  // 7
-    productSlide1,                 // 8
-    productSlide2,                 // 9
-    modulesSlide,                  // 10
-    futureFinanceSlide,            // 11
-    platformInfrastructureSlide,   // 12
-    roadmapSlide,                  // 13
-    progressSlide,                 // 14
-    gtmSlide1,                     // 15
-    gtmSlide2,                     // 16
-    tokenSlide,                    // 17
-    tractionSlide,                 // 18
-    financialSlide,                // 19
-    financialModelSlide,           // 20
-    fundingNarrativeSlide,         // 21
-    teamSlide,                     // 22
-    ctaSlide,                      // 23
+    solutionSlide1,               // 3
+    solutionSlide2,               // 4
+    missionSlide,                 // 5
+    marketSlide1,                 // 6
+    marketSlide2,                 // 7
+    productSlide1,                // 8
+    productSlide2,                // 9
+    modulesSlide,                 // 10
+    futureFinanceSlide,           // 11
+    platformInfrastructureSlide,  // 12
+    roadmapSlide,                 // 13
+    progressSlide,                // 14
+    gtmSlide1,                    // 15
+    gtmSlide2,                    // 16
+    tokenSlide,                   // 17
+    tractionSlide,                // 18
+    financialSlide,               // 19
+    financialModelSlide,          // 20
+    fundingNarrativeSlide,        // 21
+    teamSlide,                    // 22
+    ctaSlide,                     // 23
   ];
 
   const handleDownloadPDF = async () => {

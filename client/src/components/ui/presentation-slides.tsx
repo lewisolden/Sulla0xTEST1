@@ -475,18 +475,6 @@ export const fundingNarrativeSlide = (
   </Slide>
 );
 
-export const fundingBreakdownSlide = (
-  <Slide key="fundingBreakdown">
-    <h2 className="text-2xl font-bold mb-4">Use of Funds</h2>
-    <div className="bg-blue-100 rounded-lg shadow p-4">
-      <div className="flex items-center mb-2">
-        <Wallet className="w-6 h-6 mr-2 text-blue-500" />
-        <h3 className="font-bold text-lg">Allocation</h3>
-      </div>
-      <p>Detailed breakdown of funding allocation.</p>
-    </div>
-  </Slide>
-);
 
 export const teamSlide = (
   <Slide key="team">
