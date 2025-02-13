@@ -114,7 +114,7 @@ export default function Home() {
               <BookOpen className="w-12 h-12 text-blue-600 mb-4" />
               <h3 className="text-xl font-semibold mb-2">Interactive Glossary</h3>
               <p className="text-gray-600">
-                Comprehensive crypto terminology guide with easy-to-understand definitions
+                Comprehensive blockchain and AI terminology guide with easy-to-understand definitions
               </p>
               <Link href="/glossary">
                 <button className="mt-2 text-blue-600 hover:text-blue-700 font-medium">
@@ -134,10 +134,10 @@ export default function Home() {
             {...fadeInUp}
           >
             <h2 className="text-3xl font-bold text-white mb-6">
-              Ready to Start Your Blockchain Journey?
+              Ready to Start Your Technology Journey?
             </h2>
             <p className="text-xl text-blue-100 mb-8">
-              Join thousands of learners mastering blockchain technology with our interactive platform. 
+              Join thousands of learners mastering blockchain, AI, and emerging technologies with our interactive platform. 
               Create your free account today and start learning!
             </p>
             <Link href="/register">
@@ -216,18 +216,22 @@ export default function Home() {
           </motion.h2>
 
           <div className="grid md:grid-cols-2 gap-8">
-            <ModuleCard
-              icon={BookOpen}
-              title="Course 1: Introduction to Cryptocurrency"
-              description="Master the fundamentals of cryptocurrency through interactive learning and practical exercises."
-              link="/modules/module1"
-            />
-            <ModuleCard
-              icon={Brain}
-              title="Course 2: Introduction to Artificial Intelligence"
-              description="Explore the fundamentals of AI, machine learning, and their real-world applications through hands-on learning."
-              link="/modules/module2"
-            />
+            <Link href="/curriculum">
+              <ModuleCard
+                icon={BookOpen}
+                title="Course 1: Introduction to Cryptocurrency"
+                description="Master the fundamentals of cryptocurrency through interactive learning and practical exercises."
+                link="/curriculum"
+              />
+            </Link>
+            <Link href="/curriculum">
+              <ModuleCard
+                icon={Brain}
+                title="Course 2: Introduction to Artificial Intelligence"
+                description="Explore the fundamentals of AI, machine learning, and their real-world applications through hands-on learning."
+                link="/curriculum"
+              />
+            </Link>
           </div>
         </div>
       </section>
