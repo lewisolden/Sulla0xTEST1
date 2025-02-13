@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Database, Brain, Layout, Users, Shield, Radio, Rocket, Server, Code, Infinity } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
@@ -10,16 +10,37 @@ const slides = [
     title: "Sulla - Technology Overview",
     content: (
       <div className="space-y-6">
-        <h2 className="text-4xl font-bold text-blue-800">
+        <div className="flex items-center justify-center mb-8">
+          <div className="grid grid-cols-2 gap-8 text-center">
+            <div className="flex flex-col items-center space-y-4">
+              <div className="p-4 rounded-full bg-blue-100">
+                <Brain className="w-12 h-12 text-blue-600" />
+              </div>
+              <span className="text-lg font-semibold">AI-Powered Learning</span>
+            </div>
+            <div className="flex flex-col items-center space-y-4">
+              <div className="p-4 rounded-full bg-purple-100">
+                <Database className="w-12 h-12 text-purple-600" />
+              </div>
+              <span className="text-lg font-semibold">Secure Data Architecture</span>
+            </div>
+          </div>
+        </div>
+        <h2 className="text-4xl font-bold text-blue-800 text-center mb-8">
           Advanced Blockchain & AI Educational Platform
         </h2>
-        <ul className="list-disc pl-5 space-y-3 text-xl">
-          <li>Next.js + TypeScript Architecture</li>
-          <li>AI-Powered Adaptive Learning</li>
-          <li>Blockchain Integration</li>
-          <li>Comprehensive Progress Tracking</li>
-          <li>Interactive Content Delivery</li>
-        </ul>
+        <div className="grid grid-cols-2 gap-6">
+          <Card className="p-6 hover:shadow-lg transition-all">
+            <Layout className="w-8 h-8 text-blue-600 mb-4" />
+            <h3 className="font-semibold mb-2">Modern Architecture</h3>
+            <p className="text-sm text-gray-600">Next.js + TypeScript Frontend</p>
+          </Card>
+          <Card className="p-6 hover:shadow-lg transition-all">
+            <Brain className="w-8 h-8 text-purple-600 mb-4" />
+            <h3 className="font-semibold mb-2">AI Integration</h3>
+            <p className="text-sm text-gray-600">Adaptive Learning System</p>
+          </Card>
+        </div>
       </div>
     )
   },
@@ -28,20 +49,53 @@ const slides = [
     title: "Technical Architecture",
     content: (
       <div className="space-y-6">
-        <h3 className="text-2xl font-semibold text-blue-700">Core Components</h3>
+        <div className="mb-8">
+          {/* Architecture Diagram */}
+          <div className="relative h-64 bg-gray-50 rounded-lg p-4 border-2 border-blue-200">
+            <div className="absolute top-4 left-1/2 transform -translate-x-1/2 w-32 p-2 bg-blue-100 rounded text-center">
+              <Layout className="w-6 h-6 mx-auto mb-2 text-blue-600" />
+              Frontend
+            </div>
+            <div className="absolute top-24 left-1/4 transform -translate-x-1/2 w-32 p-2 bg-green-100 rounded text-center">
+              <Server className="w-6 h-6 mx-auto mb-2 text-green-600" />
+              API Layer
+            </div>
+            <div className="absolute top-24 right-1/4 transform translate-x-1/2 w-32 p-2 bg-purple-100 rounded text-center">
+              <Database className="w-6 h-6 mx-auto mb-2 text-purple-600" />
+              Database
+            </div>
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-32 p-2 bg-orange-100 rounded text-center">
+              <Shield className="w-6 h-6 mx-auto mb-2 text-orange-600" />
+              Security
+            </div>
+            {/* Connection Lines */}
+            <svg className="absolute inset-0 w-full h-full" style={{ pointerEvents: 'none' }}>
+              <line x1="50%" y1="20%" x2="25%" y2="40%" stroke="#93C5FD" strokeWidth="2" />
+              <line x1="50%" y1="20%" x2="75%" y2="40%" stroke="#93C5FD" strokeWidth="2" />
+              <line x1="25%" y1="40%" x2="50%" y2="60%" stroke="#93C5FD" strokeWidth="2" />
+              <line x1="75%" y1="40%" x2="50%" y2="60%" stroke="#93C5FD" strokeWidth="2" />
+            </svg>
+          </div>
+        </div>
         <div className="grid grid-cols-2 gap-4">
-          <Card className="p-4">
-            <h4 className="font-bold mb-2">Frontend</h4>
-            <ul className="list-disc pl-4">
+          <Card className="p-4 hover:shadow-lg transition-all">
+            <h4 className="font-bold mb-2 flex items-center">
+              <Code className="w-5 h-5 mr-2 text-blue-600" />
+              Frontend Stack
+            </h4>
+            <ul className="list-disc pl-4 space-y-1 text-sm">
               <li>Next.js with TypeScript</li>
               <li>Tailwind CSS</li>
               <li>Framer Motion</li>
               <li>Shadcn UI Components</li>
             </ul>
           </Card>
-          <Card className="p-4">
-            <h4 className="font-bold mb-2">Backend</h4>
-            <ul className="list-disc pl-4">
+          <Card className="p-4 hover:shadow-lg transition-all">
+            <h4 className="font-bold mb-2 flex items-center">
+              <Server className="w-5 h-5 mr-2 text-green-600" />
+              Backend Stack
+            </h4>
+            <ul className="list-disc pl-4 space-y-1 text-sm">
               <li>PostgreSQL Database</li>
               <li>Express.js API</li>
               <li>Drizzle ORM</li>
@@ -57,11 +111,35 @@ const slides = [
     title: "Data Storage & Management",
     content: (
       <div className="space-y-6">
-        <h3 className="text-2xl font-semibold text-blue-700">Secure & Scalable Data Layer</h3>
+        <div className="mb-8">
+          {/* Data Flow Diagram */}
+          <div className="relative h-48 bg-gray-50 rounded-lg p-4 border-2 border-blue-200">
+            <div className="grid grid-cols-3 gap-4 h-full">
+              <div className="flex flex-col items-center justify-center">
+                <Users className="w-8 h-8 text-blue-600 mb-2" />
+                <div className="text-sm font-medium">User Data</div>
+              </div>
+              <div className="flex flex-col items-center justify-center">
+                <Database className="w-8 h-8 text-purple-600 mb-2" />
+                <div className="text-sm font-medium">Secure Storage</div>
+              </div>
+              <div className="flex flex-col items-center justify-center">
+                <Brain className="w-8 h-8 text-green-600 mb-2" />
+                <div className="text-sm font-medium">AI Analysis</div>
+              </div>
+            </div>
+            <svg className="absolute inset-0 w-full h-full" style={{ pointerEvents: 'none' }}>
+              <line x1="33%" y1="50%" x2="66%" y2="50%" stroke="#93C5FD" strokeWidth="2" />
+            </svg>
+          </div>
+        </div>
         <div className="grid grid-cols-1 gap-4">
-          <Card className="p-4">
-            <h4 className="font-bold mb-2">Database Schema</h4>
-            <ul className="list-disc pl-4">
+          <Card className="p-4 hover:shadow-lg transition-all">
+            <h4 className="font-bold mb-2 flex items-center">
+              <Database className="w-5 h-5 mr-2 text-purple-600" />
+              Database Schema
+            </h4>
+            <ul className="list-disc pl-4 space-y-1 text-sm">
               <li>User Profiles & Authentication</li>
               <li>Learning Progress Tracking</li>
               <li>Course Content Management</li>
@@ -69,9 +147,12 @@ const slides = [
               <li>AI Interaction History</li>
             </ul>
           </Card>
-          <Card className="p-4">
-            <h4 className="font-bold mb-2">Data Security</h4>
-            <ul className="list-disc pl-4">
+          <Card className="p-4 hover:shadow-lg transition-all">
+            <h4 className="font-bold mb-2 flex items-center">
+              <Shield className="w-5 h-5 mr-2 text-orange-600" />
+              Data Security
+            </h4>
+            <ul className="list-disc pl-4 space-y-1 text-sm">
               <li>Encrypted User Data</li>
               <li>Regular Backups</li>
               <li>Access Control</li>
