@@ -87,8 +87,8 @@ const ScalabilityQuiz = () => {
       setShowExplanation(false);
     } else {
       setShowResult(true);
-      const passThreshold = quizQuestions.length * 0.6;
-      updateProgress(3, 'scalability-interoperability-quiz', score >= passThreshold);
+      const finalScore = ((score + (isCorrect ? 1 : 0)) / quizQuestions.length) * 100;
+      updateProgress(3, 'scalability-interoperability-quiz', finalScore >= 60, 1, undefined, finalScore);
     }
   };
 
@@ -123,7 +123,7 @@ const ScalabilityQuiz = () => {
               </p>
             </div>
           )}
-          <Button 
+          <Button
             onClick={restartQuiz}
             className="bg-blue-500 hover:bg-blue-600"
           >
@@ -160,12 +160,12 @@ const ScalabilityQuiz = () => {
                 onClick={() => handleAnswerSelect(index)}
                 className={`
                   w-full p-6 rounded-lg text-left transition-all duration-300
-                  ${selectedAnswer === null 
-                    ? 'bg-gray-100 hover:bg-blue-100' 
-                    : index === currentQuizQuestion.correctAnswer 
-                      ? 'bg-green-200' 
-                      : selectedAnswer === index 
-                        ? 'bg-red-200' 
+                  ${selectedAnswer === null
+                    ? 'bg-gray-100 hover:bg-blue-100'
+                    : index === currentQuizQuestion.correctAnswer
+                      ? 'bg-green-200'
+                      : selectedAnswer === index
+                        ? 'bg-red-200'
                         : 'bg-gray-100'}
                   whitespace-normal break-words
                 `}
@@ -179,13 +179,13 @@ const ScalabilityQuiz = () => {
           {showExplanation && (
             <div className={`
               mt-8 p-6 rounded-lg
-              ${selectedAnswer === currentQuizQuestion.correctAnswer 
-                ? 'bg-green-100 border-l-4 border-green-500' 
+              ${selectedAnswer === currentQuizQuestion.correctAnswer
+                ? 'bg-green-100 border-l-4 border-green-500'
                 : 'bg-red-100 border-l-4 border-red-500'}
             `}>
               <h3 className="font-bold mb-3 text-lg">
-                {selectedAnswer === currentQuizQuestion.correctAnswer 
-                  ? '✅ Correct!' 
+                {selectedAnswer === currentQuizQuestion.correctAnswer
+                  ? '✅ Correct!'
                   : '❌ Incorrect'}
               </h3>
               <p className="text-lg leading-relaxed">{currentQuizQuestion.explanation}</p>
@@ -198,8 +198,8 @@ const ScalabilityQuiz = () => {
               className="mt-8 w-full bg-blue-500 hover:bg-blue-600"
               size="lg"
             >
-              {currentQuestion < quizQuestions.length - 1 
-                ? 'Next Question' 
+              {currentQuestion < quizQuestions.length - 1
+                ? 'Next Question'
                 : 'Finish Quiz'}
             </Button>
           )}

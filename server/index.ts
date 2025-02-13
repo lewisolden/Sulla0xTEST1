@@ -33,7 +33,7 @@ app.use((req, res, next) => {
 });
 
 let server: any = null;
-const PORT = process.env.PORT || 5000;
+const PORT = 5001;
 
 (async () => {
   try {
@@ -81,29 +81,9 @@ const PORT = process.env.PORT || 5000;
       log("Static file serving setup complete");
     }
 
-    // Function to try starting the server on a given port
-    const tryStartServer = (port: number): Promise<void> => {
-      return new Promise((resolve, reject) => {
-        try {
-          server.listen(port, "0.0.0.0", () => {
-            log(`Server is running on port ${port}`);
-            resolve();
-          }).on('error', (err: any) => {
-            if (err.code === 'EADDRINUSE') {
-              log(`Port ${port} is in use, will try next port`);
-              resolve(tryStartServer(port + 1));
-            } else {
-              reject(err);
-            }
-          });
-        } catch (error) {
-          reject(error);
-        }
-      });
-    };
-
-    // Start the server
-    await tryStartServer(Number(PORT));
+    server.listen(PORT, "0.0.0.0", () => {
+      log(`Server is running on port ${PORT}`);
+    });
 
   } catch (error) {
     log(`Failed to start server: ${error instanceof Error ? error.message : String(error)}`);
