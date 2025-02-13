@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Link, useLocation } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
@@ -51,24 +51,37 @@ export default function ReinforcementLearning() {
   const [showQuiz, setShowQuiz] = useState(false);
   const [readingProgress, setReadingProgress] = useState(0);
   const [, setLocation] = useLocation();
+  const hasMarkedCompleteRef = useRef(false);
+  const progressUpdateTimeoutRef = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
-    // Track this page as the last accessed route when component mounts
-    updateProgress(3, 'reinforcement-learning', false, 3, 0, undefined, '/ai/module3/reinforcement-learning', 'ai');
-
     const handleScroll = () => {
       const scrolled = window.scrollY;
       const maxHeight = document.documentElement.scrollHeight - window.innerHeight;
       const progress = (scrolled / maxHeight) * 100;
       setReadingProgress(progress);
 
-      if (progress > 90) {
-        updateProgress(3, 'reinforcement-learning', true, 3, Date.now(), undefined, '/ai/module3/reinforcement-learning', 'ai');
+      // Clear any existing timeout
+      if (progressUpdateTimeoutRef.current) {
+        clearTimeout(progressUpdateTimeoutRef.current);
+      }
+
+      // Only update progress when we reach 90% and haven't marked it complete yet
+      if (progress > 90 && !hasMarkedCompleteRef.current) {
+        progressUpdateTimeoutRef.current = setTimeout(() => {
+          updateProgress(3, 'reinforcement-learning', true, 2, Date.now(), undefined, '/ai/module3/reinforcement-learning', 'ai');
+          hasMarkedCompleteRef.current = true;
+        }, 1000); // Debounce for 1 second
       }
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (progressUpdateTimeoutRef.current) {
+        clearTimeout(progressUpdateTimeoutRef.current);
+      }
+    };
   }, [updateProgress]);
 
   const handleQuizCompletion = () => {

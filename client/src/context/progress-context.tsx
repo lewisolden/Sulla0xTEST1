@@ -1,4 +1,4 @@
-import { createContext, useContext, ReactNode, useState } from "react";
+import { createContext, useContext, ReactNode, useState, useCallback } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface ProgressData {
@@ -16,8 +16,8 @@ interface ProgressContextType {
   progress: ProgressData[];
   isLoading: boolean;
   error: Error | null;
-  updateProgress: (moduleId: number, sectionId: string, completed: boolean, courseId: number, timeSpent?: number, quizScore?: number, lastAccessedRoute?: string, courseName?: string) => void;
-  getModuleProgress: (moduleId: number, courseId?: number) => { completed: boolean; total: number };
+  updateProgress: (moduleId: number, sectionId: string, completed: boolean, courseId: number, timeSpent?: number, quizScore?: number, lastAccessedRoute?: string, courseName?: string) => Promise<void>;
+  getModuleProgress: (moduleId: number, courseId?: number) => { completed: number; total: number };
   getLastAccessedRoute: (courseName: string) => string | null;
 }
 
@@ -25,6 +25,7 @@ const ProgressContext = createContext<ProgressContextType | undefined>(undefined
 
 export function ProgressProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient();
+
   const { data, isLoading, error } = useQuery({
     queryKey: ['/api/learning-path/progress'],
     queryFn: async () => {
@@ -49,12 +50,11 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       return response.json();
     },
     onSuccess: () => {
-      // Invalidate and refetch progress data
       queryClient.invalidateQueries({ queryKey: ['/api/learning-path/progress'] });
     }
   });
 
-  const updateProgress = async (
+  const updateProgress = useCallback(async (
     moduleId: number,
     sectionId: string,
     completed: boolean,
@@ -78,9 +78,9 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       console.error('Failed to update progress:', error);
     }
-  };
+  }, [mutation]);
 
-  const getModuleProgress = (moduleId: number, courseId?: number) => {
+  const getModuleProgress = useCallback((moduleId: number, courseId?: number) => {
     if (!data?.progress) {
       return { completed: 0, total: 0 };
     }
@@ -94,9 +94,9 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       completed: moduleProgress.filter((item: ProgressData) => item.completed).length,
       total: moduleProgress.length || 0
     };
-  };
+  }, [data?.progress]);
 
-  const getLastAccessedRoute = (courseName: string): string | null => {
+  const getLastAccessedRoute = useCallback((courseName: string): string | null => {
     if (!data?.progress) return null;
 
     const courseProgress = data.progress
@@ -106,7 +106,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       });
 
     return courseProgress[0]?.lastAccessedRoute || null;
-  };
+  }, [data?.progress]);
 
   const contextValue = {
     progress: data?.progress || [],
