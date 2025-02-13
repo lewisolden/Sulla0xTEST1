@@ -22,102 +22,211 @@ import { useScrollTop } from "@/hooks/useScrollTop";
 // Neural Network Animation Component
 const NeuralNetworkDiagram = () => {
   const [activeNode, setActiveNode] = useState<number | null>(null);
+  const [dataFlowAnimation, setDataFlowAnimation] = useState(false);
+
+  // Trigger data flow animation periodically
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setDataFlowAnimation(prev => !prev);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
-    <motion.svg 
-      viewBox="0 0 800 400" 
-      className="w-full h-64 md:h-96"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
-    >
-      {/* Input Layer */}
-      {[0, 1, 2].map((i) => (
-        <g key={`input-${i}`}>
-          <motion.circle
-            cx="100"
-            cy={150 + i * 100}
-            r="20"
-            fill={activeNode === i ? "#3b82f6" : "#93c5fd"}
-            stroke="#1d4ed8"
-            strokeWidth="2"
-            whileHover={{ scale: 1.2 }}
-            onClick={() => setActiveNode(i)}
-          />
-          <text x="85" y={155 + i * 100} fill="#1e40af" className="text-sm">
-            Input {i + 1}
-          </text>
-        </g>
-      ))}
-
-      {/* Hidden Layer */}
-      {[0, 1, 2, 3].map((i) => (
-        <g key={`hidden-${i}`}>
-          <motion.circle
-            cx="400"
-            cy={100 + i * 80}
-            r="20"
-            fill={activeNode === i + 3 ? "#3b82f6" : "#93c5fd"}
-            stroke="#1d4ed8"
-            strokeWidth="2"
-            whileHover={{ scale: 1.2 }}
-            onClick={() => setActiveNode(i + 3)}
-          />
-          <text x="385" y={105 + i * 80} fill="#1e40af" className="text-sm">
-            H{i + 1}
-          </text>
-          {/* Connections from input to hidden layer */}
-          {[0, 1, 2].map((j) => (
-            <motion.line
-              key={`conn-${i}-${j}`}
-              x1="120"
-              y1={150 + j * 100}
-              x2="380"
-              y2={100 + i * 80}
-              stroke="#93c5fd"
-              strokeWidth="2"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 2, delay: i * 0.2 }}
+    <div className="relative bg-gradient-to-br from-blue-50 to-white p-6 rounded-lg shadow-inner">
+      <div className="absolute top-4 left-4">
+        <h3 className="text-blue-800 font-semibold mb-2">Interactive Neural Network</h3>
+        <p className="text-sm text-gray-600">Click on nodes to see connections</p>
+      </div>
+      <motion.svg 
+        viewBox="0 0 800 400" 
+        className="w-full h-64 md:h-96"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+      >
+        {/* Input Layer */}
+        {[0, 1, 2].map((i) => (
+          <g key={`input-${i}`}>
+            <motion.circle
+              cx="100"
+              cy={150 + i * 100}
+              r="20"
+              fill={activeNode === i ? "#60A5FA" : "#93C5FD"}
+              stroke={activeNode === i ? "#2563EB" : "#1D4ED8"}
+              strokeWidth="3"
+              whileHover={{ scale: 1.2, filter: "drop-shadow(0 0 8px rgba(37, 99, 235, 0.5))" }}
+              onClick={() => setActiveNode(i)}
+              className="cursor-pointer"
             />
-          ))}
-        </g>
-      ))}
+            <motion.text 
+              x="85" 
+              y={155 + i * 100} 
+              fill={activeNode === i ? "#2563EB" : "#1E40AF"}
+              className="text-sm font-medium"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: i * 0.2 }}
+            >
+              Input {i + 1}
+            </motion.text>
+          </g>
+        ))}
 
-      {/* Output Layer */}
-      {[0, 1].map((i) => (
-        <g key={`output-${i}`}>
-          <motion.circle
-            cx="700"
-            cy={200 + i * 100}
-            r="20"
-            fill={activeNode === i + 7 ? "#3b82f6" : "#93c5fd"}
-            stroke="#1d4ed8"
-            strokeWidth="2"
-            whileHover={{ scale: 1.2 }}
-            onClick={() => setActiveNode(i + 7)}
-          />
-          <text x="685" y={205 + i * 100} fill="#1e40af" className="text-sm">
-            Out {i + 1}
-          </text>
-          {/* Connections from hidden to output layer */}
-          {[0, 1, 2, 3].map((j) => (
-            <motion.line
-              key={`conn-out-${i}-${j}`}
-              x1="420"
-              y1={100 + j * 80}
-              x2="680"
-              y2={200 + i * 100}
-              stroke="#93c5fd"
-              strokeWidth="2"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: 1 }}
-              transition={{ duration: 2, delay: (i + j) * 0.2 }}
+        {/* Hidden Layer */}
+        {[0, 1, 2, 3].map((i) => (
+          <g key={`hidden-${i}`}>
+            <motion.circle
+              cx="400"
+              cy={100 + i * 80}
+              r="20"
+              fill={activeNode === i + 3 ? "#60A5FA" : "#93C5FD"}
+              stroke={activeNode === i + 3 ? "#2563EB" : "#1D4ED8"}
+              strokeWidth="3"
+              whileHover={{ scale: 1.2, filter: "drop-shadow(0 0 8px rgba(37, 99, 235, 0.5))" }}
+              onClick={() => setActiveNode(i + 3)}
+              className="cursor-pointer"
             />
-          ))}
-        </g>
-      ))}
-    </motion.svg>
+            <motion.text 
+              x="385" 
+              y={105 + i * 80} 
+              fill={activeNode === i + 3 ? "#2563EB" : "#1E40AF"}
+              className="text-sm font-medium"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 + i * 0.2 }}
+            >
+              H{i + 1}
+            </motion.text>
+            {/* Connections from input to hidden layer */}
+            {[0, 1, 2].map((j) => {
+              const isActive = activeNode === j || activeNode === i + 3;
+              return (
+                <motion.g key={`conn-${i}-${j}`}>
+                  <motion.line
+                    x1="120"
+                    y1={150 + j * 100}
+                    x2="380"
+                    y2={100 + i * 80}
+                    stroke={isActive ? "#60A5FA" : "#BFDBFE"}
+                    strokeWidth={isActive ? "3" : "2"}
+                    initial={{ pathLength: 0 }}
+                    animate={{ 
+                      pathLength: 1,
+                      strokeWidth: isActive ? 3 : 2,
+                      stroke: isActive ? "#60A5FA" : "#BFDBFE"
+                    }}
+                    transition={{ duration: 2, delay: i * 0.2 }}
+                  />
+                  {dataFlowAnimation && isActive && (
+                    <motion.circle
+                      r="4"
+                      fill="#2563EB"
+                      initial={{ 
+                        x: 120,
+                        y: 150 + j * 100,
+                        opacity: 0 
+                      }}
+                      animate={{ 
+                        x: 380,
+                        y: 100 + i * 80,
+                        opacity: [0, 1, 0]
+                      }}
+                      transition={{
+                        duration: 1.5,
+                        ease: "linear",
+                        times: [0, 0.5, 1],
+                        repeat: Infinity
+                      }}
+                    />
+                  )}
+                </motion.g>
+              );
+            })}
+          </g>
+        ))}
+
+        {/* Output Layer */}
+        {[0, 1].map((i) => (
+          <g key={`output-${i}`}>
+            <motion.circle
+              cx="700"
+              cy={200 + i * 100}
+              r="20"
+              fill={activeNode === i + 7 ? "#60A5FA" : "#93C5FD"}
+              stroke={activeNode === i + 7 ? "#2563EB" : "#1D4ED8"}
+              strokeWidth="3"
+              whileHover={{ scale: 1.2, filter: "drop-shadow(0 0 8px rgba(37, 99, 235, 0.5))" }}
+              onClick={() => setActiveNode(i + 7)}
+              className="cursor-pointer"
+            />
+            <motion.text 
+              x="685" 
+              y={205 + i * 100} 
+              fill={activeNode === i + 7 ? "#2563EB" : "#1E40AF"}
+              className="text-sm font-medium"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8 + i * 0.2 }}
+            >
+              Out {i + 1}
+            </motion.text>
+            {/* Connections from hidden to output layer */}
+            {[0, 1, 2, 3].map((j) => {
+              const isActive = activeNode === j + 3 || activeNode === i + 7;
+              return (
+                <motion.g key={`conn-out-${i}-${j}`}>
+                  <motion.line
+                    x1="420"
+                    y1={100 + j * 80}
+                    x2="680"
+                    y2={200 + i * 100}
+                    stroke={isActive ? "#60A5FA" : "#BFDBFE"}
+                    strokeWidth={isActive ? "3" : "2"}
+                    initial={{ pathLength: 0 }}
+                    animate={{ 
+                      pathLength: 1,
+                      strokeWidth: isActive ? 3 : 2,
+                      stroke: isActive ? "#60A5FA" : "#BFDBFE"
+                    }}
+                    transition={{ duration: 2, delay: (i + j) * 0.2 }}
+                  />
+                  {dataFlowAnimation && isActive && (
+                    <motion.circle
+                      r="4"
+                      fill="#2563EB"
+                      initial={{ 
+                        x: 420,
+                        y: 100 + j * 80,
+                        opacity: 0 
+                      }}
+                      animate={{ 
+                        x: 680,
+                        y: 200 + i * 100,
+                        opacity: [0, 1, 0]
+                      }}
+                      transition={{
+                        duration: 1.5,
+                        ease: "linear",
+                        times: [0, 0.5, 1],
+                        repeat: Infinity
+                      }}
+                    />
+                  )}
+                </motion.g>
+              );
+            })}
+          </g>
+        ))}
+      </motion.svg>
+      <div className="absolute bottom-4 left-4 right-4">
+        <div className="flex items-center justify-between text-sm text-gray-600">
+          <span>Input Layer</span>
+          <span>Hidden Layer</span>
+          <span>Output Layer</span>
+        </div>
+      </div>
+    </div>
   );
 };
 
@@ -443,12 +552,6 @@ export default function HowAIWorks() {
                     transform data to learn patterns and make decisions.
                   </p>
                   <div className="bg-white p-4 rounded-lg shadow-inner mb-6">
-                    <h3 className="text-lg font-medium text-blue-800 mb-2">
-                      Interactive Neural Network
-                    </h3>
-                    <p className="text-sm text-gray-600 mb-4">
-                      Click on any node to see how information flows through the network
-                    </p>
                     <NeuralNetworkDiagram />
                   </div>
                 </motion.section>
