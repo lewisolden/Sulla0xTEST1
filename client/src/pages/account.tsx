@@ -70,15 +70,14 @@ export default function AccountPage() {
 
   const getContinueLearningPath = (enrollment: Enrollment) => {
     try {
-      // Check if this is an AI course
-      const isAICourse = enrollment.course.title.toLowerCase().includes('ai') ||
-                        enrollment.metadata?.lastPath?.includes('/ai/');
-
-      if (isAICourse) {
+      // Check if this is an AI course - placed at the very beginning
+      if (enrollment.course.title.toLowerCase().includes('artificial intelligence') ||
+          enrollment.course.title.toLowerCase().includes('ai')) {
+        console.log('[Account] AI course detected, redirecting to /ai/module1');
         return '/ai/module1';
       }
 
-      // Fall back to existing logic for other courses
+      // Only proceed with other path checks for non-AI courses
       if (enrollment.metadata?.lastPath) {
         return enrollment.metadata.lastPath;
       }
@@ -89,7 +88,7 @@ export default function AccountPage() {
       return `/modules/module1`;
     } catch (error) {
       console.error('[Account] Error in getContinueLearningPath:', error);
-      return '/modules/module1';
+      return `/modules/module1`;
     }
   };
 
