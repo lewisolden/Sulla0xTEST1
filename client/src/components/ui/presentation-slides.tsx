@@ -20,6 +20,9 @@ import {
   Book,
   GitBranch,
   BrainCircuit,
+  LineChart, // Added
+  BarChart2, // Added
+  Database, // Added
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -504,6 +507,100 @@ export const futureFinanceSlide = (
                 </div>
               </motion.div>
             ))}
+          </div>
+        </Card>
+      </div>
+    </motion.div>
+  </Slide>
+);
+
+export const platformInfrastructureSlide = (
+  <Slide key="platform-infrastructure">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div className="flex items-center gap-4 mb-8">
+        <div className="p-3 bg-blue-500/20 rounded-lg">
+          <BrainCircuit className="w-8 h-8 text-blue-400" />
+        </div>
+        <h2 className="text-4xl font-bold text-blue-400">Learning Analytics & Infrastructure</h2>
+      </div>
+      <div className="space-y-6">
+        <Card className="bg-blue-900/30 p-6 mb-8">
+          <h3 className="text-2xl font-semibold text-blue-300 mb-4">Advanced Learning Analytics</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <motion.div
+              initial={{ x: -50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <LineChart className="w-6 h-6 text-blue-400" />
+                <h4 className="text-xl font-semibold text-blue-300">Progress Tracking</h4>
+              </div>
+              <ul className="space-y-2 text-blue-100">
+                <li>• Real-time learning progress visualization</li>
+                <li>• Personalized achievement milestones</li>
+                <li>• Comprehensive performance analytics</li>
+              </ul>
+            </motion.div>
+            <motion.div
+              initial={{ x: -50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.3 }}
+              className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <BarChart2 className="w-6 h-6 text-blue-400" />
+                <h4 className="text-xl font-semibold text-blue-300">Learning Insights</h4>
+              </div>
+              <ul className="space-y-2 text-blue-100">
+                <li>• AI-powered learning pattern analysis</li>
+                <li>• Adaptive difficulty adjustment</li>
+                <li>• Personalized content recommendations</li>
+              </ul>
+            </motion.div>
+          </div>
+        </Card>
+
+        <Card className="bg-blue-900/30 p-6">
+          <h3 className="text-2xl font-semibold text-blue-300 mb-4">Technical Infrastructure</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <motion.div
+              initial={{ x: -50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <Database className="w-6 h-6 text-blue-400" />
+                <h4 className="text-xl font-semibold text-blue-300">Backend Architecture</h4>
+              </div>
+              <ul className="space-y-2 text-blue-100">
+                <li>• PostgreSQL for reliable data storage</li>
+                <li>• Real-time event processing</li>
+                <li>• Scalable microservices architecture</li>
+              </ul>
+            </motion.div>
+            <motion.div
+              initial={{ x: -50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <Shield className="w-6 h-6 text-blue-400" />
+                <h4 className="text-xl font-semibold text-blue-300">Data Security</h4>
+              </div>
+              <ul className="space-y-2 text-blue-100">
+                <li>• End-to-end encryption</li>
+                <li>• GDPR-compliant data handling</li>
+                <li>• Regular security audits</li>
+              </ul>
+            </motion.div>
           </div>
         </Card>
       </div>
