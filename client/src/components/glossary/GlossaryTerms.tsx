@@ -236,6 +236,97 @@ const mockGlossaryTerms: Term[] = [
     difficulty: "Intermediate",
     examples: ["Using charts to identify trends", "Employing indicators like RSI and MACD"],
     relatedTerms: ["Chart Patterns", "Indicators", "Trading"]
+  },
+  {
+    id: "artificial-intelligence",
+    term: "Artificial Intelligence (AI)",
+    definition: "The simulation of human intelligence by machines, particularly computer systems. AI systems can perform tasks that typically require human intelligence such as visual perception, speech recognition, decision-making, and language translation.",
+    category: "AI & Technology",
+    difficulty: "Beginner",
+    examples: [
+      "Virtual assistants like Siri and Alexa",
+      "Chess-playing computers",
+      "Automated customer service systems"
+    ],
+    relatedTerms: ["Machine Learning", "Deep Learning", "Neural Networks"]
+  },
+  {
+    id: "machine-learning",
+    term: "Machine Learning",
+    definition: "A subset of AI that enables systems to learn and improve from experience without being explicitly programmed. It focuses on developing computer programs that can access and learn from data.",
+    category: "AI & Technology",
+    difficulty: "Intermediate",
+    examples: [
+      "Email spam detection",
+      "Product recommendations",
+      "Face recognition systems"
+    ],
+    relatedTerms: ["Deep Learning", "Neural Networks", "Artificial Intelligence"]
+  },
+  {
+    id: "deep-learning",
+    term: "Deep Learning",
+    definition: "A type of machine learning based on artificial neural networks that can learn and make intelligent decisions on their own. It uses multiple layers to progressively extract higher-level features from raw input.",
+    category: "AI & Technology",
+    difficulty: "Advanced",
+    examples: [
+      "Image and speech recognition",
+      "Natural language processing",
+      "Autonomous vehicles"
+    ],
+    relatedTerms: ["Neural Networks", "Machine Learning", "Artificial Intelligence"]
+  },
+  {
+    id: "neural-networks",
+    term: "Neural Networks",
+    definition: "Computing systems inspired by biological neural networks in human brains. They consist of interconnected nodes (neurons) that process and transmit information, enabling the system to learn and recognize patterns.",
+    category: "AI & Technology",
+    difficulty: "Advanced",
+    examples: [
+      "Pattern recognition systems",
+      "Financial forecasting models",
+      "Image classification systems"
+    ],
+    relatedTerms: ["Deep Learning", "Machine Learning", "Artificial Intelligence"]
+  },
+  {
+    id: "natural-language-processing",
+    term: "Natural Language Processing (NLP)",
+    definition: "A branch of AI that helps computers understand, interpret, and generate human language in a valuable way. It bridges the gap between human communication and computer understanding.",
+    category: "AI & Technology",
+    difficulty: "Intermediate",
+    examples: [
+      "Language translation services",
+      "Chatbots and virtual assistants",
+      "Text summarization tools"
+    ],
+    relatedTerms: ["Machine Learning", "Deep Learning", "Artificial Intelligence"]
+  },
+  {
+    id: "reinforcement-learning",
+    term: "Reinforcement Learning",
+    definition: "A type of machine learning where an agent learns to make decisions by taking actions in an environment to maximize a reward. It learns through trial and error, receiving feedback in the form of rewards or penalties.",
+    category: "AI & Technology",
+    difficulty: "Advanced",
+    examples: [
+      "Game-playing AI",
+      "Robotic control systems",
+      "Automated trading systems"
+    ],
+    relatedTerms: ["Machine Learning", "Deep Learning", "Artificial Intelligence"]
+  },
+  {
+    id: "computer-vision",
+    term: "Computer Vision",
+    definition: "A field of AI that enables computers to understand and process visual information from the world. It involves extracting meaningful information from images and videos.",
+    category: "AI & Technology",
+    difficulty: "Advanced",
+    examples: [
+      "Object detection in self-driving cars",
+      "Face recognition systems",
+      "Medical image analysis"
+    ],
+    relatedTerms: ["Deep Learning", "Neural Networks", "Machine Learning"]
   }
 ];
 
