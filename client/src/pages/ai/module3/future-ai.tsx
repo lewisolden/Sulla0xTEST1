@@ -25,110 +25,155 @@ import { useScrollTop } from "@/hooks/useScrollTop";
 import { FutureAIQuiz } from "@/components/quizzes/FutureAIQuiz";
 
 // Enhanced Timeline Visualization Component
-const AITimelineVisualization = () => {
-  const [hoveredPoint, setHoveredPoint] = useState<number | null>(null);
+const AITimelineVisualization = () => (
+  <div className="relative h-96 w-full overflow-hidden bg-slate-900 rounded-2xl p-8">
+    <svg className="w-full h-full" viewBox="0 0 800 400">
+      <defs>
+        {/* Enhanced Gradients */}
+        <linearGradient id="timelineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#3B82F6" />
+          <stop offset="50%" stopColor="#6366F1" />
+          <stop offset="100%" stopColor="#8B5CF6" />
+        </linearGradient>
+        <linearGradient id="glowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#93C5FD" stopOpacity="0.2" />
+          <stop offset="50%" stopColor="#818CF8" stopOpacity="0.4" />
+          <stop offset="100%" stopColor="#A78BFA" stopOpacity="0.2" />
+        </linearGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+          <feMerge>
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+        {/* Patterns for background */}
+        <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+          <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="0.5"/>
+        </pattern>
+      </defs>
 
-  return (
-    <div className="relative h-80 w-full overflow-hidden">
-      <svg className="w-full h-full" viewBox="0 0 800 400">
-        <defs>
-          <linearGradient id="timelineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#60A5FA" />
-            <stop offset="100%" stopColor="#3B82F6" />
-          </linearGradient>
-          <filter id="glow">
-            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-            <feMerge>
-              <feMergeNode in="coloredBlur"/>
-              <feMergeNode in="SourceGraphic"/>
-            </feMerge>
-          </filter>
-        </defs>
+      {/* Background Elements */}
+      <rect width="100%" height="100%" fill="url(#grid)" />
 
-        {/* Timeline Base with Glow Effect */}
-        <path 
-          d="M 50,200 H 750" 
-          stroke="url(#timelineGradient)" 
-          strokeWidth="4"
-          filter="url(#glow)"
-          fill="none"
-        />
+      {/* Glow Effect Under Timeline */}
+      <path 
+        d="M 50,200 H 750" 
+        stroke="url(#glowGradient)"
+        strokeWidth="15"
+        filter="url(#glow)"
+        fill="none"
+        opacity="0.5"
+      />
 
-        {/* Timeline Points with Enhanced Visuals */}
-        {[
-          { x: 100, y: 200, label: "Present", sublabel: "Narrow AI", description: "Specialized AI systems" },
-          { x: 300, y: 200, label: "Near Future", sublabel: "Advanced AI", description: "More capable systems" },
-          { x: 500, y: 200, label: "Mid Future", sublabel: "AGI", description: "Human-level AI" },
-          { x: 700, y: 200, label: "Far Future", sublabel: "Superintelligence", description: "Beyond human capabilities" }
-        ].map((point, i) => (
-          <g 
-            key={i}
-            onMouseEnter={() => setHoveredPoint(i)}
-            onMouseLeave={() => setHoveredPoint(null)}
-            style={{ cursor: 'pointer' }}
+      {/* Main Timeline */}
+      <path 
+        d="M 50,200 H 750" 
+        stroke="url(#timelineGradient)"
+        strokeWidth="4"
+        fill="none"
+      />
+
+      {/* Timeline Points with Enhanced Visuals */}
+      {[
+        { x: 100, y: 200, label: "Present", sublabel: "Narrow AI", icon: "🤖", color: "#3B82F6" },
+        { x: 300, y: 200, label: "Near Future", sublabel: "Advanced AI", icon: "⚡", color: "#6366F1" },
+        { x: 500, y: 200, label: "Mid Future", sublabel: "AGI", icon: "🧠", color: "#8B5CF6" },
+        { x: 700, y: 200, label: "Far Future", sublabel: "Superintelligence", icon: "✨", color: "#A78BFA" }
+      ].map((point, i) => (
+        <g key={i}>
+          {/* Connection Lines */}
+          <line 
+            x1={i > 0 ? point.x - 100 : point.x}
+            y1="200"
+            x2={point.x}
+            y2="200"
+            stroke={point.color}
+            strokeWidth="2"
+            strokeDasharray="4 4"
+          />
+
+          {/* Milestone Points */}
+          <circle 
+            cx={point.x} 
+            cy={point.y} 
+            r="12"
+            fill={point.color}
+            filter="url(#glow)"
+          />
+          <circle 
+            cx={point.x} 
+            cy={point.y} 
+            r="8"
+            fill="white"
+          />
+
+          {/* Icon Circles */}
+          <circle
+            cx={point.x}
+            cy={point.y - 50}
+            r="20"
+            fill={point.color}
+            opacity="0.9"
+          />
+          <text
+            x={point.x}
+            y={point.y - 43}
+            textAnchor="middle"
+            fontSize="20"
           >
-            <motion.circle 
-              cx={point.x} 
-              cy={point.y} 
-              r={hoveredPoint === i ? "12" : "8"} 
-              fill={hoveredPoint === i ? "#2563EB" : "#60A5FA"}
-              initial={false}
-              animate={{
-                r: hoveredPoint === i ? 12 : 8,
-                filter: hoveredPoint === i ? "brightness(1.2)" : "none"
-              }}
-              transition={{ duration: 0.3 }}
-            />
+            {point.icon}
+          </text>
 
-            <motion.text 
-              x={point.x} 
-              y={point.y - 25} 
-              textAnchor="middle" 
-              fill="#1E40AF"
-              fontSize="14"
-              fontWeight="bold"
-              initial={false}
-              animate={{
-                y: hoveredPoint === i ? point.y - 30 : point.y - 25,
-                fontSize: hoveredPoint === i ? "16" : "14"
-              }}
-            >
-              {point.label}
-            </motion.text>
+          {/* Labels */}
+          <text 
+            x={point.x} 
+            y={point.y - 80} 
+            textAnchor="middle"
+            fill="white"
+            fontWeight="bold"
+            fontSize="16"
+          >
+            {point.label}
+          </text>
+          <text 
+            x={point.x} 
+            y={point.y + 30} 
+            textAnchor="middle"
+            fill="white"
+            opacity="0.8"
+            fontSize="14"
+          >
+            {point.sublabel}
+          </text>
 
-            <motion.text 
-              x={point.x} 
-              y={point.y + 30} 
-              textAnchor="middle" 
-              fill="#4B5563"
-              fontSize="12"
-              initial={false}
-              animate={{
-                opacity: hoveredPoint === i ? 1 : 0.7
-              }}
-            >
-              {point.sublabel}
-            </motion.text>
-
-            {hoveredPoint === i && (
-              <motion.text
-                x={point.x}
-                y={point.y + 50}
-                textAnchor="middle"
-                fill="#6B7280"
-                fontSize="11"
-                initial={{ opacity: 0, y: point.y + 45 }}
-                animate={{ opacity: 1, y: point.y + 50 }}
-              >
-                {point.description}
-              </motion.text>
-            )}
-          </g>
-        ))}
-      </svg>
-    </div>
-  );
-};
+          {/* Decorative Elements */}
+          <circle
+            cx={point.x}
+            cy={point.y}
+            r="30"
+            fill={point.color}
+            opacity="0.1"
+          />
+          {Array.from({ length: 8 }).map((_, index) => {
+            const angle = (index * Math.PI * 2) / 8;
+            const radius = 40;
+            return (
+              <circle
+                key={index}
+                cx={point.x + Math.cos(angle) * radius}
+                cy={point.y + Math.sin(angle) * radius}
+                r="2"
+                fill={point.color}
+                opacity="0.5"
+              />
+            );
+          })}
+        </g>
+      ))}
+    </svg>
+  </div>
+);
 
 // Enhanced AGI Architecture Diagram
 const AGIArchitectureDiagram = () => {
