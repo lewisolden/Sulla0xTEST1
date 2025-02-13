@@ -2,59 +2,56 @@ import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
-  titleSlide,                    // 1
-  problemSlide,                  // 2
-  solutionSlide1,               // 3
-  solutionSlide2,               // 4
-  missionSlide,                 // 5
-  marketSlide1,                 // 6
-  marketSlide2,                 // 7
-  productSlide1,                // 8
-  productSlide2,                // 9
-  modulesSlide,                 // 10
-  roadmapSlide,                 // 11
-  platformInfrastructureSlide,  // 12
-  futureFinanceSlide,           // 13
-  progressSlide,                // 14
-  gtmSlide1,                    // 15
-  gtmSlide2,                    // 16
-  tokenSlide,                   // 17
-  tractionSlide,                // 18
-  financialSlide,               // 19
-  financialModelSlide,          // 20
-  fundingNarrativeSlide,        // 21
-  teamSlide,                    // 22
-  ctaSlide,                     // 23
+  titleSlide,
+  problemSlide,
+  solutionSlide1,
+  solutionSlide2,
+  missionSlide,
+  marketSlide1,
+  marketSlide2,
+  productSlide1,
+  productSlide2,
+  modulesSlide,
+  roadmapSlide,
+  progressSlide,
+  gtmSlide1,
+  gtmSlide2,
+  tokenSlide,
+  tractionSlide,
+  financialSlide,
+  financialModelSlide,
+  fundingNarrativeSlide,
+  fundingBreakdownSlide,
+  teamSlide,
+  ctaSlide,
 } from './presentation-slides';
 
 const PitchDeck: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Define slides array in exact order with all 23 slides
   const slides = [
-    titleSlide,                    // 1
-    problemSlide,                  // 2
-    solutionSlide1,               // 3
-    solutionSlide2,               // 4
-    missionSlide,                 // 5
-    marketSlide1,                 // 6
-    marketSlide2,                 // 7
-    productSlide1,                // 8
-    productSlide2,                // 9
-    modulesSlide,                 // 10
-    roadmapSlide,                 // 11
-    platformInfrastructureSlide,  // 12
-    futureFinanceSlide,           // 13 - Positioned here
-    progressSlide,                // 14
-    gtmSlide1,                    // 15
-    gtmSlide2,                    // 16
-    tokenSlide,                   // 17
-    tractionSlide,                // 18
-    financialSlide,               // 19
-    financialModelSlide,          // 20
-    fundingNarrativeSlide,        // 21
-    teamSlide,                    // 22
-    ctaSlide,                     // 23
+    titleSlide,
+    problemSlide,
+    solutionSlide1,
+    solutionSlide2,
+    missionSlide,
+    marketSlide1,
+    marketSlide2,
+    productSlide1,
+    productSlide2,
+    modulesSlide,
+    roadmapSlide,
+    progressSlide,
+    gtmSlide1,
+    gtmSlide2,
+    tokenSlide,
+    tractionSlide,
+    financialSlide,
+    financialModelSlide,
+    fundingNarrativeSlide,
+    fundingBreakdownSlide,
+    teamSlide,
+    ctaSlide,
   ];
 
   const handleDownloadPDF = async () => {

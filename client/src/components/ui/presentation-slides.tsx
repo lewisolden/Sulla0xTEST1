@@ -20,9 +20,6 @@ import {
   Book,
   GitBranch,
   BrainCircuit,
-  LineChart,
-  BarChart2,
-  Database,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -149,62 +146,6 @@ export const solutionSlide2 = (
         <p>Learn security best practices throughout all modules.</p>
       </div>
     </div>
-  </Slide>
-);
-
-export const futureFinanceSlide = (
-  <Slide key="future-finance" className="bg-purple-100">
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="flex items-center gap-4 mb-8">
-        <div className="p-3 bg-green-500/20 rounded-lg">
-          <Book className="w-8 h-8 text-green-400" />
-        </div>
-        <h2 className="text-4xl font-bold text-green-400">Future of Finance</h2>
-      </div>
-      <div className="space-y-6">
-        <Card className="bg-blue-900/30 p-6 mb-8">
-          <h3 className="text-2xl font-semibold text-blue-300 mb-4">Revolutionary Learning Path</h3>
-          <div className="space-y-4">
-            {[
-              {
-                title: "Module 1: Understanding Cryptocurrency",
-                description: "Master the fundamentals of digital assets and blockchain technology"
-              },
-              {
-                title: "Module 2: Bitcoin Fundamentals",
-                description: "Deep dive into Bitcoin, cryptocurrency markets, and investment strategies"
-              },
-              {
-                title: "Module 3: Ethereum & Smart Contracts",
-                description: "Explore Ethereum, smart contracts, and decentralized applications"
-              }
-            ].map((module, index) => (
-              <motion.div
-                key={index}
-                initial={{ x: -50, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ delay: index * 0.2 }}
-                className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="p-2 bg-blue-400/20 rounded-full mt-1">
-                    <GitBranch className="w-5 h-5 text-blue-400" />
-                  </div>
-                  <div>
-                    <h4 className="text-xl font-semibold text-blue-300 mb-2">{module.title}</h4>
-                    <p className="text-blue-100">{module.description}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </Card>
-      </div>
-    </motion.div>
   </Slide>
 );
 
@@ -433,6 +374,18 @@ export const fundingNarrativeSlide = (
   </Slide>
 );
 
+export const fundingBreakdownSlide = (
+  <Slide key="fundingBreakdown">
+    <h2 className="text-2xl font-bold mb-4">Use of Funds</h2>
+    <div className="bg-blue-100 rounded-lg shadow p-4">
+      <div className="flex items-center mb-2">
+        <Wallet className="w-6 h-6 mr-2 text-blue-500" />
+        <h3 className="font-bold text-lg">Allocation</h3>
+      </div>
+      <p>Detailed breakdown of funding allocation.</p>
+    </div>
+  </Slide>
+);
 
 export const teamSlide = (
   <Slide key="team">
@@ -460,94 +413,97 @@ export const ctaSlide = (
   </Slide>
 );
 
-
-export const platformInfrastructureSlide = (
-  <Slide key="platform-infrastructure">
+export const futureFinanceSlide = (
+  <Slide key="future-finance">
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
       <div className="flex items-center gap-4 mb-8">
-        <div className="p-3 bg-blue-500/20 rounded-lg">
-          <BrainCircuit className="w-8 h-8 text-blue-400" />
+        <div className="p-3 bg-green-500/20 rounded-lg">
+          <Book className="w-8 h-8 text-green-400" />
         </div>
-        <h2 className="text-4xl font-bold text-blue-400">Learning Analytics & Infrastructure</h2>
+        <h2 className="text-4xl font-bold text-blue-400">Two Revolutionary Learning Paths</h2>
       </div>
       <div className="space-y-6">
         <Card className="bg-blue-900/30 p-6 mb-8">
-          <h3 className="text-2xl font-semibold text-blue-300 mb-4">Advanced Learning Analytics</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <motion.div
-              initial={{ x: -50, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <LineChart className="w-6 h-6 text-blue-400" />
-                <h4 className="text-xl font-semibold text-blue-300">Progress Tracking</h4>
-              </div>
-              <ul className="space-y-2 text-blue-100">
-                <li>• Real-time learning progress visualization</li>
-                <li>• Personalized achievement milestones</li>
-                <li>• Comprehensive performance analytics</li>
-              </ul>
-            </motion.div>
-            <motion.div
-              initial={{ x: -50, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <BarChart2 className="w-6 h-6 text-blue-400" />
-                <h4 className="text-xl font-semibold text-blue-300">Learning Insights</h4>
-              </div>
-              <ul className="space-y-2 text-blue-100">
-                <li>• AI-powered learning pattern analysis</li>
-                <li>• Adaptive difficulty adjustment</li>
-                <li>• Personalized content recommendations</li>
-              </ul>
-            </motion.div>
+          <h3 className="text-2xl font-semibold text-blue-300 mb-4">Course 1: Introduction to Cryptocurrency</h3>
+          <div className="space-y-4">
+            {[
+              {
+                title: "Module 1: Understanding Cryptocurrency",
+                description: "Master the fundamentals of digital assets and blockchain technology"
+              },
+              {
+                title: "Module 2: Bitcoin Fundamentals",
+                description: "Deep dive into Bitcoin, cryptocurrency markets, and investment strategies"
+              },
+              {
+                title: "Module 3: Ethereum & Smart Contracts",
+                description: "Explore Ethereum, smart contracts, and decentralized applications"
+              }
+            ].map((module, index) => (
+              <motion.div
+                key={index}
+                initial={{ x: -50, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: index * 0.2 }}
+                className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="p-2 bg-blue-400/20 rounded-full mt-1">
+                    <GitBranch className="w-5 h-5 text-blue-400" />
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-semibold text-blue-300 mb-2">{module.title}</h4>
+                    <p className="text-blue-100">{module.description}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </Card>
 
         <Card className="bg-blue-900/30 p-6">
-          <h3 className="text-2xl font-semibold text-blue-300 mb-4">Technical Infrastructure</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <motion.div
-              initial={{ x: -50, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.4 }}
-              className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <Database className="w-6 h-6 text-blue-400" />
-                <h4 className="text-xl font-semibold text-blue-300">Backend Architecture</h4>
-              </div>
-              <ul className="space-y-2 text-blue-100">
-                <li>• PostgreSQL for reliable data storage</li>
-                <li>• Real-time event processing</li>
-                <li>• Scalable microservices architecture</li>
-              </ul>
-            </motion.div>
-            <motion.div
-              initial={{ x: -50, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <Shield className="w-6 h-6 text-blue-400" />
-                <h4 className="text-xl font-semibold text-blue-300">Data Security</h4>
-              </div>
-              <ul className="space-y-2 text-blue-100">
-                <li>• End-to-end encryption</li>
-                <li>• GDPR-compliant data handling</li>
-                <li>• Regular security audits</li>
-              </ul>
-            </motion.div>
+          <h3 className="text-2xl font-semibold text-blue-300 mb-4">Course 2: Introduction to AI</h3>
+          <div className="space-y-4">
+            {[
+              {
+                title: "Module 1: AI Fundamentals",
+                description: "Understanding core concepts of artificial intelligence, machine learning, and neural networks"
+              },
+              {
+                title: "Module 2: AI Applications",
+                description: "Explore real-world applications of AI in various industries, from healthcare to finance"
+              },
+              {
+                title: "Module 3: Future of AI",
+                description: "Discover emerging AI technologies, ethics, and the future landscape of artificial intelligence"
+              },
+              {
+                title: "Module 4: Hands-on AI Projects",
+                description: "Build practical AI applications using modern tools and frameworks"
+              }
+            ].map((module, index) => (
+              <motion.div
+                key={index}
+                initial={{ x: -50, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: index * 0.2 }}
+                className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="p-2 bg-blue-400/20 rounded-full mt-1">
+                    <BrainCircuit className="w-5 h-5 text-blue-400" />
+                  </div>
+                  <div>
+                    <h4 className="text-xl font-semibold text-blue-300 mb-2">{module.title}</h4>
+                    <p className="text-blue-100">{module.description}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </Card>
       </div>
