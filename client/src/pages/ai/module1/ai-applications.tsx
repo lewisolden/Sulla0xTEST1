@@ -19,7 +19,16 @@ import {
   X,
   Lightbulb,
   TrendingUp,
-  Sparkles
+  Sparkles,
+  Cpu,
+  Settings,
+  Shield,
+  Scale,
+  MessageCircle,
+  Palette,
+  Database,
+  Cloud,
+  Atom
 } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 
@@ -477,32 +486,41 @@ export default function AIApplications() {
                     {[
                       {
                         title: "Edge AI",
-                        desc: "AI processing on local devices for faster response times"
+                        desc: "AI processing on local devices for faster response times",
+                        icon: Cpu
                       },
                       {
                         title: "AutoML",
-                        desc: "Automated machine learning model development"
+                        desc: "Automated machine learning model development",
+                        icon: Settings
                       },
                       {
                         title: "Explainable AI",
-                        desc: "Making AI decisions more transparent and interpretable"
+                        desc: "Making AI decisions more transparent and interpretable",
+                        icon: Lightbulb
                       },
                       {
                         title: "AI Ethics",
-                        desc: "Ensuring responsible and fair AI development"
+                        desc: "Ensuring responsible and fair AI development",
+                        icon: Shield
                       }
                     ].map((item, index) => (
                       <motion.div
                         key={item.title}
-                        className="bg-gradient-to-br from-purple-500 to-purple-700 p-6 rounded-xl text-white transform transition-all duration-300 hover:scale-105"
+                        className="bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 p-6 rounded-xl shadow-sm transform transition-all duration-300 hover:scale-105"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 1.1 + index * 0.2 }}
                       >
-                        <h3 className="font-semibold text-xl mb-2">
-                          {item.title}
-                        </h3>
-                        <p className="text-white/90">{item.desc}</p>
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="bg-blue-100 dark:bg-blue-900/50 p-2 rounded-lg">
+                            <item.icon className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                          </div>
+                          <h3 className="font-semibold text-xl text-slate-800 dark:text-slate-100">
+                            {item.title}
+                          </h3>
+                        </div>
+                        <p className="text-slate-600 dark:text-slate-300">{item.desc}</p>
                       </motion.div>
                     ))}
                   </div>
@@ -523,60 +541,73 @@ export default function AIApplications() {
                       {
                         title: "ChatGPT",
                         desc: "OpenAI's advanced language model capable of human-like conversations, coding assistance, and creative writing",
-                        url: "https://chat.openai.com"
+                        url: "https://chat.openai.com",
+                        icon: MessageCircle
                       },
                       {
                         title: "DALL-E",
                         desc: "OpenAI's AI system that creates realistic images and art from natural language descriptions",
-                        url: "https://openai.com/dall-e-3"
+                        url: "https://openai.com/dall-e-3",
+                        icon: Palette
                       },
                       {
                         title: "Midjourney",
                         desc: "AI-powered tool that generates high-quality images from text descriptions, known for artistic and creative outputs",
-                        url: "https://www.midjourney.com"
+                        url: "https://www.midjourney.com",
+                        icon: ImageIcon
                       },
                       {
                         title: "Claude",
                         desc: "Anthropic's AI assistant known for detailed analysis, writing, and coding with strong ethical considerations",
-                        url: "https://www.anthropic.com/claude"
+                        url: "https://www.anthropic.com/claude",
+                        icon: Bot
                       },
                       {
                         title: "Google Gemini",
                         desc: "Google's multimodal AI model that can understand and process text, images, and code simultaneously",
-                        url: "https://gemini.google.com"
+                        url: "https://gemini.google.com",
+                        icon: Brain
                       },
                       {
                         title: "DeepSeek",
                         desc: "Advanced language model focused on coding and technical tasks with deep understanding of software development",
-                        url: "https://deepseek.ai"
+                        url: "https://deepseek.ai",
+                        icon: Code2
                       },
                       {
                         title: "LLaMA",
                         desc: "Meta's open-source large language model foundation, enabling customized AI applications",
-                        url: "https://ai.meta.com/llama"
+                        url: "https://ai.meta.com/llama",
+                        icon: Database
                       },
                       {
                         title: "DeepMind",
                         desc: "Google's AI research company known for breakthrough achievements in AI, including AlphaGo and protein folding",
-                        url: "https://deepmind.google"
+                        url: "https://deepmind.google",
+                        icon: Atom
                       }
                     ].map((platform, index) => (
                       <motion.div
                         key={platform.title}
-                        className="bg-gradient-to-br from-blue-500 to-blue-700 p-6 rounded-xl text-white transform transition-all duration-300 hover:scale-105 hover:shadow-xl border border-white/10"
+                        className="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 p-6 rounded-xl shadow-sm transform transition-all duration-300 hover:scale-105 hover:shadow-md border border-gray-200 dark:border-gray-700"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 1.3 + index * 0.1 }}
                       >
-                        <h3 className="font-semibold text-xl mb-2">
-                          {platform.title}
-                        </h3>
-                        <p className="text-white/90 mb-4">{platform.desc}</p>
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="bg-purple-100 dark:bg-purple-900/50 p-2 rounded-lg">
+                            <platform.icon className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                          </div>
+                          <h3 className="font-semibold text-xl text-gray-800 dark:text-gray-100">
+                            {platform.title}
+                          </h3>
+                        </div>
+                        <p className="text-gray-600 dark:text-gray-300 mb-4">{platform.desc}</p>
                         <a
                           href={platform.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm transition-colors duration-200"
+                          className="inline-flex items-center gap-2 text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 text-sm font-medium transition-colors duration-200"
                         >
                           Visit Platform
                           <ArrowRight className="h-4 w-4" />
