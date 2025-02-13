@@ -576,6 +576,44 @@ const futureFinanceSlide = <Slide key="future-finance">
         </motion.div>
       ))}
     </div>
+
+    <Card className="bg-blue-900/30 p-6 mt-8 mb-8">
+      <h3 className="text-2xl font-semibold text-blue-300 mb-4">Course 2: Introduction to AI</h3>
+    </Card>
+    <div className="space-y-6">
+      {[
+        {
+          title: "Module 1: AI Fundamentals",
+          description: "Understanding AI concepts, machine learning basics, and neural networks"
+        },
+        {
+          title: "Module 2: AI in Blockchain",
+          description: "Exploring the intersection of AI and blockchain technology"
+        },
+        {
+          title: "Module 3: Practical Applications",
+          description: "Hands-on experience with AI-powered blockchain applications"
+        }
+      ].map((module, index) => (
+        <motion.div
+          key={`ai-${index}`}
+          initial={{ x: -50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ delay: (index + 3) * 0.2 }}
+          className="bg-gradient-to-br from-purple-800/50 to-blue-900/50 p-6 rounded-lg"
+        >
+          <div className="flex items-start gap-4">
+            <div className="p-2 bg-purple-400/20 rounded-full mt-1">
+              <BrainCircuit className="w-5 h-5 text-purple-400" />
+            </div>
+            <div>
+              <h4 className="text-xl font-semibold text-blue-300 mb-2">{module.title}</h4>
+              <p className="text-blue-100">{module.description}</p>
+            </div>
+          </div>
+        </motion.div>
+      ))}
+    </div>
   </motion.div>
 </Slide>;
 
@@ -753,7 +791,6 @@ const goToMarketSlide = <Slide key="go-to-market">
           ))}
         </ul>
       </motion.div>
-
       <motion.div
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -1353,7 +1390,7 @@ const fundingNarrativeSlide = <Slide key="funding-narrative">
       <div className="p-3 bg-blue-500/20 rounded-lg">
         <LineChart className="w-8 h-8 text-blue-400" />
       </div>
-      <h2 className="text-4xl font-bold text-blue-400">Funding Requirements</h2>
+      <h2 className="text4xl font-bold text-blue-400">Funding Requirements</h2>
     </div>
     <motion.div 
       initial={{ y: 20, opacity: 0 }}
