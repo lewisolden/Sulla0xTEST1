@@ -16,7 +16,10 @@ import {
   ShieldCheck,
   Code2,
   Check,
-  X
+  X,
+  Lightbulb,
+  TrendingUp,
+  Sparkles
 } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 
@@ -26,42 +29,49 @@ const ApplicationCard = ({
   description,
   icon: Icon,
   examples,
-  delay
+  delay,
+  gradient
 }: {
   title: string;
   description: string;
   icon: any;
   examples: string[];
   delay: number;
+  gradient: string;
 }) => {
   return (
     <motion.div
-      className="bg-white rounded-lg shadow-lg p-6 relative overflow-hidden"
+      className={`rounded-xl shadow-lg p-6 relative overflow-hidden ${gradient}`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay }}
+      whileHover={{ y: -5, transition: { duration: 0.2 } }}
     >
-      <div className="flex items-center gap-3 mb-4">
-        <div className="bg-blue-100 p-3 rounded-full">
-          <Icon className="h-6 w-6 text-blue-600" />
+      <div className="relative z-10">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="bg-white/20 backdrop-blur-sm p-3 rounded-xl">
+            <Icon className="h-6 w-6 text-white" />
+          </div>
+          <h3 className="text-xl font-semibold text-white">{title}</h3>
         </div>
-        <h3 className="text-xl font-semibold text-blue-800">{title}</h3>
-      </div>
-      <p className="text-gray-600 mb-4">{description}</p>
-      <div className="bg-blue-50 rounded-lg p-4">
-        <h4 className="font-semibold text-blue-700 mb-2">Examples:</h4>
-        <ul className="list-disc list-inside text-blue-600">
-          {examples.map((example, index) => (
-            <motion.li
-              key={index}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 * index }}
-            >
-              {example}
-            </motion.li>
-          ))}
-        </ul>
+        <p className="text-white/90 mb-6 leading-relaxed">{description}</p>
+        <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+          <h4 className="font-semibold text-white mb-3">Key Applications:</h4>
+          <ul className="space-y-2">
+            {examples.map((example, index) => (
+              <motion.li
+                key={index}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 * index }}
+                className="flex items-center gap-2 text-white/90"
+              >
+                <div className="h-1.5 w-1.5 bg-white rounded-full"></div>
+                <span>{example}</span>
+              </motion.li>
+            ))}
+          </ul>
+        </div>
       </div>
     </motion.div>
   );
@@ -347,18 +357,24 @@ export default function AIApplications() {
           </Link>
         </div>
 
-        <Card>
+        <Card className="border-2 border-blue-100">
           <CardContent className="pt-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
+              className="space-y-8"
             >
-              <div className="flex items-center gap-4 mb-6">
-                <Brain className="h-10 w-10 text-blue-600" />
-                <h1 className="text-3xl font-bold text-blue-800">
-                  AI Applications in the Real World
-                </h1>
+              <div className="flex items-center gap-4 mb-8 bg-gradient-to-br from-blue-600 to-purple-600 p-8 rounded-xl text-white">
+                <Brain className="h-12 w-12" />
+                <div>
+                  <h1 className="text-3xl font-bold mb-2">
+                    AI Applications in the Real World
+                  </h1>
+                  <p className="text-white/90">
+                    Discover how artificial intelligence is transforming industries and enhancing our daily lives
+                  </p>
+                </div>
               </div>
 
               <div className="prose max-w-none">
@@ -366,9 +382,10 @@ export default function AIApplications() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.2 }}
-                  className="mb-8"
+                  className="mb-12"
                 >
-                  <h2 className="text-2xl font-semibold text-blue-700 mb-4">
+                  <h2 className="text-2xl font-semibold text-blue-700 mb-6 flex items-center gap-2">
+                    <Lightbulb className="h-6 w-6" />
                     Key Application Areas
                   </h2>
                   <div className="grid md:grid-cols-2 gap-6">
@@ -383,6 +400,7 @@ export default function AIApplications() {
                         "Speech Recognition"
                       ]}
                       delay={0.3}
+                      gradient="bg-gradient-to-br from-blue-500 to-blue-700"
                     />
                     <ApplicationCard
                       title="Computer Vision"
@@ -395,6 +413,7 @@ export default function AIApplications() {
                         "Autonomous Vehicles"
                       ]}
                       delay={0.4}
+                      gradient="bg-gradient-to-br from-purple-500 to-purple-700"
                     />
                     <ApplicationCard
                       title="Robotics"
@@ -407,6 +426,7 @@ export default function AIApplications() {
                         "Home Assistance Robots"
                       ]}
                       delay={0.5}
+                      gradient="bg-gradient-to-br from-indigo-500 to-indigo-700"
                     />
                     <ApplicationCard
                       title="Healthcare"
@@ -419,6 +439,7 @@ export default function AIApplications() {
                         "Medical Image Analysis"
                       ]}
                       delay={0.6}
+                      gradient="bg-gradient-to-br from-cyan-500 to-cyan-700"
                     />
                   </div>
                 </motion.section>
@@ -427,13 +448,14 @@ export default function AIApplications() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.7 }}
-                  className="mb-8"
+                  className="mb-12"
                 >
-                  <h2 className="text-2xl font-semibold text-blue-700 mb-4">
+                  <h2 className="text-2xl font-semibold text-blue-700 mb-6 flex items-center gap-2">
+                    <TrendingUp className="h-6 w-6" />
                     Industry Impact
                   </h2>
-                  <div className="bg-white p-6 rounded-lg shadow-inner">
-                    <p className="text-gray-700 mb-6">
+                  <div className="bg-gradient-to-br from-slate-800 to-slate-900 p-8 rounded-xl text-white">
+                    <p className="text-white/90 mb-6 leading-relaxed">
                       AI's impact across different industries continues to grow,
                       transforming how businesses operate and deliver value to customers.
                     </p>
@@ -445,56 +467,61 @@ export default function AIApplications() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.9 }}
-                  className="mb-8"
+                  className="mb-12"
                 >
-                  <h2 className="text-2xl font-semibold text-blue-700 mb-4">
+                  <h2 className="text-2xl font-semibold text-blue-700 mb-6 flex items-center gap-2">
+                    <Sparkles className="h-6 w-6" />
                     Emerging Trends
                   </h2>
-                  <div className="grid md:grid-cols-2 gap-4">
+                  <div className="grid md:grid-cols-2 gap-6">
                     {[
                       {
                         title: "Edge AI",
-                        desc: "AI processing on local devices for faster response times"
+                        desc: "AI processing on local devices for faster response times",
+                        gradient: "bg-gradient-to-br from-emerald-500 to-emerald-700"
                       },
                       {
                         title: "AutoML",
-                        desc: "Automated machine learning model development"
+                        desc: "Automated machine learning model development",
+                        gradient: "bg-gradient-to-br from-amber-500 to-amber-700"
                       },
                       {
                         title: "Explainable AI",
-                        desc: "Making AI decisions more transparent and interpretable"
+                        desc: "Making AI decisions more transparent and interpretable",
+                        gradient: "bg-gradient-to-br from-rose-500 to-rose-700"
                       },
                       {
                         title: "AI Ethics",
-                        desc: "Ensuring responsible and fair AI development"
+                        desc: "Ensuring responsible and fair AI development",
+                        gradient: "bg-gradient-to-br from-violet-500 to-violet-700"
                       }
                     ].map((item, index) => (
                       <motion.div
                         key={item.title}
-                        className="bg-blue-50 p-4 rounded-lg"
+                        className={`bg-gradient-to-br ${item.gradient} p-6 rounded-xl text-white transform transition-all duration-300 hover:scale-105`}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 1.1 + index * 0.2 }}
                       >
-                        <h3 className="font-semibold text-blue-800 mb-2">
+                        <h3 className="font-semibold text-xl mb-2">
                           {item.title}
                         </h3>
-                        <p className="text-gray-700 text-sm">{item.desc}</p>
+                        <p className="text-white/90">{item.desc}</p>
                       </motion.div>
                     ))}
                   </div>
                 </motion.section>
               </div>
 
-              <div className="mt-8 flex justify-between items-center">
+              <div className="mt-12 flex justify-between items-center">
                 <Button
                   onClick={() => setShowQuiz(true)}
-                  className="gap-2 bg-blue-600 hover:bg-blue-700"
+                  className="gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white"
                 >
                   Take Topic Quiz
                 </Button>
                 <Link href="/ai/module1/machine-learning-basics">
-                  <Button className="gap-2">
+                  <Button className="gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
                     Next Topic: Machine Learning <ArrowRight className="h-4 w-4" />
                   </Button>
                 </Link>
