@@ -302,44 +302,93 @@ const TechnologyDeck = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-12 px-4">
       <div className="max-w-6xl mx-auto">
-        <div className="bg-white rounded-lg shadow-xl p-8 min-h-[600px] relative">
+        <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-2xl p-8 min-h-[600px] relative">
+          {/* Progress bar */}
+          <div className="absolute top-0 left-0 w-full h-1 bg-gray-200 rounded-t-xl">
+            <motion.div 
+              className="h-full bg-blue-600 rounded-t-xl"
+              initial={{ width: 0 }}
+              animate={{ width: `${((currentSlide + 1) / slides.length) * 100}%` }}
+              transition={{ duration: 0.3 }}
+            />
+          </div>
+
           <AnimatePresence mode="wait">
             <motion.div
               key={currentSlide}
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -100 }}
-              transition={{ duration: 0.5 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ 
+                duration: 0.5, 
+                type: "spring",
+                stiffness: 100 
+              }}
               className="space-y-6"
             >
-              <div className="text-sm text-gray-500 mb-4">
-                Slide {currentSlide + 1} of {slides.length}
+              <div className="flex justify-between items-center mb-8">
+                <div className="text-sm text-gray-500">
+                  Slide {currentSlide + 1} of {slides.length}
+                </div>
+                <motion.div 
+                  className="text-xs text-blue-600 font-medium px-3 py-1 bg-blue-50 rounded-full"
+                  initial={{ scale: 0.9 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  Technical Overview
+                </motion.div>
               </div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-8">
+
+              <motion.h2 
+                className="text-3xl font-bold text-gray-900 mb-8"
+                initial={{ x: -20 }}
+                animate={{ x: 0 }}
+                transition={{ duration: 0.3, delay: 0.2 }}
+              >
                 {slides[currentSlide].title}
-              </h2>
+              </motion.h2>
+
               {slides[currentSlide].content}
             </motion.div>
           </AnimatePresence>
 
+          {/* Navigation buttons with hover effects */}
           <div className="absolute bottom-8 right-8 flex space-x-4">
             <Button
               variant="outline"
               onClick={prevSlide}
               disabled={currentSlide === 0}
+              className="group transition-all duration-200 hover:bg-blue-50"
             >
-              <ChevronLeft className="h-4 w-4 mr-2" />
+              <ChevronLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform" />
               Previous
             </Button>
             <Button
               onClick={nextSlide}
               disabled={currentSlide === slides.length - 1}
+              className="group transition-all duration-200"
             >
               Next
-              <ChevronRight className="h-4 w-4 ml-2" />
+              <ChevronRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
+          </div>
+
+          {/* Slide indicators */}
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2">
+            {slides.map((_, index) => (
+              <motion.div
+                key={index}
+                className={`h-2 w-2 rounded-full ${
+                  currentSlide === index ? 'bg-blue-600' : 'bg-gray-300'
+                }`}
+                initial={{ scale: 0.8 }}
+                animate={{ scale: currentSlide === index ? 1 : 0.8 }}
+                transition={{ duration: 0.2 }}
+              />
+            ))}
           </div>
         </div>
       </div>
