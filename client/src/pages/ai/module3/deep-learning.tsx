@@ -46,25 +46,32 @@ export default function DeepLearning() {
   const [showQuiz, setShowQuiz] = useState(false);
   const [readingProgress, setReadingProgress] = useState(0);
   const [, setLocation] = useLocationWouter();
+  const [hasMarkedComplete, setHasMarkedComplete] = useState(false);
 
   useEffect(() => {
-    // Track this page as the last accessed route when component mounts
-    updateProgress(3, 'deep-learning', false, 3, 0, undefined, '/ai/module3/deep-learning', 'ai');
-
     const handleScroll = () => {
       const scrolled = window.scrollY;
       const maxHeight = document.documentElement.scrollHeight - window.innerHeight;
       const progress = (scrolled / maxHeight) * 100;
       setReadingProgress(progress);
 
-      if (progress > 90) {
-        updateProgress(3, 'deep-learning', true, 3, Date.now(), undefined, '/ai/module3/deep-learning', 'ai');
+      if (progress > 90 && !hasMarkedComplete) {
+        updateProgress({
+          moduleId: 'ai-module3',
+          sectionId: 'deep-learning',
+          completed: true,
+          score: 0,
+          totalSections: 5,
+          currentSection: 2,
+          nextModule: 'reinforcement-learning'
+        });
+        setHasMarkedComplete(true);
       }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [updateProgress]);
+  }, [updateProgress, hasMarkedComplete]);
 
   const handleQuizCompletion = () => {
     setLocation("/ai/module3/reinforcement-learning");
