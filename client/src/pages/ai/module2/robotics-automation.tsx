@@ -5,19 +5,25 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { useProgress } from "@/context/progress-context";
-import { 
+import {
   ArrowLeft,
   ArrowRight,
   Bot,
   Cog,
   Factory,
   Workflow,
+  Box,
+  Eye,
   Check,
   X,
   RefreshCcw,
   Play,
   Pause,
-  RotateCcw
+  RotateCcw,
+  Cpu,
+  CircuitBoard,
+  Boxes,
+  GitBranch
 } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 
@@ -26,7 +32,7 @@ const RobotArmSimulation = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [angle1, setAngle1] = useState(0);
   const [angle2, setAngle2] = useState(0);
-  
+
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (isRunning) {
@@ -37,27 +43,41 @@ const RobotArmSimulation = () => {
     }
     return () => clearInterval(interval);
   }, [isRunning]);
-  
+
   return (
     <div className="space-y-4">
-      <div className="bg-blue-50 p-6 rounded-lg">
-        <div className="aspect-video bg-gradient-to-r from-blue-200 to-blue-300 rounded-lg relative">
+      <div className="bg-gradient-to-br from-blue-900/50 to-purple-900/50 p-8 rounded-xl backdrop-blur-sm border border-blue-300/20">
+        <div className="aspect-video bg-gradient-to-r from-blue-400 to-indigo-400 rounded-xl relative overflow-hidden">
           <motion.div
-            className="absolute left-1/2 top-1/2 w-40 h-2 bg-gray-700 origin-left"
+            className="absolute left-1/2 top-1/2 w-40 h-3 bg-gradient-to-r from-gray-700 to-gray-800 origin-left rounded-full shadow-lg"
             style={{ rotate: angle1 }}
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", duration: 1 }}
           >
             <motion.div
-              className="absolute right-0 w-32 h-2 bg-gray-800 origin-left"
+              className="absolute right-0 w-32 h-3 bg-gradient-to-r from-gray-800 to-gray-900 origin-left rounded-full shadow-lg"
               style={{ rotate: angle2 }}
             >
-              <div className="absolute right-0 w-4 h-4 bg-red-500 rounded-full" />
+              <motion.div
+                className="absolute right-0 w-6 h-6 bg-gradient-to-br from-red-500 to-red-600 rounded-full shadow-lg"
+                animate={{
+                  scale: isRunning ? [1, 1.2, 1] : 1,
+                }}
+                transition={{
+                  duration: 1,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              />
             </motion.div>
           </motion.div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
         </div>
-        <div className="flex justify-center gap-4 mt-4">
+        <div className="flex justify-center gap-4 mt-6">
           <Button
             onClick={() => setIsRunning(!isRunning)}
-            className="gap-2"
+            className="gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 border-none"
           >
             {isRunning ? (
               <>
@@ -75,7 +95,7 @@ const RobotArmSimulation = () => {
               setAngle1(0);
               setAngle2(0);
             }}
-            className="gap-2"
+            className="gap-2 border-blue-500 text-blue-400 hover:text-blue-300"
           >
             <RotateCcw className="w-4 h-4" /> Reset
           </Button>
@@ -111,25 +131,44 @@ const AssemblyLineSimulation = () => {
 
   return (
     <div className="space-y-4">
-      <div className="bg-blue-50 p-6 rounded-lg">
-        <div className="h-32 bg-gradient-to-r from-blue-200 to-blue-300 rounded-lg relative overflow-hidden">
+      <div className="bg-gradient-to-br from-blue-900/50 to-purple-900/50 p-8 rounded-xl backdrop-blur-sm border border-blue-300/20">
+        <div className="h-32 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-xl relative overflow-hidden">
+          <motion.div
+            className="absolute inset-0"
+            initial={{ backgroundPosition: "0% 0%" }}
+            animate={{
+              backgroundPosition: isRunning ? "100% 0%" : "0% 0%",
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+            style={{
+              backgroundImage: "repeating-linear-gradient(45deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 10px, transparent 10px, transparent 20px)"
+            }}
+          />
           <div className="absolute inset-y-0 left-0 w-full flex items-center">
-            {items.map((id, index) => (
-              <motion.div
-                key={id}
-                className="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center text-white"
-                initial={{ x: -50, opacity: 0 }}
-                animate={{ x: index * 100, opacity: 1 }}
-                exit={{ x: 600, opacity: 0 }}
-              >
-                {index + 1}
-              </motion.div>
-            ))}
+            <AnimatePresence>
+              {items.map((id, index) => (
+                <motion.div
+                  key={id}
+                  className="w-16 h-16 bg-gradient-to-br from-gray-700 to-gray-800 rounded-xl flex items-center justify-center text-blue-300 shadow-lg border border-gray-600"
+                  initial={{ x: -100, opacity: 0, scale: 0.5 }}
+                  animate={{ x: index * 120, opacity: 1, scale: 1 }}
+                  exit={{ x: 800, opacity: 0, scale: 0.5 }}
+                  transition={{ type: "spring", stiffness: 100, damping: 12 }}
+                >
+                  <span className="text-xl font-bold">{index + 1}</span>
+                </motion.div>
+              ))}
+            </AnimatePresence>
           </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
         </div>
         <Button
           onClick={() => setIsRunning(!isRunning)}
-          className="mt-4 gap-2"
+          className="mt-6 gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 border-none w-full"
         >
           {isRunning ? (
             <>
@@ -150,10 +189,10 @@ const AssemblyLineSimulation = () => {
 const AutomationPipelineVisualization = () => {
   const [activeStep, setActiveStep] = useState(0);
   const steps = [
-    { title: "Input", icon: Factory },
-    { title: "Processing", icon: Cog },
-    { title: "Assembly", icon: Bot },
-    { title: "Quality Check", icon: Workflow }
+    { title: "Input", icon: Factory, desc: "Raw materials and data input" },
+    { title: "Processing", icon: Cog, desc: "Automated processing and transformation" },
+    { title: "Assembly", icon: Bot, desc: "Robotic assembly and integration" },
+    { title: "Quality Check", icon: Workflow, desc: "Automated quality assurance" }
   ];
 
   useEffect(() => {
@@ -164,35 +203,44 @@ const AutomationPipelineVisualization = () => {
   }, []);
 
   return (
-    <div className="w-full py-8">
+    <div className="w-full py-12 px-4 bg-gradient-to-br from-blue-900/50 to-purple-900/50 rounded-xl border border-blue-300/20 backdrop-blur-sm">
       <div className="flex justify-between relative">
         {steps.map((step, index) => {
           const Icon = step.icon;
+          const isActive = index === activeStep;
           return (
             <motion.div
               key={index}
               className={`flex flex-col items-center z-10 ${
-                index === activeStep ? "text-blue-600" : "text-gray-400"
+                isActive ? "text-blue-400" : "text-gray-500"
               }`}
               animate={{
-                scale: index === activeStep ? 1.1 : 1,
-                opacity: index === activeStep ? 1 : 0.7,
+                scale: isActive ? 1.1 : 1,
+                opacity: isActive ? 1 : 0.7,
               }}
             >
-              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center mb-2 border-2 border-current">
-                <Icon className="w-6 h-6" />
+              <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${
+                isActive ? "from-blue-500 to-indigo-600" : "from-gray-700 to-gray-800"
+              } flex items-center justify-center mb-3 shadow-lg ${
+                isActive ? "shadow-blue-500/30" : ""
+              } transition-all duration-300`}>
+                <Icon className={`w-8 h-8 ${isActive ? "text-white" : "text-gray-400"}`} />
               </div>
-              <span className="text-sm font-medium">{step.title}</span>
+              <span className="text-sm font-medium mb-1">{step.title}</span>
+              <span className="text-xs text-gray-400 text-center max-w-[120px]">{step.desc}</span>
             </motion.div>
           );
         })}
-        <div className="absolute top-6 left-0 w-full h-0.5 bg-gray-200">
+        <div className="absolute top-8 left-0 w-full h-0.5 bg-gray-700">
           <motion.div
-            className="h-full bg-blue-600"
+            className="h-full bg-gradient-to-r from-blue-500 to-indigo-600"
             animate={{
               width: `${((activeStep + 1) / steps.length) * 100}%`,
             }}
             transition={{ duration: 0.5 }}
+            style={{
+              filter: "drop-shadow(0 0 4px rgba(59, 130, 246, 0.5))"
+            }}
           />
         </div>
       </div>
@@ -271,10 +319,14 @@ export default function RoboticsAutomation() {
         });
       } else {
         setShowResults(true);
-        updateProgress('ai-module2', {
+        updateProgress({
+          moduleId: 'ai-module2',
           sectionId: 'robotics-automation',
           completed: true,
-          score: Math.round((score / questions.length) * 100)
+          score: Math.round((score / questions.length) * 100),
+          totalSections: 4,
+          currentSection: 3,
+          nextModule: 'ai-ethics'
         });
       }
     }, 2000);
@@ -284,8 +336,8 @@ export default function RoboticsAutomation() {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
-          <Card>
-            <CardContent className="pt-6">
+          <Card className="border-none bg-gradient-to-br from-gray-900 to-blue-900">
+            <CardContent className="p-8">
               {!showResults ? (
                 <motion.div
                   className="space-y-4"
@@ -295,26 +347,30 @@ export default function RoboticsAutomation() {
                   <Button
                     variant="ghost"
                     onClick={() => setShowQuiz(false)}
-                    className="mb-4"
+                    className="mb-4 text-blue-300 hover:text-blue-200"
                   >
                     <ArrowLeft className="h-4 w-4 mr-2" /> Back to Content
                   </Button>
 
                   <div className="mb-8">
-                    <h2 className="text-xl font-semibold text-blue-800 mb-2">
+                    <h2 className="text-xl font-semibold text-blue-300 mb-2">
                       Question {currentQuestion + 1} of {questions.length}
                     </h2>
-                    <div className="w-full bg-gray-200 h-2 rounded-full">
-                      <div
-                        className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                        style={{
+                    <div className="w-full bg-gray-700 h-2 rounded-full">
+                      <motion.div
+                        className="bg-gradient-to-r from-blue-500 to-indigo-600 h-2 rounded-full"
+                        initial={{ width: 0 }}
+                        animate={{
                           width: `${((currentQuestion + 1) / questions.length) * 100}%`,
                         }}
+                        transition={{ duration: 0.5 }}
                       />
                     </div>
                   </div>
 
-                  <p className="text-lg mb-6">{questions[currentQuestion].question}</p>
+                  <p className="text-lg mb-6 text-blue-100">
+                    {questions[currentQuestion].question}
+                  </p>
                   <div className="grid gap-3">
                     {questions[currentQuestion].options.map((option, index) => {
                       const isSelected = answerState.selectedAnswer === index;
@@ -332,9 +388,9 @@ export default function RoboticsAutomation() {
                             className={`w-full justify-start text-left p-4 relative ${
                               isSelected
                                 ? isCorrect
-                                  ? "bg-green-100 border-green-500 hover:bg-green-100"
-                                  : "bg-red-100 border-red-500 hover:bg-red-100"
-                                : "hover:bg-blue-50"
+                                  ? "bg-green-900/30 border-green-500 hover:bg-green-900/30 text-green-300"
+                                  : "bg-red-900/30 border-red-500 hover:bg-red-900/30 text-red-300"
+                                : "hover:bg-blue-800/30 text-blue-200 border-blue-700"
                             }`}
                             onClick={() =>
                               !answerState.showExplanation && handleAnswer(index)
@@ -347,9 +403,9 @@ export default function RoboticsAutomation() {
                               {isSelected && (
                                 <div className="absolute right-4">
                                   {isCorrect ? (
-                                    <Check className="h-5 w-5 text-green-600" />
+                                    <Check className="h-5 w-5 text-green-500" />
                                   ) : (
-                                    <X className="h-5 w-5 text-red-600" />
+                                    <X className="h-5 w-5 text-red-500" />
                                   )}
                                 </div>
                               )}
@@ -365,17 +421,17 @@ export default function RoboticsAutomation() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       className={`mt-4 p-4 rounded-lg ${
-                        answerState.isCorrect ? "bg-green-100" : "bg-red-100"
+                        answerState.isCorrect ? "bg-green-900/30" : "bg-red-900/30"
                       }`}
                     >
                       <p
                         className={`font-semibold ${
-                          answerState.isCorrect ? "text-green-800" : "text-red-800"
+                          answerState.isCorrect ? "text-green-300" : "text-red-300"
                         }`}
                       >
                         {answerState.isCorrect ? "Correct!" : "Incorrect."}
                       </p>
-                      <p className="mt-2 text-gray-700">
+                      <p className="mt-2 text-blue-200">
                         {questions[currentQuestion].explanation}
                       </p>
                     </motion.div>
@@ -387,14 +443,23 @@ export default function RoboticsAutomation() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                 >
-                  <Check className="h-16 w-16 text-green-500 mx-auto mb-4" />
-                  <h2 className="text-2xl font-semibold text-blue-800 mb-4">
+                  <div className="mb-6">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", bounce: 0.5 }}
+                      className="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full mx-auto flex items-center justify-center"
+                    >
+                      <Check className="h-10 w-10 text-white" />
+                    </motion.div>
+                  </div>
+                  <h2 className="text-2xl font-semibold text-blue-300 mb-4">
                     Quiz Completed!
                   </h2>
-                  <p className="text-lg mb-4">
+                  <p className="text-xl mb-4 text-blue-200">
                     You scored {score} out of {questions.length}
                   </p>
-                  <p className="text-gray-600 mb-6">
+                  <p className="text-blue-300 mb-6">
                     {score === questions.length
                       ? "Perfect score! You've mastered robotics and automation concepts!"
                       : "Great effort! Review the content and try again to improve your score."}
@@ -408,11 +473,12 @@ export default function RoboticsAutomation() {
                         setScore(0);
                         setShowResults(false);
                       }}
+                      className="border-blue-600 text-blue-300 hover:bg-blue-900/30"
                     >
                       Back to Content
                     </Button>
                     <Link href="/ai/module2/ai-ethics">
-                      <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
+                      <Button className="gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 border-none">
                         Next Topic <ArrowRight className="h-4 w-4" />
                       </Button>
                     </Link>
@@ -431,37 +497,44 @@ export default function RoboticsAutomation() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-6">
           <Link href="/ai/module2">
-            <Button variant="ghost" className="gap-2">
+            <Button variant="ghost" className="gap-2 text-blue-300 hover:text-blue-200">
               <ArrowLeft className="h-4 w-4" /> Back to Module 2
             </Button>
           </Link>
         </div>
 
-        <Card>
-          <CardContent className="pt-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <Bot className="h-10 w-10 text-blue-600" />
-                <h1 className="text-3xl font-bold text-blue-800">
-                  Robotics and Automation
-                </h1>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Card className="border-none bg-gradient-to-br from-gray-900 to-blue-900">
+            <CardContent className="p-8">
+              <div className="flex items-center gap-6 mb-8">
+                <div className="bg-gradient-to-br from-blue-500 to-indigo-600 p-4 rounded-2xl shadow-lg shadow-blue-500/30">
+                  <Bot className="h-10 w-10 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-3xl font-bold text-white mb-2">
+                    Robotics and Automation
+                  </h1>
+                  <p className="text-blue-200">
+                    Explore how AI powers modern robotics and automation systems
+                  </p>
+                </div>
               </div>
 
-              <div className="prose max-w-none">
+              <div className="prose max-w-none text-gray-300">
                 <motion.section
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.2 }}
-                  className="mb-8"
+                  className="mb-12"
                 >
-                  <h2 className="text-2xl font-semibold text-blue-700 mb-4">
+                  <h2 className="text-2xl font-semibold text-blue-300 mb-6">
                     Understanding Robotics and Automation
                   </h2>
-                  <p className="text-gray-700 mb-4">
+                  <p className="text-blue-100 mb-6">
                     Robotics and automation represent the intersection of artificial
                     intelligence and physical systems. These technologies enable
                     machines to perform complex tasks with precision, efficiency, and
@@ -475,12 +548,12 @@ export default function RoboticsAutomation() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4 }}
-                  className="mb-8"
+                  className="mb-12"
                 >
-                  <h2 className="text-2xl font-semibold text-blue-700 mb-4">
+                  <h2 className="text-2xl font-semibold text-blue-300 mb-6">
                     Robotic Arm Simulation
                   </h2>
-                  <p className="text-gray-700 mb-4">
+                  <p className="text-blue-100 mb-6">
                     Experience how robotic arms operate in industrial settings. This
                     simulation demonstrates basic movement patterns and control
                     systems used in manufacturing and assembly processes.
@@ -492,12 +565,12 @@ export default function RoboticsAutomation() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.6 }}
-                  className="mb-8"
+                  className="mb-12"
                 >
-                  <h2 className="text-2xl font-semibold text-blue-700 mb-4">
+                  <h2 className="text-2xl font-semibold text-blue-300 mb-6">
                     Assembly Line Automation
                   </h2>
-                  <p className="text-gray-700 mb-4">
+                  <p className="text-blue-100 mb-6">
                     Modern assembly lines combine robotics, sensors, and AI to
                     achieve high-speed, precise production. Watch this simulation of
                     an automated assembly line in action.
@@ -509,43 +582,57 @@ export default function RoboticsAutomation() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.8 }}
-                  className="mb-8"
+                  className="mb-12"
                 >
-                  <h2 className="text-2xl font-semibold text-blue-700 mb-4">
+                  <h2 className="text-2xl font-semibold text-blue-300 mb-6">
                     Key Applications
                   </h2>
                   <div className="grid md:grid-cols-2 gap-4">
                     {[
                       {
                         title: "Industrial Manufacturing",
-                        desc: "Automated assembly lines and quality control"
+                        desc: "Automated assembly lines and quality control",
+                        icon: Factory,
+                        gradient: "from-blue-500 to-blue-700"
                       },
                       {
-                        title: "Healthcare",
-                        desc: "Surgical robots and automated diagnostics"
+                        title: "Smart Automation",
+                        desc: "Intelligent process control and optimization",
+                        icon: Cpu,
+                        gradient: "from-indigo-500 to-indigo-700"
                       },
                       {
-                        title: "Logistics",
-                        desc: "Warehouse automation and package sorting"
+                        title: "Robotic Systems",
+                        desc: "Advanced robotics and control systems",
+                        icon: CircuitBoard,
+                        gradient: "from-purple-500 to-purple-700"
                       },
                       {
-                        title: "Agriculture",
-                        desc: "Automated harvesting and crop monitoring"
+                        title: "Logistics & Supply Chain",
+                        desc: "Automated warehousing and distribution",
+                        icon: Boxes,
+                        gradient: "from-pink-500 to-pink-700"
                       }
-                    ].map((item, index) => (
-                      <motion.div
-                        key={item.title}
-                        className="bg-blue-50 p-4 rounded-lg"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 1 + index * 0.2 }}
-                      >
-                        <h3 className="font-semibold text-blue-800 mb-2">
-                          {item.title}
-                        </h3>
-                        <p className="text-gray-700 text-sm">{item.desc}</p>
-                      </motion.div>
-                    ))}
+                    ].map((item, index) => {
+                      const Icon = item.icon;
+                      return (
+                        <motion.div
+                          key={item.title}
+                          className={`bg-gradient-to-br ${item.gradient} p-6 rounded-xl shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl border border-white/10`}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 1 + index * 0.2 }}
+                        >
+                          <div className="bg-white/10 p-3 rounded-lg w-fit mb-4">
+                            <Icon className="h-6 w-6 text-white" />
+                          </div>
+                          <h3 className="font-semibold text-white text-lg mb-2">
+                            {item.title}
+                          </h3>
+                          <p className="text-blue-100 text-sm">{item.desc}</p>
+                        </motion.div>
+                      );
+                    })}
                   </div>
                 </motion.section>
               </div>
@@ -553,19 +640,19 @@ export default function RoboticsAutomation() {
               <div className="mt-8 flex justify-between items-center">
                 <Button
                   onClick={() => setShowQuiz(true)}
-                  className="gap-2 bg-blue-600 hover:bg-blue-700"
+                  className="gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 border-none"
                 >
                   Take Topic Quiz
                 </Button>
                 <Link href="/ai/module2/ai-ethics">
-                  <Button className="gap-2">
+                  <Button className="gap-2 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 border-none">
                     Next Topic <ArrowRight className="h-4 w-4" />
                   </Button>
                 </Link>
               </div>
-            </motion.div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
     </div>
   );
