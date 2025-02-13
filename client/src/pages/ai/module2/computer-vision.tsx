@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { useProgress } from "@/context/progress-context";
-import { 
+import {
   ArrowLeft,
   ArrowRight,
   Camera,
@@ -29,7 +29,7 @@ const ImageProcessingDemo = () => {
   return (
     <div className="space-y-4">
       <div className="bg-gradient-to-br from-blue-900/50 to-purple-900/50 p-6 rounded-lg backdrop-blur-sm border border-blue-300/20">
-        <motion.div 
+        <motion.div
           className="aspect-video bg-gradient-to-r from-blue-400 to-indigo-400 rounded-lg mb-4 relative overflow-hidden"
           style={{
             filter: `brightness(${brightness}%) contrast(${contrast}%)`

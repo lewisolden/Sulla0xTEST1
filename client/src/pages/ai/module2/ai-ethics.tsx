@@ -135,7 +135,7 @@ const EthicalDecisionSimulator = () => {
 const BiasVisualizationDemo = () => {
   const [biasLevel, setBiasLevel] = useState(50);
   const [showingEffect, setShowingEffect] = useState(false);
-  
+
   const startVisualization = () => {
     setShowingEffect(true);
     setTimeout(() => setShowingEffect(false), 3000);
@@ -315,10 +315,13 @@ export default function AIEthics() {
         });
       } else {
         setShowResults(true);
-        updateProgress('ai-module2', {
+        updateProgress({
+          moduleId: 'ai-module2',
           sectionId: 'ai-ethics',
           completed: true,
-          score: Math.round((score / questions.length) * 100)
+          score: Math.round((score / questions.length) * 100),
+          totalSections: 4,
+          currentSection: 4
         });
       }
     }, 2000);
