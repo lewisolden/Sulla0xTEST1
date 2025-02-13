@@ -1454,6 +1454,12 @@ const slides = [
   whatIsBuiltSlide,
   goToMarketSlide,
   growthExpansionSlide,
+  tokenIntegrationSlide,
+  tractionSlide,
+  financialSlide,
+  financialModelSlide,
+  fundingNarrativeSlide,
+  fundingBreakdownSlide,
   teamSlide,
   joinUsSlide
 ];
