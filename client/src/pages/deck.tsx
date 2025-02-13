@@ -537,44 +537,84 @@ const futureFinanceSlide = <Slide key="future-finance">
       <div className="p-3 bg-green-500/20 rounded-lg">
         <Book className="w-8 h-8 text-green-400" />
       </div>
-      <h2 className="text-4xl font-bold text-blue-400">Your Journey into the Future of Finance</h2>
+      <h2 className="text-4xl font-bold text-blue-400">Your Journey into the Future of Finance & AI</h2>
     </div>
-    <Card className="bg-blue-900/30 p-6 mb-8">
-      <h3 className="text-2xl font-semibold text-blue-300 mb-4">Course 1: Introduction to Cryptocurrency</h3>
-    </Card>
     <div className="space-y-6">
-      {[
-        {
-          title: "Module 1: Understanding Cryptocurrency",
-          description: "Master the fundamentals through interactive learning and practical exercises"
-        },
-        {
-          title: "Module 2: Bitcoin Fundamentals",
-          description: "Deep dive into Bitcoin, investment strategies, and security considerations"
-        },
-        {
-          title: "Module 3: Ethereum & Smart Contracts",
-          description: "Explore Ethereum, smart contracts, and their practical applications"
-        }
-      ].map((module, index) => (
-        <motion.div
-          key={index}
-          initial={{ x: -50, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ delay: index * 0.2 }}
-          className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
-        >
-          <div className="flex items-start gap-4">
-            <div className="p-2 bg-blue-400/20 rounded-full mt-1">
-              <GitBranch className="w-5 h-5 text-blue-400" />
-            </div>
-            <div>
-              <h4 className="text-xl font-semibold text-blue-300 mb-2">{module.title}</h4>
-              <p className="text-blue-100">{module.description}</p>
-            </div>
-          </div>
-        </motion.div>
-      ))}
+      <Card className="bg-blue-900/30 p-6 mb-8">
+        <h3 className="text-2xl font-semibold text-blue-300 mb-4">Course 1: Introduction to Cryptocurrency</h3>
+        <div className="space-y-4">
+          {[
+            {
+              title: "Module 1: Understanding Cryptocurrency",
+              description: "Master the fundamentals through AI-powered interactive learning"
+            },
+            {
+              title: "Module 2: Bitcoin Fundamentals",
+              description: "Deep dive into Bitcoin, with AI-assisted investment analysis"
+            },
+            {
+              title: "Module 3: Ethereum & Smart Contracts",
+              description: "Explore Ethereum, smart contracts, and AI-driven contract auditing"
+            }
+          ].map((module, index) => (
+            <motion.div
+              key={index}
+              initial={{ x: -50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: index * 0.2 }}
+              className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+            >
+              <div className="flex items-start gap-4">
+                <div className="p-2 bg-blue-400/20 rounded-full mt-1">
+                  <GitBranch className="w-5 h-5 text-blue-400" />
+                </div>
+                <div>
+                  <h4 className="text-xl font-semibold text-blue-300 mb-2">{module.title}</h4>
+                  <p className="text-blue-100">{module.description}</p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </Card>
+
+      <Card className="bg-blue-900/30 p-6">
+        <h3 className="text-2xl font-semibold text-blue-300 mb-4">Course 2: Introduction to AI</h3>
+        <div className="space-y-4">
+          {[
+            {
+              title: "Module 1: AI Fundamentals",
+              description: "Understanding core AI concepts and machine learning basics"
+            },
+            {
+              title: "Module 2: Applied AI",
+              description: "Practical applications of AI in modern technology"
+            },
+            {
+              title: "Module 3: Emerging Technologies",
+              description: "Explore AI's role in shaping the future of technology"
+            }
+          ].map((module, index) => (
+            <motion.div
+              key={index}
+              initial={{ x: -50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ delay: index * 0.2 }}
+              className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg"
+            >
+              <div className="flex items-start gap-4">
+                <div className="p-2 bg-blue-400/20 rounded-full mt-1">
+                  <BrainCircuit className="w-5 h-5 text-blue-400" />
+                </div>
+                <div>
+                  <h4 className="text-xl font-semibold text-blue-300 mb-2">{module.title}</h4>
+                  <p className="text-blue-100">{module.description}</p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </Card>
     </div>
   </motion.div>
 </Slide>;
@@ -713,8 +753,7 @@ const whatIsBuiltSlide = <Slide key="whats-built">
   </motion.div>
 </Slide>;
 
-const goToMarketSlide = <Slide key="go-to-market">
-  <motion.div
+const goToMarketSlide = <Slide key="go-to-market"><motion.div
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     transition={{ duration: 0.5 }}
