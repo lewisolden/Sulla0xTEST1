@@ -276,48 +276,63 @@ router.post("/api/learning-path/progress", async (req, res) => {
 
 // Helper function to calculate course progress
 async function updateCourseProgress(tx: any, userId: number, courseId: number) {
-  // Updated section counting logic for AI course
-  const sectionsPerModule = courseId === 2 ? 5 : 4; // AI course has 5 sections per module
-  const totalModules = courseId === 2 ? 3 : 3; // Both courses have 3 modules
-  const totalSections = sectionsPerModule * totalModules;
+  try {
+    // AI course (courseId: 2) has 5 sections per module
+    // Regular course (courseId: 1) has 4 sections per module
+    const sectionsPerModule = courseId === 2 ? 5 : 4;
+    const totalModules = 3; // Both courses have 3 modules
+    const totalSections = sectionsPerModule * totalModules;
 
-  // Count completed sections
-  const completedSections = await tx
-    .select({ count: sql<number>`cast(count(*) as integer)` })
-    .from(moduleProgress)
-    .where(
-      and(
-        eq(moduleProgress.userId, userId),
-        eq(moduleProgress.courseId, courseId),
-        eq(moduleProgress.completed, true)
+    console.log(`[Progress Update] Course ${courseId} configuration:`, {
+      sectionsPerModule,
+      totalModules,
+      totalSections
+    });
+
+    // Count completed sections for this course
+    const completedSections = await tx
+      .select({ count: sql<number>`cast(count(*) as integer)` })
+      .from(moduleProgress)
+      .where(
+        and(
+          eq(moduleProgress.userId, userId),
+          eq(moduleProgress.courseId, courseId),
+          eq(moduleProgress.completed, true)
+        )
+      );
+
+    const progress = Math.round((completedSections[0].count / totalSections) * 100);
+
+    console.log(`[Progress Update] User ${userId}, Course ${courseId}:`, {
+      completedSections: completedSections[0].count,
+      totalSections,
+      progress,
+      sectionWeight: (100 / totalSections).toFixed(2) + '%'
+    });
+
+    // Update course enrollment progress
+    const [updatedEnrollment] = await tx
+      .update(courseEnrollments)
+      .set({
+        progress: progress,
+        lastAccessedAt: new Date(),
+        updatedAt: new Date()
+      })
+      .where(
+        and(
+          eq(courseEnrollments.userId, userId),
+          eq(courseEnrollments.courseId, courseId)
+        )
       )
-    );
+      .returning();
 
-  // Calculate progress percentage
-  const progressPercentage = Math.round((completedSections[0].count / totalSections) * 100);
+    console.log(`[Progress Update] Updated enrollment:`, updatedEnrollment);
 
-  console.log(`[Progress Update] User ${userId}, Course ${courseId}:`, {
-    completedSections: completedSections[0].count,
-    totalSections,
-    progressPercentage,
-    sectionWeight: (100 / totalSections).toFixed(2) + '%'
-  });
-
-  // Update course enrollment progress
-  await tx
-    .update(courseEnrollments)
-    .set({
-      progress: progressPercentage,
-      lastAccessedAt: new Date()
-    })
-    .where(
-      and(
-        eq(courseEnrollments.userId, userId),
-        eq(courseEnrollments.courseId, courseId)
-      )
-    );
-
-  return progressPercentage;
+    return progress;
+  } catch (error) {
+    console.error('[Progress Update] Error updating course progress:', error);
+    throw error;
+  }
 }
 
 export default router;

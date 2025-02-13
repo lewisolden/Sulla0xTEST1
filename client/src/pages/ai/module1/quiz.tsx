@@ -91,13 +91,13 @@ export default function ModuleQuiz() {
       showExplanation: true
     });
 
-    setTimeout(() => {
-      if (isCorrect) {
-        setScore(score + 1);
-      }
+    if (isCorrect) {
+      setScore(prev => prev + 1);
+    }
 
+    setTimeout(() => {
       if (currentQuestion < questions.length - 1) {
-        setCurrentQuestion(currentQuestion + 1);
+        setCurrentQuestion(prev => prev + 1);
         setAnswerState({
           selectedAnswer: null,
           isCorrect: false,
@@ -105,8 +105,10 @@ export default function ModuleQuiz() {
         });
       } else {
         setShowResults(true);
-        // Updated progress tracking for AI course
+        // Calculate final score and update progress
         const finalScore = ((score + (isCorrect ? 1 : 0)) / questions.length) * 100;
+
+        // Update progress for AI course
         updateProgress({
           moduleId: 1,
           sectionId: 'module1-quiz',
@@ -114,6 +116,8 @@ export default function ModuleQuiz() {
           completed: finalScore >= 60,
           score: finalScore,
           timeSpent: 300 // Estimated time in seconds
+        }).catch(error => {
+          console.error('Failed to update progress:', error);
         });
       }
     }, 2000);
