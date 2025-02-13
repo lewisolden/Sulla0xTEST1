@@ -580,6 +580,50 @@ export default function HowAIWorks() {
                     <Network className="h-6 w-6" />
                     Neural Networks: The Building Blocks
                   </h2>
+                  <div className="bg-slate-800 rounded-xl p-6 text-white mb-8">
+                    <p className="text-white/90 leading-relaxed mb-6">
+                      Neural networks are computing systems inspired by biological neural networks in human brains. They consist of interconnected nodes (neurons) organized in layers that process information from input to output:
+                    </p>
+                    <div className="space-y-6">
+                      <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                        <h3 className="text-lg font-semibold text-blue-400 mb-2">Input Layer</h3>
+                        <p className="text-white/80">
+                          The input layer is the first point of contact for data entering the neural network. It:
+                          <ul className="list-disc pl-6 mt-2 space-y-1">
+                            <li>Receives raw data (like image pixels, text, or numerical values)</li>
+                            <li>Standardizes and formats the input for processing</li>
+                            <li>Passes the processed input to the hidden layers</li>
+                          </ul>
+                        </p>
+                      </div>
+
+                      <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                        <h3 className="text-lg font-semibold text-blue-400 mb-2">Hidden Layers</h3>
+                        <p className="text-white/80">
+                          Hidden layers are where the deep learning magic happens. These layers:
+                          <ul className="list-disc pl-6 mt-2 space-y-1">
+                            <li>Process information through complex mathematical transformations</li>
+                            <li>Extract and learn features from the input data</li>
+                            <li>Can be multiple layers deep, enabling the network to learn hierarchical representations</li>
+                            <li>Apply activation functions to introduce non-linearity, allowing the network to learn complex patterns</li>
+                          </ul>
+                        </p>
+                      </div>
+
+                      <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                        <h3 className="text-lg font-semibold text-blue-400 mb-2">Output Layer</h3>
+                        <p className="text-white/80">
+                          The output layer produces the final results. It:
+                          <ul className="list-disc pl-6 mt-2 space-y-1">
+                            <li>Transforms the processed data into the desired output format</li>
+                            <li>Can produce various types of outputs (classifications, predictions, generated content)</li>
+                            <li>Uses specific activation functions based on the task (e.g., softmax for classification)</li>
+                          </ul>
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
                   <div className="mb-8">
                     <NeuralNetworkDiagram />
                   </div>
