@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useProgress } from "@/context/progress-context";
-import { 
+import {
   ArrowLeft,
   ArrowRight,
   MessageSquare,
@@ -14,11 +14,14 @@ import {
   Brain,
   Check,
   X,
-  RefreshCcw
+  RefreshCcw,
+  Workflow,
+  Cpu,
+  Code
 } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 
-// Interactive Text Analysis Component
+// Text Analysis Demo Component
 const TextAnalysisDemo = () => {
   const [inputText, setInputText] = useState("Natural Language Processing is amazing!");
   const [tokens, setTokens] = useState<string[]>([]);
@@ -27,7 +30,6 @@ const TextAnalysisDemo = () => {
   useEffect(() => {
     if (inputText) {
       setIsAnalyzing(true);
-      // Simulate tokenization
       const words = inputText.split(/\s+/);
       setTokens([]);
       words.forEach((word, index) => {
@@ -45,18 +47,18 @@ const TextAnalysisDemo = () => {
         value={inputText}
         onChange={(e) => setInputText(e.target.value)}
         placeholder="Enter text to analyze..."
-        className="w-full"
+        className="w-full bg-white/10 border-blue-300/20 text-white placeholder:text-blue-200/50"
       />
-      <div className="min-h-[100px] bg-blue-50 rounded-lg p-4">
-        <div className="flex flex-wrap gap-2">
+      <div className="min-h-[120px] bg-gradient-to-br from-blue-900/50 to-purple-900/50 backdrop-blur-sm rounded-lg p-6 border border-blue-300/20">
+        <div className="flex flex-wrap gap-3">
           {tokens.map((token, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="bg-white px-3 py-1 rounded-full border border-blue-200 shadow-sm"
+              initial={{ opacity: 0, scale: 0.5, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              className="bg-blue-400/20 backdrop-blur-sm px-4 py-2 rounded-full border border-blue-300/30 shadow-lg shadow-blue-500/20"
             >
-              {token}
+              <span className="text-blue-100">{token}</span>
             </motion.div>
           ))}
         </div>
@@ -64,9 +66,9 @@ const TextAnalysisDemo = () => {
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-            className="flex justify-center mt-4"
+            className="flex justify-center mt-6"
           >
-            <RefreshCcw className="w-6 h-6 text-blue-500" />
+            <RefreshCcw className="w-6 h-6 text-blue-400" />
           </motion.div>
         )}
       </div>
@@ -78,10 +80,10 @@ const TextAnalysisDemo = () => {
 const NLPPipelineVisualization = () => {
   const [activeStep, setActiveStep] = useState(0);
   const steps = [
-    { title: "Text Input", icon: MessageSquare },
-    { title: "Tokenization", icon: SplitSquareHorizontal },
-    { title: "Processing", icon: Brain },
-    { title: "Output", icon: Sparkles }
+    { title: "Text Input", icon: MessageSquare, desc: "Raw text data ingestion" },
+    { title: "Tokenization", icon: SplitSquareHorizontal, desc: "Breaking text into tokens" },
+    { title: "Processing", icon: Cpu, desc: "Analyzing and transforming tokens" },
+    { title: "Output", icon: Sparkles, desc: "Generating meaningful results" }
   ];
 
   useEffect(() => {
@@ -92,35 +94,44 @@ const NLPPipelineVisualization = () => {
   }, []);
 
   return (
-    <div className="w-full py-8">
+    <div className="w-full py-12 px-4 bg-gradient-to-br from-indigo-900/50 to-purple-900/50 rounded-xl border border-indigo-300/20 backdrop-blur-sm">
       <div className="flex justify-between relative">
         {steps.map((step, index) => {
           const Icon = step.icon;
+          const isActive = index === activeStep;
           return (
             <motion.div
               key={index}
               className={`flex flex-col items-center z-10 ${
-                index === activeStep ? "text-blue-600" : "text-gray-400"
+                isActive ? "text-blue-400" : "text-gray-500"
               }`}
               animate={{
-                scale: index === activeStep ? 1.1 : 1,
-                opacity: index === activeStep ? 1 : 0.7,
+                scale: isActive ? 1.1 : 1,
+                opacity: isActive ? 1 : 0.7,
               }}
             >
-              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center mb-2 border-2 border-current">
-                <Icon className="w-6 h-6" />
+              <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${
+                isActive ? "from-blue-500 to-indigo-600" : "from-gray-700 to-gray-800"
+              } flex items-center justify-center mb-3 shadow-lg ${
+                isActive ? "shadow-blue-500/30" : ""
+              } transition-all duration-300`}>
+                <Icon className={`w-8 h-8 ${isActive ? "text-white" : "text-gray-400"}`} />
               </div>
-              <span className="text-sm font-medium">{step.title}</span>
+              <span className="text-sm font-medium mb-1">{step.title}</span>
+              <span className="text-xs text-gray-400 text-center max-w-[120px]">{step.desc}</span>
             </motion.div>
           );
         })}
-        <div className="absolute top-6 left-0 w-full h-0.5 bg-gray-200">
+        <div className="absolute top-8 left-0 w-full h-0.5 bg-gray-700">
           <motion.div
-            className="h-full bg-blue-600"
+            className="h-full bg-gradient-to-r from-blue-500 to-indigo-600"
             animate={{
               width: `${((activeStep + 1) / steps.length) * 100}%`,
             }}
             transition={{ duration: 0.5 }}
+            style={{
+              filter: "drop-shadow(0 0 4px rgba(59, 130, 246, 0.5))"
+            }}
           />
         </div>
       </div>
@@ -134,18 +145,17 @@ const SentimentAnalysisDemo = () => {
   const [sentiment, setSentiment] = useState<number | null>(null);
 
   const analyzeSentiment = () => {
-    // Simple sentiment analysis simulation
     const positiveWords = ["good", "great", "awesome", "excellent", "happy", "love"];
     const negativeWords = ["bad", "awful", "terrible", "sad", "hate", "poor"];
-    
+
     const words = text.toLowerCase().split(/\s+/);
     let score = 0;
-    
+
     words.forEach(word => {
       if (positiveWords.includes(word)) score += 1;
       if (negativeWords.includes(word)) score -= 1;
     });
-    
+
     setSentiment(score);
   };
 
@@ -155,27 +165,49 @@ const SentimentAnalysisDemo = () => {
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="Enter text for sentiment analysis..."
-        className="w-full"
+        className="w-full bg-white/10 border-blue-300/20 text-white placeholder:text-blue-200/50"
       />
-      <Button onClick={analyzeSentiment} className="w-full">
+      <Button 
+        onClick={analyzeSentiment} 
+        className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 border-none"
+      >
         Analyze Sentiment
       </Button>
       {sentiment !== null && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center p-4 rounded-lg"
-          style={{
-            backgroundColor: sentiment > 0 ? "#dcfce7" : sentiment < 0 ? "#fee2e2" : "#f3f4f6",
-            color: sentiment > 0 ? "#166534" : sentiment < 0 ? "#991b1b" : "#374151"
-          }}
+          className={`text-center p-6 rounded-lg backdrop-blur-sm border ${
+            sentiment > 0 
+              ? "bg-green-500/20 border-green-300/30" 
+              : sentiment < 0 
+                ? "bg-red-500/20 border-red-300/30" 
+                : "bg-gray-500/20 border-gray-300/30"
+          }`}
         >
-          <p className="text-lg font-medium">
-            {sentiment > 0 ? "Positive 😊" : sentiment < 0 ? "Negative 😔" : "Neutral 😐"}
+          <motion.div 
+            className="text-4xl mb-3"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", bounce: 0.5 }}
+          >
+            {sentiment > 0 ? "😊" : sentiment < 0 ? "😔" : "😐"}
+          </motion.div>
+          <p className={`text-lg font-medium mb-2 ${
+            sentiment > 0 ? "text-green-300" : sentiment < 0 ? "text-red-300" : "text-gray-300"
+          }`}>
+            {sentiment > 0 ? "Positive" : sentiment < 0 ? "Negative" : "Neutral"}
           </p>
-          <p className="text-sm mt-2">
-            Sentiment score: {sentiment}
-          </p>
+          <div className="flex justify-center items-center gap-2">
+            <span className="text-sm text-blue-200">Sentiment score:</span>
+            <motion.span 
+              className="text-sm font-mono bg-black/30 px-2 py-1 rounded"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              {sentiment}
+            </motion.span>
+          </div>
         </motion.div>
       )}
     </div>
@@ -416,37 +448,44 @@ export default function NaturalLanguageProcessing() {
       <div className="max-w-4xl mx-auto">
         <div className="mb-6">
           <Link href="/ai/module2">
-            <Button variant="ghost" className="gap-2">
+            <Button variant="ghost" className="gap-2 text-blue-300 hover:text-blue-200">
               <ArrowLeft className="h-4 w-4" /> Back to Module 2
             </Button>
           </Link>
         </div>
 
-        <Card>
-          <CardContent className="pt-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <MessageSquare className="h-10 w-10 text-blue-600" />
-                <h1 className="text-3xl font-bold text-blue-800">
-                  Natural Language Processing
-                </h1>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Card className="border-none bg-gradient-to-br from-gray-900 to-blue-900">
+            <CardContent className="p-8">
+              <div className="flex items-center gap-6 mb-8">
+                <div className="bg-gradient-to-br from-blue-500 to-indigo-600 p-4 rounded-2xl shadow-lg shadow-blue-500/30">
+                  <MessageSquare className="h-10 w-10 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-3xl font-bold text-white mb-2">
+                    Natural Language Processing
+                  </h1>
+                  <p className="text-blue-200">
+                    Discover how computers understand and process human language
+                  </p>
+                </div>
               </div>
 
-              <div className="prose max-w-none">
+              <div className="prose max-w-none text-gray-300">
                 <motion.section
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.2 }}
-                  className="mb-8"
+                  className="mb-12"
                 >
-                  <h2 className="text-2xl font-semibold text-blue-700 mb-4">
+                  <h2 className="text-2xl font-semibold text-blue-300 mb-6">
                     Understanding NLP
                   </h2>
-                  <p className="text-gray-700 mb-4">
+                  <p className="text-blue-100 mb-6">
                     Natural Language Processing (NLP) is a branch of artificial intelligence
                     that helps computers understand, interpret, and manipulate human
                     language. Through NLP, machines can read text, hear speech, interpret
@@ -459,12 +498,12 @@ export default function NaturalLanguageProcessing() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4 }}
-                  className="mb-8"
+                  className="mb-12"
                 >
-                  <h2 className="text-2xl font-semibold text-blue-700 mb-4">
+                  <h2 className="text-2xl font-semibold text-blue-300 mb-6">
                     Text Analysis Demo
                   </h2>
-                  <p className="text-gray-700 mb-4">
+                  <p className="text-blue-100 mb-6">
                     Try out this interactive demo to see how NLP breaks down text into
                     tokens for processing. Enter your own text and watch the tokenization
                     process in action.
@@ -476,12 +515,12 @@ export default function NaturalLanguageProcessing() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.6 }}
-                  className="mb-8"
+                  className="mb-12"
                 >
-                  <h2 className="text-2xl font-semibold text-blue-700 mb-4">
+                  <h2 className="text-2xl font-semibold text-blue-300 mb-6">
                     Sentiment Analysis
                   </h2>
-                  <p className="text-gray-700 mb-4">
+                  <p className="text-blue-100 mb-6">
                     Sentiment analysis is a popular NLP application that determines the
                     emotional tone behind words. Try the demo below to analyze the
                     sentiment of your text.
@@ -493,41 +532,50 @@ export default function NaturalLanguageProcessing() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.8 }}
-                  className="mb-8"
+                  className="mb-12"
                 >
-                  <h2 className="text-2xl font-semibold text-blue-700 mb-4">
+                  <h2 className="text-2xl font-semibold text-blue-300 mb-6">
                     Key Applications
                   </h2>
                   <div className="grid md:grid-cols-2 gap-4">
                     {[
                       {
                         title: "Machine Translation",
-                        desc: "Automated translation between languages"
+                        desc: "Automated translation between languages",
+                        gradient: "from-blue-500 to-blue-700",
+                        icon: "🌍"
                       },
                       {
                         title: "Chatbots",
-                        desc: "AI-powered conversational interfaces"
+                        desc: "AI-powered conversational interfaces",
+                        gradient: "from-indigo-500 to-indigo-700",
+                        icon: "💬"
                       },
                       {
                         title: "Text Summarization",
-                        desc: "Generating concise summaries of longer texts"
+                        desc: "Generating concise summaries of longer texts",
+                        gradient: "from-purple-500 to-purple-700",
+                        icon: "📝"
                       },
                       {
                         title: "Named Entity Recognition",
-                        desc: "Identifying and classifying key information in text"
+                        desc: "Identifying and classifying key information in text",
+                        gradient: "from-pink-500 to-pink-700",
+                        icon: "🔍"
                       }
                     ].map((item, index) => (
                       <motion.div
                         key={item.title}
-                        className="bg-blue-50 p-4 rounded-lg"
+                        className={`bg-gradient-to-br ${item.gradient} p-6 rounded-xl shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl border border-white/10`}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 1 + index * 0.2 }}
                       >
-                        <h3 className="font-semibold text-blue-800 mb-2">
+                        <div className="text-3xl mb-3">{item.icon}</div>
+                        <h3 className="font-semibold text-white text-lg mb-2">
                           {item.title}
                         </h3>
-                        <p className="text-gray-700 text-sm">{item.desc}</p>
+                        <p className="text-blue-100 text-sm">{item.desc}</p>
                       </motion.div>
                     ))}
                   </div>
@@ -537,19 +585,19 @@ export default function NaturalLanguageProcessing() {
               <div className="mt-8 flex justify-between items-center">
                 <Button
                   onClick={() => setShowQuiz(true)}
-                  className="gap-2 bg-blue-600 hover:bg-blue-700"
+                  className="gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 border-none"
                 >
                   Take Topic Quiz
                 </Button>
                 <Link href="/ai/module2/computer-vision">
-                  <Button className="gap-2">
+                  <Button className="gap-2 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 border-none">
                     Next Topic <ArrowRight className="h-4 w-4" />
                   </Button>
                 </Link>
               </div>
-            </motion.div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
     </div>
   );
