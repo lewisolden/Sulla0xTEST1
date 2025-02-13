@@ -1387,8 +1387,7 @@ const fundingBreakdownSlide = <Slide key="funding-breakdown">
     <h2 className="text-3xl font-bold mb-6 text-blue-400">Funding Breakdown</h2>
     <div className="spacey-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card className="bg-blue-900/30 p-4">
-          <h3 className="font-semibold text-blue-300 mb-2">Content Expansion</h3>
+        <Card className="bg-blue-900/30 p-4"><h3 className="font-semibold text-blue-300 mb-2">Content Expansion</h3>
           <p className="text-lg text-blue-100">$50K</p>
           <p className="text-sm text-blue-200">Develop additional courses and certifications</p>
         </Card>
@@ -1454,12 +1453,6 @@ const slides = [
   whatIsBuiltSlide,
   goToMarketSlide,
   growthExpansionSlide,
-  tokenIntegrationSlide,
-  tractionSlide,
-  financialSlide,
-  financialModelSlide,
-  fundingNarrativeSlide,
-  fundingBreakdownSlide,
   teamSlide,
   joinUsSlide
 ];
