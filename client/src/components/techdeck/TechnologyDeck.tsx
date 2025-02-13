@@ -7,9 +7,13 @@ import { Card } from "@/components/ui/card";
 const slides = [
   {
     id: 1,
-    title: "Sulla - Next-Generation Learning Platform",
+    title: "Sulla Platform Overview",
     content: (
       <div className="space-y-8">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-200 mb-2">Next-Generation Learning Platform</h2>
+          <p className="text-lg text-gray-400">Advanced blockchain and AI educational platform delivering immersive experiences</p>
+        </div>
         <motion.div
           className="flex flex-col items-center justify-center"
           initial={{ opacity: 0 }}
@@ -93,9 +97,13 @@ const slides = [
   },
   {
     id: 2,
-    title: "Technical Architecture: Building a Robust Foundation",
+    title: "Technical Architecture",
     content: (
       <div className="space-y-8">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-200 mb-2">Building a Robust Foundation</h2>
+          <p className="text-lg text-gray-400">Enterprise-grade infrastructure powering seamless learning experiences</p>
+        </div>
         <div className="mb-8">
           {/* Architecture Diagram */}
           <div className="relative h-64 bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg p-4 border border-gray-700">
@@ -190,9 +198,13 @@ const slides = [
   },
   {
     id: 3,
-    title: "Data Storage & Management: Secure & Scalable Infrastructure",
+    title: "Data Storage & Management",
     content: (
       <div className="space-y-8">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-200 mb-2">Secure & Scalable Infrastructure</h2>
+          <p className="text-lg text-gray-400">Advanced data architecture ensuring privacy and performance</p>
+        </div>
         <div className="grid grid-cols-2 gap-8">
           <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
             <div className="flex items-center space-x-4 mb-6">
@@ -259,9 +271,13 @@ const slides = [
   },
   {
     id: 4,
-    title: "AI Integration: Powering Smart Learning",
+    title: "AI Integration",
     content: (
       <div className="space-y-8">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-200 mb-2">Powering Smart Learning</h2>
+          <p className="text-lg text-gray-400">Intelligent systems adapting to individual learning patterns</p>
+        </div>
         <div className="grid grid-cols-2 gap-8">
           <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
             <div className="flex items-center space-x-4 mb-6">
@@ -328,9 +344,13 @@ const slides = [
   },
   {
     id: 5,
-    title: "Adaptive Learning System: Personalized Education at Scale",
+    title: "Adaptive Learning System",
     content: (
       <div className="space-y-8">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-200 mb-2">Personalized Education at Scale</h2>
+          <p className="text-lg text-gray-400">Dynamic content delivery tailored to individual progress</p>
+        </div>
         <div className="grid grid-cols-2 gap-8">
           <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
             <div className="flex items-center space-x-4 mb-6">
@@ -397,9 +417,13 @@ const slides = [
   },
   {
     id: 6,
-    title: "User Progress Tracking: Comprehensive Learning Analytics",
+    title: "User Progress Tracking",
     content: (
       <div className="space-y-8">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-200 mb-2">Comprehensive Learning Analytics</h2>
+          <p className="text-lg text-gray-400">Detailed insights into learning performance and engagement</p>
+        </div>
         <div className="grid grid-cols-2 gap-8">
           <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
             <div className="flex items-center space-x-4 mb-6">
@@ -466,9 +490,13 @@ const slides = [
   },
   {
     id: 7,
-    title: "Content Management: Streamlined Course Creation",
+    title: "Content Management",
     content: (
       <div className="space-y-8">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-200 mb-2">Streamlined Course Creation</h2>
+          <p className="text-lg text-gray-400">Powerful tools for creating and managing educational content</p>
+        </div>
         <div className="grid grid-cols-2 gap-8">
           <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
             <div className="flex items-center space-x-4 mb-6">
@@ -514,7 +542,7 @@ const slides = [
                 </div>
               </li>
               <li className="flex items-start space-x-3">
-                <Blocks className="w-5 h-5 text-purple-400 mt-1" />
+                <Blocks className="w-5 h-5 textpurple-400 mt-1" />
                 <div>
                   <h4 className="font-medium text-gray-200">Version Control</h4>
                   <p className="text-sm text-gray-400">Track content changes and maintain multiple versions of learning materials</p>
@@ -535,9 +563,13 @@ const slides = [
   },
   {
     id: 8,
-    title: "Future Capabilities: Next-Generation Learning",
+    title: "Future Capabilities",
     content: (
       <div className="space-y-8">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-200 mb-2">Next-Generation Learning</h2>
+          <p className="text-lg text-gray-400">Innovative features shaping the future of education</p>
+        </div>
         <div className="grid grid-cols-2 gap-8">
           <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
             <div className="flex items-center space-x-4 mb-6">
@@ -603,9 +635,13 @@ const slides = [
   },
   {
     id: 9,
-    title: "Quiz & Assessment Engine: Interactive Evaluation System",
+    title: "Quiz & Assessment Engine",
     content: (
       <div className="space-y-8">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-200 mb-2">Interactive Evaluation System</h2>
+          <p className="text-lg text-gray-400">Comprehensive assessment tools for measuring learning outcomes</p>
+        </div>
         <div className="grid grid-cols-2 gap-8">
           <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
             <div className="flex items-center space-x-4 mb-6">
@@ -672,9 +708,13 @@ const slides = [
   },
   {
     id: 10,
-    title: "Course Creation System: Empowering Educators",
+    title: "Course Creation System",
     content: (
       <div className="space-y-8">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-200 mb-2">Empowering Educators</h2>
+          <p className="text-lg text-gray-400">Advanced tools for creating engaging learning experiences</p>
+        </div>
         <div className="grid grid-cols-2 gap-8">
           <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
             <div className="flex items-center space-x-4 mb-6">
@@ -741,9 +781,13 @@ const slides = [
   },
   {
     id: 11,
-    title: "Future Roadmap: Innovation & Growth",
+    title: "Future Roadmap",
     content: (
       <div className="space-y-8">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-200 mb-2">Innovation & Growth</h2>
+          <p className="text-lg text-gray-400">Strategic initiatives driving platform evolution</p>
+        </div>
         <div className="grid grid-cols-2 gap-8">
           <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
             <div className="flex items-center space-x-4 mb-6">
