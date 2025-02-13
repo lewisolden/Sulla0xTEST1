@@ -44,8 +44,8 @@ const PitchDeck: React.FC = () => {
     modulesSlide,                  // 10
     roadmapSlide,                  // 11
     progressSlide,                 // 12
-    platformInfrastructureSlide,   // 13
-    futureFinanceSlide,            // 14
+    futureFinanceSlide,            // 13
+    platformInfrastructureSlide,   // 14
     gtmSlide1,                     // 15
     gtmSlide2,                     // 16
     tokenSlide,                    // 17
@@ -55,6 +55,7 @@ const PitchDeck: React.FC = () => {
     fundingNarrativeSlide,         // 21
     fundingBreakdownSlide,         // 22
     teamSlide,                     // 23
+    ctaSlide,                      // 24
   ];
 
   const handleDownloadPDF = async () => {
