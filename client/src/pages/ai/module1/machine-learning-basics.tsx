@@ -32,16 +32,12 @@ const AlgorithmCard = ({
   examples: string[];
   delay: number;
 }) => {
-  const [isHovered, setIsHovered] = useState(false);
-
   return (
     <motion.div
-      className="bg-white rounded-lg shadow-lg p-6"
+      className="bg-white rounded-lg shadow-lg p-6 transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay }}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
     >
       <div className="flex items-center gap-3 mb-4">
         <div className="bg-blue-100 p-3 rounded-full">
@@ -49,29 +45,24 @@ const AlgorithmCard = ({
         </div>
         <h3 className="text-xl font-semibold text-blue-800">{title}</h3>
       </div>
-      <p className="text-gray-600 mb-4">{description}</p>
-      {isHovered && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          exit={{ opacity: 0, height: 0 }}
-          className="bg-blue-50 rounded-lg p-4"
-        >
-          <h4 className="font-semibold text-blue-700 mb-2">Examples:</h4>
-          <ul className="list-disc list-inside text-blue-600">
-            {examples.map((example, index) => (
-              <motion.li
-                key={index}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.1 * index }}
-              >
-                {example}
-              </motion.li>
-            ))}
-          </ul>
-        </motion.div>
-      )}
+      <p className="text-gray-600 mb-6 leading-relaxed">{description}</p>
+      <div className="bg-blue-50 rounded-lg p-4">
+        <h4 className="font-semibold text-blue-700 mb-3">Key Applications:</h4>
+        <ul className="space-y-2">
+          {examples.map((example, index) => (
+            <motion.li
+              key={index}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 * index }}
+              className="flex items-center gap-2 text-blue-600"
+            >
+              <div className="h-1.5 w-1.5 bg-blue-400 rounded-full"></div>
+              <span>{example}</span>
+            </motion.li>
+          ))}
+        </ul>
+      </div>
     </motion.div>
   );
 };
@@ -153,8 +144,7 @@ export default function MachineLearningBasics() {
           completed: true,
           score: Math.round((score / questions.length) * 100),
           totalSections: 5,
-          currentSection: 4,
-          nextModule: 'neural-networks'
+          currentSection: 4
         });
       }
     }, 2000);
@@ -164,11 +154,11 @@ export default function MachineLearningBasics() {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
-          <Card>
+          <Card className="border-2 border-blue-100">
             <CardContent className="pt-6">
               {!showResults ? (
                 <motion.div
-                  className="space-y-4"
+                  className="space-y-6"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                 >
@@ -181,7 +171,7 @@ export default function MachineLearningBasics() {
                   </Button>
 
                   <div className="mb-8">
-                    <h2 className="text-xl font-semibold text-blue-800 mb-2">
+                    <h2 className="text-2xl font-semibold text-blue-800 mb-4">
                       Question {currentQuestion + 1} of {questions.length}
                     </h2>
                     <div className="w-full bg-gray-200 h-2 rounded-full">
@@ -192,8 +182,8 @@ export default function MachineLearningBasics() {
                     </div>
                   </div>
 
-                  <p className="text-lg mb-6">{questions[currentQuestion].question}</p>
-                  <div className="grid gap-3">
+                  <p className="text-lg mb-6 font-medium">{questions[currentQuestion].question}</p>
+                  <div className="grid gap-4">
                     {questions[currentQuestion].options.map((option, index) => {
                       const isSelected = answerState.selectedAnswer === index;
                       const isCorrect = index === questions[currentQuestion].correct;
@@ -218,7 +208,7 @@ export default function MachineLearningBasics() {
                             disabled={answerState.showExplanation}
                           >
                             <div className="flex items-center gap-4">
-                              <span>{String.fromCharCode(65 + index)}.</span>
+                              <span className="font-semibold">{String.fromCharCode(65 + index)}.</span>
                               <span>{option}</span>
                               {isSelected && (
                                 <div className="absolute right-4">
@@ -240,16 +230,16 @@ export default function MachineLearningBasics() {
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className={`mt-4 p-4 rounded-lg ${
+                      className={`mt-6 p-6 rounded-lg ${
                         answerState.isCorrect ? "bg-green-100" : "bg-red-100"
                       }`}
                     >
-                      <p className={`font-semibold ${
+                      <p className={`font-semibold text-lg ${
                         answerState.isCorrect ? "text-green-800" : "text-red-800"
                       }`}>
                         {answerState.isCorrect ? "Correct!" : "Incorrect."}
                       </p>
-                      <p className="mt-2 text-gray-700">
+                      <p className="mt-2 text-gray-700 leading-relaxed">
                         {questions[currentQuestion].explanation}
                       </p>
                     </motion.div>
@@ -257,18 +247,18 @@ export default function MachineLearningBasics() {
                 </motion.div>
               ) : (
                 <motion.div
-                  className="text-center py-8"
+                  className="text-center py-12"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                 >
-                  <Check className="h-16 w-16 text-green-500 mx-auto mb-4" />
-                  <h2 className="text-2xl font-semibold text-blue-800 mb-4">
+                  <Check className="h-20 w-20 text-green-500 mx-auto mb-6" />
+                  <h2 className="text-3xl font-bold text-blue-800 mb-4">
                     Quiz Completed!
                   </h2>
-                  <p className="text-lg mb-4">
+                  <p className="text-xl mb-4">
                     You scored {score} out of {questions.length}
                   </p>
-                  <p className="text-gray-600 mb-6">
+                  <p className="text-gray-600 mb-8 max-w-md mx-auto">
                     {score === questions.length
                       ? "Perfect score! You've mastered the basics of Machine Learning!"
                       : "Great effort! Review the content and try again to improve your score."}
@@ -282,12 +272,13 @@ export default function MachineLearningBasics() {
                         setScore(0);
                         setShowResults(false);
                       }}
+                      className="min-w-[120px]"
                     >
                       Back to Content
                     </Button>
                     <Link href="/ai/module1/neural-networks">
-                      <Button className="gap-2 bg-blue-600 hover:bg-blue-700">
-                        Next Topic: Neural Networks <ArrowRight className="h-4 w-4" />
+                      <Button className="gap-2 bg-blue-600 hover:bg-blue-700 min-w-[180px]">
+                        Next Topic <ArrowRight className="h-4 w-4" />
                       </Button>
                     </Link>
                   </div>
@@ -311,18 +302,24 @@ export default function MachineLearningBasics() {
           </Link>
         </div>
 
-        <Card>
+        <Card className="border-2 border-blue-100">
           <CardContent className="pt-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
+              className="space-y-8"
             >
-              <div className="flex items-center gap-4 mb-6">
-                <Brain className="h-10 w-10 text-blue-600" />
-                <h1 className="text-3xl font-bold text-blue-800">
-                  Machine Learning Basics
-                </h1>
+              <div className="flex items-center gap-4 mb-8 bg-blue-50 p-6 rounded-lg">
+                <Brain className="h-12 w-12 text-blue-600" />
+                <div>
+                  <h1 className="text-3xl font-bold text-blue-800 mb-2">
+                    Machine Learning Basics
+                  </h1>
+                  <p className="text-gray-600">
+                    Discover the foundational concepts of machine learning and its various applications
+                  </p>
+                </div>
               </div>
 
               <div className="prose max-w-none">
@@ -330,23 +327,27 @@ export default function MachineLearningBasics() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.2 }}
-                  className="mb-8"
+                  className="mb-12"
                 >
-                  <h2 className="text-2xl font-semibold text-blue-700 mb-4">
+                  <h2 className="text-2xl font-semibold text-blue-700 mb-4 flex items-center gap-2">
+                    <Brain className="h-6 w-6" />
                     Understanding Machine Learning
                   </h2>
-                  <p className="text-gray-700 mb-6">
-                    Machine Learning is a subset of artificial intelligence that enables systems to learn and improve from experience. Unlike traditional programming where rules are explicitly defined, machine learning algorithms can learn patterns from data and make decisions with minimal human intervention.
-                  </p>
+                  <div className="bg-gradient-to-r from-blue-50 to-white p-6 rounded-lg">
+                    <p className="text-gray-700 leading-relaxed">
+                      Machine Learning is a subset of artificial intelligence that enables systems to learn and improve from experience. Unlike traditional programming where rules are explicitly defined, machine learning algorithms can learn patterns from data and make decisions with minimal human intervention.
+                    </p>
+                  </div>
                 </motion.section>
 
                 <motion.section
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4 }}
-                  className="mb-8"
+                  className="mb-12"
                 >
-                  <h2 className="text-2xl font-semibold text-blue-700 mb-4">
+                  <h2 className="text-2xl font-semibold text-blue-700 mb-6 flex items-center gap-2">
+                    <Database className="h-6 w-6" />
                     Types of Machine Learning
                   </h2>
                   <div className="grid md:grid-cols-2 gap-6">
@@ -405,13 +406,14 @@ export default function MachineLearningBasics() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1 }}
-                  className="mb-8"
+                  className="mb-12"
                 >
-                  <h2 className="text-2xl font-semibold text-blue-700 mb-4">
+                  <h2 className="text-2xl font-semibold text-blue-700 mb-6 flex items-center gap-2">
+                    <TrendingUp className="h-6 w-6" />
                     The Machine Learning Process
                   </h2>
-                  <div className="bg-blue-50 rounded-lg p-6">
-                    <ol className="space-y-4">
+                  <div className="bg-gradient-to-br from-blue-50 to-white rounded-lg p-8">
+                    <ol className="space-y-6">
                       {[
                         {
                           title: "Data Collection",
@@ -445,13 +447,13 @@ export default function MachineLearningBasics() {
                           transition={{ delay: 1.2 + index * 0.1 }}
                           className="flex items-start gap-4"
                         >
-                          <div className="bg-blue-100 p-2 rounded-full">
+                          <div className="flex items-center justify-center bg-blue-100 h-8 w-8 rounded-full shrink-0">
                             <span className="text-blue-600 font-semibold">
                               {index + 1}
                             </span>
                           </div>
                           <div>
-                            <h3 className="font-semibold text-blue-800">
+                            <h3 className="font-semibold text-blue-800 text-lg">
                               {step.title}
                             </h3>
                             <p className="text-gray-600">{step.desc}</p>
@@ -466,48 +468,53 @@ export default function MachineLearningBasics() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1.8 }}
-                  className="mb-8"
+                  className="mb-12"
                 >
-                  <h2 className="text-2xl font-semibold text-blue-700 mb-4">
+                  <h2 className="text-2xl font-semibold text-blue-700 mb-6">
                     Applications and Impact
                   </h2>
-                  <div className="grid md:grid-cols-2 gap-4">
+                  <div className="grid md:grid-cols-2 gap-6">
                     {[
                       {
                         title: "Healthcare",
-                        desc: "Disease prediction and medical imaging analysis"
+                        desc: "Disease prediction and medical imaging analysis",
+                        icon: "🏥"
                       },
                       {
                         title: "Finance",
-                        desc: "Fraud detection and algorithmic trading"
+                        desc: "Fraud detection and algorithmic trading",
+                        icon: "💰"
                       },
                       {
                         title: "Transportation",
-                        desc: "Autonomous vehicles and traffic prediction"
+                        desc: "Autonomous vehicles and traffic prediction",
+                        icon: "🚗"
                       },
                       {
                         title: "Entertainment",
-                        desc: "Content recommendations and gaming AI"
+                        desc: "Content recommendations and gaming AI",
+                        icon: "🎮"
                       }
                     ].map((item, index) => (
                       <motion.div
                         key={item.title}
-                        className="bg-blue-50 p-4 rounded-lg"
+                        className="bg-white p-6 rounded-lg shadow-md border border-blue-100 hover:shadow-lg transition-all duration-300"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 2 + index * 0.2 }}
                       >
-                        <h3 className="font-semibold text-blue-800 mb-2">
+                        <div className="text-4xl mb-4">{item.icon}</div>
+                        <h3 className="font-semibold text-blue-800 text-xl mb-2">
                           {item.title}
                         </h3>
-                        <p className="text-gray-700 text-sm">{item.desc}</p>
+                        <p className="text-gray-600">{item.desc}</p>
                       </motion.div>
                     ))}
                   </div>
                 </motion.section>
               </div>
 
-              <div className="mt-8 flex justify-between items-center">
+              <div className="mt-12 flex justify-between items-center">
                 <Button
                   onClick={() => setShowQuiz(true)}
                   className="gap-2 bg-blue-600 hover:bg-blue-700"
