@@ -19,7 +19,7 @@ import {
   Code,
   Monitor,
   Database,
-  Chart,
+  BarChart2,
   BrainCircuit,
   Sparkles
 } from 'lucide-react';
@@ -306,7 +306,7 @@ export const roadmapSlide = (
               </div>
             </div>
             <div className="flex items-center gap-3 bg-blue-900/30 p-4 rounded-lg">
-              <Chart className="w-5 h-5 text-blue-400" />
+              <BarChart2 className="w-5 h-5 text-blue-400" />
               <div>
                 <span className="text-blue-200 font-semibold">Progress Analytics</span>
                 <p className="text-blue-100">Comprehensive learning metrics and achievement tracking</p>
