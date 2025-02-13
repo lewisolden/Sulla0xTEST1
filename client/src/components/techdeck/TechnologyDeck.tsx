@@ -9,38 +9,77 @@ const slides = [
     id: 1,
     title: "Sulla - Technology Overview",
     content: (
-      <div className="space-y-6">
-        <div className="flex items-center justify-center mb-8">
-          <div className="grid grid-cols-2 gap-8 text-center">
-            <div className="flex flex-col items-center space-y-4">
-              <div className="p-4 rounded-full bg-blue-100">
-                <Brain className="w-12 h-12 text-blue-600" />
+      <div className="space-y-8">
+        <motion.div 
+          className="flex items-center justify-center"
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="relative w-64 h-64">
+            <motion.div 
+              className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full"
+              animate={{ 
+                scale: [1, 1.1, 1],
+                rotate: [0, 180, 360] 
+              }}
+              transition={{ 
+                duration: 20,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+            />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="grid grid-cols-2 gap-8">
+                <motion.div 
+                  className="flex flex-col items-center space-y-4"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  <div className="p-4 rounded-full bg-blue-100 shadow-lg">
+                    <Brain className="w-12 h-12 text-blue-600" />
+                  </div>
+                  <span className="text-lg font-semibold">AI-Powered</span>
+                </motion.div>
+                <motion.div 
+                  className="flex flex-col items-center space-y-4"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  <div className="p-4 rounded-full bg-purple-100 shadow-lg">
+                    <Database className="w-12 h-12 text-purple-600" />
+                  </div>
+                  <span className="text-lg font-semibold">Secure Data</span>
+                </motion.div>
               </div>
-              <span className="text-lg font-semibold">AI-Powered Learning</span>
-            </div>
-            <div className="flex flex-col items-center space-y-4">
-              <div className="p-4 rounded-full bg-purple-100">
-                <Database className="w-12 h-12 text-purple-600" />
-              </div>
-              <span className="text-lg font-semibold">Secure Data Architecture</span>
             </div>
           </div>
-        </div>
-        <h2 className="text-4xl font-bold text-blue-800 text-center mb-8">
-          Advanced Blockchain & AI Educational Platform
-        </h2>
-        <div className="grid grid-cols-2 gap-6">
-          <Card className="p-6 hover:shadow-lg transition-all">
+        </motion.div>
+
+        <motion.h2 
+          className="text-5xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.3 }}
+        >
+          Next-Gen Learning Platform
+        </motion.h2>
+
+        <motion.div 
+          className="grid grid-cols-2 gap-6 mt-8"
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.5 }}
+        >
+          <Card className="p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
             <Layout className="w-8 h-8 text-blue-600 mb-4" />
-            <h3 className="font-semibold mb-2">Modern Architecture</h3>
-            <p className="text-sm text-gray-600">Next.js + TypeScript Frontend</p>
+            <h3 className="font-semibold mb-2">Modern Stack</h3>
+            <p className="text-sm text-gray-600">Built with Next.js, TypeScript, and cutting-edge tools</p>
           </Card>
-          <Card className="p-6 hover:shadow-lg transition-all">
+          <Card className="p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
             <Brain className="w-8 h-8 text-purple-600 mb-4" />
             <h3 className="font-semibold mb-2">AI Integration</h3>
-            <p className="text-sm text-gray-600">Adaptive Learning System</p>
+            <p className="text-sm text-gray-600">Adaptive learning powered by advanced AI</p>
           </Card>
-        </div>
+        </motion.div>
       </div>
     )
   },
@@ -383,17 +422,33 @@ const TechnologyDeck = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-12 px-4">
-      <div className="max-w-6xl mx-auto">
-        <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-2xl p-8 min-h-[600px] relative">
-          {/* Progress bar */}
-          <div className="absolute top-0 left-0 w-full h-1 bg-gray-200 rounded-t-xl">
+    <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-50 via-white to-purple-50">
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        <motion.div 
+          className="relative bg-white/90 backdrop-blur-lg rounded-2xl shadow-2xl p-12 min-h-[700px] border border-blue-100"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          {/* Progress line */}
+          <div className="absolute top-0 left-0 w-full h-1">
             <motion.div 
-              className="h-full bg-blue-600 rounded-t-xl"
+              className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-t-2xl"
               initial={{ width: 0 }}
               animate={{ width: `${((currentSlide + 1) / slides.length) * 100}%` }}
               transition={{ duration: 0.3 }}
             />
+          </div>
+
+          <div className="absolute top-6 right-6 px-4 py-2 bg-blue-50 rounded-full">
+            <motion.span 
+              className="text-sm font-medium text-blue-600"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+            >
+              {currentSlide + 1} / {slides.length}
+            </motion.span>
           </div>
 
           <AnimatePresence mode="wait">
@@ -403,46 +458,23 @@ const TechnologyDeck = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ 
-                duration: 0.5, 
+                duration: 0.5,
                 type: "spring",
                 stiffness: 100 
               }}
-              className="space-y-6"
+              className="pt-12"
             >
-              <div className="flex justify-between items-center mb-8">
-                <div className="text-sm text-gray-500">
-                  Slide {currentSlide + 1} of {slides.length}
-                </div>
-                <motion.div 
-                  className="text-xs text-blue-600 font-medium px-3 py-1 bg-blue-50 rounded-full"
-                  initial={{ scale: 0.9 }}
-                  animate={{ scale: 1 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  Technical Overview
-                </motion.div>
-              </div>
-
-              <motion.h2 
-                className="text-3xl font-bold text-gray-900 mb-8"
-                initial={{ x: -20 }}
-                animate={{ x: 0 }}
-                transition={{ duration: 0.3, delay: 0.2 }}
-              >
-                {slides[currentSlide].title}
-              </motion.h2>
-
               {slides[currentSlide].content}
             </motion.div>
           </AnimatePresence>
 
-          {/* Navigation buttons with hover effects */}
+          {/* Navigation */}
           <div className="absolute bottom-8 right-8 flex space-x-4">
             <Button
               variant="outline"
               onClick={prevSlide}
               disabled={currentSlide === 0}
-              className="group transition-all duration-200 hover:bg-blue-50"
+              className="group hover:bg-blue-50 transition-all duration-300"
             >
               <ChevronLeft className="h-4 w-4 mr-2 group-hover:-translate-x-1 transition-transform" />
               Previous
@@ -450,7 +482,7 @@ const TechnologyDeck = () => {
             <Button
               onClick={nextSlide}
               disabled={currentSlide === slides.length - 1}
-              className="group transition-all duration-200"
+              className="group bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 transition-all duration-300"
             >
               Next
               <ChevronRight className="h-4 w-4 ml-2 group-hover:translate-x-1 transition-transform" />
@@ -460,18 +492,24 @@ const TechnologyDeck = () => {
           {/* Slide indicators */}
           <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2">
             {slides.map((_, index) => (
-              <motion.div
+              <motion.button
                 key={index}
-                className={`h-2 w-2 rounded-full ${
-                  currentSlide === index ? 'bg-blue-600' : 'bg-gray-300'
+                onClick={() => setCurrentSlide(index)}
+                className={`w-2 h-2 rounded-full ${
+                  currentSlide === index 
+                    ? 'bg-gradient-to-r from-blue-500 to-purple-500' 
+                    : 'bg-gray-300'
                 }`}
-                initial={{ scale: 0.8 }}
-                animate={{ scale: currentSlide === index ? 1 : 0.8 }}
+                whileHover={{ scale: 1.2 }}
+                animate={{ 
+                  scale: currentSlide === index ? 1.2 : 1,
+                  opacity: currentSlide === index ? 1 : 0.6
+                }}
                 transition={{ duration: 0.2 }}
               />
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
