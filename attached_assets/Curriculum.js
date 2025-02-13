@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { 
   BookOpenIcon, 
   AcademicCapIcon, 
-  LightningBoltIcon 
+  LightningBoltIcon,
+  BeakerIcon
 } from '@heroicons/react/outline';
 
 const Curriculum = () => {
@@ -45,6 +46,35 @@ const Curriculum = () => {
         "Blockchain Development Platforms",
         "Advanced Blockchain Concepts"
       ]
+    },
+    {
+      id: 4,
+      icon: BeakerIcon,
+      title: "Course 2: Introduction to Artificial Intelligence",
+      description: "Comprehensive introduction to AI fundamentals and applications.",
+      sections: [
+        "Module 1: AI Fundamentals",
+        "Module 2: AI Technologies and Applications",
+        {
+          title: "Module 2 Topics",
+          subsections: [
+            "Natural Language Processing",
+            "Computer Vision",
+            "Robotics and Automation",
+            "AI Ethics and Safety"
+          ]
+        },
+        "Module 3: Advanced AI Concepts",
+        {
+          title: "Module 3 Topics",
+          subsections: [
+            "Deep Learning",
+            "Reinforcement Learning",
+            "Generative AI",
+            "Future of AI"
+          ]
+        }
+      ]
     }
   ];
 
@@ -52,7 +82,7 @@ const Curriculum = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 py-16">
       <div className="container mx-auto px-4 max-w-6xl">
         <h1 className="text-4xl font-bold text-blue-900 mb-12 text-center">
-          Sulla Cryptocurrency Curriculum
+          Sulla Learning Platform Curriculum
         </h1>
 
         {modules.map((module) => (
@@ -74,22 +104,37 @@ const Curriculum = () => {
 
             <div className="border-t border-blue-100 pt-6">
               <h3 className="text-xl font-semibold text-blue-800 mb-4">
-                Module Sections
+                Course Content
               </h3>
               <div className="grid md:grid-cols-2 gap-4">
                 {module.sections.map((section, index) => (
-                  <div 
-                    key={index} 
-                    className="bg-blue-50 p-4 rounded-lg text-blue-700"
-                  >
-                    {section}
+                  <div key={index}>
+                    {typeof section === 'string' ? (
+                      <div className="bg-blue-50 p-4 rounded-lg text-blue-700">
+                        {section}
+                      </div>
+                    ) : (
+                      <div className="space-y-2">
+                        <div className="bg-blue-100 p-4 rounded-lg text-blue-800 font-medium">
+                          {section.title}
+                        </div>
+                        {section.subsections.map((subsection, subIndex) => (
+                          <div 
+                            key={subIndex}
+                            className="bg-blue-50 p-3 rounded-lg text-blue-700 ml-4"
+                          >
+                            {subsection}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
 
               <div className="text-center mt-6">
                 <Link 
-                  to={`/modules/module${module.id}`} 
+                  to={module.id <= 3 ? `/modules/module${module.id}` : '/ai'} 
                   className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
                 >
                   Start Module
@@ -101,7 +146,7 @@ const Curriculum = () => {
 
         <div className="text-center mt-12">
           <p className="text-blue-800 text-xl mb-6">
-            Ready to begin your blockchain learning journey?
+            Ready to begin your learning journey?
           </p>
           <Link 
             to="/modules" 
