@@ -183,7 +183,7 @@ export default function AuthPage() {
             Sulla
           </h2>
           <p className="text-xl text-blue-700 leading-relaxed max-w-lg mx-auto">
-            Discover blockchain technology through our interactive learning platform. From fundamentals to advanced concepts, we'll guide you through the world of cryptocurrency and digital finance.
+            Discover blockchain technology, artificial intelligence, and emerging technologies through our interactive learning platform. From fundamentals to advanced concepts, we'll guide you through the future of technology and innovation.
           </p>
 
           <div className="grid grid-cols-3 gap-6 mt-12">
