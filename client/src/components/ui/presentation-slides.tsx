@@ -1,10 +1,10 @@
 import React from 'react';
-import {
-  Brain,
-  Trophy,
-  Dumbbell,
-  Target,
-  Rocket,
+import { 
+  Brain, 
+  Trophy, 
+  Dumbbell, 
+  Target, 
+  Rocket, 
   Globe,
   BookOpen,
   GraduationCap,
@@ -16,8 +16,7 @@ import {
   Lightbulb,
   Wallet,
   Network,
-  Code,
-  Database,
+  Code
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -256,51 +255,14 @@ export const roadmapSlide = (
 
 export const progressSlide = (
   <Slide key="progress">
-    <h2 className="text-2xl font-bold mb-4">Progress & Technical Capabilities</h2>
+    <h2 className="text-2xl font-bold mb-4">Progress to Date</h2>
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div className="bg-green-100 rounded-lg shadow p-4">
         <div className="flex items-center mb-2">
           <Trophy className="w-6 h-6 mr-2 text-green-500" />
           <h3 className="font-bold text-lg">Key Achievements</h3>
         </div>
-        <ul className="list-disc pl-6">
-          <li>Successful MVP launch with initial user testing</li>
-          <li>Integration of AI-powered learning tools</li>
-          <li>Strategic partnerships with blockchain projects</li>
-        </ul>
-      </div>
-      <div className="bg-blue-100 rounded-lg shadow p-4">
-        <div className="flex items-center mb-2">
-          <Code className="w-6 h-6 mr-2 text-blue-500" />
-          <h3 className="font-bold text-lg">Technical Stack</h3>
-        </div>
-        <ul className="list-disc pl-6">
-          <li>Next.js & TypeScript frontend for robust UI</li>
-          <li>PostgreSQL database with advanced analytics</li>
-          <li>AI/ML pipeline for personalized learning</li>
-        </ul>
-      </div>
-      <div className="bg-purple-100 rounded-lg shadow p-4">
-        <div className="flex items-center mb-2">
-          <Database className="w-6 h-6 mr-2 text-purple-500" />
-          <h3 className="font-bold text-lg">Data Collection</h3>
-        </div>
-        <ul className="list-disc pl-6">
-          <li>User interaction tracking & analysis</li>
-          <li>Learning pattern recognition</li>
-          <li>Progress metrics & performance data</li>
-        </ul>
-      </div>
-      <div className="bg-indigo-100 rounded-lg shadow p-4">
-        <div className="flex items-center mb-2">
-          <Brain className="w-6 h-6 mr-2 text-indigo-500" />
-          <h3 className="font-bold text-lg">AI Capabilities</h3>
-        </div>
-        <ul className="list-disc pl-6">
-          <li>Adaptive learning pathways</li>
-          <li>Content recommendation engine</li>
-          <li>Performance prediction models</li>
-        </ul>
+        <p>Development milestones and early partnerships.</p>
       </div>
     </div>
   </Slide>
@@ -328,47 +290,6 @@ export const gtmSlide2 = (
         <h3 className="font-bold text-lg">Global Reach</h3>
       </div>
       <p>International expansion and localization strategy.</p>
-    </div>
-  </Slide>
-);
-
-export const technicalBackendSlide = (
-  <Slide key="technical-backend">
-    <h2 className="text-2xl font-bold mb-4">Technical Infrastructure</h2>
-    <div className="space-y-4">
-      <div className="bg-blue-100 rounded-lg shadow p-4">
-        <div className="flex items-center mb-2">
-          <Database className="w-6 h-6 mr-2 text-blue-500" />
-          <h3 className="font-bold text-lg">Learning Analytics Engine</h3>
-        </div>
-        <ul className="list-disc pl-6">
-          <li>Comprehensive user progress tracking system</li>
-          <li>Real-time performance analytics</li>
-          <li>Behavioral pattern analysis for personalized learning</li>
-        </ul>
-      </div>
-      <div className="bg-purple-100 rounded-lg shadow p-4">
-        <div className="flex items-center mb-2">
-          <Brain className="w-6 h-6 mr-2 text-purple-500" />
-          <h3 className="font-bold text-lg">AI Infrastructure</h3>
-        </div>
-        <ul className="list-disc pl-6">
-          <li>Advanced data collection framework</li>
-          <li>Machine learning pipeline for content personalization</li>
-          <li>Predictive analytics for learning outcomes</li>
-        </ul>
-      </div>
-      <div className="bg-green-100 rounded-lg shadow p-4">
-        <div className="flex items-center mb-2">
-          <Shield className="w-6 h-6 mr-2 text-green-500" />
-          <h3 className="font-bold text-lg">Data Security & Privacy</h3>
-        </div>
-        <ul className="list-disc pl-6">
-          <li>End-to-end encryption for user data</li>
-          <li>GDPR-compliant data handling</li>
-          <li>Secure API infrastructure</li>
-        </ul>
-      </div>
     </div>
   </Slide>
 );
