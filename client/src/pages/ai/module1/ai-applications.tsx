@@ -477,28 +477,24 @@ export default function AIApplications() {
                     {[
                       {
                         title: "Edge AI",
-                        desc: "AI processing on local devices for faster response times",
-                        gradient: "bg-gradient-to-br from-emerald-500 to-emerald-700"
+                        desc: "AI processing on local devices for faster response times"
                       },
                       {
                         title: "AutoML",
-                        desc: "Automated machine learning model development",
-                        gradient: "bg-gradient-to-br from-amber-500 to-amber-700"
+                        desc: "Automated machine learning model development"
                       },
                       {
                         title: "Explainable AI",
-                        desc: "Making AI decisions more transparent and interpretable",
-                        gradient: "bg-gradient-to-br from-rose-500 to-rose-700"
+                        desc: "Making AI decisions more transparent and interpretable"
                       },
                       {
                         title: "AI Ethics",
-                        desc: "Ensuring responsible and fair AI development",
-                        gradient: "bg-gradient-to-br from-violet-500 to-violet-700"
+                        desc: "Ensuring responsible and fair AI development"
                       }
                     ].map((item, index) => (
                       <motion.div
                         key={item.title}
-                        className={`bg-gradient-to-br ${item.gradient} p-6 rounded-xl text-white transform transition-all duration-300 hover:scale-105`}
+                        className="bg-gradient-to-br from-purple-500 to-purple-700 p-6 rounded-xl text-white transform transition-all duration-300 hover:scale-105"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 1.1 + index * 0.2 }}
@@ -527,55 +523,47 @@ export default function AIApplications() {
                       {
                         title: "ChatGPT",
                         desc: "OpenAI's advanced language model capable of human-like conversations, coding assistance, and creative writing",
-                        url: "https://chat.openai.com",
-                        gradient: "bg-gradient-to-br from-teal-500 to-teal-700"
+                        url: "https://chat.openai.com"
                       },
                       {
                         title: "DALL-E",
                         desc: "OpenAI's AI system that creates realistic images and art from natural language descriptions",
-                        url: "https://openai.com/dall-e-3",
-                        gradient: "bg-gradient-to-br from-fuchsia-500 to-fuchsia-700"
+                        url: "https://openai.com/dall-e-3"
                       },
                       {
                         title: "Midjourney",
                         desc: "AI-powered tool that generates high-quality images from text descriptions, known for artistic and creative outputs",
-                        url: "https://www.midjourney.com",
-                        gradient: "bg-gradient-to-br from-purple-500 to-purple-700"
+                        url: "https://www.midjourney.com"
                       },
                       {
                         title: "Claude",
                         desc: "Anthropic's AI assistant known for detailed analysis, writing, and coding with strong ethical considerations",
-                        url: "https://www.anthropic.com/claude",
-                        gradient: "bg-gradient-to-br from-blue-500 to-blue-700"
+                        url: "https://www.anthropic.com/claude"
                       },
                       {
                         title: "Google Gemini",
                         desc: "Google's multimodal AI model that can understand and process text, images, and code simultaneously",
-                        url: "https://gemini.google.com",
-                        gradient: "bg-gradient-to-br from-red-500 to-red-700"
+                        url: "https://gemini.google.com"
                       },
                       {
                         title: "DeepSeek",
                         desc: "Advanced language model focused on coding and technical tasks with deep understanding of software development",
-                        url: "https://deepseek.ai",
-                        gradient: "bg-gradient-to-br from-cyan-500 to-cyan-700"
+                        url: "https://deepseek.ai"
                       },
                       {
                         title: "LLaMA",
                         desc: "Meta's open-source large language model foundation, enabling customized AI applications",
-                        url: "https://ai.meta.com/llama",
-                        gradient: "bg-gradient-to-br from-indigo-500 to-indigo-700"
+                        url: "https://ai.meta.com/llama"
                       },
                       {
                         title: "DeepMind",
                         desc: "Google's AI research company known for breakthrough achievements in AI, including AlphaGo and protein folding",
-                        url: "https://deepmind.google",
-                        gradient: "bg-gradient-to-br from-emerald-500 to-emerald-700"
+                        url: "https://deepmind.google"
                       }
                     ].map((platform, index) => (
                       <motion.div
                         key={platform.title}
-                        className={`${platform.gradient} p-6 rounded-xl text-white transform transition-all duration-300 hover:scale-105 hover:shadow-xl border border-white/10`}
+                        className="bg-gradient-to-br from-blue-500 to-blue-700 p-6 rounded-xl text-white transform transition-all duration-300 hover:scale-105 hover:shadow-xl border border-white/10"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 1.3 + index * 0.1 }}
