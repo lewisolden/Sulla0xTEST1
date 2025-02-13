@@ -13,7 +13,9 @@ import {
   GitBranch,
   Activity,
   Check,
-  X
+  X,
+  Lightbulb,
+  Cpu
 } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 
@@ -22,44 +24,48 @@ const LayerCard = ({
   description,
   icon: Icon,
   examples,
-  delay
+  delay,
+  gradient = "bg-gradient-to-br from-blue-500 to-blue-700"
 }: {
   title: string;
   description: string;
   icon: any;
   examples: string[];
   delay: number;
+  gradient?: string;
 }) => {
   return (
     <motion.div
-      className="bg-white rounded-lg shadow-lg p-6 transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+      className={`${gradient} rounded-xl shadow-lg p-6 transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay }}
     >
-      <div className="flex items-center gap-3 mb-4">
-        <div className="bg-blue-100 p-3 rounded-full">
-          <Icon className="h-6 w-6 text-blue-600" />
+      <div className="relative z-10">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="bg-white/20 backdrop-blur-sm p-3 rounded-xl">
+            <Icon className="h-6 w-6 text-white" />
+          </div>
+          <h3 className="text-xl font-semibold text-white">{title}</h3>
         </div>
-        <h3 className="text-xl font-semibold text-blue-800">{title}</h3>
-      </div>
-      <p className="text-gray-600 mb-6 leading-relaxed">{description}</p>
-      <div className="bg-blue-50 rounded-lg p-4">
-        <h4 className="font-semibold text-blue-700 mb-3">Key Features:</h4>
-        <ul className="space-y-2">
-          {examples.map((example, index) => (
-            <motion.li
-              key={index}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 * index }}
-              className="flex items-center gap-2 text-blue-600"
-            >
-              <div className="h-1.5 w-1.5 bg-blue-400 rounded-full"></div>
-              <span>{example}</span>
-            </motion.li>
-          ))}
-        </ul>
+        <p className="text-white/90 mb-6 leading-relaxed">{description}</p>
+        <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+          <h4 className="font-semibold text-white mb-3">Key Features:</h4>
+          <ul className="space-y-2">
+            {examples.map((example, index) => (
+              <motion.li
+                key={index}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.1 * index }}
+                className="flex items-center gap-2 text-white/90"
+              >
+                <div className="h-1.5 w-1.5 bg-white rounded-full"></div>
+                <span>{example}</span>
+              </motion.li>
+            ))}
+          </ul>
+        </div>
       </div>
     </motion.div>
   );
@@ -153,7 +159,7 @@ export default function NeuralNetworks() {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
-          <Card>
+          <Card className="border-2 border-blue-100">
             <CardContent className="pt-6">
               {!showResults ? (
                 <motion.div
@@ -310,13 +316,13 @@ export default function NeuralNetworks() {
               transition={{ duration: 0.5 }}
               className="space-y-8"
             >
-              <div className="flex items-center gap-4 mb-8 bg-blue-50 p-6 rounded-lg">
-                <Network className="h-12 w-12 text-blue-600" />
+              <div className="flex items-center gap-4 mb-8 bg-gradient-to-br from-blue-600 to-purple-600 p-8 rounded-xl text-white">
+                <Network className="h-12 w-12" />
                 <div>
-                  <h1 className="text-3xl font-bold text-blue-800 mb-2">
+                  <h1 className="text-3xl font-bold mb-2">
                     Neural Networks
                   </h1>
-                  <p className="text-gray-600">
+                  <p className="text-white/90">
                     Understanding the architecture and functionality of artificial neural networks
                   </p>
                 </div>
@@ -333,10 +339,27 @@ export default function NeuralNetworks() {
                     <Brain className="h-6 w-6" />
                     Understanding Neural Networks
                   </h2>
-                  <div className="bg-gradient-to-r from-blue-50 to-white p-6 rounded-lg">
-                    <p className="text-gray-700 leading-relaxed">
+                  <div className="bg-gradient-to-br from-slate-800 to-slate-900 p-8 rounded-xl text-white">
+                    <p className="text-white/90 leading-relaxed">
                       Neural networks are computing systems inspired by biological neural networks in human brains. They consist of interconnected nodes (neurons) organized in layers that can learn patterns from data.
                     </p>
+                    <motion.div 
+                      className="mt-6 grid grid-cols-3 gap-4"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4 }}
+                    >
+                      {[
+                        { icon: Brain, text: "Inspired by human brain" },
+                        { icon: Network, text: "Interconnected nodes" },
+                        { icon: Cpu, text: "Pattern learning" }
+                      ].map((item, index) => (
+                        <div key={index} className="bg-white/10 backdrop-blur-sm p-4 rounded-lg flex items-center gap-3">
+                          <item.icon className="h-5 w-5 text-blue-400" />
+                          <span className="text-white/80 text-sm">{item.text}</span>
+                        </div>
+                      ))}
+                    </motion.div>
                   </div>
                 </motion.section>
 
@@ -362,6 +385,7 @@ export default function NeuralNetworks() {
                         "Sensor data"
                       ]}
                       delay={0.6}
+                      gradient="bg-gradient-to-br from-blue-500 to-blue-700"
                     />
                     <LayerCard
                       title="Hidden Layers"
@@ -374,6 +398,7 @@ export default function NeuralNetworks() {
                         "Data transformation"
                       ]}
                       delay={0.7}
+                      gradient="bg-gradient-to-br from-purple-500 to-purple-700"
                     />
                     <LayerCard
                       title="Output Layer"
@@ -386,6 +411,7 @@ export default function NeuralNetworks() {
                         "Decision scores"
                       ]}
                       delay={0.8}
+                      gradient="bg-gradient-to-br from-indigo-500 to-indigo-700"
                     />
                     <LayerCard
                       title="Activation Functions"
@@ -398,6 +424,7 @@ export default function NeuralNetworks() {
                         "Softmax"
                       ]}
                       delay={0.9}
+                      gradient="bg-gradient-to-br from-cyan-500 to-cyan-700"
                     />
                   </div>
                 </motion.section>
@@ -412,24 +439,28 @@ export default function NeuralNetworks() {
                     <Activity className="h-6 w-6" />
                     Training Process
                   </h2>
-                  <div className="bg-gradient-to-br from-blue-50 to-white rounded-lg p-8">
+                  <div className="bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-lg p-8 text-white">
                     <ol className="space-y-6">
                       {[
                         {
                           title: "Forward Propagation",
-                          desc: "Data flows through the network from input to output"
+                          desc: "Data flows through the network from input to output",
+                          icon: "➡️"
                         },
                         {
                           title: "Loss Calculation",
-                          desc: "Measuring prediction errors"
+                          desc: "Measuring prediction errors",
+                          icon: "📊"
                         },
                         {
                           title: "Backpropagation",
-                          desc: "Error signals flow backwards to update weights"
+                          desc: "Error signals flow backwards to update weights",
+                          icon: "⬅️"
                         },
                         {
                           title: "Weight Updates",
-                          desc: "Network parameters are adjusted to minimize errors"
+                          desc: "Network parameters are adjusted to minimize errors",
+                          icon: "🔄"
                         }
                       ].map((step, index) => (
                         <motion.li
@@ -439,16 +470,14 @@ export default function NeuralNetworks() {
                           transition={{ delay: 1.2 + index * 0.1 }}
                           className="flex items-start gap-4"
                         >
-                          <div className="flex items-center justify-center bg-blue-100 h-8 w-8 rounded-full shrink-0">
-                            <span className="text-blue-600 font-semibold">
-                              {index + 1}
-                            </span>
+                          <div className="flex items-center justify-center bg-white/20 backdrop-blur-sm h-12 w-12 rounded-full shrink-0">
+                            <span className="text-2xl">{step.icon}</span>
                           </div>
                           <div>
-                            <h3 className="font-semibold text-blue-800 text-lg">
+                            <h3 className="font-semibold text-white text-lg mb-1">
                               {step.title}
                             </h3>
-                            <p className="text-gray-600">{step.desc}</p>
+                            <p className="text-white/80">{step.desc}</p>
                           </div>
                         </motion.li>
                       ))}
@@ -460,12 +489,12 @@ export default function NeuralNetworks() {
               <div className="mt-12 flex justify-between items-center">
                 <Button
                   onClick={() => setShowQuiz(true)}
-                  className="gap-2 bg-blue-600 hover:bg-blue-700"
+                  className="gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white"
                 >
                   Take Topic Quiz
                 </Button>
                 <Link href="/ai/module1/quiz">
-                  <Button className="gap-2">
+                  <Button className="gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
                     Module Quiz <ArrowRight className="h-4 w-4" />
                   </Button>
                 </Link>
