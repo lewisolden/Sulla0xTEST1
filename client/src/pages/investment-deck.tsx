@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Maximize2, Minimize2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Maximize2, Minimize2, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import html2pdf from 'html2pdf.js';
 import {
   titleSlide,
   problemSlide,
@@ -25,6 +26,7 @@ import {
 const InvestmentDeck = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
 
   const slides = [
     titleSlide,            // 1
@@ -35,7 +37,7 @@ const InvestmentDeck = () => {
     marketSlide1,         // 6
     marketSlide2,         // 7
     productSlide1,        // 8
-    dataStrategySlide,    // 9 (inserted here)
+    dataStrategySlide,    // 9
     productSlide2,        // 10
     gtmStrategySlide,     // 11
     tractionSlide,        // 12
@@ -67,6 +69,46 @@ const InvestmentDeck = () => {
     } else {
       document.exitFullscreen();
       setIsFullscreen(false);
+    }
+  };
+
+  const exportToPDF = async () => {
+    setIsExporting(true);
+
+    // Create a temporary container for all slides
+    const container = document.createElement('div');
+    container.style.backgroundColor = '#000'; // Match deck background
+    container.style.padding = '20px';
+
+    // Add all slides to the container
+    slides.forEach((slide, index) => {
+      const slideDiv = document.createElement('div');
+      slideDiv.style.marginBottom = '20px';
+      slideDiv.style.pageBreakAfter = 'always';
+      slideDiv.innerHTML = `<div class="pdf-slide">${slide}</div>`;
+      container.appendChild(slideDiv);
+    });
+
+    // Configure PDF options
+    const opt = {
+      margin: 10,
+      filename: 'Sulla-Investment-Deck.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { 
+        scale: 2,
+        backgroundColor: '#000',
+        logging: false
+      },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+    };
+
+    try {
+      // Generate PDF
+      const pdf = await html2pdf().set(opt).from(container).save();
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    } finally {
+      setIsExporting(false);
     }
   };
 
@@ -140,6 +182,16 @@ const InvestmentDeck = () => {
               ) : (
                 <Maximize2 className="h-4 w-4" />
               )}
+            </Button>
+            <div className="w-px h-4 bg-gray-800 mx-2" />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={exportToPDF}
+              disabled={isExporting}
+              className="h-8 w-8 rounded-full text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
+            >
+              <Download className="h-4 w-4" />
             </Button>
           </div>
         </div>
