@@ -111,37 +111,43 @@ const InvestmentDeck = () => {
           </AnimatePresence>
         </div>
 
-        <div className="fixed bottom-8 left-0 right-0 flex justify-center items-center gap-4 z-50">
-          <Button
-            variant="outline"
-            onClick={previousSlide}
-            disabled={currentSlide === 0}
-            className="bg-gray-900/50 hover:bg-gray-800/50 border-gray-700 transition-colors"
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </Button>
-          <span className="text-gray-400 font-medium">
-            {currentSlide + 1} / {slides.length}
-          </span>
-          <Button
-            variant="outline"
-            onClick={nextSlide}
-            disabled={currentSlide === slides.length - 1}
-            className="bg-gray-900/50 hover:bg-gray-800/50 border-gray-700 transition-colors"
-          >
-            <ChevronRight className="w-6 h-6" />
-          </Button>
-          <Button
-            variant="outline"
-            onClick={toggleFullscreen}
-            className="ml-4 bg-gray-900/50 hover:bg-gray-800/50 border-gray-700 transition-colors"
-          >
-            {isFullscreen ? (
-              <Minimize2 className="w-6 h-6" />
-            ) : (
-              <Maximize2 className="w-6 h-6" />
-            )}
-          </Button>
+        <div className="fixed bottom-8 left-0 right-0 z-50">
+          <div className="max-w-fit mx-auto backdrop-blur-sm bg-gray-900/50 rounded-full border border-gray-800 p-2 flex items-center gap-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={previousSlide}
+              disabled={currentSlide === 0}
+              className="h-8 w-8 rounded-full hover:bg-gray-800/50"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <span className="text-gray-400 text-sm px-2 min-w-[3rem] text-center">
+              {currentSlide + 1} / {slides.length}
+            </span>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={nextSlide}
+              disabled={currentSlide === slides.length - 1}
+              className="h-8 w-8 rounded-full hover:bg-gray-800/50"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+            <div className="w-px h-4 bg-gray-800 mx-2" />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={toggleFullscreen}
+              className="h-8 w-8 rounded-full hover:bg-gray-800/50"
+            >
+              {isFullscreen ? (
+                <Minimize2 className="h-4 w-4" />
+              ) : (
+                <Maximize2 className="h-4 w-4" />
+              )}
+            </Button>
+          </div>
         </div>
       </div>
     </div>
