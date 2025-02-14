@@ -1,49 +1,59 @@
-const canvas = document.createElement('canvas');
-canvas.width = 500;
-canvas.height = 500;
-const ctx = canvas.getContext('2d');
+const colors = [
+  { name: 'blue', value: '#1e40af' },  // Original dark blue
+  { name: 'purple', value: '#6b21a8' }, // Royal purple
+  { name: 'green', value: '#166534' },  // Forest green
+  { name: 'slate', value: '#334155' },  // Business slate
+  { name: 'indigo', value: '#3730a3' }  // Deep indigo
+];
 
-// Set background
-ctx.fillStyle = '#1e40af'; // Dark blue background
-ctx.fillRect(0, 0, 500, 500);
+colors.forEach((colorObj, index) => {
+  const canvas = document.createElement('canvas');
+  canvas.width = 500;
+  canvas.height = 500;
+  const ctx = canvas.getContext('2d');
 
-// Draw stylized 'S'
-ctx.beginPath();
-ctx.strokeStyle = '#ffffff';
-ctx.lineWidth = 40;
-ctx.lineCap = 'round';
-ctx.lineJoin = 'round';
+  // Set background
+  ctx.fillStyle = colorObj.value;
+  ctx.fillRect(0, 0, 500, 500);
 
-// Draw S curve
-ctx.moveTo(175, 150);
-ctx.bezierCurveTo(
-  175, 100,
-  325, 100,
-  325, 175
-);
-ctx.bezierCurveTo(
-  325, 250,
-  175, 250,
-  175, 325
-);
-ctx.bezierCurveTo(
-  175, 400,
-  325, 400,
-  325, 350
-);
+  // Draw stylized 'S'
+  ctx.beginPath();
+  ctx.strokeStyle = '#ffffff';
+  ctx.lineWidth = 40;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
 
-ctx.stroke();
+  // Draw S curve
+  ctx.moveTo(175, 150);
+  ctx.bezierCurveTo(
+    175, 100,
+    325, 100,
+    325, 175
+  );
+  ctx.bezierCurveTo(
+    325, 250,
+    175, 250,
+    175, 325
+  );
+  ctx.bezierCurveTo(
+    175, 400,
+    325, 400,
+    325, 350
+  );
 
-// Add white circular border
-ctx.strokeStyle = '#ffffff';
-ctx.lineWidth = 20;
-ctx.beginPath();
-ctx.arc(250, 250, 220, 0, Math.PI * 2);
-ctx.stroke();
+  ctx.stroke();
 
-// Convert to PNG
-const dataURL = canvas.toDataURL('image/png');
-const link = document.createElement('a');
-link.download = 'sulla-logo.png';
-link.href = dataURL;
-link.click();
+  // Add white circular border
+  ctx.strokeStyle = '#ffffff';
+  ctx.lineWidth = 20;
+  ctx.beginPath();
+  ctx.arc(250, 250, 220, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // Convert to PNG
+  const dataURL = canvas.toDataURL('image/png');
+  const link = document.createElement('a');
+  link.download = `sulla-logo-${colorObj.name}.png`;
+  link.href = dataURL;
+  link.click();
+});
