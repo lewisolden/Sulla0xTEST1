@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Maximize2, Minimize2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Maximize2, Minimize2, CreditCard, BadgePercent, Factory, GraduationCap, Award, DollarSign, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   titleSlide,
@@ -22,6 +22,134 @@ import {
   ctaSlide,
 } from '@/components/ui/presentation-slides';
 
+const revenueGenerationSlide = (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}
+  >
+    <div className="flex items-center gap-4 mb-8">
+      <div className="p-3 bg-green-500/20 rounded-lg">
+        <DollarSign className="w-8 h-8 text-green-400" />
+      </div>
+      <h2 className="text-4xl font-bold text-blue-400">How We Generate Revenue</h2>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.2 }}
+        className="space-y-6"
+      >
+        <div className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg">
+          <div className="flex items-center gap-3 mb-4">
+            <CreditCard className="w-6 h-6 text-blue-400" />
+            <h3 className="text-xl font-semibold text-blue-300">Premium Subscriptions</h3>
+          </div>
+          <ul className="space-y-2 text-blue-100">
+            <li className="flex items-center gap-2">
+              <BadgePercent className="w-4 h-4 text-blue-400" />
+              Basic: $9.99/month - Core courses and features
+            </li>
+            <li className="flex items-center gap-2">
+              <BadgePercent className="w-4 h-4 text-blue-400" />
+              Pro: $29.99/month - Advanced content & personalization
+            </li>
+            <li className="flex items-center gap-2">
+              <BadgePercent className="w-4 h-4 text-blue-400" />
+              Enterprise: Custom pricing for teams
+            </li>
+          </ul>
+        </div>
+
+        <div className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg">
+          <div className="flex items-center gap-3 mb-4">
+            <Factory className="w-6 h-6 text-blue-400" />
+            <h3 className="text-xl font-semibold text-blue-300">B2B Solutions</h3>
+          </div>
+          <ul className="space-y-2 text-blue-100">
+            <li className="flex items-center gap-2">
+              <ArrowRight className="w-4 h-4 text-blue-400" />
+              White-label platform licensing
+            </li>
+            <li className="flex items-center gap-2">
+              <ArrowRight className="w-4 h-4 text-blue-400" />
+              Custom course development
+            </li>
+            <li className="flex items-center gap-2">
+              <ArrowRight className="w-4 h-4 text-blue-400" />
+              API access for integration
+            </li>
+          </ul>
+        </div>
+      </motion.div>
+
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.4 }}
+        className="space-y-6"
+      >
+        <div className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg">
+          <div className="flex items-center gap-3 mb-4">
+            <GraduationCap className="w-6 h-6 text-blue-400" />
+            <h3 className="text-xl font-semibold text-blue-300">Educational Partnerships</h3>
+          </div>
+          <ul className="space-y-2 text-blue-100">
+            <li className="flex items-center gap-2">
+              <ArrowRight className="w-4 h-4 text-blue-400" />
+              University licensing programs
+            </li>
+            <li className="flex items-center gap-2">
+              <ArrowRight className="w-4 h-4 text-blue-400" />
+              Corporate training packages
+            </li>
+            <li className="flex items-center gap-2">
+              <ArrowRight className="w-4 h-4 text-blue-400" />
+              Professional certification programs
+            </li>
+          </ul>
+        </div>
+
+        <div className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg">
+          <div className="flex items-center gap-3 mb-4">
+            <Award className="w-6 h-6 text-blue-400" />
+            <h3 className="text-xl font-semibold text-blue-300">Additional Revenue Streams</h3>
+          </div>
+          <ul className="space-y-2 text-blue-100">
+            <li className="flex items-center gap-2">
+              <ArrowRight className="w-4 h-4 text-blue-400" />
+              NFT certifications ($99 - $499)
+            </li>
+            <li className="flex items-center gap-2">
+              <ArrowRight className="w-4 h-4 text-blue-400" />
+              Sponsored content from crypto projects
+            </li>
+            <li className="flex items-center gap-2">
+              <ArrowRight className="w-4 h-4 text-blue-400" />
+              Marketplace commission fees
+            </li>
+          </ul>
+        </div>
+      </motion.div>
+    </div>
+
+    <motion.div
+      initial={{ y: 20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ delay: 0.6 }}
+      className="mt-6"
+    >
+      <div className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg">
+        <p className="text-lg text-blue-100">
+          Our diversified revenue model ensures sustainable growth while maintaining accessibility through a freemium approach. The focus on B2B partnerships and enterprise solutions provides high-margin opportunities while the subscription model delivers predictable recurring revenue.
+        </p>
+      </div>
+    </motion.div>
+  </motion.div>
+);
+
 const InvestmentDeck = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -35,15 +163,16 @@ const InvestmentDeck = () => {
     marketSlide1,         // 6
     marketSlide2,         // 7
     productSlide1,        // 8
-    dataStrategySlide,    // 9 (inserted here)
+    dataStrategySlide,    // 9
     productSlide2,        // 10
     gtmStrategySlide,     // 11
-    tractionSlide,        // 12
-    fundingRequirementsSlide, // 13
-    fundingAllocationSlide,   // 14
-    financialModelSlide,      // 15
-    teamSlide,               // 16
-    ctaSlide,                // 17
+    revenueGenerationSlide, // 12 (new position)
+    tractionSlide,        // 13 (shifted)
+    fundingRequirementsSlide, // 14 (shifted)
+    fundingAllocationSlide,   // 15 (shifted)
+    financialModelSlide,      // 16 (shifted)
+    teamSlide,               // 17 (shifted)
+    ctaSlide,                // 18 (shifted)
   ];
 
   const nextSlide = () => {
