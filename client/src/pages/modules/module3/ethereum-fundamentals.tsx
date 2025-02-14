@@ -6,49 +6,10 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
 import EthereumFundamentalsQuiz from "@/components/quizzes/EthereumFundamentalsQuiz";
-import mermaid from "mermaid";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import PosVsPowDiagram from "@/components/diagrams/PosVsPowDiagram";
-
-const MermaidDiagram = ({ chart }: { chart: string }) => {
-  const [svg, setSvg] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const renderDiagram = async () => {
-      try {
-        setLoading(true);
-        const uniqueId = `mermaid-${Math.random().toString(36).substr(2, 9)}`;
-        const { svg } = await mermaid.render(uniqueId, chart);
-        setSvg(svg);
-        setError('');
-      } catch (err) {
-        console.error('Failed to render mermaid diagram:', err);
-        setError('Failed to render diagram');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    renderDiagram();
-  }, [chart]);
-
-  if (loading) {
-    return <div className="flex justify-center p-4">Loading diagram...</div>;
-  }
-
-  if (error) {
-    return <div className="text-red-500 p-4">{error}</div>;
-  }
-
-  return (
-    <div 
-      className="mermaid-diagram" 
-      dangerouslySetInnerHTML={{ __html: svg }} 
-    />
-  );
-};
+import BitcoinEthereumComparison from "@/components/diagrams/BitcoinEthereumComparison";
+import EVMWorkflow from "@/components/diagrams/EVMWorkflow";
 
 const EthereumFundamentalsSection = () => {
   useScrollTop();
@@ -58,20 +19,6 @@ const EthereumFundamentalsSection = () => {
   const { updateProgress } = useProgress();
 
   useEffect(() => {
-    mermaid.initialize({ 
-      startOnLoad: true,
-      theme: 'neutral',
-      sequence: {
-        actorMargin: 50,
-        messageMargin: 35,
-        mirrorActors: false,
-        bottomMarginAdj: 10,
-        useMaxWidth: true,
-        width: 150,
-        height: 65
-      }
-    });
-
     const handleScroll = () => {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
       const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -104,51 +51,6 @@ const EthereumFundamentalsSection = () => {
     hidden: { opacity: 0, x: -20 },
     visible: { opacity: 1, x: 0 }
   };
-
-  const comparisonDiagram = `graph TB
-    subgraph BTC ["Bitcoin Network"]
-    B[("Bitcoin")]
-    BT["Transactions"]
-    BP["Payments"]
-
-    B --> BT
-    BT --> BP
-    end
-
-    subgraph ETH ["Ethereum Network"]
-    E[("Ethereum")]
-    SC["Smart Contracts"]
-    DApp["Applications"]
-    DeFi["Finance"]
-    NFT["Digital Assets"]
-
-    E --> SC
-    SC --> DApp
-    SC --> DeFi
-    SC --> NFT
-    end
-
-    style B fill:#dbeafe,stroke:#2563eb
-    style BT fill:#dbeafe,stroke:#2563eb
-    style BP fill:#dbeafe,stroke:#2563eb
-    style E fill:#eff6ff,stroke:#3b82f6
-    style SC fill:#eff6ff,stroke:#3b82f6
-    style DApp fill:#eff6ff,stroke:#3b82f6
-    style DeFi fill:#eff6ff,stroke:#3b82f6
-    style NFT fill:#eff6ff,stroke:#3b82f6`;
-
-  const evmDiagram = `sequenceDiagram
-    participant User
-    participant Wallet
-    participant Contract
-    participant Network
-
-    Note over User,Network: How Ethereum Works
-    User->>Wallet: Start Transaction
-    Wallet->>Contract: Execute Action
-    Contract->>Network: Update State
-    Network-->>Contract: Confirm Update
-    Contract-->>User: Return Result`;
 
   const startQuiz = () => {
     setShowQuiz(true);
@@ -225,7 +127,7 @@ const EthereumFundamentalsSection = () => {
 
               <div className="my-8 p-4 bg-gray-50 rounded-lg shadow-inner">
                 <h3 className="text-xl font-semibold text-blue-700 mb-4">Bitcoin vs Ethereum: A Simple Comparison</h3>
-                <MermaidDiagram chart={comparisonDiagram} />
+                <BitcoinEthereumComparison />
                 <p className="text-sm text-gray-600 mt-4">
                   <strong>💡 Key Difference:</strong> Bitcoin focuses on doing one thing well (being digital money), 
                   while Ethereum can do many things because it's programmable!
@@ -287,7 +189,7 @@ const EthereumFundamentalsSection = () => {
 
               <div className="my-8 p-4 bg-gray-50 rounded-lg shadow-inner">
                 <h3 className="text-xl font-semibold text-blue-700 mb-4">How the EVM Works</h3>
-                <MermaidDiagram chart={evmDiagram} />
+                <EVMWorkflow />
                 <p className="text-sm text-gray-600 mt-4">
                   <strong>💡 Important:</strong> Every action on Ethereum costs a small fee called "gas". 
                   This is like paying for computer processing time!
@@ -324,7 +226,6 @@ const EthereumFundamentalsSection = () => {
                 </motion.div>
               </motion.div>
             </motion.section>
-
 
             <motion.section
               variants={containerVariants}
