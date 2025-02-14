@@ -90,7 +90,7 @@ const ContentBox: React.FC<{
   </div>
 );
 
-// Export all slide components
+// Title Slide
 export const titleSlide = (
   <Slide key="title" className="text-center">
     <motion.div
@@ -109,6 +109,7 @@ export const titleSlide = (
   </Slide>
 );
 
+// Problem Slide
 export const problemSlide = (
   <Slide key="problem">
     <SlideTitle 
@@ -136,6 +137,7 @@ export const problemSlide = (
   </Slide>
 );
 
+// Solution Slides
 export const solutionSlide1 = (
   <Slide key="solution1">
     <SlideTitle 
@@ -186,10 +188,46 @@ export const solutionSlide2 = (
           <li>• Smart content recommendations based on learning patterns</li>
         </ul>
       </ContentBox>
+      <ContentBox icon={<Target className="w-6 h-6" />} title="Comprehensive Assessment">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Multi-format testing with adaptive questioning</li>
+          <li>• Real-time performance analytics and progress tracking</li>
+          <li>• Skill mastery verification through practical challenges</li>
+          <li>• Automated feedback and improvement suggestions</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Zap className="w-6 h-6" />} title="Enhanced Learning Experience">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Interactive simulations for hands-on practice</li>
+          <li>• Achievement system with skill-based badges</li>
+          <li>• Community-driven learning opportunities</li>
+          <li>• Enterprise-grade progress reporting and analytics</li>
+        </ul>
+      </ContentBox>
     </div>
   </Slide>
 );
 
+// Mission Slide
+export const missionSlide = (
+  <Slide key="mission">
+    <SlideTitle title="Our Vision & Mission" />
+    <div className="space-y-6">
+      <p className="text-xl text-gray-300 leading-relaxed mb-8">
+        We are building the world's most advanced AI-powered educational platform, revolutionizing how complex technologies are learned and mastered. Our mission is to democratize access to cutting-edge technical education through an intelligent, adaptive system that evolves with each learner.
+      </p>
+      <ContentBox icon={<Lightbulb className="w-6 h-6" />} title="Building the Future of Education">
+        <div className="space-y-4 text-gray-400">
+          <p>• Creating an unprecedented learning experience where AI actively participates in the educational journey, providing personalized guidance, real-time adaptations, and intelligent feedback.</p>
+          <p>• Developing a living platform that continuously evolves, incorporating the latest developments in AI and blockchain technology while maintaining accessibility for learners at all levels.</p>
+          <p>• Fostering a global community of innovators and thought leaders who will shape the future of technology through collaborative learning and knowledge sharing.</p>
+        </div>
+      </ContentBox>
+    </div>
+  </Slide>
+);
+
+// Market Slides
 export const marketSlide1 = (
   <Slide key="market1">
     <SlideTitle 
@@ -211,6 +249,22 @@ export const marketSlide1 = (
           <li>• Critical skills gap in both enterprise and education</li>
           <li>• Traditional education systems struggling to adapt</li>
           <li>• Global demand for accessible, quality learning</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Globe className="w-8 h-8" />} title="Global Impact">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Technologies reshaping every sector globally</li>
+          <li>• Urgent need for widespread digital literacy</li>
+          <li>• Democratizing access to technical knowledge</li>
+          <li>• Building foundation for future workforce</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Target className="w-8 h-8" />} title="Market Positioning">
+        <ul className="space-y-3 text-gray-400">
+          <li>• First-mover advantage in integrated AI/blockchain education</li>
+          <li>• Addressing critical market gap with innovative solution</li>
+          <li>• Scalable platform reaching global audience</li>
+          <li>• Strategic timing as technologies become mainstream</li>
         </ul>
       </ContentBox>
     </div>
@@ -242,10 +296,27 @@ export const marketSlide2 = (
           <li>• Practical applications and real-world use cases</li>
         </ul>
       </ContentBox>
+      <ContentBox icon={<Target className="w-6 h-6" />} title="Learning Achievements">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Interactive quizzes and assessments for each module</li>
+          <li>• Progress tracking and performance analytics</li>
+          <li>• Skill-based certification system</li>
+          <li>• Personalized learning paths based on user progress</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Database className="w-6 h-6" />} title="Technical Infrastructure">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Next.js with TypeScript for robust frontend</li>
+          <li>• AI-powered adaptive learning system</li>
+          <li>• PostgreSQL database for reliable data storage</li>
+          <li>• Real-time performance monitoring and analytics</li>
+        </ul>
+      </ContentBox>
     </div>
   </Slide>
 );
 
+// Product Slides
 export const productSlide1 = (
   <Slide key="product1">
     <SlideTitle 
@@ -271,6 +342,64 @@ export const productSlide1 = (
           <li>• JWT-based authentication system</li>
         </ul>
       </ContentBox>
+      <div className="col-span-2 mt-6">
+        <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
+          <h3 className="text-xl font-semibold text-gray-200 mb-4">System Architecture</h3>
+          <svg
+            viewBox="0 0 800 400"
+            className="w-full h-auto"
+            style={{ maxHeight: '300px' }}
+          >
+            {/* Background */}
+            <rect width="800" height="400" fill="#1a1b1e" rx="10" />
+
+            {/* Frontend Layer */}
+            <g transform="translate(50, 50)">
+              <rect width="200" height="100" fill="#3b82f6" fillOpacity="0.1" stroke="#3b82f6" strokeWidth="2" rx="5" />
+              <text x="100" y="40" fill="#3b82f6" textAnchor="middle" className="text-sm">Frontend Layer</text>
+              <text x="100" y="70" fill="#9ca3af" textAnchor="middle" fontSize="12">Next.js + TypeScript</text>
+            </g>
+
+            {/* API Layer */}
+            <g transform="translate(300, 50)">
+              <rect width="200" height="100" fill="#10b981" fillOpacity="0.1" stroke="#10b981" strokeWidth="2" rx="5" />
+              <text x="100" y="40" fill="#10b981" textAnchor="middle">API Layer</text>
+              <text x="100" y="70" fill="#9ca3af" textAnchor="middle" fontSize="12">Express.js Server</text>
+            </g>
+
+            {/* Database Layer */}
+            <g transform="translate(550, 50)">
+              <rect width="200" height="100" fill="#8b5cf6" fillOpacity="0.1" stroke="#8b5cf6" strokeWidth="2" rx="5" />
+              <text x="100" y="40" fill="#8b5cf6" textAnchor="middle">Database</text>
+              <text x="100" y="70" fill="#9ca3af" textAnchor="middle" fontSize="12">PostgreSQL</text>
+            </g>
+
+            {/* Services Layer */}
+            <g transform="translate(175, 200)">
+              <rect width="450" height="100" fill="#f59e0b" fillOpacity="0.1" stroke="#f59e0b" strokeWidth="2" rx="5" />
+              <text x="225" y="40" fill="#f59e0b" textAnchor="middle">External Services</text>
+              <text x="225" y="70" fill="#9ca3af" textAnchor="middle" fontSize="12">OpenAI API | Authentication | WebSocket</text>
+            </g>
+
+            {/* Connection Lines */}
+            <g stroke="#4b5563" strokeWidth="2" strokeDasharray="5,5">
+              {/* Frontend to API */}
+              <path d="M250,100 L300,100" />
+              {/* API to Database */}
+              <path d="M500,100 L550,100" />
+              {/* API to Services */}
+              <path d="M400,150 L400,200" />
+            </g>
+
+            {/* Flow Arrows */}
+            <g fill="#4b5563">
+              <polygon points="295,97 305,100 295,103" />
+              <polygon points="545,97 555,100 545,103" />
+              <polygon points="397,195 400,205 403,195" />
+            </g>
+          </svg>
+        </div>
+      </div>
     </div>
   </Slide>
 );
@@ -298,10 +427,27 @@ export const productSlide2 = (
           <li>• Real-time collaboration features</li>
         </ul>
       </ContentBox>
+      <ContentBox icon={<Bot className="w-6 h-6" />} title="AI Features (Q4 2025-Q1 2026)">
+        <ul className="space-y-3 text-gray-400">
+          <li>• AI-powered learning path optimization</li>
+          <li>• Intelligent content recommendations</li>
+          <li>• Automated project feedback system</li>
+          <li>• Natural language query support</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Trophy className="w-6 h-6" />} title="Gamification (Q1-Q2 2026)">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Interactive coding challenges and competitions</li>
+          <li>• Skill-based achievement system</li>
+          <li>• Peer learning and mentorship programs</li>
+          <li>• Virtual hackathons and team projects</li>
+        </ul>
+      </ContentBox>
     </div>
   </Slide>
 );
 
+// Go-to-Market Strategy Slide
 export const gtmStrategySlide = (
   <Slide key="gtm">
     <SlideTitle 
@@ -325,105 +471,51 @@ export const gtmStrategySlide = (
           <li>• Launch enterprise pilot programs</li>
         </ul>
       </ContentBox>
-    </div>
-  </Slide>
-);
-
-export const tractionSlide = (
-  <Slide key="traction">
-    <SlideTitle title="Current Traction" subtitle="Building momentum in the market" />
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <ContentBox icon={<Users className="w-8 h-8" />} title="User Growth">
+      <ContentBox icon={<DollarSign className="w-8 h-8" />} title="Phase 3: Monetization & Scaling (12-18 Months)">
         <ul className="space-y-3 text-gray-400">
-          <li>• 1000+ early access signups</li>
-          <li>• 85% completion rate on beta courses</li>
-          <li>• 92% user satisfaction rating</li>
-          <li>• Strong organic growth through referrals</li>
+          <li>• Launch premium subscription model</li>
+          <li>• Introduce enterprise licensing options</li>
+          <li>• Expand course offerings and certifications</li>
+          <li>• Implement corporate training programs</li>
         </ul>
       </ContentBox>
-      <ContentBox icon={<Building className="w-8 h-8" />} title="Partnerships">
+      <ContentBox icon={<Globe className="w-8 h-8" />} title="Phase 4: Global Expansion (18-24 Months)">
         <ul className="space-y-3 text-gray-400">
-          <li>• 3 educational institutions piloting platform</li>
-          <li>• 2 enterprise clients in trial phase</li>
-          <li>• 5 content creator partnerships</li>
-          <li>• Active discussions with 10+ institutions</li>
+          <li>• Localization for key international markets</li>
+          <li>• Regional partnerships and content adaptation</li>
+          <li>• Launch international marketing campaigns</li>
+          <li>• Establish regional support centers</li>
         </ul>
       </ContentBox>
     </div>
   </Slide>
 );
 
-export const dataStrategySlide = (
-  <Slide key="dataStrategy">
-    <SlideTitle title="Data Strategy" subtitle="Leveraging AI for Personalized Learning" />
+// Financial Slides
+export const financialSlide = (
+  <Slide key="financial">
+    <SlideTitle title="Financial Projections" subtitle="Strong revenue growth and profitability" />
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <ContentBox icon={<Brain className="w-8 h-8" />} title="AI-Powered Learning">
+      <ContentBox icon={<DollarSign className="w-8 h-8" />} title="Revenue Streams">
         <ul className="space-y-3 text-gray-400">
-          <li>• Adaptive learning algorithms</li>
-          <li>• Personalized content recommendations</li>
-          <li>• Real-time performance analytics</li>
-          <li>• Predictive learning paths</li>
+          <li>• Subscription model: $15M (Year 1)</li>
+          <li>• Enterprise licenses: $8M</li>
+          <li>• Custom content creation: $5M</li>
+          <li>• B2B partnerships: $7M</li>
         </ul>
       </ContentBox>
-      <ContentBox icon={<Shield className="w-8 h-8" />} title="Data Security">
+      <ContentBox icon={<Briefcase className="w-8 h-8" />} title="Growth Metrics">
         <ul className="space-y-3 text-gray-400">
-          <li>• Enterprise-grade encryption</li>
-          <li>• GDPR and CCPA compliant</li>
-          <li>• Regular security audits</li>
-          <li>• Transparent data policies</li>
+          <li>• User acquisition cost: $42</li>
+          <li>• Customer LTV: $850</li>
+          <li>• Gross margin: 75%</li>
+          <li>• Monthly growth rate: 15%</li>
         </ul>
       </ContentBox>
     </div>
   </Slide>
 );
 
-export const fundingRequirementsSlide = (
-  <Slide key="fundingRequirements">
-    <SlideTitle title="Funding Requirements" subtitle="Strategic Investment for Growth" />
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <ContentBox icon={<DollarSign className="w-8 h-8" />} title="Investment Allocation">
-        <ul className="space-y-3 text-gray-400">
-          <li>• Product development and enhancement</li>
-          <li>• Marketing and user acquisition</li>
-          <li>• Team expansion and talent acquisition</li>
-          <li>• Infrastructure scaling</li>
-        </ul>
-      </ContentBox>
-      <ContentBox icon={<Target className="w-8 h-8" />} title="Use of Funds">
-        <ul className="space-y-3 text-gray-400">
-          <li>• Course content development</li>
-          <li>• AI/ML infrastructure setup</li>
-          <li>• Sales and marketing initiatives</li>
-          <li>• Working capital</li>
-        </ul>
-      </ContentBox>
-    </div>
-  </Slide>
-);
-
-export const fundingAllocationSlide = (
-  <Slide key="fundingAllocation">
-    <SlideTitle title="Funding Allocation" subtitle="Strategic Resource Distribution" />
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <ContentBox icon={<PieChart className="w-8 h-8" />} title="Capital Distribution">
-        <ul className="space-y-3 text-gray-400">
-          <li>• 40% Product Development</li>
-          <li>• 30% Marketing & Growth</li>
-          <li>• 20% Team Expansion</li>
-          <li>• 10% Operations</li>
-        </ul>
-      </ContentBox>
-      <ContentBox icon={<TrendingUp className="w-8 h-8" />} title="Expected Outcomes">
-        <ul className="space-y-3 text-gray-400">
-          <li>• Accelerated user growth</li>
-          <li>• Enhanced product features</li>
-          <li>• Market expansion</li>
-          <li>• Sustainable revenue model</li>
-        </ul>
-      </ContentBox>
-    </div>
-  </Slide>
-);
 
 export const financialModelSlide = (
   <Slide key="financialModel">
@@ -449,7 +541,7 @@ export const financialModelSlide = (
             <tbody>
               <tr className="border-b border-gray-700">
                 <td className="py-2">Revenue</td>
-                <td className="text-right">$0</td>
+                <td className="text-right">$250K</td>
                 <td className="text-right">$500K</td>
                 <td className="text-right">$2M-$5M</td>
                 <td className="text-right">$10M+</td>
@@ -495,10 +587,7 @@ export const financialModelSlide = (
       <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700 mb-6">
         <h3 className="text-xl font-semibold text-blue-400 mb-4">Strategic Focus</h3>
         <p className="text-gray-300 mb-4">
-          Year 1 is strategically focused on platform development and user acquisition, with a projected investment of $400K. While we anticipate no revenue during this initial phase as we prioritize building a strong user base, we will actively explore and implement revenue opportunities as they arise. This approach ensures we can validate our product-market fit and build a substantial user community before monetization.
-        </p>
-        <p className="text-gray-300">
-          A Series A funding round will be essential in Year 2 to support our expansion plans and operational scaling, as we transition from pure growth to a balanced approach of continued user acquisition and revenue generation.
+          Year 1 is dedicated to aggressive user acquisition and platform development, with projected losses of $400K as we prioritize growth over revenue. A Series A funding round will be required in Year 2 to support continued expansion and operational scaling.
         </p>
       </div>
 
@@ -535,34 +624,339 @@ export const financialModelSlide = (
 );
 
 export const ctaSlide = (
-  <Slide key="cta" className="text-center">
+  <Slide key="cta" className="text-center bg-gradient-to-br from-blue-600 to-blue-800 text-white">
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity:0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
       <Logo className="text-white mx-auto mb-8 h-16 w-auto" />
       <h2 className="text-3xl mb-8 text-gray-200">Join the Future of AI & Blockchain Education</h2>
-      <p className="text-xl text-gray-400">Be part of our journey to revolutionize technical education</p>
     </motion.div>
   </Slide>
 );
 
-// Add back the missing missionSlide
-export const missionSlide = (
-  <Slide key="mission">
-    <SlideTitle title="Our Vision & Mission" />
-    <div className="space-y-6">
-      <p className="text-xl text-gray-300 leading-relaxed mb-8">
-        We are building the world's most advanced AI-powered educational platform, revolutionizing how complex technologies are learned and mastered. Our mission is to democratize access to cutting-edge technical education through an intelligent, adaptive system that evolves with each learner.
-      </p>
-      <ContentBox icon={<Lightbulb className="w-6 h-6" />} title="Building the Future of Education">
-        <div className="space-y-4 text-gray-400">
-          <p>• Creating an unprecedented learning experience where AI actively participates in the educational journey, providing personalized guidance, real-time adaptations, and intelligent feedback.</p>
-          <p>• Developing a living platform that continuously evolves, incorporating the latest developments in AI and blockchain technology while maintaining accessibility for learners at all levels.</p>
-          <p>• Fostering a global community of innovators and thought leaders who will shape the future of technology through collaborative learning and knowledge sharing.</p>
-        </div>
+export const modulesSlide = (
+  <Slide key="modules">
+    <SlideTitle title="Our Modules: A Comprehensive Curriculum" />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <ContentBox icon={<BookOpen className="w-6 h-6" />} title="Fundamentals of AI">
+        <p className="text-gray-400">Covering essential concepts, algorithms, and techniques in artificial intelligence.</p>
       </ContentBox>
+      <ContentBox icon={<BookOpen className="w-6 h6" />} title="Blockchain Technology">
+        <p className="text-gray-400">Exploring the fundamentals ofblockchain, cryptocurrencies, smart contracts, and decentralized applications.</p>
+      </ContentBox>
+      <ContentBox icon={<BookOpen className="w-6 h-6" />} title="AI & Blockchain Integration">
+        <p className="text-gray-400">Delving into the synergy between AI and blockchain, exploring real-world applications and innovative use cases.</p>
+      </ContentBox>
+    </div>
+  </Slide>
+);
+
+export const roadmapSlide = (
+  <Slide key="roadmap">
+    <SlideTitle title="Roadmap:  Our Vision for the Future" />
+    <div className="space-y-4">
+      <ContentBox icon={<Target className="w-6 h-6" />} title="2025 Milestones">
+        <p className="text-gray-400">Platform launch, initial user acquisition, and strategic partnerships.</p>
+      </ContentBox>
+      <ContentBox icon={<Target className="w-6 h-6" />} title="2026 Goals">
+        <p className="text-gray-400">Expand curriculum, increase user base, and explore international markets.</p>
+      </ContentBox>
+    </div>
+  </Slide>
+);
+
+
+export const tokenSlide = (
+  <Slide key="token">
+    <SlideTitle title="Token Utility:  Fueling Platform Growth" />
+    <ContentBox icon={<Code className="w-6 h-6" />} title="Tokenomics">
+      <p className="text-gray-400">A robust tokenomics model designed to incentivize community participation and platform growth.  Details to be shared in a separate document.</p>
+    </ContentBox>
+  </Slide>
+);
+
+// Traction & Milestones Slide
+export const tractionSlide = (
+  <Slide key="traction">
+    <SlideTitle 
+      title="Traction & Milestones" 
+      subtitle="Building a Data-Driven Learning Ecosystem"
+    />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <ContentBox icon={<Users className="w-8 h-8" />} title="User Growth Targets">
+        <ul className="space-y-3 text-gray-400">
+          <li>• 100,000+ active users within first 12 months</li>
+          <li>• 40% monthly user engagement rate</li>
+          <li>• 25% user referral rate through community program</li>
+          <li>• 85% user satisfaction score</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Brain className="w-8 h-8" />} title="AI Enhancement Goals">
+        <ul className="space-y-3 text-gray-400">
+          <li>• 95% accuracy in learning path recommendations</li>
+          <li>• 50% reduction in learning curve through AI assistance</li>
+          <li>• Real-time content adaptation based on user performance</li>
+          <li>• Personalized learning experiences for each user</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Target className="w-8 h-8" />} title="Platform Metrics">
+        <ul className="space-y-3 text-gray-400">
+          <li>• 90% course completion rate</li>
+          <li>• 1M+ learning interactions logged</li>
+          <li>• 30% improvement in user learning outcomes</li>
+          <li>• 500+ enterprise partnerships established</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<TrendingUp className="w-8 h-8" />} title="Growth Indicators">
+        <ul className="space-y-3 text-gray-400">
+          <li>• 60% month-over-month user base growth</li>
+          <li>• 45% conversion rate from free to premium</li>
+          <li>• 75% enterprise client retention rate</li>
+          <li>• 20+ strategic educational partnerships</li>
+        </ul>
+      </ContentBox>
+    </div>
+  </Slide>
+);
+
+export const fundingRequirementsSlide = (
+  <Slide key="fundingRequirements">
+    <SlideTitle 
+      title="Funding Requirements" 
+      subtitle="Investing in the Future"
+    />
+    <div className="space-y-8">
+      <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
+        <p className="text-gray-300 text-lg leading-relaxed mb-4">
+          To date, I have built everything myself at a minimal cost. I believe that with a team and relatively small budget I can rapidly build the platform's capabilities and onboard users.
+        </p>
+        <p className="text-gray-300 text-lg leading-relaxed mb-4">
+          To scale Sulla effectively, we require funding that supports key areas: content expansion, marketing, platform improvements, and operational growth. Our focus is on building a user-centric platform with AI-driven personalization, ensuring high engagement and long-term retention.
+        </p>
+        <p className="text-gray-300 text-lg leading-relaxed">
+          We have strategically allocated funds to maximize user acquisition in the first 12 months while setting up monetization in the second year. Security, legal compliance, and infrastructure enhancements are also prioritized to support future scalability.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <ContentBox icon={<Users className="w-8 h-8" />} title="Team Building & Operations">
+          <ul className="space-y-3 text-gray-400">
+            <li>• Core development team recruitment</li>
+            <li>• AI/ML specialists and data scientists</li>
+            <li>• Content creation and curriculum experts</li>
+            <li>• Customer support and operations staff</li>
+          </ul>
+        </ContentBox>
+        <ContentBox icon={<Brain className="w-8 h-8" />} title="Technology & Infrastructure">
+          <ul className="space-y-3 text-gray-400">
+            <li>• AI model development and training</li>
+            <li>• Platform scalability improvements</li>
+            <li>• Security and compliance enhancements</li>
+            <li>• Advanced analytics implementation</li>
+          </ul>
+        </ContentBox>
+        <ContentBox icon={<Rocket className="w-8 h-8" />} title="Marketing & User Acquisition">
+          <ul className="space-y-3 text-gray-400">
+            <li>• Digital marketing campaigns</li>
+            <li>• Educational partnerships</li>
+            <li>• Community building initiatives</li>
+            <li>• Brand awareness development</li>
+          </ul>
+        </ContentBox>
+        <ContentBox icon={<Layout className="w-8 h-8" />} title="Content & Product Development">
+          <ul className="space-y-3 text-gray-400">
+            <li>• Course content expansion</li>
+            <li>• Interactive learning tools</li>
+            <li>• Mobile app development</li>
+            <li>• User experience enhancement</li>
+          </ul>
+        </ContentBox>
+      </div>
+    </div>
+  </Slide>
+);
+
+export const fundingAllocationSlide = (
+  <Slide key="fundingAllocation">
+    <SlideTitle 
+      title="Use of Funds" 
+      subtitle="Strategic Allocation"
+    />
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <ContentBox icon={<BookOpen className="w-8 h-8" />} title="Content Expansion - $50K">
+          <ul className="space-y-3 text-gray-400">
+            <li>• Development of advanced AI & blockchain courses</li>
+            <li>• Creation of interactive learning materials</li>
+            <li>• Professional certification programs</li>
+            <li>• Industry-specific content modules</li>
+          </ul>
+        </ContentBox>
+        <ContentBox icon={<Rocket className="w-8 h-8" />} title="Marketing & User Acquisition - $50K">
+          <ul className="space-y-3 text-gray-400">
+            <li>• Digital marketing and SEO optimization</li>
+            <li>• Educational influencer partnerships</li>
+            <li>• Community engagement programs</li>
+            <li>• Early adopter incentives</li>
+          </ul>
+        </ContentBox>
+        <ContentBox icon={<Building className="w-8 h-8" />} title="Business Development - $50K">
+          <ul className="space-y-3 text-gray-400">
+            <li>• Strategic partnership development</li>
+            <li>• Enterprise client acquisition</li>
+            <li>• Educational institution collaborations</li>
+            <li>• Industry alliance building</li>
+          </ul>
+        </ContentBox>
+        <ContentBox icon={<Brain className="w-8 h-8" />} title="Platform Enhancements - $100K">
+          <ul className="space-y-3 text-gray-400">
+            <li>• AI algorithm development and training</li>
+            <li>• Gamification features implementation</li>
+            <li>• User experience improvements</li>
+            <li>• Performance optimization</li>
+          </ul>
+        </ContentBox>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <ContentBox icon={<Shield className="w-8 h-8" />} title="Legal & Compliance - $50K">
+          <ul className="space-y-3 text-gray-400">
+            <li>• Regulatory compliance implementation</li>
+            <li>• Legal documentation and contracts</li>
+            <li>• Privacy policy development</li>
+            <li>• Intellectual property protection</li>
+          </ul>
+        </ContentBox>
+        <ContentBox icon={<Users className="w-8 h-8" />} title="Operational Costs - $200K">
+          <ul className="space-y-3 text-gray-400">
+            <li>• Core team salaries and benefits</li>
+            <li>• Office and infrastructure costs</li>
+            <li>• Administrative expenses</li>
+            <li>• Professional services</li>
+          </ul>
+        </ContentBox>
+        <ContentBox icon={<Database className="w-8 h-8" />} title="Security & Maintenance - $100K">
+          <ul className="space-y-3 text-gray-400">
+            <li>• Security infrastructure setup</li>
+            <li>• Continuous monitoring systems</li>
+            <li>• Backup and recovery solutions</li>
+            <li>• Regular security audits</li>
+          </ul>
+        </ContentBox>
+        <ContentBox icon={<Wallet className="w-8 h-8" />} title="Buffer Fund - $50K">
+          <ul className="space-y-3 text-gray-400">
+            <li>• Emergency operational expenses</li>
+            <li>• Opportunity investments</li>
+            <li>• Market response flexibility</li>
+            <li>• Risk management reserve</li>
+          </ul>
+        </ContentBox>
+      </div>
+
+      <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700 mt-6">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-2xl font-semibold text-blue-400">Total Funding Needed</h3>
+          <span className="text-2xl font-bold text-blue-400">$650K</span>
+        </div>
+        <p className="text-gray-300 text-lg">
+          Break-even is expected in 18-24 months, with user acquisition as the top priority in the first year.
+        </p>
+      </div>
+    </div>
+  </Slide>
+);
+
+export const dataStrategySlide = (
+  <Slide key="dataStrategy">
+    <SlideTitle 
+      title="How We Track & Use Data" 
+      subtitle="Technical Implementation of Our AI-Powered Learning Platform"
+    />
+    <div className="space-y-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <ContentBox icon={<Database className="w-8 h-8" />} title="Data Collection & Storage">
+          <ul className="space-y-3 text-gray-400">
+            <li>• PostgreSQL with Drizzle ORM for structured learning data</li>
+            <li>• Redis for real-time caching and session management</li>
+            <li>• Time-series data tracking with TimescaleDB</li>
+            <li>• S3-compatible storage for learning materials</li>
+          </ul>
+        </ContentBox>
+        <ContentBox icon={<Brain className="w-8 h-8" />} title="Machine Learning Pipeline">
+          <ul className="space-y-3 text-gray-400">
+            <li>• OpenAI API for content generation and analysis</li>
+            <li>• TensorFlow for custom model development</li>
+            <li>• scikit-learn for learning path optimization</li>
+            <li>• Hugging Face transformers for NLP tasks</li>
+          </ul>
+        </ContentBox>
+      </div>
+
+      <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
+        <h3 className="text-xl font-semibold text-gray-200 mb-4">Data Flow Architecture</h3>
+        <svg
+          viewBox="0 0 800 200"
+          className="w-full h-auto"
+          style={{ maxHeight: '200px' }}
+        >
+          {/* Background */}
+          <rect width="800" height="200" fill="#1a1b1e" rx="10" />
+
+          {/* User Interaction Layer */}
+          <g transform="translate(50, 50)">
+            <rect width="150" height="60" fill="#3b82f6" fillOpacity="0.1" stroke="#3b82f6" strokeWidth="2" rx="5" />
+            <text x="75" y="25" fill="#3b82f6" textAnchor="middle" fontSize="14">User Interactions</text>
+            <text x="75" y="45" fill="#9ca3af" textAnchor="middle" fontSize="12">Event Tracking</text>
+          </g>
+
+          {/* Processing Layer */}
+          <g transform="translate(325, 50)">
+            <rect width="150" height="60" fill="#10b981" fillOpacity="0.1" stroke="#10b981" strokeWidth="2" rx="5" />
+            <text x="75" y="25" fill="#10b981" textAnchor="middle" fontSize="14">Data Processing</text>
+            <text x="75" y="45" fill="#9ca3af" textAnchor="middle" fontSize="12">Apache Kafka</text>
+          </g>
+
+          {/* Storage Layer */}
+          <g transform="translate(600, 50)">
+            <rect width="150" height="60" fill="#8b5cf6" fillOpacity="0.1" stroke="#8b5cf6" strokeWidth="2" rx="5" />
+            <text x="75" y="25" fill="#8b5cf6" textAnchor="middle" fontSize="14">Data Storage</text>
+            <text x="75" y="45" fill="#9ca3af" textAnchor="middle" fontSize="12">PostgreSQL + Redis</text>
+          </g>
+
+          {/* Connection Lines */}
+          <g stroke="#4b5563" strokeWidth="2" strokeDasharray="5,5">
+            <path d="M200,80 L325,80" />
+            <path d="M475,80 L600,80" />
+          </g>
+
+          {/* Flow Arrows */}
+          <g fill="#4b5563">
+            <polygon points="320,77 330,80 320,83" />
+            <polygon points="595,77 605,80 595,83" />
+          </g>
+        </svg>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <ContentBox icon={<Code className="w-8 h-8" />} title="Analytics & Processing">
+          <ul className="space-y-3 text-gray-400">
+            <li>• Apache Kafka for real-time event streaming</li>
+            <li>• ElasticSearch for search and analytics</li>
+            <li>• Pandas for data transformation pipelines</li>
+            <li>• Grafana for monitoring and visualization</li>
+          </ul>
+        </ContentBox>
+        <ContentBox icon={<Shield className="w-8 h-8" />} title="Security Implementation">
+          <ul className="space-y-3 text-gray-400">
+            <li>• JWT-based authentication system</li>
+            <li>• AES-256 encryption for sensitive data</li>
+            <li>• Role-based access control (RBAC)</li>
+            <li>• Regular security audits and penetration testing</li>
+          </ul>
+        </ContentBox>
+      </div>
     </div>
   </Slide>
 );
