@@ -249,7 +249,6 @@ export default function Module3() {
           </TabsContent>
         </Tabs>
       </div>
-      <Footer />
     </div>
   );
 }
