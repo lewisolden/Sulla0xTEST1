@@ -79,32 +79,42 @@ const InvestmentDeck = () => {
     const container = document.createElement('div');
     container.style.backgroundColor = '#000'; // Match deck background
     container.style.padding = '20px';
+    container.style.width = '1920px'; // Set fixed width for consistent rendering
+    container.style.height = '1080px'; // Set fixed height for consistent rendering
 
     // Add all slides to the container
     slides.forEach((slide, index) => {
       const slideDiv = document.createElement('div');
       slideDiv.style.marginBottom = '20px';
       slideDiv.style.pageBreakAfter = 'always';
-      slideDiv.innerHTML = `<div class="pdf-slide">${slide}</div>`;
+      slideDiv.className = 'pdf-slide';
+      // Clone the slide content to preserve styling
+      const slideContent = document.createElement('div');
+      slideContent.innerHTML = slide;
+      slideDiv.appendChild(slideContent);
       container.appendChild(slideDiv);
     });
 
     // Configure PDF options
     const opt = {
-      margin: 10,
+      margin: 0,
       filename: 'Sulla-Investment-Deck.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
+      image: { type: 'jpeg', quality: 1 },
       html2canvas: { 
         scale: 2,
         backgroundColor: '#000',
-        logging: false
+        logging: false,
+        width: 1920,
+        height: 1080,
+        windowWidth: 1920,
+        windowHeight: 1080
       },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+      jsPDF: { unit: 'mm', format: [297, 210], orientation: 'landscape' }
     };
 
     try {
       // Generate PDF
-      const pdf = await html2pdf().set(opt).from(container).save();
+      await html2pdf().set(opt).from(container).save();
     } catch (error) {
       console.error('Error generating PDF:', error);
     } finally {
