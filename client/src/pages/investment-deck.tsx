@@ -92,10 +92,19 @@ const InvestmentDeck = () => {
   }, [currentSlide]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white p-4">
-      <div className="max-w-7xl mx-auto relative min-h-[80vh] flex items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-900 to-black text-white">
+      <div className="max-w-7xl mx-auto px-4 py-8 min-h-[85vh] flex items-center justify-center">
         <AnimatePresence mode="wait">
-          {slides[currentSlide]}
+          <motion.div
+            key={currentSlide}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.5 }}
+            className="w-full"
+          >
+            {slides[currentSlide]}
+          </motion.div>
         </AnimatePresence>
       </div>
 
