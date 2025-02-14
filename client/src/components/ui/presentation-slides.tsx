@@ -96,17 +96,101 @@ const ContentBox: React.FC<{
 export const titleSlide = (
   <Slide key="title" className="text-center">
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+      className="relative"
     >
-      <Logo className="text-white mx-auto mb-12 h-24 w-auto" />
-      <h1 className="text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400">
-        The Future of AI & Blockchain Education
-      </h1>
-      <h2 className="text-2xl mb-8 text-gray-300">A Revolutionary Learning Platform</h2>
-      <p className="text-xl mb-4 text-blue-400">Investment Opportunity</p>
-      <p className="text-lg text-gray-400">February 2025</p>
+      {/* Background Elements */}
+      <div className="absolute inset-0 z-0">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 0.1, scale: 1 }}
+          transition={{ duration: 1.5 }}
+          className="absolute inset-0 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-blue-600/20"
+        />
+        <div className="absolute inset-0 mix-blend-overlay opacity-30">
+          <svg className="w-full h-full" viewBox="0 0 100 100">
+            <defs>
+              <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" strokeWidth="0.5" />
+              </pattern>
+            </defs>
+            <rect width="100" height="100" fill="url(#grid)" />
+          </svg>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="relative z-10">
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.8 }}
+        >
+          <Logo className="text-white mx-auto mb-12 h-24 w-auto filter drop-shadow-lg" />
+        </motion.div>
+
+        <motion.h1
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.8 }}
+          className="text-6xl font-extrabold mb-8 tracking-tight"
+        >
+          <span className="inline-block bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400 filter drop-shadow-lg">
+            The Future of AI & Blockchain Education
+          </span>
+        </motion.h1>
+
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.6, duration: 0.8 }}
+          className="space-y-6"
+        >
+          <h2 className="text-3xl text-gray-300 font-light">A Revolutionary Learning Platform</h2>
+
+          <div className="flex justify-center gap-8 mt-12">
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.8, duration: 0.5 }}
+              className="flex items-center gap-2 text-blue-400"
+            >
+              <Brain className="w-6 h-6" />
+              <span>AI-Powered</span>
+            </motion.div>
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 1, duration: 0.5 }}
+              className="flex items-center gap-2 text-purple-400"
+            >
+              <Network className="w-6 h-6" />
+              <span>Blockchain-Based</span>
+            </motion.div>
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 1.2, duration: 0.5 }}
+              className="flex items-center gap-2 text-blue-400"
+            >
+              <GraduationCap className="w-6 h-6" />
+              <span>Adaptive Learning</span>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 1.4, duration: 0.8 }}
+            className="mt-12"
+          >
+            <p className="text-xl text-blue-400">Investment Opportunity</p>
+            <p className="text-lg text-gray-400 mt-2">February 2025</p>
+          </motion.div>
+        </motion.div>
+      </div>
     </motion.div>
   </Slide>
 );
@@ -562,8 +646,7 @@ export const financialModelSlide = (
                 <td className="text-right">$250K</td>
                 <td className="text-right">$300K</td>
                 <td className="text-right">$1M</td>
-                <td className="text-right">$2M</td>
-                <td className="text-right">$4M</td>
+                <td className="text-right">$2M</td><td className="text-right">$4M</td>
               </tr>
               <tr className="border-b border-gray-700">
                 <td className="py-2">Operational Costs</td>
