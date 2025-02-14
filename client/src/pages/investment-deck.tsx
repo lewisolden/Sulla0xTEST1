@@ -21,7 +21,7 @@ import {
   teamSlide,
   ctaSlide,
 } from '@/components/ui/presentation-slides';
-
+import { Card } from '@/components/ui/card';
 const revenueGenerationSlide = (
   <motion.div
     initial={{ opacity: 0 }}
@@ -42,47 +42,47 @@ const revenueGenerationSlide = (
         transition={{ delay: 0.2 }}
         className="space-y-6"
       >
-        <div className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg">
+        <Card className="bg-gradient-to-br from-blue-900/30 via-purple-900/20 to-blue-900/30 p-6">
           <div className="flex items-center gap-3 mb-4">
             <CreditCard className="w-6 h-6 text-blue-400" />
             <h3 className="text-xl font-semibold text-blue-300">Premium Subscriptions</h3>
           </div>
-          <ul className="space-y-2 text-blue-100">
-            <li className="flex items-center gap-2">
+          <ul className="space-y-3 text-blue-100">
+            <li className="flex items-center gap-2 bg-blue-900/30 p-2 rounded">
               <BadgePercent className="w-4 h-4 text-blue-400" />
               Basic: $9.99/month - Core courses and features
             </li>
-            <li className="flex items-center gap-2">
+            <li className="flex items-center gap-2 bg-blue-900/30 p-2 rounded">
               <BadgePercent className="w-4 h-4 text-blue-400" />
               Pro: $29.99/month - Advanced content & personalization
             </li>
-            <li className="flex items-center gap-2">
+            <li className="flex items-center gap-2 bg-blue-900/30 p-2 rounded">
               <BadgePercent className="w-4 h-4 text-blue-400" />
               Enterprise: Custom pricing for teams
             </li>
           </ul>
-        </div>
+        </Card>
 
-        <div className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg">
+        <Card className="bg-gradient-to-br from-blue-900/30 via-purple-900/20 to-blue-900/30 p-6">
           <div className="flex items-center gap-3 mb-4">
             <Factory className="w-6 h-6 text-blue-400" />
             <h3 className="text-xl font-semibold text-blue-300">B2B Solutions</h3>
           </div>
-          <ul className="space-y-2 text-blue-100">
-            <li className="flex items-center gap-2">
+          <ul className="space-y-3 text-blue-100">
+            <li className="flex items-center gap-2 bg-blue-900/30 p-2 rounded">
               <ArrowRight className="w-4 h-4 text-blue-400" />
               White-label platform licensing
             </li>
-            <li className="flex items-center gap-2">
+            <li className="flex items-center gap-2 bg-blue-900/30 p-2 rounded">
               <ArrowRight className="w-4 h-4 text-blue-400" />
               Custom course development
             </li>
-            <li className="flex items-center gap-2">
+            <li className="flex items-center gap-2 bg-blue-900/30 p-2 rounded">
               <ArrowRight className="w-4 h-4 text-blue-400" />
               API access for integration
             </li>
           </ul>
-        </div>
+        </Card>
       </motion.div>
 
       <motion.div
@@ -91,47 +91,47 @@ const revenueGenerationSlide = (
         transition={{ delay: 0.4 }}
         className="space-y-6"
       >
-        <div className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg">
+        <Card className="bg-gradient-to-br from-blue-900/30 via-purple-900/20 to-blue-900/30 p-6">
           <div className="flex items-center gap-3 mb-4">
             <GraduationCap className="w-6 h-6 text-blue-400" />
             <h3 className="text-xl font-semibold text-blue-300">Educational Partnerships</h3>
           </div>
-          <ul className="space-y-2 text-blue-100">
-            <li className="flex items-center gap-2">
+          <ul className="space-y-3 text-blue-100">
+            <li className="flex items-center gap-2 bg-blue-900/30 p-2 rounded">
               <ArrowRight className="w-4 h-4 text-blue-400" />
               University licensing programs
             </li>
-            <li className="flex items-center gap-2">
+            <li className="flex items-center gap-2 bg-blue-900/30 p-2 rounded">
               <ArrowRight className="w-4 h-4 text-blue-400" />
               Corporate training packages
             </li>
-            <li className="flex items-center gap-2">
+            <li className="flex items-center gap-2 bg-blue-900/30 p-2 rounded">
               <ArrowRight className="w-4 h-4 text-blue-400" />
               Professional certification programs
             </li>
           </ul>
-        </div>
+        </Card>
 
-        <div className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg">
+        <Card className="bg-gradient-to-br from-blue-900/30 via-purple-900/20 to-blue-900/30 p-6">
           <div className="flex items-center gap-3 mb-4">
             <Award className="w-6 h-6 text-blue-400" />
             <h3 className="text-xl font-semibold text-blue-300">Additional Revenue Streams</h3>
           </div>
-          <ul className="space-y-2 text-blue-100">
-            <li className="flex items-center gap-2">
+          <ul className="space-y-3 text-blue-100">
+            <li className="flex items-center gap-2 bg-blue-900/30 p-2 rounded">
               <ArrowRight className="w-4 h-4 text-blue-400" />
               NFT certifications ($99 - $499)
             </li>
-            <li className="flex items-center gap-2">
+            <li className="flex items-center gap-2 bg-blue-900/30 p-2 rounded">
               <ArrowRight className="w-4 h-4 text-blue-400" />
               Sponsored content from crypto projects
             </li>
-            <li className="flex items-center gap-2">
+            <li className="flex items-center gap-2 bg-blue-900/30 p-2 rounded">
               <ArrowRight className="w-4 h-4 text-blue-400" />
               Marketplace commission fees
             </li>
           </ul>
-        </div>
+        </Card>
       </motion.div>
     </div>
 
@@ -141,11 +141,11 @@ const revenueGenerationSlide = (
       transition={{ delay: 0.6 }}
       className="mt-6"
     >
-      <div className="bg-gradient-to-br from-blue-800/50 to-purple-900/50 p-6 rounded-lg">
+      <Card className="bg-gradient-to-br from-blue-900/30 via-purple-900/20 to-blue-900/30 p-6">
         <p className="text-lg text-blue-100">
           Our diversified revenue model ensures sustainable growth while maintaining accessibility through a freemium approach. The focus on B2B partnerships and enterprise solutions provides high-margin opportunities while the subscription model delivers predictable recurring revenue.
         </p>
-      </div>
+      </Card>
     </motion.div>
   </motion.div>
 );
@@ -155,24 +155,24 @@ const InvestmentDeck = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const slides = [
-    titleSlide,            // 1
-    problemSlide,         // 2
-    solutionSlide1,       // 3
-    solutionSlide2,       // 4
-    missionSlide,         // 5
-    marketSlide1,         // 6
-    marketSlide2,         // 7
-    productSlide1,        // 8
-    dataStrategySlide,    // 9
-    productSlide2,        // 10
-    gtmStrategySlide,     // 11
-    revenueGenerationSlide, // 12 (new position)
-    tractionSlide,        // 13 (shifted)
-    fundingRequirementsSlide, // 14 (shifted)
-    fundingAllocationSlide,   // 15 (shifted)
-    financialModelSlide,      // 16 (shifted)
-    teamSlide,               // 17 (shifted)
-    ctaSlide,                // 18 (shifted)
+    titleSlide,            
+    problemSlide,         
+    solutionSlide1,       
+    solutionSlide2,       
+    missionSlide,         
+    marketSlide1,         
+    marketSlide2,         
+    productSlide1,        
+    dataStrategySlide,    
+    productSlide2,        
+    gtmStrategySlide,     
+    revenueGenerationSlide, 
+    tractionSlide,        
+    fundingRequirementsSlide, 
+    fundingAllocationSlide,   
+    financialModelSlide,      
+    teamSlide,               
+    ctaSlide,                
   ];
 
   const nextSlide = () => {
