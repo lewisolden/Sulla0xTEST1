@@ -346,6 +346,30 @@ export default function DigitalCurrenciesSection() {
                   whileHover="hover"
                   className="mt-6 p-6 bg-white rounded-lg shadow-md"
                 >
+                  <h3 className="text-2xl font-semibold text-blue-600 mb-4">Understanding Transaction Flow</h3>
+                  <motion.p variants={listItemVariants} className="mt-4">
+                    When you make a cryptocurrency transaction, it goes through several important steps to ensure security and validity:
+                  </motion.p>
+
+                  <motion.ul variants={sectionVariants} className="list-disc pl-5 mt-4 mb-6">
+                    {[
+                      "Transaction Broadcast: When you initiate a transfer, your transaction is announced to the network",
+                      "Verification: Network nodes check the transaction's validity and your available balance",
+                      "Consensus: Multiple nodes work together to confirm the transaction",
+                      "Validation: The transaction is validated and added to the blockchain",
+                      "Completion: The recipient receives the funds after network confirmation"
+                    ].map((item, index) => (
+                      <motion.li 
+                        key={index}
+                        variants={listItemVariants}
+                        custom={index}
+                        className="mb-2"
+                      >
+                        {item}
+                      </motion.li>
+                    ))}
+                  </motion.ul>
+
                   <TransactionFlowDiagram />
                 </motion.div>
               </motion.section>
