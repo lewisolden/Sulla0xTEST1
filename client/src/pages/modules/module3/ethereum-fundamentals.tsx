@@ -117,83 +117,54 @@ const EthereumFundamentalsSection = () => {
   };
 
   const comparisonDiagram = `graph TB
-    subgraph "Bitcoin Network" ["Bitcoin: Digital Gold"]
-    direction TB
-    B[("Bitcoin Wallet")]
-    BT["Simple Transactions"]
-    BP["Payment Network"]
+    subgraph BTC ["Bitcoin Network"]
+    B[("Bitcoin")]
+    BT["Transactions"]
+    BP["Payments"]
 
     B --> BT
     BT --> BP
-
-    style B fill:#dbeafe,stroke:#2563eb,color:#1e40af
-    style BT fill:#dbeafe,stroke:#2563eb,color:#1e40af
-    style BP fill:#dbeafe,stroke:#2563eb,color:#1e40af
     end
 
-    subgraph "Ethereum Network" ["Ethereum: World Computer"]
-    direction TB
-    E[("Ethereum Platform")]
+    subgraph ETH ["Ethereum Network"]
+    E[("Ethereum")]
     SC["Smart Contracts"]
-    DApps["Decentralized Apps"]
-    DeFi["Financial Services"]
+    DApp["Applications"]
+    DeFi["Finance"]
     NFT["Digital Assets"]
-    DAO["Organizations"]
 
     E --> SC
-    SC --> DApps
+    SC --> DApp
     SC --> DeFi
     SC --> NFT
-    SC --> DAO
-
-    style E fill:#eff6ff,stroke:#3b82f6,color:#1e40af
-    style SC fill:#eff6ff,stroke:#3b82f6,color:#1e40af
-    style DApps fill:#eff6ff,stroke:#3b82f6,color:#1e40af
-    style DeFi fill:#eff6ff,stroke:#3b82f6,color:#1e40af
-    style NFT fill:#eff6ff,stroke:#3b82f6,color:#1e40af
-    style DAO fill:#eff6ff,stroke:#3b82f6,color:#1e40af
     end
 
-    classDef default fill:#f8fafc,stroke:#64748b
-    classDef highlight fill:#dbeafe,stroke:#2563eb
-
-    style Bitcoin Network fill:#f8fafc,stroke:#2563eb,color:#1e40af
-    style Ethereum Network fill:#f8fafc,stroke:#3b82f6,color:#1e40af`;
+    style B fill:#dbeafe,stroke:#2563eb
+    style BT fill:#dbeafe,stroke:#2563eb
+    style BP fill:#dbeafe,stroke:#2563eb
+    style E fill:#eff6ff,stroke:#3b82f6
+    style SC fill:#eff6ff,stroke:#3b82f6
+    style DApp fill:#eff6ff,stroke:#3b82f6
+    style DeFi fill:#eff6ff,stroke:#3b82f6
+    style NFT fill:#eff6ff,stroke:#3b82f6`;
 
   const evmDiagram = `sequenceDiagram
-    participant User as 👤 You
-    participant Wallet as 💼 Wallet
-    participant Contract as 📝 Smart Contract
-    participant EVM as 🌐 Ethereum Network
+    participant U as User
+    participant W as Wallet
+    participant C as Contract
+    participant N as Network
 
-    Note over User,EVM: How Ethereum Works
+    Note over U,N: How Ethereum Works
+    U->>W: 1. Start Action
+    W->>C: 2. Send Transaction
+    C->>N: 3. Update Chain
+    N-->>C: 4. Confirm
+    C-->>U: 5. Show Result
 
-    User->>Wallet: 1️⃣ Initiate Action<br/>(e.g., Send tokens)
-    activate Wallet
-    Note over Wallet: Prepares transaction<br/>Calculates gas fee
-    Wallet->>Contract: 2️⃣ Send Transaction
-    deactivate Wallet
-
-    activate Contract
-    Note over Contract: Executes your<br/>requested action
-    Contract->>EVM: 3️⃣ Update blockchain
-    deactivate Contract
-
-    activate EVM
-    Note over EVM: Validates and<br/>processes changes
-    EVM-->>Contract: 4️⃣ Confirm update
-    deactivate EVM
-
-    activate Contract
-    Contract-->>User: 5️⃣ Show result
-    deactivate Contract
-
-    Note over User,EVM: Transaction Complete! 🎉
-
-    style User fill:#dbeafe,stroke:#2563eb
-    style Wallet fill:#dbeafe,stroke:#2563eb
-    style Contract fill:#eff6ff,stroke:#3b82f6
-    style EVM fill:#eff6ff,stroke:#3b82f6`;
+    style U fill:#dbeafe,stroke:#2563eb
+    style W fill:#dbeafe,stroke:#2563eb
+    style C fill:#eff6ff,stroke:#3b82f6
+    style N fill:#eff6ff,stroke:#3b82f6`;
 
   const startQuiz = () => {
     setShowQuiz(true);
