@@ -38,7 +38,7 @@ export const moduleProgress = pgTable("module_progress", {
   id: serial("id").primaryKey(),
   userId: integer("user_id").references(() => users.id).notNull(),
   moduleId: integer("module_id").notNull(),
-  courseId: integer("course_id").references(() => courses.id), 
+  courseId: integer("course_id").references(() => courses.id),
   sectionId: text("section_id").notNull(),
   completed: boolean("completed").default(false).notNull(),
   score: integer("score"),
@@ -63,8 +63,8 @@ export const userQuizResponses = pgTable("user_quiz_responses", {
   id: serial("id").primaryKey(),
   userId: integer("user_id").references(() => users.id).notNull(),
   quizId: integer("quiz_id").references(() => quizzes.id).notNull(),
-  courseId: integer("course_id").references(() => courses.id), 
-  moduleId: integer("module_id"), 
+  courseId: integer("course_id").references(() => courses.id),
+  moduleId: integer("module_id"),
   selectedAnswer: text("selected_answer").notNull(),
   isCorrect: boolean("is_correct").notNull(),
   timeSpent: integer("time_spent"),
@@ -118,6 +118,19 @@ export const glossaryTerms = pgTable("glossary_terms", {
   visualAid: text("visual_aid"),
   examples: jsonb("examples"),
   relatedTerms: jsonb("related_terms"),
+});
+
+export const feedback = pgTable("feedback", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  courseId: integer("course_id").references(() => courses.id),
+  type: text("type").notNull(), // 'course', 'website', 'feature'
+  rating: integer("rating"), // 1-5 stars for course feedback
+  feedback: text("feedback").notNull(),
+  status: text("status").default('pending').notNull(), // 'pending', 'reviewed', 'addressed'
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  metadata: jsonb("metadata"), // For any additional data we might need
 });
 
 export const moduleProgressRelations = relations(moduleProgress, ({ one }) => ({
@@ -184,6 +197,17 @@ export const courseRelations = relations(courses, ({ many }) => ({
   enrollments: many(courseEnrollments),
 }));
 
+export const feedbackRelations = relations(feedback, ({ one }) => ({
+  user: one(users, {
+    fields: [feedback.userId],
+    references: [users.id],
+  }),
+  course: one(courses, {
+    fields: [feedback.courseId],
+    references: [courses.id],
+  }),
+}));
+
 export const insertUserSchema = createInsertSchema(users);
 export const selectUserSchema = createSelectSchema(users);
 export const insertModuleProgressSchema = createInsertSchema(moduleProgress);
@@ -202,6 +226,8 @@ export const insertCourseSchema = createInsertSchema(courses);
 export const selectCourseSchema = createSelectSchema(courses);
 export const insertCourseEnrollmentSchema = createInsertSchema(courseEnrollments);
 export const selectCourseEnrollmentSchema = createSelectSchema(courseEnrollments);
+export const insertFeedbackSchema = createInsertSchema(feedback);
+export const selectFeedbackSchema = createSelectSchema(feedback);
 
 export type InsertUser = typeof users.$inferInsert;
 export type SelectUser = typeof users.$inferSelect;
@@ -221,6 +247,8 @@ export type InsertCourse = typeof courses.$inferInsert;
 export type SelectCourse = typeof courses.$inferSelect;
 export type InsertCourseEnrollment = typeof courseEnrollments.$inferInsert;
 export type SelectCourseEnrollment = typeof courseEnrollments.$inferSelect;
+export type InsertFeedback = typeof feedback.$inferInsert;
+export type SelectFeedback = typeof feedback.$inferSelect;
 
 export const adminUsers = pgTable("admin_users", {
   id: serial("id").primaryKey(),

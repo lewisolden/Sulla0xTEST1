@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Link } from "wouter";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { AlertCircle, Users, BookOpen, Trophy, Activity } from "lucide-react";
+import { AlertCircle, Users, BookOpen, Trophy, Activity, MessageSquare } from "lucide-react";
 
 interface Analytics {
   totalUsers: number;
@@ -12,6 +12,7 @@ interface Analytics {
   totalEnrollments: number;
   completedModules: number;
   achievementsAwarded: number;
+  pendingFeedback: number;
   userActivityData: {
     date: string;
     activeUsers: number;
@@ -20,7 +21,7 @@ interface Analytics {
 }
 
 export default function AdminDashboard() {
-  const { data: analytics, isLoading } = useQuery<Analytics>({
+  const { data: analytics, isLoading: loadingAnalytics } = useQuery<Analytics>({
     queryKey: ["admin", "analytics"],
     queryFn: async () => {
       const response = await fetch("/api/admin/analytics/users");
@@ -31,7 +32,9 @@ export default function AdminDashboard() {
     },
   });
 
-  if (isLoading) {
+  const loadingMetrics = loadingAnalytics;
+
+  if (loadingMetrics) {
     return (
       <div className="container mx-auto p-6 space-y-6">
         <h1 className="text-3xl font-bold">Admin Dashboard</h1>
@@ -55,13 +58,16 @@ export default function AdminDashboard() {
           <Button variant="outline" asChild>
             <Link href="/admin/analytics">Detailed Analytics</Link>
           </Button>
+          <Button variant="outline" asChild>
+            <Link href="/admin/feedback">View Feedback</Link>
+          </Button>
           <Button asChild>
             <Link href="/admin/users">Manage Users</Link>
           </Button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
         <Card className="p-6 hover:shadow-lg transition-shadow">
           <div className="flex items-center gap-4">
             <Users className="w-8 h-8 text-primary" />
@@ -110,6 +116,22 @@ export default function AdminDashboard() {
               <p className="text-3xl font-bold">{analytics?.achievementsAwarded || 0}</p>
             </div>
           </div>
+        </Card>
+
+        <Card className="bg-purple-50">
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-3">
+              <div className="p-3 bg-purple-100 rounded-full">
+                <MessageSquare className="h-6 w-6 text-purple-600" />
+              </div>
+              <div>
+                <p className="text-sm text-purple-600">Pending Feedback</p>
+                <p className="text-2xl font-bold text-purple-900">
+                  {loadingMetrics ? "..." : analytics?.pendingFeedback || 0}
+                </p>
+              </div>
+            </div>
+          </CardContent>
         </Card>
       </div>
 
