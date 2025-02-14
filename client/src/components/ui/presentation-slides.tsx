@@ -351,12 +351,12 @@ export const marketSlide2 = (
           <li>• Personalized learning paths based on user progress</li>
         </ul>
       </ContentBox>
-      <ContentBox icon={<Users className="w-6 h-6" />} title="User Engagement">
+      <ContentBox icon={<Database className="w-6 h-6" />} title="Technical Infrastructure">
         <ul className="space-y-3 text-gray-400">
-          <li>• Active community of learners and educators</li>
-          <li>• Regular content updates reflecting industry changes</li>
-          <li>• Multimedia learning resources and materials</li>
-          <li>• Enterprise-ready reporting and analytics</li>
+          <li>• Next.js with TypeScript for robust frontend</li>
+          <li>• AI-powered adaptive learning system</li>
+          <li>• PostgreSQL database for reliable data storage</li>
+          <li>• Real-time performance monitoring and analytics</li>
         </ul>
       </ContentBox>
     </div>
