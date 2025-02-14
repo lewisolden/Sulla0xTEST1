@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Maximize2, Minimize2, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import html2pdf from 'html2pdf.js';
-import ReactDOMServer from 'react-dom/server';
 import {
   titleSlide,
   problemSlide,
@@ -77,44 +76,28 @@ const InvestmentDeck = () => {
     setIsExporting(true);
 
     try {
-      // Get the current deck container
-      const deckContainer = document.querySelector('.deck-container');
-      if (!deckContainer) return;
+      // Get the current slide
+      const currentSlideElement = document.querySelector('.slide-wrapper');
+      if (!currentSlideElement) return;
 
-      // Clone the container to avoid modifying the visible content
-      const container = deckContainer.cloneNode(true) as HTMLElement;
-
-      // Make sure all slides are visible in the clone
-      const slideElements = container.querySelectorAll('.slide-wrapper');
-      slideElements.forEach(slide => {
-        (slide as HTMLElement).style.display = 'block';
-        (slide as HTMLElement).style.opacity = '1';
-        (slide as HTMLElement).style.transform = 'none';
-      });
-
-      // Configure PDF options
       const opt = {
-        margin: 0,
+        margin: [10, 10],
         filename: 'Sulla-Investment-Deck.pdf',
-        image: { type: 'jpeg', quality: 1 },
+        image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { 
           scale: 2,
-          backgroundColor: '#000',
-          logging: true,
           useCORS: true,
-          allowTaint: true,
-          letterRendering: true,
+          logging: true
         },
         jsPDF: { 
           unit: 'mm', 
           format: 'a4', 
-          orientation: 'landscape',
-          compress: true,
+          orientation: 'landscape'
         }
       };
 
-      // Generate PDF
-      await html2pdf().set(opt).from(container).save();
+      // Export current slide
+      await html2pdf().set(opt).from(currentSlideElement).save();
     } catch (error) {
       console.error('Error generating PDF:', error);
     } finally {
@@ -142,20 +125,18 @@ const InvestmentDeck = () => {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent" />
 
       <div className="relative z-10">
-        <div className="deck-container max-w-7xl mx-auto px-4 py-8 min-h-[85vh] flex items-center justify-center">
+        <div className="max-w-7xl mx-auto px-4 py-8 min-h-[85vh] flex items-center justify-center">
           <AnimatePresence mode="wait">
-            {slides.map((slide, index) => (
-              <motion.div
-                key={index}
-                className={`slide-wrapper w-full ${index === currentSlide ? 'block' : 'hidden'}`}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: index === currentSlide ? 1 : 0, y: index === currentSlide ? 0 : 20 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.5 }}
-              >
-                {slide}
-              </motion.div>
-            ))}
+            <motion.div
+              key={currentSlide}
+              className="slide-wrapper w-full"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+            >
+              {slides[currentSlide]}
+            </motion.div>
           </AnimatePresence>
         </div>
 
