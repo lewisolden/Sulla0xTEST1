@@ -61,25 +61,14 @@ const EthereumFundamentalsSection = () => {
     mermaid.initialize({ 
       startOnLoad: true,
       theme: 'neutral',
-      securityLevel: 'loose',
-      themeVariables: {
-        primaryColor: '#3b82f6',
-        primaryTextColor: '#1e3a8a',
-        primaryBorderColor: '#60a5fa',
-        lineColor: '#93c5fd',
-        secondaryColor: '#dbeafe',
-        tertiaryColor: '#eff6ff'
-      },
       sequence: {
-        diagramMarginX: 50,
-        diagramMarginY: 10,
         actorMargin: 50,
+        messageMargin: 35,
+        mirrorActors: false,
+        bottomMarginAdj: 10,
+        useMaxWidth: true,
         width: 150,
-        height: 65,
-        boxMargin: 10,
-        boxTextMargin: 5,
-        noteMargin: 10,
-        messageMargin: 35
+        height: 65
       }
     });
 
@@ -149,22 +138,17 @@ const EthereumFundamentalsSection = () => {
     style NFT fill:#eff6ff,stroke:#3b82f6`;
 
   const evmDiagram = `sequenceDiagram
-    participant U as User
-    participant W as Wallet
-    participant C as Contract
-    participant N as Network
+    participant User
+    participant Wallet
+    participant Contract
+    participant Network
 
-    Note over U,N: How Ethereum Works
-    U->>W: 1. Start Action
-    W->>C: 2. Send Transaction
-    C->>N: 3. Update Chain
-    N-->>C: 4. Confirm
-    C-->>U: 5. Show Result
-
-    style U fill:#dbeafe,stroke:#2563eb
-    style W fill:#dbeafe,stroke:#2563eb
-    style C fill:#eff6ff,stroke:#3b82f6
-    style N fill:#eff6ff,stroke:#3b82f6`;
+    Note over User,Network: How Ethereum Works
+    User->>Wallet: Start Transaction
+    Wallet->>Contract: Execute Action
+    Contract->>Network: Update State
+    Network-->>Contract: Confirm Update
+    Contract-->>User: Return Result`;
 
   const startQuiz = () => {
     setShowQuiz(true);
