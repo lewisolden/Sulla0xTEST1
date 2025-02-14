@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Maximize2, Minimize2, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import html2pdf from 'html2pdf.js';
+import ReactDOMServer from 'react-dom/server';
 import {
   titleSlide,
   problemSlide,
@@ -75,44 +76,43 @@ const InvestmentDeck = () => {
   const exportToPDF = async () => {
     setIsExporting(true);
 
-    // Create a temporary container for all slides
-    const container = document.createElement('div');
-    container.style.backgroundColor = '#000'; // Match deck background
-    container.style.padding = '20px';
-    container.style.width = '1920px'; // Set fixed width for consistent rendering
-    container.style.height = '1080px'; // Set fixed height for consistent rendering
-
-    // Add all slides to the container
-    slides.forEach((slide, index) => {
-      const slideDiv = document.createElement('div');
-      slideDiv.style.marginBottom = '20px';
-      slideDiv.style.pageBreakAfter = 'always';
-      slideDiv.className = 'pdf-slide';
-      // Clone the slide content to preserve styling
-      const slideContent = document.createElement('div');
-      slideContent.innerHTML = slide;
-      slideDiv.appendChild(slideContent);
-      container.appendChild(slideDiv);
-    });
-
-    // Configure PDF options
-    const opt = {
-      margin: 0,
-      filename: 'Sulla-Investment-Deck.pdf',
-      image: { type: 'jpeg', quality: 1 },
-      html2canvas: { 
-        scale: 2,
-        backgroundColor: '#000',
-        logging: false,
-        width: 1920,
-        height: 1080,
-        windowWidth: 1920,
-        windowHeight: 1080
-      },
-      jsPDF: { unit: 'mm', format: [297, 210], orientation: 'landscape' }
-    };
-
     try {
+      // Get the current deck container
+      const deckContainer = document.querySelector('.deck-container');
+      if (!deckContainer) return;
+
+      // Clone the container to avoid modifying the visible content
+      const container = deckContainer.cloneNode(true) as HTMLElement;
+
+      // Make sure all slides are visible in the clone
+      const slideElements = container.querySelectorAll('.slide-wrapper');
+      slideElements.forEach(slide => {
+        (slide as HTMLElement).style.display = 'block';
+        (slide as HTMLElement).style.opacity = '1';
+        (slide as HTMLElement).style.transform = 'none';
+      });
+
+      // Configure PDF options
+      const opt = {
+        margin: 0,
+        filename: 'Sulla-Investment-Deck.pdf',
+        image: { type: 'jpeg', quality: 1 },
+        html2canvas: { 
+          scale: 2,
+          backgroundColor: '#000',
+          logging: true,
+          useCORS: true,
+          allowTaint: true,
+          letterRendering: true,
+        },
+        jsPDF: { 
+          unit: 'mm', 
+          format: 'a4', 
+          orientation: 'landscape',
+          compress: true,
+        }
+      };
+
       // Generate PDF
       await html2pdf().set(opt).from(container).save();
     } catch (error) {
@@ -142,18 +142,20 @@ const InvestmentDeck = () => {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent" />
 
       <div className="relative z-10">
-        <div className="max-w-7xl mx-auto px-4 py-8 min-h-[85vh] flex items-center justify-center">
+        <div className="deck-container max-w-7xl mx-auto px-4 py-8 min-h-[85vh] flex items-center justify-center">
           <AnimatePresence mode="wait">
-            <motion.div
-              key={currentSlide}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
-              className="w-full"
-            >
-              {slides[currentSlide]}
-            </motion.div>
+            {slides.map((slide, index) => (
+              <motion.div
+                key={index}
+                className={`slide-wrapper w-full ${index === currentSlide ? 'block' : 'hidden'}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: index === currentSlide ? 1 : 0, y: index === currentSlide ? 0 : 20 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5 }}
+              >
+                {slide}
+              </motion.div>
+            ))}
           </AnimatePresence>
         </div>
 
