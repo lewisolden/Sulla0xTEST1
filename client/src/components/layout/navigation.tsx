@@ -1,6 +1,6 @@
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
-import { Sparkles, UserCircle } from "lucide-react";
+import { UserCircle } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 
 export default function Navigation() {
@@ -19,12 +19,6 @@ export default function Navigation() {
           <Link href="/curriculum">
             <span className="text-white hover:text-blue-200 transition-colors font-bold">
               Courses
-            </span>
-          </Link>
-          <Link href="/ai" className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-white" />
-            <span className="text-white hover:text-blue-200 transition-colors font-bold">
-              AI Features
             </span>
           </Link>
           {user ? (

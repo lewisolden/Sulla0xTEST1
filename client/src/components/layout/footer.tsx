@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import { Sparkles } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -19,6 +20,10 @@ export default function Footer() {
             <Link href="/games" className="block hover:text-blue-200">Interactive Games</Link>
             <Link href="/glossary" className="block hover:text-blue-200">Glossary</Link>
             <Link href="/modules/module1" className="block hover:text-blue-200">Start Learning</Link>
+            <Link href="/ai" className="flex items-center gap-2 hover:text-blue-200">
+              <Sparkles className="w-4 h-4" />
+              AI Features
+            </Link>
           </nav>
         </div>
 
