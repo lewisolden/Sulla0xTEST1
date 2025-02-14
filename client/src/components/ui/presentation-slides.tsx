@@ -165,50 +165,52 @@ export const solutionSlide1 = (
   </Slide>
 );
 
-// Market Slides
-export const marketSlide1 = (
-  <Slide key="market1">
+// Unique Selling Points Slide
+export const uniqueSellingPointsSlide = (
+  <Slide key="unique-selling-points">
     <SlideTitle 
-      title="Market Opportunity" 
-      subtitle="Bridging the Critical Education Gap in Revolutionary Technologies"
+      title="What Makes Sulla Unique?" 
+      subtitle="A New Standard in Technology Education"
     />
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <ContentBox icon={<TrendingUp className="w-8 h-8" />} title="Explosive Market Growth">
+      <ContentBox icon={<Brain className="w-8 h-8" />} title="Advanced AI Integration">
         <ul className="space-y-3 text-gray-400">
-          <li>• Combined AI & blockchain education market: $7.6B by 2025</li>
-          <li>• 87% of global workforce lacks AI & blockchain literacy</li>
-          <li>• 32% CAGR in demand for technical education</li>
-          <li>• Only 1% of global population understands these technologies</li>
+          <li>• Built-in AI tutor providing real-time assistance</li>
+          <li>• Smart content adaptation based on learning patterns</li>
+          <li>• Personalized learning paths for each student</li>
+          <li>• AI-powered progress predictions and recommendations</li>
         </ul>
       </ContentBox>
-      <ContentBox icon={<Users className="w-8 h-8" />} title="Universal Education Need">
+      <ContentBox icon={<Layout className="w-8 h-8" />} title="Structured Learning Experience">
         <ul className="space-y-3 text-gray-400">
-          <li>• Every industry requires AI & blockchain competency</li>
-          <li>• Critical skills gap in both enterprise and education</li>
-          <li>• Traditional education systems struggling to adapt</li>
-          <li>• Global demand for accessible, quality learning</li>
+          <li>• 3 comprehensive AI modules with interactive content</li>
+          <li>• 4 detailed blockchain modules with practical exercises</li>
+          <li>• Visual learning with dynamic diagrams and animations</li>
+          <li>• Step-by-step progression from basics to advanced topics</li>
         </ul>
       </ContentBox>
-      <ContentBox icon={<Globe className="w-8 h-8" />} title="Global Impact">
+      <ContentBox icon={<Zap className="w-8 h-8" />} title="Interactive Features">
         <ul className="space-y-3 text-gray-400">
-          <li>• Technologies reshaping every sector globally</li>
-          <li>• Urgent need for widespread digital literacy</li>
-          <li>• Democratizing access to technical knowledge</li>
-          <li>• Building foundation for future workforce</li>
+          <li>• Live blockchain simulation environment</li>
+          <li>• Hands-on AI model experimentation tools</li>
+          <li>• Real-time coding exercises with instant feedback</li>
+          <li>• Achievement system with skill verification</li>
         </ul>
       </ContentBox>
-      <ContentBox icon={<Target className="w-8 h-8" />} title="Market Positioning">
+      <ContentBox icon={<Target className="w-8 h-8" />} title="Advanced Progress Tracking">
         <ul className="space-y-3 text-gray-400">
-          <li>• First-mover advantage in integrated AI/blockchain education</li>
-          <li>• Addressing critical market gap with innovative solution</li>
-          <li>• Scalable platform reaching global audience</li>
-          <li>• Strategic timing as technologies become mainstream</li>
+          <li>• Detailed analytics dashboard for learners</li>
+          <li>• Skill mastery verification system</li>
+          <li>• Enterprise-grade reporting capabilities</li>
+          <li>• Adaptive testing and assessment platform</li>
         </ul>
       </ContentBox>
     </div>
   </Slide>
 );
 
+
+// Technical Slides
 export const technicalSlide = (
   <Slide key="technical">
     <SlideTitle title="Technical Architecture" subtitle="Robust and scalable infrastructure" />
