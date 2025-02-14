@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Send, CheckCircle2, Shield, ArrowRight, Database } from "lucide-react";
 
 export default function TransactionFlowDiagram() {
   const nodeVariants = {
@@ -7,128 +8,195 @@ export default function TransactionFlowDiagram() {
       scale: 1,
       opacity: 1,
       transition: {
-        delay: i * 0.2,
+        delay: i * 0.3,
         duration: 0.5,
-        ease: "easeOut"
+        type: "spring",
+        stiffness: 100
       }
     })
   };
 
-  const arrowVariants = {
+  const lineVariants = {
     initial: { pathLength: 0, opacity: 0 },
     animate: { 
       pathLength: 1,
       opacity: 1,
       transition: {
-        duration: 0.8,
+        duration: 1,
         ease: "easeInOut",
         delay: 0.5
       }
     }
   };
 
+  const iconVariants = {
+    initial: { scale: 0, opacity: 0 },
+    animate: { 
+      scale: 1,
+      opacity: 1,
+      transition: {
+        duration: 0.3,
+        type: "spring",
+        stiffness: 200
+      }
+    },
+    hover: {
+      scale: 1.1,
+      transition: {
+        duration: 0.2
+      }
+    }
+  };
+
   return (
-    <div className="w-full h-96 bg-white rounded-lg shadow-md p-8">
-      <svg width="100%" height="100%" viewBox="0 0 1000 300" preserveAspectRatio="xMidYMid meet">
-        {/* Sender Node */}
-        <motion.g variants={nodeVariants} custom={0} initial="initial" animate="animate">
-          <circle cx="150" cy="150" r="60" fill="#4F46E5" opacity="0.2" />
-          <circle cx="150" cy="150" r="50" fill="#4F46E5" />
-          <text x="150" y="150" textAnchor="middle" fill="white" dy=".3em" className="text-lg font-medium">
-            <tspan x="150" dy="-0.6em">Transaction</tspan>
-            <tspan x="150" dy="1.4em">Sender</tspan>
-          </text>
-        </motion.g>
+    <div className="w-full bg-white rounded-lg shadow-md p-6 my-8">
+      <h3 className="text-xl font-semibold text-blue-700 mb-6 text-center">
+        Transaction Flow Process
+      </h3>
+      <div className="relative w-full h-[400px]">
+        <svg width="100%" height="100%" viewBox="0 0 800 300" preserveAspectRatio="xMidYMid meet">
+          {/* Connection Lines */}
+          <g>
+            {/* Sender to Verification */}
+            <motion.path
+              d="M 160 150 L 320 150"
+              stroke="#E2E8F0"
+              strokeWidth="3"
+              fill="none"
+              variants={lineVariants}
+              initial="initial"
+              animate="animate"
+            />
+            {/* Verification to Validation */}
+            <motion.path
+              d="M 400 150 L 560 150"
+              stroke="#E2E8F0"
+              strokeWidth="3"
+              fill="none"
+              variants={lineVariants}
+              initial="initial"
+              animate="animate"
+            />
+            {/* Validation to Confirmation */}
+            <motion.path
+              d="M 640 150 L 800 150"
+              stroke="#E2E8F0"
+              strokeWidth="3"
+              fill="none"
+              variants={lineVariants}
+              initial="initial"
+              animate="animate"
+            />
+          </g>
 
-        {/* Network Nodes */}
-        <motion.g variants={nodeVariants} custom={1} initial="initial" animate="animate">
-          <circle cx="400" cy="80" r="45" fill="#10B981" opacity="0.2" />
-          <circle cx="400" cy="80" r="40" fill="#10B981" />
-          <text x="400" y="80" textAnchor="middle" fill="white" dy=".3em" className="text-base">
-            <tspan x="400" dy="-0.6em">Verification</tspan>
-            <tspan x="400" dy="1.4em">Node</tspan>
-          </text>
-        </motion.g>
+          {/* Nodes */}
+          <g>
+            {/* Sender Node */}
+            <motion.g
+              variants={nodeVariants}
+              custom={0}
+              initial="initial"
+              animate="animate"
+              className="cursor-pointer"
+            >
+              <circle cx="160" cy="150" r="50" fill="#EBF4FF" />
+              <circle cx="160" cy="150" r="40" fill="#3B82F6" className="transition-colors duration-200 hover:fill-blue-700" />
+              <foreignObject x="130" y="130" width="60" height="40">
+                <div className="h-full flex items-center justify-center">
+                  <Send className="w-6 h-6 text-white" />
+                </div>
+              </foreignObject>
+              <text x="160" y="220" textAnchor="middle" className="text-sm font-medium fill-gray-700">
+                Transaction
+                <tspan x="160" dy="20">Initiated</tspan>
+              </text>
+            </motion.g>
 
-        <motion.g variants={nodeVariants} custom={2} initial="initial" animate="animate">
-          <circle cx="500" cy="220" r="45" fill="#10B981" opacity="0.2" />
-          <circle cx="500" cy="220" r="40" fill="#10B981" />
-          <text x="500" y="220" textAnchor="middle" fill="white" dy=".3em" className="text-base">
-            <tspan x="500" dy="-0.6em">Consensus</tspan>
-            <tspan x="500" dy="1.4em">Node</tspan>
-          </text>
-        </motion.g>
+            {/* Verification Node */}
+            <motion.g
+              variants={nodeVariants}
+              custom={1}
+              initial="initial"
+              animate="animate"
+              className="cursor-pointer"
+            >
+              <circle cx="360" cy="150" r="50" fill="#F0FDF4" />
+              <circle cx="360" cy="150" r="40" fill="#22C55E" className="transition-colors duration-200 hover:fill-green-700" />
+              <foreignObject x="330" y="130" width="60" height="40">
+                <div className="h-full flex items-center justify-center">
+                  <Shield className="w-6 h-6 text-white" />
+                </div>
+              </foreignObject>
+              <text x="360" y="220" textAnchor="middle" className="text-sm font-medium fill-gray-700">
+                Network
+                <tspan x="360" dy="20">Verification</tspan>
+              </text>
+            </motion.g>
 
-        <motion.g variants={nodeVariants} custom={3} initial="initial" animate="animate">
-          <circle cx="600" cy="80" r="45" fill="#10B981" opacity="0.2" />
-          <circle cx="600" cy="80" r="40" fill="#10B981" />
-          <text x="600" y="80" textAnchor="middle" fill="white" dy=".3em" className="text-base">
-            <tspan x="600" dy="-0.6em">Validation</tspan>
-            <tspan x="600" dy="1.4em">Node</tspan>
-          </text>
-        </motion.g>
+            {/* Validation Node */}
+            <motion.g
+              variants={nodeVariants}
+              custom={2}
+              initial="initial"
+              animate="animate"
+              className="cursor-pointer"
+            >
+              <circle cx="560" cy="150" r="50" fill="#FDF4FF" />
+              <circle cx="560" cy="150" r="40" fill="#A855F7" className="transition-colors duration-200 hover:fill-purple-700" />
+              <foreignObject x="530" y="130" width="60" height="40">
+                <div className="h-full flex items-center justify-center">
+                  <Database className="w-6 h-6 text-white" />
+                </div>
+              </foreignObject>
+              <text x="560" y="220" textAnchor="middle" className="text-sm font-medium fill-gray-700">
+                Block
+                <tspan x="560" dy="20">Validation</tspan>
+              </text>
+            </motion.g>
 
-        {/* Receiver Node */}
-        <motion.g variants={nodeVariants} custom={4} initial="initial" animate="animate">
-          <circle cx="850" cy="150" r="60" fill="#4F46E5" opacity="0.2" />
-          <circle cx="850" cy="150" r="50" fill="#4F46E5" />
-          <text x="850" y="150" textAnchor="middle" fill="white" dy=".3em" className="text-lg font-medium">
-            <tspan x="850" dy="-0.6em">Transaction</tspan>
-            <tspan x="850" dy="1.4em">Receiver</tspan>
-          </text>
-        </motion.g>
+            {/* Confirmation Node */}
+            <motion.g
+              variants={nodeVariants}
+              custom={3}
+              initial="initial"
+              animate="animate"
+              className="cursor-pointer"
+            >
+              <circle cx="760" cy="150" r="50" fill="#ECFDF5" />
+              <circle cx="760" cy="150" r="40" fill="#10B981" className="transition-colors duration-200 hover:fill-emerald-700" />
+              <foreignObject x="730" y="130" width="60" height="40">
+                <div className="h-full flex items-center justify-center">
+                  <CheckCircle2 className="w-6 h-6 text-white" />
+                </div>
+              </foreignObject>
+              <text x="760" y="220" textAnchor="middle" className="text-sm font-medium fill-gray-700">
+                Transaction
+                <tspan x="760" dy="20">Confirmed</tspan>
+              </text>
+            </motion.g>
+          </g>
+        </svg>
 
-        {/* Connection Lines with Labels */}
-        <motion.path
-          d="M 210 150 Q 305 150 360 100"
-          stroke="#E5E7EB"
-          strokeWidth="2"
-          fill="none"
-          variants={arrowVariants}
-          initial="initial"
-          animate="animate"
-        />
-        <motion.text x="290" y="130" textAnchor="middle" fill="#666" fontSize="12">
-          <tspan>Transaction</tspan>
-          <tspan x="290" dy="1.2em">Broadcast</tspan>
-        </motion.text>
-
-        <motion.path
-          d="M 440 80 L 460 150"
-          stroke="#E5E7EB"
-          strokeWidth="2"
-          fill="none"
-          variants={arrowVariants}
-          initial="initial"
-          animate="animate"
-        />
-        <motion.text x="470" y="120" textAnchor="middle" fill="#666" fontSize="12">Verify</motion.text>
-
-        <motion.path
-          d="M 540 220 L 560 120"
-          stroke="#E5E7EB"
-          strokeWidth="2"
-          fill="none"
-          variants={arrowVariants}
-          initial="initial"
-          animate="animate"
-        />
-        <motion.text x="570" y="170" textAnchor="middle" fill="#666" fontSize="12">Confirm</motion.text>
-
-        <motion.path
-          d="M 640 80 Q 745 80 790 120"
-          stroke="#E5E7EB"
-          strokeWidth="2"
-          fill="none"
-          variants={arrowVariants}
-          initial="initial"
-          animate="animate"
-        />
-        <motion.text x="720" y="60" textAnchor="middle" fill="#666" fontSize="12">
-          <tspan>Transaction</tspan>
-          <tspan x="720" dy="1.2em">Complete</tspan>
-        </motion.text>
-      </svg>
+        {/* Legend */}
+        <div className="absolute bottom-0 left-0 right-0 flex justify-center gap-6 text-sm text-gray-600">
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-blue-500" />
+            <span>Start</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-green-500" />
+            <span>Verify</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-purple-500" />
+            <span>Validate</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-emerald-500" />
+            <span>Complete</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
