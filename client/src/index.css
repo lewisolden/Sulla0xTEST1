@@ -1,3 +1,10 @@
+
+@media print {
+  .export-container {
+    break-after: page;
+  }
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

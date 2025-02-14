@@ -53,16 +53,39 @@ const InvestmentDeck = () => {
   const exportToPDF = async () => {
     if (!deckRef.current) return;
     setIsExporting(true);
-
-    const element = deckRef.current.cloneNode(true) as HTMLElement;
-    element.classList.add('export-container');
+    
+    const currentSlideBackup = currentSlide;
+    const element = document.createElement('div');
+    element.style.width = '100%';
+    element.style.height = '100%';
+    
+    // Create a temporary container and add all slides
+    for (let i = 0; i < slides.length; i++) {
+      setCurrentSlide(i);
+      const slideDiv = document.createElement('div');
+      slideDiv.style.width = '100%';
+      slideDiv.style.height = '100vh';
+      slideDiv.style.pageBreakAfter = 'always';
+      slideDiv.innerHTML = deckRef.current.innerHTML;
+      element.appendChild(slideDiv);
+    }
 
     const opt = {
-      margin: 0,
+      margin: 10,
       filename: 'investment-deck.pdf',
       image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+      html2canvas: { 
+        scale: 2, 
+        useCORS: true,
+        windowWidth: 1920,
+        windowHeight: 1080
+      },
+      jsPDF: { 
+        unit: 'mm', 
+        format: 'a4', 
+        orientation: 'landscape'
+      },
+      pagebreak: { mode: 'avoid-all' }
     };
 
     try {
@@ -71,6 +94,8 @@ const InvestmentDeck = () => {
       console.error('PDF export failed:', error);
     }
 
+    // Restore original slide
+    setCurrentSlide(currentSlideBackup);
     setIsExporting(false);
   };
 
