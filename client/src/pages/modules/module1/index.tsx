@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import Footer from "@/components/layout/footer";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useProgress } from "@/context/progress-context";
@@ -170,53 +169,6 @@ export default function Module1() {
                     and how they differ from traditional money systems.
                   </p>
 
-                  {/*This div is removed because the enrollment section is moved to the top.*/}
-                  {/*<div className="mt-8 flex flex-col items-center gap-4">*/}
-                  {/*  {isLoadingEnrollments ? (*/}
-                  {/*    <div className="animate-pulse">*/}
-                  {/*      <div className="h-10 w-32 bg-gray-200 rounded"></div>*/}
-                  {/*    </div>*/}
-                  {/*  ) : (*/}
-                  {/*    <div className="space-y-4 w-full max-w-md">*/}
-                  {/*      {isEnrolled ? (*/}
-                  {/*        <>*/}
-                  {/*          <p className="text-green-600 font-semibold flex items-center justify-center gap-2">*/}
-                  {/*            <CheckCircle className="h-5 w-5" />*/}
-                  {/*            You're enrolled in this course*/}
-                  {/*          </p>*/}
-                  {/*          <Button*/}
-                  {/*            onClick={handleContinueLearning}*/}
-                  {/*            size="lg"*/}
-                  {/*            className="w-full bg-blue-600 hover:bg-blue-700"*/}
-                  {/*          >*/}
-                  {/*            Continue Learning*/}
-                  {/*          </Button>*/}
-                  {/*        </>*/}
-                  {/*      ) : (*/}
-                  {/*        <>*/}
-                  {/*          <p className="text-center text-gray-600">*/}
-                  {/*            Enroll now to start your learning journey*/}
-                  {/*          </p>*/}
-                  {/*          <Button*/}
-                  {/*            onClick={() => enroll()}*/}
-                  {/*            size="lg"*/}
-                  {/*            className="w-full bg-green-600 hover:bg-green-700"*/}
-                  {/*            disabled={isEnrolling}*/}
-                  {/*          >*/}
-                  {/*            {isEnrolling ? (*/}
-                  {/*              <div className="flex items-center gap-2">*/}
-                  {/*                <Loader2 className="h-4 w-4 animate-spin" />*/}
-                  {/*                <span>Enrolling...</span>*/}
-                  {/*              </div>*/}
-                  {/*            ) : (*/}
-                  {/*              "Enroll Now"*/}
-                  {/*            )}*/}
-                  {/*          </Button>*/}
-                  {/*        </>*/}
-                  {/*      )}*/}
-                  {/*    </div>*/}
-                  {/*  )}*/}
-                  {/*</div>*/}
                 </div>
               </CardContent>
             </Card>
@@ -336,7 +288,6 @@ export default function Module1() {
           </TabsContent>
         </Tabs>
       </div>
-      <Footer />
     </div>
   );
 }
