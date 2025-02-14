@@ -1,3 +1,17 @@
+import { 
+  ArrowLeft, 
+  ArrowRight,
+  Banknote,
+  Building2,
+  MapPin,
+  Building,
+  Clock,
+  Code2,
+  Users,
+  Globe,
+  Network,
+  Cog
+} from "lucide-react";
 import { NavigationWrapper } from "@/components/layout/NavigationWrapper";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -5,7 +19,7 @@ import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+
 import DoubleSpendDiagram from "@/components/diagrams/DoubleSpendDiagram";
 import DigitalCurrenciesQuiz from "@/components/quizzes/DigitalCurrenciesQuiz";
 import { BlockchainIcon, DecentralizationIcon, WalletIcon, SecurityIcon } from "@/components/icons/CryptoIcons";
@@ -13,6 +27,7 @@ import TransactionFlowDiagram from "@/components/diagrams/TransactionFlowDiagram
 import { useNavigate } from "@/hooks/useNavigate";
 import MoneyEvolutionTimeline from "@/components/diagrams/MoneyEvolutionTimeline";
 import DigitalCurrencyFeatures from "@/components/diagrams/DigitalCurrencyFeatures";
+
 
 export default function DigitalCurrenciesSection() {
   // Force scroll to top on mount
@@ -226,19 +241,19 @@ export default function DigitalCurrenciesSection() {
                     <h3 className="text-xl font-semibold text-blue-600 mb-4">Traditional Money</h3>
                     <motion.ul variants={sectionVariants} className="space-y-2">
                       {[
-                        "Physical cash for tangible transactions",
-                        "Requires banks as intermediaries",
-                        "Limited by geographical boundaries",
-                        "Controlled by central authorities",
-                        "Subject to traditional banking hours"
-                      ].map((item, index) => (
+                        [<Banknote className="h-4 w-4" />, "Physical cash for tangible transactions"],
+                        [<Building2 className="h-4 w-4" />, "Requires banks as intermediaries"],
+                        [<MapPin className="h-4 w-4" />, "Limited by geographical boundaries"],
+                        [<Building className="h-4 w-4" />, "Controlled by central authorities"],
+                        [<Clock className="h-4 w-4" />, "Subject to traditional banking hours"]
+                      ].map(([icon, text], index) => (
                         <motion.li
                           key={index}
                           variants={listItemVariants}
-                          className="flex items-center gap-2"
+                          className="flex items-center gap-3"
                         >
-                          <span className="h-2 w-2 bg-blue-500 rounded-full" />
-                          {item}
+                          <span className="text-blue-500">{icon}</span>
+                          <span>{text}</span>
                         </motion.li>
                       ))}
                     </motion.ul>
@@ -252,19 +267,19 @@ export default function DigitalCurrenciesSection() {
                     <h3 className="text-xl font-semibold text-purple-600 mb-4">Cryptocurrency</h3>
                     <motion.ul variants={sectionVariants} className="space-y-2">
                       {[
-                        "Digital-native transactions",
-                        "Peer-to-peer without intermediaries",
-                        "Global accessibility 24/7",
-                        "Decentralized governance",
-                        "Programmable money features"
-                      ].map((item, index) => (
+                        [<Code2 className="h-4 w-4" />, "Digital-native transactions"],
+                        [<Users className="h-4 w-4" />, "Peer-to-peer without intermediaries"],
+                        [<Globe className="h-4 w-4" />, "Global accessibility 24/7"],
+                        [<Network className="h-4 w-4" />, "Decentralized governance"],
+                        [<Cog className="h-4 w-4" />, "Programmable money features"]
+                      ].map(([icon, text], index) => (
                         <motion.li
                           key={index}
                           variants={listItemVariants}
-                          className="flex items-center gap-2"
+                          className="flex items-center gap-3"
                         >
-                          <span className="h-2 w-2 bg-purple-500 rounded-full" />
-                          {item}
+                          <span className="text-purple-500">{icon}</span>
+                          <span>{text}</span>
                         </motion.li>
                       ))}
                     </motion.ul>

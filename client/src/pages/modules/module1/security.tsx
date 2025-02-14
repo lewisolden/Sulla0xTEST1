@@ -38,7 +38,8 @@ export default function SecurityPage() {
 
       if (scrollPercent > 95) {
         setIsFullyRead(true);
-        updateProgress(1, 'security', true);
+        // Add the missing arguments: moduleId, sectionId, completed, progress value
+        updateProgress(1, 'security', true, scrollPercent);
       }
     };
 
