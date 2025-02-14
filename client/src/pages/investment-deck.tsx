@@ -53,80 +53,24 @@ const InvestmentDeck = () => {
   const exportToPDF = async () => {
     if (!deckRef.current) return;
     setIsExporting(true);
-    
-    const currentSlideBackup = currentSlide;
-    const container = document.createElement('div');
-    container.className = 'pdf-container';
-    
-    // Create a container for all slides
-    const allSlides = slides.map((slide, index) => {
-      const slideDiv = document.createElement('div');
-      slideDiv.className = 'pdf-slide';
-      slideDiv.style.width = '100%';
-      slideDiv.style.height = '100vh';
-      slideDiv.style.pageBreakAfter = 'always';
-      slideDiv.style.display = 'flex';
-      slideDiv.style.alignItems = 'center';
-      slideDiv.style.justifyContent = 'center';
-      
-      // Create a temporary container to render the slide
-      const tempContainer = document.createElement('div');
-      tempContainer.innerHTML = deckRef.current?.innerHTML || '';
-      
-      // Add the rendered content
-      const content = document.createElement('div');
-      content.style.width = '100%';
-      content.style.padding = '40px';
-      content.appendChild(tempContainer);
-      slideDiv.appendChild(content);
-      
-      return slideDiv;
-    });
-    
-    // Add all slides to the container
-    allSlides.forEach(slide => container.appendChild(slide));
-    
+
+    const element = deckRef.current.cloneNode(true) as HTMLElement;
+    element.classList.add('export-container');
+
     const opt = {
-      margin: 1,
+      margin: 0,
       filename: 'investment-deck.pdf',
       image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { 
-        scale: 2,
-        useCORS: true,
-        windowWidth: 1920,
-        windowHeight: 1080,
-        logging: true
-      },
-      jsPDF: { 
-        unit: 'mm', 
-        format: 'a4', 
-        orientation: 'landscape'
-      },
-      pagebreak: { mode: 'css', before: '.pdf-slide' }
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
     };
 
     try {
-      // Create temporary container for the current slide state
-      const tempDiv = document.createElement('div');
-      tempDiv.style.width = '100%';
-      tempDiv.style.height = '100%';
-      
-      // Capture all slides
-      for (let i = 0; i < slides.length; i++) {
-        setCurrentSlide(i);
-        const slideContent = document.createElement('div');
-        slideContent.className = 'pdf-slide';
-        slideContent.innerHTML = deckRef.current?.innerHTML || '';
-        tempDiv.appendChild(slideContent);
-      }
-      
-      await html2pdf().set(opt).from(tempDiv).save();
+      await html2pdf().set(opt).from(element).save();
     } catch (error) {
       console.error('PDF export failed:', error);
     }
 
-    // Restore original slide
-    setCurrentSlide(currentSlideBackup);
     setIsExporting(false);
   };
 
