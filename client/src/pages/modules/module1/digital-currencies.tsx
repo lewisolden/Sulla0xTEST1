@@ -1,5 +1,5 @@
-import { 
-  ArrowLeft, 
+import {
+  ArrowLeft,
   ArrowRight,
   Banknote,
   Building2,
@@ -65,8 +65,8 @@ export default function DigitalCurrenciesSection() {
   // Enhanced animation variants
   const pageVariants = {
     initial: { opacity: 0, y: 20 },
-    enter: { 
-      opacity: 1, 
+    enter: {
+      opacity: 1,
       y: 0,
       transition: {
         duration: 0.8,
@@ -74,8 +74,8 @@ export default function DigitalCurrenciesSection() {
         staggerChildren: 0.2
       }
     },
-    exit: { 
-      opacity: 0, 
+    exit: {
+      opacity: 0,
       y: -20,
       transition: {
         duration: 0.4
@@ -84,8 +84,8 @@ export default function DigitalCurrenciesSection() {
   };
 
   const sectionVariants = {
-    hidden: { 
-      opacity: 0, 
+    hidden: {
+      opacity: 0,
       y: 50,
       transition: {
         type: "spring",
@@ -107,8 +107,8 @@ export default function DigitalCurrenciesSection() {
 
   const listItemVariants = {
     hidden: { opacity: 0, x: -20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       x: 0,
       transition: {
         type: "spring",
@@ -120,8 +120,8 @@ export default function DigitalCurrenciesSection() {
 
   const cardVariants = {
     hidden: { scale: 0.95, opacity: 0 },
-    visible: { 
-      scale: 1, 
+    visible: {
+      scale: 1,
       opacity: 1,
       transition: {
         type: "spring",
@@ -129,7 +129,7 @@ export default function DigitalCurrenciesSection() {
         mass: 0.3
       }
     },
-    hover: { 
+    hover: {
       scale: 1.02,
       boxShadow: "0 10px 20px rgba(0,0,0,0.1)",
       transition: {
@@ -153,7 +153,7 @@ export default function DigitalCurrenciesSection() {
           <motion.div
             className="fixed top-0 left-0 w-full h-1 bg-gray-300 z-50"
             initial={{ scaleX: 0 }}
-            animate={{ 
+            animate={{
               scaleX: scrollProgress / 100,
               transition: { duration: 0.2 }
             }}
@@ -170,8 +170,8 @@ export default function DigitalCurrenciesSection() {
               whileHover={{ x: -5 }}
               className="mb-6"
             >
-              <Button 
-                variant="ghost" 
+              <Button
+                variant="ghost"
                 className="gap-2 group"
                 onClick={() => navigate("/modules/module1")}
               >
@@ -183,10 +183,10 @@ export default function DigitalCurrenciesSection() {
             <motion.h1
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ 
+              transition={{
                 duration: 0.8,
                 type: "spring",
-                stiffness: 100 
+                stiffness: 100
               }}
               className="text-4xl font-bold text-blue-800 mb-6"
             >
@@ -203,7 +203,7 @@ export default function DigitalCurrenciesSection() {
                 className="mb-12"
               >
                 <h2 className="text-3xl font-bold text-blue-700">Introduction to Digital Currency</h2>
-                <motion.p 
+                <motion.p
                   variants={listItemVariants}
                   className="mt-4"
                 >
@@ -320,7 +320,7 @@ export default function DigitalCurrenciesSection() {
                     "Digital banking enabled electronic transfers",
                     "Cryptocurrency introduces programmable, borderless money"
                   ].map((item, index) => (
-                    <motion.li 
+                    <motion.li
                       key={index}
                       variants={listItemVariants}
                       custom={index}
@@ -341,80 +341,12 @@ export default function DigitalCurrenciesSection() {
               >
                 <h2 className="text-3xl font-bold text-blue-700">Core Concepts and Features</h2>
 
-                <motion.div 
+                <motion.div
                   variants={cardVariants}
                   whileHover="hover"
                   className="mt-6 p-6 bg-white rounded-lg shadow-md"
                 >
-                  <div className="flex items-center gap-4 mb-4">
-                    <DecentralizationIcon size={32} className="text-blue-600" />
-                    <h3 className="text-2xl font-semibold text-blue-600">Decentralization: A New Paradigm</h3>
-                  </div>
-                  <motion.p variants={listItemVariants} className="mt-4">
-                    One of cryptocurrency's most revolutionary aspects is its decentralized nature. Traditional financial systems operate through centralized authorities – banks, governments, and financial institutions. These entities control money creation, verify transactions, and maintain account balances.
-                  </motion.p>
-                  <motion.p variants={listItemVariants} className="mt-4">
-                    Cryptocurrency works differently. Instead of relying on central authorities, it uses a network of computers running specialized software. This network collectively maintains and verifies all transactions through a system called blockchain. Network consensus, which is the process where all participating computers agree on the validity of transactions and the current state of the network using predefined rules and cryptographic proofs, ensures that everyone has the same version of truth without needing a central authority. Think of it as a shared digital ledger that everyone can see but no one can alter without network consensus.
-                  </motion.p>
-                  {/*DecentralizationDiagram removed here*/}
-                </motion.div>
-
-                <motion.div 
-                  variants={cardVariants}
-                  whileHover="hover"
-                  className="mt-8 p-6 bg-white rounded-lg shadow-md"
-                >
-                  <div className="flex items-center gap-4 mb-4">
-                    <BlockchainIcon size={32} className="text-blue-600" />
-                    <h3 className="text-2xl font-semibold text-blue-600">Digital Scarcity: A Breakthrough Innovation</h3>
-                  </div>
-                  <motion.p variants={listItemVariants} className="mt-4">
-                    Before cryptocurrency, creating genuine scarcity in digital assets seemed impossible. Digital files could be copied infinitely without degradation. Bitcoin solved this through its blockchain technology and precise supply controls. For example, Bitcoin has a fixed maximum supply of 21 million coins, with a predetermined release schedule that can't be altered without network consensus.
-                  </motion.p>
-                  <motion.p variants={listItemVariants} className="mt-4">
-                    This digital scarcity creates value similarly to how limited resources like gold or fine art maintain value. Unlike traditional currency, which central banks can print at will, cryptocurrency supply is often mathematically guaranteed and transparent.
-                  </motion.p>
-                </motion.div>
-
-                {/* Transaction Flow Section */}
-                <motion.div
-                  variants={cardVariants}
-                  whileHover="hover"
-                  className="mt-8 p-6 bg-white rounded-lg shadow-md"
-                >
-                  <h3 className="text-2xl font-semibold text-blue-600 mb-4">Understanding Transaction Flow</h3>
-                  <motion.p variants={listItemVariants} className="mt-4">
-                    When you make a cryptocurrency transaction, it goes through several important steps to ensure security and validity:
-                  </motion.p>
-
-                  <motion.ul variants={sectionVariants} className="list-disc pl-5 mt-4 mb-6">
-                    {[
-                      "Transaction Broadcast: When you initiate a transfer, your transaction is announced to the network",
-                      "Verification: Network nodes check the transaction's validity and your available balance",
-                      "Consensus: Multiple nodes work together to confirm the transaction",
-                      "Validation: The transaction is validated and added to the blockchain",
-                      "Completion: The recipient receives the funds after network confirmation"
-                    ].map((item, index) => (
-                      <motion.li 
-                        key={index}
-                        variants={listItemVariants}
-                        custom={index}
-                        className="mb-2"
-                      >
-                        {item}
-                      </motion.li>
-                    ))}
-                  </motion.ul>
-
                   <TransactionFlowDiagram />
-
-                  <motion.div className="mt-6 text-gray-600">
-                    <p className="text-sm">
-                      This visualization shows how your transaction moves through the cryptocurrency network. 
-                      Each node represents a computer in the network that helps verify and process the transaction. 
-                      The arrows show the flow of information and validation steps required before the transaction is complete.
-                    </p>
-                  </motion.div>
                 </motion.div>
               </motion.section>
 
@@ -428,7 +360,7 @@ export default function DigitalCurrenciesSection() {
               >
                 <h2 className="text-3xl font-bold text-blue-700">Understanding Cryptocurrency Security</h2>
 
-                <motion.div 
+                <motion.div
                   variants={cardVariants}
                   whileHover="hover"
                   className="mt-6 p-6 bg-white rounded-lg shadow-md"
@@ -440,7 +372,7 @@ export default function DigitalCurrenciesSection() {
                   <motion.p variants={listItemVariants} className="mt-4">
                     Cryptocurrency security relies on advanced cryptography, specifically public-key cryptography. This system uses pairs of keys:
                   </motion.p>
-                  <motion.ul 
+                  <motion.ul
                     variants={sectionVariants}
                     className="list-disc pl-5 mt-2"
                   >
@@ -448,7 +380,7 @@ export default function DigitalCurrenciesSection() {
                       "A private key (like your secret password)",
                       "A public key (like your public email address)"
                     ].map((item, index) => (
-                      <motion.li 
+                      <motion.li
                         key={index}
                         variants={listItemVariants}
                         custom={index}
@@ -459,7 +391,7 @@ export default function DigitalCurrenciesSection() {
                   </motion.ul>
                 </motion.div>
 
-                <motion.div 
+                <motion.div
                   variants={cardVariants}
                   whileHover="hover"
                   className="mt-8 p-6 bg-white rounded-lg shadow-md"
@@ -470,8 +402,8 @@ export default function DigitalCurrenciesSection() {
                   </motion.p>
                   <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ 
-                      opacity: 1, 
+                    whileInView={{
+                      opacity: 1,
                       scale: 1,
                       transition: {
                         duration: 0.5,
@@ -495,7 +427,7 @@ export default function DigitalCurrenciesSection() {
               >
                 <h2 className="text-3xl font-bold text-blue-700">Practical Applications</h2>
 
-                <motion.div 
+                <motion.div
                   variants={cardVariants}
                   whileHover="hover"
                   className="mt-6 p-6 bg-white rounded-lg shadow-md"
@@ -518,7 +450,7 @@ export default function DigitalCurrenciesSection() {
                   </motion.ul>
                 </motion.div>
 
-                <motion.div 
+                <motion.div
                   variants={cardVariants}
                   whileHover="hover"
                   className="mt-8 p-6 bg-white rounded-lg shadow-md"
@@ -542,7 +474,7 @@ export default function DigitalCurrenciesSection() {
                   </motion.ul>
                 </motion.div>
 
-                <motion.div 
+                <motion.div
                   variants={cardVariants}
                   whileHover="hover"
                   className="mt-8 p-6 bg-white rounded-lg shadow-md"
@@ -577,7 +509,7 @@ export default function DigitalCurrenciesSection() {
               >
                 <h2 className="text-3xl font-bold text-blue-700">Getting Started Safely</h2>
 
-                <motion.div 
+                <motion.div
                   variants={cardVariants}
                   whileHover="hover"
                   className="mt-6 p-6 bg-white rounded-lg shadow-md"
@@ -621,7 +553,7 @@ export default function DigitalCurrenciesSection() {
                   </motion.ol>
                 </motion.div>
 
-                <motion.div 
+                <motion.div
                   variants={cardVariants}
                   whileHover="hover"
                   className="mt-8 p-6 bg-white rounded-lg shadow-md"
@@ -733,29 +665,29 @@ export default function DigitalCurrenciesSection() {
                         whileHover={{ scale: 1.02, x: -5 }}
                         whileTap={{ scale: 0.98 }}
                       >
-                          <Button
-                            variant="outline"
-                            size="lg"
-                            className="w-full md:w-auto group"
-                            onClick={() => navigate("/modules/module1")}
-                          >
-                            <ArrowLeft className="mr-2 h-4 w-4 group-hover:transform group-hover:-translate-x-1 transition-transform" />
-                            Back to Overview
-                          </Button>
+                        <Button
+                          variant="outline"
+                          size="lg"
+                          className="w-full md:w-auto group"
+                          onClick={() => navigate("/modules/module1")}
+                        >
+                          <ArrowLeft className="mr-2 h-4 w-4 group-hover:transform group-hover:-translate-x-1 transition-transform" />
+                          Back to Overview
+                        </Button>
                       </motion.div>
 
                       <motion.div
                         whileHover={{ scale: 1.02, x: 5 }}
                         whileTap={{ scale: 0.98 }}
                       >
-                          <Button
-                            size="lg"
-                            className="w-full md:w-auto bg-blue-600 hover:bg-blue-700 group"
-                            onClick={() => navigate("/modules/module1/security")}
-                          >
-                            Next Topic: Understanding Security
-                            <ArrowRight className="ml-2 h-4 w-4 group-hover:transform group-hover:translate-x-1 transition-transform" />
-                          </Button>
+                        <Button
+                          size="lg"
+                          className="w-full md:w-auto bg-blue-600 hover:bg-blue-700 group"
+                          onClick={() => navigate("/modules/module1/security")}
+                        >
+                          Next Topic: Understanding Security
+                          <ArrowRight className="ml-2 h-4 w-4 group-hover:transform group-hover:translate-x-1 transition-transform" />
+                        </Button>
                       </motion.div>
                     </div>
                   </div>
