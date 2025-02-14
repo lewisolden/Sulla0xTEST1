@@ -8,6 +8,7 @@ import {
   solutionSlide1,
   solutionSlide2,
   missionSlide,
+  marketSlide1,
   marketSlide2,
   productSlide1,
   productSlide2,
@@ -23,7 +24,6 @@ import {
   teamSlide,
   progressSlide,
   ctaSlide,
-  uniqueSellingPointsSlide,
 } from '@/components/ui/presentation-slides';
 
 const InvestmentDeck = () => {
@@ -36,7 +36,7 @@ const InvestmentDeck = () => {
     solutionSlide1,
     solutionSlide2,
     missionSlide,
-    uniqueSellingPointsSlide,
+    marketSlide1,
     marketSlide2,
     productSlide1,
     productSlide2,
