@@ -517,6 +517,7 @@ export const financialSlide = (
 );
 
 
+
 export const financialModelSlide = (
   <Slide key="financialModel">
     <SlideTitle 
@@ -541,7 +542,7 @@ export const financialModelSlide = (
             <tbody>
               <tr className="border-b border-gray-700">
                 <td className="py-2">Revenue</td>
-                <td className="text-right">$250K</td>
+                <td className="text-right">$0</td>
                 <td className="text-right">$500K</td>
                 <td className="text-right">$2M-$5M</td>
                 <td className="text-right">$10M+</td>
@@ -584,10 +585,12 @@ export const financialModelSlide = (
         </div>
       </div>
 
-      <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700 mb-6">
-        <h3 className="text-xl font-semibold text-blue-400 mb-4">Strategic Focus</h3>
-        <p className="text-gray-300 mb-4">
-          Year 1 is dedicated to aggressive user acquisition and platform development, with projected losses of $400K as we prioritize growth over revenue. A Series A funding round will be required in Year 2 to support continued expansion and operational scaling.
+      <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
+        <p className="text-gray-300 text-lg leading-relaxed mb-4">
+          Year 1 is dedicated entirely to aggressive user acquisition and platform development. While we've conservatively modeled zero revenue in Year 1, we will actively pursue opportunities to generate early revenue through strategic partnerships and early adopters. The projected $400K loss reflects our intentional focus on building a strong user base and robust platform.
+        </p>
+        <p className="text-gray-300 text-lg leading-relaxed">
+          A Series A funding round of approximately $2-3M will be essential in Year 2 to support continued expansion, particularly as we scale our operations and development team. This additional capital will fuel our growth trajectory and help us capitalize on the strong user foundation built in Year 1.
         </p>
       </div>
 
