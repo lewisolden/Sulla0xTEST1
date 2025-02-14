@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="container mx-auto px-4 grid md:grid-cols-3 gap-8">
         <div>
           <h3 className="text-2xl font-bold mb-4">Sulla</h3>
-          <p>Democratizing cryptocurrency education for everyone.</p>
+          <p>Democratizing education for everyone.</p>
         </div>
 
         <div>
