@@ -170,23 +170,39 @@ export const marketSlide1 = (
   <Slide key="market1">
     <SlideTitle 
       title="Market Opportunity" 
-      subtitle="Explosive growth in AI and blockchain sectors"
+      subtitle="Bridging the Critical Education Gap in Revolutionary Technologies"
     />
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <ContentBox icon={<TrendingUp className="w-8 h-8" />} title="Market Size">
+      <ContentBox icon={<TrendingUp className="w-8 h-8" />} title="Explosive Market Growth">
         <ul className="space-y-3 text-gray-400">
-          <li>• AI education market: $5.3B by 2025</li>
-          <li>• Blockchain education: $2.3B by 2025</li>
-          <li>• Combined CAGR of 32%</li>
-          <li>• 750M+ potential users globally</li>
+          <li>• Combined AI & blockchain education market: $7.6B by 2025</li>
+          <li>• 87% of global workforce lacks AI & blockchain literacy</li>
+          <li>• 32% CAGR in demand for technical education</li>
+          <li>• Only 1% of global population understands these technologies</li>
         </ul>
       </ContentBox>
-      <ContentBox icon={<Users className="w-8 h-8" />} title="Target Segments">
+      <ContentBox icon={<Users className="w-8 h-8" />} title="Universal Education Need">
         <ul className="space-y-3 text-gray-400">
-          <li>• Technology professionals</li>
-          <li>• Corporate training programs</li>
-          <li>• Academic institutions</li>
-          <li>• Self-directed learners</li>
+          <li>• Every industry requires AI & blockchain competency</li>
+          <li>• Critical skills gap in both enterprise and education</li>
+          <li>• Traditional education systems struggling to adapt</li>
+          <li>• Global demand for accessible, quality learning</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Globe className="w-8 h-8" />} title="Global Impact">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Technologies reshaping every sector globally</li>
+          <li>• Urgent need for widespread digital literacy</li>
+          <li>• Democratizing access to technical knowledge</li>
+          <li>• Building foundation for future workforce</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Target className="w-8 h-8" />} title="Market Positioning">
+        <ul className="space-y-3 text-gray-400">
+          <li>• First-mover advantage in integrated AI/blockchain education</li>
+          <li>• Addressing critical market gap with innovative solution</li>
+          <li>• Scalable platform reaching global audience</li>
+          <li>• Strategic timing as technologies become mainstream</li>
         </ul>
       </ContentBox>
     </div>
