@@ -16,18 +16,26 @@ import {
   Lightbulb,
   Wallet,
   Network,
-  Code
+  Code,
+  Database,
+  Layout,
+  Bot,
+  School,
+  TrendingUp,
+  DollarSign,
+  PieChart,
+  Briefcase
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-// Slide Component
+// Slide Component with enhanced styling
 const Slide: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = '' }) => (
   <motion.div
-    initial={{ opacity: 0, scale: 0.95 }}
-    animate={{ opacity: 1, scale: 1 }}
-    exit={{ opacity: 0, scale: 0.95 }}
-    transition={{ duration: 0.3 }}
-    className={`bg-white rounded-lg shadow-lg p-8 mx-auto w-full mt-8 ${className}`}
+    initial={{ opacity: 0, x: 20 }}
+    animate={{ opacity: 1, x: 0 }}
+    exit={{ opacity: 0, x: -20 }}
+    transition={{ duration: 0.5 }}
+    className={`bg-white dark:bg-gray-900 rounded-lg shadow-xl p-10 mx-auto w-full max-w-6xl mt-8 ${className}`}
   >
     {children}
   </motion.div>
@@ -37,7 +45,7 @@ const Slide: React.FC<{ children: React.ReactNode; className?: string }> = ({ ch
 const Logo = ({ className = '' }) => (
   <svg
     viewBox="0 0 200 50"
-    className={`h-10 w-auto ${className}`}
+    className={`h-16 w-auto ${className}`}
     fill="currentColor"
   >
     <text
@@ -53,7 +61,7 @@ const Logo = ({ className = '' }) => (
   </svg>
 );
 
-// Title Slide
+// Title Slide with enhanced styling
 export const titleSlide = (
   <Slide key="title" className="text-center bg-gradient-to-br from-blue-600 to-blue-800 text-white">
     <motion.div
@@ -61,59 +69,180 @@ export const titleSlide = (
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <Logo className="text-white mx-auto mb-8 h-16 w-auto" />
-      <h2 className="text-3xl mb-8">Next-Generation Crypto Education Platform</h2>
-      <p className="text-xl mb-4">Investor Pitch Deck</p>
-      <p className="text-lg">2025</p>
+      <Logo className="text-white mx-auto mb-8 h-20 w-auto" />
+      <h1 className="text-4xl font-bold mb-6">Revolutionizing Blockchain Education</h1>
+      <h2 className="text-2xl mb-8">Interactive Learning Platform</h2>
+      <p className="text-xl mb-4">Investment Opportunity</p>
+      <p className="text-lg opacity-80">February 2025</p>
     </motion.div>
   </Slide>
 );
 
-// Problem Slide
+// Problem Slide with detailed content
 export const problemSlide = (
   <Slide key="problem">
-    <h2 className="text-2xl font-bold mb-4">The Problem</h2>
-    <p className="mb-4">Current crypto education is fragmented, lacks engagement, and fails to provide practical skills.</p>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div className="bg-red-100 rounded-lg shadow p-4">
-        <div className="flex items-center mb-2">
-          <Brain className="w-6 h-6 mr-2 text-red-500" />
-          <h3 className="font-bold text-lg">Lack of Engagement</h3>
+    <h2 className="text-3xl font-bold mb-6 text-blue-600">The Problem</h2>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-6">
+        <div className="flex items-center mb-4">
+          <Brain className="w-8 h-8 text-red-500 mr-3" />
+          <h3 className="text-xl font-semibold">Complex Learning Curve</h3>
         </div>
-        <p>Existing resources are often boring and passive, leading to low retention rates.</p>
+        <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+          <li>• Steep technical barriers for newcomers</li>
+          <li>• Fragmented learning resources</li>
+          <li>• Lack of structured curriculum</li>
+          <li>• Poor retention rates in traditional courses</li>
+        </ul>
       </div>
-      <div className="bg-red-100 rounded-lg shadow p-4">
-        <div className="flex items-center mb-2">
-          <Trophy className="w-6 h-6 mr-2 text-red-500" />
-          <h3 className="font-bold text-lg">Limited Practical Application</h3>
+      <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-6">
+        <div className="flex items-center mb-4">
+          <Shield className="w-8 h-8 text-red-500 mr-3" />
+          <h3 className="text-xl font-semibold">Industry Challenges</h3>
         </div>
-        <p>Theoretical knowledge without hands-on experience fails to prepare users for real-world scenarios.</p>
+        <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+          <li>• Limited hands-on practice opportunities</li>
+          <li>• Outdated teaching methodologies</li>
+          <li>• Lack of interactive learning tools</li>
+          <li>• Gap between theory and practical application</li>
+        </ul>
+      </div>
+    </div>
+    <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+      <p className="text-lg text-gray-700 dark:text-gray-300">
+        Current blockchain education fails to provide an engaging, comprehensive learning experience that prepares students for real-world applications.
+      </p>
+    </div>
+  </Slide>
+);
+
+// Solution Slides with comprehensive details
+export const solutionSlide1 = (
+  <Slide key="solution1">
+    <h2 className="text-3xl font-bold mb-6 text-blue-600">Our Solution</h2>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-6">
+        <div className="flex items-center mb-4">
+          <Rocket className="w-8 h-8 text-green-500 mr-3" />
+          <h3 className="text-xl font-semibold">Interactive Learning Platform</h3>
+        </div>
+        <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+          <li>• AI-powered adaptive learning paths</li>
+          <li>• Real-time blockchain simulations</li>
+          <li>• Gamified learning experiences</li>
+          <li>• Progress tracking and analytics</li>
+        </ul>
+      </div>
+      <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-6">
+        <div className="flex items-center mb-4">
+          <Bot className="w-8 h-8 text-green-500 mr-3" />
+          <h3 className="text-xl font-semibold">AI Integration</h3>
+        </div>
+        <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+          <li>• Personalized learning recommendations</li>
+          <li>• Intelligent content adaptation</li>
+          <li>• Real-time assistance and feedback</li>
+          <li>• Performance analytics</li>
+        </ul>
       </div>
     </div>
   </Slide>
 );
 
-// Solution Slides
-export const solutionSlide1 = (
-  <Slide key="solution1">
-    <h2 className="text-2xl font-bold mb-4">Our Solution</h2>
-    <p className="mb-4">
-      Sulla provides an engaging and practical crypto education platform with a focus on hands-on learning and community engagement.
-    </p>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div className="bg-green-100 rounded-lg shadow p-4">
-        <div className="flex items-center mb-2">
-          <Rocket className="w-6 h-6 mr-2 text-green-500" />
-          <h3 className="font-bold text-lg">Interactive Learning Modules</h3>
+// Market Slides with detailed analysis
+export const marketSlide1 = (
+  <Slide key="market1">
+    <h2 className="text-3xl font-bold mb-6 text-blue-600">Market Opportunity</h2>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6">
+        <div className="flex items-center mb-4">
+          <TrendingUp className="w-8 h-8 text-blue-500 mr-3" />
+          <h3 className="text-xl font-semibold">Market Size</h3>
         </div>
-        <p>Our platform features gamified modules that combine theory with practical exercises.</p>
+        <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+          <li>• Global EdTech market: $342B by 2025</li>
+          <li>• Blockchain education segment: $2.3B</li>
+          <li>• 32% YoY growth in demand</li>
+          <li>• 500M+ potential users by 2026</li>
+        </ul>
       </div>
-      <div className="bg-green-100 rounded-lg shadow p-4">
-        <div className="flex items-center mb-2">
-          <Globe className="w-6 h-6 mr-2 text-green-500" />
-          <h3 className="font-bold text-lg">Community-Driven Platform</h3>
+      <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6">
+        <div className="flex items-center mb-4">
+          <PieChart className="w-8 h-8 text-blue-500 mr-3" />
+          <h3 className="text-xl font-semibold">Target Segments</h3>
         </div>
-        <p>Users can collaborate, share insights, and learn from each other.</p>
+        <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+          <li>• Students and academics</li>
+          <li>• Professional developers</li>
+          <li>• Corporate training programs</li>
+          <li>• Crypto enthusiasts</li>
+        </ul>
+      </div>
+    </div>
+  </Slide>
+);
+
+// Technical Overview Slide
+export const technicalSlide = (
+  <Slide key="technical">
+    <h2 className="text-3xl font-bold mb-6 text-blue-600">Technical Architecture</h2>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-6">
+        <div className="flex items-center mb-4">
+          <Layout className="w-8 h-8 text-purple-500 mr-3" />
+          <h3 className="text-xl font-semibold">Frontend Stack</h3>
+        </div>
+        <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+          <li>• Next.js with TypeScript</li>
+          <li>• Tailwind CSS for styling</li>
+          <li>• Framer Motion animations</li>
+          <li>• React Query for state management</li>
+        </ul>
+      </div>
+      <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-6">
+        <div className="flex items-center mb-4">
+          <Database className="w-8 h-8 text-purple-500 mr-3" />
+          <h3 className="text-xl font-semibold">Backend Infrastructure</h3>
+        </div>
+        <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+          <li>• Node.js Express server</li>
+          <li>• PostgreSQL database</li>
+          <li>• OpenAI integration</li>
+          <li>• WebSocket real-time updates</li>
+        </ul>
+      </div>
+    </div>
+  </Slide>
+);
+
+// Financial Slides with detailed projections
+export const financialSlide = (
+  <Slide key="financial">
+    <h2 className="text-3xl font-bold mb-6 text-blue-600">Financial Projections</h2>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-6">
+        <div className="flex items-center mb-4">
+          <DollarSign className="w-8 h-8 text-green-500 mr-3" />
+          <h3 className="text-xl font-semibold">Revenue Streams</h3>
+        </div>
+        <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+          <li>• Subscription model: $15M (Year 1)</li>
+          <li>• Enterprise licenses: $8M</li>
+          <li>• Custom content creation: $5M</li>
+          <li>• B2B partnerships: $7M</li>
+        </ul>
+      </div>
+      <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-6">
+        <div className="flex items-center mb-4">
+          <Briefcase className="w-8 h-8 text-green-500 mr-3" />
+          <h3 className="text-xl font-semibold">Growth Metrics</h3>
+        </div>
+        <ul className="space-y-2 text-gray-700 dark:text-gray-300">
+          <li>• User acquisition cost: $42</li>
+          <li>• Customer LTV: $850</li>
+          <li>• Gross margin: 75%</li>
+          <li>• Monthly growth rate: 15%</li>
+        </ul>
       </div>
     </div>
   </Slide>
@@ -141,7 +270,7 @@ export const solutionSlide2 = (
   </Slide>
 );
 
-// Mission Slide
+
 export const missionSlide = (
   <Slide key="mission">
     <h2 className="text-2xl font-bold mb-4">Our Mission</h2>
@@ -151,20 +280,6 @@ export const missionSlide = (
         <Lightbulb className="w-6 h-6 mr-2 text-blue-500" />
         <h3 className="font-bold text-lg">Educating the Next Generation of Crypto Innovators</h3>
       </div>
-    </div>
-  </Slide>
-);
-
-// Market Slides
-export const marketSlide1 = (
-  <Slide key="market1">
-    <h2 className="text-2xl font-bold mb-4">Market Opportunity</h2>
-    <div className="bg-gray-100 rounded-lg shadow p-4">
-      <div className="flex items-center mb-2">
-        <BarChart className="w-6 h-6 mr-2 text-blue-500" />
-        <h3 className="font-bold text-lg">Large and Growing Market</h3>
-      </div>
-      <p>The crypto education market is rapidly expanding with significant growth potential.</p>
     </div>
   </Slide>
 );
@@ -191,7 +306,6 @@ export const marketSlide2 = (
   </Slide>
 );
 
-// Product Slides
 export const productSlide1 = (
   <Slide key="product1">
     <h2 className="text-2xl font-bold mb-4">Our Product</h2>
@@ -222,7 +336,6 @@ export const productSlide2 = (
   </Slide>
 );
 
-// Other slides exports (basic structure for completeness)
 export const modulesSlide = (
   <Slide key="modules">
     <h2 className="text-2xl font-bold mb-4">Our Modules</h2>
@@ -320,31 +433,6 @@ export const tractionSlide = (
   </Slide>
 );
 
-export const financialSlide = (
-  <Slide key="financial">
-    <h2 className="text-2xl font-bold mb-4">Financial Highlights</h2>
-    <div className="bg-blue-100 rounded-lg shadow p-4">
-      <div className="flex items-center mb-2">
-        <Building className="w-6 h-6 mr-2 text-blue-500" />
-        <h3 className="font-bold text-lg">Revenue Model</h3>
-      </div>
-      <p>Subscription and token-based revenue streams.</p>
-    </div>
-  </Slide>
-);
-
-export const financialModelSlide = (
-  <Slide key="financialModel">
-    <h2 className="text-2xl font-bold mb-4">Financial Model</h2>
-    <div className="bg-blue-100 rounded-lg shadow p-4">
-      <div className="flex items-center mb-2">
-        <BarChart className="w-6 h-6 mr-2 text-blue-500" />
-        <h3 className="font-bold text-lg">Projections</h3>
-      </div>
-      <p>Five-year financial projections and metrics.</p>
-    </div>
-  </Slide>
-);
 
 export const fundingNarrativeSlide = (
   <Slide key="fundingNarrative">

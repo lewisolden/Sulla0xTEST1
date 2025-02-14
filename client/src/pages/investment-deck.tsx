@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Maximize2, Minimize2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   titleSlide,
@@ -13,22 +13,23 @@ import {
   productSlide1,
   productSlide2,
   modulesSlide,
+  technicalSlide,
   roadmapSlide,
   gtmSlide1,
   gtmSlide2,
   tractionSlide,
   financialSlide,
-  financialModelSlide,
   fundingNarrativeSlide,
   fundingBreakdownSlide,
   teamSlide,
   progressSlide,
   ctaSlide,
-  tokenSlide,
 } from '@/components/ui/presentation-slides';
 
 const InvestmentDeck = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
   const slides = [
     titleSlide,
     problemSlide,
@@ -39,13 +40,13 @@ const InvestmentDeck = () => {
     marketSlide2,
     productSlide1,
     productSlide2,
+    technicalSlide,
     modulesSlide,
     roadmapSlide,
     gtmSlide1,
     gtmSlide2,
     tractionSlide,
     financialSlide,
-    financialModelSlide,
     fundingNarrativeSlide,
     fundingBreakdownSlide,
     teamSlide,
@@ -65,12 +66,24 @@ const InvestmentDeck = () => {
     }
   };
 
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen();
+      setIsFullscreen(false);
+    }
+  };
+
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight') {
         nextSlide();
       } else if (e.key === 'ArrowLeft') {
         previousSlide();
+      } else if (e.key === 'f') {
+        toggleFullscreen();
       }
     };
 
@@ -80,7 +93,7 @@ const InvestmentDeck = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white p-4">
-      <div className="max-w-6xl mx-auto relative min-h-[80vh] flex items-center justify-center">
+      <div className="max-w-7xl mx-auto relative min-h-[80vh] flex items-center justify-center">
         <AnimatePresence mode="wait">
           {slides[currentSlide]}
         </AnimatePresence>
@@ -95,7 +108,7 @@ const InvestmentDeck = () => {
         >
           <ChevronLeft className="w-6 h-6" />
         </Button>
-        <span className="text-blue-200">
+        <span className="text-blue-200 font-medium">
           {currentSlide + 1} / {slides.length}
         </span>
         <Button
@@ -105,6 +118,17 @@ const InvestmentDeck = () => {
           className="bg-blue-500/20 hover:bg-blue-500/30 border-blue-500/50"
         >
           <ChevronRight className="w-6 h-6" />
+        </Button>
+        <Button
+          variant="outline"
+          onClick={toggleFullscreen}
+          className="ml-4 bg-blue-500/20 hover:bg-blue-500/30 border-blue-500/50"
+        >
+          {isFullscreen ? (
+            <Minimize2 className="w-6 h-6" />
+          ) : (
+            <Maximize2 className="w-6 h-6" />
+          )}
         </Button>
       </div>
     </div>
