@@ -16,7 +16,7 @@ import {
   tractionSlide,
   dataStrategySlide,
   fundingRequirementsSlide,
-  teamSlide,
+  fundingAllocationSlide,
   progressSlide,
   ctaSlide,
 } from '@/components/ui/presentation-slides';
@@ -39,7 +39,7 @@ const InvestmentDeck = () => {
     tractionSlide,
     dataStrategySlide,
     fundingRequirementsSlide,
-    teamSlide,
+    fundingAllocationSlide,
     progressSlide,
     ctaSlide,
   ];

@@ -632,7 +632,7 @@ export const fundingRequirementsSlide = (
     <div className="space-y-8">
       <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
         <p className="text-gray-300 text-lg leading-relaxed mb-4">
-          To date, I have built everything myself at a minimal cost. I believe that with a team andrelatively small budget I can rapidly build the platform's capabilities and onboard users.
+          To date, I have built everything myself at a minimal cost. I believe that with a team and relatively small budget I can rapidly build the platform's capabilities and onboard users.
         </p>
         <p className="text-gray-300 text-lg leading-relaxed mb-4">
           To scale Sulla effectively, we require funding that supports key areas: content expansion, marketing, platform improvements, and operational growth. Our focus is on building a user-centric platform with AI-driven personalization, ensuring high engagement and long-term retention.
@@ -680,12 +680,93 @@ export const fundingRequirementsSlide = (
   </Slide>
 );
 
-export const teamSlide = (
-  <Slide key="team">
-    <SlideTitle title="Our Team:  Experienced Leaders and Innovators" />
-    <ContentBox icon={<Users className="w-6 h-6" />} title="Leadership">
-      <p className="text-gray-400">Our team comprises experienced professionals with deep expertise in AI, blockchain, and education.  Their combined skills and experience form the foundation of our success.</p>
-    </ContentBox>
+export const fundingAllocationSlide = (
+  <Slide key="fundingAllocation">
+    <SlideTitle 
+      title="Use of Funds" 
+      subtitle="Strategic Allocation"
+    />
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <ContentBox icon={<BookOpen className="w-8 h-8" />} title="Content Expansion - $50K">
+          <ul className="space-y-3 text-gray-400">
+            <li>• Development of advanced AI & blockchain courses</li>
+            <li>• Creation of interactive learning materials</li>
+            <li>• Professional certification programs</li>
+            <li>• Industry-specific content modules</li>
+          </ul>
+        </ContentBox>
+        <ContentBox icon={<Rocket className="w-8 h-8" />} title="Marketing & User Acquisition - $50K">
+          <ul className="space-y-3 text-gray-400">
+            <li>• Digital marketing and SEO optimization</li>
+            <li>• Educational influencer partnerships</li>
+            <li>• Community engagement programs</li>
+            <li>• Early adopter incentives</li>
+          </ul>
+        </ContentBox>
+        <ContentBox icon={<Building className="w-8 h-8" />} title="Business Development - $50K">
+          <ul className="space-y-3 text-gray-400">
+            <li>• Strategic partnership development</li>
+            <li>• Enterprise client acquisition</li>
+            <li>• Educational institution collaborations</li>
+            <li>• Industry alliance building</li>
+          </ul>
+        </ContentBox>
+        <ContentBox icon={<Brain className="w-8 h-8" />} title="Platform Enhancements - $100K">
+          <ul className="space-y-3 text-gray-400">
+            <li>• AI algorithm development and training</li>
+            <li>• Gamification features implementation</li>
+            <li>• User experience improvements</li>
+            <li>• Performance optimization</li>
+          </ul>
+        </ContentBox>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <ContentBox icon={<Shield className="w-8 h-8" />} title="Legal & Compliance - $50K">
+          <ul className="space-y-3 text-gray-400">
+            <li>• Regulatory compliance implementation</li>
+            <li>• Legal documentation and contracts</li>
+            <li>• Privacy policy development</li>
+            <li>• Intellectual property protection</li>
+          </ul>
+        </ContentBox>
+        <ContentBox icon={<Users className="w-8 h-8" />} title="Operational Costs - $200K">
+          <ul className="space-y-3 text-gray-400">
+            <li>• Core team salaries and benefits</li>
+            <li>• Office and infrastructure costs</li>
+            <li>• Administrative expenses</li>
+            <li>• Professional services</li>
+          </ul>
+        </ContentBox>
+        <ContentBox icon={<Database className="w-8 h-8" />} title="Security & Maintenance - $100K">
+          <ul className="space-y-3 text-gray-400">
+            <li>• Security infrastructure setup</li>
+            <li>• Continuous monitoring systems</li>
+            <li>• Backup and recovery solutions</li>
+            <li>• Regular security audits</li>
+          </ul>
+        </ContentBox>
+        <ContentBox icon={<Wallet className="w-8 h-8" />} title="Buffer Fund - $50K">
+          <ul className="space-y-3 text-gray-400">
+            <li>• Emergency operational expenses</li>
+            <li>• Opportunity investments</li>
+            <li>• Market response flexibility</li>
+            <li>• Risk management reserve</li>
+          </ul>
+        </ContentBox>
+      </div>
+
+      <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700 mt-6">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-2xl font-semibold text-blue-400">Total Funding Needed</h3>
+          <span className="text-2xl font-bold text-blue-400">$650K</span>
+        </div>
+        <p className="text-gray-300 text-lg">
+          Break-even is expected in 18-24 months, with user acquisition as the top priority in the first year.
+        </p>
+      </div>
+    </div>
   </Slide>
 );
 
