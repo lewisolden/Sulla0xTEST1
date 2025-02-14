@@ -80,20 +80,12 @@ const Module3Quiz = () => {
   const [showExplanation, setShowExplanation] = useState(false);
   const { progress, updateProgress } = useProgress();
 
-  // Update required sections to match the actual sections in module 3
   const requiredSections = [
     'security-risks',
     'smart-contracts',
     'ethereum-fundamentals',
     'exercises'
   ];
-
-  useEffect(() => {
-    // Mark sections as complete when component mounts (for testing)
-    requiredSections.forEach(section => {
-      updateProgress(3, section, true);
-    });
-  }, []);
 
   const getCompletedSections = () => {
     return requiredSections.filter(section =>
@@ -105,7 +97,7 @@ const Module3Quiz = () => {
   const isAllTopicsCompleted = completedSections.length === requiredSections.length;
 
   const handleAnswerSelect = (optionIndex: number) => {
-    if (selectedAnswer !== null) return; // Prevent multiple selections
+    if (selectedAnswer !== null) return;
     setSelectedAnswer(optionIndex);
     setShowExplanation(true);
 
@@ -122,10 +114,14 @@ const Module3Quiz = () => {
       setShowExplanation(false);
     } else {
       setShowResult(true);
-      // Update module completion if score meets threshold
-      const passThreshold = Math.ceil(quizQuestions.length * 0.7); // 70% to pass
+      const passThreshold = Math.ceil(quizQuestions.length * 0.7);
       if (score >= passThreshold) {
-        updateProgress(3, 'module-quiz', true);
+        updateProgress(3, 'module-quiz', true, {
+          timeSpent: 0,
+          score: (score / quizQuestions.length) * 100,
+          courseId: null,
+          aiRecommendations: null
+        });
       }
     }
   };
@@ -138,261 +134,227 @@ const Module3Quiz = () => {
     setShowExplanation(false);
   };
 
-  if (!isAllTopicsCompleted) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          <Card>
-            <CardContent className="pt-6">
-              <div className="text-center py-8">
-                <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
-                  <h2 className="text-xl font-semibold text-yellow-800 mb-2" role="alert">
-                    ⚠️ Complete Required Sections
-                  </h2>
-                  <p className="text-yellow-700">
-                    You need to complete all module sections before taking the quiz.
-                    {completedSections.length > 0 && (
-                      <span className="block mt-2">
-                        You've completed {completedSections.length} out of {requiredSections.length} sections.
+  const renderPreQuizState = () => (
+    <Card>
+      <CardContent className="pt-6">
+        <div className="text-center py-8">
+          <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+            <h2 className="text-xl font-semibold text-yellow-800 mb-2">
+              ⚠️ Complete Required Sections
+            </h2>
+            <p className="text-yellow-700">
+              You need to complete all module sections before taking the quiz.
+              {completedSections.length > 0 && (
+                <span className="block mt-2">
+                  You've completed {completedSections.length} out of {requiredSections.length} sections.
+                </span>
+              )}
+            </p>
+          </div>
+
+          <div className="bg-white p-6 rounded-lg shadow-sm">
+            <h3 className="text-lg font-medium text-gray-700 mb-4">Module Sections:</h3>
+            <ul className="space-y-3">
+              {requiredSections.map(section => {
+                const isComplete = progress.some(
+                  p => p.moduleId === 3 && p.sectionId === section && p.completed
+                );
+
+                const sectionName = section
+                  .split('-')
+                  .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                  .join(' ');
+
+                return (
+                  <li
+                    key={section}
+                    className={`flex items-center justify-between p-3 rounded-lg ${
+                      isComplete ? 'bg-green-50' : 'bg-gray-50'
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      {isComplete ? (
+                        <CheckCircle2 className="h-5 w-5 text-green-500" />
+                      ) : (
+                        <XCircle className="h-5 w-5 text-gray-400" />
+                      )}
+                      <span className={isComplete ? 'text-green-700' : 'text-gray-600'}>
+                        {sectionName}
                       </span>
+                    </span>
+                    {!isComplete && (
+                      <Link href={`/modules/module3/${section}`}>
+                        <Button variant="outline" size="sm">
+                          Start Section
+                        </Button>
+                      </Link>
                     )}
-                  </p>
-                </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
 
-                <div className="bg-white p-6 rounded-lg shadow-sm">
-                  <h3 className="text-lg font-medium text-gray-700 mb-4">Module Sections:</h3>
-                  <ul className="space-y-3" role="list">
-                    {requiredSections.map(section => {
-                      const isComplete = progress.some(
-                        p => p.moduleId === 3 && p.sectionId === section && p.completed
-                      );
-
-                      // Convert section ID to display name
-                      const sectionName = section
-                        .split('-')
-                        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                        .join(' ');
-
-                      return (
-                        <li
-                          key={section}
-                          className={`flex items-center justify-between p-3 rounded-lg ${
-                            isComplete ? 'bg-green-50' : 'bg-gray-50'
-                          }`}
-                          role="listitem"
-                        >
-                          <span className="flex items-center gap-2">
-                            {isComplete ? (
-                              <CheckCircle2 className="h-5 w-5 text-green-500" aria-label="Completed" />
-                            ) : (
-                              <XCircle className="h-5 w-5 text-gray-400" aria-label="Not completed" />
-                            )}
-                            <span className={`${isComplete ? 'text-green-700' : 'text-gray-600'}`}>
-                              {sectionName}
-                            </span>
-                          </span>
-                          {!isComplete && (
-                            <Link href={`/modules/module3/${section}`}>
-                              <Button variant="outline" size="sm" aria-label={`Start ${sectionName} section`}>
-                                Start Section
-                              </Button>
-                            </Link>
-                          )}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-
-                <div className="mt-8">
-                  <Link href="/modules/module3">
-                    <Button variant="outline" className="gap-2">
-                      <ArrowLeft className="h-4 w-4" />
-                      Return to Module Overview
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="mt-8">
+            <Link href="/modules/module3">
+              <Button variant="outline" className="gap-2">
+                <ArrowLeft className="h-4 w-4" />
+                Return to Module Overview
+              </Button>
+            </Link>
+          </div>
         </div>
-      </div>
-    );
-  }
+      </CardContent>
+    </Card>
+  );
 
-  if (showResult) {
-    const passThreshold = quizQuestions.length * 0.7;
+  const renderQuizInProgress = () => (
+    <Card>
+      <CardContent className="pt-6">
+        <div className="mb-6">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold text-blue-800">
+              Module 3 Final Quiz
+            </h2>
+            <span className="text-sm text-gray-600">
+              Question {currentQuestion + 1} of {quizQuestions.length}
+            </span>
+          </div>
+
+          <Progress
+            value={((currentQuestion + 1) / quizQuestions.length) * 100}
+            className="mb-6"
+          />
+
+          <div className="bg-blue-50 rounded-lg p-6 mb-6">
+            <p className="text-lg text-gray-700">
+              {quizQuestions[currentQuestion].question}
+            </p>
+          </div>
+
+          <div className="grid gap-4">
+            {quizQuestions[currentQuestion].options.map((option, index) => (
+              <button
+                key={index}
+                onClick={() => handleAnswerSelect(index)}
+                className={`
+                  w-full p-4 rounded-lg text-left transition-all duration-300
+                  ${selectedAnswer === null
+                    ? 'bg-gray-100 hover:bg-blue-100'
+                    : index === quizQuestions[currentQuestion].correctAnswer
+                      ? 'bg-green-200'
+                      : selectedAnswer === index
+                        ? 'bg-red-200'
+                        : 'bg-gray-100'}
+                `}
+                disabled={selectedAnswer !== null}
+              >
+                <span className="text-lg">{option}</span>
+              </button>
+            ))}
+          </div>
+
+          {showExplanation && (
+            <div className={`
+              mt-8 p-6 rounded-lg
+              ${selectedAnswer === quizQuestions[currentQuestion].correctAnswer
+                ? 'bg-green-100 border-l-4 border-green-500'
+                : 'bg-red-100 border-l-4 border-red-500'}
+            `}>
+              <h3 className="font-bold mb-2">
+                {selectedAnswer === quizQuestions[currentQuestion].correctAnswer
+                  ? '✅ Correct!'
+                  : '❌ Incorrect'}
+              </h3>
+              <p className="text-gray-700">
+                {quizQuestions[currentQuestion].explanation}
+              </p>
+            </div>
+          )}
+
+          {selectedAnswer !== null && (
+            <Button
+              onClick={moveToNextQuestion}
+              className="mt-8 w-full bg-blue-600 hover:bg-blue-700"
+              size="lg"
+            >
+              {currentQuestion < quizQuestions.length - 1
+                ? 'Next Question'
+                : 'Finish Quiz'}
+            </Button>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+
+  const renderQuizResults = () => {
+    const passThreshold = Math.ceil(quizQuestions.length * 0.7);
     const passed = score >= passThreshold;
 
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          <Card className="p-8">
-            <CardContent>
-              <div className="text-center">
-                <h2 className="text-3xl font-bold text-blue-800 mb-6">
-                  Module 3 Quiz Results
-                </h2>
-                <Progress
-                  value={(score / quizQuestions.length) * 100}
-                  className="w-full h-2 mb-4"
-                  aria-label="Quiz score progress"
-                />
-                <p className="text-xl mb-4">
-                  You scored {score} out of {quizQuestions.length}
+      <Card>
+        <CardContent className="pt-6">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold text-blue-800 mb-6">
+              Quiz Results
+            </h2>
+
+            <Progress
+              value={(score / quizQuestions.length) * 100}
+              className="mb-6"
+            />
+
+            <p className="text-xl mb-4">
+              You scored {score} out of {quizQuestions.length}
+            </p>
+
+            {passed ? (
+              <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-6">
+                <p className="text-green-700">
+                  🎉 Congratulations! You've passed Module 3!
                 </p>
-
-                {passed ? (
-                  <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-6" role="alert">
-                    <p className="text-green-700">
-                      🎉 Congratulations! You've passed Module 3!
-                    </p>
-                    <p className="text-green-600 text-sm mt-2">
-                      You've demonstrated a strong understanding of Ethereum and Smart Contracts.
-                    </p>
-                  </div>
-                ) : (
-                  <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-6" role="alert">
-                    <p className="text-red-700">
-                      You didn't pass this time. Review the topics and try again.
-                    </p>
-                    <p className="text-red-600 text-sm mt-2">
-                      You need {Math.ceil(passThreshold)} correct answers to pass.
-                    </p>
-                  </div>
-                )}
-
-                <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-                  <Link href="/modules/module3">
-                    <Button variant="outline" className="w-full sm:w-auto">
-                      <ArrowLeft className="mr-2 h-4 w-4" />
-                      Return to Module
-                    </Button>
-                  </Link>
-                  <Button
-                    onClick={restartQuiz}
-                    className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700"
-                    aria-label="Restart quiz"
-                  >
-                    Try Again
-                  </Button>
-                </div>
+                <p className="text-green-600 text-sm mt-2">
+                  You've demonstrated a strong understanding of Ethereum and Smart Contracts.
+                </p>
               </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
+            ) : (
+              <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-6">
+                <p className="text-yellow-700">
+                  You need a few more correct answers to pass.
+                </p>
+                <p className="text-yellow-600 text-sm mt-2">
+                  Review the material and try again! You need {passThreshold} correct answers to pass.
+                </p>
+              </div>
+            )}
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+              <Link href="/modules/module3">
+                <Button variant="outline" className="w-full sm:w-auto">
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Return to Module
+                </Button>
+              </Link>
+              <Button
+                onClick={restartQuiz}
+                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700"
+              >
+                Try Again
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     );
-  }
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
-        <Card className="p-8">
-          <CardContent>
-            {currentQuestion === 0 && (
-              <div className="bg-blue-50 border-l-4 border-blue-500 p-6 rounded-lg mb-8">
-                <h3 className="text-xl font-bold text-blue-900 mb-4">Quiz Requirements</h3>
-                <div className="space-y-4">
-                  <p className="text-blue-800 font-semibold">
-                    To pass this quiz, you need to:
-                  </p>
-                  <div className="bg-white p-4 rounded-lg">
-                    <p className="text-lg text-blue-900 font-medium">
-                      Get at least {Math.ceil(quizQuestions.length * 0.7)} out of {quizQuestions.length} questions correct (70%)
-                    </p>
-                  </div>
-                  <ul className="list-disc pl-6 space-y-2 text-blue-800">
-                    <li>You can retake the quiz as many times as needed</li>
-                    <li>You'll see immediately if each answer is correct</li>
-                    <li>Take your time - there's no time limit</li>
-                  </ul>
-                </div>
-              </div>
-            )}
-
-            <div className="mb-6">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-blue-800">
-                  Module 3 Final Quiz
-                </h2>
-                <span className="text-sm text-gray-600">
-                  Question {currentQuestion + 1} of {quizQuestions.length}
-                </span>
-              </div>
-
-              <Progress
-                value={((currentQuestion + 1) / quizQuestions.length) * 100}
-                className="mb-6"
-                aria-label="Quiz progress"
-              />
-
-              <div className="bg-blue-50 rounded-lg p-6 mb-6">
-                <p className="text-lg text-gray-700" role="heading" aria-level={3}>
-                  {quizQuestions[currentQuestion].question}
-                </p>
-              </div>
-
-              <div className="grid gap-4" role="radiogroup" aria-label="Answer options">
-                {quizQuestions[currentQuestion].options.map((option, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handleAnswerSelect(index)}
-                    className={`
-                      w-full p-4 rounded-lg text-left transition-all duration-300
-                      ${selectedAnswer === null
-                        ? 'bg-gray-100 hover:bg-blue-100'
-                        : index === quizQuestions[currentQuestion].correctAnswer
-                          ? 'bg-green-200'
-                          : selectedAnswer === index
-                            ? 'bg-red-200'
-                            : 'bg-gray-100'}
-                    `}
-                    disabled={selectedAnswer !== null}
-                    role="radio"
-                    aria-checked={selectedAnswer === index}
-                    aria-label={option}
-                  >
-                    <span className="text-lg">{option}</span>
-                  </button>
-                ))}
-              </div>
-
-              {showExplanation && (
-                <div className={`
-                  mt-8 p-6 rounded-lg
-                  ${selectedAnswer === quizQuestions[currentQuestion].correctAnswer
-                    ? 'bg-green-100 border-l-4 border-green-500'
-                    : 'bg-red-100 border-l-4 border-red-500'}
-                `} role="alert">
-                  <h3 className="font-bold mb-2">
-                    {selectedAnswer === quizQuestions[currentQuestion].correctAnswer
-                      ? '✅ Correct!'
-                      : '❌ Incorrect'}
-                  </h3>
-                  <p className="text-gray-700">
-                    {quizQuestions[currentQuestion].explanation}
-                  </p>
-                </div>
-              )}
-
-              {selectedAnswer !== null && (
-                <Button
-                  onClick={moveToNextQuestion}
-                  className="mt-8 w-full bg-blue-600 hover:bg-blue-700"
-                  size="lg"
-                  aria-label={currentQuestion < quizQuestions.length - 1
-                    ? 'Go to next question'
-                    : 'Complete quiz'}
-                >
-                  {currentQuestion < quizQuestions.length - 1
-                    ? 'Next Question'
-                    : 'Finish Quiz'}
-                </Button>
-              )}
-            </div>
-          </CardContent>
-        </Card>
+        {!isAllTopicsCompleted && renderPreQuizState()}
+        {isAllTopicsCompleted && !showResult && renderQuizInProgress()}
+        {isAllTopicsCompleted && showResult && renderQuizResults()}
       </div>
     </div>
   );
