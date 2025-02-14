@@ -525,12 +525,13 @@ export const financialModelSlide = (
     />
     <div className="space-y-6">
       <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
-        <h3 className="text-xl font-semibold text-blue-400 mb-4">Projected Financial Breakdown (Year 2-5)</h3>
+        <h3 className="text-xl font-semibold text-blue-400 mb-4">Projected Financial Breakdown (Year 1-5)</h3>
         <div className="overflow-x-auto">
           <table className="w-full text-gray-300">
             <thead>
               <tr className="border-b border-gray-700">
                 <th className="text-left py-2">Category</th>
+                <th className="text-right py-2">Year 1</th>
                 <th className="text-right py-2">Year 2</th>
                 <th className="text-right py-2">Year 3</th>
                 <th className="text-right py-2">Year 4</th>
@@ -540,6 +541,7 @@ export const financialModelSlide = (
             <tbody>
               <tr className="border-b border-gray-700">
                 <td className="py-2">Revenue</td>
+                <td className="text-right">$250K</td>
                 <td className="text-right">$500K</td>
                 <td className="text-right">$2M-$5M</td>
                 <td className="text-right">$10M+</td>
@@ -547,6 +549,7 @@ export const financialModelSlide = (
               </tr>
               <tr className="border-b border-gray-700">
                 <td className="py-2">Marketing Spend</td>
+                <td className="text-right">$200K</td>
                 <td className="text-right">$150K</td>
                 <td className="text-right">$400K</td>
                 <td className="text-right">$1M</td>
@@ -554,6 +557,7 @@ export const financialModelSlide = (
               </tr>
               <tr className="border-b border-gray-700">
                 <td className="py-2">Tech & Development</td>
+                <td className="text-right">$250K</td>
                 <td className="text-right">$300K</td>
                 <td className="text-right">$1M</td>
                 <td className="text-right">$2M</td>
@@ -561,6 +565,7 @@ export const financialModelSlide = (
               </tr>
               <tr className="border-b border-gray-700">
                 <td className="py-2">Operational Costs</td>
+                <td className="text-right">$200K</td>
                 <td className="text-right">$750K</td>
                 <td className="text-right">$1.5M</td>
                 <td className="text-right">$3M</td>
@@ -568,6 +573,7 @@ export const financialModelSlide = (
               </tr>
               <tr>
                 <td className="py-2">Profitability Projection</td>
+                <td className="text-right text-red-400">($400K) Loss</td>
                 <td className="text-right text-red-400">($700K) Loss</td>
                 <td className="text-right text-green-400">Break-even to $2M Profit</td>
                 <td className="text-right text-green-400">$4M+ Profit</td>
@@ -576,6 +582,13 @@ export const financialModelSlide = (
             </tbody>
           </table>
         </div>
+      </div>
+
+      <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700 mb-6">
+        <h3 className="text-xl font-semibold text-blue-400 mb-4">Strategic Focus</h3>
+        <p className="text-gray-300 mb-4">
+          Year 1 is dedicated to aggressive user acquisition and platform development, with projected losses of $400K as we prioritize growth over revenue. A Series A funding round will be required in Year 2 to support continued expansion and operational scaling.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -613,7 +626,7 @@ export const financialModelSlide = (
 export const ctaSlide = (
   <Slide key="cta" className="text-center bg-gradient-to-br from-blue-600 to-blue-800 text-white">
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity:0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
