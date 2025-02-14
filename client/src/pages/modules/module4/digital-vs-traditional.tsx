@@ -5,11 +5,25 @@ import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
+import { 
+  ArrowLeft, 
+  ArrowRight, 
+  CheckCircle2,
+  Banknote,
+  Globe2,
+  Zap,
+  Shield,
+  Wallet,
+  RefreshCw,
+  Wifi,
+  BanknoteIcon,
+  Clock,
+  AlertTriangle
+} from "lucide-react";
 import DigitalMoneyDiagram from "@/components/diagrams/DigitalMoneyDiagram";
 
 export default function DigitalVsTraditionalSection() {
-  useScrollTop(); // This hook handles scrolling to top on navigation
+  useScrollTop(); 
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const { updateProgress } = useProgress();
@@ -84,26 +98,62 @@ export default function DigitalVsTraditionalSection() {
 
             <Card className="p-6 mb-6">
               <h3 className="text-2xl font-semibold text-blue-600 mb-4">Traditional Physical Cash</h3>
-              <ul className="list-disc pl-5 space-y-2">
-                <li>Can be physically held and directly exchanged</li>
-                <li>Works without electricity or internet</li>
-                <li>Limited to country of origin</li>
-                <li>Can be permanently lost or destroyed</li>
-                <li>Expensive to transport in large amounts</li>
-                <li>Susceptible to counterfeiting</li>
-              </ul>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <Banknote className="h-5 w-5 text-blue-500 flex-shrink-0" />
+                  <span>Can be physically held and directly exchanged</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Zap className="h-5 w-5 text-blue-500 flex-shrink-0" />
+                  <span>Works without electricity or internet</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Globe2 className="h-5 w-5 text-blue-500 flex-shrink-0" />
+                  <span>Limited to country of origin</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <AlertTriangle className="h-5 w-5 text-blue-500 flex-shrink-0" />
+                  <span>Can be permanently lost or destroyed</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <BanknoteIcon className="h-5 w-5 text-blue-500 flex-shrink-0" />
+                  <span>Expensive to transport in large amounts</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Shield className="h-5 w-5 text-blue-500 flex-shrink-0" />
+                  <span>Susceptible to counterfeiting</span>
+                </div>
+              </div>
             </Card>
 
             <Card className="p-6 mb-6">
               <h3 className="text-2xl font-semibold text-blue-600 mb-4">Digital Cryptocurrency</h3>
-              <ul className="list-disc pl-5 space-y-2">
-                <li>Exists as computer code</li>
-                <li>Can't be physically destroyed</li>
-                <li>Can be backed up</li>
-                <li>Works globally with internet access</li>
-                <li>Cannot be counterfeited</li>
-                <li>Instant global transfers</li>
-              </ul>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <Wallet className="h-5 w-5 text-blue-500 flex-shrink-0" />
+                  <span>Exists as computer code</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Shield className="h-5 w-5 text-blue-500 flex-shrink-0" />
+                  <span>Can't be physically destroyed</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <RefreshCw className="h-5 w-5 text-blue-500 flex-shrink-0" />
+                  <span>Can be backed up</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Globe2 className="h-5 w-5 text-blue-500 flex-shrink-0" />
+                  <span>Works globally with internet access</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Shield className="h-5 w-5 text-blue-500 flex-shrink-0" />
+                  <span>Cannot be counterfeited</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Zap className="h-5 w-5 text-blue-500 flex-shrink-0" />
+                  <span>Instant global transfers</span>
+                </div>
+              </div>
             </Card>
 
             <h3 className="text-2xl font-semibold text-blue-600 mt-8">Real-World Example</h3>
@@ -112,21 +162,45 @@ export default function DigitalVsTraditionalSection() {
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <h4 className="font-semibold mb-2">Traditional Method:</h4>
-                  <ol className="list-decimal pl-5">
-                    <li>Visit physical bank</li>
-                    <li>Convert to another currency</li>
-                    <li>Pay high fees</li>
-                    <li>Wait days for delivery</li>
-                  </ol>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <BanknoteIcon className="h-5 w-5 text-blue-500" />
+                      <span>Visit physical bank</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <RefreshCw className="h-5 w-5 text-blue-500" />
+                      <span>Convert to another currency</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <AlertTriangle className="h-5 w-5 text-blue-500" />
+                      <span>Pay high fees</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Clock className="h-5 w-5 text-blue-500" />
+                      <span>Wait days for delivery</span>
+                    </div>
+                  </div>
                 </div>
                 <div>
                   <h4 className="font-semibold mb-2">Cryptocurrency Method:</h4>
-                  <ol className="list-decimal pl-5">
-                    <li>Open phone wallet</li>
-                    <li>Send to recipient's address</li>
-                    <li>Pay minimal fees</li>
-                    <li>Arrives in minutes</li>
-                  </ol>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <Wallet className="h-5 w-5 text-blue-500" />
+                      <span>Open phone wallet</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Zap className="h-5 w-5 text-blue-500" />
+                      <span>Send to recipient's address</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <BanknoteIcon className="h-5 w-5 text-blue-500" />
+                      <span>Pay minimal fees</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Clock className="h-5 w-5 text-blue-500" />
+                      <span>Arrives in minutes</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </Card>
