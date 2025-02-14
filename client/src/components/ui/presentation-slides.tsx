@@ -243,13 +243,42 @@ export const financialSlide = (
 
 export const solutionSlide2 = (
   <Slide key="solution2">
-    <SlideTitle title="Key Features" />
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <ContentBox icon={<Zap className="w-6 h-6" />} title="Real-Time Market Simulators">
-        <p className="text-gray-400">Practice trading strategies in a risk-free environment.</p>
+    <SlideTitle 
+      title="Core Platform Features" 
+      subtitle="Advanced Learning Technologies in Action"
+    />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <ContentBox icon={<BookOpen className="w-6 h-6" />} title="Comprehensive Course Structure">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Modular learning paths covering AI and blockchain fundamentals to advanced concepts</li>
+          <li>• Rich multimedia content with interactive diagrams and visualizations</li>
+          <li>• Step-by-step practical exercises with real-world applications</li>
+          <li>• Dynamic content updates reflecting latest industry developments</li>
+        </ul>
       </ContentBox>
-      <ContentBox icon={<Shield className="w-6 h-6" />} title="Security Focused Approach">
-        <p className="text-gray-400">Learn security best practices throughout all modules.</p>
+      <ContentBox icon={<Brain className="w-6 h-6" />} title="AI-Powered Learning">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Adaptive difficulty adjustment based on performance analytics</li>
+          <li>• Personalized learning paths using advanced AI algorithms</li>
+          <li>• Real-time concept clarification and assistance</li>
+          <li>• Smart content recommendations based on learning patterns</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Target className="w-6 h-6" />} title="Comprehensive Assessment">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Multi-format testing with adaptive questioning</li>
+          <li>• Real-time performance analytics and progress tracking</li>
+          <li>• Skill mastery verification through practical challenges</li>
+          <li>• Automated feedback and improvement suggestions</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Zap className="w-6 h-6" />} title="Enhanced Learning Experience">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Interactive simulations for hands-on practice</li>
+          <li>• Achievement system with skill-based badges</li>
+          <li>• Community-driven learning opportunities</li>
+          <li>• Enterprise-grade progress reporting and analytics</li>
+        </ul>
       </ContentBox>
     </div>
   </Slide>
@@ -257,10 +286,19 @@ export const solutionSlide2 = (
 
 export const missionSlide = (
   <Slide key="mission">
-    <SlideTitle title="Our Mission" />
-    <p className="mb-4 text-gray-400">To empower individuals with the knowledge and skills to thrive in the decentralized future.  We aim to bridge the gap between complex AI and blockchain technologies and accessible education.</p>
-    <ContentBox icon={<Lightbulb className="w-6 h-6" />} title="Educating the Next Generation of AI & Blockchain Innovators">
-    </ContentBox>
+    <SlideTitle title="Our Vision & Mission" />
+    <div className="space-y-6">
+      <p className="text-xl text-gray-300 leading-relaxed mb-8">
+        We are building the world's most advanced AI-powered educational platform, revolutionizing how complex technologies are learned and mastered. Our mission is to democratize access to cutting-edge technical education through an intelligent, adaptive system that evolves with each learner.
+      </p>
+      <ContentBox icon={<Lightbulb className="w-6 h-6" />} title="Building the Future of Education">
+        <div className="space-y-4 text-gray-400">
+          <p>• Creating an unprecedented learning experience where AI actively participates in the educational journey, providing personalized guidance, real-time adaptations, and intelligent feedback.</p>
+          <p>• Developing a living platform that continuously evolves, incorporating the latest developments in AI and blockchain technology while maintaining accessibility for learners at all levels.</p>
+          <p>• Fostering a global community of innovators and thought leaders who will shape the future of technology through collaborative learning and knowledge sharing.</p>
+        </div>
+      </ContentBox>
+    </div>
   </Slide>
 );
 
