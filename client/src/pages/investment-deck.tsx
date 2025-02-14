@@ -49,12 +49,14 @@ const InvestmentDeck = () => {
   const nextSlide = () => {
     if (currentSlide < slides.length - 1) {
       setCurrentSlide(currentSlide + 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
   const previousSlide = () => {
     if (currentSlide > 0) {
       setCurrentSlide(currentSlide - 1);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
