@@ -10,8 +10,10 @@ import type { InsertUser } from "@db/schema";
 import { useLocation } from "wouter";
 import { Loader2, Blocks, GraduationCap, Brain, Lightbulb } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useScrollTop } from "@/hooks/useScrollTop";
 
 export default function AuthPage() {
+  useScrollTop();
   const [, setLocation] = useLocation();
   const [location] = useLocation();
   const isRegisterPage = location === "/register";
@@ -25,7 +27,7 @@ export default function AuthPage() {
       title: isRegisterPage ? "Registration Page" : "Login Page",
       description: "Welcome to Sulla Learning Platform!",
     });
-  }, []);
+  });
 
   const form = useForm<InsertUser>({
     resolver: zodResolver(insertUserSchema),
