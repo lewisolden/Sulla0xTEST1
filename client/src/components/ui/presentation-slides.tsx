@@ -516,7 +516,100 @@ export const financialSlide = (
   </Slide>
 );
 
-// Call to Action Slide
+
+export const financialModelSlide = (
+  <Slide key="financialModel">
+    <SlideTitle 
+      title="Sulla's Financial Model" 
+      subtitle="Projected Growth and Key Metrics"
+    />
+    <div className="space-y-6">
+      <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
+        <h3 className="text-xl font-semibold text-blue-400 mb-4">Projected Financial Breakdown (Year 2-5)</h3>
+        <div className="overflow-x-auto">
+          <table className="w-full text-gray-300">
+            <thead>
+              <tr className="border-b border-gray-700">
+                <th className="text-left py-2">Category</th>
+                <th className="text-right py-2">Year 2</th>
+                <th className="text-right py-2">Year 3</th>
+                <th className="text-right py-2">Year 4</th>
+                <th className="text-right py-2">Year 5</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-gray-700">
+                <td className="py-2">Revenue</td>
+                <td className="text-right">$500K</td>
+                <td className="text-right">$2M-$5M</td>
+                <td className="text-right">$10M+</td>
+                <td className="text-right">$20M+</td>
+              </tr>
+              <tr className="border-b border-gray-700">
+                <td className="py-2">Marketing Spend</td>
+                <td className="text-right">$150K</td>
+                <td className="text-right">$400K</td>
+                <td className="text-right">$1M</td>
+                <td className="text-right">$2M</td>
+              </tr>
+              <tr className="border-b border-gray-700">
+                <td className="py-2">Tech & Development</td>
+                <td className="text-right">$300K</td>
+                <td className="text-right">$1M</td>
+                <td className="text-right">$2M</td>
+                <td className="text-right">$4M</td>
+              </tr>
+              <tr className="border-b border-gray-700">
+                <td className="py-2">Operational Costs</td>
+                <td className="text-right">$750K</td>
+                <td className="text-right">$1.5M</td>
+                <td className="text-right">$3M</td>
+                <td className="text-right">$4M</td>
+              </tr>
+              <tr>
+                <td className="py-2">Profitability Projection</td>
+                <td className="text-right text-red-400">($700K) Loss</td>
+                <td className="text-right text-green-400">Break-even to $2M Profit</td>
+                <td className="text-right text-green-400">$4M+ Profit</td>
+                <td className="text-right text-green-400">$10M+ Profit</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <ContentBox icon={<BarChart className="w-8 h-8" />} title="Revenue Streams">
+          <ul className="space-y-3 text-gray-400">
+            <li>• Premium subscriptions for individual learners</li>
+            <li>• Enterprise licensing for institutions</li>
+            <li>• Custom content development services</li>
+            <li>• Professional certification programs</li>
+          </ul>
+        </ContentBox>
+        <ContentBox icon={<PieChart className="w-8 h-8" />} title="Key Financial Metrics">
+          <ul className="space-y-3 text-gray-400">
+            <li>• User Acquisition Cost (CAC): $10-$20 per active user</li>
+            <li>• Customer Lifetime Value (LTV): $300+ per premium user</li>
+            <li>• Conversion Rate: 5-10% free to paid upgrade</li>
+            <li>• Operating Margins: &gt;60% (digital content scalability)</li>
+          </ul>
+        </ContentBox>
+      </div>
+
+      <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
+        <h3 className="text-xl font-semibold text-blue-400 mb-4">Growth Strategy Highlights</h3>
+        <ul className="space-y-3 text-gray-300">
+          <li>• Target 10-50 enterprise clients within 5 years</li>
+          <li>• Focus on high-margin premium content and certification programs</li>
+          <li>• Leverage AI for cost-effective content scaling and personalization</li>
+          <li>• Strategic partnerships with educational institutions and tech companies</li>
+        </ul>
+      </div>
+    </div>
+  </Slide>
+);
+
 export const ctaSlide = (
   <Slide key="cta" className="text-center bg-gradient-to-br from-blue-600 to-blue-800 text-white">
     <motion.div
@@ -537,8 +630,8 @@ export const modulesSlide = (
       <ContentBox icon={<BookOpen className="w-6 h-6" />} title="Fundamentals of AI">
         <p className="text-gray-400">Covering essential concepts, algorithms, and techniques in artificial intelligence.</p>
       </ContentBox>
-      <ContentBox icon={<BookOpen className="w-6 h-6" />} title="Blockchain Technology">
-        <p className="text-gray-400">Exploring the fundamentals of blockchain, cryptocurrencies, smart contracts, and decentralized applications.</p>
+      <ContentBox icon={<BookOpen className="w-6 h6" />} title="Blockchain Technology">
+        <p className="text-gray-400">Exploring the fundamentals ofblockchain, cryptocurrencies, smart contracts, and decentralized applications.</p>
       </ContentBox>
       <ContentBox icon={<BookOpen className="w-6 h-6" />} title="AI & Blockchain Integration">
         <p className="text-gray-400">Delving into the synergy between AI and blockchain, exploring real-world applications and innovative use cases.</p>
@@ -561,14 +654,6 @@ export const roadmapSlide = (
   </Slide>
 );
 
-export const progressSlide = (
-  <Slide key="progress">
-    <SlideTitle title="Progress to Date:  Building a Strong Foundation" />
-    <ContentBox icon={<Trophy className="w-6 h-6" />} title="Key Achievements">
-      <p className="text-gray-400">Completed core platform development, secured key partnerships, and established a strong team.</p>
-    </ContentBox>
-  </Slide>
-);
 
 export const tokenSlide = (
   <Slide key="token">
