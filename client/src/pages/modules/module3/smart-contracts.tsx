@@ -7,48 +7,9 @@ import { Button } from "@/components/ui/button";
 import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
 import { Code, Shield, Workflow, GitBranch } from "lucide-react";
 import SmartContractsQuiz from "@/components/quizzes/SmartContractsQuiz";
-import mermaid from "mermaid";
+import SmartContractWorkflow from "@/components/diagrams/SmartContractWorkflow";
+import SmartContractStructure from "@/components/diagrams/SmartContractStructure";
 import { useScrollTop } from "@/hooks/useScrollTop";
-
-const MermaidDiagram = ({ chart }) => {
-  const [svg, setSvg] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const renderDiagram = async () => {
-      try {
-        setLoading(true);
-        const uniqueId = `mermaid-${Math.random().toString(36).substr(2, 9)}`;
-        const { svg } = await mermaid.render(uniqueId, chart);
-        setSvg(svg);
-        setError('');
-      } catch (err) {
-        console.error('Failed to render mermaid diagram:', err);
-        setError('Failed to render diagram');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    renderDiagram();
-  }, [chart]);
-
-  if (loading) {
-    return <div className="flex justify-center p-4">Loading diagram...</div>;
-  }
-
-  if (error) {
-    return <div className="text-red-500 p-4">{error}</div>;
-  }
-
-  return (
-    <div 
-      className="mermaid-diagram" 
-      dangerouslySetInnerHTML={{ __html: svg }} 
-    />
-  );
-};
 
 const SmartContractsSection = () => {
   useScrollTop();
@@ -58,20 +19,6 @@ const SmartContractsSection = () => {
   const { updateProgress } = useProgress();
 
   useEffect(() => {
-    mermaid.initialize({ 
-      startOnLoad: true,
-      theme: 'neutral',
-      securityLevel: 'loose',
-      themeVariables: {
-        primaryColor: '#3b82f6',
-        primaryTextColor: '#1e3a8a',
-        primaryBorderColor: '#60a5fa',
-        lineColor: '#93c5fd',
-        secondaryColor: '#dbeafe',
-        tertiaryColor: '#eff6ff'
-      }
-    });
-
     const handleScroll = () => {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
       const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -104,34 +51,6 @@ const SmartContractsSection = () => {
     hidden: { opacity: 0, x: -20 },
     visible: { opacity: 1, x: 0 }
   };
-
-  const deploymentFlowDiagram = `graph LR
-    A[Write Contract] --> B[Compile]
-    B --> C[Deploy]
-    C --> D[Verify]
-    D --> E[Interact]
-
-    style A fill:#93c5fd,stroke:#2563eb
-    style B fill:#93c5fd,stroke:#2563eb
-    style C fill:#93c5fd,stroke:#2563eb
-    style D fill:#93c5fd,stroke:#2563eb
-    style E fill:#93c5fd,stroke:#2563eb`;
-
-  const contractHierarchyDiagram = `graph TD
-    A[Smart Contract] --> B[Storage]
-    A --> C[Logic]
-    A --> D[Interface]
-    B --> E[State Variables]
-    B --> F[Mappings]
-    C --> G[Functions]
-    C --> H[Modifiers]
-    D --> I[Events]
-    D --> J[External Functions]
-
-    style A fill:#93c5fd,stroke:#2563eb
-    style B fill:#bfdbfe,stroke:#2563eb
-    style C fill:#bfdbfe,stroke:#2563eb
-    style D fill:#bfdbfe,stroke:#2563eb`;
 
   const startQuiz = () => {
     setShowQuiz(true);
@@ -205,27 +124,27 @@ const SmartContractsSection = () => {
 
               <div className="my-8 p-4 bg-gray-50 rounded-lg shadow-inner">
                 <h3 className="text-xl font-semibold text-blue-700 mb-4">How Smart Contracts Work</h3>
-                <MermaidDiagram chart={deploymentFlowDiagram} />
+                <SmartContractWorkflow />
                 <div className="mt-4 space-y-3">
                   <div className="bg-white p-3 rounded">
                     <span className="font-semibold text-blue-700">1. Write Contract:</span>
                     <span className="ml-2 text-gray-600">Create the rules and conditions in code (like Solidity)</span>
                   </div>
                   <div className="bg-white p-3 rounded">
-                    <span className="font-semibold text-blue-700">2. Compile:</span>
-                    <span className="ml-2 text-gray-600">Convert the code into machine-readable format</span>
-                  </div>
-                  <div className="bg-white p-3 rounded">
-                    <span className="font-semibold text-blue-700">3. Deploy:</span>
+                    <span className="font-semibold text-blue-700">2. Deploy:</span>
                     <span className="ml-2 text-gray-600">Upload to the blockchain where it becomes permanent</span>
                   </div>
                   <div className="bg-white p-3 rounded">
-                    <span className="font-semibold text-blue-700">4. Verify:</span>
-                    <span className="ml-2 text-gray-600">Test to ensure everything works as intended</span>
+                    <span className="font-semibold text-blue-700">3. Execute:</span>
+                    <span className="ml-2 text-gray-600">Contract runs automatically when conditions are met</span>
                   </div>
                   <div className="bg-white p-3 rounded">
-                    <span className="font-semibold text-blue-700">5. Interact:</span>
-                    <span className="ml-2 text-gray-600">Users can now use the contract's functions</span>
+                    <span className="font-semibold text-blue-700">4. Verify:</span>
+                    <span className="ml-2 text-gray-600">Network nodes verify the execution</span>
+                  </div>
+                  <div className="bg-white p-3 rounded">
+                    <span className="font-semibold text-blue-700">5. Update:</span>
+                    <span className="ml-2 text-gray-600">Blockchain state is updated with the results</span>
                   </div>
                 </div>
               </div>
@@ -290,27 +209,7 @@ const SmartContractsSection = () => {
 
               <div className="my-8 p-4 bg-gray-50 rounded-lg shadow-inner">
                 <h3 className="text-xl font-semibold text-blue-700 mb-4">Smart Contract Structure</h3>
-                <MermaidDiagram chart={contractHierarchyDiagram} />
-                <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="bg-white p-4 rounded-lg">
-                    <h4 className="font-semibold text-blue-700 mb-2">Storage</h4>
-                    <p className="text-sm text-gray-600">
-                      Where the contract stores its data, like account balances or user information
-                    </p>
-                  </div>
-                  <div className="bg-white p-4 rounded-lg">
-                    <h4 className="font-semibold text-blue-700 mb-2">Logic</h4>
-                    <p className="text-sm text-gray-600">
-                      The rules and conditions that determine how the contract behaves
-                    </p>
-                  </div>
-                  <div className="bg-white p-4 rounded-lg">
-                    <h4 className="font-semibold text-blue-700 mb-2">Interface</h4>
-                    <p className="text-sm text-gray-600">
-                      How users and other contracts interact with this contract
-                    </p>
-                  </div>
-                </div>
+                <SmartContractStructure />
               </div>
             </motion.section>
 
