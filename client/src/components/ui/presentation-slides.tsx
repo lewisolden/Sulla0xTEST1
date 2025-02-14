@@ -623,15 +623,6 @@ export const tractionSlide = (
   </Slide>
 );
 
-export const fundingNarrativeSlide = (
-  <Slide key="fundingNarrative">
-    <SlideTitle title="Funding Narrative:  Investing in the Future" />
-    <ContentBox icon={<Target className="w-6 h-6" />} title="Investment Opportunity">
-      <p className="text-gray-400">A compelling investment opportunity with high growth potential in a rapidly expanding market.  Our detailed financial projections showcase significant returns.</p>
-    </ContentBox>
-  </Slide>
-);
-
 export const fundingBreakdownSlide = (
   <Slide key="fundingBreakdown">
     <SlideTitle title="Use of Funds:  Strategic Allocation for Growth" />
@@ -647,5 +638,48 @@ export const teamSlide = (
     <ContentBox icon={<Users className="w-6 h-6" />} title="Leadership">
       <p className="text-gray-400">Our team comprises experienced professionals with deep expertise in AI, blockchain, and education.  Their combined skills and experience form the foundation of our success.</p>
     </ContentBox>
+  </Slide>
+);
+
+export const dataStrategySlide = (
+  <Slide key="dataStrategy">
+    <SlideTitle 
+      title="How We Track & Use Data" 
+      subtitle="Powering Personalized Learning Through AI"
+    />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <ContentBox icon={<Database className="w-8 h-8" />} title="Data Collection">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Learning patterns and progression tracking</li>
+          <li>• Quiz performance and completion rates</li>
+          <li>• Content interaction and engagement metrics</li>
+          <li>• User feedback and satisfaction scores</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Brain className="w-8 h-8" />} title="AI Enhancement">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Dynamic difficulty adjustment based on performance</li>
+          <li>• Personalized learning path optimization</li>
+          <li>• Content recommendations using ML algorithms</li>
+          <li>• Automated progress assessment and feedback</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Code className="w-8 h-8" />} title="Learning Experience">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Real-time adaptation of course content</li>
+          <li>• Identification of knowledge gaps</li>
+          <li>• Custom exercise generation</li>
+          <li>• Peer learning matchmaking</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Shield className="w-8 h-8" />} title="Privacy & Security">
+        <ul className="space-y-3 text-gray-400">
+          <li>• End-to-end data encryption</li>
+          <li>• Anonymous data aggregation</li>
+          <li>• GDPR and CCPA compliance</li>
+          <li>• Transparent data usage policies</li>
+        </ul>
+      </ContentBox>
+    </div>
   </Slide>
 );
