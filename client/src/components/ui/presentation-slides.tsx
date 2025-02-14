@@ -217,6 +217,214 @@ export const marketSlide1 = (
   </Slide>
 );
 
+export const marketSlide2 = (
+  <Slide key="market2">
+    <SlideTitle 
+      title="What has been built so far?" 
+      subtitle="Comprehensive courses delivering advanced technical education"
+    />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <ContentBox icon={<Wallet className="w-6 h-6" />} title="Introduction to Cryptocurrency">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Comprehensive blockchain fundamentals with 10+ interactive modules</li>
+          <li>• Digital currencies evolution, Bitcoin deep-dive, and altcoin analysis</li>
+          <li>• Hands-on wallet simulation and trading exercises</li>
+          <li>• Security best practices and risk management training</li>
+          <li>• Real-world applications and market dynamics</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Brain className="w-6 h-6" />} title="Introduction to AI">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Three-part course covering AI/ML fundamentals to advanced concepts</li>
+          <li>• Neural networks, deep learning, and machine learning basics</li>
+          <li>• Natural Language Processing and Computer Vision modules</li>
+          <li>• Ethics in AI and future developments</li>
+          <li>• Practical applications and real-world use cases</li>
+        </ul>
+      </ContentBox>
+    </div>
+  </Slide>
+);
+
+export const productSlide1 = (
+  <Slide key="product1">
+    <SlideTitle 
+      title="Technical Architecture" 
+      subtitle="Robust and scalable infrastructure" 
+    />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <ContentBox icon={<Layout className="w-8 h-8" />} title="Frontend Stack">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Next.js with TypeScript for type-safe development</li>
+          <li>• Tailwind CSS for responsive and modern UI</li>
+          <li>• React Query for efficient data fetching and caching</li>
+          <li>• Framer Motion for smooth animations and transitions</li>
+          <li>• Shadcn UI components for consistent design</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Database className="w-8 h-8" />} title="Backend Infrastructure">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Node.js Express server for robust API endpoints</li>
+          <li>• PostgreSQL with Drizzle ORM for data persistence</li>
+          <li>• OpenAI integration for AI-powered features</li>
+          <li>• WebSocket for real-time updates and notifications</li>
+          <li>• JWT-based authentication system</li>
+        </ul>
+      </ContentBox>
+    </div>
+  </Slide>
+);
+
+export const productSlide2 = (
+  <Slide key="product2">
+    <SlideTitle 
+      title="Product Roadmap" 
+      subtitle="Strategic Development Plan 2025-2026"
+    />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <ContentBox icon={<BookOpen className="w-6 h-6" />} title="Course Expansion (Q2-Q3 2025)">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Advanced AI Development course with practical projects</li>
+          <li>• DeFi and Web3 development curriculum</li>
+          <li>• Industry partnership certification programs</li>
+          <li>• Specialized tracks for enterprise clients</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Code className="w-6 h-6" />} title="Technology Enhancement (Q3-Q4 2025)">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Mobile-optimized learning experience</li>
+          <li>• Advanced progress tracking dashboard</li>
+          <li>• Enhanced code simulation environment</li>
+          <li>• Real-time collaboration features</li>
+        </ul>
+      </ContentBox>
+    </div>
+  </Slide>
+);
+
+export const gtmStrategySlide = (
+  <Slide key="gtm">
+    <SlideTitle 
+      title="Go-to-Market Strategy" 
+      subtitle="24-Month Strategic Implementation Plan" 
+    />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <ContentBox icon={<Users className="w-8 h-8" />} title="Phase 1: Community Growth (0-6 Months)">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Launch initial AI and blockchain courses</li>
+          <li>• Build community through social media and tech forums</li>
+          <li>• Partner with tech influencers and educators</li>
+          <li>• Implement referral and early access programs</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Rocket className="w-8 h-8" />} title="Phase 2: Pre-Monetization & User Scaling (6-12 Months)">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Beta testing of premium features</li>
+          <li>• Strategic partnerships with educational institutions</li>
+          <li>• Content creation workshops and webinars</li>
+          <li>• Launch enterprise pilot programs</li>
+        </ul>
+      </ContentBox>
+    </div>
+  </Slide>
+);
+
+export const tractionSlide = (
+  <Slide key="traction">
+    <SlideTitle title="Current Traction" subtitle="Building momentum in the market" />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <ContentBox icon={<Users className="w-8 h-8" />} title="User Growth">
+        <ul className="space-y-3 text-gray-400">
+          <li>• 1000+ early access signups</li>
+          <li>• 85% completion rate on beta courses</li>
+          <li>• 92% user satisfaction rating</li>
+          <li>• Strong organic growth through referrals</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Building className="w-8 h-8" />} title="Partnerships">
+        <ul className="space-y-3 text-gray-400">
+          <li>• 3 educational institutions piloting platform</li>
+          <li>• 2 enterprise clients in trial phase</li>
+          <li>• 5 content creator partnerships</li>
+          <li>• Active discussions with 10+ institutions</li>
+        </ul>
+      </ContentBox>
+    </div>
+  </Slide>
+);
+
+export const dataStrategySlide = (
+  <Slide key="dataStrategy">
+    <SlideTitle title="Data Strategy" subtitle="Leveraging AI for Personalized Learning" />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <ContentBox icon={<Brain className="w-8 h-8" />} title="AI-Powered Learning">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Adaptive learning algorithms</li>
+          <li>• Personalized content recommendations</li>
+          <li>• Real-time performance analytics</li>
+          <li>• Predictive learning paths</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Shield className="w-8 h-8" />} title="Data Security">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Enterprise-grade encryption</li>
+          <li>• GDPR and CCPA compliant</li>
+          <li>• Regular security audits</li>
+          <li>• Transparent data policies</li>
+        </ul>
+      </ContentBox>
+    </div>
+  </Slide>
+);
+
+export const fundingRequirementsSlide = (
+  <Slide key="fundingRequirements">
+    <SlideTitle title="Funding Requirements" subtitle="Strategic Investment for Growth" />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <ContentBox icon={<DollarSign className="w-8 h-8" />} title="Investment Allocation">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Product development and enhancement</li>
+          <li>• Marketing and user acquisition</li>
+          <li>• Team expansion and talent acquisition</li>
+          <li>• Infrastructure scaling</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Target className="w-8 h-8" />} title="Use of Funds">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Course content development</li>
+          <li>• AI/ML infrastructure setup</li>
+          <li>• Sales and marketing initiatives</li>
+          <li>• Working capital</li>
+        </ul>
+      </ContentBox>
+    </div>
+  </Slide>
+);
+
+export const fundingAllocationSlide = (
+  <Slide key="fundingAllocation">
+    <SlideTitle title="Funding Allocation" subtitle="Strategic Resource Distribution" />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <ContentBox icon={<PieChart className="w-8 h-8" />} title="Capital Distribution">
+        <ul className="space-y-3 text-gray-400">
+          <li>• 40% Product Development</li>
+          <li>• 30% Marketing & Growth</li>
+          <li>• 20% Team Expansion</li>
+          <li>• 10% Operations</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<TrendingUp className="w-8 h-8" />} title="Expected Outcomes">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Accelerated user growth</li>
+          <li>• Enhanced product features</li>
+          <li>• Market expansion</li>
+          <li>• Sustainable revenue model</li>
+        </ul>
+      </ContentBox>
+    </div>
+  </Slide>
+);
+
 export const financialModelSlide = (
   <Slide key="financialModel">
     <SlideTitle 
@@ -337,5 +545,24 @@ export const ctaSlide = (
       <h2 className="text-3xl mb-8 text-gray-200">Join the Future of AI & Blockchain Education</h2>
       <p className="text-xl text-gray-400">Be part of our journey to revolutionize technical education</p>
     </motion.div>
+  </Slide>
+);
+
+// Add back the missing missionSlide
+export const missionSlide = (
+  <Slide key="mission">
+    <SlideTitle title="Our Vision & Mission" />
+    <div className="space-y-6">
+      <p className="text-xl text-gray-300 leading-relaxed mb-8">
+        We are building the world's most advanced AI-powered educational platform, revolutionizing how complex technologies are learned and mastered. Our mission is to democratize access to cutting-edge technical education through an intelligent, adaptive system that evolves with each learner.
+      </p>
+      <ContentBox icon={<Lightbulb className="w-6 h-6" />} title="Building the Future of Education">
+        <div className="space-y-4 text-gray-400">
+          <p>• Creating an unprecedented learning experience where AI actively participates in the educational journey, providing personalized guidance, real-time adaptations, and intelligent feedback.</p>
+          <p>• Developing a living platform that continuously evolves, incorporating the latest developments in AI and blockchain technology while maintaining accessibility for learners at all levels.</p>
+          <p>• Fostering a global community of innovators and thought leaders who will shape the future of technology through collaborative learning and knowledge sharing.</p>
+        </div>
+      </ContentBox>
+    </div>
   </Slide>
 );
