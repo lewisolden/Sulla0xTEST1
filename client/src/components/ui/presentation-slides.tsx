@@ -365,14 +365,87 @@ export const marketSlide2 = (
 
 export const productSlide1 = (
   <Slide key="product1">
-    <SlideTitle title="Our Product:  A Seamless Learning Experience" />
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <ContentBox icon={<Rocket className="w-6 h-6" />} title="Interactive Learning">
-        <p className="text-gray-400">Gamified courses with hands-on projects and real-world applications to enhance engagement and knowledge retention.</p>
+    <SlideTitle 
+      title="Technical Architecture" 
+      subtitle="Robust and scalable infrastructure" 
+    />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <ContentBox icon={<Layout className="w-8 h-8" />} title="Frontend Stack">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Next.js with TypeScript for type-safe development</li>
+          <li>• Tailwind CSS for responsive and modern UI</li>
+          <li>• React Query for efficient data fetching and caching</li>
+          <li>• Framer Motion for smooth animations and transitions</li>
+          <li>• Shadcn UI components for consistent design</li>
+        </ul>
       </ContentBox>
-      <ContentBox icon={<Bot className="w-6 h-6" />} title="AI-Powered Personalization">
-        <p className="text-gray-400">Adaptive learning paths tailored to individual needs and learning styles, maximizing efficiency and effectiveness.</p>
+      <ContentBox icon={<Database className="w-8 h-8" />} title="Backend Infrastructure">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Node.js Express server for robust API endpoints</li>
+          <li>• PostgreSQL with Drizzle ORM for data persistence</li>
+          <li>• OpenAI integration for AI-powered features</li>
+          <li>• WebSocket for real-time updates and notifications</li>
+          <li>• JWT-based authentication system</li>
+        </ul>
       </ContentBox>
+      <div className="col-span-2 mt-6">
+        <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
+          <h3 className="text-xl font-semibold text-gray-200 mb-4">System Architecture</h3>
+          <svg
+            viewBox="0 0 800 400"
+            className="w-full h-auto"
+            style={{ maxHeight: '300px' }}
+          >
+            {/* Background */}
+            <rect width="800" height="400" fill="#1a1b1e" rx="10" />
+
+            {/* Frontend Layer */}
+            <g transform="translate(50, 50)">
+              <rect width="200" height="100" fill="#3b82f6" fillOpacity="0.1" stroke="#3b82f6" strokeWidth="2" rx="5" />
+              <text x="100" y="40" fill="#3b82f6" textAnchor="middle" className="text-sm">Frontend Layer</text>
+              <text x="100" y="70" fill="#9ca3af" textAnchor="middle" fontSize="12">Next.js + TypeScript</text>
+            </g>
+
+            {/* API Layer */}
+            <g transform="translate(300, 50)">
+              <rect width="200" height="100" fill="#10b981" fillOpacity="0.1" stroke="#10b981" strokeWidth="2" rx="5" />
+              <text x="100" y="40" fill="#10b981" textAnchor="middle">API Layer</text>
+              <text x="100" y="70" fill="#9ca3af" textAnchor="middle" fontSize="12">Express.js Server</text>
+            </g>
+
+            {/* Database Layer */}
+            <g transform="translate(550, 50)">
+              <rect width="200" height="100" fill="#8b5cf6" fillOpacity="0.1" stroke="#8b5cf6" strokeWidth="2" rx="5" />
+              <text x="100" y="40" fill="#8b5cf6" textAnchor="middle">Database</text>
+              <text x="100" y="70" fill="#9ca3af" textAnchor="middle" fontSize="12">PostgreSQL</text>
+            </g>
+
+            {/* Services Layer */}
+            <g transform="translate(175, 200)">
+              <rect width="450" height="100" fill="#f59e0b" fillOpacity="0.1" stroke="#f59e0b" strokeWidth="2" rx="5" />
+              <text x="225" y="40" fill="#f59e0b" textAnchor="middle">External Services</text>
+              <text x="225" y="70" fill="#9ca3af" textAnchor="middle" fontSize="12">OpenAI API | Authentication | WebSocket</text>
+            </g>
+
+            {/* Connection Lines */}
+            <g stroke="#4b5563" strokeWidth="2" strokeDasharray="5,5">
+              {/* Frontend to API */}
+              <path d="M250,100 L300,100" />
+              {/* API to Database */}
+              <path d="M500,100 L550,100" />
+              {/* API to Services */}
+              <path d="M400,150 L400,200" />
+            </g>
+
+            {/* Flow Arrows */}
+            <g fill="#4b5563">
+              <polygon points="295,97 305,100 295,103" />
+              <polygon points="545,97 555,100 545,103" />
+              <polygon points="397,195 400,205 403,195" />
+            </g>
+          </svg>
+        </div>
+      </div>
     </div>
   </Slide>
 );
