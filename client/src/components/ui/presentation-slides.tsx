@@ -23,7 +23,9 @@ import {
   TrendingUp,
   DollarSign,
   PieChart,
-  Briefcase
+  Briefcase,
+  Mail,
+  Twitter,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -517,7 +519,6 @@ export const financialSlide = (
 );
 
 
-
 export const financialModelSlide = (
   <Slide key="financialModel">
     <SlideTitle 
@@ -626,10 +627,11 @@ export const financialModelSlide = (
   </Slide>
 );
 
+// CTA Slide
 export const ctaSlide = (
   <Slide key="cta" className="text-center bg-gradient-to-br from-blue-600 to-blue-800 text-white">
     <motion.div
-      initial={{ opacity:0, y: 20 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
@@ -646,8 +648,8 @@ export const modulesSlide = (
       <ContentBox icon={<BookOpen className="w-6 h-6" />} title="Fundamentals of AI">
         <p className="text-gray-400">Covering essential concepts, algorithms, and techniques in artificial intelligence.</p>
       </ContentBox>
-      <ContentBox icon={<BookOpen className="w-6 h6" />} title="Blockchain Technology">
-        <p className="text-gray-400">Exploring the fundamentals ofblockchain, cryptocurrencies, smart contracts, and decentralized applications.</p>
+      <ContentBox icon={<BookOpen className="w-6 h-6" />} title="Blockchain Technology">
+        <p className="text-gray-400">Exploring the fundamentals of blockchain, cryptocurrencies, smart contracts, and decentralized applications.</p>
       </ContentBox>
       <ContentBox icon={<BookOpen className="w-6 h-6" />} title="AI & Blockchain Integration">
         <p className="text-gray-400">Delving into the synergy between AI and blockchain, exploring real-world applications and innovative use cases.</p>
@@ -680,7 +682,6 @@ export const tokenSlide = (
   </Slide>
 );
 
-// Traction & Milestones Slide
 export const tractionSlide = (
   <Slide key="traction">
     <SlideTitle 
@@ -866,6 +867,61 @@ export const fundingAllocationSlide = (
         <p className="text-gray-300 text-lg">
           Break-even is expected in 18-24 months, with user acquisition as the top priority in the first year.
         </p>
+      </div>
+    </div>
+  </Slide>
+);
+
+export const teamSlide = (
+  <Slide key="team">
+    <SlideTitle 
+      title="The Team" 
+      subtitle="Building the Future of Tech Education"
+    />
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <ContentBox icon={<Users className="w-8 h-8" />} title="Founder - Lewis Olden">
+          <p className="text-gray-300 leading-relaxed">
+            Entrepreneur with extensive expertise in finance and education, combining deep industry knowledge with a vision for transforming technical education through AI-powered solutions.
+          </p>
+        </ContentBox>
+        <ContentBox icon={<Brain className="w-8 h-8" />} title="CTO (Hiring)">
+          <ul className="space-y-3 text-gray-400">
+            <li>• Ph.D. or extensive experience in AI/ML</li>
+            <li>• Track record building scalable AI systems</li>
+            <li>• Experience with educational technology</li>
+            <li>• Proven leadership in technical teams</li>
+          </ul>
+        </ContentBox>
+        <ContentBox icon={<Rocket className="w-8 h-8" />} title="Marketing Lead (Hiring)">
+          <ul className="space-y-3 text-gray-400">
+            <li>• 5+ years in digital marketing & community building</li>
+            <li>• Experience growing EdTech or Web3 communities</li>
+            <li>• Strong track record in user acquisition</li>
+            <li>• Data-driven growth strategy expertise</li>
+          </ul>
+        </ContentBox>
+      </div>
+
+      <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
+        <h3 className="text-xl font-semibold text-blue-400 mb-4">Join Us</h3>
+        <p className="text-gray-300 text-lg mb-6">
+          Join us in revolutionizing education. We're seeking investors, partners, and early adopters who share our vision for the future of technical education.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-gray-300">
+          <div className="flex items-center space-x-2">
+            <Mail className="w-5 h-5 text-blue-400" />
+            <span>lewis@sullacrypto.com</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Twitter className="w-5 h-5 text-blue-400" />
+            <span>@SullaCrypto</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Globe className="w-5 h-5 text-blue-400" />
+            <span>sullacrypto.com</span>
+          </div>
+        </div>
       </div>
     </div>
   </Slide>
