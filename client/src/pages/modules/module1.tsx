@@ -1,5 +1,4 @@
 import { Card, CardContent } from "@/components/ui/card";
-import Footer from "@/components/layout/footer";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useProgress } from "@/context/progress-context";
@@ -330,7 +329,6 @@ export default function Module1() {
           </TabsContent>
         </Tabs>
       </div>
-      <Footer />
     </div>
   );
 }
