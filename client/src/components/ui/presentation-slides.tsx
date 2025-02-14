@@ -623,12 +623,60 @@ export const tractionSlide = (
   </Slide>
 );
 
-export const fundingBreakdownSlide = (
-  <Slide key="fundingBreakdown">
-    <SlideTitle title="Use of Funds:  Strategic Allocation for Growth" />
-    <ContentBox icon={<Wallet className="w-6 h-6" />} title="Allocation">
-      <p className="text-gray-400">Funds will be allocated strategically across platform development, marketing, and team expansion to ensure rapid growth and market penetration.  A detailed breakdown is available in the appendix.</p>
-    </ContentBox>
+export const fundingRequirementsSlide = (
+  <Slide key="fundingRequirements">
+    <SlideTitle 
+      title="Funding Requirements" 
+      subtitle="Investing in the Future"
+    />
+    <div className="space-y-8">
+      <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
+        <p className="text-gray-300 text-lg leading-relaxed mb-4">
+          To date, I have built everything myself at a minimal cost. I believe that with a team andrelatively small budget I can rapidly build the platform's capabilities and onboard users.
+        </p>
+        <p className="text-gray-300 text-lg leading-relaxed mb-4">
+          To scale Sulla effectively, we require funding that supports key areas: content expansion, marketing, platform improvements, and operational growth. Our focus is on building a user-centric platform with AI-driven personalization, ensuring high engagement and long-term retention.
+        </p>
+        <p className="text-gray-300 text-lg leading-relaxed">
+          We have strategically allocated funds to maximize user acquisition in the first 12 months while setting up monetization in the second year. Security, legal compliance, and infrastructure enhancements are also prioritized to support future scalability.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <ContentBox icon={<Users className="w-8 h-8" />} title="Team Building & Operations">
+          <ul className="space-y-3 text-gray-400">
+            <li>• Core development team recruitment</li>
+            <li>• AI/ML specialists and data scientists</li>
+            <li>• Content creation and curriculum experts</li>
+            <li>• Customer support and operations staff</li>
+          </ul>
+        </ContentBox>
+        <ContentBox icon={<Brain className="w-8 h-8" />} title="Technology & Infrastructure">
+          <ul className="space-y-3 text-gray-400">
+            <li>• AI model development and training</li>
+            <li>• Platform scalability improvements</li>
+            <li>• Security and compliance enhancements</li>
+            <li>• Advanced analytics implementation</li>
+          </ul>
+        </ContentBox>
+        <ContentBox icon={<Rocket className="w-8 h-8" />} title="Marketing & User Acquisition">
+          <ul className="space-y-3 text-gray-400">
+            <li>• Digital marketing campaigns</li>
+            <li>• Educational partnerships</li>
+            <li>• Community building initiatives</li>
+            <li>• Brand awareness development</li>
+          </ul>
+        </ContentBox>
+        <ContentBox icon={<Layout className="w-8 h-8" />} title="Content & Product Development">
+          <ul className="space-y-3 text-gray-400">
+            <li>• Course content expansion</li>
+            <li>• Interactive learning tools</li>
+            <li>• Mobile app development</li>
+            <li>• User experience enhancement</li>
+          </ul>
+        </ContentBox>
+      </div>
+    </div>
   </Slide>
 );
 
