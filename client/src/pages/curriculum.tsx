@@ -11,8 +11,6 @@ import { useToast } from "@/hooks/use-toast";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { useLocation } from "wouter";
 import { Progress } from "@/components/ui/progress";
-import { useAuth } from "@/hooks/use-auth";
-
 
 const subjects = [
   { id: "crypto", name: "Cryptocurrency" },
@@ -144,9 +142,8 @@ export default function Curriculum() {
   const [selectedCourse, setSelectedCourse] = useState<string>("1");
   const [selectedLevel, setSelectedLevel] = useState<string>("beginner");
   const { toast } = useToast();
-  const [location, setLocation] = useLocation();
+  const [location] = useLocation();
   const [coursesProgress, setCoursesProgress] = useState<{[key: string]: number}>({});
-  const { user } = useAuth();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -235,17 +232,8 @@ export default function Curriculum() {
   );
 
   const handleEnroll = () => {
-    if (!user) {
-      toast({
-        title: "Authentication Required",
-        description: "Please login to enroll in this course",
-        variant: "destructive"
-      });
-      setLocation('/auth');
-      return;
-    }
-
     const courseIdNumber = Number(currentCourse.id);
+    console.log('Enrolling in course:', courseIdNumber);
     enrollMutation.mutate(courseIdNumber);
   };
 
