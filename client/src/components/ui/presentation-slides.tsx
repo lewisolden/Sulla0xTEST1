@@ -244,7 +244,7 @@ export const solutionSlide1 = (
           <li>• Hands-on blockchain simulations</li>
           <li>• AI model experimentation</li>
           <li>• Real-world project integration</li>
-          <li>• Community-driven learning</li>
+          <li>• Enterprise-ready learning solutions</li>
         </ul>
       </ContentBox>
     </div>
@@ -306,7 +306,7 @@ export const missionSlide = (
         <div className="space-y-4 text-gray-400">
           <p>• Creating an unprecedented learning experience where AI actively participates in the educational journey, providing personalized guidance, real-time adaptations, and intelligent feedback.</p>
           <p>• Developing a living platform that continuously evolves, incorporating the latest developments in AI and blockchain technology while maintaining accessibility for learners at all levels.</p>
-          <p>• Fostering a global community of innovators and thought leaders who will shape the future of technology through collaborative learning and knowledge sharing.</p>
+          <p>• Building a comprehensive technical education ecosystem that bridges the gap between traditional learning and industry requirements.</p>
         </div>
       </ContentBox>
     </div>
@@ -603,6 +603,7 @@ export const financialSlide = (
 );
 
 
+
 export const financialModelSlide = (
   <Slide key="financialModel">
     <SlideTitle 
@@ -635,7 +636,7 @@ export const financialModelSlide = (
               </tr>
               <tr className="border-b border-gray-700">
                 <td className="py-2">Marketing Spend</td>
-                <td className="text-right">$200K</td>
+                <td className="text-right">$150K</td>
                 <td className="text-right">$150K</td>
                 <td className="text-right">$400K</td>
                 <td className="text-right">$1M</td>
@@ -643,14 +644,15 @@ export const financialModelSlide = (
               </tr>
               <tr className="border-b border-gray-700">
                 <td className="py-2">Tech & Development</td>
-                <td className="text-right">$250K</td>
+                <td className="text-right">$200K</td>
                 <td className="text-right">$300K</td>
                 <td className="text-right">$1M</td>
-                <td className="text-right">$2M</td><td className="text-right">$4M</td>
+                <td className="text-right">$2M</td>
+                <td className="text-right">$4M</td>
               </tr>
               <tr className="border-b border-gray-700">
                 <td className="py-2">Operational Costs</td>
-                <td className="text-right">$200K</td>
+                <td className="text-right">$150K</td>
                 <td className="text-right">$750K</td>
                 <td className="text-right">$1.5M</td>
                 <td className="text-right">$3M</td>
@@ -658,7 +660,7 @@ export const financialModelSlide = (
               </tr>
               <tr>
                 <td className="py-2">Profitability Projection</td>
-                <td className="text-right text-red-400">($400K) Loss</td>
+                <td className="text-right text-red-400">($500K) Loss</td>
                 <td className="text-right text-red-400">($700K) Loss</td>
                 <td className="text-right text-green-400">Break-even to $2M Profit</td>
                 <td className="text-right text-green-400">$4M+ Profit</td>
@@ -671,7 +673,7 @@ export const financialModelSlide = (
 
       <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
         <p className="text-gray-300 text-lg leading-relaxed mb-4">
-          Year 1 is dedicated entirely to aggressive user acquisition and platform development. While we've conservatively modeled zero revenue in Year 1, we will actively pursue opportunities to generate early revenue through strategic partnerships and early adopters. The projected $400K loss reflects our intentional focus on building a strong user base and robust platform.
+          Year 1 is dedicated entirely to aggressive user acquisition and platform development. While we've conservatively modeled zero revenue in Year 1, we will actively pursue opportunities to generate early revenue through strategic partnerships and early adopters. The projected $500K loss reflects our intentional focus on building a strong user base and robust platform.
         </p>
         <p className="text-gray-300 text-lg leading-relaxed">
           A Series A funding round of approximately $2-3M will be essential in Year 2 to support continued expansion, particularly as we scale our operations and development team. This additional capital will fuel our growth trajectory and help us capitalize on the strong user foundation built in Year 1.
