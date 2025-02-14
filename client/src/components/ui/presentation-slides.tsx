@@ -26,10 +26,6 @@ import {
   Briefcase,
   Mail,
   Twitter,
-  CreditCard,
-  Factory,
-  Award,
-  BadgePercent,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -607,6 +603,7 @@ export const financialSlide = (
 );
 
 
+
 export const financialModelSlide = (
   <Slide key="financialModel">
     <SlideTitle 
@@ -646,7 +643,7 @@ export const financialModelSlide = (
                 <td className="text-right">$2M</td>
               </tr>
               <tr className="border-b border-gray-700">
-                <td className="py2">Tech & Development</td>
+                <td className="py-2">Tech & Development</td>
                 <td className="text-right">$200K</td>
                 <td className="text-right">$300K</td>
                 <td className="text-right">$1M</td>
@@ -1105,79 +1102,5 @@ export const dataStrategySlide = (
         </ContentBox>
       </div>
     </div>
-  </Slide>
-);
-
-export const revenueGenerationSlide = (
-  <Slide key="revenue-generation">
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="flex items-center gap-4 mb-8">
-        <div className="p-3 bg-blue-500/20 rounded-lg">
-          <DollarSign className="w-8 h-8 text-blue-400" />
-        </div>
-        <h2 className="text-4xl font-bold text-blue-400">How We Generate Revenue</h2>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="space-y-6"
-        >
-          <ContentBox icon={<CreditCard className="w-6 h-6" />} title="Premium Subscriptions">
-            <ul className="space-y-3 text-gray-400">
-              <li className="flex items-center gap-2">
-                <BadgePercent className="w-4 h-4 text-blue-400" />
-                Basic: $9.99/month - Core courses and features
-              </li>
-              <li className="flex items-center gap-2">
-                <BadgePercent className="w-4 h-4 text-blue-400" />
-                Pro: $29.99/month - Advanced content & personalization
-              </li>
-              <li className="flex items-center gap-2">
-                <BadgePercent className="w-4 h-4 text-blue-400" />
-                Enterprise: Custom pricing for teams
-              </li>
-            </ul>
-          </ContentBox>
-
-          <ContentBox icon={<Factory className="w-6 h-6" />} title="B2B Solutions">
-            <ul className="space-y-3 text-gray-400">
-              <li>• White-label platform licensing</li>
-              <li>• Custom course development</li>
-              <li>• API access for integration</li>
-            </ul>
-          </ContentBox>
-        </motion.div>
-
-        <motion.div
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="space-y-6"
-        >
-          <ContentBox icon={<GraduationCap className="w-6 h-6" />} title="Educational Partnerships">
-            <ul className="space-y-3 text-gray-400">
-              <li>• University licensing programs</li>
-              <li>• Corporate training packages</li>
-              <li>• Professional certification programs</li>
-            </ul>
-          </ContentBox>
-
-          <ContentBox icon={<Award className="w-6 h-6" />} title="Additional Revenue Streams">
-            <ul className="space-y-3 text-gray-400">
-              <li>• NFT certifications ($99 - $499)</li>
-              <li>• Sponsored content from crypto projects</li>
-              <li>• Marketplace commission fees</li>
-            </ul>
-          </ContentBox>
-        </motion.div>
-      </div>
-    </motion.div>
   </Slide>
 );
