@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Maximize2, Minimize2, CreditCard, BadgePercent, Factory, GraduationCap, Award, DollarSign, ArrowRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Maximize2, Minimize2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import {
   titleSlide,
   problemSlide,
@@ -15,6 +14,7 @@ import {
   dataStrategySlide,
   productSlide2,
   gtmStrategySlide,
+  revenueGenerationSlide,
   tractionSlide,
   fundingRequirementsSlide,
   fundingAllocationSlide,
@@ -22,109 +22,6 @@ import {
   teamSlide,
   ctaSlide,
 } from '@/components/ui/presentation-slides';
-
-const revenueGenerationSlide = (
-  <motion.div
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    transition={{ duration: 0.5 }}
-    className="space-y-6"
-  >
-    <motion.div
-      initial={{ y: 20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 0.1 }}
-    >
-      <div className="flex items-center gap-4 mb-8">
-        <div className="p-3 bg-blue-500/10 rounded-lg">
-          <DollarSign className="w-8 h-8 text-blue-400" />
-        </div>
-        <h2 className="text-4xl font-bold text-blue-400">How We Generate Revenue</h2>
-      </div>
-    </motion.div>
-
-    <motion.div
-      initial={{ y: 20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 0.2 }}
-    >
-      <Card className="bg-blue-950/50 p-6 border-blue-900/50">
-        <div className="flex items-center gap-3 mb-4">
-          <CreditCard className="w-6 h-6 text-blue-400" />
-          <h3 className="text-xl font-semibold text-blue-300">Premium Subscriptions</h3>
-        </div>
-        <div className="space-y-3">
-          <div className="bg-blue-900/30 p-3 rounded-lg">
-            <p className="text-blue-100"><span className="font-semibold">Basic Plan:</span> $9.99/month</p>
-            <p className="text-blue-200/70 text-sm">Core courses and essential features for individual learners</p>
-          </div>
-          <div className="bg-blue-900/30 p-3 rounded-lg">
-            <p className="text-blue-100"><span className="font-semibold">Pro Plan:</span> $29.99/month</p>
-            <p className="text-blue-200/70 text-sm">Advanced content, AI-powered personalization, and premium features</p>
-          </div>
-          <div className="bg-blue-900/30 p-3 rounded-lg">
-            <p className="text-blue-100"><span className="font-semibold">Enterprise:</span> Custom pricing</p>
-            <p className="text-blue-200/70 text-sm">Tailored solutions for organizations with custom requirements</p>
-          </div>
-        </div>
-      </Card>
-    </motion.div>
-
-    <motion.div
-      initial={{ y: 20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 0.3 }}
-    >
-      <Card className="bg-blue-950/50 p-6 border-blue-900/50">
-        <div className="flex items-center gap-3 mb-4">
-          <Factory className="w-6 h-6 text-blue-400" />
-          <h3 className="text-xl font-semibold text-blue-300">B2B & Partnership Revenue</h3>
-        </div>
-        <div className="space-y-3">
-          <div className="bg-blue-900/30 p-3 rounded-lg">
-            <p className="text-blue-100"><span className="font-semibold">White-Label Solutions</span></p>
-            <p className="text-blue-200/70 text-sm">Platform licensing for educational institutions and enterprises</p>
-          </div>
-          <div className="bg-blue-900/30 p-3 rounded-lg">
-            <p className="text-blue-100"><span className="font-semibold">Corporate Training</span></p>
-            <p className="text-blue-200/70 text-sm">Customized blockchain and AI education programs for businesses</p>
-          </div>
-          <div className="bg-blue-900/30 p-3 rounded-lg">
-            <p className="text-blue-100"><span className="font-semibold">API & Integration Services</span></p>
-            <p className="text-blue-200/70 text-sm">Enterprise-grade API access and technical integration support</p>
-          </div>
-        </div>
-      </Card>
-    </motion.div>
-
-    <motion.div
-      initial={{ y: 20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 0.4 }}
-    >
-      <Card className="bg-blue-950/50 p-6 border-blue-900/50">
-        <div className="flex items-center gap-3 mb-4">
-          <Award className="w-6 h-6 text-blue-400" />
-          <h3 className="text-xl font-semibold text-blue-300">Additional Revenue Streams</h3>
-        </div>
-        <div className="space-y-3">
-          <div className="bg-blue-900/30 p-3 rounded-lg">
-            <p className="text-blue-100"><span className="font-semibold">NFT Certifications</span></p>
-            <p className="text-blue-200/70 text-sm">Premium blockchain-verified certificates ($99 - $499)</p>
-          </div>
-          <div className="bg-blue-900/30 p-3 rounded-lg">
-            <p className="text-blue-100"><span className="font-semibold">Sponsored Content</span></p>
-            <p className="text-blue-200/70 text-sm">Featured content and partnerships with crypto projects</p>
-          </div>
-          <div className="bg-blue-900/30 p-3 rounded-lg">
-            <p className="text-blue-100"><span className="font-semibold">Marketplace Fees</span></p>
-            <p className="text-blue-200/70 text-sm">Commission from community-created content and resources</p>
-          </div>
-        </div>
-      </Card>
-    </motion.div>
-  </motion.div>
-);
 
 const InvestmentDeck = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
