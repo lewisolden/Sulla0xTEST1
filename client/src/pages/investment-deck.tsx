@@ -69,11 +69,15 @@ const InvestmentDeck = () => {
       slideDiv.style.alignItems = 'center';
       slideDiv.style.justifyContent = 'center';
       
-      // Render the slide content
+      // Create a temporary container to render the slide
+      const tempContainer = document.createElement('div');
+      tempContainer.innerHTML = deckRef.current?.innerHTML || '';
+      
+      // Add the rendered content
       const content = document.createElement('div');
       content.style.width = '100%';
       content.style.padding = '40px';
-      content.appendChild(slide);
+      content.appendChild(tempContainer);
       slideDiv.appendChild(content);
       
       return slideDiv;
