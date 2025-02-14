@@ -11,6 +11,7 @@ import {
   marketSlide1,
   marketSlide2,
   productSlide1,
+  dataStrategySlide,
   productSlide2,
   gtmStrategySlide,
   tractionSlide,
@@ -26,22 +27,23 @@ const InvestmentDeck = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const slides = [
-    titleSlide,
-    problemSlide,
-    solutionSlide1,
-    solutionSlide2,
-    missionSlide,
-    marketSlide1,
-    marketSlide2,
-    productSlide1,
-    productSlide2,
-    gtmStrategySlide,
-    tractionSlide,
-    fundingRequirementsSlide,
-    fundingAllocationSlide,
-    financialModelSlide,
-    teamSlide,
-    ctaSlide,
+    titleSlide,            // 1
+    problemSlide,         // 2
+    solutionSlide1,       // 3
+    solutionSlide2,       // 4
+    missionSlide,         // 5
+    marketSlide1,         // 6
+    marketSlide2,         // 7
+    productSlide1,        // 8
+    dataStrategySlide,    // 9 (inserted here)
+    productSlide2,        // 10
+    gtmStrategySlide,     // 11
+    tractionSlide,        // 12
+    fundingRequirementsSlide, // 13
+    fundingAllocationSlide,   // 14
+    financialModelSlide,      // 15
+    teamSlide,               // 16
+    ctaSlide,                // 17
   ];
 
   const nextSlide = () => {
