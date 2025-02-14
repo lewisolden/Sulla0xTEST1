@@ -1,39 +1,49 @@
-const colors = [
-  { name: 'blue', value: '#1e40af' },  // Dark blue
-  { name: 'purple', value: '#6b21a8' }, // Royal purple
-  { name: 'green', value: '#166534' },  // Forest green
-  { name: 'slate', value: '#334155' },  // Business slate
-  { name: 'indigo', value: '#3730a3' }  // Deep indigo
-];
+const canvas = document.createElement('canvas');
+canvas.width = 500;
+canvas.height = 500;
+const ctx = canvas.getContext('2d');
 
-colors.forEach((colorObj) => {
-  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svg.setAttribute("viewBox", "0 0 200 50");
-  svg.setAttribute("width", "200");
-  svg.setAttribute("height", "50");
+// Set background
+ctx.fillStyle = '#1e40af'; // Dark blue background
+ctx.fillRect(0, 0, 500, 500);
 
-  // Create text element
-  const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-  text.setAttribute("x", "50%");
-  text.setAttribute("y", "35");
-  text.setAttribute("font-family", "system-ui, -apple-system, sans-serif");
-  text.setAttribute("font-size", "32");
-  text.setAttribute("font-weight", "bold");
-  text.setAttribute("fill", colorObj.value);
-  text.setAttribute("text-anchor", "middle");
-  text.textContent = "Sulla";
+// Draw stylized 'S'
+ctx.beginPath();
+ctx.strokeStyle = '#ffffff';
+ctx.lineWidth = 40;
+ctx.lineCap = 'round';
+ctx.lineJoin = 'round';
 
-  svg.appendChild(text);
+// Draw S curve
+ctx.moveTo(175, 150);
+ctx.bezierCurveTo(
+  175, 100,
+  325, 100,
+  325, 175
+);
+ctx.bezierCurveTo(
+  325, 250,
+  175, 250,
+  175, 325
+);
+ctx.bezierCurveTo(
+  175, 400,
+  325, 400,
+  325, 350
+);
 
-  // Convert SVG to blob and download
-  const svgData = new XMLSerializer().serializeToString(svg);
-  const blob = new Blob([svgData], { type: "image/svg+xml" });
-  const url = URL.createObjectURL(blob);
+ctx.stroke();
 
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = `sulla-text-logo-${colorObj.name}.svg`;
-  link.click();
+// Add white circular border
+ctx.strokeStyle = '#ffffff';
+ctx.lineWidth = 20;
+ctx.beginPath();
+ctx.arc(250, 250, 220, 0, Math.PI * 2);
+ctx.stroke();
 
-  URL.revokeObjectURL(url);
-});
+// Convert to PNG
+const dataURL = canvas.toDataURL('image/png');
+const link = document.createElement('a');
+link.download = 'sulla-logo.png';
+link.href = dataURL;
+link.click();
