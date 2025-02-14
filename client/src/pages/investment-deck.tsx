@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Maximize2, Minimize2, Download } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Maximize2, Minimize2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import html2pdf from 'html2pdf.js';
+// import html2pdf from 'html2pdf.js'; //removed import
 import {
   titleSlide,
   problemSlide,
@@ -27,8 +26,10 @@ import {
 const InvestmentDeck = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isExporting, setIsExporting] = useState(false);
+  // const [isExporting, setIsExporting] = useState(false); //removed state
   const deckRef = useRef<HTMLDivElement>(null);
+
+  // const exportToPDF = async () => { ... }; //removed function
 
   const slides = [
     titleSlide,
@@ -50,29 +51,6 @@ const InvestmentDeck = () => {
     ctaSlide,
   ];
 
-  const exportToPDF = async () => {
-    if (!deckRef.current) return;
-    setIsExporting(true);
-
-    const element = deckRef.current.cloneNode(true) as HTMLElement;
-    element.classList.add('export-container');
-
-    const opt = {
-      margin: 0,
-      filename: 'investment-deck.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
-    };
-
-    try {
-      await html2pdf().set(opt).from(element).save();
-    } catch (error) {
-      console.error('PDF export failed:', error);
-    }
-
-    setIsExporting(false);
-  };
 
   const nextSlide = () => {
     if (currentSlide < slides.length - 1) {
@@ -167,20 +145,6 @@ const InvestmentDeck = () => {
                 <Minimize2 className="h-4 w-4" />
               ) : (
                 <Maximize2 className="h-4 w-4" />
-              )}
-            </Button>
-            <div className="w-px h-4 bg-gray-800 mx-2" />
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={exportToPDF}
-              disabled={isExporting}
-              className="h-8 w-8 rounded-full text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
-            >
-              {isExporting ? (
-                <span className="animate-spin">⏳</span>
-              ) : (
-                <Download className="h-4 w-4" />
               )}
             </Button>
           </div>
