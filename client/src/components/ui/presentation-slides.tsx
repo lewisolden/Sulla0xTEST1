@@ -165,98 +165,113 @@ export const solutionSlide1 = (
   </Slide>
 );
 
-// Market Slides
-export const marketSlide1 = (
-  <Slide key="market1">
-    <SlideTitle 
-      title="Market Opportunity" 
-      subtitle="Bridging the Critical Education Gap in Revolutionary Technologies"
-    />
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <ContentBox icon={<TrendingUp className="w-8 h-8" />} title="Explosive Market Growth">
-        <ul className="space-y-3 text-gray-400">
-          <li>• Combined AI & blockchain education market: $7.6B by 2025</li>
-          <li>• 87% of global workforce lacks AI & blockchain literacy</li>
-          <li>• 32% CAGR in demand for technical education</li>
-          <li>• Only 1% of global population understands these technologies</li>
-        </ul>
-      </ContentBox>
-      <ContentBox icon={<Users className="w-8 h-8" />} title="Universal Education Need">
-        <ul className="space-y-3 text-gray-400">
-          <li>• Every industry requires AI & blockchain competency</li>
-          <li>• Critical skills gap in both enterprise and education</li>
-          <li>• Traditional education systems struggling to adapt</li>
-          <li>• Global demand for accessible, quality learning</li>
-        </ul>
-      </ContentBox>
-      <ContentBox icon={<Globe className="w-8 h-8" />} title="Global Impact">
-        <ul className="space-y-3 text-gray-400">
-          <li>• Technologies reshaping every sector globally</li>
-          <li>• Urgent need for widespread digital literacy</li>
-          <li>• Democratizing access to technical knowledge</li>
-          <li>• Building foundation for future workforce</li>
-        </ul>
-      </ContentBox>
-      <ContentBox icon={<Target className="w-8 h-8" />} title="Market Positioning">
-        <ul className="space-y-3 text-gray-400">
-          <li>• First-mover advantage in integrated AI/blockchain education</li>
-          <li>• Addressing critical market gap with innovative solution</li>
-          <li>• Scalable platform reaching global audience</li>
-          <li>• Strategic timing as technologies become mainstream</li>
-        </ul>
-      </ContentBox>
-    </div>
-  </Slide>
-);
 
 export const technicalSlide = (
   <Slide key="technical">
-    <SlideTitle title="Technical Architecture" subtitle="Robust and scalable infrastructure" />
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <ContentBox icon={<Layout className="w-8 h-8" />} title="Frontend Stack">
-        <ul className="space-y-3 text-gray-400">
-          <li>• Next.js with TypeScript</li>
-          <li>• Tailwind CSS for styling</li>
-          <li>• Framer Motion animations</li>
-          <li>• React Query for state management</li>
-        </ul>
-      </ContentBox>
-      <ContentBox icon={<Database className="w-8 h-8" />} title="Backend Infrastructure">
-        <ul className="space-y-3 text-gray-400">
-          <li>• Node.js Express server</li>
-          <li>• PostgreSQL database</li>
-          <li>• OpenAI integration</li>
-          <li>• WebSocket real-time updates</li>
-        </ul>
-      </ContentBox>
+    <SlideTitle 
+      title="What Makes Sulla Unique?" 
+      subtitle="Next-Generation Learning Platform Architecture"
+    />
+    <div className="space-y-8">
+      {/* Architecture Diagram */}
+      <div className="w-full bg-gray-800/30 rounded-lg p-6 border border-gray-700">
+        <svg
+          viewBox="0 0 800 300"
+          className="w-full h-auto"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {/* Client Layer */}
+          <g>
+            <rect x="50" y="20" width="700" height="60" rx="8" fill="#1e293b" stroke="#3b82f6" strokeWidth="2"/>
+            <text x="370" y="55" fontSize="16" fill="#94a3b8" textAnchor="middle">Client Layer</text>
+            <rect x="80" y="35" width="120" height="30" rx="4" fill="#334155"/>
+            <text x="140" y="55" fontSize="12" fill="#94a3b8" textAnchor="middle">Next.js + React</text>
+            <rect x="220" y="35" width="120" height="30" rx="4" fill="#334155"/>
+            <text x="280" y="55" fontSize="12" fill="#94a3b8" textAnchor="middle">TailwindCSS</text>
+            <rect x="360" y="35" width="120" height="30" rx="4" fill="#334155"/>
+            <text x="420" y="55" fontSize="12" fill="#94a3b8" textAnchor="middle">React Query</text>
+            <rect x="500" y="35" width="120" height="30" rx="4" fill="#334155"/>
+            <text x="560" y="55" fontSize="12" fill="#94a3b8" textAnchor="middle">Framer Motion</text>
+          </g>
+
+          {/* API Layer */}
+          <g>
+            <rect x="50" y="120" width="700" height="60" rx="8" fill="#1e293b" stroke="#3b82f6" strokeWidth="2"/>
+            <text x="370" y="155" fontSize="16" fill="#94a3b8" textAnchor="middle">API Layer</text>
+            <rect x="80" y="135" width="120" height="30" rx="4" fill="#334155"/>
+            <text x="140" y="155" fontSize="12" fill="#94a3b8" textAnchor="middle">Express.js</text>
+            <rect x="220" y="135" width="120" height="30" rx="4" fill="#334155"/>
+            <text x="280" y="155" fontSize="12" fill="#94a3b8" textAnchor="middle">WebSocket</text>
+            <rect x="360" y="135" width="120" height="30" rx="4" fill="#334155"/>
+            <text x="420" y="155" fontSize="12" fill="#94a3b8" textAnchor="middle">OpenAI API</text>
+            <rect x="500" y="135" width="120" height="30" rx="4" fill="#334155"/>
+            <text x="560" y="155" fontSize="12" fill="#94a3b8" textAnchor="middle">Auth System</text>
+          </g>
+
+          {/* Data Layer */}
+          <g>
+            <rect x="50" y="220" width="700" height="60" rx="8" fill="#1e293b" stroke="#3b82f6" strokeWidth="2"/>
+            <text x="370" y="255" fontSize="16" fill="#94a3b8" textAnchor="middle">Data Layer</text>
+            <rect x="80" y="235" width="120" height="30" rx="4" fill="#334155"/>
+            <text x="140" y="255" fontSize="12" fill="#94a3b8" textAnchor="middle">PostgreSQL</text>
+            <rect x="220" y="235" width="120" height="30" rx="4" fill="#334155"/>
+            <text x="280" y="255" fontSize="12" fill="#94a3b8" textAnchor="middle">Drizzle ORM</text>
+            <rect x="360" y="235" width="120" height="30" rx="4" fill="#334155"/>
+            <text x="420" y="255" fontSize="12" fill="#94a3b8" textAnchor="middle">Redis Cache</text>
+            <rect x="500" y="235" width="120" height="30" rx="4" fill="#334155"/>
+            <text x="560" y="255" fontSize="12" fill="#94a3b8" textAnchor="middle">Data Analytics</text>
+          </g>
+
+          {/* Connecting Lines */}
+          <path d="M400 80 L400 120" stroke="#3b82f6" strokeWidth="2" strokeDasharray="4"/>
+          <path d="M400 180 L400 220" stroke="#3b82f6" strokeWidth="2" strokeDasharray="4"/>
+        </svg>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <ContentBox icon={<Layout className="w-8 h-8" />} title="Modern Frontend Architecture">
+          <ul className="space-y-3 text-gray-400">
+            <li>• Next.js with TypeScript for robust type safety and performance</li>
+            <li>• Advanced state management with React Query for real-time data</li>
+            <li>• Responsive UI with Tailwind CSS and custom animations</li>
+            <li>• Component-driven development with shadcn/ui system</li>
+            <li>• Progressive Web App capabilities for offline learning</li>
+          </ul>
+        </ContentBox>
+        <ContentBox icon={<Database className="w-8 h-8" />} title="Scalable Backend Infrastructure">
+          <ul className="space-y-3 text-gray-400">
+            <li>• Express.js server with modular API architecture</li>
+            <li>• Real-time WebSocket connections for live interactions</li>
+            <li>• OpenAI integration for adaptive learning features</li>
+            <li>• JWT-based authentication with role-based access</li>
+            <li>• Comprehensive API documentation with Swagger</li>
+          </ul>
+        </ContentBox>
+        <ContentBox icon={<Brain className="w-8 h-8" />} title="AI-Powered Features">
+          <ul className="space-y-3 text-gray-400">
+            <li>• Dynamic content adaptation based on learning patterns</li>
+            <li>• Real-time concept explanations and clarifications</li>
+            <li>• Personalized learning paths with AI recommendations</li>
+            <li>• Automated assessment and feedback systems</li>
+            <li>• Natural language processing for content understanding</li>
+          </ul>
+        </ContentBox>
+        <ContentBox icon={<Shield className="w-8 h-8" />} title="Data & Security">
+          <ul className="space-y-3 text-gray-400">
+            <li>• PostgreSQL database with Drizzle ORM for type safety</li>
+            <li>• Redis caching for optimized performance</li>
+            <li>• End-to-end encryption for user data protection</li>
+            <li>• Regular automated backups and disaster recovery</li>
+            <li>• GDPR and CCPA compliant data handling</li>
+          </ul>
+        </ContentBox>
+      </div>
     </div>
   </Slide>
 );
 
-export const financialSlide = (
-  <Slide key="financial">
-    <SlideTitle title="Financial Projections" subtitle="Strong revenue growth and profitability" />
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <ContentBox icon={<DollarSign className="w-8 h-8" />} title="Revenue Streams">
-        <ul className="space-y-3 text-gray-400">
-          <li>• Subscription model: $15M (Year 1)</li>
-          <li>• Enterprise licenses: $8M</li>
-          <li>• Custom content creation: $5M</li>
-          <li>• B2B partnerships: $7M</li>
-        </ul>
-      </ContentBox>
-      <ContentBox icon={<Briefcase className="w-8 h-8" />} title="Growth Metrics">
-        <ul className="space-y-3 text-gray-400">
-          <li>• User acquisition cost: $42</li>
-          <li>• Customer LTV: $850</li>
-          <li>• Gross margin: 75%</li>
-          <li>• Monthly growth rate: 15%</li>
-        </ul>
-      </ContentBox>
-    </div>
-  </Slide>
-);
-
+// Solution Slide 2
 export const solutionSlide2 = (
   <Slide key="solution2">
     <SlideTitle 
