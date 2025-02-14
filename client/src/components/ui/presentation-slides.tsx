@@ -137,7 +137,7 @@ export const problemSlide = (
   </Slide>
 );
 
-// Solution Slide
+// Solution Slides
 export const solutionSlide1 = (
   <Slide key="solution1">
     <SlideTitle 
@@ -159,98 +159,6 @@ export const solutionSlide1 = (
           <li>• AI model experimentation</li>
           <li>• Real-world project integration</li>
           <li>• Community-driven learning</li>
-        </ul>
-      </ContentBox>
-    </div>
-  </Slide>
-);
-
-// Market Slides
-export const marketSlide1 = (
-  <Slide key="market1">
-    <SlideTitle 
-      title="Market Opportunity" 
-      subtitle="Bridging the Critical Education Gap in Revolutionary Technologies"
-    />
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <ContentBox icon={<TrendingUp className="w-8 h-8" />} title="Explosive Market Growth">
-        <ul className="space-y-3 text-gray-400">
-          <li>• Combined AI & blockchain education market: $7.6B by 2025</li>
-          <li>• 87% of global workforce lacks AI & blockchain literacy</li>
-          <li>• 32% CAGR in demand for technical education</li>
-          <li>• Only 1% of global population understands these technologies</li>
-        </ul>
-      </ContentBox>
-      <ContentBox icon={<Users className="w-8 h-8" />} title="Universal Education Need">
-        <ul className="space-y-3 text-gray-400">
-          <li>• Every industry requires AI & blockchain competency</li>
-          <li>• Critical skills gap in both enterprise and education</li>
-          <li>• Traditional education systems struggling to adapt</li>
-          <li>• Global demand for accessible, quality learning</li>
-        </ul>
-      </ContentBox>
-      <ContentBox icon={<Globe className="w-8 h-8" />} title="Global Impact">
-        <ul className="space-y-3 text-gray-400">
-          <li>• Technologies reshaping every sector globally</li>
-          <li>• Urgent need for widespread digital literacy</li>
-          <li>• Democratizing access to technical knowledge</li>
-          <li>• Building foundation for future workforce</li>
-        </ul>
-      </ContentBox>
-      <ContentBox icon={<Target className="w-8 h-8" />} title="Market Positioning">
-        <ul className="space-y-3 text-gray-400">
-          <li>• First-mover advantage in integrated AI/blockchain education</li>
-          <li>• Addressing critical market gap with innovative solution</li>
-          <li>• Scalable platform reaching global audience</li>
-          <li>• Strategic timing as technologies become mainstream</li>
-        </ul>
-      </ContentBox>
-    </div>
-  </Slide>
-);
-
-export const technicalSlide = (
-  <Slide key="technical">
-    <SlideTitle title="Technical Architecture" subtitle="Robust and scalable infrastructure" />
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <ContentBox icon={<Layout className="w-8 h-8" />} title="Frontend Stack">
-        <ul className="space-y-3 text-gray-400">
-          <li>• Next.js with TypeScript</li>
-          <li>• Tailwind CSS for styling</li>
-          <li>• Framer Motion animations</li>
-          <li>• React Query for state management</li>
-        </ul>
-      </ContentBox>
-      <ContentBox icon={<Database className="w-8 h-8" />} title="Backend Infrastructure">
-        <ul className="space-y-3 text-gray-400">
-          <li>• Node.js Express server</li>
-          <li>• PostgreSQL database</li>
-          <li>• OpenAI integration</li>
-          <li>• WebSocket real-time updates</li>
-        </ul>
-      </ContentBox>
-    </div>
-  </Slide>
-);
-
-export const financialSlide = (
-  <Slide key="financial">
-    <SlideTitle title="Financial Projections" subtitle="Strong revenue growth and profitability" />
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <ContentBox icon={<DollarSign className="w-8 h-8" />} title="Revenue Streams">
-        <ul className="space-y-3 text-gray-400">
-          <li>• Subscription model: $15M (Year 1)</li>
-          <li>• Enterprise licenses: $8M</li>
-          <li>• Custom content creation: $5M</li>
-          <li>• B2B partnerships: $7M</li>
-        </ul>
-      </ContentBox>
-      <ContentBox icon={<Briefcase className="w-8 h-8" />} title="Growth Metrics">
-        <ul className="space-y-3 text-gray-400">
-          <li>• User acquisition cost: $42</li>
-          <li>• Customer LTV: $850</li>
-          <li>• Gross margin: 75%</li>
-          <li>• Monthly growth rate: 15%</li>
         </ul>
       </ContentBox>
     </div>
@@ -300,6 +208,7 @@ export const solutionSlide2 = (
   </Slide>
 );
 
+// Mission Slide
 export const missionSlide = (
   <Slide key="mission">
     <SlideTitle title="Our Vision & Mission" />
@@ -313,6 +222,50 @@ export const missionSlide = (
           <p>• Developing a living platform that continuously evolves, incorporating the latest developments in AI and blockchain technology while maintaining accessibility for learners at all levels.</p>
           <p>• Fostering a global community of innovators and thought leaders who will shape the future of technology through collaborative learning and knowledge sharing.</p>
         </div>
+      </ContentBox>
+    </div>
+  </Slide>
+);
+
+// Market Slides
+export const marketSlide1 = (
+  <Slide key="market1">
+    <SlideTitle 
+      title="Market Opportunity" 
+      subtitle="Bridging the Critical Education Gap in Revolutionary Technologies"
+    />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <ContentBox icon={<TrendingUp className="w-8 h-8"/>} title="Explosive Market Growth">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Combined AI & blockchain education market: $7.6B by 2025</li>
+          <li>• 87% of global workforce lacks AI & blockchain literacy</li>
+          <li>• 32% CAGR in demand for technical education</li>
+          <li>• Only 1% of global population understands these technologies</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Users className="w-8 h-8" />} title="Universal Education Need">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Every industry requires AI & blockchain competency</li>
+          <li>• Critical skills gap in both enterprise and education</li>
+          <li>• Traditional education systems struggling to adapt</li>
+          <li>• Global demand for accessible, quality learning</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Globe className="w-8 h-8" />} title="Global Impact">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Technologies reshaping every sector globally</li>
+          <li>• Urgent need for widespread digital literacy</li>
+          <li>• Democratizing access to technical knowledge</li>
+          <li>• Building foundation for future workforce</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Target className="w-8 h-8" />} title="Market Positioning">
+        <ul className="space-y-3 text-gray-400">
+          <li>• First-mover advantage in integrated AI/blockchain education</li>
+          <li>• Addressing critical market gap with innovative solution</li>
+          <li>• Scalable platform reaching global audience</li>
+          <li>• Strategic timing as technologies become mainstream</li>
+        </ul>
       </ContentBox>
     </div>
   </Slide>
@@ -363,6 +316,7 @@ export const marketSlide2 = (
   </Slide>
 );
 
+// Product Slides
 export const productSlide1 = (
   <Slide key="product1">
     <SlideTitle 
@@ -493,6 +447,89 @@ export const productSlide2 = (
   </Slide>
 );
 
+// Go-to-Market Strategy Slide
+export const gtmStrategySlide = (
+  <Slide key="gtm">
+    <SlideTitle 
+      title="Go-to-Market Strategy" 
+      subtitle="24-Month Strategic Implementation Plan" 
+    />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <ContentBox icon={<Users className="w-8 h-8" />} title="Phase 1: Community Growth (0-6 Months)">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Launch initial AI and blockchain courses</li>
+          <li>• Build community through social media and tech forums</li>
+          <li>• Partner with tech influencers and educators</li>
+          <li>• Implement referral and early access programs</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Rocket className="w-8 h-8" />} title="Phase 2: Pre-Monetization & User Scaling (6-12 Months)">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Beta testing of premium features</li>
+          <li>• Strategic partnerships with educational institutions</li>
+          <li>• Content creation workshops and webinars</li>
+          <li>• Launch enterprise pilot programs</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<DollarSign className="w-8 h-8" />} title="Phase 3: Monetization & Scaling (12-18 Months)">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Launch premium subscription model</li>
+          <li>• Introduce enterprise licensing options</li>
+          <li>• Expand course offerings and certifications</li>
+          <li>• Implement corporate training programs</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Globe className="w-8 h-8" />} title="Phase 4: Global Expansion (18-24 Months)">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Localization for key international markets</li>
+          <li>• Regional partnerships and content adaptation</li>
+          <li>• Launch international marketing campaigns</li>
+          <li>• Establish regional support centers</li>
+        </ul>
+      </ContentBox>
+    </div>
+  </Slide>
+);
+
+// Financial Slides
+export const financialSlide = (
+  <Slide key="financial">
+    <SlideTitle title="Financial Projections" subtitle="Strong revenue growth and profitability" />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <ContentBox icon={<DollarSign className="w-8 h-8" />} title="Revenue Streams">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Subscription model: $15M (Year 1)</li>
+          <li>• Enterprise licenses: $8M</li>
+          <li>• Custom content creation: $5M</li>
+          <li>• B2B partnerships: $7M</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Briefcase className="w-8 h-8" />} title="Growth Metrics">
+        <ul className="space-y-3 text-gray-400">
+          <li>• User acquisition cost: $42</li>
+          <li>• Customer LTV: $850</li>
+          <li>• Gross margin: 75%</li>
+          <li>• Monthly growth rate: 15%</li>
+        </ul>
+      </ContentBox>
+    </div>
+  </Slide>
+);
+
+// Call to Action Slide
+export const ctaSlide = (
+  <Slide key="cta" className="text-center bg-gradient-to-br from-blue-600 to-blue-800 text-white">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Logo className="text-white mx-auto mb-8 h-16 w-auto" />
+      <h2 className="text-3xl mb-8 text-gray-200">Join the Future of AI & Blockchain Education</h2>
+    </motion.div>
+  </Slide>
+);
+
 export const modulesSlide = (
   <Slide key="modules">
     <SlideTitle title="Our Modules: A Comprehensive Curriculum" />
@@ -529,24 +566,6 @@ export const progressSlide = (
     <SlideTitle title="Progress to Date:  Building a Strong Foundation" />
     <ContentBox icon={<Trophy className="w-6 h-6" />} title="Key Achievements">
       <p className="text-gray-400">Completed core platform development, secured key partnerships, and established a strong team.</p>
-    </ContentBox>
-  </Slide>
-);
-
-export const gtmSlide1 = (
-  <Slide key="gtm1">
-    <SlideTitle title="Go-to-Market Strategy:  Reaching Our Target Audience" />
-    <ContentBox icon={<Rocket className="w-6 h-6" />} title="Market Entry Plan">
-      <p className="text-gray-400">Targeted marketing campaigns focusing on technology professionals, academic institutions, and corporate training programs.</p>
-    </ContentBox>
-  </Slide>
-);
-
-export const gtmSlide2 = (
-  <Slide key="gtm2">
-    <SlideTitle title="GTM Expansion:  Global Reach" />
-    <ContentBox icon={<Globe className="w-6 h-6" />} title="Internationalization">
-      <p className="text-gray-400">Localization efforts and strategic partnerships to expand into key international markets.</p>
     </ContentBox>
   </Slide>
 );
@@ -593,18 +612,5 @@ export const teamSlide = (
     <ContentBox icon={<Users className="w-6 h-6" />} title="Leadership">
       <p className="text-gray-400">Our team comprises experienced professionals with deep expertise in AI, blockchain, and education.  Their combined skills and experience form the foundation of our success.</p>
     </ContentBox>
-  </Slide>
-);
-
-export const ctaSlide = (
-  <Slide key="cta" className="text-center bg-gradient-to-br from-blue-600 to-blue-800 text-white">
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <Logo className="text-white mx-auto mb-8 h-16 w-auto" />
-      <h2 className="text-3xl mb-8 text-gray-200">Join the Future of AI & Blockchain Education</h2>
-    </motion.div>
   </Slide>
 );
