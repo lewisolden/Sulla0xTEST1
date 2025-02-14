@@ -645,41 +645,91 @@ export const dataStrategySlide = (
   <Slide key="dataStrategy">
     <SlideTitle 
       title="How We Track & Use Data" 
-      subtitle="Powering Personalized Learning Through AI"
+      subtitle="Technical Implementation of Our AI-Powered Learning Platform"
     />
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <ContentBox icon={<Database className="w-8 h-8" />} title="Data Collection">
-        <ul className="space-y-3 text-gray-400">
-          <li>• Learning patterns and progression tracking</li>
-          <li>• Quiz performance and completion rates</li>
-          <li>• Content interaction and engagement metrics</li>
-          <li>• User feedback and satisfaction scores</li>
-        </ul>
-      </ContentBox>
-      <ContentBox icon={<Brain className="w-8 h-8" />} title="AI Enhancement">
-        <ul className="space-y-3 text-gray-400">
-          <li>• Dynamic difficulty adjustment based on performance</li>
-          <li>• Personalized learning path optimization</li>
-          <li>• Content recommendations using ML algorithms</li>
-          <li>• Automated progress assessment and feedback</li>
-        </ul>
-      </ContentBox>
-      <ContentBox icon={<Code className="w-8 h-8" />} title="Learning Experience">
-        <ul className="space-y-3 text-gray-400">
-          <li>• Real-time adaptation of course content</li>
-          <li>• Identification of knowledge gaps</li>
-          <li>• Custom exercise generation</li>
-          <li>• Peer learning matchmaking</li>
-        </ul>
-      </ContentBox>
-      <ContentBox icon={<Shield className="w-8 h-8" />} title="Privacy & Security">
-        <ul className="space-y-3 text-gray-400">
-          <li>• End-to-end data encryption</li>
-          <li>• Anonymous data aggregation</li>
-          <li>• GDPR and CCPA compliance</li>
-          <li>• Transparent data usage policies</li>
-        </ul>
-      </ContentBox>
+    <div className="space-y-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <ContentBox icon={<Database className="w-8 h-8" />} title="Data Collection & Storage">
+          <ul className="space-y-3 text-gray-400">
+            <li>• PostgreSQL with Drizzle ORM for structured learning data</li>
+            <li>• Redis for real-time caching and session management</li>
+            <li>• Time-series data tracking with TimescaleDB</li>
+            <li>• S3-compatible storage for learning materials</li>
+          </ul>
+        </ContentBox>
+        <ContentBox icon={<Brain className="w-8 h-8" />} title="Machine Learning Pipeline">
+          <ul className="space-y-3 text-gray-400">
+            <li>• OpenAI API for content generation and analysis</li>
+            <li>• TensorFlow for custom model development</li>
+            <li>• scikit-learn for learning path optimization</li>
+            <li>• Hugging Face transformers for NLP tasks</li>
+          </ul>
+        </ContentBox>
+      </div>
+
+      <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
+        <h3 className="text-xl font-semibold text-gray-200 mb-4">Data Flow Architecture</h3>
+        <svg
+          viewBox="0 0 800 200"
+          className="w-full h-auto"
+          style={{ maxHeight: '200px' }}
+        >
+          {/* Background */}
+          <rect width="800" height="200" fill="#1a1b1e" rx="10" />
+
+          {/* User Interaction Layer */}
+          <g transform="translate(50, 50)">
+            <rect width="150" height="60" fill="#3b82f6" fillOpacity="0.1" stroke="#3b82f6" strokeWidth="2" rx="5" />
+            <text x="75" y="25" fill="#3b82f6" textAnchor="middle" fontSize="14">User Interactions</text>
+            <text x="75" y="45" fill="#9ca3af" textAnchor="middle" fontSize="12">Event Tracking</text>
+          </g>
+
+          {/* Processing Layer */}
+          <g transform="translate(325, 50)">
+            <rect width="150" height="60" fill="#10b981" fillOpacity="0.1" stroke="#10b981" strokeWidth="2" rx="5" />
+            <text x="75" y="25" fill="#10b981" textAnchor="middle" fontSize="14">Data Processing</text>
+            <text x="75" y="45" fill="#9ca3af" textAnchor="middle" fontSize="12">Apache Kafka</text>
+          </g>
+
+          {/* Storage Layer */}
+          <g transform="translate(600, 50)">
+            <rect width="150" height="60" fill="#8b5cf6" fillOpacity="0.1" stroke="#8b5cf6" strokeWidth="2" rx="5" />
+            <text x="75" y="25" fill="#8b5cf6" textAnchor="middle" fontSize="14">Data Storage</text>
+            <text x="75" y="45" fill="#9ca3af" textAnchor="middle" fontSize="12">PostgreSQL + Redis</text>
+          </g>
+
+          {/* Connection Lines */}
+          <g stroke="#4b5563" strokeWidth="2" strokeDasharray="5,5">
+            <path d="M200,80 L325,80" />
+            <path d="M475,80 L600,80" />
+          </g>
+
+          {/* Flow Arrows */}
+          <g fill="#4b5563">
+            <polygon points="320,77 330,80 320,83" />
+            <polygon points="595,77 605,80 595,83" />
+          </g>
+        </svg>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <ContentBox icon={<Code className="w-8 h-8" />} title="Analytics & Processing">
+          <ul className="space-y-3 text-gray-400">
+            <li>• Apache Kafka for real-time event streaming</li>
+            <li>• ElasticSearch for search and analytics</li>
+            <li>• Pandas for data transformation pipelines</li>
+            <li>• Grafana for monitoring and visualization</li>
+          </ul>
+        </ContentBox>
+        <ContentBox icon={<Shield className="w-8 h-8" />} title="Security Implementation">
+          <ul className="space-y-3 text-gray-400">
+            <li>• JWT-based authentication system</li>
+            <li>• AES-256 encryption for sensitive data</li>
+            <li>• Role-based access control (RBAC)</li>
+            <li>• Regular security audits and penetration testing</li>
+          </ul>
+        </ContentBox>
+      </div>
     </div>
   </Slide>
 );
