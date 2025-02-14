@@ -106,7 +106,21 @@ const InvestmentDeck = () => {
     };
 
     try {
-      await html2pdf().set(opt).from(element).save();
+      // Create temporary container for the current slide state
+      const tempDiv = document.createElement('div');
+      tempDiv.style.width = '100%';
+      tempDiv.style.height = '100%';
+      
+      // Capture all slides
+      for (let i = 0; i < slides.length; i++) {
+        setCurrentSlide(i);
+        const slideContent = document.createElement('div');
+        slideContent.className = 'pdf-slide';
+        slideContent.innerHTML = deckRef.current?.innerHTML || '';
+        tempDiv.appendChild(slideContent);
+      }
+      
+      await html2pdf().set(opt).from(tempDiv).save();
     } catch (error) {
       console.error('PDF export failed:', error);
     }
