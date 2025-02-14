@@ -1,6 +1,6 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { User, ArrowRight, Database, CheckCircle, Laptop } from "lucide-react";
-import { useState } from "react";
 
 const Step = ({ 
   icon: Icon, 
@@ -72,12 +72,12 @@ const EVMWorkflow = () => {
   ];
 
   // Auto-advance steps
-  React.useEffect(() => {
+  useEffect(() => {
     const timer = setInterval(() => {
       setCurrentStep((prev) => (prev + 1) % steps.length);
     }, 3000);
     return () => clearInterval(timer);
-  }, []);
+  }, [steps.length]);
 
   return (
     <div className="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl">
