@@ -34,29 +34,10 @@ interface ContentBoxProps {
   children: React.ReactNode;
 }
 
-// Logo Component
-const Logo: React.FC<{ className?: string }> = ({ className = '' }) => (
-  <svg
-    viewBox="0 0 200 50"
-    className={`h-20 w-auto ${className}`}
-    fill="currentColor"
-  >
-    <text
-      x="50%"
-      y="35"
-      fontFamily="system-ui, -apple-system, sans-serif"
-      fontSize="32"
-      fontWeight="bold"
-      textAnchor="middle"
-    >
-      Sulla
-    </text>
-  </svg>
-);
-
 // Base Components
 const Slide: React.FC<SlideProps> = ({ children, className = '', key }) => (
   <motion.div
+    key={key}
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     exit={{ opacity: 0, y: -20 }}
@@ -91,8 +72,28 @@ const ContentBox: React.FC<ContentBoxProps> = ({ icon, title, children }) => (
   </div>
 );
 
-// Slide Components
-export const fundingRequirementsSlide = (
+// Logo Component
+const Logo: React.FC<{ className?: string }> = ({ className = '' }) => (
+  <svg
+    viewBox="0 0 200 50"
+    className={`h-20 w-auto ${className}`}
+    fill="currentColor"
+  >
+    <text
+      x="50%"
+      y="35"
+      fontFamily="system-ui, -apple-system, sans-serif"
+      fontSize="32"
+      fontWeight="bold"
+      textAnchor="middle"
+    >
+      Sulla
+    </text>
+  </svg>
+);
+
+// Define slides as constants
+const fundingRequirementsSlide = (
   <Slide key="fundingRequirements">
     <SlideTitle 
       title="Funding Requirements" 
@@ -101,7 +102,7 @@ export const fundingRequirementsSlide = (
     <div className="space-y-8">
       <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
         <p className="text-gray-300 text-lg leading-relaxed mb-4">
-          To date, I have built everything myself at a minimal cost. I believe that with a team and relatively small budget I can rapidly build the platform&apos;s capabilities and onboard users.
+          To date, I have built everything myself at a minimal cost. I believe that with a team and relatively small budget I can rapidly build the platform's capabilities and onboard users.
         </p>
         <p className="text-gray-300 text-lg leading-relaxed mb-4">
           To scale Sulla effectively, we require funding that supports key areas: content expansion, marketing, platform improvements, and operational growth. Our focus is on building a user-centric platform with AI-driven personalization, ensuring high engagement and long-term retention.
@@ -133,7 +134,7 @@ export const fundingRequirementsSlide = (
   </Slide>
 );
 
-export const fundingAllocationSlide = (
+const fundingAllocationSlide = (
   <Slide key="fundingAllocation">
     <SlideTitle 
       title="Use of Funds" 
@@ -223,7 +224,7 @@ export const fundingAllocationSlide = (
   </Slide>
 );
 
-export const financialModelSlide = (
+const financialModelSlide = (
   <Slide key="financialModel">
     <SlideTitle 
       title="Sulla's Financial Model" 
@@ -308,140 +309,10 @@ export const financialModelSlide = (
   </Slide>
 );
 
-export const ctaSlide = (
-  <Slide key="cta" className="text-center bg-gradient-to-br from-blue-600 to-blue-800 text-white">
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <Logo className="text-white mx-auto mb-8 h-16 w-auto" />
-      <h2 className="text-3xl mb-8 text-gray-200">Join the Future of AI & Blockchain Education</h2>
-    </motion.div>
-  </Slide>
-);
-
-export const modulesSlide = (
-  <Slide key="modules">
-    <SlideTitle title="Our Modules: A Comprehensive Curriculum" />
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <ContentBox icon={<BookOpen className="w-6 h-6" />} title="Fundamentals of AI">
-        <p className="text-gray-400">Covering essential concepts, algorithms, and techniques in artificial intelligence.</p>
-      </ContentBox>
-      <ContentBox icon={<BookOpen className="w-6 h-6" />} title="Blockchain Technology">
-        <p className="text-gray-400">Exploring the fundamentals of blockchain, cryptocurrencies, smart contracts, and decentralized applications.</p>
-      </ContentBox>
-      <ContentBox icon={<BookOpen className="w-6 h-6" />} title="AI & Blockchain Integration">
-        <p className="text-gray-400">Delving into the synergy between AI and blockchain, exploring real-world applications and innovative use cases.</p>
-      </ContentBox>
-    </div>
-  </Slide>
-);
-
-export const roadmapSlide = (
-  <Slide key="roadmap">
-    <SlideTitle title="Roadmap: Our Vision for the Future" />
-    <div className="space-y-4">
-      <ContentBox icon={<Target className="w-6 h-6" />} title="2025 Milestones">
-        <p className="text-gray-400">Platform launch, initial user acquisition, and strategic partnerships.</p>
-      </ContentBox>
-      <ContentBox icon={<Target className="w-6 h-6" />} title="2026 Goals">
-        <p className="text-gray-400">Expand curriculum, increase user base, and explore international markets.</p>
-      </ContentBox>
-    </div>
-  </Slide>
-);
-
-export const progressSlide = (
-  <Slide key="progress">
-    <SlideTitle title="Progress to Date: Building a Strong Foundation" />
-    <ContentBox icon={<Trophy className="w-6 h-6" />} title="Key Achievements">
-      <p className="text-gray-400">Completed core platform development, secured key partnerships, and established a strong team.</p>
-    </ContentBox>
-  </Slide>
-);
-
-export const dataStrategySlide = (
-  <Slide key="dataStrategy">
-    <SlideTitle 
-      title="How We Track & Use Data" 
-      subtitle="Building AI-Powered Learning Experiences"
-    />
-    <div className="space-y-8">
-      <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
-        <svg
-          viewBox="0 0 800 200"
-          className="w-full h-auto"
-          style={{ maxHeight: '200px' }}
-        >
-          {/* Background */}
-          <rect width="800" height="200" fill="#1a1b1e" rx="10" />
-
-          {/* User Interaction Layer */}
-          <g transform="translate(50, 50)">
-            <rect width="150" height="60" fill="#3b82f6" fillOpacity="0.1" stroke="#3b82f6" strokeWidth="2" rx="5" />
-            <text x="75" y="25" fill="#3b82f6" textAnchor="middle" fontSize="14">User Interactions</text>
-            <text x="75" y="45" fill="#9ca3af" textAnchor="middle" fontSize="12">Event Tracking</text>
-          </g>
-
-          {/* Processing Layer */}
-          <g transform="translate(325, 50)">
-            <rect width="150" height="60" fill="#10b981" fillOpacity="0.1" stroke="#10b981" strokeWidth="2" rx="5" />
-            <text x="75" y="25" fill="#10b981" textAnchor="middle" fontSize="14">Data Processing</text>
-            <text x="75" y="45" fill="#9ca3af" textAnchor="middle" fontSize="12">Apache Kafka</text>
-          </g>
-
-          {/* Storage Layer */}
-          <g transform="translate(600, 50)">
-            <rect width="150" height="60" fill="#8b5cf6" fillOpacity="0.1" stroke="#8b5cf6" strokeWidth="2" rx="5" />
-            <text x="75" y="25" fill="#8b5cf6" textAnchor="middle" fontSize="14">Data Storage</text>
-            <text x="75" y="45" fill="#9ca3af" textAnchor="middle" fontSize="12">PostgreSQL + Redis</text>
-          </g>
-
-          {/* Connection Lines */}
-          <g stroke="#4b5563" strokeWidth="2" strokeDasharray="5,5">
-            <path d="M200,80 L325,80" />
-            <path d="M475,80 L600,80" />
-          </g>
-
-          {/* Flow Arrows */}
-          <g fill="#4b5563">
-            <polygon points="320,77 330,80 320,83" />
-            <polygon points="595,77 605,80 595,83" />
-          </g>
-        </svg>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <ContentBox icon={<Code className="w-8 h-8" />} title="Analytics & Processing">
-          <ul className="space-y-3 text-gray-400">
-            <li>• Real-time event tracking with Apache Kafka</li>
-            <li>• Custom analytics pipeline built with Node.js</li>
-            <li>• Machine learning models for pattern recognition</li>
-            <li>• Automated data aggregation and processing</li>
-          </ul>
-        </ContentBox>
-        <ContentBox icon={<Database className="w-8 h-8" />} title="Storage & Integration">
-          <ul className="space-y-3 text-gray-400">
-            <li>• PostgreSQL for persistent data storage</li>
-            <li>• Redis for caching and real-time features</li>
-            <li>• Secure API integrations with OpenAI</li>
-            <li>• Distributed data processing architecture</li>
-          </ul>
-        </ContentBox>
-      </div>
-    </div>
-  </Slide>
-);
-
+// Export slides and components
 export {
   fundingRequirementsSlide,
   fundingAllocationSlide,
   financialModelSlide,
-  ctaSlide,
-  modulesSlide,
-  roadmapSlide,
-  progressSlide,
-  dataStrategySlide,
-  Logo
+  Logo,
 };
