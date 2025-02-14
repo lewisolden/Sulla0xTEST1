@@ -55,37 +55,50 @@ const InvestmentDeck = () => {
     setIsExporting(true);
     
     const currentSlideBackup = currentSlide;
-    const element = document.createElement('div');
-    element.style.width = '100%';
-    element.style.height = '100%';
+    const container = document.createElement('div');
+    container.className = 'pdf-container';
     
-    // Create a temporary container and add all slides
-    for (let i = 0; i < slides.length; i++) {
-      setCurrentSlide(i);
+    // Create a container for all slides
+    const allSlides = slides.map((slide, index) => {
       const slideDiv = document.createElement('div');
+      slideDiv.className = 'pdf-slide';
       slideDiv.style.width = '100%';
       slideDiv.style.height = '100vh';
       slideDiv.style.pageBreakAfter = 'always';
-      slideDiv.innerHTML = deckRef.current.innerHTML;
-      element.appendChild(slideDiv);
-    }
-
+      slideDiv.style.display = 'flex';
+      slideDiv.style.alignItems = 'center';
+      slideDiv.style.justifyContent = 'center';
+      
+      // Render the slide content
+      const content = document.createElement('div');
+      content.style.width = '100%';
+      content.style.padding = '40px';
+      content.appendChild(slide);
+      slideDiv.appendChild(content);
+      
+      return slideDiv;
+    });
+    
+    // Add all slides to the container
+    allSlides.forEach(slide => container.appendChild(slide));
+    
     const opt = {
-      margin: 10,
+      margin: 1,
       filename: 'investment-deck.pdf',
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { 
-        scale: 2, 
+        scale: 2,
         useCORS: true,
         windowWidth: 1920,
-        windowHeight: 1080
+        windowHeight: 1080,
+        logging: true
       },
       jsPDF: { 
         unit: 'mm', 
         format: 'a4', 
         orientation: 'landscape'
       },
-      pagebreak: { mode: 'avoid-all' }
+      pagebreak: { mode: 'css', before: '.pdf-slide' }
     };
 
     try {

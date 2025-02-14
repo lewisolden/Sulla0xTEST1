@@ -1,7 +1,18 @@
 
 @media print {
-  .export-container {
+  .pdf-container {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .pdf-slide {
     break-after: page;
+    page-break-after: always;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
