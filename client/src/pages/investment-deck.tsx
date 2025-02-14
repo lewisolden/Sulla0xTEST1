@@ -3,22 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Maximize2, Minimize2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
-  titleSlide,
-  problemSlide,
-  solutionSlide1,
-  solutionSlide2,
-  missionSlide,
-  marketSlide1,
-  marketSlide2,
-  productSlide1,
-  productSlide2,
-  gtmStrategySlide,
-  tractionSlide,
-  dataStrategySlide,
   fundingRequirementsSlide,
   fundingAllocationSlide,
   financialModelSlide,
-  ctaSlide,
 } from '@/components/ui/presentation-slides';
 
 const InvestmentDeck = () => {
@@ -26,22 +13,9 @@ const InvestmentDeck = () => {
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const slides = [
-    titleSlide,
-    problemSlide,
-    solutionSlide1,
-    solutionSlide2,
-    missionSlide,
-    marketSlide1,
-    marketSlide2,
-    productSlide1,
-    productSlide2,
-    gtmStrategySlide,
-    tractionSlide,
-    dataStrategySlide,
     fundingRequirementsSlide,
     fundingAllocationSlide,
     financialModelSlide,
-    ctaSlide,
   ];
 
   const nextSlide = () => {
