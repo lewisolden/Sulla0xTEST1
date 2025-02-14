@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Brain,
   Trophy,
-  Dumbbell,
   Target,
   Rocket,
   Globe,
@@ -55,21 +54,39 @@ const Slide: React.FC<{ children: React.ReactNode; className?: string }> = ({ ch
     animate={{ opacity: 1, y: 0 }}
     exit={{ opacity: 0, y: -20 }}
     transition={{ duration: 0.5 }}
-    className={`bg-gradient-to-br from-gray-900 via-gray-900 to-gray-800 rounded-xl shadow-2xl p-12 mx-auto w-full max-w-6xl mt-8 border border-gray-800 ${className}`}
+    className={`relative overflow-hidden rounded-xl shadow-2xl bg-gradient-to-br from-gray-900 via-gray-900 to-gray-800 p-12 mx-auto w-full max-w-6xl mt-8 border border-gray-800 ${className}`}
   >
-    {children}
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-500/5 via-transparent to-transparent" />
+    <div className="relative z-10">
+      {children}
+    </div>
   </motion.div>
 );
 
 // Title Component with enhanced styling
 const SlideTitle = ({ title, subtitle }: { title: string; subtitle?: string }) => (
-  <div className="mb-8">
-    <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400 mb-2">
+  <div className="mb-10">
+    <h2 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400 mb-3">
       {title}
     </h2>
     {subtitle && (
       <p className="text-xl text-gray-400">{subtitle}</p>
     )}
+  </div>
+);
+
+// Content Box Component
+const ContentBox: React.FC<{
+  icon: React.ReactNode;
+  title: string;
+  children: React.ReactNode;
+}> = ({ icon, title, children }) => (
+  <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700 hover:border-gray-600 transition-colors">
+    <div className="flex items-center mb-4">
+      <div className="text-blue-400 mr-3">{icon}</div>
+      <h3 className="text-xl font-semibold text-gray-200">{title}</h3>
+    </div>
+    {children}
   </div>
 );
 
@@ -82,7 +99,7 @@ export const titleSlide = (
       transition={{ duration: 0.5 }}
     >
       <Logo className="text-white mx-auto mb-12 h-24 w-auto" />
-      <h1 className="text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
+      <h1 className="text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-blue-400">
         The Future of AI & Blockchain Education
       </h1>
       <h2 className="text-2xl mb-8 text-gray-300">A Revolutionary Learning Platform</h2>
@@ -99,31 +116,23 @@ export const problemSlide = (
       title="The Challenge" 
       subtitle="Current barriers in AI and blockchain education"
     />
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-      <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
-        <div className="flex items-center mb-4">
-          <Brain className="w-8 h-8 text-blue-400 mr-3" />
-          <h3 className="text-xl font-semibold text-gray-200">Complex Technologies</h3>
-        </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <ContentBox icon={<Brain className="w-8 h-8" />} title="Complex Technologies">
         <ul className="space-y-3 text-gray-400">
-          <li>• Steep learning curve for AI and blockchain</li>
-          <li>• Fragmented learning resources</li>
-          <li>• Lack of practical, hands-on experience</li>
-          <li>• Limited access to real-world applications</li>
+          <li>• Steep learning curve for AI and blockchain concepts</li>
+          <li>• Fragmented learning resources across platforms</li>
+          <li>• Limited hands-on practice opportunities</li>
+          <li>• Gap between theory and practical application</li>
         </ul>
-      </div>
-      <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
-        <div className="flex items-center mb-4">
-          <Shield className="w-8 h-8 text-blue-400 mr-3" />
-          <h3 className="text-xl font-semibold text-gray-200">Industry Gaps</h3>
-        </div>
+      </ContentBox>
+      <ContentBox icon={<Shield className="w-8 h-8" />} title="Industry Gaps">
         <ul className="space-y-3 text-gray-400">
-          <li>• Traditional education can't keep pace</li>
-          <li>• Theory-heavy learning approaches</li>
-          <li>• Shortage of qualified instructors</li>
-          <li>• High costs of specialized training</li>
+          <li>• Traditional education can't keep pace with innovation</li>
+          <li>• Shortage of qualified instructors in both fields</li>
+          <li>• High costs of specialized training programs</li>
+          <li>• Lack of interactive, adaptive learning solutions</li>
         </ul>
-      </div>
+      </ContentBox>
     </div>
   </Slide>
 );
@@ -136,30 +145,22 @@ export const solutionSlide1 = (
       subtitle="Revolutionizing technical education through AI"
     />
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
-        <div className="flex items-center mb-4">
-          <Bot className="w-8 h-8 text-purple-400 mr-3" />
-          <h3 className="text-xl font-semibold text-gray-200">AI-Powered Learning</h3>
-        </div>
+      <ContentBox icon={<Bot className="w-8 h-8" />} title="AI-Powered Learning">
         <ul className="space-y-3 text-gray-400">
           <li>• Personalized learning paths</li>
           <li>• Real-time assistance and feedback</li>
           <li>• Adaptive difficulty scaling</li>
           <li>• Progress tracking and analytics</li>
         </ul>
-      </div>
-      <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
-        <div className="flex items-center mb-4">
-          <Code className="w-8 h-8 text-purple-400 mr-3" />
-          <h3 className="text-xl font-semibold text-gray-200">Interactive Platform</h3>
-        </div>
+      </ContentBox>
+      <ContentBox icon={<Code className="w-8 h-8" />} title="Interactive Platform">
         <ul className="space-y-3 text-gray-400">
           <li>• Hands-on blockchain simulations</li>
           <li>• AI model experimentation</li>
           <li>• Real-world project integration</li>
           <li>• Community-driven learning</li>
         </ul>
-      </div>
+      </ContentBox>
     </div>
   </Slide>
 );
@@ -172,30 +173,22 @@ export const marketSlide1 = (
       subtitle="Explosive growth in AI and blockchain sectors"
     />
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
-        <div className="flex items-center mb-4">
-          <TrendingUp className="w-8 h-8 text-green-400 mr-3" />
-          <h3 className="text-xl font-semibold text-gray-200">Market Size</h3>
-        </div>
+      <ContentBox icon={<TrendingUp className="w-8 h-8" />} title="Market Size">
         <ul className="space-y-3 text-gray-400">
           <li>• AI education market: $5.3B by 2025</li>
           <li>• Blockchain education: $2.3B by 2025</li>
           <li>• Combined CAGR of 32%</li>
           <li>• 750M+ potential users globally</li>
         </ul>
-      </div>
-      <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
-        <div className="flex items-center mb-4">
-          <Users className="w-8 h-8 text-green-400 mr-3" />
-          <h3 className="text-xl font-semibold text-gray-200">Target Segments</h3>
-        </div>
+      </ContentBox>
+      <ContentBox icon={<Users className="w-8 h-8" />} title="Target Segments">
         <ul className="space-y-3 text-gray-400">
           <li>• Technology professionals</li>
           <li>• Corporate training programs</li>
           <li>• Academic institutions</li>
           <li>• Self-directed learners</li>
         </ul>
-      </div>
+      </ContentBox>
     </div>
   </Slide>
 );
@@ -204,30 +197,22 @@ export const technicalSlide = (
   <Slide key="technical">
     <SlideTitle title="Technical Architecture" subtitle="Robust and scalable infrastructure" />
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
-        <div className="flex items-center mb-4">
-          <Layout className="w-8 h-8 text-purple-500 mr-3" />
-          <h3 className="text-xl font-semibold text-gray-200">Frontend Stack</h3>
-        </div>
+      <ContentBox icon={<Layout className="w-8 h-8" />} title="Frontend Stack">
         <ul className="space-y-3 text-gray-400">
           <li>• Next.js with TypeScript</li>
           <li>• Tailwind CSS for styling</li>
           <li>• Framer Motion animations</li>
           <li>• React Query for state management</li>
         </ul>
-      </div>
-      <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
-        <div className="flex items-center mb-4">
-          <Database className="w-8 h-8 text-purple-500 mr-3" />
-          <h3 className="text-xl font-semibold text-gray-200">Backend Infrastructure</h3>
-        </div>
+      </ContentBox>
+      <ContentBox icon={<Database className="w-8 h-8" />} title="Backend Infrastructure">
         <ul className="space-y-3 text-gray-400">
           <li>• Node.js Express server</li>
           <li>• PostgreSQL database</li>
           <li>• OpenAI integration</li>
           <li>• WebSocket real-time updates</li>
         </ul>
-      </div>
+      </ContentBox>
     </div>
   </Slide>
 );
@@ -236,30 +221,22 @@ export const financialSlide = (
   <Slide key="financial">
     <SlideTitle title="Financial Projections" subtitle="Strong revenue growth and profitability" />
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
-        <div className="flex items-center mb-4">
-          <DollarSign className="w-8 h-8 text-green-500 mr-3" />
-          <h3 className="text-xl font-semibold text-gray-200">Revenue Streams</h3>
-        </div>
+      <ContentBox icon={<DollarSign className="w-8 h-8" />} title="Revenue Streams">
         <ul className="space-y-3 text-gray-400">
           <li>• Subscription model: $15M (Year 1)</li>
           <li>• Enterprise licenses: $8M</li>
           <li>• Custom content creation: $5M</li>
           <li>• B2B partnerships: $7M</li>
         </ul>
-      </div>
-      <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
-        <div className="flex items-center mb-4">
-          <Briefcase className="w-8 h-8 text-green-500 mr-3" />
-          <h3 className="text-xl font-semibold text-gray-200">Growth Metrics</h3>
-        </div>
+      </ContentBox>
+      <ContentBox icon={<Briefcase className="w-8 h-8" />} title="Growth Metrics">
         <ul className="space-y-3 text-gray-400">
           <li>• User acquisition cost: $42</li>
           <li>• Customer LTV: $850</li>
           <li>• Gross margin: 75%</li>
           <li>• Monthly growth rate: 15%</li>
         </ul>
-      </div>
+      </ContentBox>
     </div>
   </Slide>
 );
@@ -268,35 +245,22 @@ export const solutionSlide2 = (
   <Slide key="solution2">
     <SlideTitle title="Key Features" />
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div className="bg-gray-800/50 rounded-lg shadow p-4 border border-gray-700">
-        <div className="flex items-center mb-2">
-          <Zap className="w-6 h-6 mr-2 text-green-500" />
-          <h3 className="font-bold text-lg text-gray-200">Real-Time Market Simulators</h3>
-        </div>
+      <ContentBox icon={<Zap className="w-6 h-6" />} title="Real-Time Market Simulators">
         <p className="text-gray-400">Practice trading strategies in a risk-free environment.</p>
-      </div>
-      <div className="bg-gray-800/50 rounded-lg shadow p-4 border border-gray-700">
-        <div className="flex items-center mb-2">
-          <Shield className="w-6 h-6 mr-2 text-green-500" />
-          <h3 className="font-bold text-lg text-gray-200">Security Focused Approach</h3>
-        </div>
+      </ContentBox>
+      <ContentBox icon={<Shield className="w-6 h-6" />} title="Security Focused Approach">
         <p className="text-gray-400">Learn security best practices throughout all modules.</p>
-      </div>
+      </ContentBox>
     </div>
   </Slide>
 );
-
 
 export const missionSlide = (
   <Slide key="mission">
     <SlideTitle title="Our Mission" />
     <p className="mb-4 text-gray-400">To empower individuals with the knowledge and skills to thrive in the decentralized future.  We aim to bridge the gap between complex AI and blockchain technologies and accessible education.</p>
-    <div className="bg-gray-800/50 rounded-lg shadow p-4 text-center border border-gray-700">
-      <div className="flex items-center justify-center mb-2">
-        <Lightbulb className="w-6 h-6 mr-2 text-blue-500" />
-        <h3 className="font-bold text-lg text-gray-200">Educating the Next Generation of AI & Blockchain Innovators</h3>
-      </div>
-    </div>
+    <ContentBox icon={<Lightbulb className="w-6 h-6" />} title="Educating the Next Generation of AI & Blockchain Innovators">
+    </ContentBox>
   </Slide>
 );
 
@@ -304,20 +268,12 @@ export const marketSlide2 = (
   <Slide key="market2">
     <SlideTitle title="Market Trends" />
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div className="bg-gray-800/50 rounded-lg shadow p-4 border border-gray-700">
-        <div className="flex items-center mb-2">
-          <Wallet className="w-6 h-6 mr-2 text-blue-500" />
-          <h3 className="font-bold text-lg text-gray-200">Increased Investment</h3>
-        </div>
+      <ContentBox icon={<Wallet className="w-6 h-6" />} title="Increased Investment">
         <p className="text-gray-400">Growing institutional and retail investments in AI and crypto are fueling demand for skilled professionals.</p>
-      </div>
-      <div className="bg-gray-800/50 rounded-lg shadow p-4 border border-gray-700">
-        <div className="flex items-center mb-2">
-          <Network className="w-6 h-6 mr-2 text-blue-500" />
-          <h3 className="font-bold text-lg text-gray-200">Mainstream Adoption</h3>
-        </div>
+      </ContentBox>
+      <ContentBox icon={<Network className="w-6 h-6" />} title="Mainstream Adoption">
         <p className="text-gray-400">Increasing mainstream adoption of AI and cryptocurrency is creating a significant skills gap.</p>
-      </div>
+      </ContentBox>
     </div>
   </Slide>
 );
@@ -326,20 +282,12 @@ export const productSlide1 = (
   <Slide key="product1">
     <SlideTitle title="Our Product:  A Seamless Learning Experience" />
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div className="bg-gray-800/50 rounded-lg shadow p-4 border border-gray-700">
-        <div className="flex items-center mb-2">
-          <Rocket className="w-6 h-6 mr-2 text-purple-500" />
-          <h3 className="font-bold text-lg text-gray-200">Interactive Learning</h3>
-        </div>
+      <ContentBox icon={<Rocket className="w-6 h-6" />} title="Interactive Learning">
         <p className="text-gray-400">Gamified courses with hands-on projects and real-world applications to enhance engagement and knowledge retention.</p>
-      </div>
-      <div className="bg-gray-800/50 rounded-lg shadow p-4 border border-gray-700">
-        <div className="flex items-center mb-2">
-          <Bot className="w-6 h-6 mr-2 text-purple-500" />
-          <h3 className="font-bold text-lg text-gray-200">AI-Powered Personalization</h3>
-        </div>
+      </ContentBox>
+      <ContentBox icon={<Bot className="w-6 h-6" />} title="AI-Powered Personalization">
         <p className="text-gray-400">Adaptive learning paths tailored to individual needs and learning styles, maximizing efficiency and effectiveness.</p>
-      </div>
+      </ContentBox>
     </div>
   </Slide>
 );
@@ -348,20 +296,12 @@ export const productSlide2 = (
   <Slide key="product2">
     <SlideTitle title="Key Platform Features" />
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div className="bg-gray-800/50 rounded-lg shadow p-4 border border-gray-700">
-        <div className="flex items-center mb-2">
-          <Users className="w-6 h-6 mr-2 text-purple-500" />
-          <h3 className="font-bold text-lg text-gray-200">Expert Instructors</h3>
-        </div>
+      <ContentBox icon={<Users className="w-6 h-6" />} title="Expert Instructors">
         <p className="text-gray-400">Learn from industry professionals with extensive experience in AI and blockchain.</p>
-      </div>
-      <div className="bg-gray-800/50 rounded-lg shadow p-4 border border-gray-700">
-        <div className="flex items-center mb-2">
-          <Code className="w-6 h-6 mr-2 text-purple-500" />
-          <h3 className="font-bold text-lg text-gray-200">Real-World Projects</h3>
-        </div>
+      </ContentBox>
+      <ContentBox icon={<Code className="w-6 h-6" />} title="Real-World Projects">
         <p className="text-gray-400">Gain hands-on experience by working on real-world projects to build a strong portfolio.</p>
-      </div>
+      </ContentBox>
     </div>
   </Slide>
 );
@@ -370,27 +310,15 @@ export const modulesSlide = (
   <Slide key="modules">
     <SlideTitle title="Our Modules: A Comprehensive Curriculum" />
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div className="bg-gray-800/50 rounded-lg shadow p-4 border border-gray-700">
-        <div className="flex items-center mb-2">
-          <BookOpen className="w-6 h-6 mr-2 text-blue-500" />
-          <h3 className="font-bold text-lg text-gray-200">Fundamentals of AI</h3>
-        </div>
+      <ContentBox icon={<BookOpen className="w-6 h-6" />} title="Fundamentals of AI">
         <p className="text-gray-400">Covering essential concepts, algorithms, and techniques in artificial intelligence.</p>
-      </div>
-      <div className="bg-gray-800/50 rounded-lg shadow p-4 border border-gray-700">
-        <div className="flex items-center mb-2">
-          <BookOpen className="w-6 h-6 mr-2 text-blue-500" />
-          <h3 className="font-bold text-lg text-gray-200">Blockchain Technology</h3>
-        </div>
+      </ContentBox>
+      <ContentBox icon={<BookOpen className="w-6 h-6" />} title="Blockchain Technology">
         <p className="text-gray-400">Exploring the fundamentals of blockchain, cryptocurrencies, smart contracts, and decentralized applications.</p>
-      </div>
-      <div className="bg-gray-800/50 rounded-lg shadow p-4 border border-gray-700">
-        <div className="flex items-center mb-2">
-          <BookOpen className="w-6 h-6 mr-2 text-blue-500" />
-          <h3 className="font-bold text-lg text-gray-200">AI & Blockchain Integration</h3>
-        </div>
+      </ContentBox>
+      <ContentBox icon={<BookOpen className="w-6 h-6" />} title="AI & Blockchain Integration">
         <p className="text-gray-400">Delving into the synergy between AI and blockchain, exploring real-world applications and innovative use cases.</p>
-      </div>
+      </ContentBox>
     </div>
   </Slide>
 );
@@ -399,20 +327,12 @@ export const roadmapSlide = (
   <Slide key="roadmap">
     <SlideTitle title="Roadmap:  Our Vision for the Future" />
     <div className="space-y-4">
-      <div className="bg-gray-800/50 rounded-lg shadow p-4 border border-gray-700">
-        <div className="flex items-center mb-2">
-          <Target className="w-6 h-6 mr-2 text-blue-500" />
-          <h3 className="font-bold text-lg text-gray-200">2025 Milestones</h3>
-        </div>
+      <ContentBox icon={<Target className="w-6 h-6" />} title="2025 Milestones">
         <p className="text-gray-400">Platform launch, initial user acquisition, and strategic partnerships.</p>
-      </div>
-      <div className="bg-gray-800/50 rounded-lg shadow p-4 border border-gray-700">
-        <div className="flex items-center mb-2">
-          <Target className="w-6 h-6 mr-2 text-blue-500" />
-          <h3 className="font-bold text-lg text-gray-200">2026 Goals</h3>
-        </div>
+      </ContentBox>
+      <ContentBox icon={<Target className="w-6 h-6" />} title="2026 Goals">
         <p className="text-gray-400">Expand curriculum, increase user base, and explore international markets.</p>
-      </div>
+      </ContentBox>
     </div>
   </Slide>
 );
@@ -420,106 +340,72 @@ export const roadmapSlide = (
 export const progressSlide = (
   <Slide key="progress">
     <SlideTitle title="Progress to Date:  Building a Strong Foundation" />
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div className="bg-gray-800/50 rounded-lg shadow p-4 border border-gray-700">
-        <div className="flex items-center mb-2">
-          <Trophy className="w-6 h-6 mr-2 text-green-500" />
-          <h3 className="font-bold text-lg text-gray-200">Key Achievements</h3>
-        </div>
-        <p className="text-gray-400">Completed core platform development, secured key partnerships, and established a strong team.</p>
-      </div>
-    </div>
+    <ContentBox icon={<Trophy className="w-6 h-6" />} title="Key Achievements">
+      <p className="text-gray-400">Completed core platform development, secured key partnerships, and established a strong team.</p>
+    </ContentBox>
   </Slide>
 );
 
 export const gtmSlide1 = (
   <Slide key="gtm1">
     <SlideTitle title="Go-to-Market Strategy:  Reaching Our Target Audience" />
-    <div className="bg-gray-800/50 rounded-lg shadow p-4 border border-gray-700">
-      <div className="flex items-center mb-2">
-        <Rocket className="w-6 h-6 mr-2 text-blue-500" />
-        <h3 className="font-bold text-lg text-gray-200">Market Entry Plan</h3>
-      </div>
+    <ContentBox icon={<Rocket className="w-6 h-6" />} title="Market Entry Plan">
       <p className="text-gray-400">Targeted marketing campaigns focusing on technology professionals, academic institutions, and corporate training programs.</p>
-    </div>
+    </ContentBox>
   </Slide>
 );
 
 export const gtmSlide2 = (
   <Slide key="gtm2">
     <SlideTitle title="GTM Expansion:  Global Reach" />
-    <div className="bg-gray-800/50 rounded-lg shadow p-4 border border-gray-700">
-      <div className="flex items-center mb-2">
-        <Globe className="w-6 h-6 mr-2 text-blue-500" />
-        <h3 className="font-bold text-lg text-gray-200">Internationalization</h3>
-      </div>
+    <ContentBox icon={<Globe className="w-6 h-6" />} title="Internationalization">
       <p className="text-gray-400">Localization efforts and strategic partnerships to expand into key international markets.</p>
-    </div>
+    </ContentBox>
   </Slide>
 );
 
 export const tokenSlide = (
   <Slide key="token">
     <SlideTitle title="Token Utility:  Fueling Platform Growth" />
-    <div className="bg-gray-800/50 rounded-lg shadow p-4 border border-gray-700">
-      <div className="flex items-center mb-2">
-        <Code className="w-6 h-6 mr-2 text-purple-500" />
-        <h3 className="font-bold text-lg text-gray-200">Tokenomics</h3>
-      </div>
+    <ContentBox icon={<Code className="w-6 h-6" />} title="Tokenomics">
       <p className="text-gray-400">A robust tokenomics model designed to incentivize community participation and platform growth.  Details to be shared in a separate document.</p>
-    </div>
+    </ContentBox>
   </Slide>
 );
 
 export const tractionSlide = (
   <Slide key="traction">
     <SlideTitle title="Traction:  Early Success and Momentum" />
-    <div className="bg-gray-800/50 rounded-lg shadow p-4 border border-gray-700">
-      <div className="flex items-center mb-2">
-        <BarChart className="w-6 h-6 mr-2 text-green-500" />
-        <h3 className="font-bold text-lg text-gray-200">Growth Metrics</h3>
-      </div>
+    <ContentBox icon={<BarChart className="w-6 h-6" />} title="Growth Metrics">
       <p className="text-gray-400">Significant user growth and engagement, exceeding initial projections.  Detailed data available upon request.</p>
-    </div>
+    </ContentBox>
   </Slide>
 );
 
 export const fundingNarrativeSlide = (
   <Slide key="fundingNarrative">
     <SlideTitle title="Funding Narrative:  Investing in the Future" />
-    <div className="bg-gray-800/50 rounded-lg shadow p-4 border border-gray-700">
-      <div className="flex items-center mb-2">
-        <Target className="w-6 h-6 mr-2 text-green-500" />
-        <h3 className="font-bold text-lg text-gray-200">Investment Opportunity</h3>
-      </div>
+    <ContentBox icon={<Target className="w-6 h-6" />} title="Investment Opportunity">
       <p className="text-gray-400">A compelling investment opportunity with high growth potential in a rapidly expanding market.  Our detailed financial projections showcase significant returns.</p>
-    </div>
+    </ContentBox>
   </Slide>
 );
 
 export const fundingBreakdownSlide = (
   <Slide key="fundingBreakdown">
     <SlideTitle title="Use of Funds:  Strategic Allocation for Growth" />
-    <div className="bg-gray-800/50 rounded-lg shadow p-4 border border-gray-700">
-      <div className="flex items-center mb-2">
-        <Wallet className="w-6 h-6 mr-2 text-blue-500" />
-        <h3 className="font-bold text-lg text-gray-200">Allocation</h3>
-      </div>
+    <ContentBox icon={<Wallet className="w-6 h-6" />} title="Allocation">
       <p className="text-gray-400">Funds will be allocated strategically across platform development, marketing, and team expansion to ensure rapid growth and market penetration.  A detailed breakdown is available in the appendix.</p>
-    </div>
+    </ContentBox>
   </Slide>
 );
 
 export const teamSlide = (
   <Slide key="team">
     <SlideTitle title="Our Team:  Experienced Leaders and Innovators" />
-    <div className="bg-gray-800/50 rounded-lg shadow p-4 border border-gray-700">
-      <div className="flex items-center mb-2">
-        <Users className="w-6 h-6 mr-2 text-purple-500" />
-        <h3 className="font-bold text-lg text-gray-200">Leadership</h3>
-      </div>
+    <ContentBox icon={<Users className="w-6 h-6" />} title="Leadership">
       <p className="text-gray-400">Our team comprises experienced professionals with deep expertise in AI, blockchain, and education.  Their combined skills and experience form the foundation of our success.</p>
-    </div>
+    </ContentBox>
   </Slide>
 );
 
