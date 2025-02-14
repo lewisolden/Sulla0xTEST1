@@ -452,13 +452,42 @@ export const productSlide1 = (
 
 export const productSlide2 = (
   <Slide key="product2">
-    <SlideTitle title="Key Platform Features" />
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <ContentBox icon={<Users className="w-6 h-6" />} title="Expert Instructors">
-        <p className="text-gray-400">Learn from industry professionals with extensive experience in AI and blockchain.</p>
+    <SlideTitle 
+      title="Product Roadmap" 
+      subtitle="Strategic Development Plan 2025-2026"
+    />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <ContentBox icon={<BookOpen className="w-6 h-6" />} title="Course Expansion (Q2-Q3 2025)">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Advanced AI Development course with practical projects</li>
+          <li>• DeFi and Web3 development curriculum</li>
+          <li>• Industry partnership certification programs</li>
+          <li>• Specialized tracks for enterprise clients</li>
+        </ul>
       </ContentBox>
-      <ContentBox icon={<Code className="w-6 h-6" />} title="Real-World Projects">
-        <p className="text-gray-400">Gain hands-on experience by working on real-world projects to build a strong portfolio.</p>
+      <ContentBox icon={<Code className="w-6 h-6" />} title="Technology Enhancement (Q3-Q4 2025)">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Mobile-optimized learning experience</li>
+          <li>• Advanced progress tracking dashboard</li>
+          <li>• Enhanced code simulation environment</li>
+          <li>• Real-time collaboration features</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Bot className="w-6 h-6" />} title="AI Features (Q4 2025-Q1 2026)">
+        <ul className="space-y-3 text-gray-400">
+          <li>• AI-powered learning path optimization</li>
+          <li>• Intelligent content recommendations</li>
+          <li>• Automated project feedback system</li>
+          <li>• Natural language query support</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Trophy className="w-6 h-6" />} title="Gamification (Q1-Q2 2026)">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Interactive coding challenges and competitions</li>
+          <li>• Skill-based achievement system</li>
+          <li>• Peer learning and mentorship programs</li>
+          <li>• Virtual hackathons and team projects</li>
+        </ul>
       </ContentBox>
     </div>
   </Slide>
