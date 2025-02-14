@@ -1,13 +1,32 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'wouter';
+import { useAuth } from '@/hooks/use-auth';
 import { 
   BookOpenIcon, 
   AcademicCapIcon, 
   LightningBoltIcon,
   BeakerIcon
 } from '@heroicons/react/outline';
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 const Curriculum = () => {
+  const { user } = useAuth();
+  const [, setLocation] = useLocation();
+  const { toast } = useToast();
+
+  const handleEnrollClick = () => {
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please login to enroll in this course",
+      });
+      setLocation('/auth');
+      return;
+    }
+    // Continue with enrollment logic
+  };
+
   const modules = [
     {
       id: 1,
@@ -133,12 +152,12 @@ const Curriculum = () => {
               </div>
 
               <div className="text-center mt-6">
-                <Link 
-                  to={module.id <= 3 ? `/modules/module${module.id}` : '/ai'} 
+                <Button 
+                  onClick={handleEnrollClick}
                   className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
                 >
-                  Start Module
-                </Link>
+                  Enroll Now
+                </Button>
               </div>
             </div>
           </div>
@@ -148,12 +167,12 @@ const Curriculum = () => {
           <p className="text-blue-800 text-xl mb-6">
             Ready to begin your learning journey?
           </p>
-          <Link 
-            to="/modules" 
+          <Button 
+            onClick={handleEnrollClick}
             className="bg-blue-600 text-white px-8 py-3 rounded-lg text-xl hover:bg-blue-700 transition duration-300"
           >
             Begin Your Learning Path
-          </Link>
+          </Button>
         </div>
       </div>
     </div>
