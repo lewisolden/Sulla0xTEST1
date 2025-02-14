@@ -320,13 +320,44 @@ export const missionSlide = (
 
 export const marketSlide2 = (
   <Slide key="market2">
-    <SlideTitle title="Market Trends" />
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <ContentBox icon={<Wallet className="w-6 h-6" />} title="Increased Investment">
-        <p className="text-gray-400">Growing institutional and retail investments in AI and crypto are fueling demand for skilled professionals.</p>
+    <SlideTitle 
+      title="What has been built so far?" 
+      subtitle="Comprehensive courses delivering advanced technical education"
+    />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <ContentBox icon={<Wallet className="w-6 h-6" />} title="Introduction to Cryptocurrency">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Comprehensive blockchain fundamentals with 10+ interactive modules</li>
+          <li>• Digital currencies evolution, Bitcoin deep-dive, and altcoin analysis</li>
+          <li>• Hands-on wallet simulation and trading exercises</li>
+          <li>• Security best practices and risk management training</li>
+          <li>• Real-world applications and market dynamics</li>
+        </ul>
       </ContentBox>
-      <ContentBox icon={<Network className="w-6 h-6" />} title="Mainstream Adoption">
-        <p className="text-gray-400">Increasing mainstream adoption of AI and cryptocurrency is creating a significant skills gap.</p>
+      <ContentBox icon={<Brain className="w-6 h-6" />} title="Introduction to AI">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Three-part course covering AI/ML fundamentals to advanced concepts</li>
+          <li>• Neural networks, deep learning, and machine learning basics</li>
+          <li>• Natural Language Processing and Computer Vision modules</li>
+          <li>• Ethics in AI and future developments</li>
+          <li>• Practical applications and real-world use cases</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Target className="w-6 h-6" />} title="Learning Achievements">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Interactive quizzes and assessments for each module</li>
+          <li>• Progress tracking and performance analytics</li>
+          <li>• Skill-based certification system</li>
+          <li>• Personalized learning paths based on user progress</li>
+        </ul>
+      </ContentBox>
+      <ContentBox icon={<Users className="w-6 h-6" />} title="User Engagement">
+        <ul className="space-y-3 text-gray-400">
+          <li>• Active community of learners and educators</li>
+          <li>• Regular content updates reflecting industry changes</li>
+          <li>• Multimedia learning resources and materials</li>
+          <li>• Enterprise-ready reporting and analytics</li>
+        </ul>
       </ContentBox>
     </div>
   </Slide>
