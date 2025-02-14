@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Maximize2, Minimize2, Download } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Maximize2, Minimize2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import html2pdf from 'html2pdf.js';
 import {
   titleSlide,
   problemSlide,
@@ -26,7 +25,6 @@ import {
 const InvestmentDeck = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isExporting, setIsExporting] = useState(false);
 
   const slides = [
     titleSlide,            // 1
@@ -37,7 +35,7 @@ const InvestmentDeck = () => {
     marketSlide1,         // 6
     marketSlide2,         // 7
     productSlide1,        // 8
-    dataStrategySlide,    // 9
+    dataStrategySlide,    // 9 (inserted here)
     productSlide2,        // 10
     gtmStrategySlide,     // 11
     tractionSlide,        // 12
@@ -72,39 +70,6 @@ const InvestmentDeck = () => {
     }
   };
 
-  const exportToPDF = async () => {
-    setIsExporting(true);
-
-    try {
-      // Get the current slide
-      const currentSlideElement = document.querySelector('.slide-wrapper');
-      if (!currentSlideElement) return;
-
-      const opt = {
-        margin: [10, 10],
-        filename: 'Sulla-Investment-Deck.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { 
-          scale: 2,
-          useCORS: true,
-          logging: true
-        },
-        jsPDF: { 
-          unit: 'mm', 
-          format: 'a4', 
-          orientation: 'landscape'
-        }
-      };
-
-      // Export current slide
-      await html2pdf().set(opt).from(currentSlideElement).save();
-    } catch (error) {
-      console.error('Error generating PDF:', error);
-    } finally {
-      setIsExporting(false);
-    }
-  };
-
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight') {
@@ -129,11 +94,11 @@ const InvestmentDeck = () => {
           <AnimatePresence mode="wait">
             <motion.div
               key={currentSlide}
-              className="slide-wrapper w-full"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5 }}
+              className="w-full"
             >
               {slides[currentSlide]}
             </motion.div>
@@ -175,16 +140,6 @@ const InvestmentDeck = () => {
               ) : (
                 <Maximize2 className="h-4 w-4" />
               )}
-            </Button>
-            <div className="w-px h-4 bg-gray-800 mx-2" />
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={exportToPDF}
-              disabled={isExporting}
-              className="h-8 w-8 rounded-full text-gray-400 hover:text-white hover:bg-white/10 transition-colors"
-            >
-              <Download className="h-4 w-4" />
             </Button>
           </div>
         </div>
