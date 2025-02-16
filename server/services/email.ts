@@ -191,19 +191,24 @@ async function sendTestEmail() {
 
 async function sendWelcomeEmail(email: string, username: string) {
   try {
+    console.log('Starting welcome email sending process for:', email);
+
     if (!resend) {
+      console.log('Resend client not initialized, initializing now...');
       initializeResend();
     }
 
     const fromEmail = {
       name: 'Sulla',
-      email: 'onboarding@resend.dev'
+      email: process.env.FROM_EMAIL || 'onboarding@resend.dev'
     };
 
     const appUrl = process.env.APP_URL || 'http://localhost:5000';
+    console.log('Using app URL:', appUrl);
+
     const emailTemplate = generateEmailTemplate(username, appUrl);
 
-    console.log('Sending welcome email to:', email);
+    console.log('Attempting to send welcome email to:', email);
 
     const { data, error } = await resend.emails.send({
       from: `${fromEmail.name} <${fromEmail.email}>`,
@@ -217,7 +222,7 @@ async function sendWelcomeEmail(email: string, username: string) {
       return {
         sent: false,
         error: error,
-        note: "Your account is ready! Note: Email sending is temporarily unavailable."
+        note: "We encountered an issue sending your welcome email. Please check your email address or try again later."
       };
     }
 
@@ -228,15 +233,44 @@ async function sendWelcomeEmail(email: string, username: string) {
 
     return {
       sent: true,
+      messageId: data?.id,
       note: "Welcome email sent successfully! Check your inbox for getting started instructions."
     };
 
   } catch (error) {
-    console.error('Error sending welcome email:', error);
+    console.error('Error in sendWelcomeEmail:', error);
+    // Log the full error for debugging
+    if (error instanceof Error) {
+      console.error('Error details:', {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      });
+    }
+
     return {
       sent: false,
       error: error instanceof Error ? error.message : 'Unknown error occurred',
-      note: "Your account is ready! Note: Email notifications will be enabled soon."
+      note: "We encountered an issue sending your welcome email. Our team has been notified."
+    };
+  }
+}
+
+async function verifyEmailService() {
+  try {
+    if (!resend) {
+      initializeResend();
+    }
+    return {
+      initialized: true,
+      apiKeyPresent: !!process.env.RESEND_API_KEY,
+      clientStatus: 'ready'
+    };
+  } catch (error) {
+    return {
+      initialized: false,
+      apiKeyPresent: !!process.env.RESEND_API_KEY,
+      error: error instanceof Error ? error.message : 'Unknown error'
     };
   }
 }
@@ -244,5 +278,6 @@ async function sendWelcomeEmail(email: string, username: string) {
 export {
   sendTestEmail,
   initializeResend,
-  sendWelcomeEmail
+  sendWelcomeEmail,
+  verifyEmailService
 };

@@ -14,6 +14,8 @@ import { fileURLToPath } from 'url';
 import type { Browser } from 'puppeteer';
 import puppeteer from 'puppeteer';
 import { sendTestEmail } from './services/email';
+import { verifyEmailService } from './services/email'; // Import the verification function
+
 
 // ES Module path handling
 const __filename = fileURLToPath(import.meta.url);
@@ -54,28 +56,32 @@ export function registerRoutes(app: Express): Server {
   // Add email test endpoint
   app.get("/api/email/test", async (req, res) => {
     try {
+      const verificationResult = await verifyEmailService();
       const result = await sendTestEmail();
+      console.log('Email service verification:', verificationResult);
       console.log('Test email result:', result);
 
       if (result.success) {
         res.json({ 
           success: true,
           messageId: result.messageId,
+          serviceStatus: verificationResult,
           message: "Test email sent successfully to verified test recipient."
         });
       } else {
         res.status(500).json({ 
           success: false, 
           error: result.error,
-          message: "Failed to send test email. Make sure you have configured Resend API correctly."
+          serviceStatus: verificationResult,
+          message: "Failed to send test email. Check email service configuration."
         });
       }
     } catch (error) {
-      console.error("Error sending test email:", error);
+      console.error("Error in email test endpoint:", error);
       res.status(500).json({ 
         success: false, 
         error: error instanceof Error ? error.message : "Unknown error occurred",
-        message: "An unexpected error occurred while sending the test email."
+        message: "An unexpected error occurred while testing the email service."
       });
     }
   });
