@@ -1,14 +1,30 @@
 import { Resend } from 'resend';
 
 let resend: Resend;
+const MAX_RETRIES = 3;
+const RETRY_DELAY = 1000; // 1 second
 
-function initializeResend() {
-  if (!process.env.RESEND_API_KEY) {
-    console.error('RESEND_API_KEY environment variable is not set');
-    throw new Error('RESEND_API_KEY environment variable must be set');
+function validateEmailConfig() {
+  const requiredVars = ['RESEND_API_KEY', 'FROM_EMAIL', 'APP_URL'];
+  const missing = requiredVars.filter(varName => !process.env[varName]);
+
+  if (missing.length > 0) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error(`Missing required environment variables: ${missing.join(', ')}`);
+    } else {
+      console.warn(`Warning: Missing environment variables: ${missing.join(', ')}. Using defaults for development.`);
+    }
   }
-  console.log('Initializing Resend client...');
-  resend = new Resend(process.env.RESEND_API_KEY);
+}
+
+function initializeEmailClients() {
+  validateEmailConfig();
+
+  // Initialize Resend
+  if (!resend && process.env.RESEND_API_KEY) {
+    console.log('Initializing Resend client...');
+    resend = new Resend(process.env.RESEND_API_KEY);
+  }
 }
 
 function generateEmailTemplate(username: string, appUrl: string) {
@@ -46,41 +62,6 @@ function generateEmailTemplate(username: string, appUrl: string) {
                     <p style="color: #374151; font-size: 16px; line-height: 1.6; margin-bottom: 24px;">
                       We're excited to have you join Sulla's innovative learning platform. Get ready to explore the fascinating worlds of Artificial Intelligence and Blockchain technology through our interactive courses.
                     </p>
-
-                    <!-- Featured Courses -->
-                    <h3 style="color: #1e3a8a; font-size: 24px; margin: 32px 0 24px 0;">Your Learning Journey Begins Here</h3>
-
-                    <!-- Cryptocurrency Course -->
-                    <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; margin-bottom: 24px;">
-                      <h4 style="color: #1e3a8a; font-size: 20px; margin: 0 0 16px 0;">
-                        Course 1: Introduction to Cryptocurrency
-                      </h4>
-                      <p style="color: #374151; margin: 0 0 16px 0;">
-                        Master the fundamentals of cryptocurrency through interactive learning and practical exercises.
-                      </p>
-                      <ul style="color: #374151; margin: 0 0 16px 0; padding-left: 20px;">
-                        <li>Understanding Digital Currency</li>
-                        <li>Cryptocurrency Security</li>
-                        <li>Practical Applications</li>
-                        <li>Interactive Exercises</li>
-                      </ul>
-                    </div>
-
-                    <!-- AI Course -->
-                    <div style="border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; margin-bottom: 24px;">
-                      <h4 style="color: #1e3a8a; font-size: 20px; margin: 0 0 16px 0;">
-                        Course 2: Introduction to AI
-                      </h4>
-                      <p style="color: #374151; margin: 0 0 16px 0;">
-                        Explore the fascinating world of artificial intelligence through our structured learning modules.
-                      </p>
-                      <ul style="color: #374151; margin: 0 0 16px 0; padding-left: 20px;">
-                        <li>AI Fundamentals</li>
-                        <li>Machine Learning Basics</li>
-                        <li>Neural Networks</li>
-                        <li>Practical Applications</li>
-                      </ul>
-                    </div>
 
                     <!-- CTA Button -->
                     <div style="text-align: center; margin: 32px 0;">
@@ -151,15 +132,15 @@ function generateEmailTemplate(username: string, appUrl: string) {
 async function sendTestEmail() {
   try {
     if (!resend) {
-      initializeResend();
+      initializeEmailClients();
     }
 
     console.log('Sending test email using Resend...');
     const emailTemplate = generateEmailTemplate('Test User', 'http://localhost:5000');
 
     const { data, error } = await resend.emails.send({
-      from: 'onboarding@resend.dev',
-      to: 'lewis@sullacrypto.com',
+      from: process.env.FROM_EMAIL || 'onboarding@resend.dev',
+      to: 'delivered@resend.dev', // Resend's test email address
       subject: 'Welcome to Sulla Learning Platform!',
       html: emailTemplate,
     });
@@ -194,8 +175,8 @@ async function sendWelcomeEmail(email: string, username: string) {
     console.log('Starting welcome email sending process for:', email);
 
     if (!resend) {
-      console.log('Resend client not initialized, initializing now...');
-      initializeResend();
+      console.log('Email client not initialized, initializing now...');
+      initializeEmailClients();
     }
 
     const fromEmail = {
@@ -208,38 +189,59 @@ async function sendWelcomeEmail(email: string, username: string) {
 
     const emailTemplate = generateEmailTemplate(username, appUrl);
 
-    console.log('Attempting to send welcome email to:', email);
+    let lastError: any;
+    // Implement retry logic
+    for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+      try {
+        console.log(`Attempt ${attempt} of ${MAX_RETRIES} to send welcome email to:`, email);
 
-    const { data, error } = await resend.emails.send({
-      from: `${fromEmail.name} <${fromEmail.email}>`,
-      to: email,
-      subject: 'Welcome to Sulla Learning Platform!',
-      html: emailTemplate,
-    });
+        const { data, error } = await resend.emails.send({
+          from: `${fromEmail.name} <${fromEmail.email}>`,
+          to: email,
+          subject: 'Welcome to Sulla Learning Platform!',
+          html: emailTemplate,
+        });
 
-    if (error) {
-      console.error('Failed to send welcome email:', error);
-      return {
-        sent: false,
-        error: error,
-        note: "We encountered an issue sending your welcome email. Please check your email address or try again later."
-      };
+        if (error) {
+          lastError = error;
+          console.error(`Failed attempt ${attempt}:`, error);
+
+          if (attempt < MAX_RETRIES) {
+            await new Promise(resolve => setTimeout(resolve, RETRY_DELAY * attempt));
+            continue;
+          }
+
+          return {
+            sent: false,
+            error: error,
+            note: "We encountered an issue sending your welcome email. Please check your email address or try again later."
+          };
+        }
+
+        console.log('Welcome email sent successfully:', {
+          messageId: data?.id,
+          to: email
+        });
+
+        return {
+          sent: true,
+          messageId: data?.id,
+          note: "Welcome email sent successfully! Check your inbox for getting started instructions."
+        };
+
+      } catch (attemptError) {
+        lastError = attemptError;
+        console.error(`Error in attempt ${attempt}:`, attemptError);
+        if (attempt < MAX_RETRIES) {
+          await new Promise(resolve => setTimeout(resolve, RETRY_DELAY * attempt));
+          continue;
+        }
+      }
     }
 
-    console.log('Welcome email sent successfully:', {
-      messageId: data?.id,
-      to: email
-    });
-
-    return {
-      sent: true,
-      messageId: data?.id,
-      note: "Welcome email sent successfully! Check your inbox for getting started instructions."
-    };
-
+    throw lastError; // If all retries failed
   } catch (error) {
     console.error('Error in sendWelcomeEmail:', error);
-    // Log the full error for debugging
     if (error instanceof Error) {
       console.error('Error details:', {
         message: error.message,
@@ -251,25 +253,25 @@ async function sendWelcomeEmail(email: string, username: string) {
     return {
       sent: false,
       error: error instanceof Error ? error.message : 'Unknown error occurred',
-      note: "We encountered an issue sending your welcome email. Our team has been notified."
+      note: process.env.NODE_ENV === 'production'
+        ? "We encountered an issue sending your welcome email. Our team has been notified."
+        : "Email sending failed. Make sure all required environment variables are set: RESEND_API_KEY, FROM_EMAIL, APP_URL"
     };
   }
 }
 
 async function verifyEmailService() {
   try {
-    if (!resend) {
-      initializeResend();
-    }
+    initializeEmailClients();
     return {
       initialized: true,
-      apiKeyPresent: !!process.env.RESEND_API_KEY,
+      resendAvailable: !!process.env.RESEND_API_KEY,
       clientStatus: 'ready'
     };
   } catch (error) {
     return {
       initialized: false,
-      apiKeyPresent: !!process.env.RESEND_API_KEY,
+      resendAvailable: !!process.env.RESEND_API_KEY,
       error: error instanceof Error ? error.message : 'Unknown error'
     };
   }
@@ -277,7 +279,7 @@ async function verifyEmailService() {
 
 export {
   sendTestEmail,
-  initializeResend,
+  initializeEmailClients,
   sendWelcomeEmail,
   verifyEmailService
 };

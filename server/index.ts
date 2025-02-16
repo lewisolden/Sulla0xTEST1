@@ -4,6 +4,7 @@ import { setupVite, serveStatic, log } from "./vite";
 import { setupAuth } from "./auth";
 import { db } from "@db";
 import { users } from "@db/schema";
+import { verifyEmailService } from "./services/email";
 
 const app = express();
 
@@ -48,6 +49,14 @@ process.on('SIGTERM', () => {
 (async () => {
   try {
     log("Starting server initialization...");
+
+    // Verify email service configuration
+    const emailServiceStatus = await verifyEmailService();
+    log("Email service status:", emailServiceStatus);
+
+    if (process.env.NODE_ENV === 'production' && !emailServiceStatus.initialized) {
+      throw new Error('Email service failed to initialize in production environment');
+    }
 
     // Verify database connection
     try {
@@ -111,7 +120,7 @@ process.on('SIGTERM', () => {
     // Wait for server to start with a timeout
     await Promise.race([
       startServer,
-      new Promise((_, reject) => 
+      new Promise((_, reject) =>
         setTimeout(() => reject(new Error('Server startup timed out')), 30000)
       )
     ]);
