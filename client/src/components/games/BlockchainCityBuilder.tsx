@@ -13,8 +13,17 @@ import {
   Code,
   Server,
   Lightbulb,
+  TrendingUp,
+  TrendingDown,
   HelpCircle
 } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface Building {
   id: string;
@@ -45,6 +54,17 @@ export default function BlockchainCityBuilder() {
   const [smartContracts, setSmartContracts] = useState(0);
   const [buildings, setBuildings] = useState<Building[]>([]);
   const [showTutorial, setShowTutorial] = useState(true);
+  const [cityGrid, setCityGrid] = useState<(Building | null)[][]>(
+    Array(5).fill(null).map(() => Array(5).fill(null))
+  );
+  const [selectedCell, setSelectedCell] = useState<{row: number, col: number} | null>(null);
+  const [resourceTrends, setResourceTrends] = useState({
+    coins: [] as number[],
+    energy: [] as number[],
+    population: [] as number[],
+    smartContracts: [] as number[]
+  });
+  const { toast } = useToast();
   const [feedback, setFeedback] = useState('');
   const [achievements, setAchievements] = useState<Achievement[]>([
     {
@@ -133,6 +153,59 @@ export default function BlockchainCityBuilder() {
     }
   ];
 
+  const findEmptyCell = () => {
+    for (let row = 0; row < cityGrid.length; row++) {
+      for (let col = 0; col < cityGrid[0].length; col++) {
+        if (!cityGrid[row][col]) {
+          return { row, col };
+        }
+      }
+    }
+    return null;
+  };
+
+  const buildStructure = (buildingType: Building) => {
+    if (coins < buildingType.cost) {
+      toast({
+        title: "Insufficient Funds",
+        description: `You need ${buildingType.cost} coins to build this structure.`,
+        variant: "destructive"
+      });
+      return;
+    }
+
+    const emptyCell = selectedCell || findEmptyCell();
+    if (!emptyCell) {
+      toast({
+        title: "No Space Available",
+        description: "Expand your city to build more structures.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setCoins(prev => prev - buildingType.cost);
+    const newBuilding = { ...buildingType, id: Math.random().toString() };
+    setBuildings(prev => [...prev, newBuilding]);
+
+    // Update city grid
+    const newGrid = [...cityGrid];
+    newGrid[emptyCell.row][emptyCell.col] = newBuilding;
+    setCityGrid(newGrid);
+
+    // Update resources
+    setPopulation(prev => prev + buildingType.population);
+    setSmartContracts(prev => prev + buildingType.smartContracts);
+
+    toast({
+      title: "Building Constructed!",
+      description: `New ${buildingType.name} added to your city.`,
+      variant: "default"
+    });
+
+    checkAchievements();
+  };
+
   useEffect(() => {
     // Resource generation loop
     const interval = setInterval(() => {
@@ -140,17 +213,25 @@ export default function BlockchainCityBuilder() {
         // Calculate resource changes
         const energyChange = buildings.reduce((sum, b) => sum + b.energy, 0);
         const incomeChange = buildings.reduce((sum, b) => sum + b.income, 0);
-        
+
         setEnergy(prev => prev + energyChange);
         setCoins(prev => prev + incomeChange);
 
-        // Check achievements
+        // Update resource trends
+        setResourceTrends(prev => ({
+          coins: [...prev.coins.slice(-11), coins].slice(-12),
+          energy: [...prev.energy.slice(-11), energy].slice(-12),
+          population: [...prev.population.slice(-11), population].slice(-12),
+          smartContracts: [...prev.smartContracts.slice(-11), smartContracts].slice(-12)
+        }));
+
         checkAchievements();
       }
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [isPlaying, buildings]);
+  }, [isPlaying, buildings, coins, energy, population, smartContracts]);
+
 
   const startGame = () => {
     setIsPlaying(true);
@@ -159,27 +240,13 @@ export default function BlockchainCityBuilder() {
     setPopulation(0);
     setSmartContracts(0);
     setBuildings([]);
+    setCityGrid(Array(5).fill(null).map(() => Array(5).fill(null)));
     setShowTutorial(true);
-  };
-
-  const buildStructure = (buildingType: Building) => {
-    if (coins < buildingType.cost) {
-      setFeedback('❌ Not enough coins to build this structure');
-      return;
-    }
-
-    setCoins(prev => prev - buildingType.cost);
-    setBuildings(prev => [...prev, { ...buildingType, id: Math.random().toString() }]);
-    setPopulation(prev => prev + buildingType.population);
-    setSmartContracts(prev => prev + buildingType.smartContracts);
-    
-    setFeedback(`✅ Built new ${buildingType.name}!`);
-    checkAchievements();
   };
 
   const checkAchievements = () => {
     const newAchievements = [...achievements];
-    
+
     // First building achievement
     if (!newAchievements[0].unlocked && buildings.length > 0) {
       newAchievements[0].unlocked = true;
@@ -201,6 +268,84 @@ export default function BlockchainCityBuilder() {
     setAchievements(newAchievements);
   };
 
+  const renderResourceIndicator = (
+    icon: JSX.Element,
+    value: number,
+    label: string,
+    trend: number[]
+  ) => {
+    const trendChange = trend.length >= 2 
+      ? ((trend[trend.length - 1] - trend[trend.length - 2]) / Math.abs(trend[trend.length - 2] || 1)) * 100 
+      : 0;
+
+    return (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger>
+            <div className="bg-white p-3 rounded-lg shadow-sm">
+              <div className="flex items-center justify-center gap-2">
+                {icon}
+                <span className="font-semibold">{value}</span>
+                {trendChange !== 0 && (
+                  <span className={`text-xs ${trendChange > 0 ? 'text-green-500' : 'text-red-500'}`}>
+                    {trendChange > 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+                    {Math.abs(trendChange).toFixed(1)}%
+                  </span>
+                )}
+              </div>
+              <p className="text-sm text-gray-500">{label}</p>
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Current {label.toLowerCase()}: {value}</p>
+            <p className="text-sm text-gray-500">
+              {trendChange > 0 ? 'Growing' : trendChange < 0 ? 'Declining' : 'Stable'}
+            </p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    );
+  };
+
+  const renderCityGrid = () => (
+    <div className="grid grid-cols-5 gap-2 bg-blue-50 p-4 rounded-lg">
+      {cityGrid.map((row, rowIndex) => (
+        <div key={rowIndex} className="grid grid-cols-5 gap-2">
+          {row.map((cell, colIndex) => (
+            <div
+              key={`${rowIndex}-${colIndex}`}
+              className={`
+                w-16 h-16 rounded-lg transition-all duration-300 cursor-pointer
+                ${cell ? 'bg-blue-200' : 'bg-white hover:bg-blue-100'}
+                ${selectedCell?.row === rowIndex && selectedCell?.col === colIndex ? 'ring-2 ring-blue-500' : ''}
+              `}
+              onClick={() => setSelectedCell({ row: rowIndex, col: colIndex })}
+            >
+              {cell && (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <div className="w-full h-full flex items-center justify-center">
+                        {cell.icon}
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="font-semibold">{cell.name}</p>
+                      <p className="text-sm">Energy: {cell.energy}/cycle</p>
+                      <p className="text-sm">Income: {cell.income}/cycle</p>
+                      {cell.population > 0 && <p className="text-sm">Population: +{cell.population}</p>}
+                      <p className="text-sm">Smart Contracts: +{cell.smartContracts}</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+
   return (
     <Card className="p-6 bg-gradient-to-br from-blue-50 to-blue-100">
       <div className="text-center mb-6">
@@ -210,34 +355,10 @@ export default function BlockchainCityBuilder() {
         </p>
         {isPlaying && (
           <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-white p-3 rounded-lg shadow-sm">
-              <div className="flex items-center justify-center gap-2">
-                <Coins className="w-5 h-5 text-yellow-500" />
-                <span className="font-semibold">{coins}</span>
-              </div>
-              <p className="text-sm text-gray-500">Coins</p>
-            </div>
-            <div className="bg-white p-3 rounded-lg shadow-sm">
-              <div className="flex items-center justify-center gap-2">
-                <Power className="w-5 h-5 text-green-500" />
-                <span className="font-semibold">{energy}</span>
-              </div>
-              <p className="text-sm text-gray-500">Energy</p>
-            </div>
-            <div className="bg-white p-3 rounded-lg shadow-sm">
-              <div className="flex items-center justify-center gap-2">
-                <Users className="w-5 h-5 text-blue-500" />
-                <span className="font-semibold">{population}</span>
-              </div>
-              <p className="text-sm text-gray-500">Population</p>
-            </div>
-            <div className="bg-white p-3 rounded-lg shadow-sm">
-              <div className="flex items-center justify-center gap-2">
-                <Code className="w-5 h-5 text-purple-500" />
-                <span className="font-semibold">{smartContracts}</span>
-              </div>
-              <p className="text-sm text-gray-500">Smart Contracts</p>
-            </div>
+            {renderResourceIndicator(<Coins className="w-5 h-5 text-yellow-500" />, coins, "Coins", resourceTrends.coins)}
+            {renderResourceIndicator(<Power className="w-5 h-5 text-green-500" />, energy, "Energy", resourceTrends.energy)}
+            {renderResourceIndicator(<Users className="w-5 h-5 text-blue-500" />, population, "Population", resourceTrends.population)}
+            {renderResourceIndicator(<Code className="w-5 h-5 text-purple-500" />, smartContracts, "Smart Contracts", resourceTrends.smartContracts)}
           </div>
         )}
       </div>
@@ -272,7 +393,6 @@ export default function BlockchainCityBuilder() {
         </div>
       ) : (
         <div className="space-y-6">
-          {/* Tutorial */}
           <AnimatePresence>
             {showTutorial && (
               <motion.div
@@ -305,60 +425,42 @@ export default function BlockchainCityBuilder() {
             )}
           </AnimatePresence>
 
-          {/* Building Options */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {buildingTypes.map(building => (
-              <Card
-                key={building.id}
-                className="p-4 hover:bg-blue-50 transition-colors cursor-pointer"
-                onClick={() => buildStructure(building)}
-              >
-                <div className="flex items-start gap-3">
-                  {building.icon}
-                  <div>
-                    <h3 className="font-semibold text-blue-800">{building.name}</h3>
-                    <p className="text-sm text-gray-600 mb-2">{building.description}</p>
-                    <div className="grid grid-cols-2 gap-2 text-sm">
-                      <span className="text-yellow-600">Cost: {building.cost} 🪙</span>
-                      <span className="text-green-600">Energy: {building.energy}</span>
-                      {building.population > 0 && (
-                        <span className="text-blue-600">Pop: +{building.population}</span>
-                      )}
-                      <span className="text-purple-600">Contracts: +{building.smartContracts}</span>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <h3 className="text-lg font-semibold text-blue-700 mb-4">City Layout</h3>
+              {renderCityGrid()}
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-blue-700 mb-4">Available Buildings</h3>
+              <div className="space-y-4">
+                {buildingTypes.map(building => (
+                  <Card
+                    key={building.id}
+                    className="p-4 hover:bg-blue-50 transition-colors cursor-pointer"
+                    onClick={() => buildStructure(building)}
+                  >
+                    <div className="flex items-start gap-3">
+                      {building.icon}
+                      <div>
+                        <h3 className="font-semibold text-blue-800">{building.name}</h3>
+                        <p className="text-sm text-gray-600 mb-2">{building.description}</p>
+                        <div className="grid grid-cols-2 gap-2 text-sm">
+                          <span className="text-yellow-600">Cost: {building.cost} 🪙</span>
+                          <span className="text-green-600">Energy: {building.energy}</span>
+                          {building.population > 0 && (
+                            <span className="text-blue-600">Pop: +{building.population}</span>
+                          )}
+                          <span className="text-purple-600">Contracts: +{building.smartContracts}</span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </Card>
-            ))}
+                  </Card>
+                ))}
+              </div>
+            </div>
           </div>
 
-          {/* City View */}
-          <Card className="p-4">
-            <h3 className="text-lg font-semibold text-blue-700 mb-4">Your City</h3>
-            <div className="space-y-2">
-              {buildings.map((building, index) => (
-                <motion.div
-                  key={building.id}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  className="flex items-center gap-3 bg-white p-2 rounded-lg"
-                >
-                  {building.icon}
-                  <div>
-                    <p className="font-semibold">{building.name}</p>
-                    <p className="text-sm text-gray-600">
-                      Energy: {building.energy} | Income: {building.income}/cycle
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-              {buildings.length === 0 && (
-                <p className="text-center text-gray-500">Start building your city!</p>
-              )}
-            </div>
-          </Card>
-
-          {/* Achievements */}
           <Card className="p-4">
             <h3 className="text-lg font-semibold text-blue-700 mb-4">Achievements</h3>
             <div className="space-y-2">
@@ -382,7 +484,6 @@ export default function BlockchainCityBuilder() {
             </div>
           </Card>
 
-          {/* Feedback Messages */}
           <AnimatePresence>
             {feedback && (
               <motion.div
