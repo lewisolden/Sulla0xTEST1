@@ -59,7 +59,7 @@ export default function AdminDashboard() {
             <Link href="/admin/analytics">Detailed Analytics</Link>
           </Button>
           <Button variant="outline" asChild>
-            <Link href="/admin/feedback">View Feedback</Link>
+            <Link href="/admin/feedback">Manage Feedback</Link>
           </Button>
           <Button asChild>
             <Link href="/admin/users">Manage Users</Link>

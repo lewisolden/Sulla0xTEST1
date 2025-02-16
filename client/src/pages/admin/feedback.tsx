@@ -29,7 +29,10 @@ export default function AdminFeedbackPage() {
     queryKey: ['admin', 'feedback'],
     queryFn: async () => {
       const response = await fetch('/api/admin/feedback');
-      if (!response.ok) throw new Error('Failed to fetch feedback');
+      if (!response.ok) {
+        const error = await response.text();
+        throw new Error(`Failed to fetch feedback: ${error}`);
+      }
       return response.json();
     },
   });
@@ -44,6 +47,24 @@ export default function AdminFeedbackPage() {
         return 'bg-green-100 text-green-800';
       default:
         return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const handleStatusUpdate = async (feedbackId: number, newStatus: string) => {
+    try {
+      const response = await fetch(`/api/admin/feedback/${feedbackId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: newStatus }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update feedback status');
+      }
+    } catch (error) {
+      console.error('Error updating feedback status:', error);
     }
   };
 
@@ -70,8 +91,8 @@ export default function AdminFeedbackPage() {
                 <CardHeader className="flex flex-row items-center justify-between">
                   <div>
                     <CardTitle className="text-lg">
-                      {feedback.type === 'course' ? feedback.course?.title : 
-                       feedback.type === 'website' ? 'Website Feedback' : 
+                      {feedback.type === 'course' ? feedback.course?.title :
+                       feedback.type === 'website' ? 'Website Feedback' :
                        'Feature Request'}
                     </CardTitle>
                     <p className="text-sm text-gray-500">
@@ -104,18 +125,14 @@ export default function AdminFeedbackPage() {
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => {
-                          // TODO: Implement status update
-                        }}
+                        onClick={() => handleStatusUpdate(feedback.id, 'reviewed')}
                       >
                         Mark as Reviewed
                       </Button>
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => {
-                          // TODO: Implement status update
-                        }}
+                        onClick={() => handleStatusUpdate(feedback.id, 'addressed')}
                       >
                         Mark as Addressed
                       </Button>
@@ -134,16 +151,68 @@ export default function AdminFeedbackPage() {
           )}
         </TabsContent>
 
-        {/* Other tab contents will filter the same feedback list */}
-        <TabsContent value="course">
-          {/* Similar structure as 'all' but filtered for course feedback */}
-        </TabsContent>
-        <TabsContent value="website">
-          {/* Similar structure as 'all' but filtered for website feedback */}
-        </TabsContent>
-        <TabsContent value="feature">
-          {/* Similar structure as 'all' but filtered for feature requests */}
-        </TabsContent>
+        {['course', 'website', 'feature'].map((type) => (
+          <TabsContent key={type} value={type} className="space-y-6">
+            {isLoading ? (
+              <div className="text-center p-6">Loading feedback...</div>
+            ) : feedbackList?.filter(f => f.type === type).map((feedback) => (
+              <Card key={feedback.id} className="hover:shadow-md transition-shadow">
+                <CardHeader className="flex flex-row items-center justify-between">
+                  <div>
+                    <CardTitle className="text-lg">
+                      {feedback.type === 'course' ? feedback.course?.title :
+                       feedback.type === 'website' ? 'Website Feedback' :
+                       'Feature Request'}
+                    </CardTitle>
+                    <p className="text-sm text-gray-500">
+                      From {feedback.user.username} ({feedback.user.email})
+                    </p>
+                  </div>
+                  <Badge className={getStatusColor(feedback.status)}>
+                    {feedback.status.charAt(0).toUpperCase() + feedback.status.slice(1)}
+                  </Badge>
+                </CardHeader>
+                <CardContent>
+                  {feedback.type === 'course' && feedback.rating && (
+                    <div className="flex items-center gap-1 mb-2">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`h-4 w-4 ${
+                            i < feedback.rating! ? "text-yellow-400 fill-current" : "text-gray-300"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  )}
+                  <p className="text-gray-700 whitespace-pre-wrap">{feedback.feedback}</p>
+                  <div className="mt-4 flex justify-between items-center">
+                    <span className="text-sm text-gray-500">
+                      Submitted on {new Date(feedback.createdAt).toLocaleDateString()}
+                    </span>
+                    <div className="space-x-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleStatusUpdate(feedback.id, 'reviewed')}
+                      >
+                        Mark as Reviewed
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleStatusUpdate(feedback.id, 'addressed')}
+                      >
+                        Mark as Addressed
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))
+            }
+          </TabsContent>
+        ))}
       </Tabs>
     </div>
   );
