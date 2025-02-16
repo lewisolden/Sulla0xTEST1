@@ -1,8 +1,13 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Brain, Sparkles, Book, MessageSquare, Target, Lightbulb } from "lucide-react";
 import { motion } from "framer-motion";
+import { useEffect } from "react"; // Added import
 
 export default function SenseiPage() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []); // Empty dependency array means this runs once on mount
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
