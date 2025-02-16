@@ -1,14 +1,13 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { db } from "@db";
-import { quizzes, userQuizResponses, users, courseEnrollments, moduleProgress, achievements, userAchievements } from "@db/schema";
-import { eq, count, sql } from "drizzle-orm";
 import { setupAuth, requireAdmin } from "./auth";
 import enrollmentsRouter from "./routes/enrollments";
 import userMetricsRouter from "./routes/user-metrics";
 import apiRouter from "./routes/api";
 import adminRouter from "./routes/admin";
-import learningPathRouter from "./routes/learning-path"; // Import learning path router
+import learningPathRouter from "./routes/learning-path";
+import chatRouter from "./routes/chat";
 import path from 'path';
 import { fileURLToPath } from 'url';
 import type { Browser } from 'puppeteer';
@@ -37,7 +36,7 @@ export function registerRoutes(app: Express): Server {
   // Mount API router first
   app.use("/api", apiRouter);
 
-  // Mount admin routes with the new detailed analytics endpoint
+  // Mount admin routes 
   app.use("/api/admin", adminRouter);
   // Add new detailed analytics endpoint here.  Implementation details are missing from the edited code.
   app.get('/api/admin/detailed-analytics', requireAdmin, async (req, res) => {
@@ -48,7 +47,6 @@ export function registerRoutes(app: Express): Server {
       res.status(500).json({ error: 'Failed to fetch detailed analytics' });
     }
   });
-
 
   // Add learning path routes
   app.use(learningPathRouter);
@@ -86,12 +84,13 @@ export function registerRoutes(app: Express): Server {
     }
   });
 
-  // Set up authentication routes
-  setupAuth(app);
-
   // Register other routes
   app.use(enrollmentsRouter);
   app.use(userMetricsRouter);
+  app.use('/api', chatRouter);
+
+  // Set up authentication routes
+  setupAuth(app);
 
   // Create and return the HTTP server
   const httpServer = createServer(app);

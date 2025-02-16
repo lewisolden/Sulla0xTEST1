@@ -257,7 +257,7 @@ router.get('/analytics/users', requireAdmin, async (req, res) => {
 });
 
 // Get all feedback with pagination
-router.get('/feedback', requireAdmin, async (req, res) => {
+router.get('/api/admin/feedback', requireAdmin, async (req, res) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
@@ -314,7 +314,7 @@ router.get('/feedback', requireAdmin, async (req, res) => {
 });
 
 // Update feedback status
-router.patch('/feedback/:id', requireAdmin, async (req, res) => {
+router.patch('/api/admin/feedback/:id', requireAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
