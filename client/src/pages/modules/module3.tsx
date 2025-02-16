@@ -9,6 +9,21 @@ import { Scale, Network, Code, Shield } from "lucide-react";
 import ExercisesPage from "./module3/exercises";
 import { useScrollTop } from "@/hooks/useScrollTop";
 
+const EthereumLogo = () => (
+  <svg
+    width="48"
+    height="48"
+    viewBox="0 0 24 24"
+    fill="none"
+    className="inline-block mr-4"
+  >
+    <path
+      d="M11.944 17.97L4.58 13.62 11.943 24l7.37-10.38-7.372 4.35h.003zM12.056 0L4.69 12.223l7.365 4.354 7.365-4.35L12.056 0z"
+      fill="#343434"
+    />
+  </svg>
+);
+
 const moduleTopics = [
   {
     id: "ethereum-fundamentals",
@@ -80,9 +95,12 @@ export default function Module3() {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-4xl font-bold text-blue-900 mb-6">
-          Module 3: Ethereum and Smart Contracts
-        </h1>
+        <div className="flex items-center mb-6">
+          <EthereumLogo />
+          <h1 className="text-4xl font-bold text-blue-900">
+            Module 3: Ethereum and Smart Contracts
+          </h1>
+        </div>
 
         <div className="mb-8">
           <Progress value={progressPercentage} className="w-full" />
