@@ -123,7 +123,6 @@ const InvestmentDeck = () => {
     ctaSlide,
   ];
 
-
   const nextSlide = () => {
     if (currentSlide < slides.length - 1) {
       setCurrentSlide(currentSlide + 1);
@@ -178,7 +177,9 @@ const InvestmentDeck = () => {
               transition={{ duration: 0.5 }}
               className="w-full"
             >
-              {slides[currentSlide]}
+              {typeof slides[currentSlide] === 'object' && 'content' in slides[currentSlide] 
+                ? slides[currentSlide].content 
+                : slides[currentSlide]}
             </motion.div>
           </AnimatePresence>
         </div>
