@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { BookOpen, GraduationCap, Zap, Brain, Target, Trophy, Code, Gamepad2, Wallet, Dumbbell, ArrowRight, Bot, Sparkles } from "lucide-react";
+import { BookOpen, GraduationCap, Zap, Brain, Target, Trophy, Code, Gamepad2, Wallet, Dumbbell, ArrowRight, Bot, Sparkles, CheckCircle, Users } from "lucide-react";
 import ModuleCard from "@/components/modules/module-card";
 import { motion } from "framer-motion";
 
@@ -203,6 +203,90 @@ export default function Home() {
               </motion.div>
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* Registration CTA Section */}
+      <section className="relative py-24 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(to_right,#4f46e5_1px,transparent_1px),linear-gradient(to_bottom,#4f46e5_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)] opacity-10"></div>
+          <div className="absolute -top-48 -right-48 w-96 h-96 bg-blue-400 rounded-full filter blur-3xl opacity-20"></div>
+          <div className="absolute top-48 -left-48 w-96 h-96 bg-purple-400 rounded-full filter blur-3xl opacity-20"></div>
+        </div>
+
+        <div className="container relative mx-auto px-4">
+          <motion.div 
+            className="max-w-4xl mx-auto text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="mb-8 inline-block"
+            >
+              <div className="bg-blue-500/20 p-4 rounded-full">
+                <Sparkles className="w-12 h-12 text-blue-200" />
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                Begin Your Learning Adventure
+              </h2>
+              <p className="text-xl text-blue-100 mb-12 max-w-2xl mx-auto leading-relaxed">
+                Join our community of learners and master the technologies 
+                shaping the future. Start your journey today with our 
+                comprehensive learning platform.
+              </p>
+            </motion.div>
+
+            <motion.div
+              className="flex flex-wrap justify-center gap-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+            >
+              <Link href="/register">
+                <Button variant="secondary" className="text-lg px-8 py-4">
+                  Create Free Account
+                  <ArrowRight className="w-5 h-5" />
+                </Button>
+              </Link>
+              <Link href="/curriculum">
+                <Button variant="outline" className="text-lg px-8 py-4">
+                  Explore Curriculum
+                  <BookOpen className="w-5 h-5" />
+                </Button>
+              </Link>
+            </motion.div>
+
+            <motion.div
+              className="mt-12 flex justify-center gap-8 text-blue-200"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+            >
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-5 h-5" />
+                <span>Free to get started</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Users className="w-5 h-5" />
+                <span>Join 1000+ learners</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Trophy className="w-5 h-5" />
+                <span>Earn certificates</span>
+              </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
