@@ -5,6 +5,7 @@ import { setupAuth } from "./auth";
 import { db } from "@db";
 import { users } from "@db/schema";
 import { verifyEmailService } from "./services/email";
+import chatRouter from "./routes/chat";
 
 const app = express();
 
@@ -32,6 +33,9 @@ app.use((req, res, next) => {
 
   next();
 });
+
+// Register chat routes
+app.use('/api', chatRouter);
 
 const PORT = process.env.PORT || 5000;
 let server: any = null;
