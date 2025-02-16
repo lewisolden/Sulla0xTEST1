@@ -8,7 +8,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { insertUserSchema } from "@db/schema";
 import type { InsertUser } from "@db/schema";
 import { useLocation } from "wouter";
-import { Loader2, Blocks, GraduationCap, Brain, Lightbulb, Shield, Lock, Mail } from "lucide-react";
+import { Loader2, Blocks, GraduationCap, Brain, Lightbulb, Shield, Lock, Mail, Bot } from "lucide-react"; // Added Bot import
 import { useToast } from "@/hooks/use-toast";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { motion } from "framer-motion";
@@ -267,9 +267,9 @@ export default function AuthPage() {
             </div>
             <div className="flex flex-col items-center space-y-2 group">
               <div className="p-3 bg-white/10 rounded-full transform transition-all duration-300 group-hover:scale-110 group-hover:bg-white/20">
-                <GraduationCap className="h-6 w-6 text-white" />
+                <Bot className="h-6 w-6 text-white" />
               </div>
-              <span className="text-sm text-blue-100">Structured Curriculum</span>
+              <span className="text-sm text-blue-100">AI Mentor</span>
             </div>
             <div className="flex flex-col items-center space-y-2 group">
               <div className="p-3 bg-white/10 rounded-full transform transition-all duration-300 group-hover:scale-110 group-hover:bg-white/20">
