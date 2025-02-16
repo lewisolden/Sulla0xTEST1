@@ -5,11 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { 
-  Wallet, 
-  Key, 
-  Send, 
-  Download, 
+import {
+  Wallet,
+  Key,
+  Send,
+  Download,
   Lock,
   CheckCircle2,
   AlertCircle,
@@ -57,9 +57,9 @@ export default function WalletSimulator() {
   };
 
   const generateWord = () => {
-    const words = ['apple', 'banana', 'cherry', 'dragon', 'elephant', 'flower', 
-                  'guitar', 'honey', 'island', 'jungle', 'kettle', 'lemon', 
-                  'mountain', 'needle', 'orange', 'pencil', 'queen', 'river', 
+    const words = ['apple', 'banana', 'cherry', 'dragon', 'elephant', 'flower',
+                  'guitar', 'honey', 'island', 'jungle', 'kettle', 'lemon',
+                  'mountain', 'needle', 'orange', 'pencil', 'queen', 'river',
                   'summer', 'tiger', 'umbrella', 'violin', 'window', 'yellow'];
     return words[Math.floor(Math.random() * words.length)];
   };
@@ -95,8 +95,8 @@ export default function WalletSimulator() {
 
     setWallet(prev => {
       if (!prev) return prev;
-      const newBalance = newTransaction.type === 'send' 
-        ? prev.balance - newTransaction.amount 
+      const newBalance = newTransaction.type === 'send'
+        ? prev.balance - newTransaction.amount
         : prev.balance + newTransaction.amount;
 
       return {
@@ -112,9 +112,9 @@ export default function WalletSimulator() {
         if (!prev) return prev;
         return {
           ...prev,
-          transactions: prev.transactions.map(t => 
-            t.id === newTransaction.id 
-              ? {...t, status: 'confirmed'} 
+          transactions: prev.transactions.map(t =>
+            t.id === newTransaction.id
+              ? {...t, status: 'confirmed'}
               : t
           )
         };
@@ -127,8 +127,31 @@ export default function WalletSimulator() {
     setWallet(prev => prev ? {...prev, isSecure: true} : null);
   };
 
+  // Adding new animations and transitions
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { x: -20, opacity: 0 },
+    visible: {
+      x: 0,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 100 }
+    }
+  };
+
   return (
-    <div className="space-y-6">
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="space-y-6"
+    >
       <div className="prose max-w-none">
         <h2 className="text-2xl font-bold text-blue-800">Interactive Wallet Practice</h2>
         <p className="text-gray-600">
@@ -141,8 +164,7 @@ export default function WalletSimulator() {
 
       {step === 1 && (
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          variants={itemVariants}
           className="space-y-4"
         >
           <Card className="p-6">
@@ -163,7 +185,7 @@ export default function WalletSimulator() {
                 </div>
               </div>
             </div>
-            <Button 
+            <Button
               onClick={generateWallet}
               className="gap-2"
               disabled={wallet !== null}
@@ -223,8 +245,7 @@ export default function WalletSimulator() {
 
       {step === 2 && wallet && (
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          variants={itemVariants}
           className="space-y-4"
         >
           <Card className="p-6">
@@ -287,7 +308,7 @@ export default function WalletSimulator() {
               <Button variant="outline" onClick={() => setStep(1)}>
                 Back
               </Button>
-              <Button 
+              <Button
                 onClick={() => setStep(3)}
                 disabled={!verificationSuccess}
               >
@@ -300,8 +321,7 @@ export default function WalletSimulator() {
 
       {step === 3 && wallet && (
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          variants={itemVariants}
           className="space-y-4"
         >
           <Card className="p-6">
@@ -333,7 +353,7 @@ export default function WalletSimulator() {
 
             <div className="space-y-4">
               {wallet.transactions.map(tx => (
-                <div 
+                <div
                   key={tx.id}
                   className="flex items-center justify-between p-4 bg-gray-50 rounded"
                 >
@@ -371,7 +391,7 @@ export default function WalletSimulator() {
               <Button variant="outline" onClick={() => setStep(2)}>
                 Back
               </Button>
-              <Button 
+              <Button
                 onClick={() => setStep(4)}
                 disabled={wallet.transactions.length === 0}
               >
@@ -384,8 +404,7 @@ export default function WalletSimulator() {
 
       {step === 4 && wallet && (
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          variants={itemVariants}
           className="space-y-4"
         >
           <Card className="p-6">
@@ -467,6 +486,6 @@ export default function WalletSimulator() {
           </Card>
         </motion.div>
       )}
-    </div>
+    </motion.div>
   );
 }

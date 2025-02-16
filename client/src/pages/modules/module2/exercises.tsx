@@ -10,9 +10,56 @@ import WalletSimulator from "@/components/exercises/WalletSimulator";
 import SecurityWorkshop from "@/components/exercises/SecurityWorkshop";
 import AssessmentCenter from "@/components/exercises/AssessmentCenter";
 
+const ExercisePreview = ({
+  icon: Icon,
+  title,
+  description,
+  className = "",
+}: {
+  icon: any;
+  title: string;
+  description: string;
+  className?: string;
+}) => (
+  <motion.div
+    whileHover={{ scale: 1.02 }}
+    whileTap={{ scale: 0.98 }}
+    className={`relative overflow-hidden ${className}`}
+  >
+    <Card className="p-4 h-full bg-gradient-to-br from-white to-gray-50 hover:shadow-lg transition-shadow">
+      <div className="flex items-start gap-3">
+        <Icon className="h-6 w-6 text-blue-600 mt-1" />
+        <div>
+          <h3 className="font-semibold mb-2">{title}</h3>
+          <p className="text-sm text-gray-600">{description}</p>
+        </div>
+      </div>
+    </Card>
+  </motion.div>
+);
+
 export default function ModuleExercises() {
   useScrollTop();
   const [activeTab, setActiveTab] = useState("wallet");
+
+  const contentVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    },
+    exit: {
+      opacity: 0,
+      y: -20,
+      transition: {
+        duration: 0.3
+      }
+    }
+  };
 
   return (
     <AnimatePresence mode="wait">
@@ -60,17 +107,56 @@ export default function ModuleExercises() {
               </TabsList>
 
               <TabsContent value="wallet">
-                <WalletSimulator />
+                <motion.div
+                  variants={contentVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                >
+                  <WalletSimulator />
+                </motion.div>
               </TabsContent>
 
               <TabsContent value="security">
-                <SecurityWorkshop />
+                <motion.div
+                  variants={contentVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                >
+                  <SecurityWorkshop />
+                </motion.div>
               </TabsContent>
 
               <TabsContent value="assessment">
-                <AssessmentCenter />
+                <motion.div
+                  variants={contentVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                >
+                  <AssessmentCenter />
+                </motion.div>
               </TabsContent>
             </Tabs>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+              <ExercisePreview
+                icon={Wallet}
+                title="Interactive Wallet Simulation"
+                description="Practice creating and managing a Bitcoin wallet in a safe environment. Learn about key management, transactions, and security best practices."
+              />
+              <ExercisePreview
+                icon={Shield}
+                title="Security Best Practices"
+                description="Test your knowledge of security protocols and learn to identify common threats and scams in the cryptocurrency space."
+              />
+              <ExercisePreview
+                icon={Brain}
+                title="Knowledge Assessment"
+                description="Evaluate your understanding of Bitcoin concepts through interactive quizzes and real-world scenarios."
+              />
+            </div>
           </Card>
 
           <div className="mt-8 flex justify-between">
