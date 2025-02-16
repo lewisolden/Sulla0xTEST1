@@ -11,7 +11,7 @@ import SmartContractWorkflow from "@/components/diagrams/SmartContractWorkflow";
 import SmartContractStructure from "@/components/diagrams/SmartContractStructure";
 import { useScrollTop } from "@/hooks/useScrollTop";
 
-const SmartContractsSection = () => {
+export default function SmartContractsSection() {
   useScrollTop();
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -27,7 +27,11 @@ const SmartContractsSection = () => {
 
       if (scrollPercent > 95) {
         setIsFullyRead(true);
-        updateProgress(3, 'smart-contracts', true);
+        updateProgress(3, 'smart-contracts', true, {
+          courseId: 1, // Blockchain course
+          timeSpent: Math.floor(Date.now() / 1000),
+          lastAccessedRoute: '/modules/module3/smart-contracts'
+        });
       }
     };
 
@@ -348,6 +352,4 @@ const SmartContractsSection = () => {
       />
     </motion.div>
   );
-};
-
-export default SmartContractsSection;
+}
