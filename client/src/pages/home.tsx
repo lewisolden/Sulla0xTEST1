@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { BookOpen, GraduationCap, Zap, Brain, Target, Trophy, Code, Gamepad2, Wallet, Dumbbell, ArrowRight } from "lucide-react";
+import { BookOpen, GraduationCap, Zap, Brain, Target, Trophy, Code, Gamepad2, Wallet, Dumbbell, ArrowRight, Bot } from "lucide-react";
 import ModuleCard from "@/components/modules/module-card";
 import { motion } from "framer-motion";
 
@@ -71,7 +71,7 @@ export default function Home() {
             Why Choose Sulla
           </motion.h2>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <Link href="/ai">
               <motion.div 
                 className="bg-blue-50 p-6 rounded-lg cursor-pointer hover:shadow-lg transition-shadow"
@@ -122,6 +122,23 @@ export default function Home() {
                 </button>
               </Link>
             </motion.div>
+
+            <Link href="/sensei">
+              <motion.div 
+                className="bg-blue-50 p-6 rounded-lg cursor-pointer hover:shadow-lg transition-shadow"
+                {...fadeInUp}
+                transition={{ delay: 0.5 }}
+              >
+                <Bot className="w-12 h-12 text-blue-600 mb-4" />
+                <h3 className="text-xl font-semibold mb-2">Sensei AI Tutor</h3>
+                <p className="text-gray-600">
+                  Your personal AI guide through the curriculum, providing focused assistance and answers
+                </p>
+                <button className="mt-2 text-blue-600 hover:text-blue-700 font-medium">
+                  Meet Sensei →
+                </button>
+              </motion.div>
+            </Link>
           </div>
         </div>
       </section>
