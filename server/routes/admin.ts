@@ -162,7 +162,7 @@ router.patch('/feedback/:id', requireAdmin, async (req, res) => {
   }
 });
 
-// Get user analytics (original route remains largely the same)
+// Get user analytics
 router.get('/analytics/users', requireAdmin, async (req, res) => {
   try {
     console.log('Admin analytics route - starting analytics calculation');
@@ -213,6 +213,5 @@ router.get('/analytics/users', requireAdmin, async (req, res) => {
     });
   }
 });
-
 
 export default router;
