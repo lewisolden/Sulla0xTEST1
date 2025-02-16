@@ -7,7 +7,7 @@ import { scrypt, randomBytes, timingSafeEqual } from "crypto";
 import { promisify } from "util";
 import { users, adminUsers, type SelectUser, type SelectAdminUser, insertUserSchema, insertAdminUserSchema } from "@db/schema";
 import { db } from "@db";
-import { eq } from "drizzle-orm";
+import { eq, or } from "drizzle-orm";
 import { sendWelcomeEmail } from './services/email';
 
 const scryptAsync = promisify(scrypt);
@@ -113,8 +113,12 @@ export function setupAuth(app: Express) {
       const [user] = await db
         .select()
         .from(users)
-        .where(eq(users.username, username))
-        .or(eq(users.email, username))
+        .where(
+          or(
+            eq(users.username, username),
+            eq(users.email, username)
+          )
+        )
         .limit(1);
 
       if (!user) {
