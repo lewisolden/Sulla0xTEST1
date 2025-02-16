@@ -9,6 +9,7 @@ import { ArrowLeft, ArrowRight, BookOpen, Code, Network } from "lucide-react";
 import BitcoinBasicsDiagram from "@/components/diagrams/BitcoinBasicsDiagram";
 import BitcoinFundamentalsQuiz from "@/components/modules/quizzes/BitcoinFundamentalsQuiz";
 import ProofOfWorkDiagram from "@/components/diagrams/ProofOfWorkDiagram";
+import { UTXOExercise } from "@/components/exercises/UTXOExercise";
 
 export default function BitcoinFundamentalsSection() {
   useScrollTop();
@@ -26,7 +27,7 @@ export default function BitcoinFundamentalsSection() {
 
       if (scrollPercent > 95) {
         setIsFullyRead(true);
-        updateProgress(2, 'bitcoin-fundamentals', true);
+        updateProgress(2, 'bitcoin-fundamentals', true, 1);
       }
     };
 
@@ -483,6 +484,23 @@ export default function BitcoinFundamentalsSection() {
                   </div>
                 </div>
               </div>
+            </div>
+          </motion.section>
+
+          {/* Interactive UTXO Exercise */}
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
+            className="mt-8 mb-12"
+          >
+            <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-lg">
+              <h3 className="text-2xl font-semibold text-blue-800 mb-4">Interactive UTXO Exercise</h3>
+              <p className="text-gray-700 mb-6">
+                Now that you understand how UTXOs work, let's practice with an interactive exercise. 
+                Try to complete transactions by selecting the right combination of UTXOs!
+              </p>
+              <UTXOExercise />
             </div>
           </motion.section>
 
