@@ -32,6 +32,9 @@ async function getBrowser() {
 }
 
 export function registerRoutes(app: Express): Server {
+  // Set up authentication first
+  setupAuth(app);
+
   // Mount API router first
   app.use("/api", apiRouter);
 
@@ -39,15 +42,13 @@ export function registerRoutes(app: Express): Server {
   app.use("/api/admin", adminRouter);
 
   // Add learning path routes
-  app.use(learningPathRouter);
+  app.use("/api", learningPathRouter);
 
   // Add email test endpoint
   app.get("/api/email/test", async (req, res) => {
     try {
       const verificationResult = await verifyEmailService();
       const result = await sendTestEmail();
-      console.log('Email service verification:', verificationResult);
-      console.log('Test email result:', result);
 
       if (result.success) {
         res.json({ 
@@ -75,12 +76,9 @@ export function registerRoutes(app: Express): Server {
   });
 
   // Register other routes
-  app.use(enrollmentsRouter);
-  app.use(userMetricsRouter);
-  app.use('/api', chatRouter);
-
-  // Set up authentication routes
-  setupAuth(app);
+  app.use("/api", enrollmentsRouter);
+  app.use("/api", userMetricsRouter);
+  app.use("/api", chatRouter);
 
   // Create and return the HTTP server
   const httpServer = createServer(app);

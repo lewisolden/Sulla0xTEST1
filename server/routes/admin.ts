@@ -50,7 +50,7 @@ router.get('/users', requireAdmin, async (req, res) => {
         return {
           ...user,
           enrollmentCount: enrollmentCount.count,
-          completedModules: 0, // We'll implement this when module tracking is added
+          completedModules: 0,
         };
       })
     );
@@ -157,137 +157,6 @@ router.patch('/feedback/:id', requireAdmin, async (req, res) => {
     console.error('Error updating feedback:', error);
     res.status(500).json({ 
       error: 'Failed to update feedback',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    });
-  }
-});
-
-// Get detailed analytics data
-router.get('/analytics/detailed', requireAdmin, async (req, res) => {
-  try {
-    console.log('Admin analytics route - starting detailed analytics calculation');
-
-    // Calculate date ranges
-    const now = new Date();
-    const thirtyDaysAgo = new Date(now.getTime() - (30 * 24 * 60 * 60 * 1000));
-    const sevenDaysAgo = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000));
-
-    // Get total users and active users
-    const [userCountResult] = await db
-      .select({ value: count() })
-      .from(users);
-
-    const [activeUsersResult] = await db
-      .select({ value: count() })
-      .from(users)
-      .where(gt(users.lastActivity, sevenDaysAgo));
-
-    // Get total enrollments and completed modules
-    const [enrollmentsResult] = await db
-      .select({ value: count() })
-      .from(courseEnrollments);
-
-    const [completedModulesResult] = await db
-      .select({ value: count() })
-      .from(moduleProgress)
-      .where(eq(moduleProgress.completed, true));
-
-    // Get achievements data
-    const [achievementsResult] = await db
-      .select({ value: count() })
-      .from(userAchievements);
-
-    // Calculate user activity data for the last 30 days
-    const userActivityData = await Promise.all(
-      Array.from({ length: 30 }, async (_, i) => {
-        const date = new Date(now.getTime() - (i * 24 * 60 * 60 * 1000));
-        const nextDate = new Date(date.getTime() + (24 * 60 * 60 * 1000));
-
-        const [activeUsers] = await db
-          .select({ count: count() })
-          .from(users)
-          .where(and(
-            gt(users.lastActivity, date),
-            sql`${users.lastActivity} < ${nextDate}`
-          ));
-
-        const [completions] = await db
-          .select({ count: count() })
-          .from(moduleProgress)
-          .where(and(
-            eq(moduleProgress.completed, true),
-            gt(moduleProgress.completedAt, date),
-            sql`${moduleProgress.completedAt} < ${nextDate}`
-          ));
-
-        return {
-          date: date.toISOString().split('T')[0],
-          activeUsers: activeUsers.count,
-          completions: completions.count
-        };
-      })
-    );
-
-    // Calculate module completion distribution
-    const moduleCompletionData = await db
-      .select({
-        moduleId: moduleProgress.moduleId,
-        completions: sql<number>`count(*)::integer`
-      })
-      .from(moduleProgress)
-      .where(eq(moduleProgress.completed, true))
-      .groupBy(moduleProgress.moduleId)
-      .orderBy(moduleProgress.moduleId);
-
-    // Calculate weekly retention
-    const weeklyRetentionData = await Promise.all(
-      Array.from({ length: 12 }, async (_, i) => {
-        const weekStart = new Date(now.getTime() - ((i + 1) * 7 * 24 * 60 * 60 * 1000));
-        const weekEnd = new Date(weekStart.getTime() + (7 * 24 * 60 * 60 * 1000));
-
-        const [totalUsers] = await db
-          .select({ count: count() })
-          .from(users)
-          .where(sql`${users.createdAt} < ${weekEnd}`);
-
-        const [activeUsers] = await db
-          .select({ count: count() })
-          .from(users)
-          .where(and(
-            sql`${users.createdAt} < ${weekEnd}`,
-            gt(users.lastActivity, weekStart)
-          ));
-
-        return {
-          week: weekStart.toISOString().split('T')[0],
-          retention: totalUsers.count > 0 ? (activeUsers.count / totalUsers.count) * 100 : 0
-        };
-      })
-    );
-
-    const response = {
-      totalUsers: userCountResult.value,
-      activeUsers: activeUsersResult.value,
-      totalEnrollments: enrollmentsResult.value,
-      completedModules: completedModulesResult.value,
-      achievementsAwarded: achievementsResult.value,
-      userActivityData: userActivityData.reverse(),
-      moduleCompletionData: moduleCompletionData.map(item => ({
-        name: `Module ${item.moduleId}`,
-        value: item.completions
-      })),
-      weeklyRetentionData,
-      userGrowth: {
-        last30Days: activeUsersResult.value,
-      }
-    };
-
-    console.log('Sending detailed analytics response:', response);
-    res.json(response);
-  } catch (error) {
-    console.error('Error fetching detailed analytics:', error);
-    res.status(500).json({ 
-      error: 'Failed to fetch analytics',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
   }
