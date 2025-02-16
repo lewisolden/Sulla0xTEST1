@@ -361,11 +361,12 @@ export default function Home() {
           <motion.div
             {...fadeInUp}
             transition={{ delay: 0.4 }}
+            className="flex justify-center"
           >
             <Link href="/modules/module1">
-              <Button variant="secondary">
+              <Button variant="secondary" className="px-8 py-3 text-lg">
                 Get Started Now
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             </Link>
           </motion.div>
