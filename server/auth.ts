@@ -61,7 +61,8 @@ export const requireAdmin = async (req: any, res: any, next: any) => {
 const PUBLIC_ROUTES = [
   '/deck',
   '/api/register',
-  '/api/login'
+  '/api/login',
+  '/api/admin/login' // Added admin login route to public routes
 ];
 
 function isPublicRoute(path: string): boolean {
