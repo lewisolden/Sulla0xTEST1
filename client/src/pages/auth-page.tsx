@@ -66,8 +66,9 @@ export default function AuthPage() {
           duration: 5000,
         });
       } else {
-        const { username, password } = data;
-        await loginMutation.mutateAsync({ username, password });
+        // For login, send the username/email field value as username
+        const { username: usernameOrEmail, password } = data;
+        await loginMutation.mutateAsync({ username: usernameOrEmail, password });
         console.log("Login completed, showing success toast");
         toast({
           title: "Login Successful",
