@@ -1,5 +1,5 @@
 import { TrendingUp, Wallet, Building2, Hash, Network, Search } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import TradingSimulator from "@/components/games/TradingSimulator";
 import WalletAdventure from "@/components/games/WalletAdventure";
 import { Card } from "@/components/ui/card";
@@ -16,6 +16,7 @@ const games = [
     description: "Learn to trade cryptocurrency in a risk-free environment with virtual money.",
     icon: TrendingUp,
     available: true,
+    color: "from-blue-500 to-blue-600"
   },
   {
     id: "wallet",
@@ -23,13 +24,15 @@ const games = [
     description: "Master wallet security and management through an interactive story-driven experience.",
     icon: Wallet,
     available: true,
+    color: "from-green-500 to-green-600"
   },
   {
     id: "city",
     title: "Blockchain City Builder",
     description: "Build and manage your own blockchain-powered city while learning core concepts.",
     icon: Building2,
-    available: true, 
+    available: true,
+    color: "from-purple-500 to-purple-600"
   },
   {
     id: "mining",
@@ -37,6 +40,7 @@ const games = [
     description: "Learn how proof-of-work mining works by finding valid block hashes.",
     icon: Hash,
     available: true,
+    color: "from-orange-500 to-orange-600"
   },
   {
     id: "consensus",
@@ -44,6 +48,7 @@ const games = [
     description: "Validate transactions and build blocks to understand how blockchain networks reach consensus.",
     icon: Network,
     available: true,
+    color: "from-indigo-500 to-indigo-600"
   },
   {
     id: "explorer",
@@ -51,6 +56,7 @@ const games = [
     description: "Decode hidden messages and solve puzzles by analyzing blockchain data.",
     icon: Search,
     available: true,
+    color: "from-pink-500 to-pink-600"
   }
 ];
 
@@ -80,33 +86,53 @@ export default function Games() {
             className="md:col-span-1"
           >
             <div className="space-y-4">
-              {games.map((game) => (
-                <Card
+              {games.map((game, index) => (
+                <motion.div
                   key={game.id}
-                  className={`p-4 ${!game.available ? 'opacity-75' : ''} ${
-                    game.available ? 'cursor-pointer' : 'cursor-not-allowed'
-                  } transition-all duration-300 ${
-                    selectedGame === game.id && game.available
-                      ? "bg-blue-600 text-white"
-                      : "hover:bg-blue-50"
-                  }`}
-                  onClick={() => game.available && setSelectedGame(game.id)}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
                 >
-                  <div className="flex items-center space-x-3">
-                    <game.icon className="w-5 h-5" />
-                    <div>
-                      <h3 className="font-semibold">
-                        {game.title}
-                        {!game.available && (
-                          <span className="ml-2 text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded">
-                            Coming Soon
-                          </span>
-                        )}
-                      </h3>
-                      <p className="text-sm opacity-80">{game.description}</p>
+                  <Card
+                    className={`p-4 ${!game.available ? 'opacity-75' : ''} ${
+                      game.available ? 'cursor-pointer' : 'cursor-not-allowed'
+                    } transition-all duration-300 overflow-hidden relative ${
+                      selectedGame === game.id && game.available
+                        ? `bg-gradient-to-r ${game.color} text-white`
+                        : 'hover:bg-blue-50'
+                    }`}
+                    onClick={() => game.available && setSelectedGame(game.id)}
+                  >
+                    <div className="flex items-center space-x-3 relative z-10">
+                      <game.icon className={`w-5 h-5 ${
+                        selectedGame === game.id ? 'text-white' : 'text-blue-600'
+                      }`} />
+                      <div>
+                        <h3 className="font-semibold">
+                          {game.title}
+                          {!game.available && (
+                            <span className="ml-2 text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded">
+                              Coming Soon
+                            </span>
+                          )}
+                        </h3>
+                        <p className={`text-sm ${
+                          selectedGame === game.id ? 'text-blue-50' : 'text-gray-600'
+                        }`}>
+                          {game.description}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </Card>
+                    {selectedGame === game.id && (
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r opacity-20"
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ duration: 0.3 }}
+                      />
+                    )}
+                  </Card>
+                </motion.div>
               ))}
             </div>
           </motion.div>
@@ -114,14 +140,25 @@ export default function Games() {
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
             className="md:col-span-3"
           >
-            {selectedGame === "trading" && <TradingSimulator />}
-            {selectedGame === "wallet" && <WalletAdventure />}
-            {selectedGame === "city" && <BlockchainCityBuilder />}
-            {selectedGame === "mining" && <MiningGame />}
-            {selectedGame === "consensus" && <NetworkConsensusGame />}
-            {selectedGame === "explorer" && <BlockchainExplorerGame />}
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={selectedGame}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                {selectedGame === "trading" && <TradingSimulator />}
+                {selectedGame === "wallet" && <WalletAdventure />}
+                {selectedGame === "city" && <BlockchainCityBuilder />}
+                {selectedGame === "mining" && <MiningGame />}
+                {selectedGame === "consensus" && <NetworkConsensusGame />}
+                {selectedGame === "explorer" && <BlockchainExplorerGame />}
+              </motion.div>
+            </AnimatePresence>
           </motion.div>
         </div>
       </div>
