@@ -8,6 +8,7 @@ import { useScrollTop } from "@/hooks/useScrollTop";
 import { ArrowLeft, ArrowRight, TrendingUp, ShieldCheck, PieChart } from "lucide-react";
 import { SecurityDiagram } from "@/components/diagrams/SecurityDiagram";
 import BitcoinInvestmentQuiz from "@/components/modules/quizzes/BitcoinInvestmentQuiz";
+import BitcoinInvestmentExercise from "@/components/modules/exercises/BitcoinInvestmentExercise";
 
 export default function BitcoinInvestmentSection() {
   useScrollTop();
@@ -280,6 +281,20 @@ export default function BitcoinInvestmentSection() {
               <li>Regulated and familiar structure</li>
               <li>Professional management</li>
             </ul>
+          </motion.section>
+
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
+            className="mt-8"
+          >
+            <h2 className="text-3xl font-bold text-blue-700">Practice Investment Strategies</h2>
+            <p className="text-gray-700 mb-6">
+              Now that you understand the different investment options, try out our interactive
+              investment simulator to practice making investment decisions in a risk-free environment.
+            </p>
+            <BitcoinInvestmentExercise />
           </motion.section>
 
           {isFullyRead && (
