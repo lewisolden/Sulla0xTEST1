@@ -143,45 +143,45 @@ export default function Home() {
               </motion.div>
             </Link>
 
-            <motion.div 
-              className="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-              {...fadeInUp}
-              transition={{ delay: 0.3 }}
-            >
-              <div className="bg-blue-100 p-3 rounded-lg inline-block mb-6">
-                <Dumbbell className="w-12 h-12 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Practical Exercises</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Hands-on learning with interactive exercises and real-world examples
-              </p>
-              <Link href="/modules/module1/exercises">
+            <Link href="/modules/module1/exercises">
+              <motion.div 
+                className="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                {...fadeInUp}
+                transition={{ delay: 0.3 }}
+              >
+                <div className="bg-blue-100 p-3 rounded-lg inline-block mb-6">
+                  <Dumbbell className="w-12 h-12 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">Practical Exercises</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Hands-on learning with interactive exercises and real-world examples
+                </p>
                 <div className="mt-4 text-blue-600 hover:text-blue-700 font-medium flex items-center gap-2">
                   Start Exercises
                   <ArrowRight className="w-4 h-4" />
                 </div>
-              </Link>
-            </motion.div>
+              </motion.div>
+            </Link>
 
-            <motion.div 
-              className="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-              {...fadeInUp}
-              transition={{ delay: 0.4 }}
-            >
-              <div className="bg-blue-100 p-3 rounded-lg inline-block mb-6">
-                <BookOpen className="w-12 h-12 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3">Interactive Glossary</h3>
-              <p className="text-gray-600 leading-relaxed">
-                Comprehensive blockchain and AI terminology guide with easy-to-understand definitions
-              </p>
-              <Link href="/glossary">
+            <Link href="/glossary">
+              <motion.div 
+                className="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                {...fadeInUp}
+                transition={{ delay: 0.4 }}
+              >
+                <div className="bg-blue-100 p-3 rounded-lg inline-block mb-6">
+                  <BookOpen className="w-12 h-12 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">Interactive Glossary</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Comprehensive blockchain and AI terminology guide with easy-to-understand definitions
+                </p>
                 <div className="mt-4 text-blue-600 hover:text-blue-700 font-medium flex items-center gap-2">
                   View Glossary
                   <ArrowRight className="w-4 h-4" />
                 </div>
-              </Link>
-            </motion.div>
+              </motion.div>
+            </Link>
 
             <Link href="/sensei">
               <motion.div 
