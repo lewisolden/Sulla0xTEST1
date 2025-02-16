@@ -1,6 +1,22 @@
 import { motion } from "framer-motion";
 import { Coins, Code2, Wallet, Send, Receipt, Building2, Puzzle, PuzzleIcon, Component, Box } from "lucide-react";
 
+const BitcoinLogo = () => (
+  <img 
+    src="/ethereum/bitcoin-logo.png" 
+    alt="Bitcoin Logo" 
+    className="w-12 h-12 mb-2"
+  />
+);
+
+const EthereumLogo = () => (
+  <img 
+    src="/ethereum/ethereum-logo.png" 
+    alt="Ethereum Logo" 
+    className="w-12 h-12 mb-2"
+  />
+);
+
 const ComparisonItem = ({ 
   icon: Icon, 
   title, 
@@ -79,11 +95,11 @@ const BitcoinEthereumComparison = () => {
           animate={{ opacity: 1 }}
           className="text-center mb-6"
         >
-          <div className="inline-block p-4 bg-blue-100 rounded-full mb-3">
-            <Coins className="w-8 h-8 text-blue-600" />
+          <div className="flex flex-col items-center">
+            <BitcoinLogo />
+            <h3 className="text-xl font-bold text-blue-800">Bitcoin</h3>
+            <p className="text-sm text-gray-600">Digital Gold</p>
           </div>
-          <h3 className="text-xl font-bold text-blue-800">Bitcoin</h3>
-          <p className="text-sm text-gray-600">Digital Gold</p>
         </motion.div>
         <div className="space-y-4">
           {bitcoinFeatures.map((feature, index) => (
@@ -104,11 +120,11 @@ const BitcoinEthereumComparison = () => {
           transition={{ delay: 0.3 }}
           className="text-center mb-6"
         >
-          <div className="inline-block p-4 bg-indigo-100 rounded-full mb-3">
-            <Box className="w-8 h-8 text-indigo-600" />
+          <div className="flex flex-col items-center">
+            <EthereumLogo />
+            <h3 className="text-xl font-bold text-indigo-800">Ethereum</h3>
+            <p className="text-sm text-gray-600">World Computer</p>
           </div>
-          <h3 className="text-xl font-bold text-indigo-800">Ethereum</h3>
-          <p className="text-sm text-gray-600">World Computer</p>
         </motion.div>
         <div className="space-y-4">
           {ethereumFeatures.map((feature, index) => (
