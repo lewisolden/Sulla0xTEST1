@@ -12,6 +12,7 @@ import { GettingStartedDiagram } from "@/components/diagrams/GettingStartedDiagr
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, LucideIcon, Shield, Key, Lock } from "lucide-react";
+import { useScrollTop } from "@/hooks/useScrollTop";
 
 // Add seed word list
 const SEED_WORD_LIST = [
@@ -225,6 +226,7 @@ const SEED_WORD_LIST = [
 ];
 
 const GettingStartedSection = () => {
+  useScrollTop();
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showQuiz, setShowQuiz] = useState(false);
@@ -378,83 +380,142 @@ const GettingStartedSection = () => {
                   <Shield className="w-8 h-8 text-blue-600 flex-shrink-0" />
                   <div>
                     <h2 className="text-xl font-bold text-blue-800 mb-4">
-                      Your Crypto Wallet Security Setup
+                      Your Crypto Wallet Security Setup - Important First Steps
                     </h2>
-                    {!isVerifying ? (
-                      <>
-                        <p className="text-blue-700 mb-4">
-                          Below is your unique 12-word seed phrase. This is like a master password for your wallet.
-                          Write these words down in order and keep them safe!
+
+                    <div className="space-y-4">
+                      <div className="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400">
+                        <h3 className="font-semibold text-yellow-800">⚠️ What is a Seed Phrase?</h3>
+                        <p className="text-yellow-700 mt-2">
+                          Think of a seed phrase as the master key to your crypto wallet - it's like the password 
+                          that gives access to all your cryptocurrency. It's a sequence of 12 simple words that can 
+                          restore your wallet if you:
                         </p>
-                        <div className="bg-white p-4 rounded-lg mb-4">
-                          <div className="flex justify-between items-center mb-4">
-                            <span className="text-blue-800 font-semibold">Your Seed Phrase:</span>
+                        <ul className="list-disc ml-6 mt-2 space-y-1">
+                          <li>Lose access to your device</li>
+                          <li>Forget your wallet password</li>
+                          <li>Need to move your wallet to a new device</li>
+                        </ul>
+                      </div>
+
+                      {!isVerifying ? (
+                        <>
+                          <div className="bg-green-50 p-4 rounded-lg border-l-4 border-green-400">
+                            <h3 className="font-semibold text-green-800">✅ How to Safely Store Your Seed Phrase</h3>
+                            <div className="space-y-2 mt-2 text-green-700">
+                              <p>Follow these steps carefully:</p>
+                              <ol className="list-decimal ml-6 space-y-2">
+                                <li>Get a piece of paper and a pen ready (don't take a screenshot or type it)</li>
+                                <li>Write down each word exactly as shown, including the number</li>
+                                <li>Double-check your spelling - even small mistakes matter</li>
+                                <li>Store this paper in a secure, private location</li>
+                                <li>Consider making a backup copy stored in a different secure location</li>
+                              </ol>
+                            </div>
+                          </div>
+
+                          <div className="bg-red-50 p-4 rounded-lg border-l-4 border-red-400">
+                            <h3 className="font-semibold text-red-800">🚫 Never, Ever:</h3>
+                            <ul className="list-disc ml-6 mt-2 text-red-700 space-y-1">
+                              <li>Take a screenshot or photo of your seed phrase</li>
+                              <li>Store it on your computer or phone</li>
+                              <li>Share it with anyone, even if they claim to be support</li>
+                              <li>Enter it on any website (except when restoring your wallet)</li>
+                              <li>Send it through email or messaging apps</li>
+                            </ul>
+                          </div>
+
+                          <p className="text-blue-700 mb-4">
+                            Below is your unique 12-word seed phrase. Write these words down in order:
+                          </p>
+
+                          <div className="bg-white p-4 rounded-lg mb-4">
+                            <div className="flex justify-between items-center mb-4">
+                              <span className="text-blue-800 font-semibold">Your Seed Phrase:</span>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => setShowSeedPhrase(!showSeedPhrase)}
+                              >
+                                {showSeedPhrase ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                              </Button>
+                            </div>
+
+                            {showSeedPhrase ? (
+                              <div className="grid grid-cols-3 gap-4">
+                                {seedPhrase.map((word, index) => (
+                                  <div key={index} className="bg-blue-50 p-2 rounded">
+                                    <span className="text-blue-600 mr-2">{index + 1}.</span>
+                                    <span className="font-medium">{word}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            ) : (
+                              <div className="text-center py-8 text-gray-500">
+                                ••• Hidden for security •••
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="bg-blue-100 p-4 rounded-lg mb-4">
+                            <p className="text-blue-800 font-medium">
+                              ✍️ After you've written down your seed phrase, click the button below. 
+                              You'll be asked to verify a few words to make sure you've recorded them correctly.
+                            </p>
+                          </div>
+
+                          <Button
+                            onClick={() => setIsVerifying(true)}
+                            className="w-full"
+                          >
+                            I've Written Down My Seed Phrase Safely
+                          </Button>
+                        </>
+                      ) : (
+                        <div className="space-y-4">
+                          <div className="bg-blue-100 p-4 rounded-lg">
+                            <p className="text-blue-800 font-medium">
+                              Let's verify that you've written down your seed phrase correctly. 
+                              Enter word #{currentWordIndex + 1} from your written copy:
+                            </p>
+                            <p className="text-sm text-blue-600 mt-2">
+                              Don't try to copy-paste or look at the screen - use your written backup!
+                            </p>
+                          </div>
+
+                          <div className="flex gap-2">
+                            <Input
+                              type="text"
+                              value={currentWordInput}
+                              onChange={(e) => setCurrentWordInput(e.target.value)}
+                              placeholder={`Enter word #${currentWordIndex + 1}`}
+                              className="flex-1"
+                              onKeyPress={(e) => {
+                                if (e.key === 'Enter' && currentWordInput) {
+                                  handleWordVerification();
+                                }
+                              }}
+                            />
                             <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => setShowSeedPhrase(!showSeedPhrase)}
+                              onClick={handleWordVerification}
+                              disabled={!currentWordInput}
                             >
-                              {showSeedPhrase ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                              Verify
                             </Button>
                           </div>
-                          {showSeedPhrase ? (
-                            <div className="grid grid-cols-3 gap-4">
-                              {seedPhrase.map((word, index) => (
-                                <div key={index} className="bg-blue-50 p-2 rounded">
-                                  <span className="text-blue-600 mr-2">{index + 1}.</span>
-                                  <span className="font-medium">{word}</span>
-                                </div>
-                              ))}
+
+                          <div className="mt-4">
+                            <div className="flex justify-between mb-2">
+                              <span className="text-sm text-blue-600">Verification Progress</span>
+                              <span className="text-sm text-blue-600">
+                                {currentWordIndex}/12 words verified
+                              </span>
                             </div>
-                          ) : (
-                            <div className="text-center py-8 text-gray-500">
-                              ••• Hidden for security •••
-                            </div>
-                          )}
-                        </div>
-                        <Button
-                          onClick={() => setIsVerifying(true)}
-                          className="w-full"
-                        >
-                          I've Written Down My Seed Phrase
-                        </Button>
-                      </>
-                    ) : (
-                      <div className="space-y-4">
-                        <p className="text-blue-700">
-                          Let's verify your seed phrase. Enter word #{currentWordIndex + 1}:
-                        </p>
-                        <div className="flex gap-2">
-                          <Input
-                            type="text"
-                            value={currentWordInput}
-                            onChange={(e) => setCurrentWordInput(e.target.value)}
-                            placeholder={`Enter word #${currentWordIndex + 1}`}
-                            className="flex-1"
-                            onKeyPress={(e) => {
-                              if (e.key === 'Enter' && currentWordInput) {
-                                handleWordVerification();
-                              }
-                            }}
-                          />
-                          <Button
-                            onClick={handleWordVerification}
-                            disabled={!currentWordInput}
-                          >
-                            Verify
-                          </Button>
-                        </div>
-                        <div className="mt-4">
-                          <div className="flex justify-between mb-2">
-                            <span className="text-sm text-blue-600">Verification Progress</span>
-                            <span className="text-sm text-blue-600">
-                              {currentWordIndex}/12 words verified
-                            </span>
+                            <Progress value={(currentWordIndex / 12) * 100} />
                           </div>
-                          <Progress value={(currentWordIndex / 12) * 100} />
                         </div>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -606,7 +667,7 @@ const GettingStartedSection = () => {
               </div>
             </section>
 
-            <section className="mt-12">
+            <section className="mt-8">
               <h2 className="text-2xl font-bold text-blue-700 mb-6 flex items-center gap-2">
                 <Wallet className="w-6 h-6" />
                 Recommended Wallets
