@@ -8,6 +8,7 @@ import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
 import { TrendingUp, Users, Code, Coins, Activity, Lock, Shield, Zap } from "lucide-react";
 import InvestmentValueQuiz from "@/components/quizzes/InvestmentValueQuiz";
 import { useScrollTop } from "@/hooks/useScrollTop";
+import { EthereumStakingExercise } from "@/components/modules/exercises/EthereumStakingExercise";
 
 const InvestmentValueSection = () => {
   useScrollTop();
@@ -236,6 +237,26 @@ const InvestmentValueSection = () => {
                     </div>
                   </div>
                 </div>
+
+                {/* Add ETH Staking Exercise */}
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.9 }}
+                  className="mt-8"
+                >
+                  <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-lg">
+                    <h3 className="text-2xl font-semibold text-blue-700 mb-4">
+                      Try It Yourself: ETH Staking Simulator
+                    </h3>
+                    <p className="text-gray-600 mb-6">
+                      Get hands-on experience with ETH staking through our interactive simulator. 
+                      Learn about different staking options, calculate potential rewards, and 
+                      understand the requirements and risks involved.
+                    </p>
+                    <EthereumStakingExercise />
+                  </div>
+                </motion.div>
 
                 <div className="bg-white p-6 rounded-lg shadow-sm">
                   <div className="flex items-center gap-2 mb-4">
