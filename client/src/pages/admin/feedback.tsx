@@ -14,18 +14,21 @@ interface Feedback {
   feedback: string;
   status: 'pending' | 'reviewed' | 'addressed';
   createdAt: string;
-  metadata?: any;
-  user: {
-    username: string;
-    email: string;
-  };
-  course?: {
-    title: string;
+  username: string;
+}
+
+interface FeedbackResponse {
+  feedback: Feedback[];
+  pagination: {
+    total: number;
+    page: number;
+    pageSize: number;
+    totalPages: number;
   };
 }
 
 export default function AdminFeedbackPage() {
-  const { data: feedbackList, isLoading } = useQuery<Feedback[]>({
+  const { data, isLoading } = useQuery<FeedbackResponse>({
     queryKey: ['admin', 'feedback'],
     queryFn: async () => {
       const response = await fetch('/api/admin/feedback');
@@ -36,6 +39,8 @@ export default function AdminFeedbackPage() {
       return response.json();
     },
   });
+
+  const feedbackList = data?.feedback || [];
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -85,18 +90,16 @@ export default function AdminFeedbackPage() {
         <TabsContent value="all" className="space-y-6">
           {isLoading ? (
             <div className="text-center p-6">Loading feedback...</div>
-          ) : feedbackList && feedbackList.length > 0 ? (
+          ) : feedbackList.length > 0 ? (
             feedbackList.map((feedback) => (
               <Card key={feedback.id} className="hover:shadow-md transition-shadow">
                 <CardHeader className="flex flex-row items-center justify-between">
                   <div>
                     <CardTitle className="text-lg">
-                      {feedback.type === 'course' ? feedback.course?.title :
-                       feedback.type === 'website' ? 'Website Feedback' :
-                       'Feature Request'}
+                      {feedback.type.charAt(0).toUpperCase() + feedback.type.slice(1)} Feedback
                     </CardTitle>
                     <p className="text-sm text-gray-500">
-                      From {feedback.user.username} ({feedback.user.email})
+                      From {feedback.username}
                     </p>
                   </div>
                   <Badge className={getStatusColor(feedback.status)}>
@@ -155,17 +158,15 @@ export default function AdminFeedbackPage() {
           <TabsContent key={type} value={type} className="space-y-6">
             {isLoading ? (
               <div className="text-center p-6">Loading feedback...</div>
-            ) : feedbackList?.filter(f => f.type === type).map((feedback) => (
+            ) : feedbackList.filter(f => f.type === type).map((feedback) => (
               <Card key={feedback.id} className="hover:shadow-md transition-shadow">
                 <CardHeader className="flex flex-row items-center justify-between">
                   <div>
                     <CardTitle className="text-lg">
-                      {feedback.type === 'course' ? feedback.course?.title :
-                       feedback.type === 'website' ? 'Website Feedback' :
-                       'Feature Request'}
+                      {feedback.type.charAt(0).toUpperCase() + feedback.type.slice(1)} Feedback
                     </CardTitle>
                     <p className="text-sm text-gray-500">
-                      From {feedback.user.username} ({feedback.user.email})
+                      From {feedback.username}
                     </p>
                   </div>
                   <Badge className={getStatusColor(feedback.status)}>
@@ -209,8 +210,7 @@ export default function AdminFeedbackPage() {
                   </div>
                 </CardContent>
               </Card>
-            ))
-            }
+            ))}
           </TabsContent>
         ))}
       </Tabs>
