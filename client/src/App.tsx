@@ -5,7 +5,6 @@ import { Toaster } from "@/components/ui/toaster";
 import { ProgressProvider } from "@/context/progress-context";
 import { AuthProvider, useAuth } from "@/hooks/use-auth";
 import { CourseAssistant } from "@/components/chat/CourseAssistant";
-import ScrollToTop from "@/components/ScrollToTop";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Curriculum from "@/pages/curriculum";
@@ -113,7 +112,6 @@ function ProtectedRoute({ component: Component, adminOnly = false, publicAccess 
 function Router() {
   return (
     <Switch>
-      <ScrollToTop />
       {/* Public routes */}
       <Route path="/" component={() => <ProtectedRoute component={Home} publicAccess={true} />} />
       <Route path="/curriculum" component={() => <ProtectedRoute component={Curriculum} publicAccess={true} />} />
