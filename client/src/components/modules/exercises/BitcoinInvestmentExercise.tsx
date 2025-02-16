@@ -3,8 +3,14 @@ import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { toast } from "@/hooks/use-toast";
-import { Calculator, TrendingUp, Scale, AlertTriangle } from "lucide-react";
+import { Calculator, TrendingUp, Scale, AlertTriangle, Info } from "lucide-react";
 import { useProgress } from "@/context/progress-context";
 
 type Strategy = "dca" | "lump-sum" | "value-avg";
@@ -13,7 +19,54 @@ interface SimulationResult {
   roi: number;
   riskLevel: string;
   suggestion: string;
+  pros: string[];
+  cons: string[];
 }
+
+const strategyInfo = {
+  dca: {
+    title: "Dollar-Cost Averaging",
+    description: "Invest a fixed amount at regular intervals, regardless of price",
+    pros: [
+      "Reduces impact of market volatility",
+      "Removes emotional decision-making",
+      "Consistent investment habit",
+    ],
+    cons: [
+      "May miss out on large upward movements",
+      "Higher transaction fees over time",
+      "Requires long-term commitment",
+    ],
+  },
+  "lump-sum": {
+    title: "Lump Sum",
+    description: "Invest all your money at once",
+    pros: [
+      "Maximizes potential returns in rising markets",
+      "Lower total transaction fees",
+      "Faster market exposure",
+    ],
+    cons: [
+      "Higher timing risk",
+      "More susceptible to market volatility",
+      "Greater emotional stress",
+    ],
+  },
+  "value-avg": {
+    title: "Value Averaging",
+    description: "Adjust investment amount based on performance vs target",
+    pros: [
+      "Combines benefits of DCA and timing",
+      "Systematic approach to buying dips",
+      "Potentially better returns than DCA",
+    ],
+    cons: [
+      "More complex to implement",
+      "Requires more active management",
+      "May need larger cash reserves",
+    ],
+  },
+};
 
 export const BitcoinInvestmentExercise = () => {
   const [investment, setInvestment] = useState<number>(1000);
@@ -34,18 +87,24 @@ export const BitcoinInvestmentExercise = () => {
       dca: {
         roi: 15,
         riskLevel: "Low",
-        suggestion: "Dollar-cost averaging helps reduce timing risk"
+        suggestion: "Dollar-cost averaging helps reduce timing risk",
+        pros: strategyInfo.dca.pros,
+        cons: strategyInfo.dca.cons,
       },
       "lump-sum": {
         roi: 25,
         riskLevel: "High",
-        suggestion: "Higher potential returns but also higher risk"
+        suggestion: "Higher potential returns but also higher risk",
+        pros: strategyInfo["lump-sum"].pros,
+        cons: strategyInfo["lump-sum"].cons,
       },
       "value-avg": {
         roi: 20,
         riskLevel: "Medium",
-        suggestion: "Balanced approach between DCA and lump-sum"
-      }
+        suggestion: "Balanced approach between DCA and lump-sum",
+        pros: strategyInfo["value-avg"].pros,
+        cons: strategyInfo["value-avg"].cons,
+      },
     };
 
     setResult(results[strategy]);
@@ -103,30 +162,47 @@ export const BitcoinInvestmentExercise = () => {
             Investment Strategy
           </label>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Button
-              variant={strategy === "dca" ? "default" : "outline"}
-              onClick={() => setStrategy("dca")}
-              className="flex items-center gap-2"
-            >
-              <Calculator className="w-4 h-4" />
-              Dollar-Cost Averaging
-            </Button>
-            <Button
-              variant={strategy === "lump-sum" ? "default" : "outline"}
-              onClick={() => setStrategy("lump-sum")}
-              className="flex items-center gap-2"
-            >
-              <TrendingUp className="w-4 h-4" />
-              Lump Sum
-            </Button>
-            <Button
-              variant={strategy === "value-avg" ? "default" : "outline"}
-              onClick={() => setStrategy("value-avg")}
-              className="flex items-center gap-2"
-            >
-              <Scale className="w-4 h-4" />
-              Value Averaging
-            </Button>
+            {Object.entries(strategyInfo).map(([key, info]) => (
+              <TooltipProvider key={key}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant={strategy === key ? "default" : "outline"}
+                      onClick={() => setStrategy(key as Strategy)}
+                      className="flex items-center gap-2"
+                    >
+                      {key === "dca" && <Calculator className="w-4 h-4" />}
+                      {key === "lump-sum" && <TrendingUp className="w-4 h-4" />}
+                      {key === "value-avg" && <Scale className="w-4 h-4" />}
+                      {info.title}
+                      <Info className="w-4 h-4 ml-1" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent className="w-64 p-4">
+                    <h4 className="font-semibold mb-2">{info.title}</h4>
+                    <p className="text-sm mb-2">{info.description}</p>
+                    <div className="space-y-2">
+                      <div>
+                        <span className="text-xs font-semibold text-green-600">Pros:</span>
+                        <ul className="text-xs list-disc pl-4">
+                          {info.pros.map((pro, i) => (
+                            <li key={i}>{pro}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div>
+                        <span className="text-xs font-semibold text-red-600">Cons:</span>
+                        <ul className="text-xs list-disc pl-4">
+                          {info.cons.map((con, i) => (
+                            <li key={i}>{con}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            ))}
           </div>
         </div>
 
@@ -147,7 +223,7 @@ export const BitcoinInvestmentExercise = () => {
         >
           <Card className="p-4 bg-blue-50">
             <h4 className="font-semibold text-blue-800 mb-2">Simulation Results</h4>
-            <div className="space-y-2">
+            <div className="space-y-4">
               <div className="flex justify-between">
                 <span>Expected ROI:</span>
                 <span className="font-semibold text-green-600">
@@ -166,9 +242,35 @@ export const BitcoinInvestmentExercise = () => {
                   {result.riskLevel}
                 </span>
               </div>
-              <div className="mt-4 flex items-start gap-2 text-sm">
-                <AlertTriangle className="w-4 h-4 text-yellow-600 flex-shrink-0 mt-1" />
-                <p className="text-gray-600">{result.suggestion}</p>
+              <div className="mt-4 space-y-2">
+                <div className="flex items-start gap-2">
+                  <AlertTriangle className="w-4 h-4 text-yellow-600 flex-shrink-0 mt-1" />
+                  <p className="text-gray-600">{result.suggestion}</p>
+                </div>
+                <div className="grid grid-cols-2 gap-4 mt-4">
+                  <div>
+                    <h5 className="text-sm font-semibold text-green-600 mb-2">Advantages</h5>
+                    <ul className="text-sm space-y-1">
+                      {result.pros.map((pro, index) => (
+                        <li key={index} className="flex items-start gap-2">
+                          <span className="text-green-500">•</span>
+                          {pro}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <h5 className="text-sm font-semibold text-red-600 mb-2">Disadvantages</h5>
+                    <ul className="text-sm space-y-1">
+                      {result.cons.map((con, index) => (
+                        <li key={index} className="flex items-start gap-2">
+                          <span className="text-red-500">•</span>
+                          {con}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           </Card>
