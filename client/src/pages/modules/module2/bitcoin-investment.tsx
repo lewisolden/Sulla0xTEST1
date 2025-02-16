@@ -270,6 +270,92 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
+            className="mt-8"
+          >
+            <h2 className="text-3xl font-bold text-blue-700">Understanding Bitcoin Investment Risks</h2>
+            <p className="text-gray-700 mb-6">
+              Before investing in Bitcoin, it's crucial to understand the various risks involved. Here are the key risk factors to consider:
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="p-6 border-l-4 border-red-500">
+                <h3 className="text-xl font-semibold text-red-800 mb-3">Market Volatility</h3>
+                <ul className="space-y-2 text-gray-700">
+                  <li>• Extreme price fluctuations within short periods</li>
+                  <li>• Historical drops of over 50% in value</li>
+                  <li>• Susceptibility to market sentiment and news</li>
+                  <li>• 24/7 trading leading to overnight price changes</li>
+                </ul>
+              </Card>
+
+              <Card className="p-6 border-l-4 border-yellow-500">
+                <h3 className="text-xl font-semibold text-yellow-800 mb-3">Security Risks</h3>
+                <ul className="space-y-2 text-gray-700">
+                  <li>• Potential for exchange hacks and theft</li>
+                  <li>• Private key management responsibility</li>
+                  <li>• Phishing attacks and scams</li>
+                  <li>• No recourse for lost or stolen funds</li>
+                </ul>
+              </Card>
+
+              <Card className="p-6 border-l-4 border-orange-500">
+                <h3 className="text-xl font-semibold text-orange-800 mb-3">Regulatory Risks</h3>
+                <ul className="space-y-2 text-gray-700">
+                  <li>• Varying regulations across jurisdictions</li>
+                  <li>• Potential for restrictive government policies</li>
+                  <li>• Tax implications and reporting requirements</li>
+                  <li>• Changes in legal status and classification</li>
+                </ul>
+              </Card>
+
+              <Card className="p-6 border-l-4 border-purple-500">
+                <h3 className="text-xl font-semibold text-purple-800 mb-3">Technical Risks</h3>
+                <ul className="space-y-2 text-gray-700">
+                  <li>• Network upgrades and forks</li>
+                  <li>• Software bugs or vulnerabilities</li>
+                  <li>• Infrastructure failures</li>
+                  <li>• Technological obsolescence</li>
+                </ul>
+              </Card>
+            </div>
+
+            <Card className="mt-6 p-6 bg-blue-50">
+              <h3 className="text-xl font-semibold text-blue-800 mb-3">Risk Mitigation Strategies</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-semibold text-blue-700 mb-2">Do's</h4>
+                  <ul className="space-y-2 text-gray-700">
+                    <li>✓ Only invest what you can afford to lose</li>
+                    <li>✓ Use reputable exchanges and wallets</li>
+                    <li>✓ Implement strong security measures</li>
+                    <li>✓ Diversify your investment portfolio</li>
+                    <li>✓ Stay informed about regulations</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-red-700 mb-2">Don'ts</h4>
+                  <ul className="space-y-2 text-gray-700">
+                    <li>✗ Don't invest with borrowed money</li>
+                    <li>✗ Don't store large amounts on exchanges</li>
+                    <li>✗ Don't share private keys or seed phrases</li>
+                    <li>✗ Don't make emotional investment decisions</li>
+                    <li>✗ Don't ignore tax obligations</li>
+                  </ul>
+                </div>
+              </div>
+            </Card>
+
+            <div className="mt-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+              <p className="text-sm text-yellow-800">
+                <strong>Important:</strong> This information is for educational purposes only and should not be considered financial advice. Always conduct your own research and consult with financial professionals before making investment decisions.
+              </p>
+            </div>
+          </motion.section>
+
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
           >
             <h2 className="text-3xl font-bold text-blue-700">Bitcoin ETFs Explained</h2>
             <p>
