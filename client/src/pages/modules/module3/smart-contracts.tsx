@@ -17,11 +17,20 @@ export default function SmartContractsSection() {
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showQuiz, setShowQuiz] = useState(false);
-  const [storedNumber, setStoredNumber] = useState<number | null>(null);
-  const [inputNumber, setInputNumber] = useState("");
+
+  // Smart Contract Exercise States
+  const [contractBalance, setContractBalance] = useState(0);
+  const [depositAmount, setDepositAmount] = useState("");
+  const [withdrawAmount, setWithdrawAmount] = useState("");
+  const [contractStep, setContractStep] = useState(1);
+  const [contractMessage, setContractMessage] = useState("");
+
+  // NFT Exercise States
+  const [userBalance, setUserBalance] = useState(100);
   const [nftName, setNftName] = useState("");
   const [nftDescription, setNftDescription] = useState("");
   const [mintedNFTs, setMintedNFTs] = useState<Array<{id: number, name: string, description: string}>>([]);
+
   const { updateProgress } = useProgress();
 
   useEffect(() => {
@@ -53,18 +62,53 @@ export default function SmartContractsSection() {
     }
   };
 
-  const handleMintNFT = () => {
-    if (nftName && nftDescription) {
-      const newNFT = {
-        id: mintedNFTs.length + 1,
-        name: nftName,
-        description: nftDescription
-      };
-      setMintedNFTs([...mintedNFTs, newNFT]);
-      setNftName("");
-      setNftDescription("");
+  const handleDeposit = () => {
+    const amount = parseFloat(depositAmount);
+    if (!isNaN(amount) && amount > 0) {
+      setContractBalance(prev => prev + amount);
+      setContractMessage(`Successfully deposited ${amount} ETH!`);
+      setDepositAmount("");
+      if (contractStep === 1) {
+        setContractStep(2);
+      }
     }
   };
+
+  const handleWithdraw = () => {
+    const amount = parseFloat(withdrawAmount);
+    if (!isNaN(amount) && amount > 0 && amount <= contractBalance) {
+      setContractBalance(prev => prev - amount);
+      setContractMessage(`Successfully withdrew ${amount} ETH!`);
+      setWithdrawAmount("");
+      if (contractStep === 2) {
+        setContractStep(3);
+      }
+    } else {
+      setContractMessage("Insufficient balance!");
+    }
+  };
+
+  const handleMintNFT = () => {
+    if (nftName && nftDescription) {
+      if (userBalance >= 10) {
+        const newNFT = {
+          id: mintedNFTs.length + 1,
+          name: nftName,
+          description: nftDescription
+        };
+        setMintedNFTs([...mintedNFTs, newNFT]);
+        setUserBalance(prev => prev - 10);
+        setNftName("");
+        setNftDescription("");
+      } else {
+        setContractMessage("Insufficient ETH balance! You need 10 ETH to mint an NFT.");
+      }
+    }
+  };
+
+  const [storedNumber, setStoredNumber] = useState<number | null>(null);
+  const [inputNumber, setInputNumber] = useState("");
+
 
   if (showQuiz) {
     return (
@@ -476,6 +520,153 @@ export default function SmartContractsSection() {
             label: "Investment and Value"
           }}
         />
+
+        {/* Interactive Exercises Section at the bottom */}
+        <div className="mt-12 border-t pt-8">
+          <h2 className="text-2xl font-bold text-blue-700 mb-6">Interactive Exercises</h2>
+
+          <Tabs defaultValue="smart-contract" className="space-y-4">
+            <TabsList>
+              <TabsTrigger value="smart-contract">Smart Contract Simulator</TabsTrigger>
+              <TabsTrigger value="nft">NFT Minting</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="smart-contract">
+              <Card className="p-6">
+                <h3 className="text-xl font-bold text-blue-700 mb-4">
+                  Learn Smart Contracts by Doing
+                </h3>
+
+                <div className="bg-blue-50 p-6 rounded-lg">
+                  <div className="mb-4">
+                    <h4 className="font-semibold text-blue-800 mb-2">Current Step: {contractStep}/3</h4>
+                    <p className="text-gray-700">
+                      {contractStep === 1 && "Step 1: Deposit ETH into the smart contract"}
+                      {contractStep === 2 && "Step 2: Withdraw ETH from the smart contract"}
+                      {contractStep === 3 && "Congratulations! You've completed the exercise!"}
+                    </p>
+                  </div>
+
+                  <div className="bg-white p-4 rounded-lg mb-4">
+                    <p className="font-semibold text-blue-700">Contract Balance: {contractBalance} ETH</p>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Deposit ETH
+                      </label>
+                      <div className="flex gap-2">
+                        <Input
+                          type="number"
+                          placeholder="Amount to deposit"
+                          value={depositAmount}
+                          onChange={(e) => setDepositAmount(e.target.value)}
+                          className="max-w-xs"
+                        />
+                        <Button onClick={handleDeposit}>Deposit</Button>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Withdraw ETH
+                      </label>
+                      <div className="flex gap-2">
+                        <Input
+                          type="number"
+                          placeholder="Amount to withdraw"
+                          value={withdrawAmount}
+                          onChange={(e) => setWithdrawAmount(e.target.value)}
+                          className="max-w-xs"
+                        />
+                        <Button onClick={handleWithdraw}>Withdraw</Button>
+                      </div>
+                    </div>
+
+                    {contractMessage && (
+                      <div className={`p-4 rounded-lg ${
+                        contractMessage.includes("Success") 
+                          ? "bg-green-100 text-green-700" 
+                          : "bg-red-100 text-red-700"
+                      }`}>
+                        {contractMessage}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="mt-6 bg-yellow-100 p-4 rounded-lg">
+                    <AlertTriangle className="w-5 h-5 text-yellow-600 inline mr-2" />
+                    <span className="text-yellow-700">
+                      This is a simulation! In a real smart contract, these operations would cost gas 
+                      and be permanently recorded on the blockchain.
+                    </span>
+                  </div>
+                </div>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="nft">
+              <Card className="p-6">
+                <h3 className="text-xl font-bold text-purple-700 mb-4">
+                  Create Your Own NFT
+                </h3>
+
+                <div className="bg-purple-50 p-6 rounded-lg">
+                  <div className="mb-4">
+                    <h4 className="font-semibold text-purple-800 mb-2">Your ETH Balance: {userBalance} ETH</h4>
+                    <p className="text-gray-700">
+                      Mint your own NFT for 10 ETH. Each NFT is unique and stored on the blockchain.
+                    </p>
+                  </div>
+
+                  <div className="space-y-4 mb-6">
+                    <Input
+                      placeholder="NFT Name"
+                      value={nftName}
+                      onChange={(e) => setNftName(e.target.value)}
+                      className="max-w-xs"
+                    />
+                    <Textarea
+                      placeholder="NFT Description"
+                      value={nftDescription}
+                      onChange={(e) => setNftDescription(e.target.value)}
+                      className="max-w-md"
+                    />
+                    <Button 
+                      onClick={handleMintNFT}
+                      className="bg-purple-600 hover:bg-purple-700"
+                    >
+                      Mint NFT (10 ETH)
+                    </Button>
+                  </div>
+
+                  {mintedNFTs.length > 0 && (
+                    <div className="bg-white p-4 rounded-lg">
+                      <h4 className="font-semibold text-purple-600 mb-4">Your NFT Collection:</h4>
+                      <div className="grid gap-4">
+                        {mintedNFTs.map(nft => (
+                          <div key={nft.id} className="bg-purple-100 p-4 rounded-lg">
+                            <div className="w-32 h-32 bg-gradient-to-r from-purple-400 to-pink-500 rounded-lg mb-2" />
+                            <p className="font-bold text-purple-700">#{nft.id} - {nft.name}</p>
+                            <p className="text-gray-600">{nft.description}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="mt-6 bg-yellow-100 p-4 rounded-lg">
+                    <AlertTriangle className="w-5 h-5 text-yellow-600 inline mr-2" />
+                    <span className="text-yellow-700">
+                      This is a simulation! Real NFT minting would require connecting a wallet and paying actual ETH.
+                    </span>
+                  </div>
+                </div>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
     </motion.div>
   );
