@@ -6,7 +6,7 @@ import { eq, and } from "drizzle-orm";
 const router = Router();
 
 // Handle course enrollment
-router.post("/api/enrollments", async (req, res) => {
+router.post("/enrollments", async (req, res) => {
   console.log("Enrollment attempt - User:", req.user, "Body:", req.body);
 
   if (!req.user?.id) {
@@ -60,7 +60,7 @@ router.post("/api/enrollments", async (req, res) => {
 });
 
 // Get user enrollments
-router.get("/api/enrollments", async (req, res) => {
+router.get("/enrollments", async (req, res) => {
   console.log("Fetching enrollments for user:", req.user?.id);
 
   if (!req.user?.id) {

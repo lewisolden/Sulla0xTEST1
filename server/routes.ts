@@ -35,14 +35,13 @@ export function registerRoutes(app: Express): Server {
   // Set up authentication first
   setupAuth(app);
 
-  // Mount API router first
+  // Register API routes with proper prefixes
   app.use("/api", apiRouter);
-
-  // Mount admin routes 
+  app.use("/api", enrollmentsRouter);
   app.use("/api/admin", adminRouter);
-
-  // Add learning path routes
   app.use("/api", learningPathRouter);
+  app.use("/api", userMetricsRouter);
+  app.use("/api", chatRouter);
 
   // Add email test endpoint
   app.get("/api/email/test", async (req, res) => {
@@ -74,11 +73,6 @@ export function registerRoutes(app: Express): Server {
       });
     }
   });
-
-  // Register other routes
-  app.use("/api", enrollmentsRouter);
-  app.use("/api", userMetricsRouter);
-  app.use("/api", chatRouter);
 
   // Create and return the HTTP server
   const httpServer = createServer(app);
