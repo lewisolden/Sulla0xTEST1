@@ -189,12 +189,12 @@ export default function AccountPage() {
       </Card>
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="dashboard">Overview</TabsTrigger>
-          <TabsTrigger value="progress">Course Progress</TabsTrigger>
-          <TabsTrigger value="goals">Learning Goals</TabsTrigger>
-          <TabsTrigger value="feedback">Feedback</TabsTrigger>
-          <TabsTrigger value="profile">Profile</TabsTrigger>
+        <TabsList className="w-full flex flex-row md:grid md:grid-cols-5 overflow-x-auto gap-2 md:gap-0 p-1 no-scrollbar">
+          <TabsTrigger value="dashboard" className="flex-shrink-0 text-sm whitespace-nowrap">Overview</TabsTrigger>
+          <TabsTrigger value="progress" className="flex-shrink-0 text-sm whitespace-nowrap">Course Progress</TabsTrigger>
+          <TabsTrigger value="goals" className="flex-shrink-0 text-sm whitespace-nowrap">Learning Goals</TabsTrigger>
+          <TabsTrigger value="feedback" className="flex-shrink-0 text-sm whitespace-nowrap">Feedback</TabsTrigger>
+          <TabsTrigger value="profile" className="flex-shrink-0 text-sm whitespace-nowrap">Profile</TabsTrigger>
         </TabsList>
 
         <TabsContent value="dashboard">
