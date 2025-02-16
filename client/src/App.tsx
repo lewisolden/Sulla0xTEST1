@@ -82,6 +82,7 @@ import GlossaryPage from "@/pages/glossary";
 import TechDeckPage from "@/pages/techdeck";
 import InvestmentDeck from "@/pages/investment-deck";
 import SenseiPage from "@/pages/sensei";
+import AdminFeedback from "@/pages/admin/feedback";
 
 function ProtectedRoute({ component: Component, adminOnly = false, publicAccess = false, ...rest }: any) {
   const { user, isLoading } = useAuth();
@@ -143,9 +144,10 @@ function Router() {
 
       {/* Admin routes */}
       <Route path="/admin/login" component={AdminLogin} />
-      <ProtectedRoute path="/admin" component={AdminDashboard} adminOnly />
-      <ProtectedRoute path="/admin/users" component={AdminUsers} adminOnly />
-      <ProtectedRoute path="/admin/analytics" component={AdminAnalytics} adminOnly />
+      <Route path="/admin" component={() => <ProtectedRoute component={AdminDashboard} adminOnly />} />
+      <Route path="/admin/users" component={() => <ProtectedRoute component={AdminUsers} adminOnly />} />
+      <Route path="/admin/analytics" component={() => <ProtectedRoute component={AdminAnalytics} adminOnly />} />
+      <Route path="/admin/feedback" component={() => <ProtectedRoute component={AdminFeedback} adminOnly />} />
 
       {/* Protected routes */}
       <Route path="/account" component={() => <ProtectedRoute component={AccountPage} />} />
