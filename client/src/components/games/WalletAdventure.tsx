@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useToast } from '@/hooks/use-toast';
 import {
   Wallet,
   Key,
@@ -13,7 +14,9 @@ import {
   AlertTriangle,
   CheckCircle,
   HelpCircle,
-  Award
+  Award,
+  Eye,
+  EyeOff
 } from 'lucide-react';
 
 interface Scenario {
@@ -43,8 +46,24 @@ interface Achievement {
   icon: JSX.Element;
 }
 
+const SEED_WORD_LIST = [
+  'abandon', 'ability', 'able', 'about', 'above', 'absent', 'absorb', 'abstract', 'absurd', 'abuse',
+  'access', 'accident', 'account', 'accuse', 'achieve', 'acid', 'acoustic', 'acquire', 'across', 'act',
+  'action', 'actor', 'actress', 'actual', 'adapt', 'add', 'addict', 'address', 'adjust', 'admit',
+  'adult', 'advance', 'advice', 'aerobic', 'affair', 'afford', 'afraid', 'again', 'age', 'agent',
+  'agree', 'ahead', 'aim', 'air', 'airport', 'aisle', 'alarm', 'album', 'alcohol', 'alert',
+  'alien', 'all', 'alley', 'allow', 'almost', 'alone', 'alpha', 'already', 'also', 'alter',
+  'always', 'amateur', 'amazing', 'among', 'amount', 'amused', 'analyst', 'anchor', 'ancient', 'anger'
+];
+
 export default function WalletAdventure() {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [seedPhrase, setSeedPhrase] = useState<string[]>([]);
+  const [currentWordInput, setCurrentWordInput] = useState('');
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
+  const [showSeedPhrase, setShowSeedPhrase] = useState(true);
   const [currentScenario, setCurrentScenario] = useState<number>(0);
   const [score, setScore] = useState(0);
   const [showTutorial, setShowTutorial] = useState(true);
@@ -73,6 +92,7 @@ export default function WalletAdventure() {
       icon: <Key className="w-6 h-6 text-purple-500" />
     }
   ]);
+  const { toast } = useToast();
 
   const scenarios: Scenario[] = [
     {
@@ -217,12 +237,56 @@ export default function WalletAdventure() {
     }
   ];
 
+  const generateSeedPhrase = () => {
+    const phrase = [];
+    for (let i = 0; i < 12; i++) {
+      const randomIndex = Math.floor(Math.random() * SEED_WORD_LIST.length);
+      phrase.push(SEED_WORD_LIST[randomIndex]);
+    }
+    setSeedPhrase(phrase);
+  };
+
   const startGame = () => {
     setIsPlaying(true);
-    setCurrentScenario(0);
-    setScore(0);
+    generateSeedPhrase();
     setShowTutorial(true);
-    setShowExplanation(false);
+    setIsVerifying(false);
+    setIsVerified(false);
+    setCurrentWordIndex(0);
+  };
+
+  const startVerification = () => {
+    setIsVerifying(true);
+    setShowSeedPhrase(false);
+  };
+
+  const handleWordVerification = () => {
+    if (currentWordInput.toLowerCase() === seedPhrase[currentWordIndex].toLowerCase()) {
+      if (currentWordIndex === 11) {
+        setIsVerified(true);
+        setIsVerifying(false);
+        toast({
+          title: "Wallet Access Granted!",
+          description: "You've successfully verified your seed phrase.",
+          variant: "default"
+        });
+      } else {
+        setCurrentWordIndex(prev => prev + 1);
+        setCurrentWordInput('');
+        toast({
+          title: "Correct!",
+          description: `Word ${currentWordIndex + 1} verified. ${11 - currentWordIndex} words remaining.`,
+          variant: "default"
+        });
+      }
+    } else {
+      toast({
+        title: "Incorrect Word",
+        description: "Please try again with the correct word.",
+        variant: "destructive"
+      });
+      setCurrentWordInput('');
+    }
   };
 
   const handleChoice = (choiceId: number) => {
@@ -233,7 +297,6 @@ export default function WalletAdventure() {
       setScore(prev => prev + 10);
       setFeedback(scenario.feedback.correct);
 
-      // Check for achievements
       const newAchievements = [...achievements];
       if (currentScenario === 0 && !newAchievements[0].unlocked) {
         newAchievements[0].unlocked = true;
@@ -252,7 +315,6 @@ export default function WalletAdventure() {
 
     setShowExplanation(true);
 
-    // Progress to next scenario after delay
     setTimeout(() => {
       if (currentScenario < scenarios.length - 1) {
         setCurrentScenario(prev => prev + 1);
@@ -266,18 +328,16 @@ export default function WalletAdventure() {
 
   return (
     <Card className="p-6 bg-gradient-to-br from-blue-50 to-blue-100">
-      <div className="text-center mb-6">
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="text-center mb-6"
+      >
         <h2 className="text-2xl font-bold text-blue-800 mb-2">Crypto Wallet Adventure</h2>
         <p className="text-gray-600">
-          Master wallet security through an interactive adventure! 🔐
+          Master wallet security through an interactive experience! 🔐
         </p>
-        {isPlaying && (
-          <div className="mt-4">
-            <span className="text-xl font-semibold text-blue-600">Score: {score}</span>
-            <span className="ml-4 text-sm text-gray-500">Scenario {currentScenario + 1}/{scenarios.length}</span>
-          </div>
-        )}
-      </div>
+      </motion.div>
 
       {!isPlaying ? (
         <div className="text-center">
@@ -286,16 +346,15 @@ export default function WalletAdventure() {
             <div className="text-left space-y-4">
               <p className="text-blue-700">
                 <span className="font-semibold">What is this game?</span><br/>
-                Learn how to securely manage your cryptocurrency wallet through interactive scenarios! Perfect for beginners!
+                Learn how to securely manage your cryptocurrency wallet through interactive scenarios!
               </p>
               <div className="bg-white p-4 rounded-lg">
                 <h4 className="font-semibold text-blue-800 mb-2">How to Play:</h4>
                 <ul className="list-disc pl-6 text-blue-700 space-y-2">
-                  <li>Face real-world wallet security scenarios</li>
-                  <li>Make choices to protect your digital assets</li>
-                  <li>Learn from detailed explanations</li>
+                  <li>Get your unique 12-word seed phrase</li>
+                  <li>Verify your seed phrase to access your wallet</li>
+                  <li>Learn about wallet security best practices</li>
                   <li>Earn achievements for mastering security</li>
-                  <li>Practice safe wallet management</li>
                 </ul>
               </div>
             </div>
@@ -309,131 +368,239 @@ export default function WalletAdventure() {
         </div>
       ) : (
         <div className="space-y-6">
-          {/* Tutorial */}
-          <AnimatePresence>
-            {showTutorial && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="bg-yellow-50 p-6 rounded-lg border border-yellow-200"
-              >
-                <div className="flex items-start gap-4">
-                  <Shield className="w-6 h-6 text-yellow-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <h3 className="font-semibold text-yellow-800 mb-2">Wallet Security Basics</h3>
-                    <p className="text-yellow-700 mb-4">
-                      Remember these key points:
-                      <br />• Your seed phrase is your wallet's master key
-                      <br />• Never share your private keys or seed phrase
-                      <br />• Always verify websites and apps
-                      <br />• Keep backups secure and offline
-                    </p>
-                    <Button
-                      onClick={() => setShowTutorial(false)}
-                      variant="outline"
-                      className="bg-yellow-100"
-                    >
-                      Ready to Start! 🔐
-                    </Button>
-                  </div>
+          {seedPhrase.length > 0 && !isVerified && !isVerifying && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-yellow-50 p-6 rounded-lg border-2 border-yellow-200"
+            >
+              <div className="flex justify-between items-start mb-4">
+                <div className="flex items-center gap-2">
+                  <Key className="w-6 h-6 text-yellow-600" />
+                  <h3 className="text-lg font-semibold text-yellow-800">Your Seed Phrase</h3>
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowSeedPhrase(!showSeedPhrase)}
+                >
+                  {showSeedPhrase ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </Button>
+              </div>
 
-          {/* Current Scenario */}
-          <AnimatePresence mode="wait">
-            {currentScenario < scenarios.length && (
-              <motion.div
-                key={scenarios[currentScenario].id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                className="bg-white p-6 rounded-lg shadow-sm"
-              >
-                <div className="flex items-center gap-2 mb-4">
-                  <Key className="w-6 h-6 text-blue-600" />
-                  <h3 className="text-lg font-semibold text-blue-700">
-                    {scenarios[currentScenario].title}
-                  </h3>
-                </div>
-
-                <p className="text-gray-700 mb-6">{scenarios[currentScenario].description}</p>
-
-                <div className="space-y-4">
-                  {scenarios[currentScenario].choices.map((choice) => (
-                    <Button
-                      key={choice.id}
-                      onClick={() => handleChoice(choice.id)}
-                      variant="outline"
-                      className="w-full text-left justify-start hover:bg-blue-50"
-                    >
-                      {choice.text}
-                    </Button>
+              {showSeedPhrase ? (
+                <div className="grid grid-cols-3 gap-4 mb-4">
+                  {seedPhrase.map((word, index) => (
+                    <div key={index} className="bg-white p-2 rounded border border-yellow-200">
+                      <span className="text-yellow-600 mr-2">{index + 1}.</span>
+                      <span className="font-medium">{word}</span>
+                    </div>
                   ))}
                 </div>
+              ) : (
+                <div className="bg-gray-50 p-4 rounded text-center">
+                  <p className="text-gray-600">Seed phrase hidden</p>
+                </div>
+              )}
 
-                {showExplanation && (
+              <div className="flex justify-between items-center mt-4">
+                <p className="text-sm text-yellow-700">
+                  Write down these words in order and keep them safe!
+                </p>
+                <Button onClick={startVerification}>
+                  I've Saved My Seed Phrase
+                </Button>
+              </div>
+            </motion.div>
+          )}
+
+          {isVerifying && !isVerified && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-blue-50 p-6 rounded-lg"
+            >
+              <div className="flex items-start gap-2 mb-4">
+                <Shield className="w-6 h-6 text-blue-600" />
+                <div>
+                  <h3 className="text-lg font-semibold text-blue-800">
+                    Verify Word #{currentWordIndex + 1}
+                  </h3>
+                  <p className="text-sm text-blue-600">
+                    Enter word #{currentWordIndex + 1} from your seed phrase
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex gap-2">
+                <Input
+                  type="text"
+                  value={currentWordInput}
+                  onChange={(e) => setCurrentWordInput(e.target.value)}
+                  placeholder={`Enter word #${currentWordIndex + 1}`}
+                  className="flex-1"
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter' && currentWordInput) {
+                      handleWordVerification();
+                    }
+                  }}
+                />
+                <Button 
+                  onClick={handleWordVerification}
+                  disabled={!currentWordInput}
+                >
+                  Verify
+                </Button>
+              </div>
+
+              <div className="mt-4">
+                <div className="flex justify-between mb-2">
+                  <span className="text-sm text-blue-600">Verification Progress</span>
+                  <span className="text-sm text-blue-600">
+                    {currentWordIndex}/12 words verified
+                  </span>
+                </div>
+                <div className="w-full bg-blue-100 rounded-full h-2">
+                  <div
+                    className="bg-blue-600 rounded-full h-2 transition-all duration-300"
+                    style={{ width: `${(currentWordIndex / 12) * 100}%` }}
+                  />
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {isVerified && (
+            <div className="space-y-6">
+              <AnimatePresence>
+                {showTutorial && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    className="bg-yellow-50 p-6 rounded-lg border border-yellow-200"
+                  >
+                    <div className="flex items-start gap-4">
+                      <Shield className="w-6 h-6 text-yellow-600 flex-shrink-0 mt-1" />
+                      <div>
+                        <h3 className="font-semibold text-yellow-800 mb-2">Wallet Security Basics</h3>
+                        <p className="text-yellow-700 mb-4">
+                          Remember these key points:
+                          <br />• Your seed phrase is your wallet's master key
+                          <br />• Never share your private keys or seed phrase
+                          <br />• Always verify websites and apps
+                          <br />• Keep backups secure and offline
+                        </p>
+                        <Button
+                          onClick={() => setShowTutorial(false)}
+                          variant="outline"
+                          className="bg-yellow-100"
+                        >
+                          Ready to Start! 🔐
+                        </Button>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <AnimatePresence mode="wait">
+                {currentScenario < scenarios.length && (
+                  <motion.div
+                    key={scenarios[currentScenario].id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    className="bg-white p-6 rounded-lg shadow-sm"
+                  >
+                    <div className="flex items-center gap-2 mb-4">
+                      <Key className="w-6 h-6 text-blue-600" />
+                      <h3 className="text-lg font-semibold text-blue-700">
+                        {scenarios[currentScenario].title}
+                      </h3>
+                    </div>
+
+                    <p className="text-gray-700 mb-6">{scenarios[currentScenario].description}</p>
+
+                    <div className="space-y-4">
+                      {scenarios[currentScenario].choices.map((choice) => (
+                        <Button
+                          key={choice.id}
+                          onClick={() => handleChoice(choice.id)}
+                          variant="outline"
+                          className="w-full text-left justify-start hover:bg-blue-50"
+                        >
+                          {choice.text}
+                        </Button>
+                      ))}
+                    </div>
+
+                    {showExplanation && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="mt-4 bg-blue-50 p-4 rounded-lg"
+                      >
+                        <p className="text-blue-700">
+                          <span className="font-semibold">Learn:</span> {scenarios[currentScenario].educationalContent}
+                        </p>
+                      </motion.div>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <AnimatePresence>
+                {feedback && (
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="mt-4 bg-blue-50 p-4 rounded-lg"
+                    exit={{ opacity: 0 }}
+                    className={`p-4 rounded-lg ${
+                      feedback.includes('Congratulations') || feedback.includes('Perfect')
+                        ? 'bg-green-50 text-green-700'
+                        : 'bg-yellow-50 text-yellow-700'
+                    }`}
                   >
-                    <p className="text-blue-700">
-                      <span className="font-semibold">Learn:</span> {scenarios[currentScenario].educationalContent}
-                    </p>
+                    {feedback}
                   </motion.div>
                 )}
-              </motion.div>
-            )}
-          </AnimatePresence>
+              </AnimatePresence>
 
-          {/* Feedback Message */}
-          <AnimatePresence>
-            {feedback && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className={`p-4 rounded-lg ${
-                  feedback.includes('Congratulations') || feedback.includes('Perfect')
-                    ? 'bg-green-50 text-green-700'
-                    : 'bg-yellow-50 text-yellow-700'
-                }`}
-              >
-                {feedback}
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          {/* Achievements */}
-          <Card className="p-4">
-            <h3 className="text-lg font-semibold text-blue-700 mb-4">Achievements</h3>
-            <div className="space-y-2">
-              {achievements.map(achievement => (
-                <div
-                  key={achievement.id}
-                  className={`flex items-center gap-2 p-2 rounded ${
-                    achievement.unlocked ? 'bg-green-50' : 'bg-gray-50'
-                  }`}
-                >
-                  {achievement.icon}
-                  <div>
-                    <p className="font-semibold">{achievement.title}</p>
-                    <p className="text-sm text-gray-600">{achievement.description}</p>
-                  </div>
-                  {achievement.unlocked && (
-                    <Award className="w-5 h-5 text-yellow-500 ml-auto" />
-                  )}
+              <Card className="p-4">
+                <h3 className="text-lg font-semibold text-blue-700 mb-4">Achievements</h3>
+                <div className="space-y-2">
+                  {achievements.map(achievement => (
+                    <div
+                      key={achievement.id}
+                      className={`flex items-center gap-2 p-2 rounded ${
+                        achievement.unlocked ? 'bg-green-50' : 'bg-gray-50'
+                      }`}
+                    >
+                      {achievement.icon}
+                      <div>
+                        <p className="font-semibold">{achievement.title}</p>
+                        <p className="text-sm text-gray-600">{achievement.description}</p>
+                      </div>
+                      {achievement.unlocked && (
+                        <Award className="w-5 h-5 text-yellow-500 ml-auto" />
+                      )}
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </Card>
             </div>
-          </Card>
+          )}
 
           <div className="text-center mt-6">
             <Button
-              onClick={() => setIsPlaying(false)}
+              onClick={() => {
+                setIsPlaying(false);
+                setSeedPhrase([]);
+                setCurrentWordIndex(0);
+                setIsVerified(false);
+                setIsVerifying(false);
+              }}
               variant="outline"
               className="text-blue-600"
             >
