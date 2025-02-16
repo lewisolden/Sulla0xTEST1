@@ -44,13 +44,13 @@ const InvestmentDeck = () => {
       title: "Sensei AI Tutor",
       content: (
         <div className="space-y-8">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-gray-200 mb-2">Sensei - AI-Powered Personal Learning Assistant</h2>
-            <p className="text-lg text-gray-400">Adaptive learning companion leveraging advanced AI for personalized education</p>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-indigo-400 mb-4">Sensei - AI-Powered Personal Learning Assistant</h2>
+            <p className="text-xl text-gray-400">Adaptive learning companion leveraging advanced AI for personalized education</p>
           </div>
 
           <div className="grid grid-cols-2 gap-8">
-            <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
+            <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <div className="flex items-center space-x-4 mb-6">
                 <Brain className="w-8 h-8 text-blue-400" />
                 <h3 className="text-xl font-semibold text-gray-200">Core Capabilities</h3>
@@ -80,7 +80,7 @@ const InvestmentDeck = () => {
               </ul>
             </Card>
 
-            <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
+            <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <div className="flex items-center space-x-4 mb-6">
                 <Rocket className="w-8 h-8 text-purple-400" />
                 <h3 className="text-xl font-semibold text-gray-200">Future Enhancements</h3>
@@ -177,8 +177,8 @@ const InvestmentDeck = () => {
               transition={{ duration: 0.5 }}
               className="w-full"
             >
-              {typeof slides[currentSlide] === 'object' && 'content' in slides[currentSlide] 
-                ? slides[currentSlide].content 
+              {typeof slides[currentSlide] === 'object' && 'content' in slides[currentSlide]
+                ? slides[currentSlide].content
                 : slides[currentSlide]}
             </motion.div>
           </AnimatePresence>
