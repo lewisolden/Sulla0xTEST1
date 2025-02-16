@@ -1,10 +1,11 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { useProgress } from "@/context/progress-context";
 import {
   Wallet,
   Key,
@@ -43,6 +44,10 @@ export default function WalletSimulator() {
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
   const [verificationError, setVerificationError] = useState('');
   const [verificationSuccess, setVerificationSuccess] = useState(false);
+  const [currentInput, setCurrentInput] = useState('');
+  const [verificationIndices, setVerificationIndices] = useState<number[]>([]);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const { updateProgress } = useProgress();
 
   const generateWallet = () => {
     const newWallet: WalletState = {
@@ -53,6 +58,10 @@ export default function WalletSimulator() {
       backupPhrase: Array.from({length: 12}, () => generateWord()),
       isSecure: false
     };
+    const indices = Array.from({length: 12}, (_, i) => i)
+      .sort(() => Math.random() - 0.5)
+      .slice(0, 3);
+    setVerificationIndices(indices);
     setWallet(newWallet);
   };
 
@@ -64,18 +73,32 @@ export default function WalletSimulator() {
     return words[Math.floor(Math.random() * words.length)];
   };
 
-  const verifyRecoveryPhrase = (word: string, index: number) => {
+  const verifyRecoveryPhrase = (word: string) => {
     if (!wallet) return;
 
-    if (word === wallet.backupPhrase[verificationStep]) {
+    if (word.toLowerCase() === wallet.backupPhrase[verificationIndices[verificationStep]].toLowerCase()) {
       setSelectedWords([...selectedWords, word]);
       setVerificationError('');
+      setCurrentInput(''); 
 
-      if (verificationStep === 2) { // We're verifying 3 random words (0,1,2)
+      if (verificationStep === 2) { 
         setVerificationSuccess(true);
         setHasBackedUp(true);
+        updateProgress({
+          moduleId: 2,
+          sectionId: "wallet-practice",
+          completed: true,
+          score: selectedWords.length,
+          total: 3,
+          timestamp: new Date().toISOString(),
+          type: "exercise"
+        });
       } else {
         setVerificationStep(verificationStep + 1);
+      }
+
+      if (inputRef.current) {
+        inputRef.current.focus();
       }
     } else {
       setVerificationError('Incorrect word. Please try again.');
@@ -106,7 +129,6 @@ export default function WalletSimulator() {
       };
     });
 
-    // Simulate confirmation after 2 seconds
     setTimeout(() => {
       setWallet(prev => {
         if (!prev) return prev;
@@ -127,7 +149,6 @@ export default function WalletSimulator() {
     setWallet(prev => prev ? {...prev, isSecure: true} : null);
   };
 
-  // Adding new animations and transitions
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -268,7 +289,12 @@ export default function WalletSimulator() {
 
             <div className="grid grid-cols-3 gap-4 mb-6">
               {wallet.backupPhrase.map((word, index) => (
-                <div key={index} className="bg-gray-100 p-3 rounded text-center">
+                <div
+                  key={index}
+                  className={`bg-gray-100 p-3 rounded text-center ${
+                    verificationIndices.includes(index) ? 'border-2 border-blue-500' : ''
+                  }`}
+                >
                   <span className="text-gray-500 mr-2">{index + 1}.</span>
                   <span className="font-medium">{word}</span>
                 </div>
@@ -279,20 +305,50 @@ export default function WalletSimulator() {
               <div className="space-y-4">
                 <div className="bg-yellow-50 p-4 rounded-lg">
                   <h4 className="font-medium text-yellow-800 mb-2">
-                    Verify Word #{verificationStep + 1}
+                    Verify Word #{verificationIndices[verificationStep] + 1}
                   </h4>
                   <p className="text-sm text-yellow-600 mb-4">
-                    Enter word #{verificationStep + 1} from your recovery phrase to prove you've backed it up.
+                    Enter word #{verificationIndices[verificationStep] + 1} from your recovery phrase to prove you've backed it up.
                   </p>
                   <Input
+                    ref={inputRef}
                     type="text"
-                    placeholder={`Enter word #${verificationStep + 1}`}
+                    value={currentInput}
+                    onChange={(e) => setCurrentInput(e.target.value)}
+                    onKeyPress={(e) => {
+                      if (e.key === 'Enter' && currentInput) {
+                        verifyRecoveryPhrase(currentInput);
+                      }
+                    }}
+                    placeholder={`Enter word #${verificationIndices[verificationStep] + 1}`}
                     className="mb-2"
-                    onChange={(e) => verifyRecoveryPhrase(e.target.value, verificationStep)}
                   />
+                  <Button 
+                    onClick={() => verifyRecoveryPhrase(currentInput)}
+                    disabled={!currentInput}
+                  >
+                    Verify Word
+                  </Button>
                   {verificationError && (
-                    <p className="text-sm text-red-500">{verificationError}</p>
+                    <p className="text-sm text-red-500 mt-2">{verificationError}</p>
                   )}
+                </div>
+                <div className="flex justify-between items-center">
+                  <div className="space-x-2">
+                    {[0, 1, 2].map((index) => (
+                      <span
+                        key={index}
+                        className={`inline-block w-3 h-3 rounded-full ${
+                          index < verificationStep ? 'bg-green-500' :
+                          index === verificationStep ? 'bg-blue-500' :
+                          'bg-gray-300'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <p className="text-sm text-gray-600">
+                    {verificationStep + 1} of 3 words verified
+                  </p>
                 </div>
               </div>
             ) : (

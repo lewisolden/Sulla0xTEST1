@@ -129,7 +129,15 @@ export default function SecurityWorkshop() {
       // Workshop completed
       const passingScore = Math.ceil(securityScenarios.length * 0.7);
       if (score >= passingScore) {
-        updateProgress(2, "security-workshop", true);
+        updateProgress({
+          moduleId: 2,
+          sectionId: "security-workshop",
+          completed: true,
+          score: score,
+          total: securityScenarios.length,
+          timestamp: new Date().toISOString(),
+          type: "exercise"
+        });
       }
     } else {
       setCurrentScenario((prev) => (prev + 1) % securityScenarios.length);
@@ -201,10 +209,10 @@ export default function SecurityWorkshop() {
                     transition={{ delay: index * 0.1 }}
                   >
                     <Button
-                      variant={selectedOption === null ? "outline" : 
-                              selectedOption === index ? 
-                                (index === scenario.correctOption ? "default" : "destructive") :
-                                index === scenario.correctOption ? "default" : "outline"}
+                      variant={selectedOption === null ? "outline" :
+                        selectedOption === index ?
+                          (index === scenario.correctOption ? "default" : "destructive") :
+                          index === scenario.correctOption ? "default" : "outline"}
                       className={`w-full justify-start text-left h-auto py-3 px-4 ${
                         selectedOption !== null && index === scenario.correctOption ? "border-green-500" : ""
                       }`}
@@ -213,7 +221,7 @@ export default function SecurityWorkshop() {
                     >
                       <div className="flex items-start gap-2">
                         {selectedOption !== null && (
-                          index === scenario.correctOption ? 
+                          index === scenario.correctOption ?
                             <CheckCircle2 className="h-5 w-5 text-green-500 mt-0.5" /> :
                             selectedOption === index ?
                               <XCircle className="h-5 w-5 text-red-500 mt-0.5" /> :
@@ -239,7 +247,7 @@ export default function SecurityWorkshop() {
                     className="mt-4"
                     onClick={nextScenario}
                   >
-                    {currentScenario === securityScenarios.length - 1 ? 
+                    {currentScenario === securityScenarios.length - 1 ?
                       "Complete Workshop" : "Next Scenario"}
                   </Button>
                 </motion.div>
