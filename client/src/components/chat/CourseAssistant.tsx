@@ -18,7 +18,7 @@ export function CourseAssistant() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-  
+
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -27,13 +27,13 @@ export function CourseAssistant() {
 
   const handleSendMessage = async () => {
     if (!input.trim()) return;
-    
+
     const userMessage: Message = {
       role: "user",
       content: input,
       timestamp: new Date()
     };
-    
+
     setMessages(prev => [...prev, userMessage]);
     setInput("");
     setIsLoading(true);
@@ -46,7 +46,7 @@ export function CourseAssistant() {
         },
         body: JSON.stringify({
           message: input,
-          context: window.location.pathname // Send current course context
+          context: window.location.pathname
         }),
       });
 
@@ -55,7 +55,7 @@ export function CourseAssistant() {
       }
 
       const data = await response.json();
-      
+
       setMessages(prev => [...prev, {
         role: "assistant",
         content: data.response,
@@ -86,7 +86,7 @@ export function CourseAssistant() {
           >
             <Card className="w-[350px] h-[500px] flex flex-col">
               <div className="p-4 border-b flex justify-between items-center bg-primary text-primary-foreground rounded-t-lg">
-                <h3 className="font-semibold">Course Assistant</h3>
+                <h3 className="font-semibold">Sensei</h3>
                 <Button 
                   variant="ghost" 
                   size="icon"
@@ -96,7 +96,7 @@ export function CourseAssistant() {
                   <X className="h-4 w-4" />
                 </Button>
               </div>
-              
+
               <ScrollArea 
                 ref={scrollRef} 
                 className="flex-1 p-4"
@@ -141,7 +141,7 @@ export function CourseAssistant() {
                   <Input
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    placeholder="Ask anything about the course..."
+                    placeholder="Ask me about the course..."
                     className="flex-1"
                   />
                   <Button type="submit" size="icon" disabled={isLoading}>
