@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { DollarSign, TrendingUp, TrendingDown, Award, BookOpen, HelpCircle, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { format } from 'date-fns';
 
 interface Trade {
   type: 'buy' | 'sell';
@@ -12,6 +13,11 @@ interface Trade {
   price: number;
   timestamp: number;
   profit?: number;
+}
+
+interface PriceData {
+  timestamp: Date;
+  price: number;
 }
 
 interface Achievement {
@@ -22,15 +28,20 @@ interface Achievement {
   icon: JSX.Element;
 }
 
+type TimeFrame = '1m' | '1h' | 'all';
+
 export default function TradingSimulator() {
   const [balance, setBalance] = useState(10000);
   const [crypto, setCrypto] = useState(0);
   const [currentPrice, setCurrentPrice] = useState(100);
-  const [priceHistory, setPriceHistory] = useState<{ time: string; price: number }[]>([]);
+  const [minuteData, setMinuteData] = useState<PriceData[]>([]);
+  const [hourData, setHourData] = useState<PriceData[]>([]);
   const [trades, setTrades] = useState<Trade[]>([]);
   const [showTutorial, setShowTutorial] = useState(true);
   const [tradeAmount, setTradeAmount] = useState(1);
+  const [selectedTimeFrame, setSelectedTimeFrame] = useState<TimeFrame>('1m');
   const { toast } = useToast();
+
   const [achievements, setAchievements] = useState<Achievement[]>([
     {
       id: 'first_trade',
@@ -57,24 +68,61 @@ export default function TradingSimulator() {
 
   useEffect(() => {
     const interval = setInterval(() => {
+      const now = new Date();
       setCurrentPrice(prev => {
-        const volatility = Math.random() * 0.05; // 5% max price change
+        const volatility = Math.random() * 0.05;
         const direction = Math.random() > 0.5 ? 1 : -1;
         const change = prev * volatility * direction;
         const newPrice = Math.max(1, prev + change);
 
-        const now = new Date();
-        setPriceHistory(prev => [...prev, {
-          time: `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`,
-          price: newPrice
-        }].slice(-30)); // Keep last 30 data points
+        const newPriceData = { timestamp: now, price: newPrice };
+
+        // Update minute data
+        setMinuteData(prev => {
+          const newData = [...prev, newPriceData];
+          const minuteAgo = new Date(now.getTime() - 60000);
+          return newData.filter(d => d.timestamp > minuteAgo).slice(-60);
+        });
+
+        // Update hour data
+        setHourData(prev => {
+          const newData = [...prev, newPriceData];
+          const hourAgo = new Date(now.getTime() - 3600000);
+          return newData.filter(d => d.timestamp > hourAgo);
+        });
 
         return newPrice;
       });
-    }, 2000);
+    }, 1000); // Update every second
 
     return () => clearInterval(interval);
   }, []);
+
+  const getChartData = () => {
+    switch (selectedTimeFrame) {
+      case '1m':
+        return minuteData;
+      case '1h':
+        return hourData;
+      case 'all':
+        return [...minuteData, ...hourData].sort((a, b) => 
+          a.timestamp.getTime() - b.timestamp.getTime()
+        );
+      default:
+        return minuteData;
+    }
+  };
+
+  const formatChartTime = (timestamp: Date) => {
+    switch (selectedTimeFrame) {
+      case '1m':
+        return format(timestamp, 'HH:mm:ss');
+      case '1h':
+        return format(timestamp, 'HH:mm');
+      default:
+        return format(timestamp, 'HH:mm:ss');
+    }
+  };
 
   const handleTrade = (type: 'buy' | 'sell') => {
     const cost = tradeAmount * currentPrice;
@@ -127,7 +175,6 @@ export default function TradingSimulator() {
   const checkAchievements = (trade: Trade) => {
     const newAchievements = [...achievements];
 
-    // First trade achievement
     if (!newAchievements[0].unlocked && trades.length === 0) {
       newAchievements[0].unlocked = true;
       toast({
@@ -136,7 +183,6 @@ export default function TradingSimulator() {
       });
     }
 
-    // Profit master achievement
     if (!newAchievements[1].unlocked) {
       const profit = trades.some(t => {
         if (t.type === 'sell') {
@@ -156,7 +202,6 @@ export default function TradingSimulator() {
       }
     }
 
-    // Smart trader achievement
     if (!newAchievements[2].unlocked) {
       const lastFiveTrades = trades.slice(-5);
       const allProfitable = lastFiveTrades.every(t => {
@@ -179,7 +224,7 @@ export default function TradingSimulator() {
   };
 
   const portfolioValue = balance + (crypto * currentPrice);
-  const totalProfit = portfolioValue - 10000; // Initial balance was 10000
+  const totalProfit = portfolioValue - 10000;
   const profitPercentage = ((portfolioValue / 10000) - 1) * 100;
 
   return (
@@ -213,10 +258,10 @@ export default function TradingSimulator() {
                 <p className="text-yellow-700 mb-4">
                   Here's how to get started:
                   <br />• Watch the price chart to understand market movements
+                  <br />• Switch between 1-minute and 1-hour views
                   <br />• Buy low and sell high to make profits
                   <br />• Start with $10,000 virtual money
                   <br />• Earn achievements as you learn
-                  <br />• Practice different trading strategies risk-free
                 </p>
                 <Button
                   onClick={() => setShowTutorial(false)}
@@ -239,15 +284,41 @@ export default function TradingSimulator() {
           animate={{ opacity: 1, x: 0 }}
         >
           <Card className="p-4">
-            <h3 className="text-lg font-semibold text-blue-700 mb-4">Price Chart</h3>
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold text-blue-700">Price Chart</h3>
+              <div className="flex gap-2">
+                <Button
+                  variant={selectedTimeFrame === '1m' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setSelectedTimeFrame('1m')}
+                >
+                  1M
+                </Button>
+                <Button
+                  variant={selectedTimeFrame === '1h' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setSelectedTimeFrame('1h')}
+                >
+                  1H
+                </Button>
+                <Button
+                  variant={selectedTimeFrame === 'all' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => setSelectedTimeFrame('all')}
+                >
+                  All
+                </Button>
+              </div>
+            </div>
             <div className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={priceHistory}>
+                <LineChart data={getChartData()}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                   <XAxis 
-                    dataKey="time"
+                    dataKey="timestamp"
                     stroke="#64748b"
                     tick={{ fontSize: 12 }}
+                    tickFormatter={formatChartTime}
                   />
                   <YAxis
                     stroke="#64748b"
@@ -255,6 +326,7 @@ export default function TradingSimulator() {
                     domain={['auto', 'auto']}
                   />
                   <Tooltip
+                    labelFormatter={(value: Date) => format(value, 'PPpp')}
                     contentStyle={{
                       backgroundColor: '#ffffff',
                       border: '1px solid #e2e8f0',
