@@ -8,7 +8,8 @@ import { useScrollTop } from "@/hooks/useScrollTop";
 import { 
   ArrowLeft, ArrowRight, Shield, Key, Wallet, AlertTriangle, 
   CheckCircle2, XCircle, Lock, Eye, ExternalLink, AlertOctagon,
-  Fingerprint, HardDrive, SmartphoneCharging
+  Fingerprint, HardDrive, SmartphoneCharging, Info, AlertCircle,
+  Landmark, History
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "@/hooks/use-toast";
@@ -40,6 +41,114 @@ const SecurityCard = ({ title, icon: Icon, children, className = "" }) => (
         <h2 className="text-xl font-semibold text-gray-900">{title}</h2>
       </div>
       {children}
+    </div>
+  </motion.div>
+);
+
+const WalletCard = ({ name, description, features, price, link, recommendedFor, icon: Icon }) => (
+  <motion.div
+    whileHover={{ scale: 1.02 }}
+    className="p-6 rounded-lg bg-white shadow-sm border border-gray-100"
+  >
+    <div className="flex justify-between items-start">
+      <div className="flex items-center gap-2">
+        <Icon className="h-5 w-5 text-blue-600" />
+        <h3 className="text-lg font-semibold">{name}</h3>
+      </div>
+      <a
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-500 hover:text-blue-700"
+      >
+        <ExternalLink className="h-4 w-4" />
+      </a>
+    </div>
+    <p className="text-gray-600 mt-2">{description}</p>
+    <div className="mt-4">
+      <h4 className="font-medium text-gray-700">Key Features:</h4>
+      <ul className="list-disc pl-5 mt-2 space-y-1 text-sm">
+        {features.map((feature, idx) => (
+          <li key={idx} className="text-gray-600">{feature}</li>
+        ))}
+      </ul>
+    </div>
+    <div className="mt-4 flex justify-between items-center text-sm">
+      <span className="font-medium text-gray-700">Price: {price}</span>
+      <span className="text-blue-600">Best for: {recommendedFor}</span>
+    </div>
+  </motion.div>
+);
+
+const ExchangeCard = ({ name, description, features, setupSteps, fees, link, recommendedFor, icon: Icon }) => (
+  <motion.div
+    whileHover={{ scale: 1.02 }}
+    className="p-6 rounded-lg bg-white shadow-sm border border-gray-100"
+  >
+    <div className="flex justify-between items-start">
+      <div className="flex items-center gap-2">
+        <Icon className="h-5 w-5 text-blue-600" />
+        <h3 className="text-lg font-semibold">{name}</h3>
+      </div>
+      <a
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-500 hover:text-blue-700"
+      >
+        <ExternalLink className="h-4 w-4" />
+      </a>
+    </div>
+    <p className="text-gray-600 mt-2">{description}</p>
+    <div className="mt-4 space-y-4">
+      <div>
+        <h4 className="font-medium text-gray-700">Key Features:</h4>
+        <ul className="list-disc pl-5 mt-2 space-y-1 text-sm">
+          {features.map((feature, idx) => (
+            <li key={idx} className="text-gray-600">{feature}</li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h4 className="font-medium text-gray-700">Account Setup:</h4>
+        <ol className="list-decimal pl-5 mt-2 space-y-1 text-sm">
+          {setupSteps.map((step, idx) => (
+            <li key={idx} className="text-gray-600">{step}</li>
+          ))}
+        </ol>
+      </div>
+    </div>
+    <div className="mt-4 flex justify-between items-center text-sm">
+      <span className="font-medium text-gray-700">Fees: {fees}</span>
+      <span className="text-blue-600">Best for: {recommendedFor}</span>
+    </div>
+  </motion.div>
+);
+
+const DisasterCard = ({ title, date, description, impact, lessons }) => (
+  <motion.div
+    whileHover={{ scale: 1.02 }}
+    className="p-6 rounded-lg bg-white shadow-sm border border-gray-100"
+  >
+    <div className="flex items-center gap-2">
+      <AlertCircle className="h-5 w-5 text-red-500" />
+      <div>
+        <h3 className="text-lg font-semibold">{title}</h3>
+        <p className="text-sm text-gray-500">{date}</p>
+      </div>
+    </div>
+    <p className="text-gray-600 mt-2">{description}</p>
+    <div className="mt-4">
+      <h4 className="font-medium text-gray-700">Impact:</h4>
+      <p className="text-gray-600 mt-1 text-sm">{impact}</p>
+    </div>
+    <div className="mt-4">
+      <h4 className="font-medium text-gray-700">Key Lessons:</h4>
+      <ul className="list-disc pl-5 mt-2 space-y-1 text-sm">
+        {lessons.map((lesson, idx) => (
+          <li key={idx} className="text-gray-600">{lesson}</li>
+        ))}
+      </ul>
     </div>
   </motion.div>
 );
@@ -106,6 +215,149 @@ export default function SecurityRiskSection() {
     }
   ];
 
+  const walletRecommendations = {
+    hardware: [
+      {
+        name: "Ledger Nano S Plus",
+        description: "Popular hardware wallet with a screen for transaction verification",
+        features: [
+          "Supports 5500+ coins and tokens",
+          "Built-in screen for security",
+          "Certified secure element chip"
+        ],
+        price: "$79",
+        link: "https://shop.ledger.com/",
+        recommendedFor: "Long-term storage",
+        icon: HardDrive
+      },
+      {
+        name: "Trezor Model T",
+        description: "Premium hardware wallet with touchscreen interface",
+        features: [
+          "Colored touchscreen",
+          "Open-source software",
+          "Advanced recovery options"
+        ],
+        price: "$219",
+        link: "https://trezor.io/",
+        recommendedFor: "Advanced users",
+        icon: HardDrive
+      }
+    ],
+    software: [
+      {
+        name: "Blue Wallet",
+        description: "User-friendly mobile Bitcoin wallet",
+        features: [
+          "Built specifically for Bitcoin",
+          "Lightning Network support",
+          "Open source"
+        ],
+        price: "Free",
+        link: "https://bluewallet.io/",
+        recommendedFor: "Beginners",
+        icon: Wallet
+      },
+      {
+        name: "Exodus",
+        description: "Desktop and mobile wallet with built-in exchange",
+        features: [
+          "Beautiful interface",
+          "Built-in exchange",
+          "Multiple device sync"
+        ],
+        price: "Free",
+        link: "https://exodus.com/",
+        recommendedFor: "Multi-coin users",
+        icon: Wallet
+      }
+    ]
+  };
+
+  const exchangeGuide = [
+    {
+      name: "Coinbase",
+      description: "Most popular US-based exchange, ideal for beginners",
+      features: [
+        "User-friendly interface",
+        "Strong security measures",
+        "Educational rewards program",
+        "24/7 customer support"
+      ],
+      setupSteps: [
+        "Visit coinbase.com and click 'Get started'",
+        "Verify your email and phone number",
+        "Add payment method (bank account/card)",
+        "Complete ID verification",
+        "Enable 2-factor authentication"
+      ],
+      fees: "Variable, typically 0.5% - 1.5% per trade",
+      link: "https://www.coinbase.com/",
+      recommendedFor: "Beginners",
+      icon: Landmark
+    },
+    {
+      name: "Kraken",
+      description: "Established exchange with advanced features",
+      features: [
+        "Advanced trading features",
+        "Strong security track record",
+        "Competitive fees",
+        "Multiple currency pairs"
+      ],
+      setupSteps: [
+        "Go to kraken.com and create account",
+        "Verify email and set up 2FA",
+        "Complete identity verification",
+        "Add funding method",
+        "Start with basic trading interface"
+      ],
+      fees: "0.16% - 0.26% maker-taker fees",
+      link: "https://www.kraken.com/",
+      recommendedFor: "Advanced users",
+      icon: Landmark
+    }
+  ];
+
+  const cryptoDisasters = [
+    {
+      title: "FTX Collapse",
+      date: "November 2022",
+      description: "One of the largest cryptocurrency exchanges, FTX, collapsed due to misuse of customer funds and fraudulent practices.",
+      impact: "Over $8 billion in customer funds lost, affecting millions of users worldwide.",
+      lessons: [
+        "Don't keep large amounts on exchanges",
+        "Be wary of seemingly 'too good to be true' yields",
+        "Research exchange leadership and practices",
+        "Understand the risks of centralized platforms"
+      ]
+    },
+    {
+      title: "Mt. Gox Hack",
+      date: "February 2014",
+      description: "Mt. Gox, then the largest Bitcoin exchange, lost 850,000 BTC to hackers.",
+      impact: "Approximately $450 million worth of Bitcoin stolen (at 2014 prices).",
+      lessons: [
+        "Use reputable exchanges with proven security",
+        "Withdraw to personal wallets regularly",
+        "Don't trust centralized exchanges with large amounts",
+        "Always enable maximum security features"
+      ]
+    },
+    {
+      title: "Terra/LUNA Collapse",
+      date: "May 2022",
+      description: "The collapse of the Terra/LUNA ecosystem and its UST stablecoin.",
+      impact: "Over $40 billion in market value wiped out in days.",
+      lessons: [
+        "Understand the risks of algorithmic stablecoins",
+        "Don't invest more than you can afford to lose",
+        "Diversify your crypto investments",
+        "Be cautious of high yield promises"
+      ]
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <motion.div
@@ -152,34 +404,48 @@ export default function SecurityRiskSection() {
         </div>
 
         <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-8">
-          <TabsList className="grid w-full grid-cols-4 gap-4 bg-transparent">
+          <TabsList className="grid w-full grid-cols-6 gap-4 bg-transparent">
             <TabsTrigger 
               value="basics"
               className="data-[state=active]:bg-blue-600 data-[state=active]:text-white"
             >
               <Shield className="h-4 w-4 mr-2" />
-              Security Basics
+              Basics
+            </TabsTrigger>
+            <TabsTrigger 
+              value="wallets"
+              className="data-[state=active]:bg-purple-600 data-[state=active]:text-white"
+            >
+              <Wallet className="h-4 w-4 mr-2" />
+              Wallets
+            </TabsTrigger>
+            <TabsTrigger 
+              value="exchanges"
+              className="data-[state=active]:bg-green-600 data-[state=active]:text-white"
+            >
+              <Landmark className="h-4 w-4 mr-2" />
+              Exchanges
+            </TabsTrigger>
+            <TabsTrigger 
+              value="disasters"
+              className="data-[state=active]:bg-red-600 data-[state=active]:text-white"
+            >
+              <History className="h-4 w-4 mr-2" />
+              History
             </TabsTrigger>
             <TabsTrigger 
               value="threats"
-              className="data-[state=active]:bg-red-600 data-[state=active]:text-white"
+              className="data-[state=active]:bg-orange-600 data-[state=active]:text-white"
             >
               <AlertTriangle className="h-4 w-4 mr-2" />
-              Common Threats
+              Threats
             </TabsTrigger>
             <TabsTrigger 
               value="protection"
-              className="data-[state=active]:bg-green-600 data-[state=active]:text-white"
+              className="data-[state=active]:bg-indigo-600 data-[state=active]:text-white"
             >
               <Lock className="h-4 w-4 mr-2" />
-              Protection Measures
-            </TabsTrigger>
-            <TabsTrigger 
-              value="practice"
-              className="data-[state=active]:bg-purple-600 data-[state=active]:text-white"
-            >
-              <Eye className="h-4 w-4 mr-2" />
-              Best Practices
+              Protection
             </TabsTrigger>
           </TabsList>
 
@@ -215,6 +481,109 @@ export default function SecurityRiskSection() {
                       based on your needs and risk tolerance.
                     </p>
                   </motion.div>
+                </div>
+              </div>
+            </SecurityCard>
+          </TabsContent>
+
+          <TabsContent value="wallets">
+            <SecurityCard 
+              title="Wallet Recommendations" 
+              icon={Wallet}
+              className="bg-gradient-to-br from-purple-50 to-pink-50"
+            >
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-xl font-semibold text-purple-800 mb-4">Hardware Wallets</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {walletRecommendations.hardware.map((wallet, index) => (
+                      <WalletCard key={index} {...wallet} />
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-xl font-semibold text-purple-800 mb-4">Software Wallets</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {walletRecommendations.software.map((wallet, index) => (
+                      <WalletCard key={index} {...wallet} />
+                    ))}
+                  </div>
+                </div>
+
+                <div className="bg-white p-4 rounded-lg border border-purple-100">
+                  <h4 className="font-semibold text-purple-800 mb-2">Important Safety Tips:</h4>
+                  <ul className="list-disc pl-5 space-y-2 text-gray-600">
+                    <li>Always download wallets from official websites only</li>
+                    <li>Start with small amounts while learning</li>
+                    <li>Consider using both hardware and software wallets for different purposes</li>
+                    <li>Never store your recovery phrase digitally or share it with anyone</li>
+                  </ul>
+                </div>
+              </div>
+            </SecurityCard>
+          </TabsContent>
+
+          <TabsContent value="exchanges">
+            <SecurityCard 
+              title="Exchange Guide" 
+              icon={Landmark}
+              className="bg-gradient-to-br from-green-50 to-teal-50"
+            >
+              <div className="space-y-6">
+                <div className="bg-white p-4 rounded-lg border border-green-100 mb-6">
+                  <h4 className="font-semibold text-green-800 mb-2">Before You Start:</h4>
+                  <ul className="list-disc pl-5 space-y-2 text-gray-600">
+                    <li>Have your ID ready for verification (passport or driver's license)</li>
+                    <li>Use a secure email address</li>
+                    <li>Install an authenticator app for 2FA</li>
+                    <li>Prepare a secure method for recording credentials</li>
+                  </ul>
+                </div>
+
+                <div className="grid grid-cols-1 gap-6">
+                  {exchangeGuide.map((exchange, index) => (
+                    <ExchangeCard key={index} {...exchange} />
+                  ))}
+                </div>
+
+                <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-100">
+                  <h4 className="font-semibold text-yellow-800 mb-2">Exchange Safety Tips:</h4>
+                  <ul className="list-disc pl-5 space-y-2 text-gray-600">
+                    <li>Always enable two-factor authentication (2FA)</li>
+                    <li>Use a strong, unique password</li>
+                    <li>Verify the exchange URL before logging in</li>
+                    <li>Start with small amounts to test the process</li>
+                    <li>Don't keep large amounts on exchanges long-term</li>
+                    <li>Regularly check your account activity</li>
+                  </ul>
+                </div>
+              </div>
+            </SecurityCard>
+          </TabsContent>
+
+          <TabsContent value="disasters">
+            <SecurityCard 
+              title="Major Crypto Disasters" 
+              icon={History}
+              className="bg-gradient-to-br from-red-50 to-orange-50"
+            >
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 gap-6">
+                  {cryptoDisasters.map((disaster, index) => (
+                    <DisasterCard key={index} {...disaster} />
+                  ))}
+                </div>
+
+                <div className="bg-white p-4 rounded-lg border border-red-100">
+                  <h4 className="font-semibold text-red-800 mb-2">Common Themes & Takeaways:</h4>
+                  <ul className="list-disc pl-5 space-y-2 text-gray-600">
+                    <li>Centralized entities pose significant risks</li>
+                    <li>Security should always be the top priority</li>
+                    <li>If returns seem too good to be true, they probably are</li>
+                    <li>Self-custody is the safest option for long-term storage</li>
+                    <li>The importance of doing thorough research</li>
+                  </ul>
                 </div>
               </div>
             </SecurityCard>
