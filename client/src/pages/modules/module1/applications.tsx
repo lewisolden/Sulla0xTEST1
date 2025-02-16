@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import {
   ArrowLeft,
   ArrowRight,
-  Globe,
+  Globe2,
   Users,
   Wallet,
   Timer,
@@ -20,36 +20,42 @@ import {
   PiggyBank,
   Send,
   ShieldCheck,
-  Code2,
   Banknote,
-  CheckCircle,
-  XCircle
+  Landmark,
+  FileText,
+  LineChart,
+  GraduationCap,
+  Heart
 } from "lucide-react";
 
-// Financial Inclusion Diagram Component
+// Enhanced Financial Inclusion Diagram Component with Animation
 const FinancialInclusionDiagram = () => {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-8">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 my-8">
       {[
         {
-          icon: Globe,
+          icon: Globe2,
           title: "Global Access",
-          description: "Connect to the financial system from anywhere"
+          description: "Connect to the financial system from anywhere",
+          color: "blue"
         },
         {
           icon: PiggyBank,
           title: "Cost Reduction",
-          description: "Lower fees for sending money internationally"
+          description: "Lower fees for sending money internationally",
+          color: "green"
         },
         {
           icon: Users,
           title: "Peer-to-Peer",
-          description: "Direct financial transactions without intermediaries"
+          description: "Direct financial transactions without intermediaries",
+          color: "purple"
         },
         {
           icon: Building2,
           title: "Banking Alternative",
-          description: "Financial services without traditional bank accounts"
+          description: "Financial services without traditional bank accounts",
+          color: "orange"
         }
       ].map((item, index) => (
         <motion.div
@@ -57,15 +63,93 @@ const FinancialInclusionDiagram = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: index * 0.1 }}
-          className="bg-blue-50 p-4 rounded-lg text-center"
+          whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+          className={`bg-${item.color}-50 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300`}
         >
-          <div className="mb-3 flex justify-center">
-            <div className="p-3 bg-blue-100 rounded-full">
-              <item.icon className="w-6 h-6 text-blue-600" />
+          <div className="mb-4 flex justify-center">
+            <div className={`p-4 bg-${item.color}-100 rounded-full`}>
+              <item.icon className={`w-8 h-8 text-${item.color}-600`} />
             </div>
           </div>
-          <h4 className="font-semibold text-blue-800 mb-2">{item.title}</h4>
-          <p className="text-sm text-gray-600">{item.description}</p>
+          <h4 className={`font-semibold text-${item.color}-800 text-lg mb-2 text-center`}>{item.title}</h4>
+          <p className="text-gray-600 text-center">{item.description}</p>
+        </motion.div>
+      ))}
+    </div>
+  );
+};
+
+// New Component: Real World Applications Showcase
+const ApplicationShowcase = () => {
+  const applications = [
+    {
+      icon: Banknote,
+      title: "Digital Payments",
+      description: "Fast, secure, and borderless transactions for everyday purchases",
+      examples: ["Cross-border remittances", "Online shopping", "Bill payments"],
+      color: "emerald"
+    },
+    {
+      icon: Landmark,
+      title: "Decentralized Finance",
+      description: "Access to financial services without traditional banking infrastructure",
+      examples: ["Lending platforms", "Yield farming", "Decentralized exchanges"],
+      color: "violet"
+    },
+    {
+      icon: FileText,
+      title: "Smart Contracts",
+      description: "Automated agreements and transactions without intermediaries",
+      examples: ["Insurance policies", "Real estate deals", "Supply chain tracking"],
+      color: "blue"
+    },
+    {
+      icon: LineChart,
+      title: "Investment Opportunities",
+      description: "New ways to grow and manage wealth",
+      examples: ["Token investments", "Crypto index funds", "NFT marketplaces"],
+      color: "indigo"
+    },
+    {
+      icon: GraduationCap,
+      title: "Education",
+      description: "Learning and certification on the blockchain",
+      examples: ["Digital credentials", "Online courses", "Skill verification"],
+      color: "cyan"
+    },
+    {
+      icon: Heart,
+      title: "Social Impact",
+      description: "Using blockchain for positive change",
+      examples: ["Charity transparency", "Sustainable projects", "Community initiatives"],
+      color: "rose"
+    }
+  ];
+
+  return (
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+      {applications.map((app, index) => (
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: index * 0.1 }}
+          whileHover={{ scale: 1.02 }}
+          className={`bg-${app.color}-50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300`}
+        >
+          <div className={`p-3 bg-${app.color}-100 rounded-full w-fit mb-4`}>
+            <app.icon className={`w-6 h-6 text-${app.color}-600`} />
+          </div>
+          <h3 className={`text-xl font-bold text-${app.color}-800 mb-2`}>{app.title}</h3>
+          <p className="text-gray-600 mb-4">{app.description}</p>
+          <div className="space-y-2">
+            {app.examples.map((example, i) => (
+              <div key={i} className="flex items-center gap-2">
+                <div className={`w-2 h-2 rounded-full bg-${app.color}-400`} />
+                <span className="text-sm text-gray-600">{example}</span>
+              </div>
+            ))}
+          </div>
         </motion.div>
       ))}
     </div>
@@ -77,22 +161,7 @@ const PracticalApplicationsSection = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showQuiz, setShowQuiz] = useState(false);
   const { updateProgress } = useProgress();
-
-  // Add aggressive scroll-to-top on mount
-  useEffect(() => {
-    const forceScrollTop = () => {
-      window.scrollTo(0, 0);
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
-    };
-
-    forceScrollTop();
-    setTimeout(forceScrollTop, 0);
-    requestAnimationFrame(() => {
-      forceScrollTop();
-      requestAnimationFrame(forceScrollTop);
-    });
-  }, []);
+  const [activeSection, setActiveSection] = useState('overview');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -103,7 +172,13 @@ const PracticalApplicationsSection = () => {
 
       if (scrollPercent > 95) {
         setIsFullyRead(true);
-        updateProgress(1, 'practical-applications', true);
+        // Fixed updateProgress call with correct arguments
+        updateProgress({
+          moduleId: 1,
+          sectionId: 'practical-applications',
+          completed: true,
+          score: 100
+        });
       }
     };
 
@@ -113,175 +188,99 @@ const PracticalApplicationsSection = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="fixed top-0 left-0 w-full h-1 bg-gray-300 z-50">
-        <div
-          className="h-full bg-blue-600"
-          style={{ width: `${scrollProgress}%` }}
-        ></div>
-      </div>
+      <motion.div
+        className="fixed top-0 left-0 w-full h-1 bg-gray-300 z-50"
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: scrollProgress / 100 }}
+        style={{ transformOrigin: "left" }}
+      >
+        <div className="h-full bg-blue-600" />
+      </motion.div>
 
       <div className="max-w-4xl mx-auto">
-        <div className="mb-6">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mb-6"
+        >
           <Link href="/modules/module1">
             <Button variant="ghost" className="gap-2">
               <ArrowLeft className="h-4 w-4" />
               Back to Module Overview
             </Button>
           </Link>
+        </motion.div>
+
+        <motion.h1
+          className="text-4xl font-bold text-blue-800 mb-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          Practical Applications of Blockchain Technology
+        </motion.h1>
+
+        <div className="flex gap-4 mb-6 overflow-x-auto pb-2">
+          {['overview', 'financial', 'technical', 'social'].map((section) => (
+            <Button
+              key={section}
+              variant={activeSection === section ? "default" : "outline"}
+              onClick={() => setActiveSection(section)}
+              className="min-w-[120px]"
+            >
+              {section.charAt(0).toUpperCase() + section.slice(1)}
+            </Button>
+          ))}
         </div>
 
-        <h1 className="text-4xl font-bold text-blue-800 mb-6">
-          Practical Applications of Blockchain Technology
-        </h1>
+        <motion.div
+          key={activeSection}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ duration: 0.3 }}
+        >
+          {activeSection === 'overview' && (
+            <Card className="mb-6">
+              <CardContent className="prose max-w-none p-6">
+                <section>
+                  <h2 className="text-2xl font-bold text-blue-700">Overview</h2>
+                  <p className="text-gray-700 leading-relaxed">
+                    Blockchain technology is revolutionizing various sectors beyond just cryptocurrencies.
+                    From financial services to supply chain management, its applications are creating new
+                    possibilities for business and society. Let's explore how this technology is being
+                    implemented in real-world scenarios.
+                  </p>
+                  <ApplicationShowcase />
+                </section>
+              </CardContent>
+            </Card>
+          )}
 
-        <Card className="mb-6">
-          <CardContent className="prose max-w-none p-6">
-            <section>
-              <h2 className="text-2xl font-bold text-blue-700">Overview</h2>
-              <p className="text-gray-700">
-                While blockchain technology gained prominence through cryptocurrencies, its potential applications extend far beyond digital currencies. This section explores how blockchain is transforming various industries and creating new possibilities for business and society.
-              </p>
-              <div className="bg-blue-50 p-4 rounded-lg mt-4">
-                <p className="text-gray-700">
-                  Through this section, you'll learn about:
-                </p>
-                <ul className="list-disc pl-5 mt-2 space-y-1 text-gray-700">
-                  <li>Financial inclusion and accessibility</li>
-                  <li>Payment system improvements</li>
-                  <li>Investment opportunities</li>
-                  <li>Real-world blockchain applications</li>
-                </ul>
-              </div>
-            </section>
+          {activeSection === 'financial' && (
+            <Card className="mb-6">
+              <CardContent className="prose max-w-none p-6">
+                <section>
+                  <h2 className="text-2xl font-bold text-blue-700">Financial Applications</h2>
+                  <p className="text-gray-700 mb-6">
+                    Financial inclusion is one of the most significant impacts of blockchain technology,
+                    providing access to financial services for the unbanked and underbanked populations worldwide.
+                  </p>
+                  <FinancialInclusionDiagram />
+                </section>
+              </CardContent>
+            </Card>
+          )}
 
-            <section className="mt-8">
-              <h2 className="text-2xl font-bold text-blue-700">Financial Inclusion</h2>
-              <p className="text-gray-700 mb-4">
-                One of the most significant applications of blockchain is providing financial services to the unbanked and underbanked populations worldwide.
-              </p>
-
-              <FinancialInclusionDiagram />
-
-              <div className="bg-blue-50 p-4 rounded-lg mt-4">
-                <h3 className="text-lg font-semibold text-blue-800 mb-2">Impact on Global Financial Access</h3>
-                <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                  <li>Enables participation in the global economy without traditional bank accounts</li>
-                  <li>Reduces remittance costs for international money transfers</li>
-                  <li>Facilitates micro-lending and peer-to-peer financial services</li>
-                  <li>Provides secure and affordable cross-border transactions</li>
-                </ul>
-              </div>
-            </section>
-
-            <section className="mt-8">
-              <h2 className="text-2xl font-bold text-blue-700">Payment Efficiency</h2>
-              <p className="text-gray-700 mb-6">
-                Blockchain technology is revolutionizing payment systems through several key innovations:
-              </p>
-
-              <div className="space-y-6">
-                {[
-                  {
-                    icon: Timer,
-                    title: "Near-instant settlements",
-                    description: "Unlike traditional banking systems that can take days to settle transactions, blockchain enables almost immediate settlement of payments. This is achieved through decentralized consensus mechanisms that validate transactions in minutes or seconds."
-                  },
-                  {
-                    icon: Clock,
-                    title: "24/7 operation without banking hours restrictions",
-                    description: "Blockchain networks operate continuously without downtime, allowing transactions to be processed at any time. This eliminates the limitations of traditional banking hours and enables global commerce across time zones."
-                  },
-                  {
-                    icon: Send,
-                    title: "Lower transaction fees for international transfers",
-                    description: "By removing intermediary banks and reducing operational costs, blockchain significantly lowers the fees associated with international money transfers. This makes cross-border payments more accessible and economical."
-                  },
-                  {
-                    icon: Code2,
-                    title: "Programmable payments through smart contracts",
-                    description: "Smart contracts enable automated, condition-based payments that execute when predefined criteria are met. This allows for complex financial arrangements without the need for manual intervention or trust in intermediaries."
-                  },
-                  {
-                    icon: ShieldCheck,
-                    title: "Enhanced security through cryptographic verification",
-                    description: "Every transaction is secured using advanced cryptography and must be verified by multiple network participants. This makes fraud extremely difficult and provides transparent, immutable records of all transactions."
-                  }
-                ].map((item, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="bg-blue-50 p-4 rounded-lg"
-                  >
-                    <div className="flex items-start gap-4">
-                      <div className="p-2 bg-blue-100 rounded-full mt-1">
-                        <item.icon className="w-5 h-5 text-blue-600" />
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-semibold text-blue-800 mb-2">{item.title}</h3>
-                        <p className="text-gray-700">{item.description}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </section>
-
-            <section className="mt-8">
-              <h2 className="text-2xl font-bold text-blue-700">Investment Opportunities</h2>
-              <p className="text-gray-700 mb-4">
-                Blockchain has created new investment possibilities:
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {[
-                  {
-                    icon: Banknote,
-                    title: "Digital asset trading",
-                    description: "Trade cryptocurrencies and digital tokens"
-                  },
-                  {
-                    icon: Building2,
-                    title: "DeFi opportunities",
-                    description: "Access decentralized finance platforms"
-                  },
-                  {
-                    icon: Lock,
-                    title: "Tokenized assets",
-                    description: "Invest in tokenized real-world assets"
-                  },
-                  {
-                    icon: Wallet,
-                    title: "Yield farming",
-                    description: "Earn returns through liquidity provision"
-                  }
-                ].map((item, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="bg-blue-50 p-4 rounded-lg"
-                  >
-                    <div className="flex items-center gap-3 mb-2">
-                      <div className="p-2 bg-blue-100 rounded-full">
-                        <item.icon className="w-4 h-4 text-blue-600" />
-                      </div>
-                      <h4 className="font-semibold text-blue-800">{item.title}</h4>
-                    </div>
-                    <p className="text-sm text-gray-600">{item.description}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </section>
-          </CardContent>
-        </Card>
+          {/* Add similar sections for technical and social applications */}
+        </motion.div>
 
         {isFullyRead && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
             className="mt-8 space-y-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
           >
             <Card className="bg-green-100 border-l-4 border-green-500 p-4">
               <p className="text-green-700">
@@ -289,13 +288,31 @@ const PracticalApplicationsSection = () => {
               </p>
             </Card>
 
-            <Button
-              onClick={() => setShowQuiz(!showQuiz)}
-              className="w-full bg-purple-600 hover:bg-purple-700"
-              size="lg"
-            >
-              {showQuiz ? "Hide Quiz" : "Take Topic Quiz"}
-            </Button>
+            <div className="flex flex-col md:flex-row gap-4">
+              <Button
+                onClick={() => setShowQuiz(!showQuiz)}
+                className="w-full md:w-auto bg-purple-600 hover:bg-purple-700"
+                size="lg"
+              >
+                {showQuiz ? "Hide Quiz" : "Take Topic Quiz"}
+              </Button>
+
+              <div className="flex flex-1 justify-end gap-4">
+                <Link href="/modules/module1/security">
+                  <Button variant="outline" className="w-full md:w-auto">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Previous Topic
+                  </Button>
+                </Link>
+
+                <Link href="/modules/module1/getting-started">
+                  <Button className="w-full md:w-auto bg-blue-600 hover:bg-blue-700">
+                    Next Topic
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+              </div>
+            </div>
 
             {showQuiz && (
               <motion.div
@@ -303,7 +320,7 @@ const PracticalApplicationsSection = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                <Card className="mt-4">
+                <Card>
                   <CardContent className="p-6">
                     <h2 className="text-2xl font-bold text-blue-800 mb-4">Topic Quiz</h2>
                     <PracticalApplicationsQuiz />
@@ -311,23 +328,6 @@ const PracticalApplicationsSection = () => {
                 </Card>
               </motion.div>
             )}
-
-            <div className="flex justify-between mt-4">
-              <Link href="/modules/module1/security">
-                <Button variant="outline" className="gap-2">
-                  <ArrowLeft className="h-4 w-4" />
-                  Previous Topic
-                </Button>
-              </Link>
-              <Link href="/modules/module1/getting-started">
-                <Button
-                  className="bg-blue-600 hover:bg-blue-700 gap-2"
-                >
-                  Next Topic: Getting Started Safely
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
           </motion.div>
         )}
       </div>
