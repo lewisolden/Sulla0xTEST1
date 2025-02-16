@@ -4,6 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { ProgressProvider } from "@/context/progress-context";
 import { AuthProvider, useAuth } from "@/hooks/use-auth";
+import { CourseAssistant } from "@/components/chat/CourseAssistant";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Curriculum from "@/pages/curriculum";
@@ -203,6 +204,7 @@ function App() {
               <Router />
             </main>
             <Footer />
+            <CourseAssistant />
           </div>
           <Toaster />
         </ProgressProvider>
