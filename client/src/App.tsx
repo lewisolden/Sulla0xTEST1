@@ -81,6 +81,7 @@ import TradingSimulator from "@/pages/trading-simulator";
 import GlossaryPage from "@/pages/glossary";
 import TechDeckPage from "@/pages/techdeck";
 import InvestmentDeck from "@/pages/investment-deck";
+import SenseiPage from "@/pages/sensei";
 
 function ProtectedRoute({ component: Component, adminOnly = false, publicAccess = false, ...rest }: any) {
   const { user, isLoading } = useAuth();
@@ -188,6 +189,7 @@ function Router() {
       {/* Module 4 Routes */}
       <ProtectedRoute path="/modules/module4" component={Module4Landing} />
       <ProtectedRoute path="/modules/module4/digital-vs-traditional" component={DigitalVsTraditionalSection} />
+      <Route path="/sensei" component={() => <ProtectedRoute component={SenseiPage} publicAccess={true} />} />
       <Route component={NotFound} />
     </Switch>
   );
