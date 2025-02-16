@@ -99,6 +99,24 @@ export default function AccountPage() {
   };
 
   const handleFeedbackSubmit = async () => {
+    if (!feedbackText.trim()) {
+      toast({
+        title: "Error",
+        description: "Please enter your feedback",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (feedbackType === "course" && !selectedCourse) {
+      toast({
+        title: "Error",
+        description: "Please select a course",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       const response = await fetch('/api/feedback', {
         method: 'POST',
@@ -107,21 +125,33 @@ export default function AccountPage() {
         },
         body: JSON.stringify({
           type: feedbackType,
-          courseId: selectedCourse,
-          rating,
-          feedback: feedbackText,
+          courseId: selectedCourse ? parseInt(selectedCourse) : undefined,
+          rating: rating || undefined,
+          feedback: feedbackText.trim(),
         }),
       });
 
-      if (response.ok) {
-        // Reset form
-        setFeedbackType("course");
-        setSelectedCourse("");
-        setRating(0);
-        setFeedbackText("");
+      if (!response.ok) {
+        throw new Error('Failed to submit feedback');
       }
+
+      // Reset form
+      setFeedbackType("course");
+      setSelectedCourse("");
+      setRating(0);
+      setFeedbackText("");
+
+      toast({
+        title: "Success",
+        description: "Thank you for your feedback!",
+      });
     } catch (error) {
       console.error('Failed to submit feedback:', error);
+      toast({
+        title: "Error",
+        description: "Failed to submit feedback. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 
