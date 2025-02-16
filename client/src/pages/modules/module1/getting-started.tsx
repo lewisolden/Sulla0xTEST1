@@ -335,7 +335,7 @@ const GettingStartedSection = () => {
           <h3 className="font-semibold text-lg mb-2">{title}</h3>
           <p className="text-gray-600 mb-3">{description}</p>
           <div className="flex flex-wrap gap-2">
-                        {tags.map((tag, index) => (
+            {tags.map((tag, index) => (
               <span
                 key={index}
                 className={`px-2 py-1 rounded-full text-sm ${color.replace('border-', 'bg-').replace('-500', '-100')} ${color.replace('border-', 'text-')}`}
@@ -387,8 +387,8 @@ const GettingStartedSection = () => {
                       <div className="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400">
                         <h3 className="font-semibold text-yellow-800">⚠️ What is a Seed Phrase?</h3>
                         <p className="text-yellow-700 mt-2">
-                          Think of a seed phrase as the master key to your crypto wallet - it's like the password 
-                          that gives access to all your cryptocurrency. It's a sequence of 12 simple words that can 
+                          Think of a seed phrase as the master key to your crypto wallet - it's like the password
+                          that gives access to all your cryptocurrency. It's a sequence of 12 simple words that can
                           restore your wallet if you:
                         </p>
                         <ul className="list-disc ml-6 mt-2 space-y-1">
@@ -459,13 +459,16 @@ const GettingStartedSection = () => {
 
                           <div className="bg-blue-100 p-4 rounded-lg mb-4">
                             <p className="text-blue-800 font-medium">
-                              ✍️ After you've written down your seed phrase, click the button below. 
+                              ✍️ After you've written down your seed phrase, click the button below.
                               You'll be asked to verify a few words to make sure you've recorded them correctly.
                             </p>
                           </div>
 
                           <Button
-                            onClick={() => setIsVerifying(true)}
+                            onClick={() => {
+                              window.scrollTo({ top: 0, behavior: 'smooth' });
+                              setIsVerifying(true);
+                            }}
                             className="w-full"
                           >
                             I've Written Down My Seed Phrase Safely
@@ -475,7 +478,7 @@ const GettingStartedSection = () => {
                         <div className="space-y-4">
                           <div className="bg-blue-100 p-4 rounded-lg">
                             <p className="text-blue-800 font-medium">
-                              Let's verify that you've written down your seed phrase correctly. 
+                              Let's verify that you've written down your seed phrase correctly.
                               Enter word #{currentWordIndex + 1} from your written copy:
                             </p>
                             <p className="text-sm text-blue-600 mt-2">
