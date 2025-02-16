@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Maximize2, Minimize2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-// import html2pdf from 'html2pdf.js'; //removed import
 import {
   titleSlide,
   problemSlide,
@@ -22,14 +21,13 @@ import {
   teamSlide,
   ctaSlide,
 } from '@/components/ui/presentation-slides';
+import { Card } from '@/components/ui/card';
+import { Brain, Rocket, Cpu, Users, Network, MessageSquare, Target, Book } from 'lucide-react';
 
 const InvestmentDeck = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  // const [isExporting, setIsExporting] = useState(false); //removed state
   const deckRef = useRef<HTMLDivElement>(null);
-
-  // const exportToPDF = async () => { ... }; //removed function
 
   const slides = [
     titleSlide,
@@ -41,6 +39,80 @@ const InvestmentDeck = () => {
     marketSlide2,
     productSlide1,
     dataStrategySlide,
+    {
+      id: 10,
+      title: "Sensei AI Tutor",
+      content: (
+        <div className="space-y-8">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-200 mb-2">Sensei - AI-Powered Personal Learning Assistant</h2>
+            <p className="text-lg text-gray-400">Adaptive learning companion leveraging advanced AI for personalized education</p>
+          </div>
+
+          <div className="grid grid-cols-2 gap-8">
+            <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
+              <div className="flex items-center space-x-4 mb-6">
+                <Brain className="w-8 h-8 text-blue-400" />
+                <h3 className="text-xl font-semibold text-gray-200">Core Capabilities</h3>
+              </div>
+              <ul className="space-y-4">
+                <li className="flex items-start space-x-3">
+                  <MessageSquare className="w-5 h-5 text-blue-400 mt-1" />
+                  <div>
+                    <h4 className="font-medium text-gray-200">Natural Conversations</h4>
+                    <p className="text-sm text-gray-400">Advanced language model for intuitive learning interactions and real-time support</p>
+                  </div>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <Target className="w-5 h-5 text-blue-400 mt-1" />
+                  <div>
+                    <h4 className="font-medium text-gray-200">Personalized Learning</h4>
+                    <p className="text-sm text-gray-400">Adapts teaching style and content based on individual progress and preferences</p>
+                  </div>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <Book className="w-5 h-5 text-blue-400 mt-1" />
+                  <div>
+                    <h4 className="font-medium text-gray-200">Curriculum Integration</h4>
+                    <p className="text-sm text-gray-400">Deep understanding of course materials for contextual assistance</p>
+                  </div>
+                </li>
+              </ul>
+            </Card>
+
+            <Card className="p-8 bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
+              <div className="flex items-center space-x-4 mb-6">
+                <Rocket className="w-8 h-8 text-purple-400" />
+                <h3 className="text-xl font-semibold text-gray-200">Future Enhancements</h3>
+              </div>
+              <ul className="space-y-4">
+                <li className="flex items-start space-x-3">
+                  <Cpu className="w-5 h-5 text-purple-400 mt-1" />
+                  <div>
+                    <h4 className="font-medium text-gray-200">Continuous Learning</h4>
+                    <p className="text-sm text-gray-400">Evolving knowledge base through user interactions and feedback loops</p>
+                  </div>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <Users className="w-5 h-5 text-purple-400 mt-1" />
+                  <div>
+                    <h4 className="font-medium text-gray-200">Community Insights</h4>
+                    <p className="text-sm text-gray-400">Aggregated learning patterns to improve educational strategies</p>
+                  </div>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <Network className="w-5 h-5 text-purple-400 mt-1" />
+                  <div>
+                    <h4 className="font-medium text-gray-200">Advanced Integration</h4>
+                    <p className="text-sm text-gray-400">Deeper course content understanding and real-time adaptation capabilities</p>
+                  </div>
+                </li>
+              </ul>
+            </Card>
+          </div>
+        </div>
+      )
+    },
     productSlide2,
     gtmStrategySlide,
     tractionSlide,
