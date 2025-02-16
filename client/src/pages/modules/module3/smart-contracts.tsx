@@ -5,11 +5,156 @@ import { useProgress } from "@/context/progress-context";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
-import { Code, Shield, Workflow, GitBranch } from "lucide-react";
+import { Code, Shield, Workflow, GitBranch, User } from "lucide-react";
 import SmartContractsQuiz from "@/components/quizzes/SmartContractsQuiz";
 import SmartContractWorkflow from "@/components/diagrams/SmartContractWorkflow";
 import SmartContractStructure from "@/components/diagrams/SmartContractStructure";
 import { useScrollTop } from "@/hooks/useScrollTop";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
+
+const SimpleSmartContractExercise = () => {
+  const [contractCode, setContractCode] = useState('');
+  const [balance, setBalance] = useState(100);
+  const [recipient, setRecipient] = useState('');
+  const [amount, setAmount] = useState('');
+  const { toast } = useToast();
+
+  const handleTransfer = () => {
+    if (!recipient || !amount) {
+      toast({
+        title: "Error",
+        description: "Please fill in all fields",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const transferAmount = Number(amount);
+    if (transferAmount > balance) {
+      toast({
+        title: "Transfer Failed",
+        description: "Insufficient balance",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setBalance(prev => prev - transferAmount);
+    toast({
+      title: "Transfer Successful",
+      description: `Transferred ${amount} tokens to ${recipient}`,
+      variant: "default",
+    });
+  };
+
+  return (
+    <Card className="p-6 my-8">
+      <h3 className="text-2xl font-bold text-blue-700 mb-4">Interactive Smart Contract Exercise</h3>
+      <div className="space-y-4">
+        <div className="bg-gray-100 p-4 rounded-lg">
+          <p className="mb-2">Your Smart Contract:</p>
+          <pre className="bg-black text-green-400 p-4 rounded overflow-x-auto">
+            {`// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract SimpleToken {
+    mapping(address => uint256) public balances;
+
+    constructor() {
+        balances[msg.sender] = 100;
+    }
+
+    function transfer(address to, uint256 amount) public {
+        require(balances[msg.sender] >= amount, "Insufficient balance");
+        balances[msg.sender] -= amount;
+        balances[to] += amount;
+    }
+}`}
+          </pre>
+        </div>
+
+        <div className="bg-blue-50 p-4 rounded-lg">
+          <p className="font-semibold mb-2">Your Balance: {balance} tokens</p>
+          <div className="space-y-2">
+            <Input
+              placeholder="Recipient Address (e.g. 0x123...)"
+              value={recipient}
+              onChange={(e) => setRecipient(e.target.value)}
+            />
+            <Input
+              type="number"
+              placeholder="Amount to Transfer"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+            />
+            <Button onClick={handleTransfer} className="w-full">
+              Transfer Tokens
+            </Button>
+          </div>
+        </div>
+      </div>
+    </Card>
+  );
+};
+
+const NFTMintingExercise = () => {
+  const [isMinted, setIsMinted] = useState(false);
+  const [ethBalance, setEthBalance] = useState(20);
+  const { toast } = useToast();
+
+  const handleMint = () => {
+    if (ethBalance < 10) {
+      toast({
+        title: "Minting Failed",
+        description: "Insufficient ETH balance (need 10 ETH)",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setEthBalance(prev => prev - 10);
+    setIsMinted(true);
+    toast({
+      title: "NFT Minted Successfully!",
+      description: "Your CryptoPunk NFT has been minted",
+      variant: "default",
+    });
+  };
+
+  return (
+    <Card className="p-6 my-8">
+      <h3 className="text-2xl font-bold text-blue-700 mb-4">NFT Minting Exercise</h3>
+      <div className="space-y-4">
+        <div className="bg-gray-100 p-4 rounded-lg">
+          <p className="mb-2">Your ETH Balance: {ethBalance} ETH</p>
+          {!isMinted ? (
+            <div className="space-y-4">
+              <div className="bg-white p-4 rounded-lg shadow-sm">
+                <div className="w-32 h-32 mx-auto bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                  <User className="w-16 h-16 text-white" />
+                </div>
+                <p className="text-center mt-2">CryptoPunk #1337</p>
+                <p className="text-center text-sm text-gray-600">Price: 10 ETH</p>
+              </div>
+              <Button onClick={handleMint} className="w-full">
+                Mint NFT (10 ETH)
+              </Button>
+            </div>
+          ) : (
+            <div className="text-center">
+              <p className="text-green-600 font-bold mb-2">🎉 Congratulations!</p>
+              <p>You now own CryptoPunk #1337</p>
+              <div className="w-32 h-32 mx-auto my-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                <User className="w-16 h-16 text-white" />
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </Card>
+  );
+};
 
 const SmartContractsSection = () => {
   useScrollTop();
@@ -335,6 +480,18 @@ const SmartContractsSection = () => {
           </motion.div>
         )}
       </div>
+
+      {/* Add Interactive Exercises Section */}
+      <motion.section
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="mt-12"
+      >
+        <h2 className="text-3xl font-bold text-blue-700 mb-6">Interactive Exercises</h2>
+        <SimpleSmartContractExercise />
+        <NFTMintingExercise />
+      </motion.section>
 
       <ModuleNavigation
         prev={{
