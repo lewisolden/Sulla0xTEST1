@@ -14,10 +14,10 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 
 const SimpleSmartContractExercise = () => {
-  const [contractCode, setContractCode] = useState('');
   const [balance, setBalance] = useState(100);
   const [recipient, setRecipient] = useState('');
   const [amount, setAmount] = useState('');
+  const [step, setStep] = useState(1);
   const { toast } = useToast();
 
   const handleTransfer = () => {
@@ -34,16 +34,17 @@ const SimpleSmartContractExercise = () => {
     if (transferAmount > balance) {
       toast({
         title: "Transfer Failed",
-        description: "Insufficient balance",
+        description: "Insufficient balance - This is how smart contracts protect against invalid transactions!",
         variant: "destructive",
       });
       return;
     }
 
     setBalance(prev => prev - transferAmount);
+    setStep(3);
     toast({
-      title: "Transfer Successful",
-      description: `Transferred ${amount} tokens to ${recipient}`,
+      title: "Transfer Successful!",
+      description: "The smart contract automatically executed the transfer once all conditions were met.",
       variant: "default",
     });
   };
@@ -51,48 +52,109 @@ const SimpleSmartContractExercise = () => {
   return (
     <Card className="p-6 my-8">
       <h3 className="text-2xl font-bold text-blue-700 mb-4">Interactive Smart Contract Exercise</h3>
-      <div className="space-y-4">
+
+      {/* Introduction */}
+      <div className="bg-blue-50 p-4 rounded-lg mb-6">
+        <h4 className="font-semibold text-blue-700 mb-2">What is a Smart Contract?</h4>
+        <p className="text-gray-700 mb-4">
+          Think of a smart contract like a vending machine: when you put in money and make a selection,
+          it automatically gives you what you want without needing anyone to help. Smart contracts work
+          the same way - they automatically execute actions when certain conditions are met.
+        </p>
+      </div>
+
+      {/* The Exercise */}
+      <div className="space-y-6">
+        {/* Step 1: Understand the Contract */}
         <div className="bg-gray-100 p-4 rounded-lg">
-          <p className="mb-2">Your Smart Contract:</p>
-          <pre className="bg-black text-green-400 p-4 rounded overflow-x-auto">
-            {`// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
-
+          <h4 className="font-semibold text-blue-700 mb-2">Step 1: Understanding Your First Smart Contract</h4>
+          <p className="mb-4">
+            Below is a simple smart contract that can transfer tokens between addresses.
+            It automatically checks if you have enough tokens before allowing a transfer.
+          </p>
+          <div className="bg-black text-green-400 p-4 rounded overflow-x-auto">
+            <pre className="whitespace-pre-wrap">
+              {`// This is a simple token transfer contract
 contract SimpleToken {
-    mapping(address => uint256) public balances;
+    // Store everyone's balance
+    mapping(address => uint256) balances;
 
-    constructor() {
-        balances[msg.sender] = 100;
-    }
+    // Check if sender has enough tokens
+    function transfer(address to, uint256 amount) {
+        require(balances[sender] >= amount, 
+                "Must have enough tokens");
 
-    function transfer(address to, uint256 amount) public {
-        require(balances[msg.sender] >= amount, "Insufficient balance");
-        balances[msg.sender] -= amount;
-        balances[to] += amount;
+        // If they do, subtract from sender
+        balances[sender] = balances[sender] - amount;
+
+        // And add to recipient
+        balances[to] = balances[to] + amount;
     }
 }`}
-          </pre>
+            </pre>
+          </div>
         </div>
 
+        {/* Step 2: Try the Contract */}
         <div className="bg-blue-50 p-4 rounded-lg">
-          <p className="font-semibold mb-2">Your Balance: {balance} tokens</p>
-          <div className="space-y-2">
-            <Input
-              placeholder="Recipient Address (e.g. 0x123...)"
-              value={recipient}
-              onChange={(e) => setRecipient(e.target.value)}
-            />
-            <Input
-              type="number"
-              placeholder="Amount to Transfer"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-            />
-            <Button onClick={handleTransfer} className="w-full">
-              Transfer Tokens
+          <h4 className="font-semibold text-blue-700 mb-2">Step 2: Try It Yourself!</h4>
+          <p className="mb-4">
+            Let's try sending some tokens! You have {balance} tokens to experiment with.
+            The smart contract will automatically check if you have enough tokens before allowing the transfer.
+          </p>
+
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-1">Recipient's Address:</label>
+              <Input
+                placeholder="Enter any address (e.g. 0x123...)"
+                value={recipient}
+                onChange={(e) => setRecipient(e.target.value)}
+              />
+              <p className="text-sm text-gray-600 mt-1">
+                This is where your tokens will be sent
+              </p>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-1">Amount to Send:</label>
+              <Input
+                type="number"
+                placeholder="How many tokens to send?"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+              />
+              <p className="text-sm text-gray-600 mt-1">
+                The smart contract will check if you have enough tokens
+              </p>
+            </div>
+
+            <Button 
+              onClick={handleTransfer} 
+              className="w-full"
+              variant="default"
+            >
+              Execute Smart Contract
             </Button>
           </div>
         </div>
+
+        {/* Step 3: Understanding What Happened */}
+        {step === 3 && (
+          <div className="bg-green-50 border border-green-200 p-4 rounded-lg">
+            <h4 className="font-semibold text-green-700 mb-2">Success! Here's What Happened:</h4>
+            <ol className="list-decimal pl-5 space-y-2">
+              <li>The smart contract first checked if you had enough tokens</li>
+              <li>Once verified, it automatically subtracted tokens from your balance</li>
+              <li>Then it added those tokens to the recipient's balance</li>
+              <li>All of this happened automatically without any middleman!</li>
+            </ol>
+            <p className="mt-4 text-sm text-green-600">
+              This is the power of smart contracts - they automatically execute and enforce rules without
+              needing anyone to oversee the transaction.
+            </p>
+          </div>
+        )}
       </div>
     </Card>
   );
