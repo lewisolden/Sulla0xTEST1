@@ -13,8 +13,7 @@ import { fileURLToPath } from 'url';
 import type { Browser } from 'puppeteer';
 import puppeteer from 'puppeteer';
 import { sendTestEmail } from './services/email';
-import { verifyEmailService } from './services/email'; // Import the verification function
-
+import { verifyEmailService } from './services/email';
 
 // ES Module path handling
 const __filename = fileURLToPath(import.meta.url);
@@ -38,15 +37,6 @@ export function registerRoutes(app: Express): Server {
 
   // Mount admin routes 
   app.use("/api/admin", adminRouter);
-  // Add new detailed analytics endpoint here.  Implementation details are missing from the edited code.
-  app.get('/api/admin/detailed-analytics', requireAdmin, async (req, res) => {
-    try {
-      // Implement detailed analytics logic here.  This is a placeholder.
-      res.json({ message: 'Detailed analytics endpoint (placeholder)' });
-    } catch (error) {
-      res.status(500).json({ error: 'Failed to fetch detailed analytics' });
-    }
-  });
 
   // Add learning path routes
   app.use(learningPathRouter);
