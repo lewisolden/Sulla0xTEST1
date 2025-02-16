@@ -1,115 +1,121 @@
 import React from 'react';
-import { BookOpen, Brain, Trophy, Zap, Globe, Shield, Users, Terminal, Rocket, ChartLine } from 'lucide-react';
+import { BookOpen, Brain, Trophy, Zap, Globe, Shield, Users, Terminal, Rocket, ChartLine, Sparkles, Bot, Code, Target } from 'lucide-react';
 
 const AboutFeature = ({ icon: Icon, title, description }) => (
-  <div className="flex items-start space-x-4 mb-6">
-    <div className="bg-blue-100 p-2 rounded-lg">
-      <Icon className="w-6 h-6 text-blue-700" />
-    </div>
-    <div>
-      <h3 className="text-xl font-semibold mb-2">{title}</h3>
-      <p className="text-gray-600">{description}</p>
+  <div className="group hover:transform hover:scale-105 transition-all duration-300 bg-white rounded-xl p-6 shadow-lg border border-blue-100 mb-6">
+    <div className="flex items-start space-x-4">
+      <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-3 rounded-lg group-hover:from-purple-500 group-hover:to-blue-500 transition-all duration-300">
+        <Icon className="w-6 h-6 text-white" />
+      </div>
+      <div>
+        <h3 className="text-xl font-semibold mb-2 text-gray-800">{title}</h3>
+        <p className="text-gray-600 leading-relaxed">{description}</p>
+      </div>
     </div>
   </div>
 );
 
 const About = () => {
   return (
-    <div className="container mx-auto px-4 py-12">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-5xl font-bold mb-6 text-blue-700">About Sulla</h1>
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      <div className="container mx-auto px-4 py-12">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-16">
+            <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text">
+              Welcome to Sulla
+            </h1>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Where AI-Powered Learning Meets Blockchain Education
+            </p>
+          </div>
 
-        <section className="mb-12">
-          <h2 className="text-3xl font-semibold mb-4">Our Vision</h2>
-          <p className="text-lg text-gray-700 mb-6">
-            Sulla is revolutionizing blockchain and cryptocurrency education through an 
-            innovative, AI-powered learning platform. We're building the future of 
-            educational technology, where personalized learning paths meet cutting-edge 
-            interactive experiences.
-          </p>
-        </section>
+          <section className="mb-16">
+            <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl p-8 mb-12">
+              <div className="flex items-center mb-6">
+                <Bot className="w-10 h-10 mr-4" />
+                <h2 className="text-3xl font-bold">Meet Sensei - Your AI Learning Companion</h2>
+              </div>
+              <p className="text-lg opacity-90 mb-6">
+                Sensei is our advanced AI learning system that personalizes your educational journey. 
+                Using cutting-edge artificial intelligence, Sensei adapts to your learning style, 
+                pace, and preferences to create a truly personalized learning experience.
+              </p>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="bg-white/10 rounded-lg p-4">
+                  <Sparkles className="w-6 h-6 mb-2" />
+                  <h3 className="font-semibold mb-2">Adaptive Learning</h3>
+                  <p className="opacity-80">Dynamically adjusts content difficulty based on your progress</p>
+                </div>
+                <div className="bg-white/10 rounded-lg p-4">
+                  <Target className="w-6 h-6 mb-2" />
+                  <h3 className="font-semibold mb-2">Smart Assessment</h3>
+                  <p className="opacity-80">AI-powered evaluation of your understanding and skills</p>
+                </div>
+              </div>
+            </div>
+          </section>
 
-        <section className="mb-12">
-          <h2 className="text-3xl font-semibold mb-6">What Sets Us Apart</h2>
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold mb-8 text-center">What Sets Us Apart</h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              <AboutFeature
+                icon={Brain}
+                title="AI-Powered Learning"
+                description="Our platform leverages advanced AI algorithms to create personalized learning paths, ensuring optimal knowledge retention and progress."
+              />
+              <AboutFeature
+                icon={Terminal}
+                title="Interactive Modules"
+                description="Engage with hands-on simulations and AI-guided practical exercises that bring blockchain concepts to life."
+              />
+              <AboutFeature
+                icon={Code}
+                title="Real-time AI Feedback"
+                description="Receive instant, intelligent feedback on your progress and understanding from our AI system."
+              />
+              <AboutFeature
+                icon={Globe}
+                title="Dynamic Curriculum"
+                description="AI-curated content that evolves with the blockchain industry, ensuring you're always learning the most relevant information."
+              />
+            </div>
+          </section>
 
-          <AboutFeature
-            icon={Brain}
-            title="AI-Powered Adaptive Learning"
-            description="Our platform uses advanced AI algorithms to personalize your learning journey, 
-            adjusting content difficulty and pace based on your progress and learning style."
-          />
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold mb-8 text-center">Advanced Features</h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              <AboutFeature
+                icon={Shield}
+                title="Expert-Verified Content"
+                description="All content is validated by industry experts and enhanced by our AI system for accuracy and relevance."
+              />
+              <AboutFeature
+                icon={Users}
+                title="AI-Enhanced Community"
+                description="Connect with peers and receive AI-powered recommendations for study groups and collaborations."
+              />
+              <AboutFeature
+                icon={ChartLine}
+                title="Smart Analytics"
+                description="Track your progress with AI-powered analytics that provide deep insights into your learning journey."
+              />
+              <AboutFeature
+                icon={Rocket}
+                title="Future-Ready Learning"
+                description="Stay ahead with AI-predicted industry trends and automatically updated course content."
+              />
+            </div>
+          </section>
 
-          <AboutFeature
-            icon={Terminal}
-            title="Interactive Learning Modules"
-            description="Engage with hands-on simulations, practical exercises, and real-world scenarios 
-            that bring blockchain concepts to life."
-          />
-
-          <AboutFeature
-            icon={Trophy}
-            title="Gamified Learning Experience"
-            description="Earn badges, track progress, and compete with peers through our 
-            achievement-based learning system that makes education engaging and rewarding."
-          />
-
-          <AboutFeature
-            icon={Globe}
-            title="Comprehensive Curriculum"
-            description="From blockchain basics to advanced cryptocurrency trading strategies, our 
-            curriculum covers everything you need to become proficient in the digital asset space."
-          />
-
-          <AboutFeature
-            icon={Shield}
-            title="Verified Knowledge"
-            description="Each module is carefully crafted and verified by industry experts, 
-            ensuring you receive accurate, up-to-date information about the rapidly evolving 
-            blockchain ecosystem."
-          />
-        </section>
-
-        <section className="mb-12">
-          <h2 className="text-3xl font-semibold mb-6">Built for the Future</h2>
-
-          <AboutFeature
-            icon={Rocket}
-            title="Future-Ready Education"
-            description="Our platform evolves with the blockchain industry, continuously updating 
-            content to reflect the latest developments and emerging technologies."
-          />
-
-          <AboutFeature
-            icon={Users}
-            title="Community-Driven Learning"
-            description="Join a vibrant community of learners, share insights, and collaborate 
-            on projects while building your network in the blockchain space."
-          />
-
-          <AboutFeature
-            icon={ChartLine}
-            title="Progress Tracking"
-            description="Monitor your learning journey with detailed analytics, performance metrics, 
-            and personalized recommendations for improvement."
-          />
-
-          <AboutFeature
-            icon={Zap}
-            title="Cutting-Edge Technology"
-            description="Experience learning through state-of-the-art web technologies, ensuring 
-            a smooth, responsive, and engaging educational experience."
-          />
-        </section>
-
-        <section className="bg-blue-50 p-8 rounded-lg">
-          <h2 className="text-3xl font-semibold mb-4">Join the Revolution</h2>
-          <p className="text-lg text-gray-700">
-            Whether you're a complete beginner or an experienced professional, Sulla 
-            provides the tools, knowledge, and community you need to master blockchain 
-            technology and cryptocurrency. Start your journey today and be part of the 
-            future of finance and technology.
-          </p>
-        </section>
+          <section className="bg-gradient-to-r from-blue-50 to-purple-50 p-8 rounded-2xl shadow-inner">
+            <h2 className="text-3xl font-bold mb-6 text-center">Start Your Journey Today</h2>
+            <p className="text-lg text-gray-700 text-center max-w-2xl mx-auto">
+              Join thousands of learners benefiting from our AI-powered platform. Whether you're 
+              a beginner or an experienced professional, Sulla's adaptive learning system will 
+              guide you to mastery in blockchain technology and cryptocurrency.
+            </p>
+          </section>
+        </div>
       </div>
     </div>
   );
