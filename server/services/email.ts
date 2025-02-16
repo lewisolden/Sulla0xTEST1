@@ -5,7 +5,7 @@ const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000; // 1 second
 
 function validateEmailConfig() {
-  const requiredVars = ['RESEND_API_KEY', 'FROM_EMAIL', 'APP_URL'];
+  const requiredVars = ['RESEND_API_KEY'];
   const missing = requiredVars.filter(varName => !process.env[varName]);
 
   if (missing.length > 0) {
@@ -98,24 +98,6 @@ function generateEmailTemplate(username: string, appUrl: string) {
                           </div>
                         </td>
                       </tr>
-                      <tr>
-                        <td width="50%" style="padding: 12px;">
-                          <div style="background-color: #f8fafc; padding: 20px; border-radius: 12px;">
-                            <h4 style="color: #1e3a8a; margin: 0 0 8px 0;">Progress Tracking</h4>
-                            <p style="color: #6b7280; margin: 0; font-size: 14px;">
-                              Monitor your journey with our achievement system
-                            </p>
-                          </div>
-                        </td>
-                        <td width="50%" style="padding: 12px;">
-                          <div style="background-color: #f8fafc; padding: 20px; border-radius: 12px;">
-                            <h4 style="color: #1e3a8a; margin: 0 0 8px 0;">Expert Support</h4>
-                            <p style="color: #6b7280; margin: 0; font-size: 14px;">
-                              Join our community of learners and experts
-                            </p>
-                          </div>
-                        </td>
-                      </tr>
                     </table>
                   </td>
                 </tr>
@@ -136,10 +118,10 @@ async function sendTestEmail() {
     }
 
     console.log('Sending test email using Resend...');
-    const emailTemplate = generateEmailTemplate('Test User', 'http://localhost:5000');
+    const emailTemplate = generateEmailTemplate('Test User', process.env.APP_URL || 'http://localhost:5000');
 
     const { data, error } = await resend.emails.send({
-      from: process.env.FROM_EMAIL || 'onboarding@resend.dev',
+      from: 'onboarding@resend.dev',
       to: 'delivered@resend.dev', // Resend's test email address
       subject: 'Welcome to Sulla Learning Platform!',
       html: emailTemplate,
@@ -179,11 +161,6 @@ async function sendWelcomeEmail(email: string, username: string) {
       initializeEmailClients();
     }
 
-    const fromEmail = {
-      name: 'Sulla',
-      email: process.env.FROM_EMAIL || 'onboarding@resend.dev'
-    };
-
     const appUrl = process.env.APP_URL || 'http://localhost:5000';
     console.log('Using app URL:', appUrl);
 
@@ -196,7 +173,7 @@ async function sendWelcomeEmail(email: string, username: string) {
         console.log(`Attempt ${attempt} of ${MAX_RETRIES} to send welcome email to:`, email);
 
         const { data, error } = await resend.emails.send({
-          from: `${fromEmail.name} <${fromEmail.email}>`,
+          from: 'onboarding@resend.dev', // Always use Resend's testing domain
           to: email,
           subject: 'Welcome to Sulla Learning Platform!',
           html: emailTemplate,
@@ -255,7 +232,7 @@ async function sendWelcomeEmail(email: string, username: string) {
       error: error instanceof Error ? error.message : 'Unknown error occurred',
       note: process.env.NODE_ENV === 'production'
         ? "We encountered an issue sending your welcome email. Our team has been notified."
-        : "Email sending failed. Make sure all required environment variables are set: RESEND_API_KEY, FROM_EMAIL, APP_URL"
+        : "Email sending failed. Make sure all required environment variables are set: RESEND_API_KEY"
     };
   }
 }
