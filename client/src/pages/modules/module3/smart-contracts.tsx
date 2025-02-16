@@ -13,6 +13,9 @@ import { useScrollTop } from "@/hooks/useScrollTop";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 
+// Default images should be imported from public directory
+const cryptoPunkImage = "/Screenshot 2025-02-16 at 23.23.28.png";
+
 const SimpleSmartContractExercise = () => {
   const [balance, setBalance] = useState(100);
   const [recipient, setRecipient] = useState('');
@@ -195,7 +198,7 @@ const NFTMintingExercise = () => {
               <div className="bg-white p-4 rounded-lg shadow-sm">
                 <div className="w-32 h-32 mx-auto rounded-lg flex items-center justify-center">
                   <img 
-                    src="../attached_assets/Screenshot 2025-02-16 at 23.23.28.png"
+                    src={cryptoPunkImage}
                     alt="CryptoPunk NFT"
                     className="w-full h-full object-contain"
                   />
@@ -213,7 +216,7 @@ const NFTMintingExercise = () => {
               <p>You now own CryptoPunk #1337</p>
               <div className="w-32 h-32 mx-auto my-4 rounded-lg flex items-center justify-center">
                 <img 
-                  src="../attached_assets/Screenshot 2025-02-16 at 23.23.28.png"
+                  src={cryptoPunkImage}
                   alt="CryptoPunk NFT"
                   className="w-full h-full object-contain"
                 />
