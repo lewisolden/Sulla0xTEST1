@@ -5,13 +5,13 @@ import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Wallet } from "lucide-react";
 import { GettingStartedQuiz } from "@/components/quizzes/GettingStartedQuiz";
 import { SecurityIcon, WalletIcon } from "@/components/icons/CryptoIcons";
 import { GettingStartedDiagram } from "@/components/diagrams/GettingStartedDiagram";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { Eye, EyeOff, LucideIcon, Shield, Key, Lock, Wallet } from "lucide-react";
+import { Eye, EyeOff, LucideIcon, Shield, Key, Lock } from "lucide-react";
 
 // Add seed word list
 const SEED_WORD_LIST = [
@@ -603,6 +603,62 @@ const GettingStartedSection = () => {
                     </p>
                   </div>
                 </div>
+              </div>
+            </section>
+
+            <section className="mt-12">
+              <h2 className="text-2xl font-bold text-blue-700 mb-6 flex items-center gap-2">
+                <Wallet className="w-6 h-6" />
+                Recommended Wallets
+              </h2>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <ResourceCard
+                  icon={Wallet}
+                  title="MetaMask"
+                  description="The most popular Ethereum wallet with browser extension and mobile app support. Perfect for DeFi and NFTs."
+                  tags={['Ethereum', 'DeFi', 'Browser Extension', 'Mobile']}
+                  color="border-orange-500"
+                />
+
+                <ResourceCard
+                  icon={Wallet}
+                  title="Phantom"
+                  description="Leading Solana wallet with a seamless user experience. Built-in NFT support and DeFi integration."
+                  tags={['Solana', 'NFTs', 'DeFi', 'User-Friendly']}
+                  color="border-purple-500"
+                />
+
+                <ResourceCard
+                  icon={Wallet}
+                  title="Coinbase Wallet"
+                  description="Secure wallet by Coinbase with easy integration to their exchange. Support for multiple chains."
+                  tags={['Multi-Chain', 'Exchange Integration', 'Beginner-Friendly']}
+                  color="border-blue-500"
+                />
+
+                <ResourceCard
+                  icon={Lock}
+                  title="ByBit Wallet"
+                  description="Feature-rich wallet with strong security features. Integrated with ByBit's trading ecosystem."
+                  tags={['Multi-Chain', 'Trading Integration', 'Security Focus']}
+                  color="border-yellow-500"
+                />
+
+                <ResourceCard
+                  icon={Shield}
+                  title="OKX Wallet"
+                  description="Comprehensive wallet solution with built-in DEX and cross-chain support. Advanced features for power users."
+                  tags={['Cross-Chain', 'DEX', 'Advanced Features']}
+                  color="border-green-500"
+                />
+              </div>
+
+              <div className="bg-blue-50 p-4 rounded-lg mt-6">
+                <p className="text-blue-800">
+                  <strong>Security Tip:</strong> Always download wallets from their official websites
+                  and verify the authenticity of the source. Never share your seed phrase or private keys.
+                </p>
               </div>
             </section>
 
