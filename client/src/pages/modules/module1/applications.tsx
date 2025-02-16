@@ -25,7 +25,8 @@ import {
   FileText,
   LineChart,
   GraduationCap,
-  Heart
+  Heart,
+  Shield
 } from "lucide-react";
 
 // Enhanced Financial Inclusion Diagram Component with Animation
@@ -172,7 +173,6 @@ const PracticalApplicationsSection = () => {
 
       if (scrollPercent > 95) {
         setIsFullyRead(true);
-        // Fixed updateProgress call with correct arguments
         updateProgress({
           moduleId: 1,
           sectionId: 'practical-applications',
@@ -220,27 +220,12 @@ const PracticalApplicationsSection = () => {
           Practical Applications of Blockchain Technology
         </motion.h1>
 
-        <div className="flex gap-4 mb-6 overflow-x-auto pb-2">
-          {['overview', 'financial', 'technical', 'social'].map((section) => (
-            <Button
-              key={section}
-              variant={activeSection === section ? "default" : "outline"}
-              onClick={() => setActiveSection(section)}
-              className="min-w-[120px]"
-            >
-              {section.charAt(0).toUpperCase() + section.slice(1)}
-            </Button>
-          ))}
-        </div>
-
-        <motion.div
-          key={activeSection}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          transition={{ duration: 0.3 }}
-        >
-          {activeSection === 'overview' && (
+        <div className="space-y-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <Card className="mb-6">
               <CardContent className="prose max-w-none p-6">
                 <section>
@@ -255,9 +240,13 @@ const PracticalApplicationsSection = () => {
                 </section>
               </CardContent>
             </Card>
-          )}
+          </motion.div>
 
-          {activeSection === 'financial' && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
             <Card className="mb-6">
               <CardContent className="prose max-w-none p-6">
                 <section>
@@ -270,10 +259,182 @@ const PracticalApplicationsSection = () => {
                 </section>
               </CardContent>
             </Card>
-          )}
+          </motion.div>
 
-          {/* Add similar sections for technical and social applications */}
-        </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            <Card className="mb-6">
+              <CardContent className="prose max-w-none p-6">
+                <section>
+                  <h2 className="text-2xl font-bold text-blue-700">Technical Applications</h2>
+                  <p className="text-gray-700 mb-6">
+                    Blockchain's technical capabilities extend far beyond financial transactions,
+                    enabling new solutions across various industries.
+                  </p>
+
+                  <div className="grid gap-6">
+                    {[
+                      {
+                        icon: FileText,
+                        title: "Supply Chain Management",
+                        description: "Track products from origin to consumer with immutable records",
+                        features: [
+                          "Real-time tracking and verification",
+                          "Counterfeit prevention",
+                          "Automated compliance",
+                          "Inventory optimization"
+                        ],
+                        color: "blue"
+                      },
+                      {
+                        icon: Shield,
+                        title: "Healthcare Records",
+                        description: "Secure and interoperable medical data management",
+                        features: [
+                          "Patient data privacy",
+                          "Cross-institution sharing",
+                          "Clinical trial tracking",
+                          "Drug supply verification"
+                        ],
+                        color: "green"
+                      },
+                      {
+                        icon: Lock,
+                        title: "Digital Identity",
+                        description: "Decentralized identity verification and management",
+                        features: [
+                          "Self-sovereign identity",
+                          "Credential verification",
+                          "Access control",
+                          "Privacy preservation"
+                        ],
+                        color: "purple"
+                      }
+                    ].map((item, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className={`bg-${item.color}-50 p-6 rounded-lg shadow-lg`}
+                      >
+                        <div className="flex items-start gap-4">
+                          <div className={`p-3 bg-${item.color}-100 rounded-full`}>
+                            <item.icon className={`w-6 h-6 text-${item.color}-600`} />
+                          </div>
+                          <div>
+                            <h3 className={`text-xl font-bold text-${item.color}-800 mb-2`}>
+                              {item.title}
+                            </h3>
+                            <p className="text-gray-600 mb-4">{item.description}</p>
+                            <ul className="space-y-2">
+                              {item.features.map((feature, i) => (
+                                <li key={i} className="flex items-center gap-2">
+                                  <div className={`w-2 h-2 rounded-full bg-${item.color}-400`} />
+                                  <span className="text-sm text-gray-600">{feature}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </section>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+          >
+            <Card className="mb-6">
+              <CardContent className="prose max-w-none p-6">
+                <section>
+                  <h2 className="text-2xl font-bold text-blue-700">Social Impact</h2>
+                  <p className="text-gray-700 mb-6">
+                    Blockchain technology is enabling positive social change through transparency,
+                    accountability, and improved resource distribution.
+                  </p>
+
+                  <div className="grid gap-6">
+                    {[
+                      {
+                        icon: Heart,
+                        title: "Humanitarian Aid",
+                        description: "Transparent and efficient distribution of aid",
+                        impact: [
+                          "Direct beneficiary payments",
+                          "Aid fund tracking",
+                          "Reduced fraud",
+                          "Faster emergency response"
+                        ],
+                        color: "rose"
+                      },
+                      {
+                        icon: Globe2,
+                        title: "Environmental Protection",
+                        description: "Supporting sustainability and conservation efforts",
+                        impact: [
+                          "Carbon credit tracking",
+                          "Environmental compliance",
+                          "Conservation funding",
+                          "Waste management"
+                        ],
+                        color: "emerald"
+                      },
+                      {
+                        icon: Users,
+                        title: "Community Empowerment",
+                        description: "Enabling local governance and cooperation",
+                        impact: [
+                          "Decentralized governance",
+                          "Community voting",
+                          "Resource sharing",
+                          "Local economies"
+                        ],
+                        color: "indigo"
+                      }
+                    ].map((item, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className={`bg-${item.color}-50 p-6 rounded-lg shadow-lg`}
+                      >
+                        <div className="flex items-start gap-4">
+                          <div className={`p-3 bg-${item.color}-100 rounded-full`}>
+                            <item.icon className={`w-6 h-6 text-${item.color}-600`} />
+                          </div>
+                          <div>
+                            <h3 className={`text-xl font-bold text-${item.color}-800 mb-2`}>
+                              {item.title}
+                            </h3>
+                            <p className="text-gray-600 mb-4">{item.description}</p>
+                            <ul className="space-y-2">
+                              {item.impact.map((point, i) => (
+                                <li key={i} className="flex items-center gap-2">
+                                  <div className={`w-2 h-2 rounded-full bg-${item.color}-400`} />
+                                  <span className="text-sm text-gray-600">{point}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </section>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
 
         {isFullyRead && (
           <motion.div
@@ -397,7 +558,7 @@ const PracticalApplicationsQuiz = () => {
               </p>
             </div>
           )}
-          <Button 
+          <Button
             onClick={restartQuiz}
             variant="outline"
             className="mt-4"
@@ -435,12 +596,12 @@ const PracticalApplicationsQuiz = () => {
                 onClick={() => handleAnswerSelect(parseInt(key))}
                 className={`
                   w-full p-4 h-auto whitespace-normal text-left justify-start
-                  ${selectedAnswer === null 
-                    ? 'bg-gray-100 hover:bg-blue-100 text-gray-700' 
-                    : index === currentQuizQuestion.correctAnswer 
-                      ? 'bg-green-200 text-gray-700' 
-                      : selectedAnswer === index 
-                        ? 'bg-red-200 text-gray-700' 
+                  ${selectedAnswer === null
+                    ? 'bg-gray-100 hover:bg-blue-100 text-gray-700'
+                    : index === currentQuizQuestion.correctAnswer
+                      ? 'bg-green-200 text-gray-700'
+                      : selectedAnswer === index
+                        ? 'bg-red-200 text-gray-700'
                         : 'bg-gray-100 text-gray-700'}
                 `}
                 disabled={selectedAnswer !== null}
@@ -454,13 +615,13 @@ const PracticalApplicationsQuiz = () => {
           {showExplanation && (
             <div className={`
               mt-6 p-4 rounded-lg
-              ${selectedAnswer === currentQuizQuestion.correctAnswer 
-                ? 'bg-green-100 border-l-4 border-green-500' 
+              ${selectedAnswer === currentQuizQuestion.correctAnswer
+                ? 'bg-green-100 border-l-4 border-green-500'
                 : 'bg-red-100 border-l-4 border-red-500'}
             `}>
               <h3 className="font-bold mb-2">
-                {selectedAnswer === currentQuizQuestion.correctAnswer 
-                  ? '✅ Correct!' 
+                {selectedAnswer === currentQuizQuestion.correctAnswer
+                  ? '✅ Correct!'
                   : '❌ Incorrect'}
               </h3>
               <p>{currentQuizQuestion.explanation}</p>
@@ -472,8 +633,8 @@ const PracticalApplicationsQuiz = () => {
               onClick={moveToNextQuestion}
               className="mt-6 w-full"
             >
-              {currentQuestion < questions.length - 1 
-                ? 'Next Question' 
+              {currentQuestion < questions.length - 1
+                ? 'Next Question'
                 : 'Finish Quiz'}
             </Button>
           )}
@@ -485,54 +646,54 @@ const PracticalApplicationsQuiz = () => {
 
 
 const questions = [
-    {
-      id: "q1",
-      question: "Which of the following best describes how blockchain technology promotes financial inclusion?",
-      options: {
-        0: "By requiring users to have traditional bank accounts",
-        1: "By enabling access to financial services without traditional banking infrastructure",
-        2: "By eliminating the need for money completely",
-        3: "By making all transactions free"
-      },
-      correctAnswer: 1,  // Changed from 'correct' to 'correctAnswer' to match the validation logic
-      explanation: "Blockchain technology promotes financial inclusion by allowing people to access financial services without requiring traditional banking infrastructure. This is particularly important for the unbanked and underbanked populations who may not have access to conventional banking services but can participate in the global economy through blockchain-based solutions."
+  {
+    id: "q1",
+    question: "Which of the following best describes how blockchain technology promotes financial inclusion?",
+    options: {
+      0: "By requiring users to have traditional bank accounts",
+      1: "By enabling access to financial services without traditional banking infrastructure",
+      2: "By eliminating the need for money completely",
+      3: "By making all transactions free"
     },
-    {
-      id: "q2",
-      question: "What is a key advantage of blockchain-based payments over traditional banking systems?",
-      options: {
-        0: "They require more intermediaries",
-        1: "They only work during banking hours",
-        2: "They enable near-instant settlement 24/7",
-        3: "They are only available in developed countries"
-      },
-      correctAnswer: 2,
-      explanation: "Blockchain-based payments operate 24/7 and enable near-instant settlement of transactions. Unlike traditional banking systems that may take days to process payments and operate only during business hours, blockchain networks operate continuously and can validate transactions within minutes or even seconds."
+    correctAnswer: 1,
+    explanation: "Blockchain technology promotes financial inclusion by allowing people to access financial services without requiring traditional banking infrastructure. This is particularly important for the unbanked and underbanked populations who may not have access to conventional banking services but can participate in the global economy through blockchain-based solutions."
+  },
+  {
+    id: "q2",
+    question: "What is a key advantage of blockchain-based payments over traditional banking systems?",
+    options: {
+      0: "They require more intermediaries",
+      1: "They only work during banking hours",
+      2: "They enable near-instant settlement 24/7",
+      3: "They are only available in developed countries"
     },
-    {
-      id: "q3",
-      question: "How do smart contracts enhance payment systems?",
-      options: {
-        0: "By requiring manual verification for every transaction",
-        1: "By automating payments based on predefined conditions",
-        2: "By increasing transaction fees",
-        3: "By slowing down transaction processing"
-      },
-      correctAnswer: 1,
-      explanation: "Smart contracts enhance payment systems by automating transactions based on predefined conditions. This automation eliminates the need for manual intervention, reduces the risk of human error, and enables complex financial arrangements to execute automatically when specific criteria are met."
+    correctAnswer: 2,
+    explanation: "Blockchain-based payments operate 24/7 and enable near-instant settlement of transactions. Unlike traditional banking systems that may take days to process payments and operate only during business hours, blockchain networks operate continuously and can validate transactions within minutes or even seconds."
+  },
+  {
+    id: "q3",
+    question: "How do smart contracts enhance payment systems?",
+    options: {
+      0: "By requiring manual verification for every transaction",
+      1: "By automating payments based on predefined conditions",
+      2: "By increasing transaction fees",
+      3: "By slowing down transaction processing"
     },
-    {
-      id: "q4",
-      question: "Which of these is NOT a typical investment opportunity in the blockchain space?",
-      options: {
-        0: "Digital asset trading",
-        1: "Yield farming",
-        2: "Risk-free guaranteed returns",
-        3: "Tokenized real-world assets"
-      },
-      correctAnswer: 2,
-      explanation: "Risk-free guaranteed returns is NOT a legitimate investment opportunity in the blockchain space. While blockchain offers various investment opportunities like digital asset trading, yield farming, and tokenized assets, all investments carry risks. Claims of guaranteed returns are often associated with scams or fraudulent schemes."
-    }
+    correctAnswer: 1,
+    explanation: "Smart contracts enhance payment systems by automating transactions based on predefined conditions. This automation eliminates the need for manual intervention, reduces the risk of human error, and enables complex financial arrangements to execute automatically when specific criteria are met."
+  },
+  {
+    id: "q4",
+    question: "Which of these is NOT a typical investment opportunity in the blockchain space?",
+    options: {
+      0: "Digital asset trading",
+      1: "Yield farming",
+      2: "Risk-free guaranteed returns",
+      3: "Tokenized real-world assets"
+    },
+    correctAnswer: 2,
+    explanation: "Risk-free guaranteed returns is NOT a legitimate investment opportunity in the blockchain space. While blockchain offers various investment opportunities like digital asset trading, yield farming, and tokenized assets, all investments carry risks. Claims of guaranteed returns are often associated with scams or fraudulent schemes."
+  }
 ];
 
 export default PracticalApplicationsSection;
