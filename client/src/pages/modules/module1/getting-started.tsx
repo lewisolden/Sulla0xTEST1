@@ -333,7 +333,7 @@ const GettingStartedSection = () => {
           <h3 className="font-semibold text-lg mb-2">{title}</h3>
           <p className="text-gray-600 mb-3">{description}</p>
           <div className="flex flex-wrap gap-2">
-            {tags.map((tag, index) => (
+                        {tags.map((tag, index) => (
               <span
                 key={index}
                 className={`px-2 py-1 rounded-full text-sm ${color.replace('border-', 'bg-').replace('-500', '-100')} ${color.replace('border-', 'text-')}`}
@@ -612,7 +612,7 @@ const GettingStartedSection = () => {
                 Recommended Wallets
               </h2>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid md:grid-cols-3 gap-6">
                 <ResourceCard
                   icon={Wallet}
                   title="MetaMask"
@@ -635,22 +635,6 @@ const GettingStartedSection = () => {
                   description="Secure wallet by Coinbase with easy integration to their exchange. Support for multiple chains."
                   tags={['Multi-Chain', 'Exchange Integration', 'Beginner-Friendly']}
                   color="border-blue-500"
-                />
-
-                <ResourceCard
-                  icon={Lock}
-                  title="ByBit Wallet"
-                  description="Feature-rich wallet with strong security features. Integrated with ByBit's trading ecosystem."
-                  tags={['Multi-Chain', 'Trading Integration', 'Security Focus']}
-                  color="border-yellow-500"
-                />
-
-                <ResourceCard
-                  icon={Shield}
-                  title="OKX Wallet"
-                  description="Comprehensive wallet solution with built-in DEX and cross-chain support. Advanced features for power users."
-                  tags={['Cross-Chain', 'DEX', 'Advanced Features']}
-                  color="border-green-500"
                 />
               </div>
 
