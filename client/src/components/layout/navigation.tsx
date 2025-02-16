@@ -27,8 +27,7 @@ export default function Navigation() {
             <NavigationMenuList>
               <NavigationMenuItem>
                 <NavigationMenuTrigger className="text-white bg-transparent hover:bg-blue-500">
-                  <Menu className="h-5 w-5 mr-2" />
-                  Menu
+                  <Menu className="h-5 w-5" />
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <div className="w-[220px] p-2">
