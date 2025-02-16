@@ -5,7 +5,7 @@ import { useProgress } from "@/context/progress-context";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
-import { Code, Shield, Workflow, GitBranch, AlertTriangle, Coins } from "lucide-react";
+import { Code, Shield, AlertTriangle, Coins } from "lucide-react";
 import SmartContractsQuiz from "@/components/quizzes/SmartContractsQuiz";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -205,7 +205,6 @@ export default function SmartContractsSection() {
               </TabsContent>
             </Tabs>
 
-            {/* Articles moved to bottom */}
             <div className="mt-12 border-t pt-8">
               <h2 className="text-2xl font-bold text-blue-700 mb-6">Learn More About Smart Contracts</h2>
 
@@ -258,43 +257,58 @@ export default function SmartContractsSection() {
                     </div>
                   </div>
                 </section>
-                
+
                 <section>
                   <h3 className="text-xl font-semibold text-blue-700 mb-4">Smart Contract Workflow</h3>
-                  <div className="my-8 p-4 bg-gray-50 rounded-lg shadow-inner">
-                    <SmartContractWorkflow />
-                    <div className="mt-4 space-y-3">
-                      <div className="bg-white p-3 rounded">
-                        <span className="font-semibold text-blue-700">1. Write Contract:</span>
-                        <span className="ml-2 text-gray-600">Create the rules and conditions in code (like Solidity)</span>
-                      </div>
-                      <div className="bg-white p-3 rounded">
-                        <span className="font-semibold text-blue-700">2. Deploy:</span>
-                        <span className="ml-2 text-gray-600">Upload to the blockchain where it becomes permanent</span>
-                      </div>
-                      <div className="bg-white p-3 rounded">
-                        <span className="font-semibold text-blue-700">3. Execute:</span>
-                        <span className="ml-2 text-gray-600">Contract runs automatically when conditions are met</span>
-                      </div>
-                      <div className="bg-white p-3 rounded">
-                        <span className="font-semibold text-blue-700">4. Verify:</span>
-                        <span className="ml-2 text-gray-600">Network nodes verify the execution</span>
-                      </div>
-                      <div className="bg-white p-3 rounded">
-                        <span className="font-semibold text-blue-700">5. Update:</span>
-                        <span className="ml-2 text-gray-600">Blockchain state is updated with the results</span>
-                      </div>
-                    </div>
+                  <div className="bg-blue-50 p-6 rounded-lg">
+                    <ol className="list-decimal pl-5 space-y-3">
+                      <li className="bg-white p-3 rounded">
+                        <span className="font-semibold text-blue-700">Write Contract:</span>
+                        <span className="ml-2 text-gray-600">Create the rules and conditions in code</span>
+                      </li>
+                      <li className="bg-white p-3 rounded">
+                        <span className="font-semibold text-blue-700">Deploy:</span>
+                        <span className="ml-2 text-gray-600">Upload to the blockchain</span>
+                      </li>
+                      <li className="bg-white p-3 rounded">
+                        <span className="font-semibold text-blue-700">Execute:</span>
+                        <span className="ml-2 text-gray-600">Contract runs when conditions are met</span>
+                      </li>
+                      <li className="bg-white p-3 rounded">
+                        <span className="font-semibold text-blue-700">Verify:</span>
+                        <span className="ml-2 text-gray-600">Network verifies the execution</span>
+                      </li>
+                      <li className="bg-white p-3 rounded">
+                        <span className="font-semibold text-blue-700">Update:</span>
+                        <span className="ml-2 text-gray-600">Blockchain records the results</span>
+                      </li>
+                    </ol>
                   </div>
                 </section>
 
                 <section>
-                  <h3 className="text-xl font-semibold text-blue-700 mb-4">Smart Contract Structure</h3>
-                  <div className="my-8 p-4 bg-gray-50 rounded-lg shadow-inner">
-                    <SmartContractStructure />
+                  <h3 className="text-xl font-semibold text-blue-700 mb-4">Important Considerations</h3>
+                  <div className="bg-blue-50 p-6 rounded-lg">
+                    <ul className="space-y-4">
+                      <li className="bg-white p-4 rounded">
+                        <span className="font-semibold text-blue-700">Gas Fees:</span>
+                        <p className="text-gray-600 mt-1">Each operation costs a small amount of cryptocurrency</p>
+                      </li>
+                      <li className="bg-white p-4 rounded">
+                        <span className="font-semibold text-blue-700">Code is Law:</span>
+                        <p className="text-gray-600 mt-1">Contracts execute exactly as written - no exceptions</p>
+                      </li>
+                      <li className="bg-white p-4 rounded">
+                        <span className="font-semibold text-blue-700">Security First:</span>
+                        <p className="text-gray-600 mt-1">Thorough testing is crucial as bugs cannot be fixed after deployment</p>
+                      </li>
+                      <li className="bg-white p-4 rounded">
+                        <span className="font-semibold text-blue-700">Network Limitations:</span>
+                        <p className="text-gray-600 mt-1">Consider blockchain's speed and capacity constraints</p>
+                      </li>
+                    </ul>
                   </div>
                 </section>
-                
                 <section>
                   <h3 className="text-xl font-semibold text-blue-700 mb-4">Practical Applications</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
