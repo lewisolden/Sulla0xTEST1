@@ -648,51 +648,63 @@ const PracticalApplicationsQuiz = () => {
 const questions = [
   {
     id: "q1",
-    question: "Which of the following best describes how blockchain technology promotes financial inclusion?",
+    question: "Which blockchain application has the potential to revolutionize healthcare data management?",
     options: {
-      0: "By requiring users to have traditional bank accounts",
-      1: "By enabling access to financial services without traditional banking infrastructure",
-      2: "By eliminating the need for money completely",
-      3: "By making all transactions free"
+      0: "Digital asset trading platforms",
+      1: "Secure, interoperable medical records",
+      2: "Cryptocurrency mining operations",
+      3: "Social media networks"
     },
     correctAnswer: 1,
-    explanation: "Blockchain technology promotes financial inclusion by allowing people to access financial services without requiring traditional banking infrastructure. This is particularly important for the unbanked and underbanked populations who may not have access to conventional banking services but can participate in the global economy through blockchain-based solutions."
+    explanation: "Blockchain technology enables secure, interoperable medical records management, allowing healthcare providers to share patient data securely while maintaining privacy and ensuring data integrity. This improves care coordination and reduces medical errors."
   },
   {
     id: "q2",
-    question: "What is a key advantage of blockchain-based payments over traditional banking systems?",
+    question: "How does blockchain technology support environmental sustainability efforts?",
     options: {
-      0: "They require more intermediaries",
-      1: "They only work during banking hours",
-      2: "They enable near-instant settlement 24/7",
-      3: "They are only available in developed countries"
+      0: "By increasing energy consumption",
+      1: "By replacing traditional currencies",
+      2: "By tracking carbon credits and environmental compliance",
+      3: "By eliminating the need for environmental monitoring"
     },
     correctAnswer: 2,
-    explanation: "Blockchain-based payments operate 24/7 and enable near-instant settlement of transactions. Unlike traditional banking systems that may take days to process payments and operate only during business hours, blockchain networks operate continuously and can validate transactions within minutes or even seconds."
+    explanation: "Blockchain supports environmental sustainability by providing transparent tracking of carbon credits, ensuring environmental compliance, and enabling efficient management of conservation funding and waste management initiatives."
   },
   {
     id: "q3",
-    question: "How do smart contracts enhance payment systems?",
+    question: "What is a key benefit of using blockchain in supply chain management?",
     options: {
-      0: "By requiring manual verification for every transaction",
-      1: "By automating payments based on predefined conditions",
-      2: "By increasing transaction fees",
-      3: "By slowing down transaction processing"
+      0: "Increased shipping costs",
+      1: "Real-time tracking and verification of products",
+      2: "Elimination of all intermediaries",
+      3: "Slower delivery times"
     },
     correctAnswer: 1,
-    explanation: "Smart contracts enhance payment systems by automating transactions based on predefined conditions. This automation eliminates the need for manual intervention, reduces the risk of human error, and enables complex financial arrangements to execute automatically when specific criteria are met."
+    explanation: "Blockchain technology in supply chain management enables real-time tracking and verification of products from origin to consumer, helping prevent counterfeiting, ensure compliance, and optimize inventory management."
   },
   {
     id: "q4",
-    question: "Which of these is NOT a typical investment opportunity in the blockchain space?",
+    question: "How does blockchain technology enhance humanitarian aid distribution?",
     options: {
-      0: "Digital asset trading",
-      1: "Yield farming",
-      2: "Risk-free guaranteed returns",
-      3: "Tokenized real-world assets"
+      0: "By requiring aid recipients to have bank accounts",
+      1: "By increasing administrative costs",
+      2: "By restricting access to specific regions",
+      3: "By enabling transparent, direct beneficiary payments"
     },
-    correctAnswer: 2,
-    explanation: "Risk-free guaranteed returns is NOT a legitimate investment opportunity in the blockchain space. While blockchain offers various investment opportunities like digital asset trading, yield farming, and tokenized assets, all investments carry risks. Claims of guaranteed returns are often associated with scams or fraudulent schemes."
+    correctAnswer: 3,
+    explanation: "Blockchain improves humanitarian aid distribution through transparent, direct beneficiary payments, efficient aid fund tracking, reduced fraud, and faster emergency response capabilities."
+  },
+  {
+    id: "q5",
+    question: "Which feature of blockchain technology enables community empowerment?",
+    options: {
+      0: "Centralized control",
+      1: "Decentralized governance and voting",
+      2: "Restricted access to resources",
+      3: "Limited participation options"
+    },
+    correctAnswer: 1,
+    explanation: "Blockchain enables community empowerment through decentralized governance and voting systems, allowing communities to make collective decisions, share resources, and build local economies in a transparent and equitable way."
   }
 ];
 
