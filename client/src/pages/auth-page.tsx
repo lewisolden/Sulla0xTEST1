@@ -99,10 +99,10 @@ export default function AuthPage() {
 
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium">Username</label>
+              <label className="text-sm font-medium">{isRegisterPage ? "Username" : "Username or Email"}</label>
               <Input
                 {...form.register("username")}
-                placeholder="Enter your username"
+                placeholder={isRegisterPage ? "Enter your username" : "Enter your username or email"}
                 disabled={isLoading}
                 className="border-blue-200 focus:border-blue-400"
               />

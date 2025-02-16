@@ -114,10 +114,11 @@ export function setupAuth(app: Express) {
         .select()
         .from(users)
         .where(eq(users.username, username))
+        .or(eq(users.email, username))
         .limit(1);
 
       if (!user) {
-        return done(null, false, { message: "Incorrect username." });
+        return done(null, false, { message: "Incorrect username or email." });
       }
 
       const isValid = await verifyPassword(password, user.password);
