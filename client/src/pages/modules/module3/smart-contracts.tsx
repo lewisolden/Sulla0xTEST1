@@ -193,8 +193,12 @@ const NFTMintingExercise = () => {
           {!isMinted ? (
             <div className="space-y-4">
               <div className="bg-white p-4 rounded-lg shadow-sm">
-                <div className="w-32 h-32 mx-auto bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-                  <User className="w-16 h-16 text-white" />
+                <div className="w-32 h-32 mx-auto rounded-lg flex items-center justify-center">
+                  <img 
+                    src="/attached_assets/image_1739747982122.png"
+                    alt="CryptoPunk NFT"
+                    className="w-full h-full object-contain"
+                  />
                 </div>
                 <p className="text-center mt-2">CryptoPunk #1337</p>
                 <p className="text-center text-sm text-gray-600">Price: 10 ETH</p>
@@ -207,8 +211,12 @@ const NFTMintingExercise = () => {
             <div className="text-center">
               <p className="text-green-600 font-bold mb-2">🎉 Congratulations!</p>
               <p>You now own CryptoPunk #1337</p>
-              <div className="w-32 h-32 mx-auto my-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-                <User className="w-16 h-16 text-white" />
+              <div className="w-32 h-32 mx-auto my-4 rounded-lg flex items-center justify-center">
+                <img 
+                  src="/attached_assets/image_1739747982122.png"
+                  alt="CryptoPunk NFT"
+                  className="w-full h-full object-contain"
+                />
               </div>
             </div>
           )}
