@@ -1,6 +1,6 @@
 import { Link, useLocation, useLocation as useLocationHook } from "wouter";
-import { BookOpen, GraduationCap, Zap, Gamepad2, CreditCard, Dumbbell, Lightbulb, Brain, Code, Globe } from "lucide-react";
-import { motion } from "framer-motion";
+import { BookOpen, GraduationCap, Zap, Gamepad2, CreditCard, Dumbbell, Lightbulb, Brain, Code, Globe, CheckCircle2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { PersonalizedPath } from "@/components/learning/personalized-path";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
@@ -249,37 +249,44 @@ export default function Curriculum() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 py-16">
+    <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-100 via-blue-50 to-white py-16">
       <div className="container mx-auto px-4 max-w-6xl">
         <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
           className="text-center mb-12"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
         >
-          <h1 className="text-4xl font-bold text-blue-900 mb-6">
-            Course Curriculum
+          <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-800 mb-6">
+            Your Learning Journey
           </h1>
-          <Card className="p-6 bg-blue-600">
-            <div className="text-center">
-              <div className="flex items-center justify-center gap-2 text-xl font-bold text-white">
-                <Lightbulb className="h-6 w-6" />
-                <p>Ready to embark on your learning journey?</p>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            <Card className="p-6 bg-gradient-to-br from-blue-600 to-blue-700 shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className="text-center">
+                <div className="flex items-center justify-center gap-3 text-xl font-bold text-white">
+                  <Lightbulb className="h-8 w-8" />
+                  <p>Discover Your Path to Mastery</p>
+                </div>
               </div>
-            </div>
-          </Card>
+            </Card>
+          </motion.div>
         </motion.div>
 
         <motion.div
           className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.1 }}
+          transition={{ delay: 0.3 }}
         >
           <Select
             value={selectedSubject}
             onValueChange={setSelectedSubject}
           >
-            <SelectTrigger className="bg-white">
+            <SelectTrigger className="bg-white/80 backdrop-blur-sm border-blue-200 hover:border-blue-300 transition-colors">
               <SelectValue placeholder="Select Subject" />
             </SelectTrigger>
             <SelectContent>
@@ -290,12 +297,11 @@ export default function Curriculum() {
               ))}
             </SelectContent>
           </Select>
-
           <Select
             value={selectedCourse}
             onValueChange={setSelectedCourse}
           >
-            <SelectTrigger className="bg-white">
+            <SelectTrigger className="bg-white/80 backdrop-blur-sm border-blue-200 hover:border-blue-300 transition-colors">
               <SelectValue placeholder="Select Course" />
             </SelectTrigger>
             <SelectContent>
@@ -306,12 +312,11 @@ export default function Curriculum() {
               ))}
             </SelectContent>
           </Select>
-
           <Select
             value={selectedLevel}
             onValueChange={setSelectedLevel}
           >
-            <SelectTrigger className="bg-white">
+            <SelectTrigger className="bg-white/80 backdrop-blur-sm border-blue-200 hover:border-blue-300 transition-colors">
               <SelectValue placeholder="Select Level" />
             </SelectTrigger>
             <SelectContent>
@@ -322,72 +327,106 @@ export default function Curriculum() {
           </Select>
         </motion.div>
 
-        <motion.div
-          className="bg-white rounded-lg shadow-lg p-8 mb-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-        >
-          <h2 className="text-3xl font-bold text-blue-800 mb-4">
-            {currentCourse.title}
-          </h2>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentCourse.id}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-8 mb-8"
+          >
+            <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-800 mb-4">
+              {currentCourse.title}
+            </h2>
 
-          <p className="text-xl text-blue-700 mb-6">
-            {currentCourse.description}
-          </p>
+            <p className="text-xl text-blue-700 mb-6">
+              {currentCourse.description}
+            </p>
 
-          {!loadingProgress && progressData && (
-            <div className="mb-6">
-              <div className="flex justify-between text-sm text-blue-600 mb-2">
-                <span>Course Progress</span>
-                <span>{Math.round(coursesProgress[currentCourse.id] || 0)}%</span>
+            {!loadingProgress && progressData && (
+              <div className="mb-6">
+                <div className="flex justify-between text-sm text-blue-600 mb-2">
+                  <span>Course Progress</span>
+                  <span>{Math.round(coursesProgress[currentCourse.id] || 0)}%</span>
+                </div>
+                <Progress 
+                  value={coursesProgress[currentCourse.id] || 0} 
+                  className="h-3 bg-blue-100 rounded-full"
+                />
               </div>
-              <Progress 
-                value={coursesProgress[currentCourse.id] || 0} 
-                className="h-2 bg-blue-100"
-              />
-            </div>
-          )}
+            )}
 
-          <div className="grid md:grid-cols-3 gap-6 mb-8">
-            {currentCourse.modules.map((module) => (
-              <Card key={module.id} className="p-6 bg-blue-50">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="bg-blue-100 p-2 rounded-lg">
-                    <module.icon className="h-6 w-6 text-blue-600" />
-                  </div>
-                  <h3 className="font-semibold text-blue-800">{module.title.split(':')[1]}</h3>
-                </div>
-                <p className="text-blue-600 text-sm mb-4">{module.description}</p>
-                <div className="text-blue-500 text-sm">
-                  {module.sections.length} lessons included
-                </div>
-              </Card>
-            ))}
-          </div>
+            <div className="grid md:grid-cols-3 gap-6 mb-8">
+              {currentCourse.modules.map((module, index) => (
+                <motion.div
+                  key={module.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <Card className="group p-6 bg-gradient-to-br from-white to-blue-50 hover:from-blue-50 hover:to-blue-100 transition-all duration-300 border border-blue-100 hover:border-blue-200 hover:shadow-lg">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="bg-blue-100 p-3 rounded-lg group-hover:bg-blue-200 transition-colors">
+                        <module.icon className="h-6 w-6 text-blue-600" />
+                      </div>
+                      <h3 className="font-semibold text-blue-800 group-hover:text-blue-900">
+                        {module.title.split(':')[1]}
+                      </h3>
+                    </div>
+                    <p className="text-blue-600 text-sm mb-4 group-hover:text-blue-700">
+                      {module.description}
+                    </p>
+                    <div className="text-blue-500 text-sm flex items-center gap-2">
+                      <BookOpen className="h-4 w-4" />
+                      {module.sections.length} lessons
+                    </div>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
 
-          {loadingEnrollments ? (
-            <div className="text-center">
-              <p>Loading enrollment status...</p>
-            </div>
-          ) : isEnrolled ? (
-            <div className="bg-green-100 text-green-800 px-4 py-2 rounded-lg text-center mb-6">
-              You are enrolled in this course
-            </div>
-          ) : (
-            <div className="text-center">
-              <Button 
-                onClick={handleEnroll}
-                className="bg-blue-600 hover:bg-blue-700 text-lg px-8 py-3"
-                disabled={enrollMutation.isPending}
+            {loadingEnrollments ? (
+              <div className="text-center py-4">
+                <div className="animate-pulse flex justify-center">
+                  <div className="h-8 w-32 bg-blue-200 rounded"></div>
+                </div>
+              </div>
+            ) : isEnrolled ? (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="bg-green-100 text-green-800 px-6 py-4 rounded-xl text-center mb-6 flex items-center justify-center gap-2"
               >
-                {enrollMutation.isPending ? "Enrolling..." : "Enroll Now"}
-              </Button>
-              <p className="text-gray-600 mt-2">
-                Enroll to access full course content and track your progress
-              </p>
-            </div>
-          )}
-        </motion.div>
+                <CheckCircle2 className="h-5 w-5" />
+                <span className="font-medium">You are enrolled in this course</span>
+              </motion.div>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-center"
+              >
+                <Button 
+                  onClick={handleEnroll}
+                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-lg px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                  disabled={enrollMutation.isPending}
+                >
+                  {enrollMutation.isPending ? (
+                    <div className="flex items-center gap-2">
+                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                      <span>Enrolling...</span>
+                    </div>
+                  ) : (
+                    "Enroll Now"
+                  )}
+                </Button>
+                <p className="text-gray-600 mt-3">
+                  Enroll to access full course content and track your progress
+                </p>
+              </motion.div>
+            )}
+          </motion.div>
+        </AnimatePresence>
 
         {isEnrolled && (
           <>
