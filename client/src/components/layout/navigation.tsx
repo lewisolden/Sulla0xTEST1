@@ -35,11 +35,11 @@ export default function Navigation() {
                       { path: "/about", label: "About" },
                       { path: "/ai", label: "AI" },
                       { path: "/curriculum", label: "Curriculum" },
+                      { path: "/faqs", label: "FAQs" },
                       { path: "/games", label: "Games" },
                       { path: "/glossary", label: "Glossary" },
                       { path: "/modules/module1", label: "Start Learning" },
                       { path: "/sensei", label: "Sensei" },
-                      { path: "/faqs", label: "FAQs" }, // Added FAQs link
                     ].map(({ path, label }) => (
                       <Link key={path} href={path}>
                         <NavigationMenuLink
