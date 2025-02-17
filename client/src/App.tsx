@@ -22,6 +22,7 @@ import AdminLogin from "@/pages/admin/login";
 import AdminAnalytics from "@/pages/admin/analytics";
 import Navigation from "@/components/layout/navigation";
 import Footer from "@/components/layout/footer";
+import FAQs from "@/pages/faqs";  // Add FAQs import
 
 // AI Module imports
 import AIModule1 from "@/pages/ai/module1";
@@ -114,8 +115,10 @@ function Router() {
     <Switch>
       {/* Public routes */}
       <Route path="/" component={() => <ProtectedRoute component={Home} publicAccess={true} />} />
-      <Route path="/curriculum" component={() => <ProtectedRoute component={Curriculum} publicAccess={true} />} />
       <Route path="/about" component={() => <ProtectedRoute component={About} publicAccess={true} />} />
+      <Route path="/curriculum" component={() => <ProtectedRoute component={Curriculum} publicAccess={true} />} />
+      <Route path="/faqs" component={FAQs} /> 
+      <Route path="/games" component={() => <ProtectedRoute component={Games} publicAccess={true} />} />
       <Route path="/ai" component={() => <ProtectedRoute component={AIOverview} publicAccess={true} />} />
       <Route path="/ai/module1" component={() => <ProtectedRoute component={AIModule1} publicAccess={true} />} />
       <Route path="/ai/module1/introduction" component={() => <ProtectedRoute component={AIIntroduction} publicAccess={true} />} />
@@ -151,7 +154,6 @@ function Router() {
 
       {/* Protected routes */}
       <Route path="/account" component={() => <ProtectedRoute component={AccountPage} />} />
-      <Route path="/games" component={() => <ProtectedRoute component={Games} />} />
       <Route path="/achievements" component={() => <ProtectedRoute component={Achievements} />} />
       <Route path="/deck" component={() => <ProtectedRoute component={Deck} publicAccess={true} />} />
       <Route path="/wallet-simulator" component={() => <ProtectedRoute component={WalletSimulator} />} />
