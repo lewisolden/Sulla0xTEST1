@@ -49,7 +49,7 @@ const FAQs = () => {
         },
         {
           question: "Do I need prior programming experience for AI courses?",
-          answer: "While basic programming knowledge is helpful, our AI courses are designed for various skill levels:\n• Beginner tracks include Python programming basics\n• Interactive coding environments with real-time guidance\n• Step-by-step tutorials and examples\n• Practical projects with increasing complexity\n• Comprehensive documentation and resources\n\nWe ensure everyone can learn AI regardless of their starting point.",
+          answer: "While basic programming knowledge is helpful, our AI courses are designed for various skill levels:\n• Beginner tracks include Python programming basics\n• Interactive coding environments with real-time guidance\n• Step-by-step tutorials and examples\n• Practical projects with increasing complexity\n• Comprehensive documentation and resources\n\nIf you have questions about your readiness, feel free to ask Sensei, our AI assistant, who can assess your current level and recommend the best starting point.",
         },
         {
           question: "How practical are the AI courses?",
@@ -76,7 +76,7 @@ const FAQs = () => {
         },
         {
           question: "How do the trading simulators work?",
-          answer: "Our trading simulators provide risk-free practice environments where you can:\n• Execute virtual trades with real-time market data\n• Analyze market trends and patterns\n• Test different trading strategies\n• Track portfolio performance\n• Learn from trading history\n• Understand market mechanics\n\nStart with virtual currency and learn without financial risk.",
+          answer: "Our trading simulators provide risk-free practice environments where you can:\n• Execute virtual trades with real-time market data\n• Analyze market trends and patterns\n• Test different trading strategies\n• Track portfolio performance\n• Learn from trading history\n• Understand market mechanics\n\nStart with virtual currency and learn without financial risk. For personalized trading strategies and advice, consult with Sensei through the chat interface.",
         },
         {
           question: "What blockchain networks do you cover?",
@@ -95,7 +95,7 @@ const FAQs = () => {
       faqs: [
         {
           question: "What makes Sulla's AI integration (Sensei) unique?",
-          answer: "Sensei, our AI-powered learning assistant, provides:\n• Personalized learning paths based on your progress and goals\n• Real-time assistance and explanations\n• Adaptive content difficulty\n• Custom practice problems\n• Performance analytics and improvement suggestions\n• Integration with both AI and crypto courses\n\nIt's like having a personal tutor available 24/7.",
+          answer: "Sensei, our AI-powered learning assistant, provides:\n• Personalized learning paths based on your progress and goals\n• Real-time assistance and explanations\n• Adaptive content difficulty\n• Custom practice problems\n• Performance analytics and improvement suggestions\n• Integration with both AI and crypto courses\n\nSensei is available 24/7 through the chat interface to answer questions, provide guidance, and help you overcome any learning challenges.",
         },
         {
           question: "How does the platform track my progress?",
@@ -118,11 +118,11 @@ const FAQs = () => {
       faqs: [
         {
           question: "What kind of support do you offer?",
-          answer: "We provide comprehensive support through:\n• 24/7 AI-powered chat assistance\n• Community forums and discussion boards\n• Expert-led study groups\n• Regular webinars and workshops\n• Technical support team\n• Resource library and documentation\n\nOur goal is to ensure you never feel stuck in your learning journey.",
+          answer: "Your primary support resource is Sensei, our AI-powered learning assistant, available 24/7 through the chat interface. Sensei provides:\n• Instant answers to course-related questions\n• Real-time problem-solving assistance\n• Personalized learning guidance\n• Technical support for exercises\n• Resource recommendations\n• Progress tracking and feedback\n\nFor matters requiring human assistance, our support team is also available through the platform.",
         },
         {
           question: "How can I get help if I'm stuck?",
-          answer: "Multiple support channels are available:\n• Direct messaging with tutors\n• Community help forums\n• Live chat support\n• Video call consultations\n• Interactive problem-solving sessions\n• Resource recommendations",
+          answer: "Your first stop should be Sensei, our AI assistant, who can help with:\n• Course content clarification\n• Exercise guidance and hints\n• Code debugging and explanations\n• Learning path recommendations\n• Resource suggestions\n• Practice problem solutions\n\nSimply open the chat interface and ask Sensei your questions for immediate assistance.",
         },
         {
           question: "Are there networking opportunities?",
@@ -198,8 +198,12 @@ const FAQs = () => {
           <Card className="p-6 mb-8 bg-gradient-to-br from-blue-50 to-white">
             <p className="text-lg text-gray-700 mb-4">
               Welcome to Sulla's FAQ section. Here you'll find comprehensive information about our platform, 
-              learning methodology, and available features. If you can't find the answer you're looking for, 
-              feel free to contact our support team.
+              learning methodology, and available features. 
+            </p>
+            <p className="text-lg text-gray-700">
+              Don't see what you're looking for? Ask Sensei, our AI learning assistant! Sensei is available 24/7 
+              through the chat interface and can provide personalized help with course content, technical questions, 
+              and learning guidance. Simply click the chat icon to get started.
             </p>
           </Card>
 
