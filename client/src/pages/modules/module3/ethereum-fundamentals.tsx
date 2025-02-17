@@ -11,6 +11,21 @@ import PosVsPowDiagram from "@/components/diagrams/PosVsPowDiagram";
 import BitcoinEthereumComparison from "@/components/diagrams/BitcoinEthereumComparison";
 import EVMWorkflow from "@/components/diagrams/EVMWorkflow";
 
+const EthereumLogo = () => (
+  <svg
+    width="48"
+    height="48"
+    viewBox="0 0 24 24"
+    fill="none"
+    className="inline-block mr-4"
+  >
+    <path
+      d="M11.944 17.97L4.58 13.62 11.943 24l7.37-10.38-7.372 4.35h.003zM12.056 0L4.69 12.223l7.365 4.354 7.365-4.35L12.056 0z"
+      fill="#343434"
+    />
+  </svg>
+);
+
 const EthereumFundamentalsSection = () => {
   useScrollTop();
   const [isFullyRead, setIsFullyRead] = useState(false);
@@ -87,14 +102,17 @@ const EthereumFundamentalsSection = () => {
       </div>
 
       <div className="max-w-4xl mx-auto">
-        <motion.h1 
+        <motion.div 
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="text-4xl font-bold text-blue-800 mb-6"
+          className="flex items-center mb-6"
         >
-          3.1 Ethereum Fundamentals
-        </motion.h1>
+          <EthereumLogo />
+          <h1 className="text-4xl font-bold text-blue-800">
+            3.1 Ethereum Fundamentals
+          </h1>
+        </motion.div>
 
         <Card className="mb-6">
           <div className="p-6 prose max-w-none">
