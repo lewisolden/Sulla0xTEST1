@@ -330,6 +330,22 @@ const mockGlossaryTerms: Term[] = [
   }
 ];
 
+const difficultyColors = {
+  Beginner: "bg-green-100 text-green-800",
+  Intermediate: "bg-blue-100 text-blue-800",
+  Advanced: "bg-purple-100 text-purple-800"
+};
+
+const categoryColors = {
+  "Cryptocurrencies": "bg-blue-100 text-blue-800 border-blue-200",
+  "Core Concepts": "bg-slate-100 text-slate-800 border-slate-200",
+  "Security": "bg-red-100 text-red-800 border-red-200",
+  "Technology": "bg-emerald-100 text-emerald-800 border-emerald-200",
+  "Market": "bg-amber-100 text-amber-800 border-amber-200",
+  "Applications": "bg-indigo-100 text-indigo-800 border-indigo-200",
+  "AI & Technology": "bg-purple-100 text-purple-800 border-purple-200"
+};
+
 export default function GlossaryTerms() {
   const [searchTerm, setSearchTerm] = useState("");
   const [expandedTerm, setExpandedTerm] = useState<string | null>(null);
@@ -366,8 +382,12 @@ export default function GlossaryTerms() {
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-4 space-y-6">
-      <div className="flex flex-col md:flex-row gap-4 mb-6">
+    <div className="w-full max-w-4xl mx-auto space-y-6">
+      <motion.div 
+        className="flex flex-col md:flex-row gap-4 mb-6"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
         <div className="relative flex-1">
           <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
           <Input
@@ -375,24 +395,26 @@ export default function GlossaryTerms() {
             placeholder="Search terms..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
+            className="pl-10 bg-white/80 backdrop-blur-sm border-blue-200 focus:border-blue-300"
           />
         </div>
+
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
-          className="p-2 border rounded-md bg-background"
+          className="p-2 border rounded-md bg-white/80 backdrop-blur-sm border-blue-200 focus:border-blue-300"
         >
           {categories.map(category => (
             <option key={category} value={category}>
-              {category.charAt(0).toUpperCase() + category.slice(1)}
+              {category === "all" ? "All Categories" : category}
             </option>
           ))}
         </select>
+
         <select
           value={selectedDifficulty}
           onChange={(e) => setSelectedDifficulty(e.target.value)}
-          className="p-2 border rounded-md bg-background"
+          className="p-2 border rounded-md bg-white/80 backdrop-blur-sm border-blue-200 focus:border-blue-300"
         >
           {difficulties.map(difficulty => (
             <option key={difficulty} value={difficulty}>
@@ -400,7 +422,7 @@ export default function GlossaryTerms() {
             </option>
           ))}
         </select>
-      </div>
+      </motion.div>
 
       <motion.div
         className="space-y-4"
@@ -411,25 +433,35 @@ export default function GlossaryTerms() {
         {filteredTerms.map((term) => (
           <Card
             key={term.id}
-            className="overflow-hidden cursor-pointer hover:shadow-md transition-shadow"
+            className="overflow-hidden cursor-pointer hover:shadow-lg transition-all duration-300 bg-white/90 backdrop-blur-sm border-blue-100"
             onClick={() => setExpandedTerm(expandedTerm === term.id ? null : term.id)}
           >
             <motion.div
               className="p-4"
               initial={false}
-              animate={{ backgroundColor: expandedTerm === term.id ? "rgb(243, 244, 246)" : "white" }}
+              animate={{ 
+                backgroundColor: expandedTerm === term.id ? "rgb(243, 244, 246)" : "white",
+                borderColor: expandedTerm === term.id ? "rgb(219, 234, 254)" : "transparent"
+              }}
               transition={{ duration: 0.2 }}
             >
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-2">
-                  <h3 className="text-lg font-semibold text-blue-800">{term.term}</h3>
-                  <Badge variant="outline">{term.difficulty}</Badge>
+                  <h3 className="text-lg font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-800">
+                    {term.term}
+                  </h3>
+                  <Badge 
+                    variant="outline" 
+                    className={`${difficultyColors[term.difficulty]} border`}
+                  >
+                    {term.difficulty}
+                  </Badge>
                 </div>
                 <motion.div
                   animate={{ rotate: expandedTerm === term.id ? 180 : 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <ChevronDown className="h-5 w-5 text-gray-500" />
+                  <ChevronDown className="h-5 w-5 text-blue-500" />
                 </motion.div>
               </div>
 
@@ -442,14 +474,14 @@ export default function GlossaryTerms() {
                     transition={{ duration: 0.3 }}
                     className="mt-4 space-y-4"
                   >
-                    <p className="text-gray-700">{term.definition}</p>
+                    <p className="text-gray-700 leading-relaxed">{term.definition}</p>
 
                     {term.examples && term.examples.length > 0 && (
-                      <div className="bg-gray-50 p-4 rounded-md">
-                        <h4 className="font-medium text-gray-900 mb-2">Examples:</h4>
+                      <div className="bg-blue-50/50 p-4 rounded-lg border border-blue-100">
+                        <h4 className="font-medium text-blue-900 mb-2">Examples:</h4>
                         <ul className="list-disc pl-5 space-y-2">
                           {term.examples.map((example, index) => (
-                            <li key={index} className="text-gray-700">{example}</li>
+                            <li key={index} className="text-blue-800">{example}</li>
                           ))}
                         </ul>
                       </div>
@@ -463,7 +495,7 @@ export default function GlossaryTerms() {
                             <Badge
                               key={index}
                               variant="secondary"
-                              className="cursor-pointer hover:bg-gray-200"
+                              className="cursor-pointer hover:bg-blue-100 transition-colors"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setSearchTerm(relatedTerm);
@@ -477,7 +509,10 @@ export default function GlossaryTerms() {
                     )}
 
                     <div className="flex items-center gap-2 mt-4">
-                      <Badge variant="outline" className="bg-blue-50">
+                      <Badge 
+                        variant="outline" 
+                        className={`${categoryColors[term.category]} border`}
+                      >
                         {term.category}
                       </Badge>
                     </div>
