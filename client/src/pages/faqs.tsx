@@ -45,11 +45,11 @@ const FAQs = () => {
       faqs: [
         {
           question: "What AI courses does Sulla offer?",
-          answer: "Our AI curriculum includes:\n• Introduction to Artificial Intelligence\n• Machine Learning Fundamentals\n• Neural Networks and Deep Learning\n• Natural Language Processing\n• Computer Vision\n• Robotics and Automation\n• AI Ethics and Governance\n• Generative AI and Future Trends\n\nEach course combines theory with hands-on projects and real-world applications.",
+          answer: "Our AI curriculum includes courses for all skill levels, from complete beginners to advanced practitioners:\n• Introduction to Artificial Intelligence (No prerequisites)\n• Machine Learning Fundamentals (Beginner-friendly)\n• Neural Networks and Deep Learning\n• Natural Language Processing\n• Computer Vision\n• Robotics and Automation\n• AI Ethics and Governance\n• Generative AI and Future Trends\n\nEach course combines theory with hands-on projects and real-world applications, with additional support for beginners.",
         },
         {
           question: "Do I need prior programming experience for AI courses?",
-          answer: "While basic programming knowledge is helpful, our AI courses are designed for various skill levels:\n• Beginner tracks include Python programming basics\n• Interactive coding environments with real-time guidance\n• Step-by-step tutorials and examples\n• Practical projects with increasing complexity\n• Comprehensive documentation and resources\n\nIf you have questions about your readiness, feel free to ask Sensei, our AI assistant, who can assess your current level and recommend the best starting point.",
+          answer: "No prior experience is needed! Our AI courses are designed for all skill levels:\n• Complete beginner tracks with Python basics\n• Step-by-step guidance for newcomers\n• Interactive coding environments with real-time help\n• Gradual progression from basics to advanced topics\n• Comprehensive documentation and resources\n• Extra support through Sensei for beginners\n\nIf you're unsure about where to start, just ask Sensei through the chat icon in the bottom right corner - our AI assistant will assess your current level and recommend the perfect starting point.",
         },
         {
           question: "How practical are the AI courses?",
@@ -153,8 +153,8 @@ const FAQs = () => {
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: {
         duration: 0.5,
@@ -165,8 +165,8 @@ const FAQs = () => {
 
   const itemVariants = {
     hidden: { opacity: 0, x: -20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       x: 0,
       transition: { duration: 0.3 }
     }
@@ -197,13 +197,13 @@ const FAQs = () => {
 
           <Card className="p-6 mb-8 bg-gradient-to-br from-blue-50 to-white">
             <p className="text-lg text-gray-700 mb-4">
-              Welcome to Sulla's FAQ section. Here you'll find comprehensive information about our platform, 
-              learning methodology, and available features. 
+              Welcome to Sulla's FAQ section. Here you'll find comprehensive information about our platform,
+              learning methodology, and available features.
             </p>
             <p className="text-lg text-gray-700">
-              Don't see what you're looking for? Ask Sensei, our AI learning assistant! Sensei is available 24/7 
-              through the chat interface and can provide personalized help with course content, technical questions, 
-              and learning guidance. Simply click the chat icon to get started.
+              Don't see what you're looking for? Ask Sensei, our AI learning assistant! You'll find Sensei's chat icon in the bottom right corner of your screen. Sensei is available 24/7
+              and can provide personalized help with course content, technical questions,
+              and learning guidance. Simply click the chat icon to start getting immediate, personalized assistance.
             </p>
           </Card>
 
