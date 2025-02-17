@@ -4,8 +4,14 @@ import GlossaryTerms from "@/components/glossary/GlossaryTerms";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ArrowLeft, Book, Lightbulb, List } from "lucide-react";
+import { useEffect } from "react";
 
 export default function GlossaryPage() {
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
