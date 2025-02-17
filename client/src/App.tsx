@@ -117,7 +117,7 @@ function Router() {
       <Route path="/" component={() => <ProtectedRoute component={Home} publicAccess={true} />} />
       <Route path="/about" component={() => <ProtectedRoute component={About} publicAccess={true} />} />
       <Route path="/curriculum" component={() => <ProtectedRoute component={Curriculum} publicAccess={true} />} />
-      <Route path="/faqs" component={FAQs} /> 
+      <Route path="/faqs" component={() => <ProtectedRoute component={FAQs} publicAccess={true} />} />
       <Route path="/games" component={() => <ProtectedRoute component={Games} publicAccess={true} />} />
       <Route path="/ai" component={() => <ProtectedRoute component={AIOverview} publicAccess={true} />} />
       <Route path="/ai/module1" component={() => <ProtectedRoute component={AIModule1} publicAccess={true} />} />

@@ -7,7 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-export default function FAQs() {
+const FAQs = () => {
   const faqs = [
     {
       question: "What is Sulla?",
@@ -53,7 +53,7 @@ export default function FAQs() {
         <h1 className="text-4xl font-bold text-blue-800 mb-6">
           Frequently Asked Questions
         </h1>
-        
+
         <Card className="p-6 mb-8">
           <p className="text-lg text-gray-700 mb-4">
             Welcome to Sulla's FAQ section. Here you'll find comprehensive information about our platform, 
@@ -77,4 +77,6 @@ export default function FAQs() {
       </motion.div>
     </div>
   );
-}
+};
+
+export default FAQs;
