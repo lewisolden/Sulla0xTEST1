@@ -1,5 +1,5 @@
 import { Link, useLocation, useLocation as useLocationHook } from "wouter";
-import { BookOpen, GraduationCap, Zap, Gamepad2, CreditCard, Dumbbell, Lightbulb, Brain, Code, Globe, CheckCircle2 } from "lucide-react";
+import { BookOpen, GraduationCap, Zap, Gamepad2, CreditCard, Dumbbell, Lightbulb, Brain, Code, Globe, CheckCircle2, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PersonalizedPath } from "@/components/learning/personalized-path";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -123,16 +123,25 @@ const courses = [
 
 const simulators = [
   {
-    id: "wallet",
-    title: "Wallet Simulator",
-    description: "Practice creating and managing cryptocurrency wallets in a safe environment.",
-    path: "/wallet-simulator"
+    id: "games",
+    title: "Interactive Games",
+    description: "Learn through gamified experiences and interactive challenges.",
+    path: "/games",
+    icon: Gamepad2
   },
   {
-    id: "trading",
-    title: "Trading Simulator",
-    description: "Learn cryptocurrency trading basics with our risk-free simulator.",
-    path: "/trading-simulator"
+    id: "glossary",
+    title: "Knowledge Base",
+    description: "Comprehensive glossary of terms and concepts.",
+    path: "/glossary",
+    icon: BookOpen
+  },
+  {
+    id: "sensei",
+    title: "AI Sensei",
+    description: "Get personalized guidance from our AI learning assistant.",
+    path: "/sensei",
+    icon: Brain
   }
 ];
 
@@ -487,32 +496,52 @@ export default function Curriculum() {
         )}
 
         <motion.div
-          className="mt-12 bg-white shadow-lg rounded-lg p-8"
+          className="mt-12"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
         >
-          <div className="flex items-center gap-4 mb-6">
-            <Dumbbell className="h-8 w-8 text-blue-600" />
-            <h2 className="text-2xl font-semibold text-blue-800">Learning Tools</h2>
-          </div>
-          <div className="grid md:grid-cols-2 gap-6">
-            {simulators.map((sim) => (
-              <motion.div
-                key={sim.id}
-                className="bg-blue-50 p-6 rounded-lg"
-                whileHover={{ scale: 1.02 }}
-              >
-                <h3 className="text-xl font-semibold text-blue-700 mb-2">{sim.title}</h3>
-                <p className="text-blue-600 mb-4">{sim.description}</p>
-                <Link href={sim.path}>
-                  <Button className="bg-blue-600 hover:bg-blue-700">
-                    Launch Simulator
-                  </Button>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
+          <Card className="bg-gradient-to-br from-white to-blue-50 shadow-lg hover:shadow-xl transition-all duration-300 p-8">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="bg-blue-100 p-3 rounded-lg">
+                <Dumbbell className="h-8 w-8 text-blue-600" />
+              </div>
+              <h2 className="text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-800">
+                Learning Tools
+              </h2>
+            </div>
+            <div className="grid md:grid-cols-3 gap-6">
+              {simulators.map((tool) => (
+                <motion.div
+                  key={tool.id}
+                  className="group"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <Link href={tool.path}>
+                    <Card className="h-full bg-gradient-to-br from-blue-50 to-white hover:from-blue-100 hover:to-blue-50 transition-all duration-300 p-6 border border-blue-100 hover:border-blue-200 hover:shadow-lg">
+                      <div className="flex flex-col h-full">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="bg-blue-100 p-3 rounded-lg group-hover:bg-blue-200 transition-colors">
+                            <tool.icon className="h-6 w-6 text-blue-600" />
+                          </div>
+                          <h3 className="text-xl font-semibold text-blue-800 group-hover:text-blue-900">
+                            {tool.title}
+                          </h3>
+                        </div>
+                        <p className="text-blue-600 group-hover:text-blue-700 flex-grow">
+                          {tool.description}
+                        </p>
+                        <div className="mt-4 flex items-center text-blue-600 group-hover:text-blue-700">
+                          <span className="text-sm font-medium">Explore</span>
+                          <ArrowRight className="h-4 w-4 ml-2 transform group-hover:translate-x-1 transition-transform" />
+                        </div>
+                      </div>
+                    </Card>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </Card>
         </motion.div>
       </div>
     </div>
