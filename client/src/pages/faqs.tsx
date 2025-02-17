@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import {
@@ -8,8 +9,11 @@ import {
 } from "@/components/ui/accordion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Brain, BookOpen, Coins, Shield, GraduationCap, MessageCircle } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 const FAQs = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+
   const faqCategories = [
     {
       id: "general",
@@ -24,6 +28,14 @@ const FAQs = () => {
           question: "How does Sulla's learning approach work?",
           answer: "Sulla uses a multi-faceted learning approach that includes:\n• Interactive modules with practical exercises\n• AI-powered adaptive learning system (Sensei)\n• Real-time trading simulators\n• Hands-on blockchain experiments\n• AI project implementations\n• Gamified learning experiences\n• Progress tracking and achievements\n\nOur platform adapts to your learning pace and style, ensuring an optimized educational experience.",
         },
+        {
+          question: "What makes Sulla different from other learning platforms?",
+          answer: "Sulla stands out through:\n• Integration of AI and blockchain education\n• Hands-on practical learning with real-world applications\n• Personalized AI-driven learning paths\n• Interactive simulations and tools\n• Community-driven learning environment\n• Regular content updates reflecting industry trends",
+        },
+        {
+          question: "Can I learn at my own pace?",
+          answer: "Yes! Sulla is designed for flexible learning:\n• Self-paced modules\n• 24/7 access to all content\n• No deadlines or time restrictions\n• Save progress and resume anytime\n• Customizable learning schedules\n• Mobile-friendly platform for learning on-the-go",
+        }
       ]
     },
     {
@@ -42,6 +54,14 @@ const FAQs = () => {
         {
           question: "How practical are the AI courses?",
           answer: "Our AI courses are highly practical and industry-focused:\n• Real-world project implementations\n• Industry-standard tools and frameworks\n• Hands-on experience with popular AI libraries\n• Portfolio-building opportunities\n• Collaboration with AI-powered tools\n• Regular updates reflecting latest AI trends",
+        },
+        {
+          question: "What tools and technologies are covered in the AI curriculum?",
+          answer: "Our AI courses cover a wide range of tools:\n• Python and its AI/ML libraries\n• TensorFlow and PyTorch\n• Natural Language Processing tools\n• Computer Vision frameworks\n• Cloud AI services\n• MLOps tools and practices\n• Deployment platforms and strategies",
+        },
+        {
+          question: "How do you keep AI course content up-to-date?",
+          answer: "We maintain current content through:\n• Regular reviews by industry experts\n• Integration of new AI developments\n• Updates based on industry trends\n• Feedback from AI practitioners\n• Partnership with tech companies\n• Community contributions",
         }
       ]
     },
@@ -57,6 +77,14 @@ const FAQs = () => {
         {
           question: "How do the trading simulators work?",
           answer: "Our trading simulators provide risk-free practice environments where you can:\n• Execute virtual trades with real-time market data\n• Analyze market trends and patterns\n• Test different trading strategies\n• Track portfolio performance\n• Learn from trading history\n• Understand market mechanics\n\nStart with virtual currency and learn without financial risk.",
+        },
+        {
+          question: "What blockchain networks do you cover?",
+          answer: "We provide comprehensive coverage of:\n• Bitcoin and its ecosystem\n• Ethereum and smart contracts\n• Popular altcoin networks\n• Layer 2 solutions\n• Cross-chain technologies\n• Emerging blockchain platforms",
+        },
+        {
+          question: "How do you teach DeFi concepts?",
+          answer: "Our DeFi education includes:\n• Interactive DeFi simulations\n• Real protocol examples\n• Yield farming strategies\n• Liquidity provision mechanics\n• Risk management in DeFi\n• Smart contract security",
         }
       ]
     },
@@ -72,6 +100,14 @@ const FAQs = () => {
         {
           question: "How does the platform track my progress?",
           answer: "Sulla provides comprehensive progress tracking through:\n• Achievement badges and milestones\n• Detailed performance analytics\n• Progress visualization\n• Skill assessment scores\n• Learning path completion status\n• Practice exercise results\n\nYou can access your progress dashboard anytime to review your learning journey.",
+        },
+        {
+          question: "Can I get certifications for completed courses?",
+          answer: "Yes, we offer certificates:\n• Course completion certificates\n• Skill-specific certifications\n• Project completion badges\n• Industry-recognized credentials\n• Shareable achievements\n• Blockchain-verified certificates",
+        },
+        {
+          question: "How do you assess learning outcomes?",
+          answer: "We use multiple assessment methods:\n• Interactive quizzes\n• Practical project evaluations\n• Peer reviews\n• AI-powered skill assessments\n• Portfolio development\n• Continuous feedback loops",
         }
       ]
     },
@@ -83,6 +119,14 @@ const FAQs = () => {
         {
           question: "What kind of support do you offer?",
           answer: "We provide comprehensive support through:\n• 24/7 AI-powered chat assistance\n• Community forums and discussion boards\n• Expert-led study groups\n• Regular webinars and workshops\n• Technical support team\n• Resource library and documentation\n\nOur goal is to ensure you never feel stuck in your learning journey.",
+        },
+        {
+          question: "How can I get help if I'm stuck?",
+          answer: "Multiple support channels are available:\n• Direct messaging with tutors\n• Community help forums\n• Live chat support\n• Video call consultations\n• Interactive problem-solving sessions\n• Resource recommendations",
+        },
+        {
+          question: "Are there networking opportunities?",
+          answer: "Yes, we offer various networking options:\n• Student communities\n• Industry meetups\n• Expert Q&A sessions\n• Project collaboration spaces\n• Career networking events\n• Alumni network access",
         }
       ]
     },
@@ -94,6 +138,14 @@ const FAQs = () => {
         {
           question: "Is my learning data secure?",
           answer: "Yes, Sulla takes data security seriously:\n• End-to-end encryption for all data\n• Secure user authentication\n• Regular security audits\n• GDPR compliance\n• Transparent data usage policies\n• Regular backups\n\nYour learning data and personal information are protected with industry-standard security measures.",
+        },
+        {
+          question: "How do you protect user privacy?",
+          answer: "We maintain privacy through:\n• Strict data protection policies\n• Limited data collection\n• User control over sharing\n• Regular privacy audits\n• Secure data storage\n• Transparent privacy policies",
+        },
+        {
+          question: "What about financial transaction security?",
+          answer: "We ensure secure transactions via:\n• Industry-standard encryption\n• Secure payment gateways\n• Regular security updates\n• PCI DSS compliance\n• Transaction monitoring\n• Fraud prevention systems",
         }
       ]
     }
@@ -120,6 +172,16 @@ const FAQs = () => {
     }
   };
 
+  // Filter FAQs based on search query
+  const getFilteredFAQs = (category) => {
+    if (!searchQuery) return category.faqs;
+
+    return category.faqs.filter(faq =>
+      faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      faq.answer.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  };
+
   return (
     <div className="container mx-auto px-4 py-8">
       <motion.div
@@ -140,6 +202,17 @@ const FAQs = () => {
               feel free to contact our support team.
             </p>
           </Card>
+
+          {/* Search Input */}
+          <div className="mb-6">
+            <Input
+              type="text"
+              placeholder="Search FAQs..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="max-w-md"
+            />
+          </div>
         </motion.div>
 
         <Tabs defaultValue="general" className="w-full">
@@ -164,7 +237,7 @@ const FAQs = () => {
                 animate="visible"
               >
                 <Accordion type="single" collapsible className="w-full space-y-4">
-                  {category.faqs.map((faq, index) => (
+                  {getFilteredFAQs(category).map((faq, index) => (
                     <motion.div
                       key={index}
                       variants={itemVariants}
