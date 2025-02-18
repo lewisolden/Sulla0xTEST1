@@ -3,13 +3,15 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { MessageSquare, X, Send, Loader2 } from "lucide-react";
+import { MessageSquare, X, Send, Loader2, ExternalLink } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "wouter";
 
 interface Message {
   role: "user" | "assistant";
   content: string;
   timestamp: Date;
+  links?: Array<{ text: string; url: string }>;
 }
 
 export function CourseAssistant() {
@@ -59,7 +61,8 @@ export function CourseAssistant() {
       setMessages(prev => [...prev, {
         role: "assistant",
         content: data.response,
-        timestamp: new Date()
+        timestamp: new Date(),
+        links: data.links
       }]);
     } catch (error) {
       console.error('Chat error:', error);
@@ -110,13 +113,27 @@ export function CourseAssistant() {
                       }`}
                     >
                       <div
-                        className={`max-w-[80%] rounded-lg p-3 ${
+                        className={`space-y-2 max-w-[80%] rounded-lg p-3 ${
                           msg.role === "user"
                             ? "bg-primary text-primary-foreground ml-4"
                             : "bg-muted"
                         }`}
                       >
-                        {msg.content}
+                        <div>{msg.content}</div>
+                        {msg.links && msg.links.length > 0 && (
+                          <div className="space-y-1 mt-2 pt-2 border-t border-primary/10">
+                            {msg.links.map((link, linkIdx) => (
+                              <Link 
+                                key={linkIdx} 
+                                href={link.url}
+                                className="flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700"
+                              >
+                                <ExternalLink className="w-3 h-3" />
+                                {link.text}
+                              </Link>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}
