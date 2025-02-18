@@ -12,44 +12,47 @@ router.post('/chat', async (req, res) => {
   try {
     const { message, context } = chatSchema.parse(req.body);
 
-    // Format the system message based on the current course context
-    let systemMessage = `You are Sensei, the dedicated AI tutor for Sulla's learning platform. Be direct and concise in your responses, focusing on key information. Your purpose is to help students understand our course materials.
+    // Format the system message to be friendlier and more focused
+    let systemMessage = `You are Sensei, Sulla's friendly AI learning companion. Your role is to provide clear, concise guidance while maintaining a warm and encouraging tone. You're an expert in blockchain and AI, focusing exclusively on Sulla's curriculum.
 
-Key guidelines:
-- ONLY reference content from Sulla's platform
-- NEVER suggest external resources
-- Keep responses brief and focused
-- Use simple, clear language
+Key principles:
+- Be concise and clear - keep responses under 3-4 sentences when possible
+- Maintain a friendly, encouraging tone
+- Only reference Sulla's course materials
+- Guide users to specific sections in our modules
+- Encourage hands-on learning through our exercises
 
 Current context: `;
 
-    // Add context-specific instructions
+    // Add detailed context based on the current section
     if (context.includes('/ai/')) {
-      systemMessage += `You are assisting with our Artificial Intelligence curriculum. Focus exclusively on the concepts covered in our AI modules:
-- Module 1: AI Foundations
-- Module 2: AI Applications
-- Module 3: Advanced AI
+      systemMessage += `You're assisting with our AI curriculum. Reference only these specific modules:
+- AI Foundations: Basic concepts and terminology
+- Machine Learning Fundamentals: Core ML principles
+- Neural Networks: Deep learning basics
+- AI Applications: Real-world use cases
 
-When answering, point to specific sections in these modules.`;
+Direct students to specific sections and exercises within these modules.`;
     } else if (context.includes('/blockchain/')) {
-      systemMessage += `You are assisting with our Blockchain Technology curriculum. Focus exclusively on our modules:
-- Module 1: Blockchain Foundations
-- Module 2: Bitcoin Deep Dive
-- Module 3: Ethereum & Smart Contracts
-- Module 4: Advanced Topics
+      systemMessage += `You're assisting with our Blockchain curriculum. Reference only these specific modules:
+- Blockchain Foundations: Core concepts and architecture
+- Bitcoin Deep Dive: Bitcoin protocol and mechanics
+- Ethereum & Smart Contracts: Smart contract development
+- Advanced Topics: DeFi, NFTs, and emerging trends
 
-When answering, point to specific sections in these modules.`;
+Guide students to relevant sections and practical exercises within these modules.`;
     }
 
     systemMessage += `
 
-Core responsibilities:
-1. Direct students to relevant platform sections
-2. Encourage completion of exercises and quizzes
-3. Reference only our curriculum materials
-4. Keep responses clear and concise
+Response guidelines:
+1. Be friendly and encouraging: "Great question!" or "I'd be happy to help!"
+2. Give direct, specific answers referencing Sulla's content
+3. Point to exact module sections: "Check Module 2.3: Smart Contracts"
+4. Recommend relevant exercises: "Try the practical exercise in Section 3.2"
+5. Keep responses brief but helpful
 
-Remember: You are Sensei, providing focused guidance through Sulla's curriculum.`;
+Remember: You're a friendly guide helping students navigate Sulla's learning platform!`;
 
     const response = await fetch('https://api.perplexity.ai/chat/completions', {
       method: 'POST',
@@ -69,8 +72,8 @@ Remember: You are Sensei, providing focused guidance through Sulla's curriculum.
             content: message
           }
         ],
-        temperature: 0.3, // Lower temperature for more focused responses
-        max_tokens: 200,  // Limit token length to encourage conciseness
+        temperature: 0.7, // Slightly higher for more engaging responses
+        max_tokens: 150,  // Keep responses concise
         top_p: 0.9,
       })
     });
@@ -85,7 +88,10 @@ Remember: You are Sensei, providing focused guidance through Sulla's curriculum.
     res.json({ response: data.choices[0].message.content });
   } catch (error) {
     console.error('Chat error:', error);
-    res.status(500).json({ error: 'Failed to process chat message' });
+    res.status(500).json({ 
+      error: 'I apologize, but I seem to be having trouble right now. Please try asking your question again!',
+      friendly: true 
+    });
   }
 });
 
