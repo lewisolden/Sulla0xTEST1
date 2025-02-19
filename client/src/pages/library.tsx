@@ -21,6 +21,22 @@ const samplePosts: BlogPost[] = [
     readTime: "12",
     category: "Platform Updates",
     slug: "sulla-future-tech-education"
+  },
+  {
+    title: "The Role of Artificial Intelligence in Shaping the Future of Work",
+    description: "Explore how AI is transforming industries, creating new opportunities, and reshaping the future of work in our rapidly evolving digital economy.",
+    date: "February 19, 2025",
+    readTime: "15",
+    category: "AI & Technology",
+    slug: "ai-future-of-work"
+  },
+  {
+    title: "How Sulla's Personalized Learning and Sensei Tutor Help Learners Succeed",
+    description: "Learn about Sulla's innovative approach to personalized learning and how our AI-powered Sensei tutor adapts to each student's unique needs.",
+    date: "February 19, 2025",
+    readTime: "10",
+    category: "Education & Technology",
+    slug: "personalized-learning-sensei-tutor"
   }
 ];
 
