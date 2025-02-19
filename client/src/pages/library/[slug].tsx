@@ -6,17 +6,7 @@ const blogPosts = {
     title: "Sulla: Empowering the Future of Technology and Education",
     content: `In the rapidly evolving world of technology and education, Sulla stands at the forefront of innovation, delivering an immersive, AI-powered learning experience focused on blockchain, cryptocurrency, and financial technologies.
 
-Our platform combines cutting-edge artificial intelligence with comprehensive educational content to create a uniquely adaptive learning environment. Through interactive modules, real-time simulations, and personalized guidance, we're making complex technological concepts accessible and engaging for learners at all levels.
-
-Key Features:
-- AI-Powered Adaptive Learning
-- Interactive Blockchain Simulations
-- Comprehensive Cryptocurrency Education
-- Real-Time Market Analysis Tools
-- Personalized Learning Paths
-- Expert-Curated Content
-
-Join us on this journey as we shape the future of technology education, empowering individuals with the knowledge and skills needed to thrive in the digital economy.`,
+Our platform combines cutting-edge artificial intelligence with comprehensive educational content to create a uniquely adaptive learning environment. Through interactive modules, real-time simulations, and personalized guidance, we're making complex technological concepts accessible and engaging for learners at all levels.`,
     date: "February 19, 2025",
     readTime: "12 min read",
     category: "Platform Updates"
