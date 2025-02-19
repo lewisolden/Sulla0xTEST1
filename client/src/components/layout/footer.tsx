@@ -13,17 +13,16 @@ export default function Footer() {
         <div>
           <h4 className="font-semibold mb-3">Quick Links</h4>
           <nav className="space-y-2">
-            <Link href="/" className="block hover:text-blue-200">Home</Link>
             <Link href="/about" className="block hover:text-blue-200">About</Link>
-            <Link href="/curriculum" className="block hover:text-blue-200">Curriculum</Link>
-            <Link href="/achievements" className="block hover:text-blue-200">Achievements</Link>
-            <Link href="/games" className="block hover:text-blue-200">Interactive Games</Link>
-            <Link href="/glossary" className="block hover:text-blue-200">Glossary</Link>
-            <Link href="/modules/module1" className="block hover:text-blue-200">Start Learning</Link>
             <Link href="/ai" className="flex items-center gap-2 hover:text-blue-200">
               <Sparkles className="w-4 h-4" />
               AI Features
             </Link>
+            <Link href="/curriculum" className="block hover:text-blue-200">Curriculum</Link>
+            <Link href="/games" className="block hover:text-blue-200">Games</Link>
+            <Link href="/glossary" className="block hover:text-blue-200">Glossary</Link>
+            <Link href="/library" className="block hover:text-blue-200">Library</Link>
+            <Link href="/modules/module1" className="block hover:text-blue-200">Start Learning</Link>
           </nav>
         </div>
 

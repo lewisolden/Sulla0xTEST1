@@ -38,6 +38,7 @@ export default function Navigation() {
                       { path: "/faqs", label: "FAQs" },
                       { path: "/games", label: "Games" },
                       { path: "/glossary", label: "Glossary" },
+                      { path: "/library", label: "Library" },
                       { path: "/modules/module1", label: "Start Learning" },
                       { path: "/sensei", label: "Sensei" },
                     ].map(({ path, label }) => (
