@@ -15,6 +15,14 @@ interface BlogPost {
 // Sample blog posts - In a real app, this would come from an API
 const samplePosts: BlogPost[] = [
   {
+    title: "Sulla: Empowering the Future of Technology and Education",
+    description: "Discover how Sulla is revolutionizing blockchain and AI education through immersive learning experiences and cutting-edge technology.",
+    date: "February 19, 2025",
+    readTime: "12",
+    category: "Platform Updates",
+    slug: "sulla-future-tech-education"
+  },
+  {
     title: "Understanding Blockchain Technology",
     description: "A comprehensive guide to blockchain technology and its real-world applications in modern finance.",
     date: "February 19, 2025",
