@@ -21,30 +21,6 @@ const samplePosts: BlogPost[] = [
     readTime: "12",
     category: "Platform Updates",
     slug: "sulla-future-tech-education"
-  },
-  {
-    title: "Understanding Blockchain Technology",
-    description: "A comprehensive guide to blockchain technology and its real-world applications in modern finance.",
-    date: "February 19, 2025",
-    readTime: "8",
-    category: "Blockchain",
-    slug: "understanding-blockchain"
-  },
-  {
-    title: "The Future of Cryptocurrency Trading",
-    description: "Exploring emerging trends and technologies shaping the future of cryptocurrency trading.",
-    date: "February 18, 2025",
-    readTime: "6",
-    category: "Cryptocurrency",
-    slug: "future-crypto-trading"
-  },
-  {
-    title: "AI in Financial Technology",
-    description: "How artificial intelligence is revolutionizing the financial technology sector.",
-    date: "February 17, 2025",
-    readTime: "10",
-    category: "AI & Finance",
-    slug: "ai-in-fintech"
   }
 ];
 

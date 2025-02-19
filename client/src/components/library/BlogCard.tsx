@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { Link } from "wouter";
 
 interface BlogPost {
   title: string;
@@ -35,9 +36,11 @@ const BlogCard: FC<BlogCardProps> = ({ post }) => {
           <p className="text-muted-foreground">{post.description}</p>
         </CardContent>
         <CardFooter>
-          <Button variant="outline" className="w-full">
-            Read More
-          </Button>
+          <Link href={`/library/${post.slug}`}>
+            <Button variant="outline" className="w-full">
+              Read More
+            </Button>
+          </Link>
         </CardFooter>
       </Card>
     </motion.div>
