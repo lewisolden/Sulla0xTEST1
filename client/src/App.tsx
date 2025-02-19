@@ -84,6 +84,8 @@ import TechDeckPage from "@/pages/techdeck";
 import InvestmentDeck from "@/pages/investment-deck";
 import SenseiPage from "@/pages/sensei";
 import AdminFeedback from "@/pages/admin/feedback";
+import LibraryPage from "@/pages/library"; //Import the LibraryPage component
+
 
 function ProtectedRoute({ component: Component, adminOnly = false, publicAccess = false, ...rest }: any) {
   const { user, isLoading } = useAuth();
@@ -117,6 +119,7 @@ function Router() {
       <Route path="/" component={() => <ProtectedRoute component={Home} publicAccess={true} />} />
       <Route path="/about" component={() => <ProtectedRoute component={About} publicAccess={true} />} />
       <Route path="/curriculum" component={() => <ProtectedRoute component={Curriculum} publicAccess={true} />} />
+      <Route path="/library" component={() => <ProtectedRoute component={LibraryPage} publicAccess={true} />} />
       <Route path="/faqs" component={() => <ProtectedRoute component={FAQs} publicAccess={true} />} />
       <Route path="/games" component={() => <ProtectedRoute component={Games} publicAccess={true} />} />
       <Route path="/ai" component={() => <ProtectedRoute component={AIOverview} publicAccess={true} />} />
