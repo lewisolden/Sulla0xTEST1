@@ -22,7 +22,9 @@ import AdminLogin from "@/pages/admin/login";
 import AdminAnalytics from "@/pages/admin/analytics";
 import Navigation from "@/components/layout/navigation";
 import Footer from "@/components/layout/footer";
-import FAQs from "@/pages/faqs";  // Add FAQs import
+import FAQs from "@/pages/faqs";
+import LibraryPage from "@/pages/library";
+import BlogPost from "@/pages/library/[slug]";
 
 // AI Module imports
 import AIModule1 from "@/pages/ai/module1";
@@ -84,7 +86,6 @@ import TechDeckPage from "@/pages/techdeck";
 import InvestmentDeck from "@/pages/investment-deck";
 import SenseiPage from "@/pages/sensei";
 import AdminFeedback from "@/pages/admin/feedback";
-import LibraryPage from "@/pages/library"; //Import the LibraryPage component
 
 
 function ProtectedRoute({ component: Component, adminOnly = false, publicAccess = false, ...rest }: any) {
@@ -120,7 +121,7 @@ function Router() {
       <Route path="/about" component={() => <ProtectedRoute component={About} publicAccess={true} />} />
       <Route path="/curriculum" component={() => <ProtectedRoute component={Curriculum} publicAccess={true} />} />
       <Route path="/library" component={() => <ProtectedRoute component={LibraryPage} publicAccess={true} />} />
-      <Route path="/library/:slug" component={() => <ProtectedRoute component={require("@/pages/library/[slug]").default} publicAccess={true} />} />
+      <Route path="/library/:slug" component={() => <ProtectedRoute component={BlogPost} publicAccess={true} />} />
       <Route path="/faqs" component={() => <ProtectedRoute component={FAQs} publicAccess={true} />} />
       <Route path="/games" component={() => <ProtectedRoute component={Games} publicAccess={true} />} />
       <Route path="/ai" component={() => <ProtectedRoute component={AIOverview} publicAccess={true} />} />
