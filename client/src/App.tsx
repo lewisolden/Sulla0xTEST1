@@ -120,6 +120,7 @@ function Router() {
       <Route path="/about" component={() => <ProtectedRoute component={About} publicAccess={true} />} />
       <Route path="/curriculum" component={() => <ProtectedRoute component={Curriculum} publicAccess={true} />} />
       <Route path="/library" component={() => <ProtectedRoute component={LibraryPage} publicAccess={true} />} />
+      <Route path="/library/:slug" component={() => <ProtectedRoute component={require("@/pages/library/[slug]").default} publicAccess={true} />} />
       <Route path="/faqs" component={() => <ProtectedRoute component={FAQs} publicAccess={true} />} />
       <Route path="/games" component={() => <ProtectedRoute component={Games} publicAccess={true} />} />
       <Route path="/ai" component={() => <ProtectedRoute component={AIOverview} publicAccess={true} />} />
