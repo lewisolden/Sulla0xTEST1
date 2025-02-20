@@ -25,10 +25,16 @@ router.post("/api/chat/test", async (req, res) => {
       model: "llama-3.1-sonar-small-128k-online",
       messages: [
         {
+          role: "system",
+          content: "You are a helpful assistant."
+        },
+        {
           role: "user",
           content: "Hello, are you working?"
         }
-      ]
+      ],
+      temperature: 0.7,
+      max_tokens: 150
     };
 
     console.log('[Chat Test] Making request to Perplexity API');
@@ -59,8 +65,14 @@ router.post("/api/chat/test", async (req, res) => {
       throw new Error(`API request failed: ${response.status} ${response.statusText}\n${responseText}`);
     }
 
-    const data = JSON.parse(responseText);
-    res.json({ success: true, response: data });
+    try {
+      const data = JSON.parse(responseText);
+      console.log('[Chat Test] Parsed API response:', data);
+      res.json({ success: true, response: data });
+    } catch (parseError) {
+      console.error('[Chat Test] JSON parse error:', parseError);
+      throw new Error('Failed to parse API response');
+    }
 
   } catch (error) {
     console.error('[Chat Test] Error:', error);
