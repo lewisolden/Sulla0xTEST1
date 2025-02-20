@@ -14,11 +14,18 @@ interface Message {
   links?: Array<{ text: string; url: string }>;
 }
 
+const WELCOME_MESSAGE: Message = {
+  role: "assistant",
+  content: "Hello! I'm Sensei, your AI learning assistant. How can I help you with your blockchain and cryptocurrency learning journey today?",
+  timestamp: new Date()
+};
+
 export function CourseAssistant() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([WELCOME_MESSAGE]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -29,6 +36,7 @@ export function CourseAssistant() {
 
   const handleSendMessage = async () => {
     if (!input.trim()) return;
+    setError(null);
 
     const userMessage: Message = {
       role: "user",
@@ -53,7 +61,7 @@ export function CourseAssistant() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to get response');
+        throw new Error(`Failed to get response: ${response.statusText}`);
       }
 
       const data = await response.json();
@@ -66,6 +74,7 @@ export function CourseAssistant() {
       }]);
     } catch (error) {
       console.error('Chat error:', error);
+      setError("I'm having trouble connecting to the server. Please try again in a moment.");
       setMessages(prev => [...prev, {
         role: "assistant",
         content: "I apologize, but I'm having trouble responding right now. Please try again later.",
@@ -119,7 +128,7 @@ export function CourseAssistant() {
                             : "bg-muted"
                         }`}
                       >
-                        <div>{msg.content}</div>
+                        <div className="whitespace-pre-wrap">{msg.content}</div>
                         {msg.links && msg.links.length > 0 && (
                           <div className="space-y-1 mt-2 pt-2 border-t border-primary/10">
                             {msg.links.map((link, linkIdx) => (
@@ -144,6 +153,11 @@ export function CourseAssistant() {
                       </div>
                     </div>
                   )}
+                  {error && (
+                    <div className="text-sm text-red-500 text-center p-2">
+                      {error}
+                    </div>
+                  )}
                 </div>
               </ScrollArea>
 
@@ -160,6 +174,7 @@ export function CourseAssistant() {
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Ask me about the course..."
                     className="flex-1"
+                    disabled={isLoading}
                   />
                   <Button type="submit" size="icon" disabled={isLoading}>
                     <Send className="h-4 w-4" />
