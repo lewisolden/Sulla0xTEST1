@@ -87,10 +87,19 @@ let server: any = null;
     // Create a promise that resolves when the server starts listening
     const startServer = new Promise((resolve, reject) => {
       try {
-        server.listen(PORT, "0.0.0.0", () => {
-          log(`Server is running on port ${PORT}`);
-          resolve(true);
-        });
+        if (server.listening) {
+          server.close(() => {
+            server.listen(PORT, "0.0.0.0", () => {
+              log(`Server is running on port ${PORT}`);
+              resolve(true);
+            });
+          });
+        } else {
+          server.listen(PORT, "0.0.0.0", () => {
+            log(`Server is running on port ${PORT}`);
+            resolve(true);
+          });
+        }
 
         server.on('error', (error: Error) => {
           log(`Failed to start server: ${error.message}`);

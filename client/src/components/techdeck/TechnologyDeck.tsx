@@ -26,7 +26,7 @@ const slides = [
               className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-indigo-500/20 rounded-full"
               animate={{
                 scale: [1, 1.1, 1],
-                rotate: 360
+                rotateZ: 360
               }}
               transition={{
                 duration: 8,
@@ -38,7 +38,7 @@ const slides = [
               className="absolute inset-4 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-indigo-600/20 rounded-full"
               animate={{
                 scale: [1.1, 1, 1.1],
-                rotate: -360
+                rotateZ: -360
               }}
               transition={{
                 duration: 8,
@@ -542,7 +542,7 @@ const slides = [
                 </div>
               </li>
               <li className="flex items-start space-x-3">
-                <Blocks className="w-5 h-5 textpurple-400 mt-1" />
+                <Blocks className="w-5 h-5 text-purple-400 mt-1" />
                 <div>
                   <h4 className="font-medium text-gray-200">Version Control</h4>
                   <p className="text-sm text-gray-400">Track content changes and maintain multiple versions of learning materials</p>
