@@ -19,60 +19,17 @@ import { verifyEmailService } from './services/email';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Lazy initialize puppeteer browser
-let browserInstance: Browser | null = null;
-async function getBrowser() {
-  if (!browserInstance) {
-    browserInstance = await puppeteer.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
-  }
-  return browserInstance;
-}
-
 export function registerRoutes(app: Express): Server {
   // Set up authentication first
   setupAuth(app);
 
-  // Register API routes with proper prefixes
+  // Register API routes with proper prefixes and authentication middleware
   app.use("/api", apiRouter);
   app.use("/api", enrollmentsRouter);
-  app.use("/api/admin", adminRouter);
+  app.use("/api/admin", requireAdmin, adminRouter);
   app.use("/api", learningPathRouter);
   app.use("/api", userMetricsRouter);
   app.use("/api", chatRouter);
-
-  // Add email test endpoint
-  app.get("/api/email/test", async (req, res) => {
-    try {
-      const verificationResult = await verifyEmailService();
-      const result = await sendTestEmail();
-
-      if (result.success) {
-        res.json({ 
-          success: true,
-          messageId: result.messageId,
-          serviceStatus: verificationResult,
-          message: "Test email sent successfully to verified test recipient."
-        });
-      } else {
-        res.status(500).json({ 
-          success: false, 
-          error: result.error,
-          serviceStatus: verificationResult,
-          message: "Failed to send test email. Check email service configuration."
-        });
-      }
-    } catch (error) {
-      console.error("Error in email test endpoint:", error);
-      res.status(500).json({ 
-        success: false, 
-        error: error instanceof Error ? error.message : "Unknown error occurred",
-        message: "An unexpected error occurred while testing the email service."
-      });
-    }
-  });
 
   // Create and return the HTTP server
   const httpServer = createServer(app);

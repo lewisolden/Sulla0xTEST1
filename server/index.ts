@@ -7,7 +7,19 @@ import { users } from "@db/schema";
 import { verifyEmailService } from "./services/email";
 import chatRouter from "./routes/chat";
 
+// Force Vite to allow all hosts in development
+process.env.VITE_DEV_SERVER_FORCE_ALLOW_ALL_HOSTS = 'true';
+
 const app = express();
+
+// Host header middleware - must be first
+app.use((req, res, next) => {
+  // Force localhost:5000 as host for Vite in development
+  if (process.env.NODE_ENV !== 'production') {
+    req.headers.host = 'localhost:5000';
+  }
+  next();
+});
 
 // Add middleware for parsing JSON and URL-encoded bodies
 app.use(express.json());
@@ -16,36 +28,15 @@ app.use(express.urlencoded({ extended: false }));
 // Trust proxy - required for secure cookies in production
 app.set('trust proxy', 1);
 
-// Development-specific middleware to handle Vite host requirements
-if (process.env.NODE_ENV !== 'production') {
-  app.use((req, res, next) => {
-    // Rewrite host header for Vite in development
-    req.headers.host = 'localhost:5000';
-    next();
-  });
-}
-
-// Add CORS headers for development
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
-
 // Add request logging middleware
 app.use((req, res, next) => {
   const start = Date.now();
-  const path = req.path;
+  log(`${req.method} ${req.path} - Starting request`);
 
-  // Capture JSON responses for logging
-  const originalJsonSend = res.json;
-  res.json = function(body) {
+  res.on('finish', () => {
     const duration = Date.now() - start;
-    if (path.startsWith("/api")) {
-      log(`${req.method} ${path} ${res.statusCode} in ${duration}ms :: ${JSON.stringify(body).slice(0, 100)}`);
-    }
-    return originalJsonSend.call(this, body);
-  };
+    log(`${req.method} ${req.path} ${res.statusCode} - ${duration}ms`);
+  });
 
   next();
 });
@@ -55,16 +46,6 @@ app.use('/api', chatRouter);
 
 const PORT = process.env.PORT || 5000;
 let server: any = null;
-
-process.on('SIGTERM', () => {
-  console.log('SIGTERM received, shutting down gracefully');
-  if (server) {
-    server.close(() => {
-      console.log('Server closed');
-      process.exit(0);
-    });
-  }
-});
 
 (async () => {
   try {
@@ -120,13 +101,7 @@ process.on('SIGTERM', () => {
       }
     });
 
-    // Wait for server to start with a timeout
-    await Promise.race([
-      startServer,
-      new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Server startup timed out')), 30000)
-      )
-    ]);
+    await startServer;
 
     // Initialize services in the background
     verifyEmailService().catch(error => {
