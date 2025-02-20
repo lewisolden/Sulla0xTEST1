@@ -9,7 +9,7 @@ import { ArrowLeft, ArrowRight, ArrowDownUp, Wallet, RefreshCw, Settings, Info }
 import { motion, AnimatePresence } from "framer-motion";
 import { FaEthereum } from "react-icons/fa";
 import { BiDollarCircle } from "react-icons/bi";
-import { SiSushiswap } from "react-icons/si";
+import { SiSushiswap, SiCoinbase, SiUniswap } from "react-icons/si";
 
 // Mock token data for the swap demo
 const tokens = {
@@ -116,16 +116,16 @@ export default function DexAmm() {
                         features: ["Concentrated Liquidity", "Multiple Fee Tiers", "V3 Architecture"]
                       },
                       {
-                        name: "PancakeSwap",
-                        icon: SiPancakeswap,
-                        description: "Leading DEX on BNB Chain (formerly BSC)",
-                        features: ["Low Fees", "Yield Farming", "NFT Integration"]
+                        name: "SushiSwap",
+                        icon: SiSushiswap,
+                        description: "Community-driven DEX with yield farming",
+                        features: ["Yield Farming", "Cross-chain Support", "NFT Platform"]
                       },
                       {
-                        name: "Curve Finance",
-                        icon: SiCurvefi,
-                        description: "Specialized in stablecoin trading",
-                        features: ["Low Slippage", "High Efficiency", "Stable Pairs"]
+                        name: "Coinbase",
+                        icon: SiCoinbase,
+                        description: "Leading centralized exchange comparison",
+                        features: ["High Liquidity", "Regulatory Compliance", "User-Friendly"]
                       }
                     ].map((dex, index) => (
                       <motion.div
@@ -177,8 +177,18 @@ export default function DexAmm() {
                               placeholder="0.00"
                               className="flex-1"
                             />
-                            <Button variant="outline" className="w-24">
-                              {swapDirection === "USDC_TO_ETH" ? "USDC" : "ETH"}
+                            <Button variant="outline" className="w-24 flex items-center gap-2">
+                              {swapDirection === "USDC_TO_ETH" ? (
+                                <>
+                                  <BiDollarCircle className="h-4 w-4" />
+                                  USDC
+                                </>
+                              ) : (
+                                <>
+                                  <FaEthereum className="h-4 w-4" />
+                                  ETH
+                                </>
+                              )}
                             </Button>
                           </div>
                         </div>
@@ -204,8 +214,18 @@ export default function DexAmm() {
                               placeholder="0.00"
                               className="flex-1 bg-gray-50"
                             />
-                            <Button variant="outline" className="w-24">
-                              {swapDirection === "USDC_TO_ETH" ? "ETH" : "USDC"}
+                            <Button variant="outline" className="w-24 flex items-center gap-2">
+                              {swapDirection === "USDC_TO_ETH" ? (
+                                <>
+                                  <FaEthereum className="h-4 w-4" />
+                                  ETH
+                                </>
+                              ) : (
+                                <>
+                                  <BiDollarCircle className="h-4 w-4" />
+                                  USDC
+                                </>
+                              )}
                             </Button>
                           </div>
                         </div>
