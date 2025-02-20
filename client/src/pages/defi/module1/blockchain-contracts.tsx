@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { 
-  ArrowLeft, ArrowRight, Code2, Database, FileCode, 
-  LockIcon, RefreshCw, Settings, CheckCircle2, X, Check, 
+import {
+  ArrowLeft, ArrowRight, Code2, Database, FileCode,
+  LockIcon, RefreshCw, Settings, CheckCircle2, X, Check,
   Zap, Globe, Lock, ChevronRight
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -106,25 +106,25 @@ export default function BlockchainContracts() {
   const executeSmartContract = () => {
     const amount = parseFloat(transferAmount);
     if (isNaN(amount) || amount <= 0) {
-      setExerciseOutput(prev => [...prev, { 
-        type: 'error', 
-        message: 'Invalid amount. Please enter a positive number.' 
+      setExerciseOutput(prev => [...prev, {
+        type: 'error',
+        message: 'Invalid amount. Please enter a positive number.'
       }]);
       return;
     }
 
     if (amount > contractState.balance) {
-      setExerciseOutput(prev => [...prev, { 
-        type: 'error', 
-        message: 'Insufficient balance for transfer.' 
+      setExerciseOutput(prev => [...prev, {
+        type: 'error',
+        message: 'Insufficient balance for transfer.'
       }]);
       return;
     }
 
     if (amount > contractState.threshold) {
-      setExerciseOutput(prev => [...prev, { 
-        type: 'error', 
-        message: `Transfer amount exceeds threshold (${contractState.threshold} tokens). Transaction rejected.` 
+      setExerciseOutput(prev => [...prev, {
+        type: 'error',
+        message: `Transfer amount exceeds threshold (${contractState.threshold} tokens). Transaction rejected.`
       }]);
       return;
     }
@@ -136,9 +136,9 @@ export default function BlockchainContracts() {
       lastTransaction: amount
     }));
 
-    setExerciseOutput(prev => [...prev, { 
-      type: 'success', 
-      message: `Successfully transferred ${amount} tokens. New balance: ${contractState.balance - amount} tokens.` 
+    setExerciseOutput(prev => [...prev, {
+      type: 'success',
+      message: `Successfully transferred ${amount} tokens. New balance: ${contractState.balance - amount} tokens.`
     }]);
     setTransferAmount("");
   };
@@ -466,6 +466,7 @@ export default function BlockchainContracts() {
                                 {quizQuestions[currentQuestion].options.map((option, index) => {
                                   const isSelected = selectedAnswer === index;
                                   const isCorrect = index === quizQuestions[currentQuestion].correctAnswer;
+                                  const showResult = selectedAnswer !== null;
 
                                   return (
                                     <motion.div
@@ -478,30 +479,33 @@ export default function BlockchainContracts() {
                                         onClick={() => !selectedAnswer && handleAnswer(index)}
                                         variant="outline"
                                         className={`w-full justify-start text-left transition-all duration-300 ${
-                                          isSelected
+                                          showResult
                                             ? isCorrect
                                               ? "bg-green-50 border-green-500 text-green-700"
-                                              : "bg-red-50 border-red-500 text-red-700"
+                                              : isSelected
+                                                ? "bg-red-50 border-red-500 text-red-700"
+                                                : ""
                                             : "hover:bg-blue-50"
                                         }`}
                                         disabled={selectedAnswer !== null}
                                       >
-                                        <span className="flex items-center gap-2 w-full">
-                                          {option}
-                                          {isSelected && (
+                                        <div className="flex items-center justify-between w-full">
+                                          <span>{option}</span>
+                                          {showResult && (isCorrect || isSelected) && (
                                             <motion.span
                                               initial={{ scale: 0 }}
                                               animate={{ scale: 1 }}
                                               transition={{ type: "spring", stiffness: 200, damping: 10 }}
-                                              className="ml-auto"
+                                              className="ml-2"
                                             >
-                                              {isCorrect
-                                                ? <Check className="h-5 w-5 text-green-500" />
-                                                : <X className="h-5 w-5 text-red-500" />
-                                              }
+                                              {isCorrect ? (
+                                                <Check className="h-5 w-5 text-green-500" />
+                                              ) : (
+                                                <X className="h-5 w-5 text-red-500" />
+                                              )}
                                             </motion.span>
                                           )}
-                                        </span>
+                                        </div>
                                       </Button>
                                     </motion.div>
                                   );
@@ -513,11 +517,34 @@ export default function BlockchainContracts() {
                                   initial={{ opacity: 0, y: 20 }}
                                   animate={{ opacity: 1, y: 0 }}
                                   transition={{ duration: 0.5 }}
-                                  className="mt-4 p-4 rounded-lg bg-gray-50 border"
+                                  className={`mt-6 p-6 rounded-lg ${
+                                    selectedAnswer === quizQuestions[currentQuestion].correctAnswer
+                                      ? "bg-green-50 border border-green-200"
+                                      : "bg-red-50 border border-red-200"
+                                  }`}
                                 >
-                                  <p className="text-sm text-gray-700">
-                                    {quizQuestions[currentQuestion].explanation}
-                                  </p>
+                                  <div className="flex items-start gap-3">
+                                    {selectedAnswer === quizQuestions[currentQuestion].correctAnswer ? (
+                                      <CheckCircle2 className="h-6 w-6 text-green-500 mt-1" />
+                                    ) : (
+                                      <X className="h-6 w-6 text-red-500 mt-1" />
+                                    )}
+                                    <div>
+                                      <h4 className={`font-medium mb-2 ${
+                                        selectedAnswer === quizQuestions[currentQuestion].correctAnswer
+                                          ? "text-green-800"
+                                          : "text-red-800"
+                                      }`}>
+                                        {selectedAnswer === quizQuestions[currentQuestion].correctAnswer
+                                          ? "Correct!"
+                                          : "Incorrect"
+                                        }
+                                      </h4>
+                                      <p className="text-gray-700">
+                                        {quizQuestions[currentQuestion].explanation}
+                                      </p>
+                                    </div>
+                                  </div>
                                 </motion.div>
                               )}
                             </motion.div>
