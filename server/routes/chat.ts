@@ -77,28 +77,7 @@ router.post("/api/chat", async (req, res) => {
       throw new Error('API key format error');
     }
 
-    // Test network connectivity
-    console.log('[Chat] Testing network connectivity to Perplexity API');
-    try {
-      const pingResponse = await fetch('https://api.perplexity.ai/health', {
-        method: 'GET',
-        signal: AbortSignal.timeout(5000) // 5 second timeout
-      });
-
-      if (!pingResponse.ok) {
-        console.error('[Chat] API health check failed:', {
-          status: pingResponse.status,
-          statusText: pingResponse.statusText
-        });
-        throw new Error('API health check failed');
-      }
-      console.log('[Chat] API health check successful');
-    } catch (networkError) {
-      console.error('[Chat] Network connectivity test failed:', networkError);
-      throw new Error('API network connectivity error');
-    }
-
-    // Make the actual API request with a longer timeout
+    // Make the API request with timeout
     console.log('[Chat] Sending request to Perplexity API');
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
@@ -115,28 +94,7 @@ router.post("/api/chat", async (req, res) => {
           messages: [
             {
               role: 'system',
-              content: `You are Sensei, Sulla's friendly AI learning companion. Your role is to provide clear, concise guidance while maintaining a warm and encouraging tone. You're an expert in blockchain and AI, focusing exclusively on Sulla's curriculum.
-
-Key principles:
-- Be concise and clear - keep responses under 3-4 sentences when possible
-- Maintain a friendly, encouraging tone
-- Only reference Sulla's course materials
-- Guide users to specific sections in our modules
-- Encourage hands-on learning through our exercises
-
-${userProgress ? `
-User Progress Information:
-- Completed Modules: ${userProgress.completedModules.join(', ')}
-- Overall Progress: ${Math.round(userProgress.currentProgress)}%
-- Total Learning Time: ${userProgress.totalLearningMinutes} minutes
-
-When responding:
-1. Reference completed modules to build on existing knowledge
-2. Suggest next modules based on their progress
-3. Encourage completion of partially finished modules
-` : ''}
-
-Current context: ${context}`
+              content: 'You are a helpful assistant.'
             },
             {
               role: 'user',
@@ -164,25 +122,9 @@ Current context: ${context}`
 
       const data = await response.json();
       console.log('[Chat] Received response from Perplexity API');
-      const aiResponse = data.choices[0].message.content;
-
-      // Extract any links from the response
-      const links = [];
-      const linkRegex = /\[LINK\](.*?)\|(.*?)\[\/LINK\]/g;
-      let match;
-      while ((match = linkRegex.exec(aiResponse)) !== null) {
-        links.push({
-          text: match[1],
-          url: match[2]
-        });
-      }
-
-      // Clean up the response by removing the link tags
-      const cleanResponse = aiResponse.replace(linkRegex, '$1');
 
       res.json({ 
-        response: cleanResponse,
-        links: links,
+        response: data.choices[0].message.content,
         userProgress: userProgress 
       });
     } catch (apiError) {
@@ -205,12 +147,6 @@ Current context: ${context}`
         errorMessage = 'The chat service is currently unavailable. Please try again later.';
       } else if (error.message.includes('API request failed')) {
         errorMessage = 'I\'m having trouble connecting to my knowledge base. Please try again in a moment.';
-      } else if (error.message.includes('API network connectivity error')) {
-        errorMessage = 'I\'m currently having network connectivity issues. Please try again in a few minutes.';
-      } else if (error.message.includes('API health check failed')) {
-        errorMessage = 'The chat service is experiencing technical difficulties. Please try again later.';
-      } else if (error.message.includes('API key format')) {
-        errorMessage = 'Invalid API key format. Please check your configuration.';
       }
     }
 
