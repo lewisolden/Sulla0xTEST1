@@ -1,22 +1,8 @@
 import { Link } from "wouter";
-import { BookOpen, GraduationCap, Zap, Brain, Target, Trophy, Code, Gamepad2, Wallet, Dumbbell, ArrowRight, Bot, Sparkles, CheckCircle, Users } from "lucide-react";
+import { BookOpen, GraduationCap, Brain, Target, Trophy, Code, Gamepad2, Wallet, Dumbbell, ArrowRight, Bot, Sparkles, CheckCircle, Users } from "lucide-react";
 import ModuleCard from "@/components/modules/module-card";
 import { motion } from "framer-motion";
-
-const Button = ({ children, className, variant = "primary" }: { children: React.ReactNode; className?: string; variant?: "primary" | "secondary" | "outline" }) => {
-  const baseStyles = "px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center gap-2";
-  const variants = {
-    primary: "bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl",
-    secondary: "bg-white hover:bg-blue-50 text-blue-700",
-    outline: "border-2 border-white hover:bg-white/10 text-white"
-  };
-
-  return (
-    <button className={`${baseStyles} ${variants[variant]} ${className || ''}`}>
-      {children}
-    </button>
-  );
-};
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const fadeInUp = {
@@ -89,29 +75,29 @@ export default function Home() {
               animate="show"
             >
               <Link href="/modules/module1">
-                <Button variant="secondary">
+                <a className="inline-flex items-center px-6 py-3 bg-white hover:bg-blue-50 text-blue-700 rounded-lg font-semibold transition-all duration-300">
                   Start Learning
-                  <ArrowRight className="w-5 h-5" />
-                </Button>
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </a>
               </Link>
               <Link href="/curriculum">
-                <Button variant="outline">
+                <a className="inline-flex items-center px-6 py-3 border-2 border-white hover:bg-white/10 text-white rounded-lg font-semibold transition-all duration-300">
                   View Curriculum
-                  <BookOpen className="w-5 h-5" />
-                </Button>
+                  <BookOpen className="w-5 h-5 ml-2" />
+                </a>
               </Link>
               <Link href="/games">
-                <Button variant="primary">
-                  <Gamepad2 className="w-5 h-5" />
+                <a className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl">
+                  <Gamepad2 className="w-5 h-5 mr-2" />
                   Play & Learn
-                </Button>
+                </a>
               </Link>
             </motion.div>
           </motion.div>
         </div>
       </div>
 
-      {/* Why Choose Sulla Section */}
+      {/* Features Section */}
       <section className="py-20 bg-white relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-white"></div>
         <div className="container relative mx-auto px-4">
@@ -123,252 +109,77 @@ export default function Home() {
           </motion.h2>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Link href="/ai">
-              <motion.div 
-                className="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-                {...fadeInUp}
-                transition={{ delay: 0.2 }}
-              >
-                <div className="bg-blue-100 p-3 rounded-lg inline-block mb-6">
-                  <Brain className="w-12 h-12 text-blue-600" />
-                </div>
-                <h3 className="text-xl font-semibold mb-3">AI-Powered Learning</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Personalized learning paths that adapt to your understanding and pace
-                </p>
-                <div className="mt-4 text-blue-600 hover:text-blue-700 font-medium flex items-center gap-2">
-                  Learn More
-                  <ArrowRight className="w-4 h-4" />
-                </div>
-              </motion.div>
-            </Link>
-
-            <Link href="/modules/module1/exercises">
-              <motion.div 
-                className="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-                {...fadeInUp}
-                transition={{ delay: 0.3 }}
-              >
-                <div className="bg-blue-100 p-3 rounded-lg inline-block mb-6">
-                  <Dumbbell className="w-12 h-12 text-blue-600" />
-                </div>
-                <h3 className="text-xl font-semibold mb-3">Practical Exercises</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Hands-on learning with interactive exercises and real-world examples
-                </p>
-                <div className="mt-4 text-blue-600 hover:text-blue-700 font-medium flex items-center gap-2">
-                  Start Exercises
-                  <ArrowRight className="w-4 h-4" />
-                </div>
-              </motion.div>
-            </Link>
-
-            <Link href="/glossary">
-              <motion.div 
-                className="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-                {...fadeInUp}
-                transition={{ delay: 0.4 }}
-              >
-                <div className="bg-blue-100 p-3 rounded-lg inline-block mb-6">
-                  <BookOpen className="w-12 h-12 text-blue-600" />
-                </div>
-                <h3 className="text-xl font-semibold mb-3">Interactive Glossary</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Comprehensive blockchain and AI terminology guide with easy-to-understand definitions
-                </p>
-                <div className="mt-4 text-blue-600 hover:text-blue-700 font-medium flex items-center gap-2">
-                  View Glossary
-                  <ArrowRight className="w-4 h-4" />
-                </div>
-              </motion.div>
-            </Link>
-
-            <Link href="/sensei">
-              <motion.div 
-                className="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-                {...fadeInUp}
-                transition={{ delay: 0.5 }}
-              >
-                <div className="bg-blue-100 p-3 rounded-lg inline-block mb-6">
-                  <Bot className="w-12 h-12 text-blue-600" />
-                </div>
-                <h3 className="text-xl font-semibold mb-3">Sensei AI Tutor</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Your personal AI guide through the curriculum, providing focused assistance
-                </p>
-                <div className="mt-4 text-blue-600 hover:text-blue-700 font-medium flex items-center gap-2">
-                  Meet Sensei
-                  <ArrowRight className="w-4 h-4" />
-                </div>
-              </motion.div>
-            </Link>
+            {[
+              {
+                icon: Brain,
+                title: "AI-Powered Learning",
+                description: "Personalized learning paths that adapt to your understanding and pace",
+                link: "/ai"
+              },
+              {
+                icon: Dumbbell,
+                title: "Practical Exercises",
+                description: "Hands-on learning with interactive exercises and real-world examples",
+                link: "/modules/module1/exercises"
+              },
+              {
+                icon: BookOpen,
+                title: "Interactive Glossary",
+                description: "Comprehensive blockchain and AI terminology guide with easy-to-understand definitions",
+                link: "/glossary"
+              },
+              {
+                icon: Bot,
+                title: "Sensei AI Tutor",
+                description: "Your personal AI guide through the curriculum, providing focused assistance",
+                link: "/sensei"
+              }
+            ].map((feature, index) => (
+              <Link key={feature.title} href={feature.link}>
+                <motion.div 
+                  className="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                  {...fadeInUp}
+                  transition={{ delay: 0.2 + (index * 0.1) }}
+                >
+                  <div className="bg-blue-100 p-3 rounded-lg inline-block mb-6">
+                    <feature.icon className="w-12 h-12 text-blue-600" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                  <div className="mt-4 text-blue-600 hover:text-blue-700 font-medium flex items-center gap-2">
+                    Learn More
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
+                </motion.div>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Registration CTA Section */}
-      <section className="relative py-24 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(to_right,#4f46e5_1px,transparent_1px),linear-gradient(to_bottom,#4f46e5_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)] opacity-10"></div>
-          <div className="absolute -top-48 -right-48 w-96 h-96 bg-blue-400 rounded-full filter blur-3xl opacity-20"></div>
-          <div className="absolute top-48 -left-48 w-96 h-96 bg-purple-400 rounded-full filter blur-3xl opacity-20"></div>
-        </div>
-
-        <div className="container relative mx-auto px-4">
+      {/* Call to Action */}
+      <section className="py-20 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800">
+        <div className="container mx-auto px-4 text-center">
           <motion.div 
-            className="max-w-4xl mx-auto text-center"
+            className="max-w-4xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2 }}
-              className="mb-8 inline-block"
-            >
-              <div className="bg-blue-500/20 p-4 rounded-full">
-                <Sparkles className="w-12 h-12 text-blue-200" />
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
-                Begin Your Learning Adventure
-              </h2>
-              <p className="text-xl text-blue-100 mb-12 max-w-2xl mx-auto leading-relaxed">
-                Join our community of learners and master the technologies 
-                shaping the future. Start your journey today with our 
-                comprehensive learning platform.
-              </p>
-            </motion.div>
-
-            <motion.div
-              className="flex flex-wrap justify-center gap-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-              <Link href="/register">
-                <Button variant="secondary" className="text-lg px-8 py-4">
-                  Create Free Account
-                  <ArrowRight className="w-5 h-5" />
-                </Button>
-              </Link>
-              <Link href="/curriculum">
-                <Button variant="outline" className="text-lg px-8 py-4">
-                  Explore Curriculum
-                  <BookOpen className="w-5 h-5" />
-                </Button>
-              </Link>
-            </motion.div>
-
-            <motion.div
-              className="mt-12 flex justify-center gap-8 text-blue-200"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-            >
-              <div className="flex items-center gap-2">
-                <CheckCircle className="w-5 h-5" />
-                <span>Free to get started</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Users className="w-5 h-5" />
-                <span>Join 1000+ learners</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Trophy className="w-5 h-5" />
-                <span>Earn certificates</span>
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Modules Section */}
-      <section className="bg-gradient-to-b from-white to-blue-50 py-20">
-        <div className="container mx-auto px-4">
-          <motion.div 
-            className="text-center max-w-3xl mx-auto mb-16"
-            {...fadeInUp}
-          >
-            <h2 className="text-4xl font-bold text-blue-900 mb-6">
-              Begin Your Learning Journey
+            <h2 className="text-4xl font-bold text-white mb-6">
+              Begin Your Learning Adventure
             </h2>
-            <p className="text-xl text-gray-600">
-              Choose your path and start mastering the technologies of tomorrow
+            <p className="text-xl text-blue-100 mb-12">
+              Join our community of learners and master the technologies shaping the future.
             </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            <Link href="/curriculum?subject=crypto">
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.2 }}
-              >
-                <ModuleCard
-                  icon={BookOpen}
-                  title="Course 1: Introduction to Cryptocurrency"
-                  description="Master the fundamentals of cryptocurrency through interactive learning and practical exercises."
-                  link="/curriculum?subject=crypto"
-                />
-              </motion.div>
-            </Link>
-            <Link href="/curriculum?subject=ai">
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.2 }}
-              >
-                <ModuleCard
-                  icon={Brain}
-                  title="Course 2: Introduction to Artificial Intelligence"
-                  description="Explore the fundamentals of AI, machine learning, and their real-world applications through hands-on learning."
-                  link="/curriculum?subject=ai"
-                />
-              </motion.div>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action Section */}
-      <section className="relative py-20 bg-blue-600 overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute -top-48 -right-48 w-96 h-96 bg-blue-400 rounded-full filter blur-3xl opacity-20"></div>
-          <div className="absolute top-48 -left-48 w-96 h-96 bg-purple-400 rounded-full filter blur-3xl opacity-20"></div>
-        </div>
-
-        <div className="container relative mx-auto px-4 text-center">
-          <motion.h2 
-            className="text-4xl font-bold text-white mb-6"
-            {...fadeInUp}
-          >
-            Start Your Technology Journey Today
-          </motion.h2>
-          <motion.p 
-            className="text-xl max-w-2xl mx-auto mb-12 text-blue-100"
-            {...fadeInUp}
-            transition={{ delay: 0.2 }}
-          >
-            Join thousands of learners mastering blockchain technology, artificial intelligence, 
-            and emerging technologies with our comprehensive platform.
-          </motion.p>
-          <motion.div
-            {...fadeInUp}
-            transition={{ delay: 0.4 }}
-            className="flex justify-center"
-          >
-            <Link href="/modules/module1">
-              <Button variant="secondary" className="px-8 py-3 text-lg">
-                Get Started Now
-                <ArrowRight className="w-5 h-5 ml-2" />
-              </Button>
-            </Link>
+            <div className="flex justify-center gap-6">
+              <Link href="/register">
+                <a className="inline-flex items-center px-8 py-4 bg-white hover:bg-blue-50 text-blue-700 rounded-lg font-semibold text-lg transition-all duration-300">
+                  Create Free Account
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </a>
+              </Link>
+            </div>
           </motion.div>
         </div>
       </section>
