@@ -7,9 +7,9 @@ const router = Router();
 
 // Map course IDs to their proper titles
 const COURSE_TITLES = {
-  1: "Introduction to Cryptocurrency",
-  2: "Introduction to AI",
-  3: "Mastering DeFi"
+  1: "Course 1: Introduction to Cryptocurrency",
+  2: "Course 2: Introduction to AI",
+  3: "Course 3: Mastering DeFi"
 };
 
 // Route to get learning path progress
