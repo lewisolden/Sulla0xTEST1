@@ -334,6 +334,81 @@ export default function DexAmm() {
                   </div>
                 </section>
 
+
+                {/*NEW SECTION START HERE*/}
+                <section className="mb-12">
+                  <h2 className="text-2xl font-semibold text-blue-700 mb-4">
+                    Key DEX Concepts
+                  </h2>
+
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {/* Slippage Explanation */}
+                    <div className="bg-white rounded-xl p-6 shadow-lg">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="bg-blue-100 rounded-full p-2">
+                          <ArrowDownUp className="h-6 w-6 text-blue-600" />
+                        </div>
+                        <h3 className="text-xl font-semibold">Understanding Slippage</h3>
+                      </div>
+                      <p className="text-gray-600 mb-4">
+                        Slippage is the difference between the expected price of a trade and the actual executed price. This occurs due to:
+                      </p>
+                      <ul className="space-y-2 mb-4">
+                        <li className="text-sm text-gray-500 flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                          Market Movement: Prices can change between when you submit a trade and when it's executed
+                        </li>
+                        <li className="text-sm text-gray-500 flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                          Trade Size: Large orders can significantly impact the price, especially in smaller liquidity pools
+                        </li>
+                        <li className="text-sm text-gray-500 flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                          Network Congestion: Blockchain network delays can lead to price changes
+                        </li>
+                      </ul>
+                      <div className="bg-blue-50 rounded-lg p-4">
+                        <p className="text-sm text-blue-700">
+                          💡 Setting a slippage tolerance helps protect your trade from executing at an unfavorable price. Our demo uses a 0.5% default slippage tolerance.
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Perpetual DEX Explanation */}
+                    <div className="bg-white rounded-xl p-6 shadow-lg">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="bg-blue-100 rounded-full p-2">
+                          <BsGraphUp className="h-6 w-6 text-blue-600" />
+                        </div>
+                        <h3 className="text-xl font-semibold">Perpetual DEXs</h3>
+                      </div>
+                      <p className="text-gray-600 mb-4">
+                        Perpetual DEXs are specialized exchanges that offer perpetual futures contracts - cryptocurrency derivatives that never expire. Key features include:
+                      </p>
+                      <ul className="space-y-2 mb-4">
+                        <li className="text-sm text-gray-500 flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                          Leverage: Trade with borrowed funds to amplify potential returns (and risks)
+                        </li>
+                        <li className="text-sm text-gray-500 flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                          No Expiry: Positions can be held indefinitely, unlike traditional futures
+                        </li>
+                        <li className="text-sm text-gray-500 flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                          Funding Rates: Periodic payments between longs and shorts to maintain price alignment
+                        </li>
+                      </ul>
+                      <div className="bg-blue-50 rounded-lg p-4">
+                        <p className="text-sm text-blue-700">
+                          ⚠️ Perpetual trading involves significant risks due to leverage and complex mechanics. Always understand the product before trading.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                {/*NEW SECTION END HERE*/}
+
                 <section className="mb-12">
                   <h2 className="text-2xl font-semibold text-blue-700 mb-4">
                     Interactive DEX Demo
