@@ -9,6 +9,8 @@ import { ArrowLeft, ArrowRight, Wallet, RefreshCw, Settings, Info, Check, X, Che
 import { motion, AnimatePresence } from "framer-motion";
 import { FaExchangeAlt, FaWater, FaChartLine, FaLayerGroup, FaSearch, FaShieldAlt, FaPercent, FaChartBar, FaCoins } from "react-icons/fa";
 import { BiDollarCircle } from "react-icons/bi";
+import { Trophy } from "lucide-react"; // Import the Trophy icon
+
 
 // Quiz questions with explanations
 const quizQuestions = [
@@ -724,11 +726,33 @@ export default function LiquidityYield() {
                           <p className="text-gray-600 text-lg mb-2">
                             You scored {score} out of {quizQuestions.length}
                           </p>
-                          <p className="text-gray-500">
-                            {score === quizQuestions.length
-                              ? "Perfect score! You've mastered liquidity provision and yield farming concepts!"
-                              : "Keep learning and try again to improve your score!"}
-                          </p>
+                          {score === quizQuestions.length && (
+                            <motion.div
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              className="space-y-4"
+                            >
+                              <motion.div
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                              >
+                                <Trophy className="h-16 w-16 text-yellow-500 mx-auto" />
+                              </motion.div>
+                              <p className="text-green-600">Perfect score! You're ready for the module quiz!</p>
+                              <Link href="/defi/module1/quiz">
+                                <Button className="bg-green-600 hover:bg-green-700">
+                                  Take Module Quiz <ArrowRight className="ml-2 h-4 w-4" />
+                                </Button>
+                              </Link>
+                            </motion.div>
+                          )}
+                          {score !== quizQuestions.length && (
+                            <p className="text-gray-500">
+                              Keep learning and try again to improve your score!
+                            </p>
+                                                    )}
+
                         </div>
 
                         <Button
@@ -759,7 +783,7 @@ export default function LiquidityYield() {
                     <div className="flex gap-4">
                       <Button
                         onClick={handleComplete}
-                        className="bg-green-600 hover:bggreen-700"
+                        className="bg-green-600 hover:bg-green-700"
                         disabled={isCompleted}
                       >
                         {isCompleted ? "Completed" : "Mark as Complete"}
