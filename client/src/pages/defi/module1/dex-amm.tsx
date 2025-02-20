@@ -17,16 +17,18 @@ const initialTokens = {
   USDC: {
     symbol: "USDC",
     name: "USD Coin",
-    balance: 10000,
-    Icon: BiDollarCircle,
+    decimals: 6,
+    price: 1,
+    balance: 10000, // Updated balance to 10,000 USDC
   },
   ETH: {
     symbol: "ETH",
     name: "Ethereum",
-    balance: 0,
-    Icon: FaEthereum,
+    decimals: 18,
+    price: 3000, // 1 ETH = 3,000 USDC
+    balance: 5,
   },
-} as const;
+};
 
 // Quiz questions with explanations
 const quizQuestions = [
@@ -69,11 +71,13 @@ export default function DexAmm() {
   useScrollTop();
   const { updateProgress } = useProgress();
   const [isCompleted, setIsCompleted] = useState(false);
-  const [fromToken, setFromToken] = useState("USDC");
-  const [toToken, setToToken] = useState("ETH");
-  const [fromAmount, setFromAmount] = useState("");
-  const [toAmount, setToAmount] = useState("");
-  const [exchangeRate] = useState(3000); // 1 ETH = 3000 USDC
+
+  // Swap interface state
+  const [inputAmount, setInputAmount] = useState("");
+  const [swapDirection, setSwapDirection] = useState<"USDC_TO_ETH" | "ETH_TO_USDC">("USDC_TO_ETH");
+  const [slippage, setSlippage] = useState(0.5); // 0.5% default slippage
+  const [showSwapDetails, setShowSwapDetails] = useState(false);
+  const [tokens, setTokens] = useState(initialTokens);
   const [swapStatus, setSwapStatus] = useState<{
     type: 'success' | 'error' | null;
     message: string;
@@ -113,156 +117,145 @@ export default function DexAmm() {
   };
 
   // Calculate swap output based on exchange rate
-  const calculateSwapOutput = (input: string) => {
-    if (!input) return "";
-    const amount = parseFloat(input);
-    if (isNaN(amount)) return "";
-
-    if (fromToken === "USDC") {
-      return (amount / exchangeRate).toFixed(6);
+  const calculateSwapOutput = (inputAmount: number): number => {
+    if (swapDirection === "USDC_TO_ETH") {
+      return (inputAmount / 3000) * (1 - slippage / 100);
     } else {
-      return (amount * exchangeRate).toFixed(2);
+      return (inputAmount * 3000) * (1 - slippage / 100);
     }
   };
 
-  // Handle amount input change
-  const handleAmountChange = (value: string) => {
-    setFromAmount(value);
-    setToAmount(calculateSwapOutput(value));
+  const validateSwap = (input: number): { isValid: boolean; message: string } => {
+    if (isNaN(input) || input <= 0) {
+      return { isValid: false, message: "Please enter a valid amount" };
+    }
+
+    const sourceToken = swapDirection === "USDC_TO_ETH" ? tokens.USDC : tokens.ETH;
+    if (input > sourceToken.balance) {
+      return { isValid: false, message: `Insufficient ${sourceToken.symbol} balance` };
+    }
+
+    return { isValid: true, message: "" };
   };
 
-  // Swap tokens function
-  const swapTokens = () => {
-    if (!fromAmount) {
-      setSwapStatus({
-        type: 'error',
-        message: 'Please enter an amount to swap'
-      });
+  const handleSwap = () => {
+    const input = parseFloat(inputAmount);
+    const validation = validateSwap(input);
+
+    if (!validation.isValid) {
+      setSwapStatus({ type: 'error', message: validation.message });
       return;
     }
 
-    const amount = parseFloat(fromAmount);
-    if (isNaN(amount)) {
-      setSwapStatus({
-        type: 'error',
-        message: 'Invalid amount'
-      });
-      return;
-    }
+    const output = calculateSwapOutput(input);
 
-    if (amount > initialTokens[fromToken as keyof typeof initialTokens].balance) {
-      setSwapStatus({
-        type: 'error',
-        message: 'Insufficient balance'
-      });
-      return;
-    }
-
-    setSwapStatus({
-      type: 'success',
-      message: `Successfully swapped ${fromAmount} ${fromToken} for ${toAmount} ${toToken}`
+    // Update token balances
+    setTokens(prev => {
+      if (swapDirection === "USDC_TO_ETH") {
+        return {
+          USDC: { ...prev.USDC, balance: prev.USDC.balance - input },
+          ETH: { ...prev.ETH, balance: prev.ETH.balance + output }
+        };
+      } else {
+        return {
+          ETH: { ...prev.ETH, balance: prev.ETH.balance - input },
+          USDC: { ...prev.USDC, balance: prev.USDC.balance + output }
+        };
+      }
     });
 
-    // Reset form
-    setFromAmount("");
-    setToAmount("");
+    // Show success message
+    setSwapStatus({
+      type: 'success',
+      message: `Successfully swapped ${input} ${swapDirection === "USDC_TO_ETH" ? "USDC" : "ETH"} for ${output.toFixed(6)} ${swapDirection === "USDC_TO_ETH" ? "ETH" : "USDC"}`
+    });
 
-    // Clear status after 3 seconds
-    setTimeout(() => {
-      setSwapStatus({ type: null, message: '' });
-    }, 3000);
+    // Reset input
+    setInputAmount("");
+  };
+
+  const toggleSwapDirection = () => {
+    setSwapDirection(prev => prev === "USDC_TO_ETH" ? "ETH_TO_USDC" : "USDC_TO_ETH");
+    setInputAmount("");
+    setSwapStatus({ type: null, message: '' });
   };
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
+        <div className="mb-6">
+          <Link href="/defi/module1">
+            <Button variant="ghost" className="gap-2">
+              <ArrowLeft className="h-4 w-4" /> Back to Module Overview
+            </Button>
+          </Link>
+        </div>
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="mb-6">
-            <Link href="/defi/module1">
-              <Button variant="ghost" className="gap-2">
-                <ArrowLeft className="h-4 w-4" /> Back to Module Overview
-              </Button>
-            </Link>
-          </div>
-
-          <Card>
+          <Card className="mb-8">
             <CardContent className="pt-6">
               <h1 className="text-3xl font-bold text-blue-800 mb-6">
-                Decentralized Exchanges & AMMs
+                Decentralized Exchanges & Automated Market Makers
               </h1>
 
               <div className="prose max-w-none">
-                <section className="mb-8">
+                <section className="mb-12">
                   <h2 className="text-2xl font-semibold text-blue-700 mb-4">
-                    How DEXs Work
+                    Understanding DEXs
                   </h2>
-                  <p className="text-gray-700 mb-4">
-                    Decentralized Exchanges (DEXs) enable peer-to-peer trading of cryptocurrencies without intermediaries. They use smart contracts and liquidity pools to facilitate trades, ensuring constant availability of assets for trading.
+                  <p className="text-gray-700 mb-6">
+                    Decentralized Exchanges (DEXs) revolutionize cryptocurrency trading by eliminating intermediaries 
+                    through smart contracts. Unlike centralized exchanges, DEXs operate entirely on blockchain 
+                    networks, offering enhanced security, transparency, and user control over funds.
                   </p>
-                </section>
 
-                <section className="mb-8">
-                  <h2 className="text-2xl font-semibold text-blue-700 mb-4">
-                    Automated Market Makers (AMMs)
-                  </h2>
-                  <p className="text-gray-700 mb-4">
-                    AMMs are smart contracts that create liquidity pools of tokens, allowing users to trade against these pools. The price of tokens is determined by a mathematical formula, typically using the constant product formula (x * y = k).
-                  </p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                    <div className="bg-blue-50 rounded-lg p-6">
-                      <div className="flex items-center gap-2 mb-4">
-                        <BsGraphUp className="h-6 w-6 text-blue-600" />
-                        <h3 className="text-lg font-semibold text-blue-700">Price Discovery</h3>
-                      </div>
-                      <p className="text-gray-600">
-                        AMMs use mathematical formulas to determine token prices based on the ratio of assets in the liquidity pool.
-                      </p>
-                    </div>
-                    <div className="bg-blue-50 rounded-lg p-6">
-                      <div className="flex items-center gap-2 mb-4">
-                        <FaExchangeAlt className="h-6 w-6 text-blue-600" />
-                        <h3 className="text-lg font-semibold text-blue-700">Constant Liquidity</h3>
-                      </div>
-                      <p className="text-gray-600">
-                        Liquidity is always available for trading, with prices adjusting automatically based on pool ratios.
-                      </p>
-                    </div>
-                  </div>
-                </section>
-
-                <section className="mb-8">
-                  <div className="mt-8 space-y-6">
-                    <div className="bg-blue-50/50 rounded-lg p-6 border border-blue-100">
-                      <h3 className="text-lg font-semibold text-blue-700 mb-3">Understanding Slippage</h3>
-                      <p className="text-gray-700">
-                        Slippage refers to the difference between the expected price of a trade and the actual executed price. This occurs because:
-                      </p>
-                      <ul className="mt-3 space-y-2 list-disc pl-6 text-gray-600">
-                        <li>Market prices can change between when you submit a transaction and when it's executed</li>
-                        <li>Large trades can significantly impact the pool's token ratio, leading to worse execution prices</li>
-                        <li>Setting a slippage tolerance helps protect your trade from executing at unfavorable prices</li>
-                      </ul>
-                    </div>
-
-                    <div className="bg-blue-50/50 rounded-lg p-6 border border-blue-100">
-                      <h3 className="text-lg font-semibold text-blue-700 mb-3">Perpetual DEXs Explained</h3>
-                      <p className="text-gray-700">
-                        Perpetual DEXs are specialized exchanges that allow traders to hold leveraged positions indefinitely without an expiration date. Key features include:
-                      </p>
-                      <ul className="mt-3 space-y-2 list-disc pl-6 text-gray-600">
-                        <li>Continuous trading of synthetic assets without settlement dates</li>
-                        <li>Leverage trading with automated liquidation mechanisms</li>
-                        <li>Price feeds from multiple oracles to ensure accurate market prices</li>
-                        <li>Funding rates to keep perpetual prices aligned with spot markets</li>
-                      </ul>
-                      <p className="mt-4 text-sm text-gray-500">
-                        Examples include dYdX and Hyperliquid, which offer perpetual futures trading with deep liquidity and advanced trading features.
-                      </p>
-                    </div>
+                  <div className="grid md:grid-cols-3 gap-6 my-8">
+                    {[
+                      {
+                        name: "Automated Market Maker",
+                        icon: FaExchangeAlt,
+                        description: "Algorithmic trading using liquidity pools",
+                        features: ["No Order Books", "Constant Product Formula", "Liquidity Pools"]
+                      },
+                      {
+                        name: "Order Book DEX",
+                        icon: BsCurrencyExchange,
+                        description: "Traditional order matching system",
+                        features: ["Limit Orders", "Market Orders", "Order Matching"]
+                      },
+                      {
+                        name: "Hybrid Exchange",
+                        icon: BsGraphUp,
+                        description: "Combines AMM and order book features",
+                        features: ["Best of Both", "Enhanced Liquidity", "Price Efficiency"]
+                      }
+                    ].map((dex, index) => (
+                      <motion.div
+                        key={dex.name}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                        className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300"
+                      >
+                        <div className="flex items-center gap-3 mb-4">
+                          <dex.icon className="h-8 w-8 text-blue-600" />
+                          <h3 className="text-xl font-semibold">{dex.name}</h3>
+                        </div>
+                        <p className="text-gray-600 mb-4">{dex.description}</p>
+                        <ul className="space-y-2">
+                          {dex.features.map((feature, i) => (
+                            <li key={i} className="text-sm text-gray-500 flex items-center gap-2">
+                              <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                              {feature}
+                            </li>
+                          ))}
+                        </ul>
+                      </motion.div>
+                    ))}
                   </div>
                 </section>
 
@@ -279,7 +272,7 @@ export default function DexAmm() {
                     {[
                       {
                         name: "Uniswap",
-                        icon: FaExchangeAlt,
+                        icon: FaExchangeAlt,  // Using a generic exchange icon for Uniswap
                         description: "Leading Ethereum DEX with concentrated liquidity",
                         url: "https://app.uniswap.org",
                         features: ["V3 Architecture", "Multi-chain", "Best-in-class UX"]
@@ -346,123 +339,171 @@ export default function DexAmm() {
                     Interactive DEX Demo
                   </h2>
                   <p className="text-gray-700 mb-6">
-                    Try out this simulated DEX interface to understand how token swaps work in practice. You have 10,000 USDC to experiment with!
+                    Experience how decentralized exchanges work with our interactive demo. Swap between USDC and ETH 
+                    while observing how prices and balances update in real-time.
                   </p>
 
-                  <div className="bg-white rounded-xl p-6 shadow-lg">
-                    <div className="mb-4">
-                      <AnimatePresence>
-                        {swapStatus.type && (
-                          <motion.div
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -10 }}
-                            className={`p-3 rounded-lg ${
-                              swapStatus.type === 'success'
-                                ? 'bg-green-50 border border-green-200 text-green-700'
-                                : 'bg-red-50 border border-red-200 text-red-700'
-                            }`}
+                  <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-8">
+                    <div className="mb-6 bg-white/80 backdrop-blur-sm rounded-lg p-4">
+                      <h3 className="text-lg font-semibold text-blue-800 mb-2">Welcome to the DEX Demo!</h3>
+                      <p className="text-gray-600 mb-4">
+                        Try out a decentralized exchange with this interactive demo. You have:
+                      </p>
+                      <div className="flex gap-4">
+                        <div className="flex items-center gap-2 bg-blue-50 px-3 py-2 rounded-lg">
+                          <BiDollarCircle className="h-5 w-5 text-blue-500" />
+                          <span className="font-medium">{tokens.USDC.balance.toFixed(2)} USDC</span>
+                        </div>
+                        <div className="flex items-center gap-2 bg-blue-50 px-3 py-2 rounded-lg">
+                          <FaEthereum className="h-5 w-5 text-blue-500" />
+                          <span className="font-medium">{tokens.ETH.balance.toFixed(6)} ETH</span>
+                        </div>
+                      </div>
+                      <p className="text-sm text-gray-500 mt-2">
+                        Current exchange rate: 1 ETH = 3,000 USDC
+                      </p>
+                    </div>
+
+                    <div className="max-w-md mx-auto bg-white rounded-xl shadow-lg p-6">
+                      <div className="space-y-4">
+                        {/* Swap Status Message */}
+                        <AnimatePresence>
+                          {swapStatus.type && (
+                            <motion.div
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -10 }}
+                              className={`p-3 rounded-lg ${
+                                swapStatus.type === 'success'
+                                  ? 'bg-green-50 border border-green-200 text-green-700'
+                                  : 'bg-red-50 border border-red-200 text-red-700'
+                              }`}
+                            >
+                              {swapStatus.message}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium text-gray-700">You Pay</label>
+                          <div className="flex gap-2">
+                            <Input
+                              type="number"
+                              value={inputAmount}
+                              onChange={(e) => {
+                                setInputAmount(e.target.value);
+                                setSwapStatus({ type: null, message: '' });
+                              }}
+                              placeholder="0.00"
+                              className="flex-1"
+                            />
+                            <Button variant="outline" className="w-24 flex items-center gap-2">
+                              {swapDirection === "USDC_TO_ETH" ? (
+                                <>
+                                  <BiDollarCircle className="h-4 w-4" />
+                                  USDC
+                                </>
+                              ) : (
+                                <>
+                                  <FaEthereum className="h-4 w-4" />
+                                  ETH
+                                </>
+                              )}
+                            </Button>
+                          </div>
+                          <p className="text-sm text-gray-500">
+                            Balance: {swapDirection === "USDC_TO_ETH" ? tokens.USDC.balance.toFixed(2) : tokens.ETH.balance.toFixed(6)} {swapDirection === "USDC_TO_ETH" ? "USDC" : "ETH"}
+                          </p>
+                        </div>
+
+                        <div className="flex justify-center">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={toggleSwapDirection}
+                            className="rounded-full hover:bg-blue-50"
                           >
-                            {swapStatus.message}
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
+                            <ArrowDownUp className="h-6 w-6" />
+                          </Button>
+                        </div>
 
-                    <div className="flex items-center gap-4 mb-4">
-                      <Wallet className="h-5 w-5 text-blue-600" />
-                      <span className="text-sm text-gray-600">
-                        Available Balance: {initialTokens[fromToken as keyof typeof initialTokens].balance} {fromToken}
-                      </span>
-                    </div>
+                        <div className="space-y-2">
+                          <label className="text-sm font-medium text-gray-700">You Receive</label>
+                          <div className="flex gap-2">
+                            <Input
+                              type="number"
+                              value={inputAmount ? calculateSwapOutput(parseFloat(inputAmount)).toFixed(6) : ""}
+                              readOnly
+                              placeholder="0.00"
+                              className="flex-1 bg-gray-50"
+                            />
+                            <Button variant="outline" className="w-24 flex items-center gap-2">
+                              {swapDirection === "USDC_TO_ETH" ? (
+                                <>
+                                  <FaEthereum className="h-4 w-4" />
+                                  ETH
+                                </>
+                              ) : (
+                                <>
+                                  <BiDollarCircle className="h-4 w-4" />
+                                  USDC
+                                </>
+                              )}
+                            </Button>
+                          </div>
+                        </div>
 
-                    <div className="space-y-4">
-                      <div className="bg-gray-50 rounded-lg p-4">
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-sm text-gray-600">From</span>
-                          <div className="flex items-center gap-2">
-                            <Settings className="h-4 w-4 text-gray-400" />
-                            <span className="text-sm text-gray-600">
-                              Max: {initialTokens[fromToken as keyof typeof initialTokens].balance}
+                        <div className="space-y-2">
+                          <div className="flex justify-between items-center">
+                            <button
+                              onClick={() => setShowSwapDetails(!showSwapDetails)}
+                              className="text-sm text-blue-600 hover:text-blue-700 flex items-center gap-1"
+                            >
+                              <Info className="h-4 w-4" />
+                              Swap Details
+                            </button>
+                            <span className="text-sm text-gray-500">
+                              Slippage: {slippage}%
                             </span>
                           </div>
-                        </div>
-                        <div className="flex items-center gap-4">
-                          <Input
-                            type="number"
-                            value={fromAmount}
-                            onChange={(e) => handleAmountChange(e.target.value)}
-                            placeholder="0.0"
-                            className="text-lg"
-                          />
-                          <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg">
-                            {(() => {
-                              const TokenIcon = initialTokens[fromToken as keyof typeof initialTokens].Icon;
-                              return <TokenIcon className="h-5 w-5 text-blue-600" />;
-                            })()}
-                            <span className="font-medium">{fromToken}</span>
-                          </div>
-                        </div>
-                      </div>
 
-                      <div className="flex justify-center">
+                          <AnimatePresence>
+                            {showSwapDetails && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: "auto" }}
+                                exit={{ opacity: 0, height: 0 }}
+                                className="bg-gray-50 rounded-lg p-4 space-y-2"
+                              >
+                                <div className="flex justify-between text-sm">
+                                  <span className="text-gray-600">Rate</span>
+                                  <span className="text-gray-800">
+                                    1 ETH = 3,000 USDC
+                                  </span>
+                                </div>
+                                <div className="flex justify-between text-sm">
+                                  <span className="text-gray-600">Price Impact</span>
+                                  <span className="text-blue-600">~0.05%</span>
+                                </div>
+                                <div className="flex justify-between text-sm">
+                                  <span className="text-gray-600">Minimum Received</span>
+                                  <span className="text-gray-800">
+                                    {inputAmount ? (calculateSwapOutput(parseFloat(inputAmount))).toFixed(6) : "0.00"}
+                                    {" "}{swapDirection === "USDC_TO_ETH" ? "ETH" : "USDC"}
+                                  </span>
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+
                         <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => {
-                            const temp = fromToken;
-                            setFromToken(toToken);
-                            setToToken(temp);
-                            setFromAmount("");
-                            setToAmount("");
-                          }}
-                          className="bg-blue-100 hover:bg-blue-200 rounded-full h-8 w-8"
+                          onClick={handleSwap}
+                          className="w-full bg-blue-600 hover:bg-blue-700 transform hover:scale-105 transition-all duration-300"
+                          disabled={!inputAmount || parseFloat(inputAmount) <= 0}
                         >
-                          <ArrowDownUp className="h-4 w-4 text-blue-600" />
+                          Swap
                         </Button>
-                      </div>
-
-                      <div className="bg-gray-50 rounded-lg p-4">
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-sm text-gray-600">To</span>
-                          <div className="flex items-center gap-2">
-                            <RefreshCw className="h-4 w-4 text-gray-400" />
-                            <span className="text-sm text-gray-600">
-                              Rate: 1 ETH = {exchangeRate} USDC
-                            </span>
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-4">
-                          <Input
-                            type="text"
-                            value={toAmount}
-                            readOnly
-                            placeholder="0.0"
-                            className="text-lg"
-                          />
-                          <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg">
-                            {(() => {
-                              const TokenIcon = initialTokens[toToken as keyof typeof initialTokens].Icon;
-                              return <TokenIcon className="h-5 w-5 text-blue-600" />;
-                            })()}
-                            <span className="font-medium">{toToken}</span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <Button
-                        onClick={swapTokens}
-                        className="w-full bg-blue-600 hover:bg-blue-700"
-                        disabled={!fromAmount || parseFloat(fromAmount) <= 0}
-                      >
-                        Swap Tokens
-                      </Button>
-
-                      <div className="text-sm text-gray-500 flex items-start gap-2">
-                        <Info className="h-4 w-4 mt-0.5" />
-                        <p>
-                          This is a simulated swap interface. In a real DEX, you would need to connect your wallet and approve token spending.
-                        </p>
                       </div>
                     </div>
                   </div>
