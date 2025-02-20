@@ -1,10 +1,9 @@
-```tsx
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Trophy, ArrowLeft, ArrowRight, Star } from "lucide-react";
+import { Trophy, ArrowLeft, Check, X } from "lucide-react";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
 
@@ -43,66 +42,66 @@ const quizQuestions = [
     explanation: "APR (Annual Percentage Rate) represents the yearly earnings you can expect from your yield farming position, expressed as a percentage of your initial investment."
   },
   {
-    question: "Which strategy is generally considered lowest risk for beginning yield farmers?",
+    question: "Which DeFi protocol feature is essential for yield farming?",
     options: [
-      "Providing liquidity for volatile token pairs",
-      "Stablecoin liquidity provision",
-      "Leveraged yield farming",
-      "Token staking with new protocols"
+      "Smart contracts",
+      "Hardware wallets",
+      "Centralized exchanges",
+      "Physical asset backing"
     ],
-    correctAnswer: 1,
-    explanation: "Stablecoin liquidity provision is considered lower risk because stablecoins maintain relatively stable prices, minimizing impermanent loss risk."
+    correctAnswer: 0,
+    explanation: "Smart contracts are essential for yield farming as they automate the process of depositing assets, collecting rewards, and managing liquidity positions in a trustless manner."
   },
   {
-    question: "What are governance tokens in DeFi?",
+    question: "What is a liquidity pool in DeFi?",
     options: [
-      "Tokens used only for trading",
-      "Tokens that represent voting rights in a protocol",
-      "Tokens used to pay transaction fees",
-      "Tokens that automatically generate yield"
+      "A centralized exchange's order book",
+      "A collection of cryptocurrencies locked in a smart contract",
+      "A type of cryptocurrency wallet",
+      "A mining pool for new tokens"
     ],
     correctAnswer: 1,
-    explanation: "Governance tokens give holders voting rights in a DeFi protocol, allowing them to participate in decision-making about protocol changes and upgrades."
+    explanation: "A liquidity pool is a smart contract containing locked cryptocurrencies that enables decentralized trading, lending, and other DeFi activities."
   },
   {
-    question: "What is the main benefit of automated market makers (AMMs) in DeFi?",
+    question: "What is the primary risk of providing liquidity to new, unproven protocols?",
     options: [
-      "They require central authority approval",
-      "They provide constant liquidity without traditional market makers",
-      "They guarantee profits for traders",
-      "They eliminate all trading fees"
+      "High gas fees",
+      "Smart contract vulnerabilities",
+      "Network congestion",
+      "Low trading volume"
     ],
     correctAnswer: 1,
-    explanation: "AMMs provide constant liquidity for trading pairs through mathematical formulas and liquidity pools, eliminating the need for traditional market makers."
+    explanation: "Smart contract vulnerabilities in new, unaudited protocols pose the biggest risk as they could lead to loss of funds through exploits or bugs in the code."
   },
   {
-    question: "How do liquidity pools typically handle trading fees?",
+    question: "How do automated market makers (AMMs) determine asset prices?",
     options: [
-      "All fees go to the protocol developers",
-      "Fees are burned to reduce token supply",
-      "Fees are distributed proportionally to liquidity providers",
-      "Fees are returned to traders"
-    ],
-    correctAnswer: 2,
-    explanation: "Trading fees are typically distributed proportionally to liquidity providers based on their share of the pool, serving as a reward for providing liquidity."
-  },
-  {
-    question: "What is 'smart contract risk' in yield farming?",
-    options: [
-      "The risk of network congestion",
-      "The risk of losing funds due to code vulnerabilities",
-      "The risk of low returns",
-      "The risk of high gas fees"
+      "Through centralized order books",
+      "Using mathematical formulas and pool ratios",
+      "Based on the last traded price",
+      "Through manual price updates"
     ],
     correctAnswer: 1,
-    explanation: "Smart contract risk refers to the potential loss of funds due to vulnerabilities or bugs in the protocol's smart contract code."
+    explanation: "AMMs use mathematical formulas, typically constant product formulas, to determine prices based on the ratio of assets in their liquidity pools."
+  },
+  {
+    question: "What is the purpose of governance tokens in DeFi protocols?",
+    options: [
+      "To pay transaction fees",
+      "To vote on protocol changes and updates",
+      "To store value",
+      "To generate yield"
+    ],
+    correctAnswer: 1,
+    explanation: "Governance tokens give holders voting rights to participate in the decision-making process for protocol changes, updates, and parameter adjustments."
   }
 ];
 
 export default function ModuleQuiz() {
   useScrollTop();
-  const { updateProgress } = useProgress();
   const [, setLocation] = useLocation();
+  const { updateProgress } = useProgress();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
@@ -153,7 +152,7 @@ export default function ModuleQuiz() {
         <Card>
           <CardContent className="pt-6">
             <h1 className="text-3xl font-bold text-blue-800 mb-6">
-              DeFi Module 1 Quiz
+              DeFi Module 1 Final Quiz
             </h1>
 
             {!quizCompleted ? (
@@ -168,10 +167,9 @@ export default function ModuleQuiz() {
                     </p>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
-                    <motion.div
-                      className="bg-blue-600 h-2 rounded-full"
-                      initial={{ width: `${((currentQuestion) / quizQuestions.length) * 100}%` }}
-                      animate={{ width: `${((currentQuestion + 1) / quizQuestions.length) * 100}%` }}
+                    <div 
+                      className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${((currentQuestion + (selectedAnswer !== null ? 1 : 0)) / quizQuestions.length) * 100}%` }}
                     />
                   </div>
                 </div>
@@ -213,7 +211,22 @@ export default function ModuleQuiz() {
                             }`}
                             disabled={selectedAnswer !== null}
                           >
-                            {option}
+                            <div className="flex items-center justify-between w-full">
+                              <span>{option}</span>
+                              {showResult && (isCorrect || isSelected) && (
+                                <motion.span
+                                  initial={{ scale: 0 }}
+                                  animate={{ scale: 1 }}
+                                  transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                                >
+                                  {isCorrect ? (
+                                    <Check className="h-5 w-5 text-green-500" />
+                                  ) : (
+                                    <X className="h-5 w-5 text-red-500" />
+                                  )}
+                                </motion.span>
+                              )}
+                            </div>
                           </Button>
                         </motion.div>
                       );
@@ -256,9 +269,15 @@ export default function ModuleQuiz() {
                         You scored {score} out of {quizQuestions.length}
                       </p>
                       <p className="text-green-600">
-                        You've mastered the fundamentals of DeFi! Ready for the next module?
+                        You've mastered the fundamentals of DeFi! Ready for Module 2?
                       </p>
                     </div>
+                    <Button
+                      onClick={handleComplete}
+                      className="bg-green-600 hover:bg-green-700"
+                    >
+                      Continue to Module 2
+                    </Button>
                   </>
                 ) : (
                   <>
@@ -273,25 +292,13 @@ export default function ModuleQuiz() {
                         Keep learning! Try reviewing the material and attempt the quiz again.
                       </p>
                     </div>
-                  </>
-                )}
-
-                <div className="flex justify-center gap-4">
-                  {score >= 7 ? (
-                    <Button
-                      onClick={handleComplete}
-                      className="bg-green-600 hover:bg-green-700"
-                    >
-                      Continue to Module 2
-                    </Button>
-                  ) : (
                     <Link href="/defi/module1/liquidity-yield">
                       <Button variant="outline">
                         Review Material
                       </Button>
                     </Link>
-                  )}
-                </div>
+                  </>
+                )}
               </motion.div>
             )}
           </CardContent>
@@ -300,4 +307,3 @@ export default function ModuleQuiz() {
     </div>
   );
 }
-```
