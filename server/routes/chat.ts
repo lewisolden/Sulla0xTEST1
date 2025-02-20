@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import { z } from 'zod';
-import { db } from '@db';
+import { db } from "@db";
 import { eq } from 'drizzle-orm';
-import { courseEnrollments } from '@db/schema';
+import { courseEnrollments } from "@db/schema";
 
 declare module 'express-session' {
   interface Session {
@@ -23,22 +23,35 @@ interface UserProgress {
   totalLearningMinutes: number;
 }
 
-router.post('/api/chat', async (req, res) => {
+router.post("/api/chat", async (req, res) => {
   try {
+    if (!req.isAuthenticated()) {
+      console.error("[Chat] Unauthenticated request");
+      return res.status(401).json({ error: "Unauthorized - Please log in" });
+    }
+
+    const userId = req.user?.id;
+    if (!userId) {
+      console.error("[Chat] No user ID in authenticated session");
+      return res.status(401).json({ error: "Invalid session" });
+    }
+
     const { message, context } = chatSchema.parse(req.body);
+    console.log("[Chat] Received message:", { message, context });
 
     // Get user progress if authenticated
     let userProgress: UserProgress | null = null;
-    if (req.session.userId) {
+    try {
+      console.log('[Chat] Fetching user progress for userId:', userId);
       const enrollments = await db
         .select()
         .from(courseEnrollments)
-        .where(eq(courseEnrollments.userId, req.session.userId));
+        .where(eq(courseEnrollments.userId, userId));
 
       // Calculate completed modules and current progress
       userProgress = {
         completedModules: enrollments
-          .filter(e => e.progress >= 100)
+          .filter(e => e.progress !== null && e.progress >= 100)
           .map(e => e.courseId),
         currentProgress: enrollments.length > 0 
           ? enrollments.reduce((acc, curr) => acc + (curr.progress || 0), 0) / enrollments.length 
@@ -50,6 +63,10 @@ router.post('/api/chat', async (req, res) => {
           return acc + minutes;
         }, 0)
       };
+      console.log('[Chat] Calculated user progress:', userProgress);
+    } catch (dbError) {
+      console.error('[Chat] Database error:', dbError);
+      userProgress = null;
     }
 
     let systemMessage = `You are Sensei, Sulla's friendly AI learning companion. Your role is to provide clear, concise guidance while maintaining a warm and encouraging tone. You're an expert in blockchain and AI, focusing exclusively on Sulla's curriculum.
@@ -94,21 +111,13 @@ Direct students to specific sections and exercises within these modules.`;
 Guide students to relevant sections and practical exercises within these modules.`;
     }
 
-    systemMessage += `
+    // Check if API key exists
+    if (!process.env.PERPLEXITY_API_KEY) {
+      console.error('[Chat] Missing Perplexity API key');
+      throw new Error('API key configuration error');
+    }
 
-Response guidelines:
-1. Be friendly and encouraging: "Great question!" or "I'd be happy to help!"
-2. Give direct, specific answers referencing Sulla's content
-3. Point to exact module sections: "Check Module 2.3: Smart Contracts"
-4. Recommend relevant exercises: "Try the practical exercise in Section 3.2"
-5. Include quick links using [LINK] tags: [LINK]module-name|/path/to/module[/LINK]
-6. Keep responses brief but helpful
-
-Remember: You're a friendly guide helping students navigate Sulla's learning platform!
-
-When suggesting content, wrap links in [LINK] tags:
-Example: "Check out our [LINK]Smart Contracts module|/modules/smart-contracts[/LINK]"`;
-
+    console.log('[Chat] Sending request to Perplexity API');
     const response = await fetch('https://api.perplexity.ai/chat/completions', {
       method: 'POST',
       headers: {
@@ -134,11 +143,13 @@ Example: "Check out our [LINK]Smart Contracts module|/modules/smart-contracts[/L
     });
 
     if (!response.ok) {
-      console.error('Perplexity API error:', await response.text());
-      throw new Error('Failed to get response from AI');
+      const errorText = await response.text();
+      console.error('[Chat] Perplexity API error:', errorText);
+      throw new Error(`API request failed: ${response.status} ${response.statusText}`);
     }
 
     const data = await response.json();
+    console.log('[Chat] Received response from Perplexity API');
     const aiResponse = data.choices[0].message.content;
 
     // Extract any links from the response
@@ -161,15 +172,26 @@ Example: "Check out our [LINK]Smart Contracts module|/modules/smart-contracts[/L
       userProgress: userProgress 
     });
   } catch (error) {
-    console.error('Chat error:', error);
+    console.error('[Chat] Error:', error);
     if (error instanceof z.ZodError) {
       return res.status(400).json({ 
         error: 'Invalid request format',
         details: error.errors
       });
     }
+
+    // More specific error messages based on the error type
+    let errorMessage = 'I apologize, but I seem to be having trouble right now. Please try asking your question again!';
+    if (error instanceof Error) {
+      if (error.message.includes('API key')) {
+        errorMessage = 'The chat service is currently unavailable. Please try again later.';
+      } else if (error.message.includes('API request failed')) {
+        errorMessage = 'I\'m having trouble connecting to my knowledge base. Please try again in a moment.';
+      }
+    }
+
     res.status(500).json({ 
-      error: 'I apologize, but I seem to be having trouble right now. Please try asking your question again!',
+      error: errorMessage,
       friendly: true 
     });
   }
