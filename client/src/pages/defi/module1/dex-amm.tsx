@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { ArrowLeft, ArrowRight, ArrowDownUp, Wallet, RefreshCw, Settings, Info, Check, X, CheckCircle2 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { FaEthereum, FaExchangeAlt } from "react-icons/fa";
 import { BiDollarCircle } from "react-icons/bi";
 import { BsCurrencyExchange, BsGraphUp } from "react-icons/bs";
@@ -18,13 +19,13 @@ const initialTokens = {
     name: "USD Coin",
     decimals: 6,
     price: 1,
-    balance: 10000, // Updated balance to 10,000 USDC
+    balance: 10000,
   },
   ETH: {
     symbol: "ETH",
     name: "Ethereum",
     decimals: 18,
-    price: 3000, // 1 ETH = 3,000 USDC
+    price: 3000,
     balance: 5,
   },
 };
@@ -74,7 +75,7 @@ export default function DexAmm() {
   // Swap interface state
   const [inputAmount, setInputAmount] = useState("");
   const [swapDirection, setSwapDirection] = useState<"USDC_TO_ETH" | "ETH_TO_USDC">("USDC_TO_ETH");
-  const [slippage, setSlippage] = useState(0.5); // 0.5% default slippage
+  const [slippage, setSlippage] = useState(0.5);
   const [showSwapDetails, setShowSwapDetails] = useState(false);
   const [tokens, setTokens] = useState(initialTokens);
   const [swapStatus, setSwapStatus] = useState<{
@@ -148,7 +149,6 @@ export default function DexAmm() {
 
     const output = calculateSwapOutput(input);
 
-    // Update token balances
     setTokens(prev => {
       if (swapDirection === "USDC_TO_ETH") {
         return {
@@ -163,13 +163,11 @@ export default function DexAmm() {
       }
     });
 
-    // Show success message
     setSwapStatus({
       type: 'success',
       message: `Successfully swapped ${input} ${swapDirection === "USDC_TO_ETH" ? "USDC" : "ETH"} for ${output.toFixed(6)} ${swapDirection === "USDC_TO_ETH" ? "ETH" : "USDC"}`
     });
 
-    // Reset input
     setInputAmount("");
   };
 
@@ -195,7 +193,7 @@ export default function DexAmm() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <Card className="mb-8">
+          <Card>
             <CardContent className="pt-6">
               <h1 className="text-3xl font-bold text-blue-800 mb-6">
                 Decentralized Exchanges & Automated Market Makers
@@ -207,8 +205,8 @@ export default function DexAmm() {
                     Understanding DEXs
                   </h2>
                   <p className="text-gray-700 mb-6">
-                    Decentralized Exchanges (DEXs) revolutionize cryptocurrency trading by eliminating intermediaries 
-                    through smart contracts. Unlike centralized exchanges, DEXs operate entirely on blockchain 
+                    Decentralized Exchanges (DEXs) revolutionize cryptocurrency trading by eliminating intermediaries
+                    through smart contracts. Unlike centralized exchanges, DEXs operate entirely on blockchain
                     networks, offering enhanced security, transparency, and user control over funds.
                   </p>
 
@@ -271,7 +269,7 @@ export default function DexAmm() {
                     {[
                       {
                         name: "Uniswap",
-                        icon: FaExchangeAlt,  // Using a generic exchange icon for Uniswap
+                        icon: FaExchangeAlt,
                         description: "Leading Ethereum DEX with concentrated liquidity",
                         url: "https://app.uniswap.org",
                         features: ["V3 Architecture", "Multi-chain", "Best-in-class UX"]
@@ -334,7 +332,6 @@ export default function DexAmm() {
                 </section>
 
 
-                {/*NEW SECTION START HERE*/}
                 <section className="mb-12">
                   <h2 className="text-2xl font-semibold text-blue-700 mb-4">
                     Key DEX Concepts
@@ -406,15 +403,13 @@ export default function DexAmm() {
                     </div>
                   </div>
                 </section>
-                {/*NEW SECTION END HERE*/}
-
 
                 <section className="mb-12">
                   <h2 className="text-2xl font-semibold text-blue-700 mb-4">
                     Interactive DEX Demo
                   </h2>
                   <p className="text-gray-700 mb-6">
-                    Experience how decentralized exchanges work with our interactive demo. Swap between USDC and ETH 
+                    Experience how decentralized exchanges work with our interactive demo. Swap between USDC and ETH
                     while observing how prices and balances update in real-time.
                   </p>
 
@@ -595,7 +590,7 @@ export default function DexAmm() {
                     </Button>
                   </div>
                 ) : (
-                  <section className="bg-white/80 backdrop-blur-sm rounded-xl p-6 mt-8">
+                  <section className="bg-white rounded-xl p-6 mt-8">
                     <h2 className="text-2xl font-semibold text-blue-800 mb-6">
                       Knowledge Check
                     </h2>
@@ -648,7 +643,7 @@ export default function DexAmm() {
                                   <Button
                                     onClick={() => !selectedAnswer && handleAnswer(index)}
                                     variant="outline"
-                                    className={`w-full justify-start text-left transition-all duration-300 ${
+                                    className={`w-full justify-start text-left ${
                                       showResult
                                         ? isCorrect
                                           ? "bg-green-50 border-green-500 text-green-700"
@@ -721,52 +716,48 @@ export default function DexAmm() {
                       </div>
                     ) : (
                       <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.5 }}
-                        className="text-center space-y-6"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="text-center"
                       >
-                        <motion.div
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          transition={{ type: "spring", stiffness: 200, damping: 10 }}
-                        >
-                          <CheckCircle2 className="h-16 w-16 text-green-500 mx-auto" />
-                        </motion.div>
-
-                        <div>
-                          <h3 className="text-2xl font-semibold text-gray-800 mb-2">
+                        <div className="mb-6">
+                          <CheckCircle2 className="h-16 w-16 text-green-500 mx-auto mb-4" />
+                          <h3 className="text-xl font-semibold mb-2">
                             Quiz Completed!
                           </h3>
-                          <p className="text-gray-600 text-lg mb-2">
+                          <p className="text-gray-600">
                             You scored {score} out of {quizQuestions.length}
-                          </p>
-                          <p className="text-gray-500">
-                            {score === quizQuestions.length
-                              ? "Perfect score! You've mastered this topic!"
-                              : "Keep learning and try again to improve your score!"}
                           </p>
                         </div>
 
-                        <Button
-                          onClick={() => {
-                            setShowQuiz(false);
-                            setCurrentQuestion(0);
-                            setScore(0);
-                            setQuizCompleted(false);
-                                                        setSelectedAnswer(null);
-                            setShowExplanation(false);
-                          }}
-                          variant="outline"
-                          className="transform hover:scale-105 transition-all duration-300"
-                        >
-                          Retake Quiz
-                        </Button>
+                        <div className="space-x-4">
+                          <Button
+                            onClick={() => {
+                              setShowQuiz(false);
+                              setCurrentQuestion(0);
+                              setScore(0);
+                              setQuizCompleted(false);
+                              setSelectedAnswer(null);
+                              setShowExplanation(false);
+                            }}
+                            variant="outline"
+                            className="gap-2"
+                          >
+                            <ArrowLeft className="h-4 w-4" /> Back to Content
+                          </Button>
+                          {score === quizQuestions.length && !isCompleted && (
+                            <Button
+                              onClick={handleComplete}
+                              className="bg-green-600 hover:bg-green-700 gap-2"
+                            >
+                              Complete Module <Check className="h-4 w-4" />
+                            </Button>
+                          )}
+                        </div>
                       </motion.div>
                     )}
                   </section>
                 )}
-
                 <div className="flex justify-between items-center mt-12">
                   <Link href="/defi/module1/blockchain-contracts">
                     <Button variant="outline" className="gap-2">
