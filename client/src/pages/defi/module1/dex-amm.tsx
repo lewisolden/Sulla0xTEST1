@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { ArrowLeft, ArrowRight, ArrowDownUp, Wallet, RefreshCw, Settings, Info, Check, X, CheckCircle2 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { FaEthereum, FaExchangeAlt } from "react-icons/fa";
 import { BiDollarCircle } from "react-icons/bi";
 import { BsCurrencyExchange, BsGraphUp } from "react-icons/bs";
@@ -409,6 +408,7 @@ export default function DexAmm() {
                 </section>
                 {/*NEW SECTION END HERE*/}
 
+
                 <section className="mb-12">
                   <h2 className="text-2xl font-semibold text-blue-700 mb-4">
                     Interactive DEX Demo
@@ -754,7 +754,7 @@ export default function DexAmm() {
                             setCurrentQuestion(0);
                             setScore(0);
                             setQuizCompleted(false);
-                            setSelectedAnswer(null);
+                                                        setSelectedAnswer(null);
                             setShowExplanation(false);
                           }}
                           variant="outline"
