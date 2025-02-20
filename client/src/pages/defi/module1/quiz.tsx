@@ -3,7 +3,7 @@ import { Link, useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Trophy, ArrowLeft, Check, X } from "lucide-react";
+import { Trophy, ArrowLeft, Check, X, ArrowRight } from "lucide-react";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
 
@@ -107,12 +107,19 @@ export default function ModuleQuiz() {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showExplanation, setShowExplanation] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
+  const [feedbackMessage, setFeedbackMessage] = useState<{ text: string; isCorrect: boolean } | null>(null);
 
   const handleAnswer = (selectedOption: number) => {
     setSelectedAnswer(selectedOption);
     setShowExplanation(true);
 
-    if (selectedOption === quizQuestions[currentQuestion].correctAnswer) {
+    const isCorrect = selectedOption === quizQuestions[currentQuestion].correctAnswer;
+    setFeedbackMessage({
+      text: isCorrect ? "Correct!" : "Incorrect!",
+      isCorrect
+    });
+
+    if (isCorrect) {
       setScore(prev => prev + 1);
     }
   };
@@ -124,6 +131,7 @@ export default function ModuleQuiz() {
         setCurrentQuestion(prev => prev + 1);
         setSelectedAnswer(null);
         setShowExplanation(false);
+        setFeedbackMessage(null);
       }, 4000);
     } else if (showExplanation && currentQuestion === quizQuestions.length - 1) {
       timer = setTimeout(() => {
@@ -134,7 +142,7 @@ export default function ModuleQuiz() {
   }, [showExplanation, currentQuestion]);
 
   const handleComplete = async () => {
-    await updateProgress(3, "module1-quiz", true);
+    await updateProgress(3, "module1-quiz", true, score);
     setLocation("/defi/module2");
   };
 
@@ -167,7 +175,7 @@ export default function ModuleQuiz() {
                     </p>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div 
+                    <div
                       className="bg-blue-600 h-2 rounded-full transition-all duration-300"
                       style={{ width: `${((currentQuestion + (selectedAnswer !== null ? 1 : 0)) / quizQuestions.length) * 100}%` }}
                     />
@@ -183,6 +191,19 @@ export default function ModuleQuiz() {
                   <h3 className="text-lg font-medium text-gray-800">
                     {quizQuestions[currentQuestion].question}
                   </h3>
+
+                  {feedbackMessage && (
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                      className={`text-center py-2 rounded-lg ${
+                        feedbackMessage.isCorrect ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                      }`}
+                    >
+                      <p className="font-semibold">{feedbackMessage.text}</p>
+                    </motion.div>
+                  )}
 
                   <div className="space-y-3">
                     {quizQuestions[currentQuestion].options.map((option, index) => {
@@ -252,53 +273,32 @@ export default function ModuleQuiz() {
                 animate={{ opacity: 1, scale: 1 }}
                 className="text-center space-y-6"
               >
-                {score >= 7 ? (
-                  <>
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ type: "spring", stiffness: 200, damping: 10 }}
-                    >
-                      <Trophy className="h-16 w-16 text-yellow-500 mx-auto" />
-                    </motion.div>
-                    <div>
-                      <h3 className="text-2xl font-semibold text-gray-800 mb-2">
-                        Congratulations! 🎉
-                      </h3>
-                      <p className="text-gray-600 text-lg mb-2">
-                        You scored {score} out of {quizQuestions.length}
-                      </p>
-                      <p className="text-green-600">
-                        You've mastered the fundamentals of DeFi! Ready for Module 2?
-                      </p>
-                    </div>
-                    <Button
-                      onClick={handleComplete}
-                      className="bg-green-600 hover:bg-green-700"
-                    >
-                      Continue to Module 2
-                    </Button>
-                  </>
-                ) : (
-                  <>
-                    <div>
-                      <h3 className="text-2xl font-semibold text-gray-800 mb-2">
-                        Quiz Completed
-                      </h3>
-                      <p className="text-gray-600 text-lg mb-2">
-                        You scored {score} out of {quizQuestions.length}
-                      </p>
-                      <p className="text-blue-600">
-                        Keep learning! Try reviewing the material and attempt the quiz again.
-                      </p>
-                    </div>
-                    <Link href="/defi/module1/liquidity-yield">
-                      <Button variant="outline">
-                        Review Material
-                      </Button>
-                    </Link>
-                  </>
-                )}
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                >
+                  <Trophy className="h-16 w-16 text-yellow-500 mx-auto" />
+                </motion.div>
+                <div>
+                  <h3 className="text-2xl font-semibold text-gray-800 mb-2">
+                    Quiz Completed!
+                  </h3>
+                  <p className="text-gray-600 text-lg mb-2">
+                    You scored {score} out of {quizQuestions.length}
+                  </p>
+                  <p className="text-blue-600 mb-4">
+                    {score >= 7
+                      ? "Excellent work! You've demonstrated a strong understanding of DeFi concepts!"
+                      : "Keep learning and exploring DeFi concepts to deepen your understanding."}
+                  </p>
+                  <Button
+                    onClick={handleComplete}
+                    className="bg-green-600 hover:bg-green-700"
+                  >
+                    Continue to Module 2 <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </div>
               </motion.div>
             )}
           </CardContent>

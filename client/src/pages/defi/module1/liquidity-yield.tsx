@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -266,6 +266,7 @@ export default function LiquidityYield() {
   useScrollTop();
   const { updateProgress } = useProgress();
   const [isCompleted, setIsCompleted] = useState(false);
+  const [, setLocation] = useLocation();
 
   // Farm simulation state
   const [pooledTokens, setPooledTokens] = useState({ USDC: 1000, ETH: 1 });
@@ -286,6 +287,7 @@ export default function LiquidityYield() {
   const handleComplete = async () => {
     await updateProgress(3, "liquidity-yield", true, 3);
     setIsCompleted(true);
+    setLocation("/defi/module1/quiz");
   };
 
   // Yield farming simulation logic
@@ -726,7 +728,7 @@ export default function LiquidityYield() {
                           <p className="text-gray-600 text-lg mb-2">
                             You scored {score} out of {quizQuestions.length}
                           </p>
-                          {score === quizQuestions.length && (
+                          {score === quizQuestions.length ? (
                             <motion.div
                               initial={{ opacity: 0, y: 20 }}
                               animate={{ opacity: 1, y: 0 }}
@@ -740,19 +742,18 @@ export default function LiquidityYield() {
                                 <Trophy className="h-16 w-16 text-yellow-500 mx-auto" />
                               </motion.div>
                               <p className="text-green-600">Perfect score! You're ready for the module quiz!</p>
-                              <Link href="/defi/module1/quiz">
-                                <Button className="bg-green-600 hover:bg-green-700">
-                                  Take Module Quiz <ArrowRight className="ml-2 h-4 w-4" />
-                                </Button>
-                              </Link>
+                              <Button
+                                onClick={handleComplete}
+                                className="bg-green-600 hover:bg-green-700"
+                              >
+                                Continue to Module Quiz <ArrowRight className="ml-2 h-4 w-4" />
+                              </Button>
                             </motion.div>
-                          )}
-                          {score !== quizQuestions.length && (
+                          ) : (
                             <p className="text-gray-500">
                               Keep learning and try again to improve your score!
                             </p>
-                                                    )}
-
+                          )}
                         </div>
 
                         <Button
