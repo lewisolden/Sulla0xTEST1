@@ -69,7 +69,42 @@ router.post("/api/chat", async (req, res) => {
       throw new Error('API key configuration error');
     }
 
-    console.log('[Chat] Sending request to Perplexity API');
+    console.log('[Chat] Testing Perplexity API connection');
+    // First make a simple test request
+    const testResponse = await fetch('https://api.perplexity.ai/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.PERPLEXITY_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'llama-3.1-sonar-small-128k-online',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a helpful assistant.'
+          },
+          {
+            role: 'user',
+            content: 'Test connection'
+          }
+        ],
+        temperature: 0.7,
+        max_tokens: 50
+      })
+    });
+
+    if (!testResponse.ok) {
+      const errorText = await testResponse.text();
+      console.error('[Chat] Perplexity API test failed:', {
+        status: testResponse.status,
+        statusText: testResponse.statusText,
+        error: errorText
+      });
+      throw new Error(`API connection test failed: ${testResponse.status}`);
+    }
+
+    console.log('[Chat] API test successful, sending actual request');
     const response = await fetch('https://api.perplexity.ai/chat/completions', {
       method: 'POST',
       headers: {
@@ -160,6 +195,8 @@ Current context: ${context}`
         errorMessage = 'The chat service is currently unavailable. Please try again later.';
       } else if (error.message.includes('API request failed')) {
         errorMessage = 'I\'m having trouble connecting to my knowledge base. Please try again in a moment.';
+      } else if (error.message.includes('API connection test failed')) {
+        errorMessage = 'I\'m currently unable to connect to the knowledge base. Please try again later.';
       }
     }
 
