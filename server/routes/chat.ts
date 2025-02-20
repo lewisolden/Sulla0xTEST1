@@ -6,6 +6,65 @@ import { courseEnrollments } from "@db/schema";
 
 const router = Router();
 
+// Test endpoint for Perplexity API
+router.post("/api/chat/test", async (req, res) => {
+  try {
+    // Check if API key exists and validate format
+    if (!process.env.PERPLEXITY_API_KEY) {
+      console.error('[Chat Test] Missing Perplexity API key');
+      return res.status(500).json({ error: 'API key configuration error' });
+    }
+
+    const apiKey = process.env.PERPLEXITY_API_KEY.trim();
+    console.log('[Chat Test] API Key format check:', {
+      length: apiKey.length,
+      startsWithPrefix: apiKey.startsWith('pplx-'),
+      matches: apiKey.match(/^pplx-[a-zA-Z0-9]{48}$/) !== null
+    });
+
+    const requestBody = {
+      model: "llama-3.1-sonar-small-128k-online",
+      messages: [
+        {
+          role: "user",
+          content: "Hello, are you working?"
+        }
+      ]
+    };
+
+    console.log('[Chat Test] Request payload:', JSON.stringify(requestBody));
+
+    const response = await fetch('https://api.perplexity.ai/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(requestBody)
+    });
+
+    console.log('[Chat Test] Response status:', response.status);
+    console.log('[Chat Test] Response headers:', Object.fromEntries(response.headers.entries()));
+
+    const responseText = await response.text();
+    console.log('[Chat Test] Raw response:', responseText);
+
+    if (!response.ok) {
+      throw new Error(`API request failed: ${response.status} ${response.statusText}\n${responseText}`);
+    }
+
+    const data = JSON.parse(responseText);
+    res.json({ success: true, response: data });
+
+  } catch (error) {
+    console.error('[Chat Test] Error:', error);
+    res.status(500).json({ 
+      error: 'Chat test failed',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
 const chatSchema = z.object({
   message: z.string().min(1),
   context: z.string()
@@ -163,20 +222,8 @@ router.post("/api/chat", async (req, res) => {
       });
     }
 
-    // More specific error messages based on the error type
-    let errorMessage = 'I apologize, but I seem to be having trouble right now. Please try asking your question again!';
-    if (error instanceof Error) {
-      if (error.message.includes('API key')) {
-        errorMessage = 'The chat service is currently unavailable. Please try again later.';
-      } else if (error.message.includes('API request failed')) {
-        errorMessage = 'I\'m having trouble connecting to my knowledge base. Please try again in a moment.';
-      } else if (error.message.includes('parse')) {
-        errorMessage = 'I received an unexpected response format. Please try again.';
-      }
-    }
-
     res.status(500).json({ 
-      error: errorMessage,
+      error: 'I apologize, but I seem to be having trouble right now. Please try asking your question again!',
       friendly: true 
     });
   }
