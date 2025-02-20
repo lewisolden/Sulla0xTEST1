@@ -42,7 +42,6 @@ router.post("/api/chat", async (req, res) => {
         .from(courseEnrollments)
         .where(eq(courseEnrollments.userId, userId));
 
-      // Calculate completed modules and current progress
       userProgress = {
         completedModules: enrollments
           .filter(e => e.progress !== null && e.progress >= 100)
@@ -84,20 +83,28 @@ router.post("/api/chat", async (req, res) => {
 
     try {
       const requestBody = {
-        model: 'llama-2-70b-chat',
+        model: "llama-3.1-sonar-small-128k-online",
         messages: [
           {
-            role: 'system',
-            content: 'You are a helpful assistant.'
+            role: "system",
+            content: "You are a helpful assistant."
           },
           {
-            role: 'user',
+            role: "user",
             content: message
           }
         ],
         temperature: 0.7,
         max_tokens: 150,
         top_p: 0.9,
+        search_domain_filter: ["perplexity.ai"],
+        return_images: false,
+        return_related_questions: false,
+        search_recency_filter: "month",
+        top_k: 0,
+        stream: false,
+        presence_penalty: 0,
+        frequency_penalty: 1
       };
 
       console.log('[Chat] Request payload:', JSON.stringify(requestBody));
@@ -126,13 +133,23 @@ router.post("/api/chat", async (req, res) => {
         throw new Error(`API request failed: ${response.status} ${response.statusText}`);
       }
 
-      const data = JSON.parse(responseText);
-      console.log('[Chat] Parsed API response:', data);
+      try {
+        const data = JSON.parse(responseText);
+        console.log('[Chat] Parsed API response:', data);
 
-      res.json({ 
-        response: data.choices[0].message.content,
-        userProgress: userProgress 
-      });
+        if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+          console.error('[Chat] Invalid API response format:', data);
+          throw new Error('Invalid API response format');
+        }
+
+        res.json({ 
+          response: data.choices[0].message.content,
+          userProgress: userProgress 
+        });
+      } catch (parseError) {
+        console.error('[Chat] JSON parse error:', parseError);
+        throw new Error('Failed to parse API response');
+      }
     } catch (apiError) {
       console.error('[Chat] API request error:', apiError);
       throw apiError;
@@ -153,6 +170,8 @@ router.post("/api/chat", async (req, res) => {
         errorMessage = 'The chat service is currently unavailable. Please try again later.';
       } else if (error.message.includes('API request failed')) {
         errorMessage = 'I\'m having trouble connecting to my knowledge base. Please try again in a moment.';
+      } else if (error.message.includes('parse')) {
+        errorMessage = 'I received an unexpected response format. Please try again.';
       }
     }
 
