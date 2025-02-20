@@ -11,8 +11,8 @@ import { FaEthereum, FaExchangeAlt, FaChartLine } from "react-icons/fa";
 import { BiDollarCircle } from "react-icons/bi";
 import { BsCurrencyExchange, BsGraphUp } from "react-icons/bs";
 
-// Mock token data for the swap demo
-const tokens = {
+// Initial token data for the swap demo
+const initialTokens = {
   USDC: {
     symbol: "USDC",
     name: "USD Coin",
@@ -39,6 +39,11 @@ export default function DexAmm() {
   const [swapDirection, setSwapDirection] = useState<"USDC_TO_ETH" | "ETH_TO_USDC">("USDC_TO_ETH");
   const [slippage, setSlippage] = useState(0.5); // 0.5% default slippage
   const [showSwapDetails, setShowSwapDetails] = useState(false);
+  const [tokens, setTokens] = useState(initialTokens);
+  const [swapStatus, setSwapStatus] = useState<{
+    type: 'success' | 'error' | null;
+    message: string;
+  }>({ type: null, message: '' });
 
   const handleComplete = async () => {
     await updateProgress(3, "dex-amm", true, 3);
@@ -48,27 +53,65 @@ export default function DexAmm() {
   // Calculate swap output based on exchange rate
   const calculateSwapOutput = (inputAmount: number): number => {
     if (swapDirection === "USDC_TO_ETH") {
-      // Convert USDC to ETH (1 ETH = 3000 USDC)
       return (inputAmount / 3000) * (1 - slippage / 100);
     } else {
-      // Convert ETH to USDC (1 ETH = 3000 USDC)
       return (inputAmount * 3000) * (1 - slippage / 100);
     }
   };
 
+  const validateSwap = (input: number): { isValid: boolean; message: string } => {
+    if (isNaN(input) || input <= 0) {
+      return { isValid: false, message: "Please enter a valid amount" };
+    }
+
+    const sourceToken = swapDirection === "USDC_TO_ETH" ? tokens.USDC : tokens.ETH;
+    if (input > sourceToken.balance) {
+      return { isValid: false, message: `Insufficient ${sourceToken.symbol} balance` };
+    }
+
+    return { isValid: true, message: "" };
+  };
+
   const handleSwap = () => {
-    // In a real implementation, this would interact with smart contracts
-    console.log("Swap executed:", {
-      direction: swapDirection,
-      inputAmount,
-      outputAmount: calculateSwapOutput(parseFloat(inputAmount)),
-      slippage
+    const input = parseFloat(inputAmount);
+    const validation = validateSwap(input);
+
+    if (!validation.isValid) {
+      setSwapStatus({ type: 'error', message: validation.message });
+      return;
+    }
+
+    const output = calculateSwapOutput(input);
+
+    // Update token balances
+    setTokens(prev => {
+      if (swapDirection === "USDC_TO_ETH") {
+        return {
+          USDC: { ...prev.USDC, balance: prev.USDC.balance - input },
+          ETH: { ...prev.ETH, balance: prev.ETH.balance + output }
+        };
+      } else {
+        return {
+          ETH: { ...prev.ETH, balance: prev.ETH.balance - input },
+          USDC: { ...prev.USDC, balance: prev.USDC.balance + output }
+        };
+      }
     });
+
+    // Show success message
+    setSwapStatus({
+      type: 'success',
+      message: `Successfully swapped ${input} ${swapDirection === "USDC_TO_ETH" ? "USDC" : "ETH"} for ${output.toFixed(6)} ${swapDirection === "USDC_TO_ETH" ? "ETH" : "USDC"}`
+    });
+
+    // Reset input
+    setInputAmount("");
   };
 
   const toggleSwapDirection = () => {
     setSwapDirection(prev => prev === "USDC_TO_ETH" ? "ETH_TO_USDC" : "USDC_TO_ETH");
     setInputAmount("");
+    setSwapStatus({ type: null, message: '' });
   };
 
   return (
@@ -152,15 +195,14 @@ export default function DexAmm() {
 
                 <section className="mb-12">
                   <h2 className="text-2xl font-semibold text-blue-700 mb-4">
-                    AMM Mechanics
+                    Interactive DEX Demo
                   </h2>
                   <p className="text-gray-700 mb-6">
-                    Automated Market Makers use mathematical formulas to determine asset prices and facilitate trades. 
-                    The most common model is the constant product formula (x * y = k), where the product of the two 
-                    token quantities must remain constant after each trade.
+                    Experience how decentralized exchanges work with our interactive demo. Swap between USDC and ETH 
+                    while observing how prices and balances update in real-time.
                   </p>
 
-                  <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-8 mb-8">
+                  <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-8">
                     <div className="mb-6 bg-white/80 backdrop-blur-sm rounded-lg p-4">
                       <h3 className="text-lg font-semibold text-blue-800 mb-2">Welcome to the DEX Demo!</h3>
                       <p className="text-gray-600 mb-4">
@@ -169,11 +211,11 @@ export default function DexAmm() {
                       <div className="flex gap-4">
                         <div className="flex items-center gap-2 bg-blue-50 px-3 py-2 rounded-lg">
                           <BiDollarCircle className="h-5 w-5 text-blue-500" />
-                          <span className="font-medium">{tokens.USDC.balance} USDC</span>
+                          <span className="font-medium">{tokens.USDC.balance.toFixed(2)} USDC</span>
                         </div>
                         <div className="flex items-center gap-2 bg-blue-50 px-3 py-2 rounded-lg">
                           <FaEthereum className="h-5 w-5 text-blue-500" />
-                          <span className="font-medium">{tokens.ETH.balance} ETH</span>
+                          <span className="font-medium">{tokens.ETH.balance.toFixed(6)} ETH</span>
                         </div>
                       </div>
                       <p className="text-sm text-gray-500 mt-2">
@@ -183,13 +225,34 @@ export default function DexAmm() {
 
                     <div className="max-w-md mx-auto bg-white rounded-xl shadow-lg p-6">
                       <div className="space-y-4">
+                        {/* Swap Status Message */}
+                        <AnimatePresence>
+                          {swapStatus.type && (
+                            <motion.div
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -10 }}
+                              className={`p-3 rounded-lg ${
+                                swapStatus.type === 'success' 
+                                  ? 'bg-green-50 border border-green-200 text-green-700'
+                                  : 'bg-red-50 border border-red-200 text-red-700'
+                              }`}
+                            >
+                              {swapStatus.message}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+
                         <div className="space-y-2">
                           <label className="text-sm font-medium text-gray-700">You Pay</label>
                           <div className="flex gap-2">
                             <Input
                               type="number"
                               value={inputAmount}
-                              onChange={(e) => setInputAmount(e.target.value)}
+                              onChange={(e) => {
+                                setInputAmount(e.target.value);
+                                setSwapStatus({ type: null, message: '' });
+                              }}
                               placeholder="0.00"
                               className="flex-1"
                             />
@@ -208,7 +271,7 @@ export default function DexAmm() {
                             </Button>
                           </div>
                           <p className="text-sm text-gray-500">
-                            Balance: {swapDirection === "USDC_TO_ETH" ? tokens.USDC.balance : tokens.ETH.balance} {swapDirection === "USDC_TO_ETH" ? "USDC" : "ETH"}
+                            Balance: {swapDirection === "USDC_TO_ETH" ? tokens.USDC.balance.toFixed(2) : tokens.ETH.balance.toFixed(6)} {swapDirection === "USDC_TO_ETH" ? "USDC" : "ETH"}
                           </p>
                         </div>
 
@@ -295,7 +358,7 @@ export default function DexAmm() {
 
                         <Button
                           onClick={handleSwap}
-                          className="w-full bg-blue-600 hover:bg-blue-700"
+                          className="w-full bg-blue-600 hover:bg-blue-700 transform hover:scale-105 transition-all duration-300"
                           disabled={!inputAmount || parseFloat(inputAmount) <= 0}
                         >
                           Swap
