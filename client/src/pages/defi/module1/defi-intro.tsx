@@ -68,7 +68,6 @@ export default function DefiIntro() {
       setScore(prev => prev + 1);
     }
 
-    // Wait for user to see the explanation before moving to next question
     setTimeout(() => {
       if (currentQuestion < quizQuestions.length - 1) {
         setCurrentQuestion(prev => prev + 1);
@@ -137,6 +136,70 @@ export default function DefiIntro() {
                     DeFi applications (dApps) enable users to lend, borrow, trade, and invest without traditional intermediaries. This not only reduces costs and increases efficiency but also opens up financial services to anyone with an internet connection, regardless of their location or economic status.
                   </p>
 
+                  {/* Comparison Diagram */}
+                  <div className="grid md:grid-cols-2 gap-8 mb-12 bg-gray-50 p-6 rounded-lg">
+                    <motion.div
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5 }}
+                      className="bg-white p-6 rounded-lg shadow-md"
+                    >
+                      <h3 className="text-xl font-semibold text-red-600 mb-4 flex items-center gap-2">
+                        <Building2 className="h-6 w-6" />
+                        Traditional Finance
+                      </h3>
+                      <ul className="space-y-3 text-gray-700">
+                        <li className="flex items-start gap-2">
+                          <X className="h-5 w-5 text-red-500 mt-1" />
+                          Requires intermediaries
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <X className="h-5 w-5 text-red-500 mt-1" />
+                          Limited access hours
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <X className="h-5 w-5 text-red-500 mt-1" />
+                          High fees
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <X className="h-5 w-5 text-red-500 mt-1" />
+                          Geographic restrictions
+                        </li>
+                      </ul>
+                    </motion.div>
+
+                    <motion.div
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: 0.2 }}
+                      className="bg-white p-6 rounded-lg shadow-md"
+                    >
+                      <h3 className="text-xl font-semibold text-green-600 mb-4 flex items-center gap-2">
+                        <Globe className="h-6 w-6" />
+                        DeFi
+                      </h3>
+                      <ul className="space-y-3 text-gray-700">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="h-5 w-5 text-green-500 mt-1" />
+                          Trustless & automated
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="h-5 w-5 text-green-500 mt-1" />
+                          24/7 availability
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="h-5 w-5 text-green-500 mt-1" />
+                          Lower costs
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle2 className="h-5 w-5 text-green-500 mt-1" />
+                          Global access
+                        </li>
+                      </ul>
+                    </motion.div>
+                  </div>
+
+                  {/* Interactive Feature Cards */}
                   <div className="grid md:grid-cols-2 gap-6 mb-8">
                     {features.map((feature, index) => (
                       <motion.div
@@ -144,7 +207,7 @@ export default function DefiIntro() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: index * 0.1 }}
-                        className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-shadow"
+                        className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
                       >
                         <feature.icon className="h-8 w-8 text-blue-500 mb-4" />
                         <h3 className="text-lg font-semibold text-blue-700 mb-2">{feature.title}</h3>
@@ -153,6 +216,43 @@ export default function DefiIntro() {
                     ))}
                   </div>
 
+                  {/* DeFi Ecosystem Visualization */}
+                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-8 rounded-lg mb-8">
+                    <h3 className="text-xl font-semibold text-blue-800 mb-6 text-center">
+                      The DeFi Ecosystem
+                    </h3>
+                    <div className="grid grid-cols-3 gap-4 text-center">
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5 }}
+                        className="bg-white p-4 rounded-lg shadow-sm"
+                      >
+                        <h4 className="font-semibold text-blue-700 mb-2">Lending & Borrowing</h4>
+                        <p className="text-sm text-gray-600">Earn interest or get loans without banks</p>
+                      </motion.div>
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                        className="bg-white p-4 rounded-lg shadow-sm"
+                      >
+                        <h4 className="font-semibold text-blue-700 mb-2">Decentralized Exchange</h4>
+                        <p className="text-sm text-gray-600">Trade assets without intermediaries</p>
+                      </motion.div>
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                        className="bg-white p-4 rounded-lg shadow-sm"
+                      >
+                        <h4 className="font-semibold text-blue-700 mb-2">Yield Farming</h4>
+                        <p className="text-sm text-gray-600">Optimize returns across protocols</p>
+                      </motion.div>
+                    </div>
+                  </div>
+
+                  {/* Key Advantages Section */}
                   <div className="bg-blue-50 p-6 rounded-lg mb-8">
                     <h3 className="text-xl font-semibold text-blue-800 mb-4">The DeFi Advantage</h3>
                     <ul className="space-y-3">
@@ -196,7 +296,7 @@ export default function DefiIntro() {
                           <p className="text-sm text-gray-500">Question {currentQuestion + 1} of {quizQuestions.length}</p>
                           <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
                             <div
-                              className="bg-blue-600 h-2 rounded-full"
+                              className="bg-blue-600 h-2 rounded-full transition-all duration-300"
                               style={{ width: `${((currentQuestion + 1) / quizQuestions.length) * 100}%` }}
                             />
                           </div>
@@ -208,7 +308,7 @@ export default function DefiIntro() {
                           {quizQuestions[currentQuestion].options.map((option, index) => {
                             const isSelected = selectedAnswer === index;
                             const isCorrect = index === quizQuestions[currentQuestion].correctAnswer;
-                            let buttonStyle = "w-full justify-start text-left";
+                            let buttonStyle = "w-full justify-start text-left transition-all duration-300";
 
                             if (isSelected) {
                               buttonStyle += isCorrect 
@@ -237,11 +337,16 @@ export default function DefiIntro() {
                           })}
                         </div>
                         {showExplanation && (
-                          <div className={`mt-4 p-4 rounded-lg ${
-                            selectedAnswer === quizQuestions[currentQuestion].correctAnswer
-                              ? "bg-green-50 border border-green-200"
-                              : "bg-red-50 border border-red-200"
-                          }`}>
+                          <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className={`mt-4 p-4 rounded-lg ${
+                              selectedAnswer === quizQuestions[currentQuestion].correctAnswer
+                                ? "bg-green-50 border border-green-200"
+                                : "bg-red-50 border border-red-200"
+                            }`}
+                          >
                             <p className={`text-sm ${
                               selectedAnswer === quizQuestions[currentQuestion].correctAnswer
                                 ? "text-green-800"
@@ -249,11 +354,16 @@ export default function DefiIntro() {
                             }`}>
                               {quizQuestions[currentQuestion].explanation}
                             </p>
-                          </div>
+                          </motion.div>
                         )}
                       </div>
                     ) : (
-                      <div className="text-center">
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5 }}
+                        className="text-center"
+                      >
                         <CheckCircle2 className="h-12 w-12 text-green-500 mx-auto mb-4" />
                         <h3 className="text-xl font-semibold text-gray-800 mb-2">
                           Quiz Completed!
@@ -274,7 +384,7 @@ export default function DefiIntro() {
                         >
                           Retake Quiz
                         </Button>
-                      </div>
+                      </motion.div>
                     )}
                   </section>
                 )}
