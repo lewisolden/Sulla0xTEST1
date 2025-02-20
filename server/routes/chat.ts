@@ -83,45 +83,51 @@ router.post("/api/chat", async (req, res) => {
     const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
 
     try {
+      const requestBody = {
+        model: 'llama-2-70b-chat',
+        messages: [
+          {
+            role: 'system',
+            content: 'You are a helpful assistant.'
+          },
+          {
+            role: 'user',
+            content: message
+          }
+        ],
+        temperature: 0.7,
+        max_tokens: 150,
+        top_p: 0.9,
+      };
+
+      console.log('[Chat] Request payload:', JSON.stringify(requestBody));
+
       const response = await fetch('https://api.perplexity.ai/chat/completions', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          model: 'llama-3.1-sonar-small-128k-online',
-          messages: [
-            {
-              role: 'system',
-              content: 'You are a helpful assistant.'
-            },
-            {
-              role: 'user',
-              content: message
-            }
-          ],
-          temperature: 0.7,
-          max_tokens: 150,
-          top_p: 0.9,
-        }),
+        body: JSON.stringify(requestBody),
         signal: controller.signal
       });
 
       clearTimeout(timeoutId);
 
+      const responseText = await response.text();
+      console.log('[Chat] Raw API response:', responseText);
+
       if (!response.ok) {
-        const errorText = await response.text();
         console.error('[Chat] Perplexity API error:', {
           status: response.status,
           statusText: response.statusText,
-          error: errorText
+          body: responseText
         });
         throw new Error(`API request failed: ${response.status} ${response.statusText}`);
       }
 
-      const data = await response.json();
-      console.log('[Chat] Received response from Perplexity API');
+      const data = JSON.parse(responseText);
+      console.log('[Chat] Parsed API response:', data);
 
       res.json({ 
         response: data.choices[0].message.content,
