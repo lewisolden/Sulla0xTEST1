@@ -44,7 +44,7 @@ export default function AIModule1() {
   ];
 
   // Filter progress for AI module 1
-  const moduleProgress = progress.filter(p => p.moduleId === 'ai-module1');
+  const moduleProgress = progress.filter(p => p.moduleId.toString() === 'ai-module1');
   const completedSections = moduleProgress.filter(p => p.completed).length;
   const totalSections = sections.length;
   const progressPercentage = (completedSections / totalSections) * 100;

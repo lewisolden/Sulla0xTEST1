@@ -44,7 +44,7 @@ export default function AIModule2() {
   ];
 
   // Filter progress for AI module 2
-  const moduleProgress = progress.filter(p => p.moduleId === 'ai-module2');
+  const moduleProgress = progress.filter(p => p.moduleId.toString() === 'ai-module2');
   const completedSections = moduleProgress.filter(p => p.completed).length;
   const totalSections = sections.length;
   const progressPercentage = (completedSections / totalSections) * 100;
@@ -205,7 +205,7 @@ export default function AIModule2() {
 
                   return (
                     <Link key={section.id} href={section.href}>
-                      <Card 
+                      <Card
                         className="transition-all duration-300 hover:shadow-md cursor-pointer"
                       >
                         <CardContent className="p-6">
