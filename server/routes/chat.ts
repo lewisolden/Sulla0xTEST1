@@ -69,54 +69,53 @@ router.post("/api/chat", async (req, res) => {
       throw new Error('API key configuration error');
     }
 
-    console.log('[Chat] Testing Perplexity API connection');
-    // First make a simple test request
-    const testResponse = await fetch('https://api.perplexity.ai/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${process.env.PERPLEXITY_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'llama-3.1-sonar-small-128k-online',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are a helpful assistant.'
-          },
-          {
-            role: 'user',
-            content: 'Test connection'
-          }
-        ],
-        temperature: 0.7,
-        max_tokens: 50
-      })
-    });
-
-    if (!testResponse.ok) {
-      const errorText = await testResponse.text();
-      console.error('[Chat] Perplexity API test failed:', {
-        status: testResponse.status,
-        statusText: testResponse.statusText,
-        error: errorText
-      });
-      throw new Error(`API connection test failed: ${testResponse.status}`);
+    // Validate API key format
+    const apiKey = process.env.PERPLEXITY_API_KEY.trim();
+    const keyMatch = apiKey.match(/^pplx-[a-zA-Z0-9]{48}$/);
+    if (!keyMatch) {
+      console.error('[Chat] Invalid API key format:', apiKey.slice(0, 7) + '...');
+      throw new Error('API key format error');
     }
 
-    console.log('[Chat] API test successful, sending actual request');
-    const response = await fetch('https://api.perplexity.ai/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${process.env.PERPLEXITY_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'llama-3.1-sonar-small-128k-online',
-        messages: [
-          {
-            role: 'system',
-            content: `You are Sensei, Sulla's friendly AI learning companion. Your role is to provide clear, concise guidance while maintaining a warm and encouraging tone. You're an expert in blockchain and AI, focusing exclusively on Sulla's curriculum.
+    // Test network connectivity
+    console.log('[Chat] Testing network connectivity to Perplexity API');
+    try {
+      const pingResponse = await fetch('https://api.perplexity.ai/health', {
+        method: 'GET',
+        signal: AbortSignal.timeout(5000) // 5 second timeout
+      });
+
+      if (!pingResponse.ok) {
+        console.error('[Chat] API health check failed:', {
+          status: pingResponse.status,
+          statusText: pingResponse.statusText
+        });
+        throw new Error('API health check failed');
+      }
+      console.log('[Chat] API health check successful');
+    } catch (networkError) {
+      console.error('[Chat] Network connectivity test failed:', networkError);
+      throw new Error('API network connectivity error');
+    }
+
+    // Make the actual API request with a longer timeout
+    console.log('[Chat] Sending request to Perplexity API');
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
+    try {
+      const response = await fetch('https://api.perplexity.ai/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'llama-3.1-sonar-small-128k-online',
+          messages: [
+            {
+              role: 'system',
+              content: `You are Sensei, Sulla's friendly AI learning companion. Your role is to provide clear, concise guidance while maintaining a warm and encouraging tone. You're an expert in blockchain and AI, focusing exclusively on Sulla's curriculum.
 
 Key principles:
 - Be concise and clear - keep responses under 3-4 sentences when possible
@@ -138,47 +137,58 @@ When responding:
 ` : ''}
 
 Current context: ${context}`
-          },
-          {
-            role: 'user',
-            content: message
-          }
-        ],
-        temperature: 0.7,
-        max_tokens: 150,
-        top_p: 0.9,
-      })
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('[Chat] Perplexity API error:', errorText);
-      throw new Error(`API request failed: ${response.status} ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    console.log('[Chat] Received response from Perplexity API');
-    const aiResponse = data.choices[0].message.content;
-
-    // Extract any links from the response
-    const links = [];
-    const linkRegex = /\[LINK\](.*?)\|(.*?)\[\/LINK\]/g;
-    let match;
-    while ((match = linkRegex.exec(aiResponse)) !== null) {
-      links.push({
-        text: match[1],
-        url: match[2]
+            },
+            {
+              role: 'user',
+              content: message
+            }
+          ],
+          temperature: 0.7,
+          max_tokens: 150,
+          top_p: 0.9,
+        }),
+        signal: controller.signal
       });
+
+      clearTimeout(timeoutId);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('[Chat] Perplexity API error:', {
+          status: response.status,
+          statusText: response.statusText,
+          error: errorText
+        });
+        throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log('[Chat] Received response from Perplexity API');
+      const aiResponse = data.choices[0].message.content;
+
+      // Extract any links from the response
+      const links = [];
+      const linkRegex = /\[LINK\](.*?)\|(.*?)\[\/LINK\]/g;
+      let match;
+      while ((match = linkRegex.exec(aiResponse)) !== null) {
+        links.push({
+          text: match[1],
+          url: match[2]
+        });
+      }
+
+      // Clean up the response by removing the link tags
+      const cleanResponse = aiResponse.replace(linkRegex, '$1');
+
+      res.json({ 
+        response: cleanResponse,
+        links: links,
+        userProgress: userProgress 
+      });
+    } catch (apiError) {
+      console.error('[Chat] API request error:', apiError);
+      throw apiError;
     }
-
-    // Clean up the response by removing the link tags
-    const cleanResponse = aiResponse.replace(linkRegex, '$1');
-
-    res.json({ 
-      response: cleanResponse,
-      links: links,
-      userProgress: userProgress 
-    });
   } catch (error) {
     console.error('[Chat] Error:', error);
     if (error instanceof z.ZodError) {
@@ -195,8 +205,12 @@ Current context: ${context}`
         errorMessage = 'The chat service is currently unavailable. Please try again later.';
       } else if (error.message.includes('API request failed')) {
         errorMessage = 'I\'m having trouble connecting to my knowledge base. Please try again in a moment.';
-      } else if (error.message.includes('API connection test failed')) {
-        errorMessage = 'I\'m currently unable to connect to the knowledge base. Please try again later.';
+      } else if (error.message.includes('API network connectivity error')) {
+        errorMessage = 'I\'m currently having network connectivity issues. Please try again in a few minutes.';
+      } else if (error.message.includes('API health check failed')) {
+        errorMessage = 'The chat service is experiencing technical difficulties. Please try again later.';
+      } else if (error.message.includes('API key format')) {
+        errorMessage = 'Invalid API key format. Please check your configuration.';
       }
     }
 
