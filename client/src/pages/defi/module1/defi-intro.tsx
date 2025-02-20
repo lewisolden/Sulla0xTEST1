@@ -280,7 +280,7 @@ export default function DefiIntro() {
                   <div className="mt-8 text-center">
                     <Button
                       onClick={() => setShowQuiz(true)}
-                      className="bg-blue-600 hover:bg-blue-700"
+                      className="bg-blue-600 hover:bg-blue-700 transform hover:scale-105 transition-all duration-300"
                     >
                       Take Topic Quiz
                     </Button>
@@ -292,68 +292,115 @@ export default function DefiIntro() {
                     </h2>
                     {!quizCompleted ? (
                       <div>
-                        <div className="mb-4">
-                          <p className="text-sm text-gray-500">Question {currentQuestion + 1} of {quizQuestions.length}</p>
-                          <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-                            <div
-                              className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                              style={{ width: `${((currentQuestion + 1) / quizQuestions.length) * 100}%` }}
+                        <div className="mb-6">
+                          <div className="flex justify-between items-center mb-2">
+                            <p className="text-sm text-gray-500">Question {currentQuestion + 1} of {quizQuestions.length}</p>
+                            <p className="text-sm text-gray-500">Score: {score}/{currentQuestion + (selectedAnswer !== null ? 1 : 0)}</p>
+                          </div>
+                          <div className="w-full bg-gray-200 rounded-full h-2">
+                            <motion.div
+                              className="bg-blue-600 h-2 rounded-full"
+                              initial={{ width: `${((currentQuestion) / quizQuestions.length) * 100}%` }}
+                              animate={{ width: `${((currentQuestion + 1) / quizQuestions.length) * 100}%` }}
+                              transition={{ duration: 0.5 }}
                             />
                           </div>
                         </div>
-                        <h3 className="text-lg font-medium text-gray-800 mb-4">
-                          {quizQuestions[currentQuestion].question}
-                        </h3>
-                        <div className="space-y-3">
-                          {quizQuestions[currentQuestion].options.map((option, index) => {
-                            const isSelected = selectedAnswer === index;
-                            const isCorrect = index === quizQuestions[currentQuestion].correctAnswer;
-                            let buttonStyle = "w-full justify-start text-left transition-all duration-300";
 
-                            if (isSelected) {
-                              buttonStyle += isCorrect 
-                                ? " bg-green-50 border-green-500 text-green-700" 
-                                : " bg-red-50 border-red-500 text-red-700";
-                            }
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5 }}
+                          className="mb-6"
+                        >
+                          <h3 className="text-lg font-medium text-gray-800 mb-4">
+                            {quizQuestions[currentQuestion].question}
+                          </h3>
+                          <div className="space-y-3">
+                            {quizQuestions[currentQuestion].options.map((option, index) => {
+                              const isSelected = selectedAnswer === index;
+                              const isCorrect = index === quizQuestions[currentQuestion].correctAnswer;
+                              let buttonStyle = "w-full justify-start text-left transition-all duration-300";
 
-                            return (
-                              <Button
-                                key={index}
-                                onClick={() => !selectedAnswer && handleAnswer(index)}
-                                variant="outline"
-                                className={buttonStyle}
-                                disabled={selectedAnswer !== null}
-                              >
-                                <span className="flex items-center gap-2 w-full">
-                                  {option}
-                                  {isSelected && (
-                                    isCorrect 
-                                      ? <Check className="h-5 w-5 text-green-500 ml-auto" />
-                                      : <X className="h-5 w-5 text-red-500 ml-auto" />
-                                  )}
-                                </span>
-                              </Button>
-                            );
-                          })}
-                        </div>
+                              if (isSelected) {
+                                buttonStyle += isCorrect
+                                  ? " bg-green-50 border-green-500 text-green-700"
+                                  : " bg-red-50 border-red-500 text-red-700";
+                              }
+
+                              return (
+                                <motion.div
+                                  key={index}
+                                  initial={{ opacity: 0, x: -20 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                                >
+                                  <Button
+                                    onClick={() => !selectedAnswer && handleAnswer(index)}
+                                    variant="outline"
+                                    className={buttonStyle}
+                                    disabled={selectedAnswer !== null}
+                                  >
+                                    <span className="flex items-center gap-2 w-full">
+                                      {option}
+                                      {isSelected && (
+                                        <motion.span
+                                          initial={{ scale: 0 }}
+                                          animate={{ scale: 1 }}
+                                          transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                                          className="ml-auto"
+                                        >
+                                          {isCorrect
+                                            ? <Check className="h-5 w-5 text-green-500" />
+                                            : <X className="h-5 w-5 text-red-500" />
+                                          }
+                                        </motion.span>
+                                      )}
+                                    </span>
+                                  </Button>
+                                </motion.div>
+                              );
+                            })}
+                          </div>
+                        </motion.div>
+
                         {showExplanation && (
                           <motion.div
-                            initial={{ opacity: 0, y: 10 }}
+                            initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.3 }}
-                            className={`mt-4 p-4 rounded-lg ${
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                            className="space-y-4"
+                          >
+                            <motion.div
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                              className="flex justify-center"
+                            >
+                              <div
+                                className={`text-lg font-semibold px-4 py-2 rounded-full ${
+                                  selectedAnswer === quizQuestions[currentQuestion].correctAnswer
+                                    ? "bg-green-100 text-green-800"
+                                    : "bg-red-100 text-red-800"
+                                }`}
+                              >
+                                {selectedAnswer === quizQuestions[currentQuestion].correctAnswer ? "Correct!" : "Incorrect!"}
+                              </div>
+                            </motion.div>
+
+                            <div className={`p-4 rounded-lg ${
                               selectedAnswer === quizQuestions[currentQuestion].correctAnswer
                                 ? "bg-green-50 border border-green-200"
                                 : "bg-red-50 border border-red-200"
-                            }`}
-                          >
-                            <p className={`text-sm ${
-                              selectedAnswer === quizQuestions[currentQuestion].correctAnswer
-                                ? "text-green-800"
-                                : "text-red-800"
                             }`}>
-                              {quizQuestions[currentQuestion].explanation}
-                            </p>
+                              <p className={`text-sm ${
+                                selectedAnswer === quizQuestions[currentQuestion].correctAnswer
+                                  ? "text-green-800"
+                                  : "text-red-800"
+                              }`}>
+                                {quizQuestions[currentQuestion].explanation}
+                              </p>
+                            </div>
                           </motion.div>
                         )}
                       </div>
@@ -362,15 +409,30 @@ export default function DefiIntro() {
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.5 }}
-                        className="text-center"
+                        className="text-center space-y-6"
                       >
-                        <CheckCircle2 className="h-12 w-12 text-green-500 mx-auto mb-4" />
-                        <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                          Quiz Completed!
-                        </h3>
-                        <p className="text-gray-600 mb-4">
-                          You scored {score} out of {quizQuestions.length}
-                        </p>
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                        >
+                          <CheckCircle2 className="h-16 w-16 text-green-500 mx-auto" />
+                        </motion.div>
+
+                        <div>
+                          <h3 className="text-2xl font-semibold text-gray-800 mb-2">
+                            Quiz Completed!
+                          </h3>
+                          <p className="text-gray-600 text-lg mb-2">
+                            You scored {score} out of {quizQuestions.length}
+                          </p>
+                          <p className="text-gray-500">
+                            {score === quizQuestions.length
+                              ? "Perfect score! You've mastered this topic!"
+                              : "Keep learning and try again to improve your score!"}
+                          </p>
+                        </div>
+
                         <Button
                           onClick={() => {
                             setShowQuiz(false);
@@ -381,6 +443,7 @@ export default function DefiIntro() {
                             setShowExplanation(false);
                           }}
                           variant="outline"
+                          className="transform hover:scale-105 transition-all duration-300"
                         >
                           Retake Quiz
                         </Button>
