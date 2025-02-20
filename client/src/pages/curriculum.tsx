@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { Progress } from "@/components/ui/progress";
 import { useAuth } from "@/hooks/use-auth";
+import { useProgress } from "@/context/progress-context"; // Updated import path
 
 const subjects = [
   { id: "crypto", name: "Cryptocurrency & DeFi" },
@@ -44,29 +45,26 @@ const courses = [
       {
         id: 2,
         icon: GraduationCap,
-        title: "Module 2: Bitcoin Deep Dive",
-        description: "Deep dive into Bitcoin, investment strategies, and security considerations.",
+        title: "Module 2: What is a Blockchain?",
+        description: "Deep dive into blockchain technology, its structure, and fundamental principles.",
         sections: [
-          "Bitcoin Fundamentals",
-          "Bitcoin Investment",
-          "Security & Risk Management",
-          "Interactive Exercises",
-          "Module Quiz"
+          "Blockchain Basics",
+          "Distributed Ledger Technology",
+          "Consensus Mechanisms",
+          "Smart Contracts"
         ],
         path: "/modules/module2"
       },
       {
         id: 3,
         icon: Zap,
-        title: "Module 3: Ethereum & Smart Contracts",
-        description: "Explore Ethereum, smart contracts, and their practical applications.",
+        title: "Module 3: Blockchain Technology",
+        description: "Advanced exploration of blockchain development, applications, and future trends.",
         sections: [
-          "Ethereum Fundamentals",
-          "Smart Contracts",
-          "Investment Value",
-          "Security Risks",
-          "Interactive Exercises",
-          "Module Quiz"
+          "Blockchain Scalability and Interoperability",
+          "Types of Blockchains",
+          "Blockchain Development Platforms",
+          "Advanced Blockchain Concepts"
         ],
         path: "/modules/module3"
       }
@@ -83,7 +81,7 @@ const courses = [
       {
         id: 1,
         icon: Brain,
-        title: "Module 1: Foundations of AI",
+        title: "Module 1: AI Fundamentals",
         description: "Learn the fundamental concepts of AI, machine learning, and neural networks.",
         sections: [
           "Topic 1.1 - Introduction to Artificial Intelligence",
@@ -210,18 +208,30 @@ const simulators = [
   }
 ];
 
-const getLastAccessedRoute = (courseId: number): { lastQuizPath?: string; lastCompletedPath?: string } => {
-  // This is a placeholder.  You'll need to fetch this data from your backend.
-  //  Replace this with actual logic to retrieve the last accessed path from your database or state management.
-
-  if (courseId === 1) {
-    return { lastQuizPath: '/modules/module2' }; // Example for Course 1
-  } else if (courseId === 3) {
-    return { lastCompletedPath: '/defi/module2' }; //Example for Course 3
+const handleContinueLearning = (course: any) => {
+  if (!user) {
+    toast({
+      title: "Authentication Required",
+      description: "Please log in or register to continue learning.",
+      variant: "destructive",
+    });
+    setLocation("/login");
+    return;
   }
-  return {};
-};
 
+  const { progress } = useProgress();
+  const courseProgress = progress.filter(p => p.courseId === course.id);
+  const lastProgress = courseProgress.length > 0 ? courseProgress[courseProgress.length - 1] : null;
+
+  // Handle different course types
+  if (course.id === 1) { // Introduction to Cryptocurrency
+    setLocation(lastProgress?.lastQuizPath || "/modules/module1");
+  } else if (course.id === 2) { // Introduction to AI
+    setLocation(lastProgress?.lastQuizPath || "/ai/module1");
+  } else if (course.id === 3) { // Mastering DeFi
+    setLocation(lastProgress?.lastCompletedPath || "/defi/module1");
+  }
+};
 
 export default function Curriculum() {
   useScrollTop();
@@ -333,30 +343,6 @@ export default function Curriculum() {
     const courseIdNumber = Number(currentCourse.id);
     console.log('Enrolling in course:', courseIdNumber);
     enrollMutation.mutate(courseIdNumber);
-  };
-
-  const handleContinueLearning = (course: any) => {
-    if (!user) {
-      toast({
-        title: "Authentication Required",
-        description: "Please log in or register to continue learning.",
-        variant: "destructive",
-      });
-      setLocation("/login");
-      return;
-    }
-
-    const { lastQuizPath, lastCompletedPath } = getLastAccessedRoute(course.id);
-
-    if (course.subject === "crypto" && course.id === 1) {
-      setLocation(lastQuizPath || course.defaultPath);
-    } else if (course.subject === "ai") {
-      setLocation(lastQuizPath || course.defaultPath);
-    } else if (course.subject === "crypto" && course.id === 3) {
-      setLocation(lastCompletedPath || course.defaultPath);
-    } else {
-      setLocation(course.defaultPath);
-    }
   };
 
 
