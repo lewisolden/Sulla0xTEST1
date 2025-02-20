@@ -4,10 +4,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, ArrowRight, Wallet, Building2, Lock, Globe, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Wallet, Building2, Lock, Globe, CheckCircle2, X, Check } from "lucide-react";
 import { motion } from "framer-motion";
 
-// Quiz questions
+// Quiz questions with explanations
 const quizQuestions = [
   {
     question: "What is the primary difference between DeFi and traditional finance?",
@@ -17,7 +17,8 @@ const quizQuestions = [
       "DeFi is faster than traditional finance",
       "DeFi is more expensive to use"
     ],
-    correctAnswer: 0
+    correctAnswer: 0,
+    explanation: "DeFi's key innovation is its ability to provide financial services without centralized intermediaries like banks. This is achieved through smart contracts and blockchain technology, enabling trustless transactions and automated financial services."
   },
   {
     question: "Which of the following is NOT a key feature of DeFi?",
@@ -27,7 +28,8 @@ const quizQuestions = [
       "Smart contract automation",
       "Transparent transactions"
     ],
-    correctAnswer: 1
+    correctAnswer: 1,
+    explanation: "Centralized control goes against the fundamental principles of DeFi, which emphasizes decentralization and removes the need for central authorities. All other options are core features that make DeFi revolutionary."
   },
   {
     question: "What enables trustless execution in DeFi applications?",
@@ -37,7 +39,8 @@ const quizQuestions = [
       "Smart contracts",
       "Human intermediaries"
     ],
-    correctAnswer: 2
+    correctAnswer: 2,
+    explanation: "Smart contracts are self-executing contracts with the terms directly written into code. They automatically enforce agreements without requiring trust in intermediaries, making them the foundation of trustless execution in DeFi."
   }
 ];
 
@@ -49,6 +52,8 @@ export default function DefiIntro() {
   const [showQuiz, setShowQuiz] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [score, setScore] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+  const [showExplanation, setShowExplanation] = useState(false);
 
   const handleComplete = async () => {
     await updateProgress(3, "defi-intro", true, 3);
@@ -56,37 +61,45 @@ export default function DefiIntro() {
   };
 
   const handleAnswer = (selectedOption: number) => {
+    setSelectedAnswer(selectedOption);
+    setShowExplanation(true);
+
     if (selectedOption === quizQuestions[currentQuestion].correctAnswer) {
       setScore(prev => prev + 1);
     }
 
-    if (currentQuestion < quizQuestions.length - 1) {
-      setCurrentQuestion(prev => prev + 1);
-    } else {
-      setQuizCompleted(true);
-    }
+    // Wait for user to see the explanation before moving to next question
+    setTimeout(() => {
+      if (currentQuestion < quizQuestions.length - 1) {
+        setCurrentQuestion(prev => prev + 1);
+        setSelectedAnswer(null);
+        setShowExplanation(false);
+      } else {
+        setQuizCompleted(true);
+      }
+    }, 3000);
   };
 
   const features = [
     {
       icon: Globe,
       title: "Permissionless Access",
-      description: "Anyone with an internet connection can access DeFi services without traditional barriers"
+      description: "Anyone with an internet connection can access DeFi services without traditional barriers. No bank accounts, credit checks, or identity verification required."
     },
     {
       icon: Lock,
       title: "Trustless Operations",
-      description: "Smart contracts automatically enforce rules without requiring trust in intermediaries"
+      description: "Smart contracts automatically enforce rules without requiring trust in intermediaries. All transactions are verifiable on the blockchain."
     },
     {
       icon: Building2,
       title: "Financial Innovation",
-      description: "New financial instruments and services that weren't possible in traditional finance"
+      description: "Novel financial instruments like flash loans, yield farming, and liquidity mining enable new ways of generating returns and managing assets."
     },
     {
       icon: Wallet,
       title: "Asset Control",
-      description: "Users maintain full control of their assets without relying on custodial services"
+      description: "Users maintain full custody of their assets with private keys, eliminating counterparty risk and the need for traditional custodians."
     }
   ];
 
@@ -118,7 +131,10 @@ export default function DefiIntro() {
                     What is DeFi?
                   </h2>
                   <p className="text-gray-700 mb-6">
-                    Decentralized Finance (DeFi) represents a fundamental shift in how financial services are delivered and accessed. Unlike traditional financial systems that rely on centralized intermediaries like banks and brokerages, DeFi leverages blockchain technology and smart contracts to provide financial services in a trustless, transparent, and permissionless manner.
+                    Decentralized Finance (DeFi) represents a revolutionary shift in how financial services are delivered and accessed. Unlike traditional financial systems that rely on centralized intermediaries like banks and brokerages, DeFi leverages blockchain technology and smart contracts to provide financial services in a trustless, transparent, and permissionless manner.
+                  </p>
+                  <p className="text-gray-700 mb-6">
+                    DeFi applications (dApps) enable users to lend, borrow, trade, and invest without traditional intermediaries. This not only reduces costs and increases efficiency but also opens up financial services to anyone with an internet connection, regardless of their location or economic status.
                   </p>
 
                   <div className="grid md:grid-cols-2 gap-6 mb-8">
@@ -135,6 +151,28 @@ export default function DefiIntro() {
                         <p className="text-gray-600">{feature.description}</p>
                       </motion.div>
                     ))}
+                  </div>
+
+                  <div className="bg-blue-50 p-6 rounded-lg mb-8">
+                    <h3 className="text-xl font-semibold text-blue-800 mb-4">The DeFi Advantage</h3>
+                    <ul className="space-y-3">
+                      <li className="flex items-start gap-3">
+                        <CheckCircle2 className="h-6 w-6 text-green-500 mt-1" />
+                        <span className="text-gray-700">24/7 market access with no trading hours or holidays</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <CheckCircle2 className="h-6 w-6 text-green-500 mt-1" />
+                        <span className="text-gray-700">Lower fees due to automated processes and reduced overhead</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <CheckCircle2 className="h-6 w-6 text-green-500 mt-1" />
+                        <span className="text-gray-700">Instant settlement of trades and transactions</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <CheckCircle2 className="h-6 w-6 text-green-500 mt-1" />
+                        <span className="text-gray-700">Full transparency with all transactions visible on the blockchain</span>
+                      </li>
+                    </ul>
                   </div>
                 </section>
 
@@ -167,17 +205,52 @@ export default function DefiIntro() {
                           {quizQuestions[currentQuestion].question}
                         </h3>
                         <div className="space-y-3">
-                          {quizQuestions[currentQuestion].options.map((option, index) => (
-                            <Button
-                              key={index}
-                              onClick={() => handleAnswer(index)}
-                              variant="outline"
-                              className="w-full justify-start text-left"
-                            >
-                              {option}
-                            </Button>
-                          ))}
+                          {quizQuestions[currentQuestion].options.map((option, index) => {
+                            const isSelected = selectedAnswer === index;
+                            const isCorrect = index === quizQuestions[currentQuestion].correctAnswer;
+                            let buttonStyle = "w-full justify-start text-left";
+
+                            if (isSelected) {
+                              buttonStyle += isCorrect 
+                                ? " bg-green-50 border-green-500 text-green-700" 
+                                : " bg-red-50 border-red-500 text-red-700";
+                            }
+
+                            return (
+                              <Button
+                                key={index}
+                                onClick={() => !selectedAnswer && handleAnswer(index)}
+                                variant="outline"
+                                className={buttonStyle}
+                                disabled={selectedAnswer !== null}
+                              >
+                                <span className="flex items-center gap-2 w-full">
+                                  {option}
+                                  {isSelected && (
+                                    isCorrect 
+                                      ? <Check className="h-5 w-5 text-green-500 ml-auto" />
+                                      : <X className="h-5 w-5 text-red-500 ml-auto" />
+                                  )}
+                                </span>
+                              </Button>
+                            );
+                          })}
                         </div>
+                        {showExplanation && (
+                          <div className={`mt-4 p-4 rounded-lg ${
+                            selectedAnswer === quizQuestions[currentQuestion].correctAnswer
+                              ? "bg-green-50 border border-green-200"
+                              : "bg-red-50 border border-red-200"
+                          }`}>
+                            <p className={`text-sm ${
+                              selectedAnswer === quizQuestions[currentQuestion].correctAnswer
+                                ? "text-green-800"
+                                : "text-red-800"
+                            }`}>
+                              {quizQuestions[currentQuestion].explanation}
+                            </p>
+                          </div>
+                        )}
                       </div>
                     ) : (
                       <div className="text-center">
@@ -194,6 +267,8 @@ export default function DefiIntro() {
                             setCurrentQuestion(0);
                             setScore(0);
                             setQuizCompleted(false);
+                            setSelectedAnswer(null);
+                            setShowExplanation(false);
                           }}
                           variant="outline"
                         >
