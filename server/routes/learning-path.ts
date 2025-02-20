@@ -5,6 +5,13 @@ import { sql, eq, and, desc } from "drizzle-orm";
 
 const router = Router();
 
+// Map course IDs to their proper titles
+const COURSE_TITLES = {
+  1: "Introduction to Cryptocurrency",
+  2: "Introduction to AI",
+  3: "Mastering DeFi"
+};
+
 // Route to get learning path progress
 router.get("/api/learning-path", async (req, res) => {
   try {
@@ -25,17 +32,20 @@ router.get("/api/learning-path", async (req, res) => {
       orderBy: [desc(moduleProgress.lastAccessed)],
     });
 
-    // Calculate total time spent
-    const [totalTimeResult] = await db
+    // Calculate total time spent per course
+    const courseTimeStats = await db
       .select({ 
-        total: sql<number>`COALESCE(SUM(CASE 
+        courseId: moduleProgress.courseId,
+        totalTime: sql<number>`COALESCE(SUM(CASE 
           WHEN ${moduleProgress.timeSpent} IS NULL THEN 5 
           WHEN ${moduleProgress.timeSpent} = 0 THEN 5 
           ELSE ${moduleProgress.timeSpent} 
-        END), 0)::integer`
+        END), 0)::integer`,
+        completedQuizzes: sql<number>`COUNT(CASE WHEN ${moduleProgress.score} IS NOT NULL THEN 1 END)::integer`
       })
       .from(moduleProgress)
-      .where(eq(moduleProgress.userId, userId));
+      .where(eq(moduleProgress.userId, userId))
+      .groupBy(moduleProgress.courseId);
 
     // Get recommendations based on progress
     const lastModule = moduleProgressData[0];
@@ -46,36 +56,51 @@ router.get("/api/learning-path", async (req, res) => {
     };
 
     if (lastModule) {
-      // Customize recommendations based on last accessed module
-      const moduleId = lastModule.moduleId;
-      const completedSections = moduleProgressData.filter(mp => mp.completed).length;
+      const courseId = lastModule.courseId;
+      const completedSections = moduleProgressData.filter(mp => mp.completed && mp.courseId === courseId).length;
 
-      if (moduleId === 1 && completedSections >= 3) {
-        recommendations = {
-          nextTopic: "module2/bitcoin-fundamentals",
-          reason: "You've completed the basics. Time to dive deeper into Bitcoin!",
-          suggestedResources: ["Bitcoin Technical Analysis", "Understanding Blockchain"]
-        };
-      } else if (moduleId === 2 && completedSections >= 6) {
-        recommendations = {
-          nextTopic: "module3/ethereum-fundamentals",
-          reason: "Ready to explore Ethereum and Smart Contracts",
-          suggestedResources: ["Ethereum Basics", "Smart Contract Development"]
-        };
+      // Set recommendations based on course progress
+      if (courseId === 1) { // Crypto course
+        if (completedSections >= 3) {
+          recommendations = {
+            nextTopic: "module2/bitcoin-fundamentals",
+            reason: "You've completed the basics. Time to dive deeper into Bitcoin!",
+            suggestedResources: ["Bitcoin Technical Analysis", "Understanding Blockchain"]
+          };
+        }
+      } else if (courseId === 2) { // AI course
+        if (completedSections >= 3) {
+          recommendations = {
+            nextTopic: "ai/module2",
+            reason: "Ready to explore advanced AI concepts",
+            suggestedResources: ["Machine Learning Basics", "Neural Networks"]
+          };
+        }
+      } else if (courseId === 3) { // DeFi course
+        if (completedSections >= 3) {
+          recommendations = {
+            nextTopic: "defi/module2",
+            reason: "Time to explore advanced DeFi concepts",
+            suggestedResources: ["DeFi Protocols", "Yield Farming"]
+          };
+        }
       }
     }
 
-    const userStats = {
-      completedTopics: moduleProgressData.filter(mp => mp.completed).length,
-      averageQuizScore: moduleProgressData.reduce((acc, curr) => {
-        return curr.score ? acc + curr.score : acc;
-      }, 0) / moduleProgressData.filter(mp => mp.score !== null).length || 0,
-      totalLearningTime: totalTimeResult.total
-    };
+    // Format course progress stats
+    const courseStats = courseTimeStats.map(stat => ({
+      courseId: stat.courseId,
+      title: COURSE_TITLES[stat.courseId as keyof typeof COURSE_TITLES],
+      totalLearningTime: stat.totalTime,
+      completedQuizzes: stat.completedQuizzes,
+      completedSections: moduleProgressData.filter(mp => 
+        mp.completed && mp.courseId === stat.courseId
+      ).length
+    }));
 
     res.json({
       recommendations,
-      userStats
+      courseStats
     });
 
   } catch (error) {

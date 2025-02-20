@@ -36,6 +36,21 @@ interface Enrollment {
   };
 }
 
+interface CourseStats {
+  courseId: number;
+  totalLearningTime: number;
+  completedQuizzes: number;
+}
+
+interface UserMetrics {
+  totalLearningMinutes: number;
+  completedQuizzes: number;
+  earnedBadges: number;
+  learningStreak: number;
+  courseStats: CourseStats[];
+}
+
+
 export default function AccountPage() {
   const { user, logoutMutation } = useAuth();
   const { progress, getLastAccessedRoute } = useProgress();
@@ -49,16 +64,20 @@ export default function AccountPage() {
   const { data: enrollments, isLoading: loadingEnrollments } = useQuery<Enrollment[]>({
     queryKey: ['enrollments'],
     queryFn: async () => {
-      const response = await fetch('/api/enrollments');
+      const response = await fetch('/api/enrollments', {
+        credentials: 'include' 
+      });
       if (!response.ok) throw new Error('Failed to fetch enrollments');
       return response.json();
     }
   });
 
-  const { data: metrics, isLoading: loadingMetrics } = useQuery({
+  const { data: metrics, isLoading: loadingMetrics } = useQuery<UserMetrics>({
     queryKey: ['user-metrics'],
     queryFn: async () => {
-      const response = await fetch('/api/user/metrics');
+      const response = await fetch('/api/user/metrics', {
+        credentials: 'include' 
+      });
       if (!response.ok) throw new Error('Failed to fetch user metrics');
       return response.json();
     }
@@ -70,17 +89,29 @@ export default function AccountPage() {
 
   const getContinueLearningPath = (enrollment: Enrollment) => {
     try {
-      // Check if this is an AI course - placed at the very beginning
-      if (enrollment.course.title.toLowerCase().includes('artificial intelligence') ||
-          enrollment.course.title.toLowerCase().includes('ai')) {
-        console.log('[Account] AI course detected, redirecting to /ai/module1');
+      const courseTitle = enrollment.course.title.toLowerCase();
+
+      // Handle AI course
+      if (courseTitle.includes('introduction to ai')) {
+        if (enrollment.metadata?.lastPath) {
+          return enrollment.metadata.lastPath;
+        }
         return '/ai/module1';
       }
 
-      // Only proceed with other path checks for non-AI courses
+      // Handle DeFi course
+      if (courseTitle.includes('mastering defi')) {
+        if (enrollment.metadata?.lastPath) {
+          return enrollment.metadata.lastPath;
+        }
+        return '/defi/module1';
+      }
+
+      // Default to Crypto course (Introduction to Cryptocurrency)
       if (enrollment.metadata?.lastPath) {
         return enrollment.metadata.lastPath;
       }
+      // If no last path, check for last module
       const moduleMatch = enrollment.metadata?.lastModule?.match(/Module (\d+)/i);
       if (moduleMatch) {
         return `/modules/module${moduleMatch[1]}`;
@@ -97,6 +128,10 @@ export default function AccountPage() {
     const remainingMinutes = minutes % 60;
     return `${hours}h ${remainingMinutes}m`;
   };
+
+  // Calculate total metrics across all courses
+  const totalLearningTime = metrics?.courseStats?.reduce((acc, stat) => acc + (stat.totalLearningTime || 0), 0) || 0;
+  const totalCompletedQuizzes = metrics?.courseStats?.reduce((acc, stat) => acc + (stat.completedQuizzes || 0), 0) || 0;
 
   const handleFeedbackSubmit = async () => {
     if (!feedbackText.trim()) {
@@ -209,7 +244,7 @@ export default function AccountPage() {
                     <div>
                       <p className="text-sm text-blue-600">Learning Time</p>
                       <p className="text-2xl font-bold text-blue-900">
-                        {loadingMetrics ? "..." : formatLearningTime(metrics?.totalLearningMinutes || 0)}
+                        {loadingMetrics ? "..." : formatLearningTime(totalLearningTime)}
                       </p>
                     </div>
                   </div>
@@ -225,7 +260,7 @@ export default function AccountPage() {
                     <div>
                       <p className="text-sm text-green-600">Completed Quizzes</p>
                       <p className="text-2xl font-bold text-green-900">
-                        {loadingMetrics ? "..." : metrics?.completedQuizzes || 0}
+                        {loadingMetrics ? "..." : totalCompletedQuizzes}
                       </p>
                     </div>
                   </div>
@@ -285,43 +320,57 @@ export default function AccountPage() {
                     </div>
                   ) : enrollments && enrollments.length > 0 ? (
                     <div className="grid gap-4 md:grid-cols-2">
-                      {enrollments.map((enrollment) => (
-                        <Card key={enrollment.id} className="bg-gradient-to-br from-blue-50 to-blue-100">
-                          <CardHeader>
-                            <CardTitle className="text-lg">{enrollment.course.title}</CardTitle>
-                          </CardHeader>
-                          <CardContent>
-                            <div className="space-y-4">
-                              <div>
-                                <div className="flex justify-between text-sm mb-2">
-                                  <span>Course Progress</span>
-                                  <span>{enrollment.progress}%</span>
+                      {enrollments.map((enrollment) => {
+                        const courseStats = metrics?.courseStats?.find(
+                          stat => stat.courseId === enrollment.courseId
+                        );
+
+                        return (
+                          <Card key={enrollment.id} className="bg-gradient-to-br from-blue-50 to-blue-100">
+                            <CardHeader>
+                              <CardTitle className="text-lg">{enrollment.course.title}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <div className="space-y-4">
+                                <div>
+                                  <div className="flex justify-between text-sm mb-2">
+                                    <span>Course Progress</span>
+                                    <span>{enrollment.progress}%</span>
+                                  </div>
+                                  <Progress value={enrollment.progress} />
                                 </div>
-                                <Progress value={enrollment.progress} />
-                              </div>
-                              <div className="space-y-2">
-                                <p className="text-sm text-gray-600">
-                                  Status: {enrollment.status.charAt(0).toUpperCase() + enrollment.status.slice(1)}
-                                </p>
-                                <p className="text-sm text-gray-600">
-                                  Enrolled: {new Date(enrollment.enrolledAt).toLocaleDateString()}
-                                </p>
-                                {enrollment.metadata?.lastModule && (
+                                <div className="space-y-2">
                                   <p className="text-sm text-gray-600">
-                                    Last Activity: {enrollment.metadata.lastModule}
-                                    {enrollment.metadata.lastTopic && ` - ${enrollment.metadata.lastTopic}`}
+                                    Status: {enrollment.status.charAt(0).toUpperCase() + enrollment.status.slice(1)}
                                   </p>
-                                )}
+                                  <p className="text-sm text-gray-600">
+                                    Enrolled: {new Date(enrollment.enrolledAt).toLocaleDateString()}
+                                  </p>
+                                  {courseStats && (
+                                    <div className="grid grid-cols-2 gap-4 mt-4">
+                                      <div className="bg-blue-50 p-3 rounded-lg">
+                                        <p className="text-sm text-blue-600">Learning Time</p>
+                                        <p className="font-semibold">
+                                          {formatLearningTime(courseStats.totalLearningTime)}
+                                        </p>
+                                      </div>
+                                      <div className="bg-green-50 p-3 rounded-lg">
+                                        <p className="text-sm text-green-600">Completed Quizzes</p>
+                                        <p className="font-semibold">{courseStats.completedQuizzes}</p>
+                                      </div>
+                                    </div>
+                                  )}
+                                </div>
+                                <Button className="w-full" asChild>
+                                  <Link href={getContinueLearningPath(enrollment)}>
+                                    Continue Learning <ArrowRight className="ml-2 h-4 w-4" />
+                                  </Link>
+                                </Button>
                               </div>
-                              <Button className="w-full" asChild>
-                                <Link href={getContinueLearningPath(enrollment)}>
-                                  Continue Learning <ArrowRight className="ml-2 h-4 w-4" />
-                                </Link>
-                              </Button>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
+                            </CardContent>
+                          </Card>
+                        );
+                      })}
                     </div>
                   ) : (
                     <div className="text-center p-4">
@@ -335,7 +384,7 @@ export default function AccountPage() {
               </CardContent>
             </Card>
 
-            <div className="grid md:grid-cols-3 gap-4"> {/* Changed to md:grid-cols-3 */}
+            <div className="grid md:grid-cols-3 gap-4">
               <Card>
                 <CardContent className="pt-6">
                   <Link href="/curriculum">
@@ -385,55 +434,56 @@ export default function AccountPage() {
                   </div>
                 ) : enrollments && enrollments.length > 0 ? (
                   <div className="grid gap-4">
-                    {enrollments.map((enrollment) => (
-                      <Card key={enrollment.id} className="bg-gradient-to-br from-blue-50 to-blue-100">
-                        <CardHeader>
-                          <CardTitle>{enrollment.course.title}</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="space-y-4">
-                            <div>
-                              <div className="flex justify-between text-sm mb-2">
-                                <span>Course Progress</span>
-                                <span>{enrollment.progress}%</span>
-                              </div>
-                              <Progress value={enrollment.progress} />
-                            </div>
-                            <div className="space-y-2">
-                              <p className="text-sm text-gray-600">
-                                Status: {enrollment.status.charAt(0).toUpperCase() + enrollment.status.slice(1)}
-                              </p>
-                              <p className="text-sm text-gray-600">
-                                Enrolled: {new Date(enrollment.enrolledAt).toLocaleDateString()}
-                              </p>
-                              {enrollment.metadata?.lastModule && (
-                                <p className="text-sm text-gray-600">
-                                  Last Activity: {enrollment.metadata.lastModule}
-                                  {enrollment.metadata.lastTopic && ` - ${enrollment.metadata.lastTopic}`}
-                                </p>
-                              )}
-                              {loadingMetrics ? null : (
-                                <div className="grid grid-cols-2 gap-4 mt-4">
-                                  <div className="bg-blue-50 p-3 rounded-lg">
-                                    <p className="text-sm text-blue-600">Quiz Score</p>
-                                    <p className="font-semibold">{metrics?.courseMetrics?.[enrollment.courseId]?.averageQuizScore || 0}%</p>
-                                  </div>
-                                  <div className="bg-green-50 p-3 rounded-lg">
-                                    <p className="text-sm text-green-600">Time Spent</p>
-                                    <p className="font-semibold">{formatLearningTime(metrics?.courseMetrics?.[enrollment.courseId]?.timeSpent || 0)}</p>
-                                  </div>
+                    {enrollments.map((enrollment) => {
+                      const courseStats = metrics?.courseStats?.find(
+                        stat => stat.courseId === enrollment.courseId
+                      );
+                      return (
+                        <Card key={enrollment.id} className="bg-gradient-to-br from-blue-50 to-blue-100">
+                          <CardHeader>
+                            <CardTitle>{enrollment.course.title}</CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="space-y-4">
+                              <div>
+                                <div className="flex justify-between text-sm mb-2">
+                                  <span>Course Progress</span>
+                                  <span>{enrollment.progress}%</span>
                                 </div>
-                              )}
+                                <Progress value={enrollment.progress} />
+                              </div>
+                              <div className="space-y-2">
+                                <p className="text-sm text-gray-600">
+                                  Status: {enrollment.status.charAt(0).toUpperCase() + enrollment.status.slice(1)}
+                                </p>
+                                <p className="text-sm text-gray-600">
+                                  Enrolled: {new Date(enrollment.enrolledAt).toLocaleDateString()}
+                                </p>
+                                {courseStats && (
+                                  <div className="grid grid-cols-2 gap-4 mt-4">
+                                    <div className="bg-blue-50 p-3 rounded-lg">
+                                      <p className="text-sm text-blue-600">Learning Time</p>
+                                      <p className="font-semibold">
+                                        {formatLearningTime(courseStats.totalLearningTime)}
+                                      </p>
+                                    </div>
+                                    <div className="bg-green-50 p-3 rounded-lg">
+                                      <p className="text-sm text-green-600">Completed Quizzes</p>
+                                      <p className="font-semibold">{courseStats.completedQuizzes}</p>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                              <Button className="w-full" asChild>
+                                <Link href={getContinueLearningPath(enrollment)}>
+                                  Continue Learning <ArrowRight className="ml-2 h-4 w-4" />
+                                </Link>
+                              </Button>
                             </div>
-                            <Button className="w-full" asChild>
-                              <Link href={getContinueLearningPath(enrollment)}>
-                                Continue Learning <ArrowRight className="ml-2 h-4 w-4" />
-                              </Link>
-                            </Button>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    ))}
+                          </CardContent>
+                        </Card>
+                      );
+                    })}
                   </div>
                 ) : (
                   <div className="text-center p-4">
