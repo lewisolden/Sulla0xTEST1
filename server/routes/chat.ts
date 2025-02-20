@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { z } from 'zod';
-import { db } from '../db';
+import { db } from '@db';
 import { eq } from 'drizzle-orm';
 import { courseEnrollments } from '@db/schema';
 
@@ -23,27 +23,27 @@ interface UserProgress {
   totalLearningMinutes: number;
 }
 
-router.post('/chat', async (req, res) => {
+router.post('/api/chat', async (req, res) => {
   try {
     const { message, context } = chatSchema.parse(req.body);
 
     // Get user progress if authenticated
     let userProgress: UserProgress | null = null;
     if (req.session.userId) {
-      const userEnrollments = await db.query.courseEnrollments.findMany({
-        where: eq(courseEnrollments.userId, req.session.userId),
-        with: {
-          course: true
-        }
-      });
+      const enrollments = await db
+        .select()
+        .from(courseEnrollments)
+        .where(eq(courseEnrollments.userId, req.session.userId));
 
       // Calculate completed modules and current progress
       userProgress = {
-        completedModules: userEnrollments
-          .filter((e: { progress: number }) => e.progress >= 100)
-          .map((e: { courseId: number }) => e.courseId),
-        currentProgress: userEnrollments.reduce((acc: number, curr: { progress: number }) => acc + curr.progress, 0) / userEnrollments.length,
-        totalLearningMinutes: userEnrollments.reduce((acc: number, curr: { lastAccessedAt: Date | null }) => {
+        completedModules: enrollments
+          .filter(e => e.progress >= 100)
+          .map(e => e.courseId),
+        currentProgress: enrollments.length > 0 
+          ? enrollments.reduce((acc, curr) => acc + (curr.progress || 0), 0) / enrollments.length 
+          : 0,
+        totalLearningMinutes: enrollments.reduce((acc, curr) => {
           const minutes = curr.lastAccessedAt 
             ? Math.floor((new Date().getTime() - new Date(curr.lastAccessedAt).getTime()) / 60000)
             : 0;
@@ -134,8 +134,7 @@ Example: "Check out our [LINK]Smart Contracts module|/modules/smart-contracts[/L
     });
 
     if (!response.ok) {
-      const error = await response.json();
-      console.error('Perplexity API error:', error);
+      console.error('Perplexity API error:', await response.text());
       throw new Error('Failed to get response from AI');
     }
 
@@ -163,6 +162,12 @@ Example: "Check out our [LINK]Smart Contracts module|/modules/smart-contracts[/L
     });
   } catch (error) {
     console.error('Chat error:', error);
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({ 
+        error: 'Invalid request format',
+        details: error.errors
+      });
+    }
     res.status(500).json({ 
       error: 'I apologize, but I seem to be having trouble right now. Please try asking your question again!',
       friendly: true 
