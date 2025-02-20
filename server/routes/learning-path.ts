@@ -26,45 +26,47 @@ router.get("/api/learning-path", async (req, res) => {
       return res.status(401).json({ error: "Invalid session" });
     }
 
-    // Get user's module progress
-    const moduleProgressData = await db.query.moduleProgress.findMany({
-      where: eq(moduleProgress.userId, userId),
-      orderBy: [desc(moduleProgress.lastAccessed)],
-    });
-
-    // Get last completed quiz or topic for each course
-    const lastCompletedByCourse = {};
-    moduleProgressData.forEach(mp => {
-      if (mp.completed && (!lastCompletedByCourse[mp.courseId] || 
-          new Date(mp.completedAt) > new Date(lastCompletedByCourse[mp.courseId].completedAt))) {
-        lastCompletedByCourse[mp.courseId] = mp;
-      }
-    });
-
     // Calculate course-specific stats
     const courseStats = await db
       .select({ 
         courseId: moduleProgress.courseId,
         totalTime: sql<number>`COALESCE(SUM(${moduleProgress.timeSpent}), 0)::integer`,
         completedQuizzes: sql<number>`COUNT(CASE WHEN ${moduleProgress.score} IS NOT NULL AND ${moduleProgress.completed} = true THEN 1 END)::integer`,
-        lastCompletedPath: sql<string>`MAX(CASE WHEN ${moduleProgress.completed} = true THEN ${moduleProgress.sectionId} END)`,
-        lastQuizPath: sql<string>`MAX(CASE WHEN ${moduleProgress.score} IS NOT NULL AND ${moduleProgress.completed} = true THEN ${moduleProgress.sectionId} END)`
+        lastQuizPath: sql<string>`MAX(CASE WHEN ${moduleProgress.score} IS NOT NULL AND ${moduleProgress.completed} = true THEN ${moduleProgress.sectionId} END)`,
+        lastCompletedPath: sql<string>`MAX(CASE WHEN ${moduleProgress.completed} = true THEN ${moduleProgress.sectionId} END)`
       })
       .from(moduleProgress)
       .where(eq(moduleProgress.userId, userId))
       .groupBy(moduleProgress.courseId);
 
     // Format stats for response
-    const formattedStats = courseStats.map(stat => ({
-      courseId: stat.courseId,
-      title: COURSE_TITLES[stat.courseId as keyof typeof COURSE_TITLES],
-      totalLearningTime: stat.totalTime,
-      completedQuizzes: stat.completedQuizzes,
-      lastPath: stat.lastQuizPath || stat.lastCompletedPath,
-      defaultPath: stat.courseId === 1 ? '/modules/module1' :
-                  stat.courseId === 2 ? '/ai/module1' :
-                  '/defi/module1'
-    }));
+    const formattedStats = courseStats.map(stat => {
+      let continuePath;
+
+      // Determine the continue learning path based on course type
+      switch (stat.courseId) {
+        case 1: // Introduction to Cryptocurrency
+        case 2: // Introduction to AI
+          // For Crypto and AI courses, prefer last completed quiz path
+          continuePath = stat.lastQuizPath || 
+            (stat.courseId === 1 ? '/modules/module1' : '/ai/module1');
+          break;
+        case 3: // Mastering DeFi
+          // For DeFi course, prefer last completed topic
+          continuePath = stat.lastCompletedPath || '/defi/module1';
+          break;
+        default:
+          continuePath = '/modules/module1';
+      }
+
+      return {
+        courseId: stat.courseId,
+        title: COURSE_TITLES[stat.courseId as keyof typeof COURSE_TITLES],
+        totalLearningTime: stat.totalTime,
+        completedQuizzes: stat.completedQuizzes,
+        continuePath
+      };
+    });
 
     res.json({
       courseStats: formattedStats

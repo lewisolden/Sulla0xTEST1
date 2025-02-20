@@ -38,9 +38,10 @@ interface Enrollment {
 
 interface CourseStats {
   courseId: number;
+  title: string;
   totalLearningTime: number;
   completedQuizzes: number;
-  lastPath?: string; // Added lastPath to CourseStats
+  continuePath: string;
 }
 
 interface UserMetrics {
@@ -94,12 +95,12 @@ export default function AccountPage() {
         stat => stat.courseId === enrollment.courseId
       );
 
-      // If we have course stats with a last path, use it
-      if (courseStats?.lastPath) {
-        return courseStats.lastPath;
+      // Use the continuePath from courseStats if available
+      if (courseStats?.continuePath) {
+        return courseStats.continuePath;
       }
 
-      // Otherwise use the default path based on course type
+      // Default paths if no progress is available
       switch (enrollment.courseId) {
         case 1:
           return '/modules/module1';
