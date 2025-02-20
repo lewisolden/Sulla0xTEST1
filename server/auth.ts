@@ -62,7 +62,8 @@ const PUBLIC_ROUTES = [
   '/deck',
   '/api/register',
   '/api/login',
-  '/api/admin/login' // Added admin login route to public routes
+  '/api/admin/login',
+  '/api/chat/test' // Added chat test endpoint to public routes
 ];
 
 function isPublicRoute(path: string): boolean {

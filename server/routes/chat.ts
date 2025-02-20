@@ -9,6 +9,7 @@ const router = Router();
 // Test endpoint for Perplexity API
 router.post("/api/chat/test", async (req, res) => {
   try {
+    // Remove authentication check for test endpoint
     // Check if API key exists and validate format
     if (!process.env.PERPLEXITY_API_KEY) {
       console.error('[Chat Test] Missing Perplexity API key');
