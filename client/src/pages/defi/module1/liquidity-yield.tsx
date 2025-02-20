@@ -175,8 +175,8 @@ export default function LiquidityYield() {
                       What is Yield Farming?
                     </h2>
                     <p className="text-gray-700 mb-6">
-                      Yield farming is a DeFi strategy where users provide liquidity or stake assets to earn rewards. 
-                      These rewards often come in multiple forms: trading fees, interest rates, and governance tokens. 
+                      Yield farming is a DeFi strategy where users provide liquidity or stake assets to earn rewards.
+                      These rewards often come in multiple forms: trading fees, interest rates, and governance tokens.
                       Think of it as putting your crypto assets to work in various DeFi protocols to maximize returns.
                     </p>
                     <div className="grid md:grid-cols-3 gap-4">
@@ -252,7 +252,7 @@ export default function LiquidityYield() {
                       Interactive Yield Farming Simulator
                     </h2>
                     <p className="text-gray-700 mb-6">
-                      Experience the mechanics of yield farming with our interactive simulator. 
+                      Experience the mechanics of yield farming with our interactive simulator.
                       Watch how your liquidity position grows over time through trading fees and reward tokens.
                     </p>
 
@@ -349,202 +349,191 @@ export default function LiquidityYield() {
                   </section>
 
                   {/* Quiz Section */}
-                  {!showQuiz ? (
-                    <div className="text-center mt-8">
-                      <Button
-                        onClick={() => setShowQuiz(true)}
-                        className="bg-blue-600 hover:bg-blue-700 transform hover:scale-105 transition-all duration-300"
-                      >
-                        Take Topic Quiz
-                      </Button>
-                    </div>
-                  ) : (
-                    <section className="bg-white rounded-xl p-6 mt-8">
-                      <h2 className="text-2xl font-semibold text-blue-800 mb-6">
-                        Knowledge Check
-                      </h2>
+                  <section className="bg-white rounded-xl p-6 mt-8">
+                    <h2 className="text-2xl font-semibold text-blue-800 mb-6">
+                      Knowledge Check
+                    </h2>
 
-                      {!quizCompleted ? (
-                        <div>
-                          <div className="mb-6">
-                            <div className="flex justify-between items-center mb-2">
-                              <p className="text-sm text-gray-600">
-                                Question {currentQuestion + 1} of {quizQuestions.length}
-                              </p>
-                              <p className="text-sm font-medium text-blue-600">
-                                Score: {score}/{currentQuestion + (selectedAnswer !== null ? 1 : 0)}
-                              </p>
-                            </div>
-                            <div className="w-full bg-gray-200 rounded-full h-2">
-                              <motion.div
-                                className="bg-blue-600 h-2 rounded-full"
-                                initial={{ width: `${((currentQuestion) / quizQuestions.length) * 100}%` }}
-                                animate={{ width: `${((currentQuestion + 1) / quizQuestions.length) * 100}%` }}
-                                transition={{ duration: 0.5 }}
-                              />
-                            </div>
+                    {!quizCompleted ? (
+                      <div>
+                        <div className="mb-6">
+                          <div className="flex justify-between items-center mb-2">
+                            <p className="text-sm text-gray-600">
+                              Question {currentQuestion + 1} of {quizQuestions.length}
+                            </p>
+                            <p className="text-sm font-medium text-blue-600">
+                              Score: {score}/{currentQuestion + (selectedAnswer !== null ? 1 : 0)}
+                            </p>
                           </div>
-
-                          <motion.div
-                            key={currentQuestion}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5 }}
-                            className="space-y-6"
-                          >
-                            <h3 className="text-lg font-medium text-gray-800">
-                              {quizQuestions[currentQuestion].question}
-                            </h3>
-
-                            <div className="space-y-3">
-                              {quizQuestions[currentQuestion].options.map((option, index) => {
-                                const isSelected = selectedAnswer === index;
-                                const isCorrect = index === quizQuestions[currentQuestion].correctAnswer;
-                                const showResult = selectedAnswer !== null;
-
-                                return (
-                                  <motion.div
-                                    key={index}
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ duration: 0.3, delay: index * 0.1 }}
-                                  >
-                                    <Button
-                                      onClick={() => !selectedAnswer && handleAnswer(index)}
-                                      variant="outline"
-                                      className={`w-full justify-start text-left ${
-                                        showResult
-                                          ? isCorrect
-                                            ? "bg-green-50 border-green-500 text-green-700"
-                                            : isSelected
-                                              ? "bg-red-50 border-red-500 text-red-700"
-                                              : ""
-                                          : "hover:bg-blue-50"
-                                      }`}
-                                      disabled={selectedAnswer !== null}
-                                    >
-                                      <div className="flex items-center justify-between w-full">
-                                        <span>{option}</span>
-                                        {showResult && (isCorrect || isSelected) && (
-                                          <motion.span
-                                            initial={{ scale: 0 }}
-                                            animate={{ scale: 1 }}
-                                            transition={{ type: "spring", stiffness: 200, damping: 10 }}
-                                            className="ml-2"
-                                          >
-                                            {isCorrect ? (
-                                              <Check className="h-5 w-5 text-green-500" />
-                                            ) : (
-                                              <X className="h-5 w-5 text-red-500" />
-                                            )}
-                                          </motion.span>
-                                        )}
-                                      </div>
-                                    </Button>
-                                  </motion.div>
-                                );
-                              })}
-                            </div>
-
-                            {showExplanation && (
-                              <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5 }}
-                                className="space-y-4"
-                              >
-                                <motion.div
-                                  initial={{ scale: 0 }}
-                                  animate={{ scale: 1 }}
-                                  transition={{ type: "spring", stiffness: 200, damping: 10 }}
-                                  className="flex justify-center"
-                                >
-                                  <div
-                                    className={`text-lg font-semibold px-4 py-2 rounded-full ${
-                                      selectedAnswer === quizQuestions[currentQuestion].correctAnswer
-                                        ? "bg-green-100 text-green-800"
-                                        : "bg-red-100 text-red-800"
-                                    }`}
-                                  >
-                                    {selectedAnswer === quizQuestions[currentQuestion].correctAnswer ? "Correct!" : "Incorrect!"}
-                                  </div>
-                                </motion.div>
-
-                                <div className={`p-4 rounded-lg ${
-                                  selectedAnswer === quizQuestions[currentQuestion].correctAnswer
-                                    ? "bg-green-50 border border-green-200"
-                                    : "bg-red-50 border border-red-200"
-                                }`}>
-                                  <p className={`text-sm ${
-                                    selectedAnswer === quizQuestions[currentQuestion].correctAnswer
-                                      ? "text-green-800"
-                                      : "text-red-800"
-                                  }`}>
-                                    {quizQuestions[currentQuestion].explanation}
-                                  </p>
-                                </div>
-
-                                {currentQuestion < quizQuestions.length - 1 && (
-                                  <div className="flex justify-center">
-                                    <Button
-                                      onClick={handleNextQuestion}
-                                      className="bg-blue-600 hover:bg-blue-700"
-                                    >
-                                      Next Question
-                                    </Button>
-                                  </div>
-                                )}
-                              </motion.div>
-                            )}
-                          </motion.div>
+                          <div className="w-full bg-gray-200 rounded-full h-2">
+                            <motion.div
+                              className="bg-blue-600 h-2 rounded-full"
+                              initial={{ width: `${((currentQuestion) / quizQuestions.length) * 100}%` }}
+                              animate={{ width: `${((currentQuestion + 1) / quizQuestions.length) * 100}%` }}
+                              transition={{ duration: 0.5 }}
+                            />
+                          </div>
                         </div>
-                      ) : (
-                        <motion.div
-                          initial={{ opacity: 0, scale: 0.95 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ duration: 0.5 }}
-                          className="text-center space-y-6"
-                        >
-                          <motion.div
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            transition={{ type: "spring", stiffness: 200, damping: 10 }}
-                          >
-                            <CheckCircle2 className="h-16 w-16 text-green-500 mx-auto" />
-                          </motion.div>
 
-                          <div>
-                            <h3 className="text-2xl font-semibold text-gray-800 mb-2">
-                              Quiz Completed!
-                            </h3>
-                            <p className="text-gray-600 text-lg mb-2">
-                              You scored {score} out of {quizQuestions.length}
-                            </p>
-                            <p className="text-gray-500">
-                              {score === quizQuestions.length
-                                ? "Perfect score! You've mastered liquidity provision and yield farming concepts!"
-                                : "Keep learning and try again to improve your score!"}
-                            </p>
+                        <motion.div
+                          key={currentQuestion}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5 }}
+                          className="space-y-6"
+                        >
+                          <h3 className="text-lg font-medium text-gray-800">
+                            {quizQuestions[currentQuestion].question}
+                          </h3>
+
+                          <div className="space-y-3">
+                            {quizQuestions[currentQuestion].options.map((option, index) => {
+                              const isSelected = selectedAnswer === index;
+                              const isCorrect = index === quizQuestions[currentQuestion].correctAnswer;
+                              const showResult = selectedAnswer !== null;
+
+                              return (
+                                <motion.div
+                                  key={index}
+                                  initial={{ opacity: 0, x: -20 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                                >
+                                  <Button
+                                    onClick={() => !selectedAnswer && handleAnswer(index)}
+                                    variant="outline"
+                                    className={`w-full justify-start text-left ${
+                                      showResult
+                                        ? isCorrect
+                                          ? "bg-green-50 border-green-500 text-green-700"
+                                          : isSelected
+                                            ? "bg-red-50 border-red-500 text-red-700"
+                                            : ""
+                                        : "hover:bg-blue-50"
+                                    }`}
+                                    disabled={selectedAnswer !== null}
+                                  >
+                                    <div className="flex items-center justify-between w-full">
+                                      <span>{option}</span>
+                                      {showResult && (isCorrect || isSelected) && (
+                                        <motion.span
+                                          initial={{ scale: 0 }}
+                                          animate={{ scale: 1 }}
+                                          transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                                          className="ml-2"
+                                        >
+                                          {isCorrect ? (
+                                            <Check className="h-5 w-5 text-green-500" />
+                                          ) : (
+                                            <X className="h-5 w-5 text-red-500" />
+                                          )}
+                                        </motion.span>
+                                      )}
+                                    </div>
+                                  </Button>
+                                </motion.div>
+                              );
+                            })}
                           </div>
 
-                          <Button
-                            onClick={() => {
-                              setShowQuiz(false);
-                              setCurrentQuestion(0);
-                              setScore(0);
-                              setQuizCompleted(false);
-                              setSelectedAnswer(null);
-                              setShowExplanation(false);
-                            }}
-                            variant="outline"
-                            className="transform hover:scale-105 transition-all duration-300"
-                          >
-                            Retake Quiz
-                          </Button>
+                          {showExplanation && (
+                            <motion.div
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.5 }}
+                              className="space-y-4"
+                            >
+                              <motion.div
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                                className="flex justify-center"
+                              >
+                                <div
+                                  className={`text-lg font-semibold px-4 py-2 rounded-full ${
+                                    selectedAnswer === quizQuestions[currentQuestion].correctAnswer
+                                      ? "bg-green-100 text-green-800"
+                                      : "bg-red-100 text-red-800"
+                                  }`}
+                                >
+                                  {selectedAnswer === quizQuestions[currentQuestion].correctAnswer ? "Correct!" : "Incorrect!"}
+                                </div>
+                              </motion.div>
+
+                              <div className={`p-4 rounded-lg ${
+                                selectedAnswer === quizQuestions[currentQuestion].correctAnswer
+                                  ? "bg-green-50 border border-green-200"
+                                  : "bg-red-50 border border-red-200"
+                              }`}>
+                                <p className={`text-sm ${
+                                  selectedAnswer === quizQuestions[currentQuestion].correctAnswer
+                                    ? "text-green-800"
+                                    : "text-red-800"
+                                }`}>
+                                  {quizQuestions[currentQuestion].explanation}
+                                </p>
+                              </div>
+
+                              {currentQuestion < quizQuestions.length - 1 && (
+                                <div className="flex justify-center">
+                                  <Button
+                                    onClick={handleNextQuestion}
+                                    className="bg-blue-600 hover:bg-blue-700"
+                                  >
+                                    Next Question
+                                  </Button>
+                                </div>
+                              )}
+                            </motion.div>
+                          )}
                         </motion.div>
-                      )}
-                    </section>
-                  )}
+                      </div>
+                    ) : (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5 }}
+                        className="text-center space-y-6"
+                      >
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                        >
+                          <CheckCircle2 className="h-16 w-16 text-green-500 mx-auto" />
+                        </motion.div>
+
+                        <div>
+                          <h3 className="text-2xl font-semibold text-gray-800 mb-2">
+                            Quiz Completed!
+                          </h3>
+                          <p className="text-gray-600 text-lg mb-2">
+                            You scored {score} out of {quizQuestions.length}
+                          </p>
+                          <p className="text-gray-500">
+                            {score === quizQuestions.length
+                              ? "Perfect score! You've mastered liquidity provision and yield farming concepts!"
+                              : "Keep learning and try again to improve your score!"}
+                          </p>
+                        </div>
+
+                        <Button
+                          onClick={() => {
+                            setShowQuiz(false);
+                            setCurrentQuestion(0);
+                            setScore(0);
+                            setQuizCompleted(false);
+                            setSelectedAnswer(null);
+                            setShowExplanation(false);
+                          }}
+                          variant="outline"
+                          className="transform hover:scale-105 transition-all duration-300"
+                        >
+                          Retake Quiz
+                        </Button>
+                      </motion.div>
+                    )}
+                  </section>
 
                   <div className="flex justify-between items-center mt-12">
                     <Link href="/defi/module1/dex-amm">
