@@ -87,6 +87,13 @@ import InvestmentDeck from "@/pages/investment-deck";
 import SenseiPage from "@/pages/sensei";
 import AdminFeedback from "@/pages/admin/feedback";
 
+// DeFi Module imports
+import DefiModule1 from "@/pages/defi/module1";
+import DefiIntro from "@/pages/defi/module1/defi-intro";
+import BlockchainContracts from "@/pages/defi/module1/blockchain-contracts";
+import DexAmm from "@/pages/defi/module1/dex-amm";
+import LiquidityYield from "@/pages/defi/module1/liquidity-yield";
+
 
 function ProtectedRoute({ component: Component, adminOnly = false, publicAccess = false, ...rest }: any) {
   const { user, isLoading } = useAuth();
@@ -199,6 +206,14 @@ function Router() {
       <ProtectedRoute path="/modules/module4" component={Module4Landing} />
       <ProtectedRoute path="/modules/module4/digital-vs-traditional" component={DigitalVsTraditionalSection} />
       <Route path="/sensei" component={() => <ProtectedRoute component={SenseiPage} publicAccess={true} />} />
+
+      {/* DeFi Module Routes */}
+      <Route path="/defi/module1" component={() => <ProtectedRoute component={DefiModule1} />} />
+      <Route path="/defi/module1/defi-intro" component={() => <ProtectedRoute component={DefiIntro} />} />
+      <Route path="/defi/module1/blockchain-contracts" component={() => <ProtectedRoute component={BlockchainContracts} />} />
+      <Route path="/defi/module1/dex-amm" component={() => <ProtectedRoute component={DexAmm} />} />
+      <Route path="/defi/module1/liquidity-yield" component={() => <ProtectedRoute component={LiquidityYield} />} />
+
       <Route component={NotFound} />
     </Switch>
   );
