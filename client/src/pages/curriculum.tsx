@@ -24,6 +24,7 @@ const courses = [
     description: "A comprehensive introduction to cryptocurrency, blockchain technology, and digital finance through interactive learning experiences.",
     subject: "crypto",
     level: "beginner",
+    defaultPath: "/modules/module1",
     modules: [
       {
         id: 1,
@@ -43,7 +44,7 @@ const courses = [
       {
         id: 2,
         icon: GraduationCap,
-        title: "Module 2: Bitcoin Fundamentals",
+        title: "Module 2: Bitcoin Deep Dive",
         description: "Deep dive into Bitcoin, investment strategies, and security considerations.",
         sections: [
           "Bitcoin Fundamentals",
@@ -77,6 +78,7 @@ const courses = [
     description: "A comprehensive introduction to artificial intelligence, machine learning, and their real-world applications.",
     subject: "ai",
     level: "beginner",
+    defaultPath: "/ai/module1",
     modules: [
       {
         id: 1,
@@ -125,6 +127,7 @@ const courses = [
     description: "A comprehensive exploration of decentralized finance, from fundamentals to advanced trading strategies and risk management.",
     subject: "crypto",
     level: "intermediate",
+    defaultPath: "/defi/module1",
     modules: [
       {
         id: 1,
@@ -206,6 +209,19 @@ const simulators = [
     icon: Brain
   }
 ];
+
+const getLastAccessedRoute = (courseId: number): { lastQuizPath?: string; lastCompletedPath?: string } => {
+  // This is a placeholder.  You'll need to fetch this data from your backend.
+  //  Replace this with actual logic to retrieve the last accessed path from your database or state management.
+
+  if (courseId === 1) {
+    return { lastQuizPath: '/modules/module2' }; // Example for Course 1
+  } else if (courseId === 3) {
+    return { lastCompletedPath: '/defi/module2' }; //Example for Course 3
+  }
+  return {};
+};
+
 
 export default function Curriculum() {
   useScrollTop();
@@ -318,6 +334,31 @@ export default function Curriculum() {
     console.log('Enrolling in course:', courseIdNumber);
     enrollMutation.mutate(courseIdNumber);
   };
+
+  const handleContinueLearning = (course: any) => {
+    if (!user) {
+      toast({
+        title: "Authentication Required",
+        description: "Please log in or register to continue learning.",
+        variant: "destructive",
+      });
+      setLocation("/login");
+      return;
+    }
+
+    const { lastQuizPath, lastCompletedPath } = getLastAccessedRoute(course.id);
+
+    if (course.subject === "crypto" && course.id === 1) {
+      setLocation(lastQuizPath || course.defaultPath);
+    } else if (course.subject === "ai") {
+      setLocation(lastQuizPath || course.defaultPath);
+    } else if (course.subject === "crypto" && course.id === 3) {
+      setLocation(lastCompletedPath || course.defaultPath);
+    } else {
+      setLocation(course.defaultPath);
+    }
+  };
+
 
   return (
     <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-100 via-blue-50 to-white py-16">
@@ -542,9 +583,9 @@ export default function Curriculum() {
                         </div>
 
                         <div className="mt-6 text-center">
-                          <Link href={module.path}>
+                          <Link onClick={() => handleContinueLearning(currentCourse)}>
                             <Button className="bg-blue-600 hover:bg-blue-700">
-                              Start Learning
+                              Continue Learning
                             </Button>
                           </Link>
                         </div>

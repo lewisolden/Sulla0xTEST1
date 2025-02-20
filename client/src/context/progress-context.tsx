@@ -8,7 +8,8 @@ interface ProgressData {
   courseId: number;
   timeSpent?: number;
   quizScore?: number;
-  lastAccessedRoute?: string;
+  lastQuizPath?: string;
+  lastCompletedPath?: string;
   courseName?: string;
 }
 
@@ -16,9 +17,9 @@ interface ProgressContextType {
   progress: ProgressData[];
   isLoading: boolean;
   error: Error | null;
-  updateProgress: (moduleId: number, sectionId: string, completed: boolean, courseId: number, timeSpent?: number, quizScore?: number, lastAccessedRoute?: string, courseName?: string) => Promise<void>;
+  updateProgress: (moduleId: number, sectionId: string, completed: boolean, courseId: number, timeSpent?: number, quizScore?: number, lastQuizPath?: string, lastCompletedPath?: string, courseName?: string) => Promise<void>;
   getModuleProgress: (moduleId: number, courseId?: number) => { completed: number; total: number };
-  getLastAccessedRoute: (courseName: string) => string | null;
+  getLastAccessedRoute: (courseId: number) => { lastQuizPath: string | null; lastCompletedPath: string | null };
 }
 
 const ProgressContext = createContext<ProgressContextType | undefined>(undefined);
@@ -61,7 +62,8 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     courseId: number,
     timeSpent?: number,
     quizScore?: number,
-    lastAccessedRoute?: string,
+    lastQuizPath?: string,
+    lastCompletedPath?: string,
     courseName?: string
   ) => {
     try {
@@ -72,7 +74,8 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         courseId,
         timeSpent,
         quizScore,
-        lastAccessedRoute,
+        lastQuizPath,
+        lastCompletedPath,
         courseName
       });
     } catch (error) {
@@ -96,16 +99,22 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     };
   }, [data?.progress]);
 
-  const getLastAccessedRoute = useCallback((courseName: string): string | null => {
-    if (!data?.progress) return null;
+  const getLastAccessedRoute = useCallback((courseId: number) => {
+    if (!data?.progress) {
+      return { lastQuizPath: null, lastCompletedPath: null };
+    }
 
     const courseProgress = data.progress
-      .filter((item: ProgressData) => item.courseName === courseName)
+      .filter((item: ProgressData) => item.courseId === courseId)
       .sort((a: ProgressData, b: ProgressData) => {
         return (b.timeSpent || 0) - (a.timeSpent || 0);
       });
 
-    return courseProgress[0]?.lastAccessedRoute || null;
+    const lastItem = courseProgress[0];
+    return {
+      lastQuizPath: lastItem?.lastQuizPath || null,
+      lastCompletedPath: lastItem?.lastCompletedPath || null
+    };
   }, [data?.progress]);
 
   const contextValue = {
