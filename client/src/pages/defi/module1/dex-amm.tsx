@@ -7,9 +7,9 @@ import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { ArrowLeft, ArrowRight, ArrowDownUp, Wallet, RefreshCw, Settings, Info } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaEthereum } from "react-icons/fa";
+import { FaEthereum, FaExchangeAlt, FaChartLine } from "react-icons/fa";
 import { BiDollarCircle } from "react-icons/bi";
-import { SiSushiswap, SiCoinbase, SiUniswap } from "react-icons/si";
+import { BsCurrencyExchange, BsGraphUp } from "react-icons/bs";
 
 // Mock token data for the swap demo
 const tokens = {
@@ -110,22 +110,22 @@ export default function DexAmm() {
                   <div className="grid md:grid-cols-3 gap-6 my-8">
                     {[
                       {
-                        name: "Uniswap",
-                        icon: SiUniswap,
-                        description: "Pioneer of the AMM model, largest Ethereum DEX",
-                        features: ["Concentrated Liquidity", "Multiple Fee Tiers", "V3 Architecture"]
+                        name: "Automated Market Maker",
+                        icon: FaExchangeAlt,
+                        description: "Algorithmic trading using liquidity pools",
+                        features: ["No Order Books", "Constant Product Formula", "Liquidity Pools"]
                       },
                       {
-                        name: "SushiSwap",
-                        icon: SiSushiswap,
-                        description: "Community-driven DEX with yield farming",
-                        features: ["Yield Farming", "Cross-chain Support", "NFT Platform"]
+                        name: "Order Book DEX",
+                        icon: BsCurrencyExchange,
+                        description: "Traditional order matching system",
+                        features: ["Limit Orders", "Market Orders", "Order Matching"]
                       },
                       {
-                        name: "Coinbase",
-                        icon: SiCoinbase,
-                        description: "Leading centralized exchange comparison",
-                        features: ["High Liquidity", "Regulatory Compliance", "User-Friendly"]
+                        name: "Hybrid Exchange",
+                        icon: BsGraphUp,
+                        description: "Combines AMM and order book features",
+                        features: ["Best of Both", "Enhanced Liquidity", "Price Efficiency"]
                       }
                     ].map((dex, index) => (
                       <motion.div
