@@ -7,7 +7,7 @@ import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { ArrowLeft, ArrowRight, Wallet, RefreshCw, Settings, Info, Check, X, CheckCircle2, Coins, TrendingUp, Lock, Percent, Timer, BarChart3 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaExchangeAlt, FaWater, FaChartLine, FaLayerGroup, FaSearch, FaShieldAlt } from "react-icons/fa";
+import { FaExchangeAlt, FaWater, FaChartLine, FaLayerGroup, FaSearch, FaShieldAlt, FaPercent, FaChartBar, FaCoins } from "react-icons/fa";
 import { BiDollarCircle } from "react-icons/bi";
 
 // Quiz questions with explanations
@@ -48,78 +48,216 @@ const quizQuestions = [
 ];
 
 const APRExplanation = () => (
-  <div className="bg-white rounded-lg p-6 mb-8 shadow-sm">
-    <h3 className="text-xl font-semibold text-blue-800 mb-4">Understanding APR in Yield Farming</h3>
-    <div className="space-y-4">
-      <p className="text-gray-700">
-        Annual Percentage Rate (APR) represents your yearly earnings from yield farming, expressed as a percentage of your initial investment. For example:
-      </p>
-      <div className="bg-blue-50 p-4 rounded-lg">
-        <p className="text-blue-800">
-          If you invest $1,000 in a yield farm with 20% APR:
-          <br />• You would earn $200 in rewards over one year
-          <br />• That's approximately $16.67 per month
-          <br />• Or about $0.55 per day
-        </p>
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5 }}
+    className="bg-gradient-to-br from-blue-50 via-blue-100 to-indigo-50 rounded-xl p-8 mb-8 shadow-lg"
+  >
+    <div className="flex items-center gap-4 mb-6">
+      <div className="bg-blue-500 rounded-full p-3">
+        <FaPercent className="h-6 w-6 text-white" />
       </div>
-      <p className="text-gray-700">
-        APR in yield farming can come from multiple sources:
-      </p>
-      <ul className="list-disc list-inside space-y-2 text-gray-700">
-        <li>Trading fees from other users using the liquidity pool</li>
-        <li>Reward tokens from the protocol</li>
-        <li>Governance token incentives</li>
-      </ul>
+      <h3 className="text-2xl font-semibold text-blue-800">Understanding APR in Yield Farming</h3>
     </div>
-  </div>
+
+    <div className="grid md:grid-cols-2 gap-8">
+      <div className="space-y-4">
+        <p className="text-gray-700 text-lg">
+          Annual Percentage Rate (APR) represents your yearly earnings from yield farming, expressed as a percentage of your initial investment.
+        </p>
+        <div className="bg-white p-6 rounded-xl shadow-sm">
+          <h4 className="font-semibold text-blue-700 mb-3 flex items-center gap-2">
+            <FaChartBar className="h-5 w-5" />
+            Example Calculation
+          </h4>
+          <div className="space-y-2 text-blue-800">
+            <p className="flex items-center gap-2">
+              <span className="bg-blue-100 rounded-full p-1">💰</span>
+              Initial Investment: $1,000
+            </p>
+            <p className="flex items-center gap-2">
+              <span className="bg-blue-100 rounded-full p-1">📈</span>
+              APR: 20%
+            </p>
+            <p className="flex items-center gap-2">
+              <span className="bg-blue-100 rounded-full p-1">💵</span>
+              Yearly Earnings: $200
+            </p>
+            <p className="flex items-center gap-2">
+              <span className="bg-blue-100 rounded-full p-1">📅</span>
+              Monthly: ~$16.67
+            </p>
+            <p className="flex items-center gap-2">
+              <span className="bg-blue-100 rounded-full p-1">⏰</span>
+              Daily: ~$0.55
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        <h4 className="font-semibold text-blue-700 flex items-center gap-2">
+          <FaCoins className="h-5 w-5" />
+          APR Sources in Yield Farming
+        </h4>
+        <div className="space-y-4">
+          {[
+            {
+              icon: "💱",
+              title: "Trading Fees",
+              description: "Earn from other users' trades in your liquidity pool"
+            },
+            {
+              icon: "🎁",
+              title: "Protocol Rewards",
+              description: "Additional tokens given by the platform"
+            },
+            {
+              icon: "🏛️",
+              title: "Governance Incentives",
+              description: "Rewards for participating in platform governance"
+            }
+          ].map((source, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.2 }}
+              className="bg-white p-4 rounded-lg shadow-sm flex items-start gap-3"
+            >
+              <span className="text-2xl">{source.icon}</span>
+              <div>
+                <h5 className="font-medium text-blue-800">{source.title}</h5>
+                <p className="text-gray-600 text-sm">{source.description}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </motion.div>
 );
 
 const YieldFarmingExamples = () => (
-  <div className="space-y-6 mb-8">
-    <h3 className="text-xl font-semibold text-blue-800">Real-World Examples of Yield Farming</h3>
-
-    <div className="grid md:grid-cols-2 gap-6">
-      <div className="bg-white p-6 rounded-lg shadow-sm">
-        <h4 className="font-semibold text-blue-700 mb-3">Example 1: Stablecoin Liquidity Pool</h4>
-        <p className="text-gray-700 mb-4">
-          Think of this like a digital savings account with better returns:
-        </p>
-        <ul className="list-disc list-inside space-y-2 text-gray-600">
-          <li>You deposit $1,000 worth of USDC and USDT (stablecoins)</li>
-          <li>Other traders use your liquidity to swap between these tokens</li>
-          <li>You earn 0.3% of each trade that uses your liquidity</li>
-          <li>Plus bonus reward tokens from the platform</li>
-          <li>Total APR could be 5-20% or more</li>
-        </ul>
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5, delay: 0.2 }}
+    className="space-y-8 mb-8"
+  >
+    <div className="flex items-center gap-4 mb-6">
+      <div className="bg-green-500 rounded-full p-3">
+        <FaChartLine className="h-6 w-6 text-white" />
       </div>
-
-      <div className="bg-white p-6 rounded-lg shadow-sm">
-        <h4 className="font-semibold text-blue-700 mb-3">Example 2: ETH-USDC Pool</h4>
-        <p className="text-gray-700 mb-4">
-          Similar to running a tiny crypto exchange:
-        </p>
-        <ul className="list-disc list-inside space-y-2 text-gray-600">
-          <li>You provide equal value of ETH and USDC</li>
-          <li>Earn fees when people trade ETH for USDC or vice versa</li>
-          <li>Receive additional platform tokens as rewards</li>
-          <li>Higher risk but potentially higher returns (20-100% APR)</li>
-        </ul>
-      </div>
+      <h3 className="text-2xl font-semibold text-green-800">Real-World Examples of Yield Farming</h3>
     </div>
 
-    <div className="bg-yellow-50 p-4 rounded-lg">
-      <h4 className="font-semibold text-yellow-800 mb-2">Important Note for Beginners</h4>
-      <p className="text-yellow-700">
-        While yield farming can offer attractive returns, it's important to start small and understand the risks:
-      </p>
-      <ul className="list-disc list-inside space-y-1 text-yellow-700 mt-2">
-        <li>Start with stable assets (like stablecoins) to minimize volatility risk</li>
-        <li>Use established platforms with good security track records</li>
-        <li>Be aware that higher APRs usually mean higher risks</li>
-        <li>Consider impermanent loss when providing liquidity for volatile assets</li>
-      </ul>
+    <div className="grid md:grid-cols-2 gap-8">
+      {[
+        {
+          title: "Stablecoin Liquidity Pool",
+          description: "Like a digital savings account with better returns",
+          icon: "🏦",
+          color: "blue",
+          steps: [
+            "Deposit $1,000 worth of USDC and USDT",
+            "Traders use your liquidity to swap tokens",
+            "Earn 0.3% from each trade",
+            "Get bonus platform tokens",
+            "Total APR: 5-20% or higher"
+          ]
+        },
+        {
+          title: "ETH-USDC Trading Pool",
+          description: "Run your own mini crypto exchange",
+          icon: "💱",
+          color: "purple",
+          steps: [
+            "Provide equal amounts of ETH and USDC",
+            "Earn fees from ETH/USDC trades",
+            "Receive platform reward tokens",
+            "Higher risk, higher return (20-100% APR)"
+          ]
+        }
+      ].map((example, index) => (
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: index * 0.3 }}
+          className={`bg-${example.color}-50 rounded-xl p-6 shadow-lg border border-${example.color}-100`}
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <span className="text-3xl">{example.icon}</span>
+            <div>
+              <h4 className={`text-xl font-semibold text-${example.color}-700`}>{example.title}</h4>
+              <p className="text-gray-600">{example.description}</p>
+            </div>
+          </div>
+          <ul className="space-y-3">
+            {example.steps.map((step, stepIndex) => (
+              <motion.li
+                key={stepIndex}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: (index * 0.3) + (stepIndex * 0.1) }}
+                className="flex items-center gap-2"
+              >
+                <div className={`w-2 h-2 rounded-full bg-${example.color}-400`} />
+                <span className="text-gray-700">{step}</span>
+              </motion.li>
+            ))}
+          </ul>
+        </motion.div>
+      ))}
     </div>
-  </div>
+
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.6 }}
+      className="bg-yellow-50 rounded-xl p-6 border border-yellow-200 shadow-md"
+    >
+      <div className="flex items-center gap-3 mb-4">
+        <div className="bg-yellow-500 rounded-full p-2">
+          <Info className="h-5 w-5 text-white" />
+        </div>
+        <h4 className="text-xl font-semibold text-yellow-800">Important Tips for Beginners</h4>
+      </div>
+      <div className="grid md:grid-cols-2 gap-4">
+        {[
+          {
+            tip: "Start with stablecoins to minimize volatility",
+            icon: "🛡️"
+          },
+          {
+            tip: "Use established platforms with good security",
+            icon: "🔒"
+          },
+          {
+            tip: "Higher APR usually means higher risk",
+            icon: "⚠️"
+          },
+          {
+            tip: "Watch out for impermanent loss",
+            icon: "📊"
+          }
+        ].map((tip, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.8 + (index * 0.1) }}
+            className="flex items-center gap-2 text-yellow-800"
+          >
+            <span className="text-xl">{tip.icon}</span>
+            <span>{tip.tip}</span>
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
+  </motion.div>
 );
 
 export default function LiquidityYield() {
@@ -560,17 +698,6 @@ export default function LiquidityYield() {
                                   {quizQuestions[currentQuestion].explanation}
                                 </p>
                               </div>
-
-                              {currentQuestion < quizQuestions.length - 1 && (
-                                <div className="flex justify-center">
-                                  <Button
-                                    onClick={handleNextQuestion}
-                                    className="bg-blue-600 hover:bg-blue-700"
-                                  >
-                                    Next Question
-                                  </Button>
-                                </div>
-                              )}
                             </motion.div>
                           )}
                         </motion.div>
@@ -632,7 +759,7 @@ export default function LiquidityYield() {
                     <div className="flex gap-4">
                       <Button
                         onClick={handleComplete}
-                        className="bg-green-600 hover:bg-green-700"
+                        className="bg-green-600 hover:bggreen-700"
                         disabled={isCompleted}
                       >
                         {isCompleted ? "Completed" : "Mark as Complete"}
