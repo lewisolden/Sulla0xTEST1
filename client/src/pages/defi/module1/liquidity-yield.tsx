@@ -47,6 +47,81 @@ const quizQuestions = [
   }
 ];
 
+const APRExplanation = () => (
+  <div className="bg-white rounded-lg p-6 mb-8 shadow-sm">
+    <h3 className="text-xl font-semibold text-blue-800 mb-4">Understanding APR in Yield Farming</h3>
+    <div className="space-y-4">
+      <p className="text-gray-700">
+        Annual Percentage Rate (APR) represents your yearly earnings from yield farming, expressed as a percentage of your initial investment. For example:
+      </p>
+      <div className="bg-blue-50 p-4 rounded-lg">
+        <p className="text-blue-800">
+          If you invest $1,000 in a yield farm with 20% APR:
+          <br />• You would earn $200 in rewards over one year
+          <br />• That's approximately $16.67 per month
+          <br />• Or about $0.55 per day
+        </p>
+      </div>
+      <p className="text-gray-700">
+        APR in yield farming can come from multiple sources:
+      </p>
+      <ul className="list-disc list-inside space-y-2 text-gray-700">
+        <li>Trading fees from other users using the liquidity pool</li>
+        <li>Reward tokens from the protocol</li>
+        <li>Governance token incentives</li>
+      </ul>
+    </div>
+  </div>
+);
+
+const YieldFarmingExamples = () => (
+  <div className="space-y-6 mb-8">
+    <h3 className="text-xl font-semibold text-blue-800">Real-World Examples of Yield Farming</h3>
+
+    <div className="grid md:grid-cols-2 gap-6">
+      <div className="bg-white p-6 rounded-lg shadow-sm">
+        <h4 className="font-semibold text-blue-700 mb-3">Example 1: Stablecoin Liquidity Pool</h4>
+        <p className="text-gray-700 mb-4">
+          Think of this like a digital savings account with better returns:
+        </p>
+        <ul className="list-disc list-inside space-y-2 text-gray-600">
+          <li>You deposit $1,000 worth of USDC and USDT (stablecoins)</li>
+          <li>Other traders use your liquidity to swap between these tokens</li>
+          <li>You earn 0.3% of each trade that uses your liquidity</li>
+          <li>Plus bonus reward tokens from the platform</li>
+          <li>Total APR could be 5-20% or more</li>
+        </ul>
+      </div>
+
+      <div className="bg-white p-6 rounded-lg shadow-sm">
+        <h4 className="font-semibold text-blue-700 mb-3">Example 2: ETH-USDC Pool</h4>
+        <p className="text-gray-700 mb-4">
+          Similar to running a tiny crypto exchange:
+        </p>
+        <ul className="list-disc list-inside space-y-2 text-gray-600">
+          <li>You provide equal value of ETH and USDC</li>
+          <li>Earn fees when people trade ETH for USDC or vice versa</li>
+          <li>Receive additional platform tokens as rewards</li>
+          <li>Higher risk but potentially higher returns (20-100% APR)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div className="bg-yellow-50 p-4 rounded-lg">
+      <h4 className="font-semibold text-yellow-800 mb-2">Important Note for Beginners</h4>
+      <p className="text-yellow-700">
+        While yield farming can offer attractive returns, it's important to start small and understand the risks:
+      </p>
+      <ul className="list-disc list-inside space-y-1 text-yellow-700 mt-2">
+        <li>Start with stable assets (like stablecoins) to minimize volatility risk</li>
+        <li>Use established platforms with good security track records</li>
+        <li>Be aware that higher APRs usually mean higher risks</li>
+        <li>Consider impermanent loss when providing liquidity for volatile assets</li>
+      </ul>
+    </div>
+  </div>
+);
+
 export default function LiquidityYield() {
   useScrollTop();
   const { updateProgress } = useProgress();
@@ -145,6 +220,17 @@ export default function LiquidityYield() {
     }
   ];
 
+  // Add auto-advance functionality for quiz
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (showExplanation && currentQuestion < quizQuestions.length - 1) {
+      timer = setTimeout(() => {
+        handleNextQuestion();
+      }, 4000); // 4 seconds delay before advancing
+    }
+    return () => clearTimeout(timer);
+  }, [showExplanation, currentQuestion]);
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
@@ -168,17 +254,18 @@ export default function LiquidityYield() {
               </h1>
 
               <div className="prose max-w-none">
-                {/* Introduction Section */}
                 <section className="mb-12">
                   <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-8 mb-8">
                     <h2 className="text-2xl font-semibold text-blue-800 mb-4">
                       What is Yield Farming?
                     </h2>
                     <p className="text-gray-700 mb-6">
-                      Yield farming is a DeFi strategy where users provide liquidity or stake assets to earn rewards.
-                      These rewards often come in multiple forms: trading fees, interest rates, and governance tokens.
-                      Think of it as putting your crypto assets to work in various DeFi protocols to maximize returns.
+                      Yield farming is like earning interest on your cryptocurrency assets, but with potentially higher returns than traditional banking. Instead of letting your crypto sit idle in a wallet, you put it to work in various DeFi (Decentralized Finance) protocols.
                     </p>
+                    <p className="text-gray-700 mb-6">
+                      Think of it like being both a bank and an investor: You provide your crypto assets to help others trade (like a bank providing loans), and in return, you earn a portion of the fees plus additional reward tokens (like earning both interest and stock dividends).
+                    </p>
+
                     <div className="grid md:grid-cols-3 gap-4">
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -225,7 +312,9 @@ export default function LiquidityYield() {
                     </div>
                   </div>
 
-                  {/* Yield Farming Strategies */}
+                  <APRExplanation />
+                  <YieldFarmingExamples />
+
                   <div className="grid md:grid-cols-2 gap-6 mb-8">
                     {yieldFarmingStrategies.map((strategy, index) => (
                       <motion.div
@@ -246,7 +335,6 @@ export default function LiquidityYield() {
                     ))}
                   </div>
 
-                  {/* Yield Farming Simulator */}
                   <section className="mb-12">
                     <h2 className="text-2xl font-semibold text-blue-700 mb-4">
                       Interactive Yield Farming Simulator
@@ -348,7 +436,6 @@ export default function LiquidityYield() {
                     </div>
                   </section>
 
-                  {/* Quiz Section */}
                   <section className="bg-white rounded-xl p-6 mt-8">
                     <h2 className="text-2xl font-semibold text-blue-800 mb-6">
                       Knowledge Check
