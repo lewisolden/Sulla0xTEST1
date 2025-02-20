@@ -121,8 +121,8 @@ export default function DefiModule1() {
   );
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto">
+    <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-blue-100 to-white">
+      <div className="max-w-5xl mx-auto rounded-lg shadow-lg p-8 bg-white">
         <div className="mb-6">
           <Link href="/curriculum">
             <Button variant="ghost" className="gap-2">
@@ -137,7 +137,7 @@ export default function DefiModule1() {
           transition={{ duration: 0.5 }}
         >
           <Card className="mb-8 overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+            <CardHeader className="bg-gradient-to-r from-sky-500 to-indigo-500 text-white">
               <CardTitle className="text-3xl font-bold">
                 Module 1: DeFi Fundamentals
               </CardTitle>
@@ -151,14 +151,7 @@ export default function DefiModule1() {
                   <p className="text-sm text-gray-500">Course Progress</p>
                   <p className="text-sm font-medium text-blue-600">{Math.round(progressPercentage)}%</p>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <motion.div
-                    className="bg-blue-600 h-2 rounded-full"
-                    initial={{ width: 0 }}
-                    animate={{ width: `${progressPercentage}%` }}
-                    transition={{ duration: 0.8, ease: "easeOut" }}
-                  />
-                </div>
+                <Progress value={progressPercentage} />
               </div>
 
               {loadingEnrollments ? (
@@ -177,7 +170,7 @@ export default function DefiModule1() {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5 }}
-                  className="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg text-center mb-6"
+                  className="bg-green-100 border border-green-200 text-green-800 px-4 py-3 rounded-lg text-center mb-6"
                 >
                   <CheckCircle2 className="h-6 w-6 text-green-500 mx-auto mb-2" />
                   <p className="font-medium">You are enrolled in this course</p>
@@ -250,7 +243,6 @@ export default function DefiModule1() {
                           Welcome to Module 1 of our DeFi course! This module introduces you to the revolutionary world of Decentralized Finance (DeFi). You'll learn how DeFi is transforming traditional financial systems through blockchain technology and smart contracts.
                         </motion.p>
 
-                        {/* Prerequisites Section */}
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
@@ -301,7 +293,6 @@ export default function DefiModule1() {
                           </div>
                         </motion.div>
 
-                        {/* Learning Objectives */}
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
@@ -365,6 +356,7 @@ export default function DefiModule1() {
                             ))}
                           </div>
                         </motion.div>
+
                       </div>
 
                       <motion.div
