@@ -7,44 +7,68 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, BookOpen, CheckCircle2, ArrowRight, Wallet } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCircle2, ArrowRight, Wallet, Database, Network, Shield } from "lucide-react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
+
+const sections = [
+  {
+    id: "defi-intro",
+    title: "1.1 What is DeFi?",
+    description: "Understand the fundamentals of decentralized finance and its potential to transform traditional financial systems",
+    icon: Database,
+    subsections: [
+      "Introduction to DeFi",
+      "Traditional Finance vs DeFi",
+      "Key DeFi Components",
+      "DeFi Use Cases"
+    ]
+  },
+  {
+    id: "blockchain-contracts",
+    title: "1.2 Blockchain & Smart Contracts",
+    description: "Learn how blockchain and smart contracts enable trustless financial applications",
+    icon: Network,
+    subsections: [
+      "Blockchain Fundamentals",
+      "Smart Contract Basics",
+      "Ethereum and DeFi",
+      "Gas and Transaction Fees"
+    ]
+  },
+  {
+    id: "dex-amm",
+    title: "1.3 DEXs & AMMs",
+    description: "Master decentralized exchanges and automated market makers",
+    icon: Wallet,
+    subsections: [
+      "How DEXs Work",
+      "AMM Mechanics",
+      "Liquidity Pools",
+      "Trading on DEXs"
+    ]
+  },
+  {
+    id: "liquidity-yield",
+    title: "1.4 Liquidity & Yield Farming",
+    description: "Explore liquidity provision and yield farming strategies",
+    icon: Shield,
+    subsections: [
+      "Providing Liquidity",
+      "Understanding Impermanent Loss",
+      "Yield Farming Strategies",
+      "Risk Management"
+    ]
+  }
+];
 
 export default function DefiModule1() {
   useScrollTop();
   const { progress } = useProgress();
   const { toast } = useToast();
 
-  const sections = [
-    {
-      id: "defi-intro",
-      title: "1.1 What is DeFi?",
-      description: "Learn about the fundamentals of DeFi and how it differs from traditional finance",
-      href: "/defi/module1/introduction"
-    },
-    {
-      id: "blockchain-contracts",
-      title: "1.2 Blockchain & Smart Contracts",
-      description: "Understand the role of blockchains and smart contracts in DeFi",
-      href: "/defi/module1/blockchain-contracts"
-    },
-    {
-      id: "dex-amm",
-      title: "1.3 DEXs & AMMs",
-      description: "Explore decentralized exchanges and automated market makers",
-      href: "/defi/module1/dex-amm"
-    },
-    {
-      id: "liquidity-yield",
-      title: "1.4 Liquidity & Yield Farming",
-      description: "Master liquidity provision and yield farming strategies",
-      href: "/defi/module1/liquidity-yield"
-    }
-  ];
-
   // Filter progress for DeFi module 1
-  const moduleProgress = progress.filter(p => p.moduleId.toString() === 'defi-module1');
+  const moduleProgress = progress.filter(p => p.moduleId === 3 && p.courseId === 3);
   const completedSections = moduleProgress.filter(p => p.completed).length;
   const totalSections = sections.length;
   const progressPercentage = (completedSections / totalSections) * 100;
@@ -65,10 +89,8 @@ export default function DefiModule1() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
         },
-        credentials: 'include',
-        body: JSON.stringify({ courseId: 3 }) // Course ID 3 for DeFi course
+        body: JSON.stringify({ courseId: 3 })
       });
 
       if (!response.ok) {
@@ -159,30 +181,36 @@ export default function DefiModule1() {
                 <CardContent className="pt-6">
                   <div className="prose max-w-none">
                     <h2 className="text-3xl font-bold text-blue-800 mb-6 text-center">
-                      Course Overview
+                      Welcome to DeFi Fundamentals
                     </h2>
 
                     <div className="space-y-4 text-gray-700">
                       <p>
-                        Welcome to DeFi Fundamentals! This module introduces you to the revolutionary world of Decentralized Finance (DeFi). You'll learn how DeFi is transforming traditional financial systems through blockchain technology and smart contracts.
+                        Welcome to Module 1 of our DeFi course! This module introduces you to the revolutionary world of Decentralized Finance (DeFi). You'll learn how DeFi is transforming traditional financial systems through blockchain technology and smart contracts.
                       </p>
 
                       <p>
-                        Through interactive lessons and practical examples, you'll understand the core concepts of DeFi, including decentralized exchanges, yield farming, and liquidity provision. We'll explore both the opportunities and risks in this emerging financial landscape.
+                        Through interactive lessons and practical examples, you'll understand:
                       </p>
+                      <ul className="list-disc pl-6 space-y-2">
+                        <li>The fundamental concepts of DeFi and how it differs from traditional finance</li>
+                        <li>How blockchain and smart contracts enable trustless financial applications</li>
+                        <li>The mechanics of decentralized exchanges (DEXs) and automated market makers (AMMs)</li>
+                        <li>Strategies for providing liquidity and participating in yield farming</li>
+                      </ul>
+
+                      <div className="bg-blue-50 p-4 rounded-lg mt-6">
+                        <h3 className="text-lg font-semibold text-blue-800 mb-2">Prerequisites</h3>
+                        <ul className="list-disc pl-6 text-blue-700">
+                          <li>Basic understanding of cryptocurrency concepts</li>
+                          <li>Familiarity with digital wallets</li>
+                          <li>Basic knowledge of blockchain technology</li>
+                        </ul>
+                      </div>
                     </div>
 
-                    <h3 className="text-xl font-semibold mt-8 mb-4">Learning Objectives</h3>
-                    <ul className="list-disc pl-6 space-y-2 text-gray-700">
-                      <li>Understand the fundamental concepts of DeFi</li>
-                      <li>Compare traditional finance with decentralized alternatives</li>
-                      <li>Learn about blockchain technology and smart contracts in DeFi</li>
-                      <li>Master DEX and AMM concepts</li>
-                      <li>Explore liquidity provision and yield farming strategies</li>
-                    </ul>
-
                     <div className="mt-8 flex justify-center">
-                      <Link href="/defi/module1/introduction">
+                      <Link href="/defi/module1/defi-intro">
                         <Button
                           size="lg"
                           className="bg-blue-600 hover:bg-blue-700"
@@ -203,25 +231,32 @@ export default function DefiModule1() {
                   const isComplete = sectionProgress?.completed || false;
 
                   return (
-                    <Link key={section.id} href={section.href}>
+                    <Link key={section.id} href={`/defi/module1/${section.id}`}>
                       <Card
                         className="transition-all duration-300 hover:shadow-md cursor-pointer"
                       >
                         <CardContent className="p-6">
-                          <div className="flex justify-between items-center">
-                            <div>
-                              <h3 className="text-xl font-semibold text-blue-800 mb-2">
-                                {section.title}
-                              </h3>
-                              <p className="text-gray-600">{section.description}</p>
+                          <div className="flex justify-between items-start">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-3 mb-2">
+                                <section.icon className="h-6 w-6 text-blue-500" />
+                                <h3 className="text-xl font-semibold text-blue-800">
+                                  {section.title}
+                                </h3>
+                              </div>
+                              <p className="text-gray-600 mb-4">{section.description}</p>
+                              <ul className="grid grid-cols-2 gap-2">
+                                {section.subsections.map((subsection, idx) => (
+                                  <li key={idx} className="text-sm text-gray-500 flex items-center gap-2">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                                    {subsection}
+                                  </li>
+                                ))}
+                              </ul>
                             </div>
-                            <div className="ml-4">
-                              {isComplete ? (
-                                <CheckCircle2 className="h-6 w-6 text-green-500" />
-                              ) : (
-                                <Wallet className="h-6 w-6 text-blue-500" />
-                              )}
-                            </div>
+                            {isComplete && (
+                              <CheckCircle2 className="h-6 w-6 text-green-500 ml-4" />
+                            )}
                           </div>
                         </CardContent>
                       </Card>
