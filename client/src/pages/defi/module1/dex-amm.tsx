@@ -5,11 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, ArrowRight, ArrowDownUp, Wallet, RefreshCw, Settings, Info } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowDownUp, Wallet, RefreshCw, Settings, Info, Check, X, CheckCircle2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaEthereum, FaExchangeAlt, FaChartLine } from "react-icons/fa";
+import { FaEthereum, FaExchangeAlt } from "react-icons/fa";
 import { BiDollarCircle } from "react-icons/bi";
 import { BsCurrencyExchange, BsGraphUp } from "react-icons/bs";
+import { SiSolana } from "react-icons/si";
 
 // Initial token data for the swap demo
 const initialTokens = {
@@ -29,6 +30,43 @@ const initialTokens = {
   },
 };
 
+// Quiz questions with explanations
+const quizQuestions = [
+  {
+    question: "What is the main advantage of using a DEX over a centralized exchange?",
+    options: [
+      "Non-custodial trading without intermediaries",
+      "Faster transaction speeds",
+      "Lower trading fees",
+      "Better user interface"
+    ],
+    correctAnswer: 0,
+    explanation: "DEXs allow users to trade directly from their wallets without surrendering custody of their funds to an intermediary, enhancing security and maintaining true ownership of assets."
+  },
+  {
+    question: "How do Automated Market Makers (AMMs) determine token prices?",
+    options: [
+      "By following centralized exchange prices",
+      "Through order books matching",
+      "Using mathematical formulas and liquidity pools",
+      "By manual price updates from administrators"
+    ],
+    correctAnswer: 2,
+    explanation: "AMMs use mathematical formulas (like the constant product formula x*y=k) and liquidity pools to automatically determine token prices based on the ratio of tokens in the pool."
+  },
+  {
+    question: "What is slippage in DEX trading?",
+    options: [
+      "A technical error in the smart contract",
+      "The time delay between trades",
+      "The difference between expected and actual execution price",
+      "The fee charged by the DEX"
+    ],
+    correctAnswer: 2,
+    explanation: "Slippage is the difference between the expected price of a trade and the actual executed price, often occurring due to market movement or large trade sizes relative to liquidity."
+  }
+];
+
 export default function DexAmm() {
   useScrollTop();
   const { updateProgress } = useProgress();
@@ -45,9 +83,37 @@ export default function DexAmm() {
     message: string;
   }>({ type: null, message: '' });
 
+  // Quiz state
+  const [showQuiz, setShowQuiz] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [quizCompleted, setQuizCompleted] = useState(false);
+  const [score, setScore] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
+  const [showExplanation, setShowExplanation] = useState(false);
+
   const handleComplete = async () => {
     await updateProgress(3, "dex-amm", true, 3);
     setIsCompleted(true);
+  };
+
+  // Quiz handlers
+  const handleAnswer = (selectedOption: number) => {
+    setSelectedAnswer(selectedOption);
+    setShowExplanation(true);
+
+    if (selectedOption === quizQuestions[currentQuestion].correctAnswer) {
+      setScore(prev => prev + 1);
+    }
+
+    setTimeout(() => {
+      if (currentQuestion < quizQuestions.length - 1) {
+        setCurrentQuestion(prev => prev + 1);
+        setSelectedAnswer(null);
+        setShowExplanation(false);
+      } else {
+        setQuizCompleted(true);
+      }
+    }, 3000);
   };
 
   // Calculate swap output based on exchange rate
@@ -193,6 +259,81 @@ export default function DexAmm() {
                   </div>
                 </section>
 
+                {/* Popular DEXs section */}
+                <section className="mb-12">
+                  <h2 className="text-2xl font-semibold text-blue-700 mb-4">
+                    Popular Decentralized Exchanges
+                  </h2>
+                  <p className="text-gray-700 mb-6">
+                    Explore some of the most innovative and widely-used decentralized exchanges in the ecosystem:
+                  </p>
+
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {[
+                      {
+                        name: "Uniswap",
+                        icon: FaExchangeAlt,  // Using a generic exchange icon for Uniswap
+                        description: "Leading Ethereum DEX with concentrated liquidity",
+                        url: "https://app.uniswap.org",
+                        features: ["V3 Architecture", "Multi-chain", "Best-in-class UX"]
+                      },
+                      {
+                        name: "Jupiter",
+                        icon: SiSolana,
+                        description: "Solana's most popular aggregator & DEX",
+                        url: "https://jup.ag",
+                        features: ["Best Price Routes", "High Speed", "Low Fees"]
+                      },
+                      {
+                        name: "Hyperliquid",
+                        icon: FaExchangeAlt,
+                        description: "Perpetual DEX with advanced features",
+                        url: "https://app.hyperliquid.xyz",
+                        features: ["Perpetuals", "Cross-margin", "Advanced Trading"]
+                      },
+                      {
+                        name: "dYdX",
+                        icon: BsCurrencyExchange,
+                        description: "Leading decentralized derivatives exchange",
+                        url: "https://dydx.exchange",
+                        features: ["Perpetual Trading", "Low Latency", "Cross-margin"]
+                      }
+                    ].map((dex, index) => (
+                      <motion.div
+                        key={dex.name}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                        className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300"
+                      >
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="bg-blue-100 rounded-full p-2">
+                            <dex.icon className="h-6 w-6 text-blue-600" />
+                          </div>
+                          <h3 className="text-xl font-semibold">{dex.name}</h3>
+                        </div>
+                        <p className="text-gray-600 mb-4">{dex.description}</p>
+                        <ul className="space-y-2 mb-4">
+                          {dex.features.map((feature, i) => (
+                            <li key={i} className="text-sm text-gray-500 flex items-center gap-2">
+                              <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                              {feature}
+                            </li>
+                          ))}
+                        </ul>
+                        <a
+                          href={dex.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center gap-1"
+                        >
+                          Visit {dex.name} <ArrowRight className="h-4 w-4" />
+                        </a>
+                      </motion.div>
+                    ))}
+                  </div>
+                </section>
+
                 <section className="mb-12">
                   <h2 className="text-2xl font-semibold text-blue-700 mb-4">
                     Interactive DEX Demo
@@ -233,7 +374,7 @@ export default function DexAmm() {
                               animate={{ opacity: 1, y: 0 }}
                               exit={{ opacity: 0, y: -10 }}
                               className={`p-3 rounded-lg ${
-                                swapStatus.type === 'success' 
+                                swapStatus.type === 'success'
                                   ? 'bg-green-50 border border-green-200 text-green-700'
                                   : 'bg-red-50 border border-red-200 text-red-700'
                               }`}
@@ -367,6 +508,189 @@ export default function DexAmm() {
                     </div>
                   </div>
                 </section>
+
+                {/* Quiz Section */}
+                {!showQuiz ? (
+                  <div className="text-center mt-8">
+                    <Button
+                      onClick={() => setShowQuiz(true)}
+                      className="bg-blue-600 hover:bg-blue-700 transform hover:scale-105 transition-all duration-300"
+                    >
+                      Take Topic Quiz
+                    </Button>
+                  </div>
+                ) : (
+                  <section className="bg-white/80 backdrop-blur-sm rounded-xl p-6 mt-8">
+                    <h2 className="text-2xl font-semibold text-blue-800 mb-6">
+                      Knowledge Check
+                    </h2>
+
+                    {!quizCompleted ? (
+                      <div>
+                        <div className="mb-6">
+                          <div className="flex justify-between items-center mb-2">
+                            <p className="text-sm text-gray-600">
+                              Question {currentQuestion + 1} of {quizQuestions.length}
+                            </p>
+                            <p className="text-sm font-medium text-blue-600">
+                              Score: {score}/{currentQuestion + (selectedAnswer !== null ? 1 : 0)}
+                            </p>
+                          </div>
+                          <div className="w-full bg-gray-200 rounded-full h-2">
+                            <motion.div
+                              className="bg-blue-600 h-2 rounded-full"
+                              initial={{ width: `${((currentQuestion) / quizQuestions.length) * 100}%` }}
+                              animate={{ width: `${((currentQuestion + 1) / quizQuestions.length) * 100}%` }}
+                              transition={{ duration: 0.5 }}
+                            />
+                          </div>
+                        </div>
+
+                        <motion.div
+                          key={currentQuestion}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5 }}
+                          className="space-y-6"
+                        >
+                          <h3 className="text-lg font-medium text-gray-800">
+                            {quizQuestions[currentQuestion].question}
+                          </h3>
+
+                          <div className="space-y-3">
+                            {quizQuestions[currentQuestion].options.map((option, index) => {
+                              const isSelected = selectedAnswer === index;
+                              const isCorrect = index === quizQuestions[currentQuestion].correctAnswer;
+                              const showResult = selectedAnswer !== null;
+
+                              return (
+                                <motion.div
+                                  key={index}
+                                  initial={{ opacity: 0, x: -20 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                                >
+                                  <Button
+                                    onClick={() => !selectedAnswer && handleAnswer(index)}
+                                    variant="outline"
+                                    className={`w-full justify-start text-left transition-all duration-300 ${
+                                      showResult
+                                        ? isCorrect
+                                          ? "bg-green-50 border-green-500 text-green-700"
+                                          : isSelected
+                                            ? "bg-red-50 border-red-500 text-red-700"
+                                            : ""
+                                        : "hover:bg-blue-50"
+                                    }`}
+                                    disabled={selectedAnswer !== null}
+                                  >
+                                    <div className="flex items-center justify-between w-full">
+                                      <span>{option}</span>
+                                      {showResult && (isCorrect || isSelected) && (
+                                        <motion.span
+                                          initial={{ scale: 0 }}
+                                          animate={{ scale: 1 }}
+                                          transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                                          className="ml-2"
+                                        >
+                                          {isCorrect ? (
+                                            <Check className="h-5 w-5 text-green-500" />
+                                          ) : (
+                                            <X className="h-5 w-5 text-red-500" />
+                                          )}
+                                        </motion.span>
+                                      )}
+                                    </div>
+                                  </Button>
+                                </motion.div>
+                              );
+                            })}
+                          </div>
+
+                          {showExplanation && (
+                            <motion.div
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.5 }}
+                              className={`mt-6 p-6 rounded-lg ${
+                                selectedAnswer === quizQuestions[currentQuestion].correctAnswer
+                                  ? "bg-green-50 border border-green-200"
+                                  : "bg-red-50 border border-red-200"
+                              }`}
+                            >
+                              <div className="flex items-start gap-3">
+                                {selectedAnswer === quizQuestions[currentQuestion].correctAnswer ? (
+                                  <CheckCircle2 className="h-6 w-6 text-green-500 mt-1" />
+                                ) : (
+                                  <X className="h-6 w-6 text-red-500 mt-1" />
+                                )}
+                                <div>
+                                  <h4 className={`font-medium mb-2 ${
+                                    selectedAnswer === quizQuestions[currentQuestion].correctAnswer
+                                      ? "text-green-800"
+                                      : "text-red-800"
+                                  }`}>
+                                    {selectedAnswer === quizQuestions[currentQuestion].correctAnswer
+                                      ? "Correct!"
+                                      : "Incorrect"
+                                    }
+                                  </h4>
+                                  <p className="text-gray-700">
+                                    {quizQuestions[currentQuestion].explanation}
+                                  </p>
+                                </div>
+                              </div>
+                            </motion.div>
+                          )}
+                        </motion.div>
+                      </div>
+                    ) : (
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5 }}
+                        className="text-center space-y-6"
+                      >
+                        <motion.div
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                        >
+                          <CheckCircle2 className="h-16 w-16 text-green-500 mx-auto" />
+                        </motion.div>
+
+                        <div>
+                          <h3 className="text-2xl font-semibold text-gray-800 mb-2">
+                            Quiz Completed!
+                          </h3>
+                          <p className="text-gray-600 text-lg mb-2">
+                            You scored {score} out of {quizQuestions.length}
+                          </p>
+                          <p className="text-gray-500">
+                            {score === quizQuestions.length
+                              ? "Perfect score! You've mastered this topic!"
+                              : "Keep learning and try again to improve your score!"}
+                          </p>
+                        </div>
+
+                        <Button
+                          onClick={() => {
+                            setShowQuiz(false);
+                            setCurrentQuestion(0);
+                            setScore(0);
+                            setQuizCompleted(false);
+                            setSelectedAnswer(null);
+                            setShowExplanation(false);
+                          }}
+                          variant="outline"
+                          className="transform hover:scale-105 transition-all duration-300"
+                        >
+                          Retake Quiz
+                        </Button>
+                      </motion.div>
+                    )}
+                  </section>
+                )}
 
                 <div className="flex justify-between items-center mt-12">
                   <Link href="/defi/module1/blockchain-contracts">
