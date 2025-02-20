@@ -7,7 +7,7 @@ import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { ArrowLeft, BookOpen, CheckCircle2, ArrowRight } from "lucide-react";
 
-const BitcoinLogo = () => (
+const BlockchainLogo = () => (
   <svg
     width="48"
     height="48"
@@ -15,9 +15,9 @@ const BitcoinLogo = () => (
     fill="none"
     className="inline-block mr-4"
   >
-    <circle cx="12" cy="12" r="12" fill="#F7931A"/>
+    <rect width="24" height="24" rx="12" fill="#3B82F6"/>
     <path
-      d="M16.662 10.661c.235-1.57-0.962-2.412-2.596-2.974l.53-2.126-1.295-.323-.517 2.072c-.34-.085-.69-.165-1.039-.244l.52-2.083-1.294-.323-.53 2.126c-.282-.064-.559-.128-.827-.194l.001-.006-1.785-.446-.344 1.382s.962.22.942.234c.525.131.62.48.604.756l-.606 2.432c.036.009.083.022.135.043l-.137-.034-.85 3.41c-.064.16-.228.4-.595.308.013.019-.942-.235-.942-.235l-.644 1.487 1.684.42c.313.079.62.161.922.238l-.536 2.15 1.293.323.53-2.127c.354.096.698.184 1.034.268l-.528 2.117 1.294.323.536-2.148c2.211.419 3.873.25 4.572-1.75.564-1.61-.028-2.538-1.191-3.144.847-.195 1.485-.752 1.655-1.903zm-2.961 4.153c-.4 1.61-3.11.74-3.99.522l.712-2.854c.879.22 3.697.654 3.278 2.332zm.401-4.176c-.366 1.465-2.621.72-3.353.538l.645-2.587c.731.182 3.089.522 2.708 2.049z"
+      d="M17 8h-3V6h-4v2H7v8h3v2h4v-2h3V8zm-8 6V10h2v4H9zm4 2v-8h2v8h-2z"
       fill="white"
     />
   </svg>
@@ -29,28 +29,28 @@ export default function Module2() {
 
   const sections = [
     {
-      id: "bitcoin-fundamentals",
-      title: "2.1 Bitcoin Fundamentals",
-      description: "Learn about the birth of Bitcoin, its historical context, and how Bitcoin works.",
-      href: "/modules/module2/bitcoin-fundamentals"
+      id: "blockchain-basics",
+      title: "2.1 Blockchain Basics",
+      description: "Learn about the fundamentals of blockchain technology and how it works.",
+      href: "/modules/module2/blockchain-basics"
     },
     {
-      id: "bitcoin-investment",
-      title: "2.2 Bitcoin as an Investment",
-      description: "Understand Bitcoin's value proposition, investment considerations, and Bitcoin ETFs.",
-      href: "/modules/module2/bitcoin-investment"
+      id: "distributed-ledger",
+      title: "2.2 Distributed Ledger Technology",
+      description: "Understand distributed ledger technology and its role in blockchain systems.",
+      href: "/modules/module2/distributed-ledger"
     },
     {
-      id: "security-risk",
-      title: "2.3 Security and Risk Management",
-      description: "Master essential security practices and risk management strategies for Bitcoin.",
-      href: "/modules/module2/security-risk"
+      id: "consensus-mechanisms",
+      title: "2.3 Consensus Mechanisms",
+      description: "Explore different consensus mechanisms used in blockchain networks.",
+      href: "/modules/module2/consensus-mechanisms"
     },
     {
-      id: "practical-exercises",
-      title: "2.4 Practical Exercises",
-      description: "Hands-on exercises to reinforce your understanding of Bitcoin concepts.",
-      href: "/modules/module2/exercises"
+      id: "smart-contracts",
+      title: "2.4 Smart Contracts",
+      description: "Learn about smart contracts and their applications in blockchain.",
+      href: "/modules/module2/smart-contracts"
     }
   ];
 
@@ -78,29 +78,29 @@ export default function Module2() {
           <Card className="mb-8">
             <CardHeader>
               <div className="flex items-center">
-                <BitcoinLogo />
+                <BlockchainLogo />
                 <CardTitle className="text-2xl font-bold text-blue-800">
-                  Module 2: Bitcoin Deep Dive
+                  Module 2: What is a Blockchain?
                 </CardTitle>
               </div>
             </CardHeader>
             <CardContent>
               <div className="prose max-w-none">
                 <p className="text-gray-600">
-                  Welcome to Module 2! Before diving into Bitcoin's technical aspects, let's address some common concerns:
+                  Welcome to Module 2! In this module, we'll explore the fundamental concepts of blockchain technology:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 text-gray-600">
-                  <li><strong>Do I need to buy a whole Bitcoin?</strong> No! Bitcoin is divisible into 100 million units called "satoshis" or "sats." You can start with as little as $10.</li>
-                  <li><strong>Is it too technical for me?</strong> While Bitcoin uses complex technology, using it is similar to mobile banking. Start with the basics, and your understanding will grow naturally.</li>
-                  <li><strong>What if I make a mistake?</strong> Start with small amounts while learning. Use test transactions and practice with minimal stakes to build confidence.</li>
+                  <li>Understanding blockchain's core architecture and principles</li>
+                  <li>How distributed ledger technology works</li>
+                  <li>Different consensus mechanisms and their importance</li>
+                  <li>Smart contracts and their applications</li>
                 </ul>
                 <h3 className="text-xl font-semibold mt-4 mb-2">What You'll Learn:</h3>
                 <ul className="list-disc pl-6 space-y-2 text-gray-600">
-                  <li>The historical context and significance of Bitcoin</li>
-                  <li>How Bitcoin works as a digital currency</li>
-                  <li>Investment considerations and Bitcoin ETFs</li>
-                  <li>Security practices and risk management</li>
-                  <li>Hands-on experience through practical exercises</li>
+                  <li>The structure and components of a blockchain</li>
+                  <li>How transactions are processed and validated</li>
+                  <li>Different types of consensus mechanisms</li>
+                  <li>Practical applications of smart contracts</li>
                 </ul>
               </div>
             </CardContent>
