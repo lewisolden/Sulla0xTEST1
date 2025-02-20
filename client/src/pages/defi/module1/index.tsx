@@ -207,6 +207,20 @@ export default function DefiModule1() {
                           <li>Basic knowledge of blockchain technology</li>
                         </ul>
                       </div>
+
+                      <div className="bg-green-50 p-4 rounded-lg mt-6">
+                        <h3 className="text-lg font-semibold text-green-800 mb-2">Learning Objectives</h3>
+                        <ul className="list-disc pl-6 text-green-700 space-y-2">
+                          <li>Define and explain the core concepts of Decentralized Finance (DeFi)</li>
+                          <li>Compare and contrast traditional financial systems with DeFi applications</li>
+                          <li>Understand how blockchain and smart contracts enable DeFi functionality</li>
+                          <li>Analyze the mechanics of decentralized exchanges (DEXs) and automated market makers (AMMs)</li>
+                          <li>Evaluate different liquidity provision strategies and their associated risks</li>
+                          <li>Identify and assess yield farming opportunities in the DeFi ecosystem</li>
+                          <li>Apply risk management principles to DeFi investments and trading</li>
+                          <li>Navigate common DeFi protocols and understand their interconnections</li>
+                        </ul>
+                      </div>
                     </div>
 
                     <div className="mt-8 flex justify-center">
