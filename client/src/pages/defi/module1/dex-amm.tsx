@@ -18,13 +18,13 @@ const tokens = {
     name: "USD Coin",
     decimals: 6,
     price: 1,
-    balance: 1000,
+    balance: 10000, // Updated balance to 10,000 USDC
   },
   ETH: {
     symbol: "ETH",
     name: "Ethereum",
     decimals: 18,
-    price: 3000,
+    price: 3000, // 1 ETH = 3,000 USDC
     balance: 5,
   },
 };
@@ -45,17 +45,14 @@ export default function DexAmm() {
     setIsCompleted(true);
   };
 
-  // Calculate swap output based on constant product formula (x * y = k)
+  // Calculate swap output based on exchange rate
   const calculateSwapOutput = (inputAmount: number): number => {
-    const poolSize = 1000000; // Mock liquidity pool size
-    const k = poolSize * poolSize; // Constant product
-
     if (swapDirection === "USDC_TO_ETH") {
-      const ethOut = poolSize - (k / (poolSize + inputAmount));
-      return ethOut * (1 - slippage / 100);
+      // Convert USDC to ETH (1 ETH = 3000 USDC)
+      return (inputAmount / 3000) * (1 - slippage / 100);
     } else {
-      const usdcOut = poolSize - (k / (poolSize + inputAmount));
-      return usdcOut * (1 - slippage / 100);
+      // Convert ETH to USDC (1 ETH = 3000 USDC)
+      return (inputAmount * 3000) * (1 - slippage / 100);
     }
   };
 
@@ -164,7 +161,26 @@ export default function DexAmm() {
                   </p>
 
                   <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-8 mb-8">
-                    <h3 className="text-xl font-semibold text-blue-800 mb-4">Interactive DEX Demo</h3>
+                    <div className="mb-6 bg-white/80 backdrop-blur-sm rounded-lg p-4">
+                      <h3 className="text-lg font-semibold text-blue-800 mb-2">Welcome to the DEX Demo!</h3>
+                      <p className="text-gray-600 mb-4">
+                        Try out a decentralized exchange with this interactive demo. You have:
+                      </p>
+                      <div className="flex gap-4">
+                        <div className="flex items-center gap-2 bg-blue-50 px-3 py-2 rounded-lg">
+                          <BiDollarCircle className="h-5 w-5 text-blue-500" />
+                          <span className="font-medium">{tokens.USDC.balance} USDC</span>
+                        </div>
+                        <div className="flex items-center gap-2 bg-blue-50 px-3 py-2 rounded-lg">
+                          <FaEthereum className="h-5 w-5 text-blue-500" />
+                          <span className="font-medium">{tokens.ETH.balance} ETH</span>
+                        </div>
+                      </div>
+                      <p className="text-sm text-gray-500 mt-2">
+                        Current exchange rate: 1 ETH = 3,000 USDC
+                      </p>
+                    </div>
+
                     <div className="max-w-md mx-auto bg-white rounded-xl shadow-lg p-6">
                       <div className="space-y-4">
                         <div className="space-y-2">
@@ -191,6 +207,9 @@ export default function DexAmm() {
                               )}
                             </Button>
                           </div>
+                          <p className="text-sm text-gray-500">
+                            Balance: {swapDirection === "USDC_TO_ETH" ? tokens.USDC.balance : tokens.ETH.balance} {swapDirection === "USDC_TO_ETH" ? "USDC" : "ETH"}
+                          </p>
                         </div>
 
                         <div className="flex justify-center">
@@ -255,8 +274,7 @@ export default function DexAmm() {
                                 <div className="flex justify-between text-sm">
                                   <span className="text-gray-600">Rate</span>
                                   <span className="text-gray-800">
-                                    1 {swapDirection === "USDC_TO_ETH" ? "ETH" : "USDC"} = 
-                                    {swapDirection === "USDC_TO_ETH" ? " 3000 USDC" : " 0.000333 ETH"}
+                                    1 ETH = 3,000 USDC
                                   </span>
                                 </div>
                                 <div className="flex justify-between text-sm">
@@ -266,7 +284,7 @@ export default function DexAmm() {
                                 <div className="flex justify-between text-sm">
                                   <span className="text-gray-600">Minimum Received</span>
                                   <span className="text-gray-800">
-                                    {inputAmount ? (calculateSwapOutput(parseFloat(inputAmount)) * (1 - slippage / 100)).toFixed(6) : "0.00"}
+                                    {inputAmount ? (calculateSwapOutput(parseFloat(inputAmount))).toFixed(6) : "0.00"}
                                     {" "}{swapDirection === "USDC_TO_ETH" ? "ETH" : "USDC"}
                                   </span>
                                 </div>
