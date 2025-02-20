@@ -32,75 +32,42 @@ router.get("/api/learning-path", async (req, res) => {
       orderBy: [desc(moduleProgress.lastAccessed)],
     });
 
-    // Calculate total time spent per course
-    const courseTimeStats = await db
+    // Get last completed quiz or topic for each course
+    const lastCompletedByCourse = {};
+    moduleProgressData.forEach(mp => {
+      if (mp.completed && (!lastCompletedByCourse[mp.courseId] || 
+          new Date(mp.completedAt) > new Date(lastCompletedByCourse[mp.courseId].completedAt))) {
+        lastCompletedByCourse[mp.courseId] = mp;
+      }
+    });
+
+    // Calculate course-specific stats
+    const courseStats = await db
       .select({ 
         courseId: moduleProgress.courseId,
-        totalTime: sql<number>`COALESCE(SUM(CASE 
-          WHEN ${moduleProgress.timeSpent} IS NULL THEN 5 
-          WHEN ${moduleProgress.timeSpent} = 0 THEN 5 
-          ELSE ${moduleProgress.timeSpent} 
-        END), 0)::integer`,
-        completedQuizzes: sql<number>`COUNT(CASE WHEN ${moduleProgress.score} IS NOT NULL THEN 1 END)::integer`
+        totalTime: sql<number>`COALESCE(SUM(${moduleProgress.timeSpent}), 0)::integer`,
+        completedQuizzes: sql<number>`COUNT(CASE WHEN ${moduleProgress.score} IS NOT NULL AND ${moduleProgress.completed} = true THEN 1 END)::integer`,
+        lastCompletedPath: sql<string>`MAX(CASE WHEN ${moduleProgress.completed} = true THEN ${moduleProgress.sectionId} END)`,
+        lastQuizPath: sql<string>`MAX(CASE WHEN ${moduleProgress.score} IS NOT NULL AND ${moduleProgress.completed} = true THEN ${moduleProgress.sectionId} END)`
       })
       .from(moduleProgress)
       .where(eq(moduleProgress.userId, userId))
       .groupBy(moduleProgress.courseId);
 
-    // Get recommendations based on progress
-    const lastModule = moduleProgressData[0];
-    let recommendations = {
-      nextTopic: "module1/getting-started",
-      reason: "Start your learning journey with the basics",
-      suggestedResources: ["Introduction to Cryptocurrency", "Digital Currency Basics"]
-    };
-
-    if (lastModule) {
-      const courseId = lastModule.courseId;
-      const completedSections = moduleProgressData.filter(mp => mp.completed && mp.courseId === courseId).length;
-
-      // Set recommendations based on course progress
-      if (courseId === 1) { // Crypto course
-        if (completedSections >= 3) {
-          recommendations = {
-            nextTopic: "module2/bitcoin-fundamentals",
-            reason: "You've completed the basics. Time to dive deeper into Bitcoin!",
-            suggestedResources: ["Bitcoin Technical Analysis", "Understanding Blockchain"]
-          };
-        }
-      } else if (courseId === 2) { // AI course
-        if (completedSections >= 3) {
-          recommendations = {
-            nextTopic: "ai/module2",
-            reason: "Ready to explore advanced AI concepts",
-            suggestedResources: ["Machine Learning Basics", "Neural Networks"]
-          };
-        }
-      } else if (courseId === 3) { // DeFi course
-        if (completedSections >= 3) {
-          recommendations = {
-            nextTopic: "defi/module2",
-            reason: "Time to explore advanced DeFi concepts",
-            suggestedResources: ["DeFi Protocols", "Yield Farming"]
-          };
-        }
-      }
-    }
-
-    // Format course progress stats
-    const courseStats = courseTimeStats.map(stat => ({
+    // Format stats for response
+    const formattedStats = courseStats.map(stat => ({
       courseId: stat.courseId,
       title: COURSE_TITLES[stat.courseId as keyof typeof COURSE_TITLES],
       totalLearningTime: stat.totalTime,
       completedQuizzes: stat.completedQuizzes,
-      completedSections: moduleProgressData.filter(mp => 
-        mp.completed && mp.courseId === stat.courseId
-      ).length
+      lastPath: stat.lastQuizPath || stat.lastCompletedPath,
+      defaultPath: stat.courseId === 1 ? '/modules/module1' :
+                  stat.courseId === 2 ? '/ai/module1' :
+                  '/defi/module1'
     }));
 
     res.json({
-      recommendations,
-      courseStats
+      courseStats: formattedStats
     });
 
   } catch (error) {

@@ -40,6 +40,7 @@ interface CourseStats {
   courseId: number;
   totalLearningTime: number;
   completedQuizzes: number;
+  lastPath?: string; // Added lastPath to CourseStats
 }
 
 interface UserMetrics {
@@ -89,37 +90,29 @@ export default function AccountPage() {
 
   const getContinueLearningPath = (enrollment: Enrollment) => {
     try {
-      const courseTitle = enrollment.course.title.toLowerCase();
+      const courseStats = metrics?.courseStats?.find(
+        stat => stat.courseId === enrollment.courseId
+      );
 
-      // Handle AI course
-      if (courseTitle.includes('introduction to ai')) {
-        if (enrollment.metadata?.lastPath) {
-          return enrollment.metadata.lastPath;
-        }
-        return '/ai/module1';
-      }
-
-      // Handle DeFi course
-      if (courseTitle.includes('mastering defi')) {
-        if (enrollment.metadata?.lastPath) {
-          return enrollment.metadata.lastPath;
-        }
-        return '/defi/module1';
+      // If we have course stats with a last path, use it
+      if (courseStats?.lastPath) {
+        return courseStats.lastPath;
       }
 
-      // Default to Crypto course (Introduction to Cryptocurrency)
-      if (enrollment.metadata?.lastPath) {
-        return enrollment.metadata.lastPath;
+      // Otherwise use the default path based on course type
+      switch (enrollment.courseId) {
+        case 1:
+          return '/modules/module1';
+        case 2:
+          return '/ai/module1';
+        case 3:
+          return '/defi/module1';
+        default:
+          return '/modules/module1';
       }
-      // If no last path, check for last module
-      const moduleMatch = enrollment.metadata?.lastModule?.match(/Module (\d+)/i);
-      if (moduleMatch) {
-        return `/modules/module${moduleMatch[1]}`;
-      }
-      return `/modules/module1`;
     } catch (error) {
       console.error('[Account] Error in getContinueLearningPath:', error);
-      return `/modules/module1`;
+      return '/modules/module1';
     }
   };
 
