@@ -305,7 +305,7 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             <Link href="/curriculum?subject=crypto">
               <motion.div
                 whileHover={{ scale: 1.02 }}
@@ -329,6 +329,19 @@ export default function Home() {
                   title="Course 2: Introduction to Artificial Intelligence"
                   description="Explore the fundamentals of AI, machine learning, and their real-world applications through hands-on learning."
                   link="/curriculum?subject=ai"
+                />
+              </motion.div>
+            </Link>
+            <Link href="/curriculum?subject=defi">
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.2 }}
+              >
+                <ModuleCard
+                  icon={Wallet}
+                  title="Course 3: DeFi Fundamentals"
+                  description="Learn the core concepts behind decentralized finance and how it transforms traditional financial systems."
+                  link="/curriculum?subject=defi"
                 />
               </motion.div>
             </Link>
