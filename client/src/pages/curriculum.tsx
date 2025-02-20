@@ -1,5 +1,5 @@
 import { Link, useLocation, useLocation as useLocationHook } from "wouter";
-import { BookOpen, GraduationCap, Zap, Gamepad2, CreditCard, Dumbbell, Lightbulb, Brain, Code, Globe, CheckCircle2, ArrowRight } from "lucide-react";
+import { BookOpen, GraduationCap, Zap, Gamepad2, CreditCard, Dumbbell, Lightbulb, Brain, Code, Globe, CheckCircle2, ArrowRight, Wallet, Shield, Rocket } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PersonalizedPath } from "@/components/learning/personalized-path";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -14,7 +14,8 @@ import { useAuth } from "@/hooks/use-auth";
 
 const subjects = [
   { id: "crypto", name: "Cryptocurrency" },
-  { id: "ai", name: "Artificial Intelligence" }
+  { id: "ai", name: "Artificial Intelligence" },
+  { id: "defi", name: "Decentralized Finance" }
 ];
 
 const courses = [
@@ -118,6 +119,68 @@ const courses = [
         path: "/ai/module3"
       }
     ]
+  },
+  {
+    id: 3,
+    title: "Mastering DeFi",
+    description: "A comprehensive exploration of decentralized finance, from fundamentals to advanced trading strategies and risk management.",
+    subject: "defi",
+    level: "beginner",
+    modules: [
+      {
+        id: 1,
+        icon: Wallet,
+        title: "Module 1: DeFi Fundamentals",
+        description: "Learn the core concepts behind decentralized finance and how it transforms traditional financial systems.",
+        sections: [
+          "1.1 What is DeFi?",
+          "1.2 Blockchain & Smart Contracts",
+          "1.3 Decentralized Exchanges (DEXs) & AMMs",
+          "1.4 Liquidity & Yield Farming"
+        ],
+        path: "/defi/module1"
+      },
+      {
+        id: 2,
+        icon: CreditCard,
+        title: "Module 2: Advanced DeFi Trading & Strategies",
+        description: "Dive deeper into perpetual futures, options, cross-chain swaps, and advanced DeFi mechanisms.",
+        sections: [
+          "2.1 Perpetual Futures & Hyperliquid",
+          "2.2 Options Trading in DeFi",
+          "2.3 Cross-Chain Liquidity & Jupiter Exchange",
+          "2.4 Flash Loans & Arbitrage",
+          "2.5 DeFi Lending & Borrowing"
+        ],
+        path: "/defi/module2"
+      },
+      {
+        id: 3,
+        icon: Shield,
+        title: "Module 3: Practical DeFi & Risk Management",
+        description: "Learn how to build a DeFi portfolio, protect assets, and understand regulations.",
+        sections: [
+          "3.1 Building a DeFi Portfolio",
+          "3.2 Security & Avoiding Scams",
+          "3.3 Regulatory Landscape & Compliance",
+          "3.4 The Future of DeFi"
+        ],
+        path: "/defi/module3"
+      },
+      {
+        id: 4,
+        icon: Rocket,
+        title: "Module 4: Memecoins & Speculation",
+        description: "Explore the culture, hype cycles, and extreme risks behind memecoins.",
+        sections: [
+          "4.1 What Are Memecoins?",
+          "4.2 How Memecoins Gain & Lose Value",
+          "4.3 Trading & Speculating on Memecoins",
+          "4.4 The Extreme Risks of Memecoins"
+        ],
+        path: "/defi/module4"
+      }
+    ]
   }
 ];
 
@@ -158,9 +221,9 @@ export default function Curriculum() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const subject = params.get('subject');
-    if (subject && (subject === 'crypto' || subject === 'ai')) {
+    if (subject && (subject === 'crypto' || subject === 'ai' || subject === 'defi')) {
       setSelectedSubject(subject);
-      setSelectedCourse(subject === 'crypto' ? '1' : '2');
+      setSelectedCourse(subject === 'crypto' ? '1' : subject === 'ai' ? '2' : '3');
     }
   }, [setLocation]);
 
