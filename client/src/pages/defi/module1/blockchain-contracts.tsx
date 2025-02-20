@@ -103,9 +103,9 @@ export default function BlockchainContracts() {
     }
 
     if (amount > contractState.threshold) {
-      setExerciseOutput(prev => [...prev, { 
-        type: 'error', 
-        message: `Transfer amount exceeds threshold (${contractState.threshold} tokens). Transaction rejected.` 
+      setExerciseOutput(prev => [...prev, {
+        type: 'error',
+        message: `Transfer amount exceeds threshold (${contractState.threshold} tokens). Transaction rejected.`
       }]);
       return;
     }
@@ -117,9 +117,9 @@ export default function BlockchainContracts() {
       lastTransaction: amount
     }));
 
-    setExerciseOutput(prev => [...prev, { 
-      type: 'success', 
-      message: `Successfully transferred ${amount} tokens. New balance: ${contractState.balance - amount} tokens.` 
+    setExerciseOutput(prev => [...prev, {
+      type: 'success',
+      message: `Successfully transferred ${amount} tokens. New balance: ${contractState.balance - amount} tokens.`
     }]);
     setTransferAmount("");
   };
@@ -250,29 +250,78 @@ export default function BlockchainContracts() {
                   </div>
 
                   {/* Smart Contract Exercise */}
-                  <div className="bg-white border border-gray-200 rounded-lg p-6 mb-8">
-                    <h3 className="text-xl font-semibold text-blue-800 mb-4">
-                      Practical Exercise: Token Transfer Smart Contract
+                  <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-8 mb-8">
+                    <h3 className="text-2xl font-semibold text-blue-800 mb-4 flex items-center gap-2">
+                      <Code2 className="h-6 w-6" />
+                      Interactive Smart Contract Simulator
                     </h3>
-                    <p className="text-gray-600 mb-4">
-                      Interact with a simulated smart contract that manages token transfers with predefined rules.
-                      The contract has a balance of 100 tokens and a transfer threshold of 50 tokens.
+                    <p className="text-gray-700 mb-6">
+                      Experience how smart contracts work by interacting with this simulated token transfer contract.
+                      The contract implements basic safety features like balance checks and transfer limits.
                     </p>
 
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <h4 className="font-semibold text-blue-700 mb-2">Contract State</h4>
-                        <div className="bg-gray-50 p-4 rounded-lg">
-                          <p className="text-gray-700">Balance: {contractState.balance} tokens</p>
-                          <p className="text-gray-700">Transfer Threshold: {contractState.threshold} tokens</p>
-                          {contractState.lastTransaction && (
-                            <p className="text-gray-700">Last Transaction: {contractState.lastTransaction} tokens</p>
-                          )}
-                        </div>
+                    {/* Contract Features */}
+                    <div className="grid md:grid-cols-3 gap-4 mb-6">
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.3 }}
+                        className="bg-white p-4 rounded-lg shadow-sm"
+                      >
+                        <LockIcon className="h-6 w-6 text-blue-500 mb-2" />
+                        <h4 className="font-semibold text-blue-700 mb-1">Safety Controls</h4>
+                        <p className="text-sm text-gray-600">Built-in limits and balance checks prevent unauthorized transfers</p>
+                      </motion.div>
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.3, delay: 0.1 }}
+                        className="bg-white p-4 rounded-lg shadow-sm"
+                      >
+                        <Database className="h-6 w-6 text-blue-500 mb-2" />
+                        <h4 className="font-semibold text-blue-700 mb-1">State Management</h4>
+                        <p className="text-sm text-gray-600">Contract maintains balance and transaction history</p>
+                      </motion.div>
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.3, delay: 0.2 }}
+                        className="bg-white p-4 rounded-lg shadow-sm"
+                      >
+                        <RefreshCw className="h-6 w-6 text-blue-500 mb-2" />
+                        <h4 className="font-semibold text-blue-700 mb-1">Automated Execution</h4>
+                        <p className="text-sm text-gray-600">Instant validation and processing of transfers</p>
+                      </motion.div>
+                    </div>
 
-                        <div className="mt-4 space-y-4">
+                    <div className="grid md:grid-cols-2 gap-6">
+                      {/* Contract Interface */}
+                      <div className="bg-white rounded-lg p-6 shadow-md">
+                        <h4 className="font-semibold text-blue-800 mb-4 flex items-center gap-2">
+                          <Settings className="h-5 w-5" />
+                          Contract Interface
+                        </h4>
+
+                        <div className="space-y-4">
+                          <div className="bg-gray-50 p-4 rounded-lg">
+                            <div className="flex justify-between mb-2">
+                              <span className="text-sm text-gray-600">Current Balance:</span>
+                              <span className="font-medium text-blue-600">{contractState.balance} tokens</span>
+                            </div>
+                            <div className="flex justify-between mb-2">
+                              <span className="text-sm text-gray-600">Transfer Limit:</span>
+                              <span className="font-medium text-blue-600">{contractState.threshold} tokens</span>
+                            </div>
+                            {contractState.lastTransaction && (
+                              <div className="flex justify-between">
+                                <span className="text-sm text-gray-600">Last Transfer:</span>
+                                <span className="font-medium text-blue-600">{contractState.lastTransaction} tokens</span>
+                              </div>
+                            )}
+                          </div>
+
                           <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
                               Transfer Amount
                             </label>
                             <div className="flex gap-2">
@@ -283,11 +332,11 @@ export default function BlockchainContracts() {
                                 placeholder="Enter amount to transfer"
                                 className="flex-1"
                               />
-                              <Button 
+                              <Button
                                 onClick={executeSmartContract}
-                                className="bg-blue-600 hover:bg-blue-700"
+                                className="bg-blue-600 hover:bg-blue-700 transform hover:scale-105 transition-all duration-300"
                               >
-                                Execute
+                                Execute Transfer
                               </Button>
                             </div>
                           </div>
@@ -295,30 +344,69 @@ export default function BlockchainContracts() {
                           <Button
                             onClick={resetExercise}
                             variant="outline"
-                            className="w-full"
+                            className="w-full hover:bg-gray-50 transition-colors"
                           >
                             Reset Contract State
                           </Button>
                         </div>
                       </div>
 
-                      <div>
-                        <h4 className="font-semibold text-blue-700 mb-2">Transaction Log</h4>
-                        <div className="bg-gray-50 p-4 rounded-lg h-[200px] overflow-y-auto">
-                          {exerciseOutput.map((output, index) => (
-                            <div
-                              key={index}
-                              className={`mb-2 text-sm ${
-                                output.type === 'success' ? 'text-green-600' : 'text-red-600'
-                              }`}
-                            >
-                              {output.message}
-                            </div>
-                          ))}
+                      {/* Transaction Log */}
+                      <div className="bg-white rounded-lg p-6 shadow-md">
+                        <h4 className="font-semibold text-blue-800 mb-4 flex items-center gap-2">
+                          <FileCode className="h-5 w-5" />
+                          Transaction Log
+                        </h4>
+                        <div className="bg-gray-50 p-4 rounded-lg h-[250px] overflow-y-auto">
+                          {exerciseOutput.length === 0 ? (
+                            <p className="text-gray-500 text-center italic">No transactions yet. Try executing a transfer!</p>
+                          ) : (
+                            exerciseOutput.map((output, index) => (
+                              <motion.div
+                                key={index}
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.3 }}
+                                className={`mb-2 p-2 rounded ${
+                                  output.type === 'success'
+                                    ? 'bg-green-50 text-green-700 border border-green-200'
+                                    : 'bg-red-50 text-red-700 border border-red-200'
+                                }`}
+                              >
+                                <div className="flex items-start gap-2">
+                                  {output.type === 'success'
+                                    ? <Check className="h-4 w-4 mt-1" />
+                                    : <X className="h-4 w-4 mt-1" />
+                                  }
+                                  <span className="text-sm">{output.message}</span>
+                                </div>
+                              </motion.div>
+                            ))
+                          )}
                         </div>
                       </div>
                     </div>
+
+                    {/* Smart Contract Rules */}
+                    <div className="mt-6 bg-white p-4 rounded-lg shadow-sm">
+                      <h4 className="font-semibold text-blue-800 mb-3">Contract Rules:</h4>
+                      <ul className="space-y-2 text-sm text-gray-700">
+                        <li className="flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                          Transfer amount must be positive and less than current balance
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                          Transfers exceeding 50 tokens will be rejected (transfer threshold)
+                        </li>
+                        <li className="flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                          Contract state updates automatically after successful transfers
+                        </li>
+                      </ul>
+                    </div>
                   </div>
+
                 </section>
 
                 {!showQuiz ? (

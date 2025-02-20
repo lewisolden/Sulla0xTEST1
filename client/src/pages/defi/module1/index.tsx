@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, BookOpen, CheckCircle2, ArrowRight, Wallet, Database, Network, Shield, TrendingUp } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCircle2, ArrowRight, Wallet, Database, Network, Shield, TrendingUp, Code2, RefreshCw, Settings } from "lucide-react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 
@@ -250,56 +250,121 @@ export default function DefiModule1() {
                           Welcome to Module 1 of our DeFi course! This module introduces you to the revolutionary world of Decentralized Finance (DeFi). You'll learn how DeFi is transforming traditional financial systems through blockchain technology and smart contracts.
                         </motion.p>
 
+                        {/* Prerequisites Section */}
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.5, delay: 0.4 }}
-                          className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg"
+                          className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-6 rounded-lg shadow-lg"
                         >
-                          <h3 className="text-xl font-semibold text-blue-800 mb-4">What You'll Learn</h3>
+                          <h3 className="text-xl font-semibold text-blue-800 mb-4 flex items-center gap-2">
+                            <Database className="h-6 w-6" />
+                            Prerequisites
+                          </h3>
+                          <div className="grid md:grid-cols-3 gap-4">
+                            <motion.div
+                              initial={{ scale: 0.9, opacity: 0 }}
+                              animate={{ scale: 1, opacity: 1 }}
+                              transition={{ duration: 0.3, delay: 0.5 }}
+                              className="bg-white p-4 rounded-lg shadow-sm"
+                            >
+                              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mb-2">
+                                <Wallet className="h-4 w-4 text-blue-600" />
+                              </div>
+                              <h4 className="font-medium text-blue-700 mb-1">Crypto Basics</h4>
+                              <p className="text-sm text-gray-600">Understanding of cryptocurrency concepts</p>
+                            </motion.div>
+                            <motion.div
+                              initial={{ scale: 0.9, opacity: 0 }}
+                              animate={{ scale: 1, opacity: 1 }}
+                              transition={{ duration: 0.3, delay: 0.6 }}
+                              className="bg-white p-4 rounded-lg shadow-sm"
+                            >
+                              <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center mb-2">
+                                <Shield className="h-4 w-4 text-indigo-600" />
+                              </div>
+                              <h4 className="font-medium text-blue-700 mb-1">Digital Wallets</h4>
+                              <p className="text-sm text-gray-600">Experience with crypto wallets</p>
+                            </motion.div>
+                            <motion.div
+                              initial={{ scale: 0.9, opacity: 0 }}
+                              animate={{ scale: 1, opacity: 1 }}
+                              transition={{ duration: 0.3, delay: 0.7 }}
+                              className="bg-white p-4 rounded-lg shadow-sm"
+                            >
+                              <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mb-2">
+                                <Network className="h-4 w-4 text-purple-600" />
+                              </div>
+                              <h4 className="font-medium text-blue-700 mb-1">Blockchain Basics</h4>
+                              <p className="text-sm text-gray-600">Basic blockchain knowledge</p>
+                            </motion.div>
+                          </div>
+                        </motion.div>
+
+                        {/* Learning Objectives */}
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5, delay: 0.8 }}
+                          className="bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 p-6 rounded-lg shadow-lg"
+                        >
+                          <h3 className="text-xl font-semibold text-green-800 mb-4 flex items-center gap-2">
+                            <TrendingUp className="h-6 w-6" />
+                            Learning Objectives
+                          </h3>
                           <div className="grid md:grid-cols-2 gap-4">
                             {[
-                              { icon: Database, text: "Core DeFi concepts and principles" },
-                              { icon: Shield, text: "Security and risk management" },
-                              { icon: Wallet, text: "DEX and AMM mechanics" },
-                              { icon: TrendingUp, text: "Yield farming strategies" }
-                            ].map((item, index) => (
+                              {
+                                icon: Database,
+                                title: "DeFi Fundamentals",
+                                description: "Master core DeFi concepts and principles"
+                              },
+                              {
+                                icon: Network,
+                                title: "System Comparison",
+                                description: "Compare traditional finance with DeFi applications"
+                              },
+                              {
+                                icon: Code2,
+                                title: "Smart Contracts",
+                                description: "Understand blockchain and smart contract functionality"
+                              },
+                              {
+                                icon: RefreshCw,
+                                title: "DEX Mechanics",
+                                description: "Analyze decentralized exchanges and AMMs"
+                              },
+                              {
+                                icon: Shield,
+                                title: "Risk Management",
+                                description: "Apply DeFi risk management principles"
+                              },
+                              {
+                                icon: Settings,
+                                title: "Protocol Navigation",
+                                description: "Navigate and understand DeFi protocols"
+                              }
+                            ].map((objective, index) => (
                               <motion.div
                                 key={index}
-                                initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                                className="flex items-center gap-3 bg-white p-3 rounded-lg shadow-sm"
+                                initial={{ scale: 0.9, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                transition={{ duration: 0.3, delay: 0.9 + index * 0.1 }}
+                                className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1"
                               >
-                                <item.icon className="h-5 w-5 text-blue-500" />
-                                <span className="text-gray-700">{item.text}</span>
+                                <div className="flex items-start gap-3">
+                                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
+                                    <objective.icon className="h-4 w-4 text-green-600" />
+                                  </div>
+                                  <div>
+                                    <h4 className="font-medium text-green-700 mb-1">{objective.title}</h4>
+                                    <p className="text-sm text-gray-600">{objective.description}</p>
+                                  </div>
+                                </div>
                               </motion.div>
                             ))}
                           </div>
                         </motion.div>
-
-                        <div className="bg-blue-50 p-4 rounded-lg mt-6">
-                          <h3 className="text-lg font-semibold text-blue-800 mb-2">Prerequisites</h3>
-                          <ul className="list-disc pl-6 text-blue-700">
-                            <li>Basic understanding of cryptocurrency concepts</li>
-                            <li>Familiarity with digital wallets</li>
-                            <li>Basic knowledge of blockchain technology</li>
-                          </ul>
-                        </div>
-
-                        <div className="bg-green-50 p-4 rounded-lg mt-6">
-                          <h3 className="text-lg font-semibold text-green-800 mb-2">Learning Objectives</h3>
-                          <ul className="list-disc pl-6 text-green-700 space-y-2">
-                            <li>Define and explain the core concepts of Decentralized Finance (DeFi)</li>
-                            <li>Compare and contrast traditional financial systems with DeFi applications</li>
-                            <li>Understand how blockchain and smart contracts enable DeFi functionality</li>
-                            <li>Analyze the mechanics of decentralized exchanges (DEXs) and automated market makers (AMMs)</li>
-                            <li>Evaluate different liquidity provision strategies and their associated risks</li>
-                            <li>Identify and assess yield farming opportunities in the DeFi ecosystem</li>
-                            <li>Apply risk management principles to DeFi investments and trading</li>
-                            <li>Navigate common DeFi protocols and understand their interconnections</li>
-                          </ul>
-                        </div>
                       </div>
 
                       <motion.div
@@ -423,8 +488,8 @@ export default function DefiModule1() {
                         <Button
                           size="lg"
                           className={`transform transition-all duration-300 ${
-                            progressPercentage >= 100 
-                              ? "bg-green-600 hover:bg-green-700 hover:scale-105" 
+                            progressPercentage >= 100
+                              ? "bg-green-600 hover:bg-green-700 hover:scale-105"
                               : "bg-gray-400"
                           }`}
                           disabled={progressPercentage < 100}
