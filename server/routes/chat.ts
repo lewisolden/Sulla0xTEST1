@@ -4,12 +4,6 @@ import { db } from "@db";
 import { eq } from 'drizzle-orm';
 import { courseEnrollments } from "@db/schema";
 
-declare module 'express-session' {
-  interface Session {
-    userId?: number;
-  }
-}
-
 const router = Router();
 
 const chatSchema = z.object({
@@ -69,7 +63,25 @@ router.post("/api/chat", async (req, res) => {
       userProgress = null;
     }
 
-    let systemMessage = `You are Sensei, Sulla's friendly AI learning companion. Your role is to provide clear, concise guidance while maintaining a warm and encouraging tone. You're an expert in blockchain and AI, focusing exclusively on Sulla's curriculum.
+    // Check if API key exists
+    if (!process.env.PERPLEXITY_API_KEY) {
+      console.error('[Chat] Missing Perplexity API key');
+      throw new Error('API key configuration error');
+    }
+
+    console.log('[Chat] Sending request to Perplexity API');
+    const response = await fetch('https://api.perplexity.ai/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.PERPLEXITY_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: 'llama-3.1-sonar-small-128k-online',
+        messages: [
+          {
+            role: 'system',
+            content: `You are Sensei, Sulla's friendly AI learning companion. Your role is to provide clear, concise guidance while maintaining a warm and encouraging tone. You're an expert in blockchain and AI, focusing exclusively on Sulla's curriculum.
 
 Key principles:
 - Be concise and clear - keep responses under 3-4 sentences when possible
@@ -90,46 +102,7 @@ When responding:
 3. Encourage completion of partially finished modules
 ` : ''}
 
-Current context: `;
-
-    // Add detailed context based on the current section
-    if (context.includes('/ai/')) {
-      systemMessage += `You're assisting with our AI curriculum. Reference only these specific modules:
-- AI Foundations: Basic concepts and terminology
-- Machine Learning Fundamentals: Core ML principles
-- Neural Networks: Deep learning basics
-- AI Applications: Real-world use cases
-
-Direct students to specific sections and exercises within these modules.`;
-    } else if (context.includes('/blockchain/')) {
-      systemMessage += `You're assisting with our Blockchain curriculum. Reference only these specific modules:
-- Blockchain Foundations: Core concepts and architecture
-- Bitcoin Deep Dive: Bitcoin protocol and mechanics
-- Ethereum & Smart Contracts: Smart contract development
-- Advanced Topics: DeFi, NFTs, and emerging trends
-
-Guide students to relevant sections and practical exercises within these modules.`;
-    }
-
-    // Check if API key exists
-    if (!process.env.PERPLEXITY_API_KEY) {
-      console.error('[Chat] Missing Perplexity API key');
-      throw new Error('API key configuration error');
-    }
-
-    console.log('[Chat] Sending request to Perplexity API');
-    const response = await fetch('https://api.perplexity.ai/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${process.env.PERPLEXITY_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'llama-3.1-sonar-small-128k-online',
-        messages: [
-          {
-            role: 'system',
-            content: systemMessage
+Current context: ${context}`
           },
           {
             role: 'user',
