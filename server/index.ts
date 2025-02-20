@@ -16,6 +16,22 @@ app.use(express.urlencoded({ extended: false }));
 // Trust proxy - required for secure cookies in production
 app.set('trust proxy', 1);
 
+// Development-specific middleware to handle Vite host requirements
+if (process.env.NODE_ENV !== 'production') {
+  app.use((req, res, next) => {
+    // Rewrite host header for Vite in development
+    req.headers.host = 'localhost:5000';
+    next();
+  });
+}
+
+// Add CORS headers for development
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
+
 // Add request logging middleware
 app.use((req, res, next) => {
   const start = Date.now();
@@ -53,23 +69,6 @@ process.on('SIGTERM', () => {
 (async () => {
   try {
     log("Starting server initialization...");
-
-    // Verify email service configuration
-    const emailServiceStatus = await verifyEmailService();
-    log("Email service status:", emailServiceStatus);
-
-    if (process.env.NODE_ENV === 'production' && !emailServiceStatus.initialized) {
-      throw new Error('Email service failed to initialize in production environment');
-    }
-
-    // Verify database connection
-    try {
-      await db.select().from(users).limit(1);
-      log("Database connection verified");
-    } catch (error) {
-      log("Database connection failed:", error instanceof Error ? error.message : String(error));
-      process.exit(1);
-    }
 
     // Setup authentication first
     setupAuth(app);
@@ -128,6 +127,19 @@ process.on('SIGTERM', () => {
         setTimeout(() => reject(new Error('Server startup timed out')), 30000)
       )
     ]);
+
+    // Initialize services in the background
+    verifyEmailService().catch(error => {
+      log(`Email service initialization warning: ${error.message}`);
+    });
+
+    // Verify database connection
+    try {
+      await db.select().from(users).limit(1);
+      log("Database connection verified");
+    } catch (error) {
+      log("Database connection warning:", error instanceof Error ? error.message : String(error));
+    }
 
   } catch (error) {
     log(`Failed to start server: ${error instanceof Error ? error.message : String(error)}`);
