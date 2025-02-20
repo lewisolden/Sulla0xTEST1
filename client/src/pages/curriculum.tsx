@@ -13,9 +13,8 @@ import { Progress } from "@/components/ui/progress";
 import { useAuth } from "@/hooks/use-auth";
 
 const subjects = [
-  { id: "crypto", name: "Cryptocurrency" },
-  { id: "ai", name: "Artificial Intelligence" },
-  { id: "defi", name: "Decentralized Finance" }
+  { id: "crypto", name: "Cryptocurrency & DeFi" },
+  { id: "ai", name: "Artificial Intelligence" }
 ];
 
 const courses = [
@@ -122,10 +121,10 @@ const courses = [
   },
   {
     id: 3,
-    title: "Mastering DeFi",
+    title: "Course 3: Mastering DeFi",
     description: "A comprehensive exploration of decentralized finance, from fundamentals to advanced trading strategies and risk management.",
-    subject: "defi",
-    level: "beginner",
+    subject: "crypto",
+    level: "intermediate",
     modules: [
       {
         id: 1,
@@ -221,7 +220,7 @@ export default function Curriculum() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const subject = params.get('subject');
-    if (subject && (subject === 'crypto' || subject === 'ai' || subject === 'defi')) {
+    if (subject && (subject === 'crypto' || subject === 'ai')) {
       setSelectedSubject(subject);
       setSelectedCourse(subject === 'crypto' ? '1' : subject === 'ai' ? '2' : '3');
     }
