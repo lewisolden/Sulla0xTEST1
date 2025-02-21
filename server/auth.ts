@@ -64,7 +64,7 @@ const PUBLIC_ROUTES = [
   '/api/login',
   '/api/admin/login',
   '/api/chat/test',
-  '/api/chat/send' // Add chat endpoints to public routes
+  '/api/chat/send' 
 ];
 
 function isPublicRoute(path: string): boolean {
@@ -141,23 +141,35 @@ export function setupAuth(app: Express) {
   // Admin strategy
   passport.use('admin-local', new LocalStrategy(async (username, password, done) => {
     try {
+      console.log('Attempting admin login for username:', username);
+
       const [admin] = await db
         .select()
         .from(adminUsers)
-        .where(eq(adminUsers.username, username))
+        .where(
+          or(
+            eq(adminUsers.username, username),
+            eq(adminUsers.email, username)
+          )
+        )
         .limit(1);
 
+      console.log('Admin lookup result:', admin ? 'Found' : 'Not found');
+
       if (!admin) {
-        return done(null, false, { message: "Incorrect admin username." });
+        return done(null, false, { message: "Invalid credentials" });
       }
 
       const isValid = await verifyPassword(password, admin.password);
+      console.log('Password verification:', isValid ? 'Success' : 'Failed');
+
       if (!isValid) {
-        return done(null, false, { message: "Incorrect password." });
+        return done(null, false, { message: "Invalid credentials" });
       }
 
       return done(null, { ...admin, role: 'admin' });
     } catch (err) {
+      console.error('Admin authentication error:', err);
       return done(err);
     }
   }));
@@ -188,47 +200,42 @@ export function setupAuth(app: Express) {
     }
   });
 
-  // Admin login route with improved error handling and logging
-  app.post("/api/admin/login", async (req, res, next) => {
+  // Admin login route
+  app.post("/api/admin/login", (req, res, next) => {
     console.log('Admin login attempt:', { username: req.body.username });
 
     if (!req.body.username || !req.body.password) {
       return res.status(400).json({ error: "Username and password are required" });
     }
 
-    try {
-      passport.authenticate("admin-local", (err: any, admin: Express.User | false, info: IVerifyOptions) => {
+    passport.authenticate("admin-local", (err: any, admin: Express.User | false, info: IVerifyOptions) => {
+      if (err) {
+        console.error("Admin login error:", err);
+        return res.status(500).json({ error: "Internal server error" });
+      }
+
+      if (!admin) {
+        console.log('Admin login failed:', info?.message);
+        return res.status(401).json({ error: info?.message || "Invalid credentials" });
+      }
+
+      req.logIn(admin, (err) => {
         if (err) {
-          console.error("Admin login error:", err);
-          return res.status(500).json({ error: "Internal server error" });
+          console.error("Session error:", err);
+          return res.status(500).json({ error: "Failed to create session" });
         }
 
-        if (!admin) {
-          console.log('Admin login failed:', info?.message);
-          return res.status(401).json({ error: info?.message || "Invalid credentials" });
-        }
-
-        req.logIn(admin, (err) => {
-          if (err) {
-            console.error("Session error:", err);
-            return res.status(500).json({ error: "Failed to create session" });
+        console.log('Admin login successful:', { id: admin.id, username: admin.username });
+        return res.json({
+          message: "Admin login successful",
+          user: {
+            id: admin.id,
+            username: admin.username,
+            role: 'admin'
           }
-
-          console.log('Admin login successful:', { id: admin.id, username: admin.username });
-          return res.json({
-            message: "Admin login successful",
-            user: {
-              id: admin.id,
-              username: admin.username,
-              role: 'admin'
-            }
-          });
         });
-      })(req, res, next);
-    } catch (error) {
-      console.error("Admin login error:", error);
-      return res.status(500).json({ error: "Internal server error" });
-    }
+      });
+    })(req, res, next);
   });
 
   // Regular authentication routes

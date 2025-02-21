@@ -2,6 +2,7 @@ import { db } from '@db';
 import { adminUsers } from '@db/schema';
 import { scrypt, randomBytes } from "crypto";
 import { promisify } from "util";
+import { eq } from 'drizzle-orm';
 
 const scryptAsync = promisify(scrypt);
 
@@ -25,6 +26,7 @@ async function createInitialAdmin() {
       return;
     }
 
+    // Create new admin user
     const hashedPassword = await hashPassword("admin123");
 
     const [admin] = await db
@@ -45,4 +47,5 @@ async function createInitialAdmin() {
   }
 }
 
+// Run the initialization
 createInitialAdmin();
