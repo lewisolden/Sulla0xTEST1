@@ -176,48 +176,92 @@ export default function Home() {
       </section>
 
       {/* Begin Your Learning Adventure Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900">
-        <div className="container mx-auto px-4 text-center">
+      <section className="py-20 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 relative overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-24 right-1/4 w-96 h-96 bg-blue-400 rounded-full filter blur-3xl opacity-20"></div>
+          <div className="absolute bottom-0 -left-48 w-96 h-96 bg-purple-400 rounded-full filter blur-3xl opacity-20"></div>
+        </div>
+
+        <div className="container mx-auto px-4 text-center relative">
           <motion.div 
-            className="max-w-4xl mx-auto"
+            className="max-w-4xl mx-auto relative"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-4xl font-bold text-white mb-6">
+            {/* Animated star */}
+            <motion.div
+              animate={{ 
+                y: [0, -10, 0],
+                rotate: [0, 2, 0]
+              }}
+              transition={{ 
+                duration: 5,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              className="absolute top-0 right-1/4 text-blue-300 opacity-50"
+            >
+              <Sparkles className="w-8 h-8" />
+            </motion.div>
+
+            <h2 className="text-6xl font-bold text-white mb-6 leading-tight">
               Begin Your Learning Adventure
             </h2>
-            <p className="text-xl text-blue-100 mb-12">
+            <p className="text-xl text-blue-100 mb-12 max-w-2xl mx-auto leading-relaxed">
               Join our community of learners and master the technologies shaping the future. Start your journey today with our comprehensive learning platform.
             </p>
             <div className="flex justify-center gap-6 mb-8">
               <Link href="/register">
-                <a className="inline-flex items-center px-6 py-3 bg-white hover:bg-blue-50 text-blue-700 rounded-lg font-semibold transition-all duration-300 transform hover:-translate-y-1">
+                <motion.a 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="inline-flex items-center px-8 py-4 bg-white hover:bg-blue-50 text-blue-700 rounded-lg font-semibold transition-all duration-300 transform hover:shadow-lg"
+                >
                   Create Free Account
                   <ArrowRight className="w-5 h-5 ml-2" />
-                </a>
+                </motion.a>
               </Link>
               <Link href="/curriculum">
-                <a className="inline-flex items-center px-6 py-3 border-2 border-white hover:bg-white/10 text-white rounded-lg font-semibold transition-all duration-300">
+                <motion.a 
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="inline-flex items-center px-8 py-4 border-2 border-white hover:bg-white/10 text-white rounded-lg font-semibold transition-all duration-300"
+                >
                   Explore Curriculum
                   <BookOpen className="w-5 h-5 ml-2" />
-                </a>
+                </motion.a>
               </Link>
             </div>
-            <div className="flex justify-center gap-8 text-blue-100">
-              <div className="flex items-center gap-2">
+            <motion.div 
+              className="flex justify-center gap-8 text-blue-100"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+            >
+              <motion.div 
+                className="flex items-center gap-2"
+                whileHover={{ scale: 1.1 }}
+              >
                 <CheckCircle className="w-5 h-5" />
                 <span>Free to get started</span>
-              </div>
-              <div className="flex items-center gap-2">
+              </motion.div>
+              <motion.div 
+                className="flex items-center gap-2"
+                whileHover={{ scale: 1.1 }}
+              >
                 <Users className="w-5 h-5" />
                 <span>Join 1,000+ learners</span>
-              </div>
-              <div className="flex items-center gap-2">
+              </motion.div>
+              <motion.div 
+                className="flex items-center gap-2"
+                whileHover={{ scale: 1.1 }}
+              >
                 <Trophy className="w-5 h-5" />
                 <span>Earn certificates</span>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
