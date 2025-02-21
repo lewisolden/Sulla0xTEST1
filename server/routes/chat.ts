@@ -135,11 +135,6 @@ router.post("/send", async (req, res) => {
       return res.status(500).json({ error: 'API configuration error' });
     }
 
-    if (!apiKey.match(/^pplx-[a-zA-Z0-9]{48}$/)) {
-      console.error('[Chat] Invalid API key format:', apiKey.substring(0, 10) + '...');
-      return res.status(500).json({ error: 'Invalid API key configuration' });
-    }
-
     let systemMessage = "You are an AI tutor specialized in blockchain and cryptocurrency education. ";
     systemMessage += `The user is currently viewing: ${context.currentPath}. `;
     systemMessage += "Focus on providing accurate, educational responses related to blockchain concepts. Be clear and concise. Use examples when explaining complex topics.";
@@ -179,7 +174,8 @@ router.post("/send", async (req, res) => {
     console.log('[Chat] Making API request with:', {
       model: requestBody.model,
       messageCount: requestBody.messages.length,
-      systemMessage: systemMessage.substring(0, 50) + '...'
+      systemMessage: systemMessage.substring(0, 50) + '...',
+      messages: requestBody.messages
     });
 
     const response = await fetch('https://api.perplexity.ai/chat/completions', {
@@ -194,6 +190,7 @@ router.post("/send", async (req, res) => {
 
     const responseText = await response.text();
     console.log('[Chat] Response status:', response.status);
+    console.log('[Chat] Raw response:', responseText);
 
     if (!response.ok) {
       console.error('[Chat] API error:', {
@@ -207,7 +204,8 @@ router.post("/send", async (req, res) => {
     try {
       const data = JSON.parse(responseText);
       console.log('[Chat] Successfully parsed response:', {
-        messageLength: data.choices?.[0]?.message?.content?.length || 0
+        messageLength: data.choices?.[0]?.message?.content?.length || 0,
+        response: data
       });
 
       res.json({
