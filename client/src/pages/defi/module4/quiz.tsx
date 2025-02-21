@@ -112,10 +112,10 @@ export default function DefiModule4Quiz() {
           4,
           'defi-module4-quiz',
           finalScore >= 70,
-          1,
+          4,
           undefined,
           finalScore,
-          '/defi/module4/quiz',
+          '/defi/module4',
           undefined,
           'DeFi'
         );
