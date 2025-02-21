@@ -273,9 +273,9 @@ const InnovationQuiz = () => {
                         ? "Perfect score! You're well-versed in DeFi innovations!"
                         : "Good effort! Review the innovation concepts and try again!"}
                     </p>
-                    <Link href="/defi/module3">
+                    <Link href="/defi/module3/quiz">
                       <Button className="w-full bg-green-600 hover:bg-green-700">
-                        Complete DeFi Module 3
+                        Continue to Module 3 Quiz
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </Link>
@@ -468,11 +468,15 @@ const DefiInnovation = () => {
                     <ul className="space-y-2">
                       <li className="flex items-center gap-2 text-gray-600">
                         <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                        <span>Reduced transaction costs</span>
+                        <span>Optimistic Rollups (e.g., Optimism, Arbitrum)</span>
                       </li>
                       <li className="flex items-center gap-2 text-gray-600">
                         <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                        <span>Increased transaction speed</span>
+                        <span>ZK-Rollups (e.g., zkSync, StarkNet)</span>
+                      </li>
+                      <li className="flex items-center gap-2 text-gray-600">
+                        <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                        <span>State Channels (e.g., Lightning Network)</span>
                       </li>
                     </ul>
                   </div>
@@ -486,11 +490,15 @@ const DefiInnovation = () => {
                     <ul className="space-y-2">
                       <li className="flex items-center gap-2 text-gray-600">
                         <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                        <span>Unified liquidity pools</span>
+                        <span>Cross-chain Bridges (e.g., Poly Network, Portal)</span>
                       </li>
                       <li className="flex items-center gap-2 text-gray-600">
                         <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                        <span>Cross-chain asset transfers</span>
+                        <span>Multi-chain Protocols (e.g., LayerZero, Cosmos IBC)</span>
+                      </li>
+                      <li className="flex items-center gap-2 text-gray-600">
+                        <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                        <span>Unified Liquidity (e.g., THORChain, Multichain)</span>
                       </li>
                     </ul>
                   </div>
@@ -506,11 +514,15 @@ const DefiInnovation = () => {
                     <ul className="space-y-2">
                       <li className="flex items-center gap-2 text-gray-600">
                         <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                        <span>Predictive analytics</span>
+                        <span>ML-powered Trading (e.g., Numerai, DeFi Yield)</span>
                       </li>
                       <li className="flex items-center gap-2 text-gray-600">
                         <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                        <span>Automated risk management</span>
+                        <span>Risk Analysis Tools (e.g., Gauntlet, Credmark)</span>
+                      </li>
+                      <li className="flex items-center gap-2 text-gray-600">
+                        <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                        <span>Predictive Oracle Networks (e.g., API3, Chainlink)</span>
                       </li>
                     </ul>
                   </div>
@@ -524,11 +536,15 @@ const DefiInnovation = () => {
                     <ul className="space-y-2">
                       <li className="flex items-center gap-2 text-gray-600">
                         <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                        <span>Green consensus mechanisms</span>
+                        <span>Proof of Stake Networks (e.g., Ethereum 2.0, Cardano)</span>
                       </li>
                       <li className="flex items-center gap-2 text-gray-600">
                         <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                        <span>Carbon-neutral protocols</span>
+                        <span>Carbon Credit Markets (e.g., Toucan Protocol, KlimaDAO)</span>
+                      </li>
+                      <li className="flex items-center gap-2 text-gray-600">
+                        <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                        <span>Energy-Efficient Consensus (e.g., Algorand, Solana)</span>
                       </li>
                     </ul>
                   </div>
