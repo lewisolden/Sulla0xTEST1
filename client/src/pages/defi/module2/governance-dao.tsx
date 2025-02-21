@@ -5,13 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { 
-  ArrowLeft, 
-  BookOpen, 
-  CheckCircle2, 
-  Users, 
-  Vote, 
-  Database, 
+import {
+  ArrowLeft,
+  BookOpen,
+  CheckCircle2,
+  Users,
+  Vote,
+  Database,
   NetworkIcon,
   LightbulbIcon,
   ChartBarIcon,
@@ -19,7 +19,7 @@ import {
   ShieldCheckIcon
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 
 // Animation variants
 const containerVariants = {
@@ -56,7 +56,7 @@ const OracleNetworks = () => {
           <CardContent className="pt-6">
             <div className="space-y-4">
               <p className="text-gray-700">
-                Oracle networks serve as the critical bridge between blockchain smart contracts 
+                Oracle networks serve as the critical bridge between blockchain smart contracts
                 and external data sources. They provide:
               </p>
               <ul className="space-y-2">
@@ -323,6 +323,7 @@ const GovernanceDAOSection = () => {
   const { progress, updateProgress } = useProgress();
   const { toast } = useToast();
   const [currentSection, setCurrentSection] = useState(0);
+  const [, setLocation] = useLocation();
 
   const sections = [
     {
@@ -568,6 +569,8 @@ const GovernanceDAOSection = () => {
         title: "Topic Complete! 🎉",
         description: "You've completed the Governance & DAO section!",
       });
+      // Navigate to the module quiz
+      setLocation("/defi/module2/quiz");
     }
   };
 
@@ -581,7 +584,15 @@ const GovernanceDAOSection = () => {
             </Link>
             <h1 className="text-3xl font-bold text-gray-900">Governance & DAOs</h1>
           </div>
-          <Progress value={typeof progress === 'number' ? progress : 0} className="w-32" />
+          <div className="flex items-center gap-4">
+            <Progress value={typeof progress === 'number' ? progress : 0} className="w-32" />
+            <Link href="/defi/module2/quiz">
+              <Button variant="outline" className="flex items-center gap-2">
+                <BookOpen className="h-4 w-4" />
+                Take Module Quiz
+              </Button>
+            </Link>
+          </div>
         </div>
 
         <motion.div

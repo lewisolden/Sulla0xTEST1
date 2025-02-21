@@ -19,7 +19,8 @@ const questions = [
       "To create new cryptocurrencies",
       "To manage network consensus"
     ],
-    correctAnswer: 1
+    correctAnswer: 1,
+    explanation: "Lending protocols in DeFi serve to facilitate peer-to-peer lending and borrowing without traditional banking intermediaries, allowing users to earn interest on their assets or borrow against their collateral in a decentralized manner."
   },
   {
     id: 2,
@@ -30,7 +31,8 @@ const questions = [
       "Mining-backed",
       "Algorithmic"
     ],
-    correctAnswer: 2
+    correctAnswer: 2,
+    explanation: "Mining-backed stablecoins don't exist as a category. The main types of stablecoins are fiat-collateralized (backed by traditional currencies), crypto-collateralized (backed by cryptocurrencies), and algorithmic (maintained through smart contracts and incentives)."
   },
   {
     id: 3,
@@ -41,7 +43,8 @@ const questions = [
       "They store user funds",
       "They create new tokens"
     ],
-    correctAnswer: 1
+    correctAnswer: 1,
+    explanation: "Oracles are crucial in DeFi as they provide external, real-world data to smart contracts. This includes price feeds, market data, and other off-chain information that smart contracts need to execute properly."
   },
   {
     id: 4,
@@ -52,7 +55,8 @@ const questions = [
       "A new cryptocurrency",
       "A type of stablecoin"
     ],
-    correctAnswer: 1
+    correctAnswer: 1,
+    explanation: "Synthetic assets in DeFi are tokenized derivatives that track the value of other assets (like stocks, commodities, or currencies) without requiring ownership of the underlying asset, enabling exposure to traditional markets through DeFi protocols."
   },
   {
     id: 5,
@@ -63,7 +67,8 @@ const questions = [
       "To store cryptocurrency",
       "To mine new blocks"
     ],
-    correctAnswer: 1
+    correctAnswer: 1,
+    explanation: "DAOs (Decentralized Autonomous Organizations) exist to enable decentralized governance where token holders can participate in decision-making processes about the protocol's future, ensuring community-driven development and management."
   },
   {
     id: 6,
@@ -74,7 +79,8 @@ const questions = [
       "Forced closure of a position when collateral ratio falls below threshold",
       "Creating new loans"
     ],
-    correctAnswer: 2
+    correctAnswer: 2,
+    explanation: "Liquidation occurs when a borrower's collateral value falls below the required threshold, leading to automatic position closure to protect the protocol. This mechanism ensures the lending protocol remains solvent and lenders are protected."
   },
   {
     id: 7,
@@ -85,7 +91,8 @@ const questions = [
       "Voting on protocol changes and proposals",
       "Storing value"
     ],
-    correctAnswer: 2
+    correctAnswer: 2,
+    explanation: "Governance tokens give holders voting rights to participate in the protocol's decision-making process. Token holders can vote on proposals ranging from parameter changes to protocol upgrades and treasury management."
   },
   {
     id: 8,
@@ -96,7 +103,8 @@ const questions = [
       "Guaranteed profits",
       "Simplified trading"
     ],
-    correctAnswer: 0
+    correctAnswer: 0,
+    explanation: "The key advantage of perpetual futures is that they have no expiration date, allowing traders to maintain positions indefinitely without having to roll over contracts, making them more flexible than traditional futures."
   }
 ];
 
@@ -105,6 +113,7 @@ export default function DefiModule2Quiz() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
+  const [showExplanation, setShowExplanation] = useState(false);
   const [score, setScore] = useState(0);
   const [answers, setAnswers] = useState<number[]>([]);
   const { toast } = useToast();
@@ -114,6 +123,7 @@ export default function DefiModule2Quiz() {
     if (selectedAnswer !== null) return;
 
     setSelectedAnswer(selectedIndex);
+    setShowExplanation(true);
     const isCorrect = selectedIndex === questions[currentQuestion].correctAnswer;
     const newAnswers = [...answers];
     newAnswers[currentQuestion] = selectedIndex;
@@ -123,40 +133,29 @@ export default function DefiModule2Quiz() {
       setScore(score + 1);
       toast({
         title: "Correct!",
-        description: "Well done! That's the right answer.",
+        description: "Well done! Let's look at why this answer is correct.",
         variant: "default",
       });
     } else {
       toast({
         title: "Incorrect",
-        description: "That's not quite right. Keep trying!",
+        description: "Let's understand the correct answer.",
         variant: "destructive",
       });
     }
 
-    // Auto-advance after a short delay
+    // Auto-advance after explanation delay
     setTimeout(() => {
       if (currentQuestion < questions.length - 1) {
         setCurrentQuestion(currentQuestion + 1);
         setSelectedAnswer(null);
+        setShowExplanation(false);
       } else {
         setShowResult(true);
         // Update progress when quiz is completed
-        updateProgress({
-          courseId: 3,
-          moduleId: 4,
-          sectionId: "quiz",
-          subsectionId: "defi-module2-quiz",
-          progress: 100,
-          completed: true,
-          type: "quiz",
-          data: {
-            score,
-            totalQuestions: questions.length
-          }
-        });
+        updateProgress(3, "module2-quiz", true, score);
       }
-    }, 1500);
+    }, 3000);
   };
 
   const progressPercentage = ((currentQuestion + 1) / questions.length) * 100;
@@ -202,6 +201,9 @@ export default function DefiModule2Quiz() {
                           Correct answer: {q.options[q.correctAnswer]}
                         </p>
                       )}
+                      <p className="text-sm text-blue-600 mt-2">
+                        {q.explanation}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -214,9 +216,9 @@ export default function DefiModule2Quiz() {
                   <ArrowLeft className="w-4 h-4" /> Back to Module
                 </Button>
               </Link>
-              <Link href="/curriculum">
+              <Link href="/defi/module3">
                 <Button className="gap-2">
-                  Continue Learning <ChevronRight className="w-4 h-4" />
+                  Continue to Module 3 <ChevronRight className="w-4 h-4" />
                 </Button>
               </Link>
             </div>
@@ -282,6 +284,19 @@ export default function DefiModule2Quiz() {
                   </motion.button>
                 ))}
               </div>
+
+              {showExplanation && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-6 p-4 bg-blue-50 rounded-lg"
+                >
+                  <h4 className="font-semibold text-blue-900 mb-2">Explanation:</h4>
+                  <p className="text-blue-800">
+                    {questions[currentQuestion].explanation}
+                  </p>
+                </motion.div>
+              )}
             </div>
           </Card>
         </motion.div>
