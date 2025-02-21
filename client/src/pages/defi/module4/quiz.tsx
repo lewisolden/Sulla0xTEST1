@@ -209,12 +209,20 @@ export default function DefiModule4Quiz() {
                     Keep learning! Review the material and try again to improve your score.
                   </p>
                 )}
-                <Link href="/defi/module4">
-                  <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white transition duration-300 ease-in-out transform hover:scale-105">
-                    Return to Module 4
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
+                <div className="space-y-4">
+                  <Link href="/defi/final-assessment">
+                    <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white transition duration-300 ease-in-out transform hover:scale-105">
+                      Proceed to Final Assessment
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                  <Link href="/defi/module4">
+                    <Button variant="outline" className="w-full">
+                      Return to Module 4
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                </div>
               </div>
             </CardContent>
           )}
