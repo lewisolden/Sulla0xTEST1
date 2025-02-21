@@ -14,7 +14,6 @@ import {
   LineChart,
   Lock,
   Wallet,
-  Bank,
   Shield
 } from "lucide-react";
 
@@ -102,10 +101,10 @@ export default function DeFiFinalAssessment() {
   const handleMatchingAnswer = (term: string, definition: string) => {
     const newMatches = { ...matches, [term]: definition };
     setMatches(newMatches);
-    
+
     const section = assessmentSections[currentSection];
     const isCorrect = section.items.find(item => item.term === term)?.definition === definition;
-    
+
     toast({
       title: isCorrect ? "Correct match! 🎉" : "Try again",
       description: isCorrect ? "Great job identifying the concept!" : "That's not quite right. Review the terms and try again.",
@@ -229,7 +228,7 @@ export default function DeFiFinalAssessment() {
                     <div className="grid md:grid-cols-2 gap-4">
                       <div className="space-y-3">
                         <h3 className="font-medium text-gray-700 mb-2">Terms</h3>
-                        {assessmentSections[currentSection].items.map((item) => (
+                        {assessmentSections[currentSection].items?.map((item) => (
                           <motion.div
                             key={item.term}
                             className="p-3 bg-blue-50 rounded-lg cursor-move"
@@ -244,7 +243,7 @@ export default function DeFiFinalAssessment() {
                       </div>
                       <div className="space-y-3">
                         <h3 className="font-medium text-gray-700 mb-2">Definitions</h3>
-                        {assessmentSections[currentSection].items.map((item) => (
+                        {assessmentSections[currentSection].items?.map((item) => (
                           <motion.div
                             key={item.definition}
                             className="p-3 bg-purple-50 rounded-lg"
@@ -272,7 +271,7 @@ export default function DeFiFinalAssessment() {
                           {assessmentSections[currentSection].scenario}
                         </p>
                       </div>
-                      {assessmentSections[currentSection].questions.map((question, idx) => (
+                      {assessmentSections[currentSection].questions?.map((question, idx) => (
                         <div key={idx} className="space-y-3">
                           <p className="font-medium text-gray-800">{question.question}</p>
                           <div className="grid gap-2">
@@ -299,7 +298,7 @@ export default function DeFiFinalAssessment() {
                           <code>{assessmentSections[currentSection].code}</code>
                         </pre>
                       </div>
-                      {assessmentSections[currentSection].questions.map((question, idx) => (
+                      {assessmentSections[currentSection].questions?.map((question, idx) => (
                         <div key={idx} className="space-y-3">
                           <p className="font-medium text-gray-800">{question.question}</p>
                           <div className="grid gap-2">
