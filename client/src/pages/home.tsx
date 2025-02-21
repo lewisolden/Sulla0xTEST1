@@ -313,7 +313,7 @@ export default function Home() {
                 icon: BookOpen,
                 title: "Blockchain Fundamentals",
                 description: "Master the basics of digital currencies and blockchain technology",
-                path: "/modules/course1",
+                path: "/curriculum?subject=crypto&course=1",
                 badge: "Course 1",
                 gradient: "from-blue-500 to-purple-500"
               },
@@ -321,7 +321,7 @@ export default function Home() {
                 icon: Brain,
                 title: "AI & Machine Learning",
                 description: "Explore the world of AI, machine learning, and neural networks",
-                path: "/ai/course1",
+                path: "/curriculum?subject=ai&course=2",
                 badge: "Course 2",
                 gradient: "from-purple-500 to-pink-500"
               },
@@ -329,7 +329,7 @@ export default function Home() {
                 icon: Wallet,
                 title: "Advanced DeFi",
                 description: "Learn advanced decentralized finance concepts and strategies",
-                path: "/defi/course1",
+                path: "/curriculum?subject=crypto&course=3",
                 badge: "Course 3",
                 gradient: "from-pink-500 to-red-500"
               }
