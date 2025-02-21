@@ -17,14 +17,15 @@ router.get('/users', requireAdmin, async (req, res) => {
 
     console.log('Query params:', { page, limit, offset, search });
 
-    // Get total count
-    const [totalCount] = await db
-      .select({ count: count() })
+    // Get total count with proper error handling
+    const totalCountResult = await db
+      .select({ value: count() })
       .from(users);
 
+    const totalCount = totalCountResult[0]?.value || 0;
     console.log('Total users count:', totalCount);
 
-    // Get paginated users with more detailed logging
+    // Get paginated users with proper error handling
     const allUsers = await db
       .select({
         id: users.id,
@@ -45,19 +46,32 @@ router.get('/users', requireAdmin, async (req, res) => {
 
     console.log('Fetched users:', allUsers.length);
 
-    // Get enrollment counts with detailed logging
+    // Get enrollment counts with proper error handling
     const userEnrollments = await Promise.all(
       allUsers.map(async (user) => {
         console.log('Fetching enrollments for user:', user.id);
-        const [enrollmentCount] = await db
-          .select({ count: count() })
+        const enrollmentCountResult = await db
+          .select({ value: count() })
           .from(courseEnrollments)
-          .where(sql`${courseEnrollments.userId} = ${user.id}`);
+          .where(eq(courseEnrollments.userId, user.id));
+
+        const enrollmentCount = enrollmentCountResult[0]?.value || 0;
+
+        // Get completed modules count
+        const completedModulesResult = await db
+          .select({ value: count() })
+          .from(moduleProgress)
+          .where(and(
+            eq(moduleProgress.userId, user.id),
+            eq(moduleProgress.status, 'completed')
+          ));
+
+        const completedModules = completedModulesResult[0]?.value || 0;
 
         return {
           ...user,
-          enrollmentCount: enrollmentCount.count,
-          completedModules: 0, // We'll enhance this later
+          enrollmentCount,
+          completedModules,
         };
       })
     );
@@ -66,10 +80,10 @@ router.get('/users', requireAdmin, async (req, res) => {
     res.json({
       users: userEnrollments,
       pagination: {
-        total: totalCount.count,
+        total: totalCount,
         page,
         pageSize: limit,
-        totalPages: Math.ceil(totalCount.count / limit)
+        totalPages: Math.ceil(totalCount / limit)
       }
     });
   } catch (error) {
