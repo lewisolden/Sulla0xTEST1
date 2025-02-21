@@ -238,55 +238,7 @@ export default function AccountPage() {
                     <div>
                       <p className="text-sm text-blue-600">Learning Time</p>
                       <p className="text-2xl font-bold text-blue-900">
-                        {loadingMetrics ? "..." : formatLearningTime(metrics?.totalLearningMinutes || 0)}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-orange-50">
-                <CardContent className="pt-6">
-                  <div className="flex items-center gap-3">
-                    <div className="p-3 bg-orange-100 rounded-full">
-                      <Flame className="h-6 w-6 text-orange-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-orange-600">Learning Streak</p>
-                      <p className="text-2xl font-bold text-orange-900">
-                        {loadingMetrics ? "..." : `${metrics?.learningStreak || 0} days`}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-green-50">
-                <CardContent className="pt-6">
-                  <div className="flex items-center gap-3">
-                    <div className="p-3 bg-green-100 rounded-full">
-                      <CheckCircle className="h-6 w-6 text-green-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-green-600">Quizzes Completed</p>
-                      <p className="text-2xl font-bold text-green-900">
-                        {loadingMetrics ? "..." : metrics?.completedQuizzes || 0}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-purple-50">
-                <CardContent className="pt-6">
-                  <div className="flex items-center gap-3">
-                    <div className="p-3 bg-purple-100 rounded-full">
-                      <BookOpen className="h-6 w-6 text-purple-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-purple-600">Course Progress</p>
-                      <p className="text-2xl font-bold text-purple-900">
-                        {loadingMetrics ? "..." : `${Math.round(metrics?.overallProgress || 0)}%`}
+                        {loadingMetrics ? "..." : formatLearningTime(totalLearningTime)}
                       </p>
                     </div>
                   </div>
