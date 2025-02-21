@@ -259,15 +259,32 @@ export default function DefiIntro() {
                   </div>
                 </section>
 
+                {/* Quiz Section */}
                 {!showQuiz ? (
-                  <div className="mt-8 text-center">
-                    <Button
-                      onClick={() => setShowQuiz(true)}
-                      className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white transform hover:scale-105 transition-all duration-300"
-                    >
-                      Take Topic Quiz
-                    </Button>
-                  </div>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="mt-8"
+                  >
+                    <Card className="overflow-hidden border-2 border-blue-200 hover:border-blue-300 transition-all">
+                      <CardHeader
+                        onClick={() => setShowQuiz(true)}
+                        className="bg-gradient-to-r from-blue-500 to-purple-500 cursor-pointer"
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <CheckCircle2 className="h-6 w-6 text-white" />
+                            <div>
+                              <CardTitle className="text-2xl text-white">Test Your Knowledge</CardTitle>
+                              <p className="text-blue-50 mt-1">Complete the quiz to test your understanding</p>
+                            </div>
+                          </div>
+                          <ArrowRight className="h-6 w-6 text-white" />
+                        </div>
+                      </CardHeader>
+                    </Card>
+                  </motion.div>
                 ) : (
                   <section className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-6 mt-8">
                     <h2 className="text-2xl font-semibold text-blue-700 mb-4">
