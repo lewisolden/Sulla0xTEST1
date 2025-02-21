@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { 
   Accordion, 
@@ -13,8 +14,18 @@ export default function AdvancedDefi() {
   const { updateProgress } = useProgress();
 
   // Update progress when component mounts
-  React.useEffect(() => {
-    updateProgress("defi-module3-advanced", 100);
+  useEffect(() => {
+    updateProgress(
+      3, // moduleId for Module 3
+      'defi-module3-advanced', // sectionId
+      true, // completed
+      1, // courseId (1 for DeFi course)
+      undefined, // timeSpent
+      undefined, // quizScore
+      undefined, // lastQuizPath
+      '/defi/module3/advanced-defi', // lastCompletedPath
+      'DeFi' // courseName
+    );
   }, [updateProgress]);
 
   return (
@@ -32,7 +43,7 @@ export default function AdvancedDefi() {
           <Card className="p-6">
             <h2 className="text-2xl font-semibold mb-4">Understanding Advanced DeFi Protocols</h2>
             <Progress value={33} className="mb-4" />
-            
+
             <Accordion type="single" collapsible className="space-y-4">
               <AccordionItem value="item-1">
                 <AccordionTrigger className="text-lg font-medium">
@@ -84,7 +95,7 @@ export default function AdvancedDefi() {
           <Card className="p-6">
             <h2 className="text-2xl font-semibold mb-4">Advanced Yield Strategies</h2>
             <Progress value={66} className="mb-4" />
-            
+
             <Accordion type="single" collapsible className="space-y-4">
               <AccordionItem value="item-4">
                 <AccordionTrigger className="text-lg font-medium">
@@ -136,7 +147,7 @@ export default function AdvancedDefi() {
           <Card className="p-6">
             <h2 className="text-2xl font-semibold mb-4">Emerging DeFi Innovations</h2>
             <Progress value={100} className="mb-4" />
-            
+
             <Accordion type="single" collapsible className="space-y-4">
               <AccordionItem value="item-7">
                 <AccordionTrigger className="text-lg font-medium">
