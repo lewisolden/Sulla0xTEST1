@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { BookOpen, GraduationCap, Brain, Target, Trophy, Code, Gamepad2, Wallet, Dumbbell, ArrowRight, Bot, Sparkles, CheckCircle, Users } from "lucide-react";
+import { BookOpen, GraduationCap, Brain, Target, Trophy, Code, Gamepad2, Wallet, Dumbbell, ArrowRight, Bot, Sparkles, CheckCircle, Users, Zap, Globe, Shield } from "lucide-react";
 import ModuleCard from "@/components/modules/module-card";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,50 @@ export default function Home() {
       }
     }
   };
+
+  const features = [
+    {
+      icon: Brain,
+      title: "AI-Powered Learning",
+      description: "Personalized learning paths powered by advanced AI to adapt to your understanding and pace"
+    },
+    {
+      icon: Target,
+      title: "Interactive Modules",
+      description: "Hands-on experience with real-world blockchain and DeFi applications"
+    },
+    {
+      icon: Trophy,
+      title: "Achievement System",
+      description: "Track your progress and earn certificates as you master new concepts"
+    },
+    {
+      icon: Gamepad2,
+      title: "Learning Games",
+      description: "Engage with gamified exercises that make complex concepts fun and memorable"
+    }
+  ];
+
+  const modules = [
+    {
+      icon: Wallet,
+      title: "Cryptocurrency Fundamentals",
+      description: "Master the basics of digital currencies and blockchain technology",
+      badge: "Module 1"
+    },
+    {
+      icon: Shield,
+      title: "DeFi and Smart Contracts",
+      description: "Explore decentralized finance and automated agreements",
+      badge: "Module 2"
+    },
+    {
+      icon: Globe,
+      title: "Blockchain Infrastructure",
+      description: "Understand the technology powering the crypto revolution",
+      badge: "Module 3"
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900">
@@ -109,50 +153,127 @@ export default function Home() {
           </motion.h2>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                icon: Brain,
-                title: "AI-Powered Learning",
-                description: "Personalized learning paths that adapt to your understanding and pace",
-                link: "/ai"
-              },
-              {
-                icon: Dumbbell,
-                title: "Practical Exercises",
-                description: "Hands-on learning with interactive exercises and real-world examples",
-                link: "/modules/module1/exercises"
-              },
-              {
-                icon: BookOpen,
-                title: "Interactive Glossary",
-                description: "Comprehensive blockchain and AI terminology guide with easy-to-understand definitions",
-                link: "/glossary"
-              },
-              {
-                icon: Bot,
-                title: "Sensei AI Tutor",
-                description: "Your personal AI guide through the curriculum, providing focused assistance",
-                link: "/sensei"
-              }
-            ].map((feature, index) => (
-              <Link key={feature.title} href={feature.link}>
-                <motion.div 
-                  className="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-                  {...fadeInUp}
-                  transition={{ delay: 0.2 + (index * 0.1) }}
-                >
-                  <div className="bg-blue-100 p-3 rounded-lg inline-block mb-6">
-                    <feature.icon className="w-12 h-12 text-blue-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{feature.description}</p>
-                  <div className="mt-4 text-blue-600 hover:text-blue-700 font-medium flex items-center gap-2">
-                    Learn More
-                    <ArrowRight className="w-4 h-4" />
-                  </div>
-                </motion.div>
-              </Link>
+            {features.map((feature, index) => (
+              <motion.div 
+                key={feature.title}
+                className="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                {...fadeInUp}
+                transition={{ delay: 0.2 + (index * 0.1) }}
+              >
+                <div className="bg-blue-100 p-3 rounded-lg inline-block mb-6">
+                  <feature.icon className="w-12 h-12 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
+                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+              </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Learning Modules Section */}
+      <section className="py-20 bg-gradient-to-br from-blue-50 via-blue-100 to-white">
+        <div className="container mx-auto px-4">
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-4xl font-bold text-blue-900 mb-6">
+              Comprehensive Learning Paths
+            </h2>
+            <p className="text-xl text-blue-700 max-w-3xl mx-auto">
+              Structured courses designed to take you from beginner to expert with hands-on practice and real-world applications.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {modules.map((module, index) => (
+              <motion.div
+                key={module.title}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 + (index * 0.1) }}
+              >
+                <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
+                  <div className="bg-blue-100 p-4 rounded-lg inline-block mb-6">
+                    <module.icon className="w-12 h-12 text-blue-600" />
+                  </div>
+                  <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm font-medium mb-4 inline-block">
+                    {module.badge}
+                  </span>
+                  <h3 className="text-xl font-semibold text-blue-900 mb-3">{module.title}</h3>
+                  <p className="text-blue-600 mb-6">{module.description}</p>
+                  <Link href="/modules/module1">
+                    <a className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium">
+                      Learn More
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </a>
+                  </Link>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* AI Features Section */}
+      <section className="py-20 bg-gradient-to-br from-blue-900 to-blue-800">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold text-white mb-6">
+              AI-Powered Learning Experience
+            </h2>
+            <p className="text-xl text-blue-100 max-w-3xl mx-auto">
+              Leverage cutting-edge AI technology to enhance your learning journey
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              className="bg-white/10 backdrop-blur-lg rounded-xl p-8 text-white"
+            >
+              <Bot className="w-12 h-12 text-blue-300 mb-6" />
+              <h3 className="text-xl font-semibold mb-4">AI Tutor</h3>
+              <p className="text-blue-100">
+                Get personalized assistance and instant answers to your questions from our AI tutor
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="bg-white/10 backdrop-blur-lg rounded-xl p-8 text-white"
+            >
+              <Brain className="w-12 h-12 text-blue-300 mb-6" />
+              <h3 className="text-xl font-semibold mb-4">Adaptive Learning</h3>
+              <p className="text-blue-100">
+                Experience a learning path that adapts to your progress and understanding
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 }}
+              className="bg-white/10 backdrop-blur-lg rounded-xl p-8 text-white"
+            >
+              <Zap className="w-12 h-12 text-blue-300 mb-6" />
+              <h3 className="text-xl font-semibold mb-4">Smart Progress Tracking</h3>
+              <p className="text-blue-100">
+                Monitor your learning journey with AI-powered insights and recommendations
+              </p>
+            </motion.div>
           </div>
         </div>
       </section>
