@@ -97,7 +97,7 @@ import ModuleQuiz from "@/pages/defi/module1/quiz";
 import DefiModule2 from "@/pages/defi/module2";
 import LendingBorrowing from "@/pages/defi/module2/lending-borrowing";
 import StablecoinsSection from "@/pages/defi/module2/stablecoins";
-
+import DerivativesSection from "@/pages/defi/module2/derivatives";
 
 function ProtectedRoute({ component: Component, adminOnly = false, publicAccess = false, ...rest }: any) {
   const { user, isLoading } = useAuth();
@@ -223,6 +223,7 @@ function Router() {
       <Route path="/defi/module2" component={() => <ProtectedRoute component={DefiModule2} />} />
       <Route path="/defi/module2/lending-borrowing" component={() => <ProtectedRoute component={LendingBorrowing} />} />
       <Route path="/defi/module2/stablecoins" component={() => <ProtectedRoute component={StablecoinsSection} />} />
+      <Route path="/defi/module2/derivatives" component={() => <ProtectedRoute component={DerivativesSection} />} />
 
       <Route component={NotFound} />
     </Switch>
