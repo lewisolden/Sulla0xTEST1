@@ -109,12 +109,22 @@ router.get("/api/user/metrics", async (req, res) => {
       }
     }
 
+    // Get quiz completion stats
+    const quizStats = await db
+      .select({
+        count: count()
+      })
+      .from(userQuizResponses)
+      .where(eq(userQuizResponses.userId, userId));
+
     const response = {
       totalLearningMinutes: Math.max(0, Math.round(totalLearningTime)),
       completedModules: progressSummary.completedModules,
       totalModules: progressSummary.totalModules,
+      completedQuizzes: quizStats[0]?.count || 0,
       earnedBadges: badgeCount?.count || 0,
-      learningStreak: streak
+      learningStreak: streak,
+      overallProgress: progressSummary.completedModules / progressSummary.totalModules * 100
     };
 
     console.log("[User Metrics] Final response:", response);
