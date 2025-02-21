@@ -178,7 +178,7 @@ const courses = [
           "4.3 DeFi Integrations",
           "4.4 Future of DeFi Infrastructure"
         ],
-        path: "/defi/module4/defi-governance" // Updated the path to point to governance
+        path: "/defi/module4" 
       }
     ]
   }
@@ -570,8 +570,8 @@ export default function Curriculum() {
                         </div>
 
                         <div className="mt-6 text-center">
-                          <Link href={module.path}> {/*Corrected Link */}
-                            <Button className="w-full bg-blue-600 hover:bg-blue-700"> {/*Added w-full */}
+                          <Link href={module.path}>
+                            <Button className="w-full bg-blue-600 hover:bg-blue-700">
                               Continue Learning
                             </Button>
                           </Link>
