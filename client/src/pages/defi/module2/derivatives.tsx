@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider"; // Import Slider component
+import { Slider } from "@/components/ui/slider";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { ArrowLeft, BookOpen, CheckCircle2, ArrowRight, TrendingUp, Lock, DollarSign, AlertTriangle, LineChart, Zap, CandlestickChart, Wallet } from "lucide-react";
@@ -453,22 +453,25 @@ const DerivativesQuiz: React.FC = () => {
       setScore(score + 1);
       toast({
         title: "Correct! 🎉",
-        description: "Great job! Let's see the explanation.",
+        description: "Great job! Moving to next question...",
         variant: "default",
       });
     } else {
       toast({
         title: "Incorrect",
-        description: "Let's understand why. Check the explanation below.",
+        description: "Let's understand why before moving on.",
         variant: "destructive",
       });
     }
-  };
 
-  const handleNextQuestion = () => {
-    setShowExplanation(false);
-    setUserAnswer(null);
-    setCurrentQuestion(currentQuestion + 1);
+    // Auto advance after 3 seconds
+    setTimeout(() => {
+      if (currentQuestion < questions.length - 1) {
+        setShowExplanation(false);
+        setUserAnswer(null);
+        setCurrentQuestion(currentQuestion + 1);
+      }
+    }, 3000);
   };
 
   if (!quizStarted) {
@@ -538,11 +541,7 @@ const DerivativesQuiz: React.FC = () => {
             >
               <h4 className="font-medium text-blue-800 mb-2">Explanation</h4>
               <p className="text-blue-700">{questions[currentQuestion].explanation}</p>
-              {currentQuestion < questions.length - 1 ? (
-                <Button onClick={handleNextQuestion} className="mt-4">
-                  Next Question
-                </Button>
-              ) : (
+              {currentQuestion === questions.length - 1 && (
                 <div className="mt-4 space-y-4">
                   <h3 className="text-xl font-bold">Quiz Complete!</h3>
                   <p className="text-gray-600">
@@ -568,7 +567,7 @@ const DerivativesQuiz: React.FC = () => {
   );
 };
 
-export default function DerivativesSection() {
+const DerivativesSection = () => {
   useScrollTop();
   const { progress, updateProgress } = useProgress();
   const { toast } = useToast();
@@ -612,6 +611,75 @@ export default function DerivativesSection() {
       )
     },
     {
+      id: "mechanics",
+      title: "Derivatives Trading Mechanics",
+      icon: LineChart,
+      content: (
+        <div className="space-y-6">
+          <div className="grid md:grid-cols-2 gap-6">
+            <Card className="border-blue-200">
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-100">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-blue-500 rounded-lg">
+                    <Lock className="h-6 w-6 text-white" />
+                  </div>
+                  <CardTitle className="text-xl">Collateral & Margin</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <div className="space-y-4">
+                  <p className="text-gray-700">
+                    Traders must deposit collateral to open leveraged positions. This collateral,
+                    or margin, protects against potential losses and determines the maximum
+                    position size.
+                  </p>
+                  <ul className="space-y-2">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-600">Initial Margin: Required to open a position</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-600">Maintenance Margin: Minimum collateral to keep position open</span>
+                    </li>
+                  </ul>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-purple-200">
+              <CardHeader className="bg-gradient-to-r from-purple-50 to-purple-100">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-purple-500 rounded-lg">
+                    <Zap className="h-6 w-6 text-white" />
+                  </div>
+                  <CardTitle className="text-xl">Leverage & Liquidation</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <div className="space-y-4">
+                  <p className="text-gray-700">
+                    Leverage multiplies both potential profits and losses. When losses approach
+                    the maintenance margin, positions risk liquidation.
+                  </p>
+                  <ul className="space-y-2">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="h-5 w-5 text-purple-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-600">Leverage = Position Size / Collateral</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="h-5 w-5 text-purple-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-600">Higher leverage = Higher liquidation risk</span>
+                    </li>
+                  </ul>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      )
+    },
+    {
       id: "simulator",
       title: "Interactive Trading Simulator",
       icon: CandlestickChart,
@@ -622,6 +690,105 @@ export default function DerivativesSection() {
       title: "Hyperliquid Overview",
       icon: TrendingUp,
       content: <HyperliquidOverview />
+    },
+    {
+      id: "hyperliquid-case",
+      title: "Hyperliquid Case Study",
+      icon: TrendingUp,
+      content: (
+        <Card className="border-green-200">
+          <CardHeader className="bg-gradient-to-r from-green-50 to-green-100">
+            <CardTitle className="text-2xl">Hyperliquid: Next-Gen Derivatives Exchange</CardTitle>
+          </CardHeader>
+          <CardContent className="pt-6">
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-3">Token Generation Event (TGE)</h3>
+                <p className="text-gray-700">
+                  Hyperliquid's unique token launch focused on fair distribution and long-term
+                  sustainability. The protocol implemented innovative tokenomics with:
+                </p>
+                <ul className="mt-3 space-y-2">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-600">No pre-mine for team or investors</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-600">100% fair launch through trading rewards</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-600">Dynamic emission schedule based on trading volume</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-3">HypeEVM Innovation</h3>
+                <p className="text-gray-700">
+                  The HypeEVM represents a breakthrough in DeFi infrastructure, offering:
+                </p>
+                <ul className="mt-3 space-y-2">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-600">Zero-knowledge proof verification for fast settlements</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-600">Custom-built orderbook matching engine</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-600">Optimized for high-frequency trading</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-3">Liquidity Management</h3>
+                <p className="text-gray-700">
+                  Hyperliquid achieves superior liquidity through:
+                </p>
+                <ul className="mt-3 space-y-2">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-600">Professional market makers with dedicated pools</span>                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-600">Dynamic fee structure incentivizing liquidity provision</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-gray-600">Cross-margin efficiency for capital utilization</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="bg-yellow-50 p-4 rounded-lg mt-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <AlertTriangle className="h-5 w-5 text-yellow-600" />
+                  <h5 className="font-semibold text-yellow-800">Key Advantages</h5>
+                </div>
+                <ul className="space-y-2 text-yellow-700">
+                  <li className="flex items-start gap-2">
+                    <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-yellow-500"></div>
+                    <p>Minimal price impact on large trades</p>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-yellow-500"></div>
+                    <p>Competitive spreads across all trading pairs</p>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-yellow-500"></div>
+                    <p>High capital efficiency through unified liquidity pools</p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )
     },
     {
       id: "quiz",
@@ -663,7 +830,7 @@ export default function DerivativesSection() {
             </Link>
             <h1 className="text-3xl font-bold text-gray-900">DeFi Derivatives</h1>
           </div>
-          <Progress value={progress} className="w-32" />
+          <Progress value={typeof progress === 'number' ? progress : 0} className="w-32" />
         </div>
 
         <motion.div
@@ -713,4 +880,6 @@ export default function DerivativesSection() {
       </div>
     </div>
   );
-}
+};
+
+export default DerivativesSection;
