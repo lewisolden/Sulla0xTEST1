@@ -9,31 +9,57 @@ const router = Router();
 // Get all users with pagination
 router.get('/users', requireAdmin, async (req, res) => {
   try {
-    console.log('Admin users route - starting user fetch');
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const offset = (page - 1) * limit;
+    const search = req.query.search as string;
 
-    // Simple query to get all users
-    const usersResult = await db.select().from(users);
-    console.log('Raw query result:', usersResult);
+    console.log('Admin users route - Request params:', { page, limit, offset, search });
 
-    // Map users to expected format
-    const mappedUsers = usersResult.map(user => ({
+    // First get the filtered users
+    let query = db.select().from(users);
+
+    // Add search if provided
+    if (search) {
+      query = query.where(
+        sql`username ILIKE ${`%${search}%`} OR email ILIKE ${`%${search}%`}`
+      );
+    }
+
+    // Add pagination
+    const usersList = await query
+      .limit(limit)
+      .offset(offset)
+      .orderBy(desc(users.lastActivity));
+
+    console.log('Found users:', usersList.length);
+
+    // Get total count for pagination
+    const [totalCount] = await db
+      .select({
+        count: sql<number>`count(*)`
+      })
+      .from(users);
+
+    console.log('Total users count:', totalCount?.count || 0);
+
+    // Map users to the expected format
+    const mappedUsers = usersList.map(user => ({
       id: user.id,
       username: user.username,
       email: user.email,
       lastActivity: user.lastActivity,
-      enrollmentCount: 0, // We'll enhance this later with actual counts
-      completedModules: 0 // We'll enhance this later with actual counts
+      enrollmentCount: 0, // These will be implemented when those features are added
+      completedModules: 0
     }));
-
-    console.log('Mapped users:', mappedUsers);
 
     res.json({
       users: mappedUsers,
       pagination: {
-        total: mappedUsers.length,
-        page: 1,
-        pageSize: mappedUsers.length,
-        totalPages: 1
+        total: Number(totalCount?.count || 0),
+        page,
+        pageSize: limit,
+        totalPages: Math.ceil(Number(totalCount?.count || 0) / limit)
       }
     });
   } catch (error) {
@@ -134,31 +160,37 @@ router.patch('/feedback/:id', requireAdmin, async (req, res) => {
   }
 });
 
-// Get user analytics
+// Analytics endpoint
 router.get('/analytics/users', requireAdmin, async (req, res) => {
   try {
-    console.log('Admin analytics route - starting analytics calculation');
-
     // Get total users count
-    const [userCountResult] = await db
+    const [totalCount] = await db
       .select({
         count: sql<number>`count(*)`
       })
       .from(users);
 
-    console.log('Total users count:', userCountResult);
+    // Get active users in last 7 days
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+    const [activeUsers] = await db
+      .select({
+        count: sql<number>`count(*)`
+      })
+      .from(users)
+      .where(gt(users.lastActivity, sevenDaysAgo));
 
     const response = {
-      totalUsers: Number(userCountResult.count || 0),
-      activeUsers: 0,
+      totalUsers: Number(totalCount?.count || 0),
+      activeUsers: Number(activeUsers?.count || 0),
       totalEnrollments: 0,
-      avgEnrollmentsPerUser: 0,
-      userGrowth: {
-        last30Days: 0,
-      }
+      completedModules: 0,
+      achievementsAwarded: 0,
+      pendingFeedback: 0,
+      userActivityData: [] // Will be implemented when activity tracking is added
     };
 
-    console.log('Sending analytics response:', response);
     res.json(response);
   } catch (error) {
     console.error('Error fetching analytics:', error);
