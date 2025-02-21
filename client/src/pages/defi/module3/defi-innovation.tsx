@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useProgress } from "@/context/progress-context";
+import { useScrollTop } from "@/hooks/useScrollTop"; 
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -291,6 +292,7 @@ const InnovationQuiz = () => {
 };
 
 const DefiInnovation = () => {
+  useScrollTop();
   const { updateProgress } = useProgress();
   const { toast } = useToast();
 
