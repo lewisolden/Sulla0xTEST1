@@ -40,8 +40,8 @@ app.use((req, res, next) => {
   next();
 });
 
-const PORT = process.env.PORT || 5000;
 let server: any = null;
+const tryPorts = [5000, 5001, 5002, 5003];
 
 (async () => {
   try {
@@ -66,33 +66,38 @@ let server: any = null;
       log("Static file serving setup complete");
     }
 
-    // Create a promise that resolves when the server starts listening
-    const startServer = new Promise((resolve, reject) => {
+    // Try ports sequentially until one works
+    for (const port of tryPorts) {
       try {
-        if (server.listening) {
-          server.close(() => {
-            server.listen(PORT, "0.0.0.0", () => {
-              log(`Server is running on port ${PORT}`);
-              resolve(true);
-            });
-          });
-        } else {
-          server.listen(PORT, "0.0.0.0", () => {
-            log(`Server is running on port ${PORT}`);
+        await new Promise((resolve, reject) => {
+          server.listen(port, "0.0.0.0", () => {
+            log(`Server successfully started on port ${port}`);
             resolve(true);
           });
-        }
 
-        server.on('error', (error: Error) => {
-          log(`Failed to start server: ${error.message}`);
-          reject(error);
+          server.on('error', (error: Error) => {
+            if ((error as any).code === 'EADDRINUSE') {
+              log(`Port ${port} is in use, trying next port...`);
+              resolve(false);
+            } else {
+              reject(error);
+            }
+          });
         });
-      } catch (error) {
-        reject(error);
-      }
-    });
 
-    await startServer;
+        // If we get here and server is listening, we found a working port
+        if (server.listening) {
+          break;
+        }
+      } catch (error) {
+        log(`Error trying port ${port}: ${error}`);
+        // Continue to next port
+      }
+    }
+
+    if (!server.listening) {
+      throw new Error('Failed to find an available port');
+    }
 
     // Initialize services in the background
     verifyEmailService().catch(error => {

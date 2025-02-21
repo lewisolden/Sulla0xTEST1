@@ -117,7 +117,7 @@ router.post("/send", async (req, res) => {
     if (courseId) {
       systemMessage += "Focus on providing accurate, educational responses related to the current course material. ";
     }
-    systemMessage += "Keep responses clear, concise, and engaging.";
+    systemMessage += "Keep responses clear, concise, and engaging. Provide practical examples when explaining complex blockchain and cryptocurrency concepts. Use analogies when helpful. Avoid technical jargon unless specifically asked about technical details.";
 
     // Prepare the chat request
     const requestBody = {
