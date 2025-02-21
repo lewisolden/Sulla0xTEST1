@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { Building2, ArrowLeft, Shield, Landmark, BarChart3, Scale, BadgeCheck, ChartBar, Network, Lock, BookOpen, ArrowRight } from "lucide-react";
+import { Building2, ArrowLeft, Shield, Landmark, BarChart3, Scale, BadgeCheck, ChartBar, Network, Lock, BookOpen, ArrowRight, Activity, CircleDollarSign, Database } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { useProgress } from "@/context/progress-context";
 
@@ -74,8 +74,8 @@ const sections = [
         <div className="prose max-w-none">
           <h3 className="text-2xl font-bold text-blue-800">The Institutional DeFi Revolution</h3>
           <p className="text-gray-700 leading-relaxed">
-            Institutional DeFi represents a transformative convergence of traditional finance and decentralized technologies. 
-            As major financial institutions increasingly explore blockchain solutions, the DeFi ecosystem is evolving to 
+            Institutional DeFi represents a transformative convergence of traditional finance and decentralized technologies.
+            As major financial institutions increasingly explore blockchain solutions, the DeFi ecosystem is evolving to
             meet enterprise-grade requirements while maintaining the core benefits of decentralization.
           </p>
         </div>
@@ -247,6 +247,8 @@ export default function InstitutionalDefi() {
   const { toast } = useToast();
   const { updateProgress } = useProgress();
   const [activeTab, setActiveTab] = useState("overview");
+  const [quizStarted, setQuizStarted] = useState(false);
+
 
   const handleStartQuiz = () => {
     setShowQuiz(true);
@@ -290,9 +292,9 @@ export default function InstitutionalDefi() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="mb-6 flex items-center">
+    <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-purple-50 to-white">
+      <div className="max-w-5xl mx-auto">
+        <div className="mb-6">
           <Link href="/defi/module4">
             <Button variant="ghost" className="gap-2">
               <ArrowLeft className="h-4 w-4" /> Back to Module 4
@@ -309,21 +311,73 @@ export default function InstitutionalDefi() {
           {!showQuiz ? (
             <>
               {/* Title Section */}
-              <Card className="overflow-hidden">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-4 mb-6">
-                    <Building2 className="h-12 w-12 text-blue-600" />
-                    <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                      Institutional DeFi: Enterprise Solutions & Compliance
-                    </h1>
-                  </div>
-
-                  <div className="prose max-w-none">
-                    <p className="text-gray-600 text-lg leading-relaxed">
-                      Explore how traditional financial institutions are adopting DeFi technology,
-                      the regulatory frameworks being developed, and the enterprise-grade solutions
-                      enabling institutional participation in decentralized finance.
+              <Card>
+                <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
+                  <CardTitle className="text-3xl">
+                    Institutional DeFi: Enterprise Solutions & Compliance
+                  </CardTitle>
+                  <p className="text-blue-100 mt-2">
+                    Explore how traditional financial institutions are adopting DeFi technology,
+                    the regulatory frameworks being developed, and the enterprise-grade solutions
+                    enabling institutional participation in decentralized finance.
+                  </p>
+                </CardHeader>
+                <CardContent className="pt-6">
+                  <div className="space-y-6">
+                    <p className="text-gray-700 text-lg">
+                      Understanding DeFi analytics is crucial for making informed decisions. Learn about key metrics,
+                      data interpretation, and market analysis techniques.
                     </p>
+
+                    <div className="grid md:grid-cols-3 gap-6">
+                      <Card className="border-blue-200">
+                        <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-100">
+                          <div className="flex items-center gap-3">
+                            <div className="p-2 bg-blue-500 rounded-lg">
+                              <ChartBar className="h-6 w-6 text-white" />
+                            </div>
+                            <CardTitle className="text-xl">Key Metrics</CardTitle>
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-gray-600">
+                            Understanding and interpreting essential DeFi metrics
+                          </p>
+                        </CardContent>
+                      </Card>
+
+                      <Card className="border-purple-200">
+                        <CardHeader className="bg-gradient-to-r from-purple-50 to-purple-100">
+                          <div className="flex items-center gap-3">
+                            <div className="p-2 bg-purple-500 rounded-lg">
+                              <Activity className="h-6 w-6 text-white" />
+                            </div>
+                            <CardTitle className="text-xl">Market Analysis</CardTitle>
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-gray-600">
+                            Tools and techniques for analyzing DeFi markets
+                          </p>
+                        </CardContent>
+                      </Card>
+
+                      <Card className="border-indigo-200">
+                        <CardHeader className="bg-gradient-to-r from-indigo-50 to-indigo-100">
+                          <div className="flex items-center gap-3">
+                            <div className="p-2 bg-indigo-500 rounded-lg">
+                              <Shield className="h-6 w-6 text-white" />
+                            </div>
+                            <CardTitle className="text-xl">Risk Assessment</CardTitle>
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-gray-600">
+                            Evaluating and managing DeFi investment risks
+                          </p>
+                        </CardContent>
+                      </Card>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -355,15 +409,52 @@ export default function InstitutionalDefi() {
               </Tabs>
 
               {/* Start Quiz Button */}
-              <div className="flex justify-center">
-                <Button
-                  size="lg"
-                  onClick={handleStartQuiz}
-                  className="bg-blue-600 hover:bg-blue-700 transform transition-all duration-200 hover:scale-105"
-                >
-                  Test Your Knowledge
-                </Button>
-              </div>
+              <Card>
+                <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
+                  <CardTitle className="text-2xl">Test Your Analytics Knowledge</CardTitle>
+                  <p className="text-blue-100 mt-2">
+                    Verify your understanding of DeFi analytics concepts
+                  </p>
+                </CardHeader>
+                <CardContent className="pt-6">
+                  {!quizStarted ? (
+                    <div className="text-center space-y-4">
+                      <p className="text-gray-600">
+                        Ready to test your knowledge of DeFi analytics, metrics interpretation,
+                        and data analysis?
+                      </p>
+                      <Button onClick={() => setQuizStarted(true)} className="w-full md:w-auto">
+                        Start Quiz
+                      </Button>
+                    </div>
+                  ) : (
+                    <div>
+                      <Progress value={(currentQuestion / quizQuestions.length) * 100} className="mb-6" />
+                      <div className="mb-6">
+                        <h3 className="text-xl font-semibold mb-4">
+                          Question {currentQuestion + 1} of {quizQuestions.length}
+                        </h3>
+                        <p className="text-lg mb-4">{quizQuestions[currentQuestion].question}</p>
+                        <div className="space-y-3">
+                          {quizQuestions[currentQuestion].options.map((option, index) => (
+                            <Button
+                              key={index}
+                              variant={selectedAnswer === index ? "default" : "outline"}
+                              className="w-full justify-start text-left"
+                              onClick={() => handleAnswerSelection(index)}
+                            >
+                              {option}
+                            </Button>
+                          ))}
+                        </div>
+                      </div>
+                      <Button className="w-full" onClick={handleNextQuestion}>
+                        {currentQuestion === quizQuestions.length - 1 ? "Finish Quiz" : "Next Question"}
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
             </>
           ) : (
             <Card>
@@ -374,8 +465,8 @@ export default function InstitutionalDefi() {
 
                 {!showResults ? (
                   <>
-                    <Progress 
-                      value={(currentQuestion / quizQuestions.length) * 100} 
+                    <Progress
+                      value={(currentQuestion / quizQuestions.length) * 100}
                       className="mb-6"
                     />
                     <div className="mb-6">
@@ -396,10 +487,7 @@ export default function InstitutionalDefi() {
                         ))}
                       </div>
                     </div>
-                    <Button 
-                      className="w-full"
-                      onClick={handleNextQuestion}
-                    >
+                    <Button className="w-full" onClick={handleNextQuestion}>
                       {currentQuestion === quizQuestions.length - 1 ? "Finish Quiz" : "Next Question"}
                     </Button>
                   </>
@@ -409,8 +497,8 @@ export default function InstitutionalDefi() {
                     <p className="text-xl mb-4">
                       Your score: {score} out of {quizQuestions.length}
                     </p>
-                    <Progress 
-                      value={(score / quizQuestions.length) * 100} 
+                    <Progress
+                      value={(score / quizQuestions.length) * 100}
                       className="mb-6"
                     />
                     {score === quizQuestions.length ? (
