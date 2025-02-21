@@ -235,7 +235,15 @@ function Router() {
 
       {/* DeFi Module 3 Route */}
       <Route path="/defi/module3" component={() => <ProtectedRoute component={DefiModule3} />} />
-      <Route path="/defi/module3/advanced-defi" component={() => <ProtectedRoute component={AdvancedDefi} />} />
+      <Route 
+        path="/defi/module3/advanced-defi" 
+        component={() => (
+          <ProtectedRoute 
+            component={AdvancedDefi} 
+            publicAccess={true}
+          />
+        )} 
+      />
       <Route path="/defi/module3/quiz" component={() => <ProtectedRoute component={DefiModule3Quiz} />} />
 
       <Route component={NotFound} />

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { motion } from "framer-motion";
@@ -10,22 +10,32 @@ import {
   AccordionTrigger 
 } from "@/components/ui/accordion";
 
-const AdvancedDefi: React.FC = () => {
+const AdvancedDefi = () => {
   const { updateProgress } = useProgress();
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    updateProgress(
-      3, // moduleId for Module 3
-      'defi-module3-advanced', // sectionId
-      true, // completed
-      1, // courseId (1 for DeFi course)
-      undefined, // timeSpent
-      undefined, // quizScore
-      undefined, // lastQuizPath
-      '/defi/module3/advanced-defi', // lastCompletedPath
-      'DeFi' // courseName
-    );
+    try {
+      updateProgress(
+        3,
+        'defi-module3-advanced',
+        true,
+        1,
+        undefined,
+        undefined,
+        undefined,
+        '/defi/module3/advanced-defi',
+        'DeFi'
+      );
+      setIsLoaded(true);
+    } catch (error) {
+      console.error('Failed to update progress:', error);
+    }
   }, [updateProgress]);
+
+  if (!isLoaded) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
