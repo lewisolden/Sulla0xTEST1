@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
@@ -328,14 +328,14 @@ const HyperliquidOverview: React.FC = () => {
               <div className="bg-white p-4 rounded-lg border border-gray-200">
                 <h4 className="font-medium text-blue-700 mb-2">Decentralized Order Book</h4>
                 <p className="text-gray-600">
-                  Unlike centralized exchanges that maintain private order books, Hyperliquid operates a fully on-chain order book, 
+                  Unlike centralized exchanges that maintain private order books, Hyperliquid operates a fully on-chain order book,
                   ensuring complete transparency and preventing market manipulation.
                 </p>
               </div>
               <div className="bg-white p-4 rounded-lg border border-gray-200">
                 <h4 className="font-medium text-blue-700 mb-2">Self-Custody</h4>
                 <p className="text-gray-600">
-                  Traders maintain control of their assets through smart contracts, eliminating counterparty risk 
+                  Traders maintain control of their assets through smart contracts, eliminating counterparty risk
                   associated with centralized exchanges holding user funds.
                 </p>
               </div>
@@ -398,9 +398,12 @@ const HyperliquidOverview: React.FC = () => {
 };
 
 const DerivativesQuiz: React.FC = () => {
-  const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [submitted, setSubmitted] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [showExplanation, setShowExplanation] = useState(false);
+  const [userAnswer, setUserAnswer] = useState<string | null>(null);
   const [score, setScore] = useState(0);
+  const [quizStarted, setQuizStarted] = useState(false);
+  const { toast } = useToast();
 
   const questions = [
     {
@@ -412,7 +415,8 @@ const DerivativesQuiz: React.FC = () => {
         c: "Trading without any risk",
         d: "Trading physical assets only"
       },
-      correct: "a"
+      correct: "a",
+      explanation: "Leverage trading allows traders to open positions larger than their capital by borrowing funds. This amplifies both potential profits and losses."
     },
     {
       id: 2,
@@ -423,7 +427,8 @@ const DerivativesQuiz: React.FC = () => {
         c: "You lose your collateral and position is closed",
         d: "The trade is automatically extended"
       },
-      correct: "c"
+      correct: "c",
+      explanation: "When the price reaches the liquidation level, the position is automatically closed and the trader loses their collateral. This is a risk management mechanism to prevent further losses."
     },
     {
       id: 3,
@@ -434,64 +439,123 @@ const DerivativesQuiz: React.FC = () => {
         c: "It's slower",
         d: "It requires KYC"
       },
-      correct: "b"
+      correct: "b",
+      explanation: "Hyperliquid combines the benefits of decentralization with the speed of centralized exchanges. It maintains order books on-chain and allows users to retain custody of their assets, enhancing transparency and security."
     }
   ];
 
-  const handleSubmit = () => {
-    let correct = 0;
-    questions.forEach(q => {
-      if (answers[q.id] === q.correct) correct++;
-    });
-    setScore(correct);
-    setSubmitted(true);
+  const handleAnswer = (answer: string) => {
+    setUserAnswer(answer);
+    setShowExplanation(true);
+
+    const isCorrect = answer === questions[currentQuestion].correct;
+    if (isCorrect) {
+      setScore(score + 1);
+      toast({
+        title: "Correct! 🎉",
+        description: "Great job! Let's see the explanation.",
+        variant: "default",
+      });
+    } else {
+      toast({
+        title: "Incorrect",
+        description: "Let's understand why. Check the explanation below.",
+        variant: "destructive",
+      });
+    }
   };
+
+  const handleNextQuestion = () => {
+    setShowExplanation(false);
+    setUserAnswer(null);
+    setCurrentQuestion(currentQuestion + 1);
+  };
+
+  if (!quizStarted) {
+    return (
+      <Card className="mt-8">
+        <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
+          <CardTitle className="text-2xl">Test Your Knowledge</CardTitle>
+          <p className="text-blue-100 mt-2">
+            Ready to test your understanding of DeFi derivatives and leverage trading?
+          </p>
+        </CardHeader>
+        <CardContent className="pt-6">
+          <div className="text-center space-y-4">
+            <p className="text-gray-600">
+              This quiz will test your knowledge of leverage trading, liquidation mechanics,
+              and decentralized derivatives platforms.
+            </p>
+            <Button onClick={() => setQuizStarted(true)} className="w-full md:w-auto">
+              Start Quiz
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="mt-8">
       <CardHeader className="bg-gradient-to-r from-blue-50 to-purple-50">
-        <CardTitle className="text-2xl">Knowledge Check</CardTitle>
+        <div className="flex justify-between items-center">
+          <CardTitle className="text-2xl">Question {currentQuestion + 1}/{questions.length}</CardTitle>
+          <span className="text-sm font-medium text-blue-600">
+            Score: {score}/{questions.length}
+          </span>
+        </div>
+        <Progress
+          value={(currentQuestion / questions.length) * 100}
+          className="mt-4"
+        />
       </CardHeader>
       <CardContent className="pt-6">
         <div className="space-y-6">
-          {questions.map((q) => (
-            <div key={q.id} className="space-y-4">
-              <p className="text-lg font-medium">{q.question}</p>
-              <div className="space-y-2">
-                {Object.entries(q.options).map(([key, value]) => (
-                  <div key={key} className="flex items-center">
-                    <input
-                      type="radio"
-                      id={`${q.id}-${key}`}
-                      name={`question-${q.id}`}
-                      value={key}
-                      onChange={(e) => setAnswers({ ...answers, [q.id]: e.target.value })}
-                      disabled={submitted}
-                      className="mr-2"
-                    />
-                    <label htmlFor={`${q.id}-${key}`}>{value}</label>
-                  </div>
-                ))}
-              </div>
-              {submitted && (
-                <div className={`text-sm ${answers[q.id] === q.correct ? 'text-green-600' : 'text-red-600'}`}>
-                  {answers[q.id] === q.correct ? '✓ Correct!' : '✗ Incorrect'}
+          <div className="space-y-4">
+            <h3 className="text-xl font-medium">{questions[currentQuestion].question}</h3>
+            <div className="space-y-2">
+              {Object.entries(questions[currentQuestion].options).map(([key, value]) => (
+                <Button
+                  key={key}
+                  onClick={() => !showExplanation && handleAnswer(key)}
+                  variant={userAnswer === key ?
+                    (key === questions[currentQuestion].correct ? "default" : "destructive")
+                    : "outline"}
+                  disabled={showExplanation}
+                  className="w-full justify-start text-left"
+                >
+                  {value}
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          {showExplanation && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-blue-50 p-4 rounded-lg"
+            >
+              <h4 className="font-medium text-blue-800 mb-2">Explanation</h4>
+              <p className="text-blue-700">{questions[currentQuestion].explanation}</p>
+              {currentQuestion < questions.length - 1 ? (
+                <Button onClick={handleNextQuestion} className="mt-4">
+                  Next Question
+                </Button>
+              ) : (
+                <div className="mt-4 text-center">
+                  <h3 className="text-xl font-bold mb-2">Quiz Complete!</h3>
+                  <p className="text-gray-600">
+                    Final Score: {score}/{questions.length}
+                  </p>
+                  <p className="text-gray-600">
+                    {score === questions.length
+                      ? "Perfect score! Excellent understanding!"
+                      : "Good effort! Review the material and try again!"}
+                  </p>
                 </div>
               )}
-            </div>
-          ))}
-
-          {!submitted ? (
-            <Button onClick={handleSubmit} className="w-full">
-              Submit Answers
-            </Button>
-          ) : (
-            <div className="text-center">
-              <p className="text-xl font-bold mb-2">Your Score: {score}/{questions.length}</p>
-              <p className="text-gray-600">
-                {score === questions.length ? 'Perfect score! Well done!' : 'Review the material and try again!'}
-              </p>
-            </div>
+            </motion.div>
           )}
         </div>
       </CardContent>
@@ -504,9 +568,6 @@ export default function DerivativesSection() {
   const { progress, updateProgress } = useProgress();
   const { toast } = useToast();
   const [currentSection, setCurrentSection] = useState(0);
-  const [showQuiz, setShowQuiz] = useState(false);
-  const [quizSubmitted, setQuizSubmitted] = useState(false);
-  const [score, setScore] = useState(0);
 
   const sections = [
     {
@@ -516,9 +577,9 @@ export default function DerivativesSection() {
       content: (
         <div className="space-y-4">
           <p className="text-gray-700 text-lg">
-            DeFi derivatives are financial instruments whose value is derived from the performance 
-            of underlying assets, indexes, or entities. In the decentralized finance space, these 
-            instruments enable traders to speculate on asset prices, hedge their positions, and 
+            DeFi derivatives are financial instruments whose value is derived from the performance
+            of underlying assets, indexes, or entities. In the decentralized finance space, these
+            instruments enable traders to speculate on asset prices, hedge their positions, and
             gain exposure to various markets without owning the underlying assets.
           </p>
 
@@ -564,8 +625,8 @@ export default function DerivativesSection() {
               <CardContent className="pt-6">
                 <div className="space-y-4">
                   <p className="text-gray-700">
-                    Traders must deposit collateral to open leveraged positions. This collateral, 
-                    or margin, protects against potential losses and determines the maximum 
+                    Traders must deposit collateral to open leveraged positions. This collateral,
+                    or margin, protects against potential losses and determines the maximum
                     position size.
                   </p>
                   <ul className="space-y-2">
@@ -594,7 +655,7 @@ export default function DerivativesSection() {
               <CardContent className="pt-6">
                 <div className="space-y-4">
                   <p className="text-gray-700">
-                    Leverage multiplies both potential profits and losses. When losses approach 
+                    Leverage multiplies both potential profits and losses. When losses approach
                     the maintenance margin, positions risk liquidation.
                   </p>
                   <ul className="space-y-2">
@@ -635,7 +696,7 @@ export default function DerivativesSection() {
                 <div>
                   <h3 className="text-xl font-semibold text-gray-800 mb-3">Token Generation Event (TGE)</h3>
                   <p className="text-gray-700">
-                    Hyperliquid's unique token launch focused on fair distribution and long-term 
+                    Hyperliquid's unique token launch focused on fair distribution and long-term
                     sustainability. The protocol implemented innovative tokenomics with:
                   </p>
                   <ul className="mt-3 space-y-2">
@@ -686,7 +747,7 @@ export default function DerivativesSection() {
                       <span className="text-gray-600">Professional market makers with dedicated pools</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0 mt0.5" />
                       <span className="text-gray-600">Dynamic fee structure incentivizing liquidity provision</span>
                     </li>
                     <li className="flex items-start gap-2">
@@ -723,13 +784,7 @@ export default function DerivativesSection() {
       )
     },
     {
-      id: "hyperliquid-overview", // Added new section for Hyperliquid overview
-      title: "Hyperliquid Overview",
-      icon: TrendingUp,
-      content: <HyperliquidOverview />
-    },
-    {
-      id: "quiz", // Added new section for quiz
+      id: "quiz",
       title: "Derivatives Quiz",
       icon: BookOpen,
       content: <DerivativesQuiz />
@@ -804,40 +859,42 @@ export default function DerivativesSection() {
         >
           {sections.map((section, index) => (
             <motion.div
-              key={index}
+              key={section.id}
               variants={itemVariants}
               className={`${
                 index === currentSection ? 'border-2 border-blue-500' : ''
               } rounded-lg overflow-hidden`}
             >
               <Card>
-                <CardHeader className="bg-gradient-to-r from-blue-50 to-purple-50">
-                  <div className="flex items-center gap-3">
-                    <section.icon className="h-6 w-6 text-blue-500" />
-                    <CardTitle className="text-xl font-semibold text-blue-800">
-                      {section.title}
-                    </CardTitle>
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 bg-blue-500 rounded-lg">
+                        <section.icon className="h-6 w-6 text-white" />
+                      </div>
+                      <CardTitle className="text-xl font-semibold text-blue-800">
+                        {section.title}
+                      </CardTitle>
+                    </div>
+                    {index < currentSection && (
+                      <CheckCircle2 className="h-6 w-6 text-green-500" />
+                    )}
                   </div>
                 </CardHeader>
-                <CardContent className="pt-6">
-                  {section.content}
-                  <div className="mt-6 flex justify-end">
-                    <Button
-                      onClick={() => handleSectionComplete(index)}
-                      className="bg-blue-600 hover:bg-blue-700"
-                      disabled={index !== currentSection}
-                    >
-                      {index === sections.length - 1 ? "Complete Topic" : "Next Section"}
-                    </Button>
-                  </div>
+                <CardContent>
+                  {currentSection === index && section.content}
                 </CardContent>
+                {currentSection === index && index < sections.length - 1 && (
+                  <CardFooter>
+                    <Button onClick={() => handleSectionComplete(index)} className="ml-auto">
+                      Complete Section
+                    </Button>
+                  </CardFooter>
+                )}
               </Card>
             </motion.div>
           ))}
         </motion.div>
-
-        <HyperliquidOverview />
-        <DerivativesQuiz />
       </div>
     </div>
   );
