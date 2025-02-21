@@ -6,12 +6,17 @@ import { courseEnrollments } from "@db/schema";
 
 const router = Router();
 
+// Message schema validation
+const chatMessageSchema = z.object({
+  message: z.string().min(1, "Message cannot be empty"),
+  courseId: z.number().optional(),
+  context: z.string().optional()
+});
+
 // Test endpoint for Perplexity API
 router.get("/test", async (req, res) => {
   console.log('[Chat Test] Received request to /test');
   try {
-    // Remove authentication check for test endpoint
-    // Check if API key exists and validate format
     if (!process.env.PERPLEXITY_API_KEY) {
       console.error('[Chat Test] Missing Perplexity API key');
       return res.status(500).json({ error: 'API key configuration error' });
@@ -38,10 +43,8 @@ router.get("/test", async (req, res) => {
       temperature: 0.7,
       max_tokens: 150,
       top_p: 0.9,
-      search_domain_filter: ["perplexity.ai"],
       return_images: false,
       return_related_questions: false,
-      search_recency_filter: "month",
       top_k: 0,
       stream: false,
       presence_penalty: 0,
@@ -85,6 +88,112 @@ router.get("/test", async (req, res) => {
     console.error('[Chat Test] Error:', error);
     res.status(500).json({ 
       error: 'Chat test failed',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
+// Main chat endpoint
+router.post("/send", async (req, res) => {
+  console.log('[Chat] Received message:', req.body);
+  try {
+    // Validate request body
+    const result = chatMessageSchema.safeParse(req.body);
+    if (!result.success) {
+      console.error('[Chat] Validation error:', result.error);
+      return res.status(400).json({ 
+        error: 'Invalid request',
+        details: result.error.errors
+      });
+    }
+
+    const { message, courseId, context } = result.data;
+
+    // Check API key
+    if (!process.env.PERPLEXITY_API_KEY) {
+      console.error('[Chat] Missing Perplexity API key');
+      return res.status(500).json({ error: 'API configuration error' });
+    }
+
+    // Prepare system message based on context
+    let systemMessage = "You are an AI tutor specialized in blockchain and cryptocurrency education. ";
+    if (courseId) {
+      systemMessage += "Focus on providing accurate, educational responses related to the current course material. ";
+    }
+    systemMessage += "Keep responses clear, concise, and engaging.";
+
+    // Prepare the chat request
+    const requestBody = {
+      model: "llama-3.1-sonar-small-128k-online",
+      messages: [
+        {
+          role: "system",
+          content: systemMessage
+        },
+        {
+          role: "user",
+          content: message
+        }
+      ],
+      temperature: 0.7,
+      max_tokens: 500,
+      top_p: 0.9,
+      return_images: false,
+      return_related_questions: false,
+      top_k: 0,
+      stream: false,
+      presence_penalty: 0,
+      frequency_penalty: 1
+    };
+
+    if (context) {
+      requestBody.messages.splice(1, 0, {
+        role: "system",
+        content: `Additional context: ${context}`
+      });
+    }
+
+    console.log('[Chat] Making request to Perplexity API');
+    const response = await fetch('https://api.perplexity.ai/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.PERPLEXITY_API_KEY}`
+      },
+      body: JSON.stringify(requestBody)
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('[Chat] API error:', {
+        status: response.status,
+        statusText: response.statusText,
+        body: errorText
+      });
+      throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    console.log('[Chat] Received API response:', data);
+
+    // Format and send response
+    res.json({
+      success: true,
+      response: {
+        message: data.choices[0].message.content,
+        citations: data.citations || [],
+        metadata: {
+          model: data.model,
+          usage: data.usage
+        }
+      }
+    });
+
+  } catch (error) {
+    console.error('[Chat] Error:', error);
+    res.status(500).json({
+      error: 'Failed to process chat message',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
   }
