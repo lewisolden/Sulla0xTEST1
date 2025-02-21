@@ -63,24 +63,30 @@ export default function AccountPage() {
   const [feedbackText, setFeedbackText] = useState("");
   const { toast } = useToast();
 
-  const { data: enrollments, isLoading: loadingEnrollments } = useQuery<Enrollment[]>({
-    queryKey: ['enrollments'],
-    queryFn: async () => {
-      const response = await fetch('/api/enrollments', {
-        credentials: 'include' 
-      });
-      if (!response.ok) throw new Error('Failed to fetch enrollments');
-      return response.json();
-    }
-  });
-
   const { data: metrics, isLoading: loadingMetrics } = useQuery<UserMetrics>({
     queryKey: ['user-metrics'],
     queryFn: async () => {
       const response = await fetch('/api/user/metrics', {
-        credentials: 'include' 
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
       if (!response.ok) throw new Error('Failed to fetch user metrics');
+      return response.json();
+    }
+  });
+
+  const { data: enrollments, isLoading: loadingEnrollments } = useQuery<Enrollment[]>({
+    queryKey: ['enrollments'],
+    queryFn: async () => {
+      const response = await fetch('/api/enrollments', {
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      if (!response.ok) throw new Error('Failed to fetch enrollments');
       return response.json();
     }
   });

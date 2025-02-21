@@ -8,8 +8,20 @@ import { promisify } from "util";
 import { users, adminUsers, type SelectUser, type SelectAdminUser } from "@db/schema";
 import { db } from "@db";
 import { eq, or } from "drizzle-orm";
+import { z } from "zod";
 
 const scryptAsync = promisify(scrypt);
+
+// User schemas for validation
+export const insertUserSchema = z.object({
+  username: z.string().min(3).max(50),
+  email: z.string().email(),
+  password: z.string().min(8),
+});
+
+export const insertAdminUserSchema = insertUserSchema.extend({
+  role: z.enum(['admin']).default('admin'),
+});
 
 async function hashPassword(password: string) {
   const salt = randomBytes(16).toString("hex");
@@ -34,46 +46,13 @@ declare global {
   }
 }
 
-export const requireAdmin = async (req: any, res: any, next: any) => {
-  if (!req.isAuthenticated()) {
-    console.log('Admin check failed - not authenticated');
-    return res.status(401).json({ error: "Not authenticated" });
-  }
-
-  try {
-    // Check if the user has admin role
-    if (req.user?.role !== 'admin') {
-      console.log('Admin check failed - not an admin user');
-      return res.status(403).json({ error: "Not authorized" });
-    }
-
-    // Additional admin verification from database
-    const [admin] = await db
-      .select()
-      .from(adminUsers)
-      .where(eq(adminUsers.id, req.user.id))
-      .limit(1);
-
-    if (!admin) {
-      console.log('Admin check failed - admin record not found');
-      return res.status(403).json({ error: "Not authorized" });
-    }
-
-    console.log('Admin check passed for user:', req.user.id);
-    next();
-  } catch (error) {
-    console.error('Error in admin check:', error);
-    return res.status(500).json({ error: "Internal server error" });
-  }
-};
-
 const PUBLIC_ROUTES = [
   '/deck',
   '/api/register',
   '/api/login',
   '/api/admin/login',
   '/api/chat/test',
-  '/api/chat/send' 
+  '/api/chat/send'
 ];
 
 function isPublicRoute(path: string): boolean {
@@ -107,13 +86,11 @@ export function setupAuth(app: Express) {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  // Add middleware to check for public routes
+  // Authentication status middleware
   app.use((req, res, next) => {
-    if (isPublicRoute(req.path) || req.isAuthenticated()) {
-      return next();
-    }
-    if (req.path.startsWith('/api/')) {
-      return res.status(401).json({ error: "Not authenticated" });
+    console.log(`[Auth] Request to ${req.path} - Authenticated: ${req.isAuthenticated()}`);
+    if (req.isAuthenticated()) {
+      console.log(`[Auth] User ID: ${req.user?.id}, Role: ${req.user?.role}`);
     }
     next();
   });
@@ -121,6 +98,8 @@ export function setupAuth(app: Express) {
   // Regular user strategy
   passport.use('local', new LocalStrategy(async (username, password, done) => {
     try {
+      console.log(`[Auth] Login attempt for username: ${username}`);
+
       const [user] = await db
         .select()
         .from(users)
@@ -133,16 +112,20 @@ export function setupAuth(app: Express) {
         .limit(1);
 
       if (!user) {
+        console.log(`[Auth] User not found: ${username}`);
         return done(null, false, { message: "Incorrect username or email." });
       }
 
       const isValid = await verifyPassword(password, user.password);
       if (!isValid) {
+        console.log(`[Auth] Invalid password for user: ${username}`);
         return done(null, false, { message: "Incorrect password." });
       }
 
+      console.log(`[Auth] Successful login for user: ${username}`);
       return done(null, { ...user, role: 'user' });
     } catch (err) {
+      console.error(`[Auth] Error during authentication:`, err);
       return done(err);
     }
   }));
@@ -334,10 +317,21 @@ export function setupAuth(app: Express) {
     });
   });
 
+  // Update the /api/user endpoint to include more detailed error handling
   app.get("/api/user", (req, res) => {
+    console.log(`[Auth] User data request - Authenticated: ${req.isAuthenticated()}`);
+
     if (!req.isAuthenticated()) {
+      console.log('[Auth] Unauthorized user data request');
       return res.status(401).json({ error: "Not logged in" });
     }
+
+    if (!req.user) {
+      console.log('[Auth] No user data found in authenticated session');
+      return res.status(500).json({ error: "User session error" });
+    }
+
+    console.log(`[Auth] Returning user data for ID: ${req.user.id}`);
     res.json(req.user);
   });
   app.post("/api/admin/register", requireAdmin, async (req, res, next) => {
@@ -382,4 +376,42 @@ export function setupAuth(app: Express) {
       next(error);
     }
   });
+}
+
+export const requireAdmin = async (req: any, res: any, next: any) => {
+  if (!req.isAuthenticated()) {
+    console.log('Admin check failed - not authenticated');
+    return res.status(401).json({ error: "Not authenticated" });
+  }
+
+  try {
+    // Check if the user has admin role
+    if (req.user?.role !== 'admin') {
+      console.log('Admin check failed - not an admin user');
+      return res.status(403).json({ error: "Not authorized" });
+    }
+
+    // Additional admin verification from database
+    const [admin] = await db
+      .select()
+      .from(adminUsers)
+      .where(eq(adminUsers.id, req.user.id))
+      .limit(1);
+
+    if (!admin) {
+      console.log('Admin check failed - admin record not found');
+      return res.status(403).json({ error: "Not authorized" });
+    }
+
+    console.log('Admin check passed for user:', req.user.id);
+    next();
+  } catch (error) {
+    console.error('Error in admin check:', error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// Placeholder for email sending function.  Needs to be implemented separately.
+async function sendWelcomeEmail(email: string, username: string): Promise<{ sent: boolean; note: string }> {
+    return {sent: false, note: "Email sending functionality not implemented"};
 }
