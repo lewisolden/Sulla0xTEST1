@@ -251,11 +251,16 @@ export default function Curriculum() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const subject = params.get('subject');
+    const course = params.get('course');
     if (subject && (subject === 'crypto' || subject === 'ai')) {
       setSelectedSubject(subject);
-      setSelectedCourse(subject === 'crypto' ? '1' : subject === 'ai' ? '2' : '3');
+      if (course) {
+        setSelectedCourse(course);
+      } else {
+        setSelectedCourse(subject === 'crypto' ? '1' : '2');
+      }
     }
-  }, [setLocation]);
+  }, []);
 
   const { data: enrollments, isLoading: loadingEnrollments } = useQuery({
     queryKey: ['enrollments'],
