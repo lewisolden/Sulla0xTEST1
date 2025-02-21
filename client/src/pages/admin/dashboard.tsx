@@ -21,6 +21,7 @@ import {
   Settings,
   BarChart3,
   ChevronRight,
+  AlertCircle,
 } from "lucide-react";
 
 interface Analytics {
@@ -38,21 +39,47 @@ interface Analytics {
 }
 
 export default function AdminDashboard() {
-  const { data: analytics, isLoading: loadingAnalytics } = useQuery<Analytics>({
+  const { data: analytics, isLoading, error } = useQuery<Analytics>({
     queryKey: ["admin", "analytics"],
     queryFn: async () => {
-      const response = await fetch("/api/admin/analytics/users");
+      const response = await fetch("/api/admin/analytics/users", {
+        credentials: 'include'
+      });
       if (!response.ok) {
-        throw new Error("Failed to fetch analytics");
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || "Failed to fetch analytics");
       }
       return response.json();
     },
   });
 
-  if (loadingAnalytics) {
+  if (error) {
+    return (
+      <div className="container mx-auto p-6">
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+          <div className="flex items-center gap-2 text-red-700">
+            <AlertCircle className="h-5 w-5" />
+            <h2 className="font-semibold">Error Loading Dashboard</h2>
+          </div>
+          <p className="mt-2 text-red-600">{(error as Error).message}</p>
+          <div className="mt-4">
+            <Button variant="outline" asChild>
+              <Link href="/admin/login" className="inline-flex items-center">
+                Return to Login
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (isLoading) {
     return (
       <div className="container mx-auto p-6 space-y-6">
-        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+        <div className="flex items-center gap-4">
+          <Skeleton className="h-8 w-48" />
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[...Array(6)].map((_, i) => (
             <Card key={i} className="p-6">

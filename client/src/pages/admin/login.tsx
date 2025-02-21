@@ -28,10 +28,10 @@ export default function AdminLogin() {
     try {
       const response = await fetch("/api/admin/login", {
         method: "POST",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
         },
-        credentials: 'include', // Important: include credentials for session cookies
+        credentials: 'include',
         body: JSON.stringify({ username, password }),
       });
 
@@ -46,7 +46,8 @@ export default function AdminLogin() {
         description: "Logged in successfully",
       });
 
-      setLocation("/admin");
+      // Redirect to admin dashboard after successful login
+      setLocation("/admin/dashboard");
     } catch (error: any) {
       setError(error.message);
       toast({
