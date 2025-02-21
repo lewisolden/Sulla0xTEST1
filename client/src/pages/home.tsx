@@ -329,7 +329,7 @@ export default function Home() {
                 icon: Wallet,
                 title: "Advanced DeFi",
                 description: "Learn advanced decentralized finance concepts and strategies",
-                path: "/curriculum?subject=defi&course=3",
+                path: "/curriculum?subject=crypto&course=3",
                 badge: "Course 3",
                 gradient: "from-pink-500 to-red-500"
               }
