@@ -14,10 +14,10 @@ router.get('/users', requireAdmin, async (req, res) => {
     const offset = (page - 1) * limit;
     const search = req.query.search as string;
 
-    // First get filtered users with enrollments
-    const baseQuery = db.$with('user_stats').as(
-      db.select({
-        userId: users.id,
+    // Get users with enrollment counts
+    const usersWithEnrollments = await db
+      .select({
+        id: users.id,
         username: users.username,
         email: users.email,
         lastActivity: users.lastActivity,
@@ -26,42 +26,36 @@ router.get('/users', requireAdmin, async (req, res) => {
       })
       .from(users)
       .leftJoin(courseEnrollments, eq(users.id, courseEnrollments.userId))
+      .where(
+        search
+          ? sql`${users.username} ilike ${'%' + search + '%'} or ${users.email} ilike ${'%' + search + '%'}`
+          : undefined
+      )
       .groupBy(users.id)
-    );
-
-    let finalQuery = db.with(baseQuery).select().from(baseQuery);
-
-    // Add search condition if provided
-    if (search) {
-      finalQuery = finalQuery.where(
-        sql`username ilike ${'%' + search + '%'} or email ilike ${'%' + search + '%'}`
-      );
-    }
-
-    const usersList = await finalQuery
-      .orderBy(desc(sql`lastActivity`))
+      .orderBy(desc(users.lastActivity))
       .limit(limit)
       .offset(offset);
 
-    // Get total count for pagination
+    // Get total count
     const [{ total }] = await db
       .select({
-        total: count(users.id)
+        total: count()
       })
       .from(users)
-      .where(search ? 
-        sql`username ilike ${'%' + search + '%'} or email ilike ${'%' + search + '%'}` : 
-        undefined
+      .where(
+        search
+          ? sql`${users.username} ilike ${'%' + search + '%'} or ${users.email} ilike ${'%' + search + '%'}`
+          : undefined
       );
 
     res.json({
-      users: usersList.map(user => ({
-        id: user.userId,
+      users: usersWithEnrollments.map(user => ({
+        id: user.id,
         username: user.username,
         email: user.email,
         lastActivity: user.lastActivity,
-        enrollmentCount: Number(user.enrollmentCount),
-        completedModules: Number(user.completedCount)
+        enrollmentCount: Number(user.enrollmentCount) || 0,
+        completedModules: Number(user.completedCount) || 0
       })),
       pagination: {
         total: Number(total || 0),
