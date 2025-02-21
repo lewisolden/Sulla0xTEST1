@@ -170,15 +170,15 @@ const courses = [
       {
         id: 4,
         icon: Rocket,
-        title: "Module 4: Memecoins & Speculation",
-        description: "Explore the culture, hype cycles, and extreme risks behind memecoins.",
+        title: "Module 4: Advanced DeFi Concepts",
+        description: "Explore governance, institutional adoption, and advanced DeFi integrations.",
         sections: [
-          "4.1 What Are Memecoins?",
-          "4.2 How Memecoins Gain & Lose Value",
-          "4.3 Trading & Speculating on Memecoins",
-          "4.4 The Extreme Risks of Memecoins"
+          "4.1 DeFi Governance",
+          "4.2 Institutional DeFi",
+          "4.3 DeFi Integrations",
+          "4.4 Future of DeFi Infrastructure"
         ],
-        path: "/defi/module4"
+        path: "/defi/module4/defi-governance" // Updated the path to point to governance
       }
     ]
   }
