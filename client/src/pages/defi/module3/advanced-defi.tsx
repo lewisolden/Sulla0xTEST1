@@ -317,6 +317,12 @@ const AdvancedDefiQuiz = () => {
                         ? "Perfect score! Excellent understanding!"
                         : "Good effort! Review the material and try again!"}
                     </p>
+                    <Link href="/defi/module3/defi-security">
+                      <Button className="w-full bg-green-600 hover:bg-green-700">
+                        Continue to DeFi Security
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </Link>
                   </div>
                 )}
               </motion.div>
