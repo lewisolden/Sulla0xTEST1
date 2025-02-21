@@ -20,6 +20,65 @@ interface StablecoinComparisonProps {
   type: 'fiat' | 'crypto' | 'algorithmic';
 }
 
+const getTypeInfo = (type: 'fiat' | 'crypto' | 'algorithmic') => {
+  switch (type) {
+    case 'fiat':
+      return {
+        title: "Fiat-Collateralized Stablecoins",
+        icon: Building2,
+        color: "blue",
+        examples: ["USDT", "USDC", "BUSD"],
+        features: [
+          "1:1 backing with fiat currency",
+          "Regular audits of reserves",
+          "Centralized issuance and management",
+          "High market liquidity"
+        ],
+        risks: [
+          "Counterparty risk",
+          "Regulatory compliance requirements",
+          "Centralization concerns"
+        ]
+      };
+    case 'crypto':
+      return {
+        title: "Crypto-Collateralized Stablecoins",
+        icon: Coins,
+        color: "purple",
+        examples: ["DAI", "MIM", "sUSD"],
+        features: [
+          "Over-collateralization with crypto assets",
+          "Decentralized governance",
+          "Transparent on-chain collateral",
+          "Automatic liquidation mechanisms"
+        ],
+        risks: [
+          "Collateral volatility",
+          "Complex liquidation processes",
+          "Smart contract risks"
+        ]
+      };
+    case 'algorithmic':
+      return {
+        title: "Algorithmic Stablecoins",
+        icon: ChartLine,
+        color: "green",
+        examples: ["AMPL", "FRAX", "FEI"],
+        features: [
+          "No collateral requirement",
+          "Supply adjustments based on demand",
+          "Fully decentralized",
+          "Elastic supply mechanism"
+        ],
+        risks: [
+          "Complexity of stabilization mechanisms",
+          "Potential for death spirals",
+          "Market confidence dependency"
+        ]
+      };
+  }
+};
+
 // Animation variants
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -196,66 +255,7 @@ const StablecoinSimulator: React.FC<StablecoinSimulatorProps> = ({ onUpdate }) =
 };
 
 const StablecoinComparison: React.FC<StablecoinComparisonProps> = ({ type }) => {
-  const getTypeInfo = () => {
-    switch (type) {
-      case 'fiat':
-        return {
-          title: "Fiat-Collateralized Stablecoins",
-          icon: Bank,
-          color: "blue",
-          examples: ["USDT", "USDC", "BUSD"],
-          features: [
-            "1:1 backing with fiat currency",
-            "Regular audits of reserves",
-            "Centralized issuance and management",
-            "High market liquidity"
-          ],
-          risks: [
-            "Counterparty risk",
-            "Regulatory compliance requirements",
-            "Centralization concerns"
-          ]
-        };
-      case 'crypto':
-        return {
-          title: "Crypto-Collateralized Stablecoins",
-          icon: Coins,
-          color: "purple",
-          examples: ["DAI", "MIM", "sUSD"],
-          features: [
-            "Over-collateralization with crypto assets",
-            "Decentralized governance",
-            "Transparent on-chain collateral",
-            "Automatic liquidation mechanisms"
-          ],
-          risks: [
-            "Collateral volatility",
-            "Complex liquidation processes",
-            "Smart contract risks"
-          ]
-        };
-      case 'algorithmic':
-        return {
-          title: "Algorithmic Stablecoins",
-          icon: ChartLine,
-          color: "green",
-          examples: ["AMPL", "FRAX", "FEI"],
-          features: [
-            "No collateral requirement",
-            "Supply adjustments based on demand",
-            "Fully decentralized",
-            "Elastic supply mechanism"
-          ],
-          risks: [
-            "Complexity of stabilization mechanisms",
-            "Potential for death spirals",
-            "Market confidence dependency"
-          ]
-        };
-    }
-  };
-
-  const info = getTypeInfo();
+  const info = getTypeInfo(type);
   const ColorIcon = info.icon;
 
   return (
@@ -557,68 +557,52 @@ export default function StablecoinsSection() {
     }
   ];
 
-  const handleSectionComplete = async (index: number) => {
-    try {
-      await updateProgress({
-        courseId: 3,
-        moduleId: 4,
-        sectionId: 'stablecoins',
-        completed: true,
-        subsectionId: `subsection-${index + 1}`,
-        type: 'section',
-        progress: ((index + 1) / sections.length) * 100,
-        timestamp: new Date().toISOString(),
-        userId: 'current',
-        metadata: {}
-      });
+  const handleSectionComplete = (index: number) => {
+    updateProgress({
+      courseId: 3,
+      moduleId: 4,
+      sectionId: 'stablecoins',
+      completed: true,
+      subsectionId: `subsection-${index + 1}`,
+      type: 'section',
+      progress: ((index + 1) / sections.length) * 100,
+      timestamp: new Date().toISOString(),
+      userId: 'current',
+      metadata: {}
+    });
 
-      toast({
-        title: "Progress Updated",
-        description: "Section completed successfully!",
-      });
+    toast({
+      title: "Progress Updated",
+      description: "Section completed successfully!",
+    });
 
-      if (index < sections.length - 1) {
-        setCurrentSection(index + 1);
-      }
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to update progress",
-        variant: "destructive",
-      });
+    if (index < sections.length - 1) {
+      setCurrentSection(index + 1);
     }
   };
 
-  const handleQuizComplete = async (score: number) => {
+  const handleQuizComplete = (score: number) => {
     setScore(score);
     setQuizSubmitted(true);
 
     if (score >= 70) {
-      try {
-        await updateProgress({
-          courseId: 3,
-          moduleId: 4,
-          sectionId: 'stablecoins',
-          completed: true,
-          subsectionId: 'quiz',
-          type: 'quiz',
-          progress: 100,
-          timestamp: new Date().toISOString(),
-          userId: 'current',
-          metadata: { score }
-        });
+      updateProgress({
+        courseId: 3,
+        moduleId: 4,
+        sectionId: 'stablecoins',
+        completed: true,
+        subsectionId: 'quiz',
+        type: 'quiz',
+        progress: 100,
+        timestamp: new Date().toISOString(),
+        userId: 'current',
+        metadata: { score }
+      });
 
-        toast({
-          title: "Quiz Completed!",
-          description: `You scored ${score}%. Great job!`,
-        });
-      } catch (error) {
-        toast({
-          title: "Error",
-          description: "Failed to update progress",
-          variant: "destructive",
-        });
-      }
+      toast({
+        title: "Quiz Completed!",
+        description: `You scored ${score}%. Great job!`,
+      });
     } else {
       toast({
         title: "Quiz Result",
