@@ -53,6 +53,17 @@ export function CourseAssistant() {
     setIsLoading(true);
 
     try {
+      console.log("Sending chat request with:", {
+        message: input,
+        context: {
+          currentPath: window.location.pathname,
+          previousMessages: messages.map(msg => ({
+            ...msg,
+            timestamp: msg.timestamp.toISOString()
+          }))
+        }
+      });
+
       const response = await fetch('/api/chat/send', {
         method: 'POST',
         headers: {
@@ -62,17 +73,26 @@ export function CourseAssistant() {
           message: input,
           context: {
             currentPath: window.location.pathname,
-            previousMessages: messages.slice(-3), 
-            userProgress: {}, 
+            previousMessages: messages.map(msg => ({
+              ...msg,
+              timestamp: msg.timestamp.toISOString()
+            })),
+            userProgress: {},
           }
         }),
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to get response: ${response.statusText}`);
+        const errorData = await response.json();
+        throw new Error(errorData.error || `Server error: ${response.status}`);
       }
 
       const data = await response.json();
+      console.log("Received chat response:", data);
+
+      if (!data.success || !data.response) {
+        throw new Error("Invalid response format from server");
+      }
 
       setMessages(prev => [...prev, {
         role: "assistant",
@@ -82,7 +102,7 @@ export function CourseAssistant() {
       }]);
     } catch (error) {
       console.error('Chat error:', error);
-      setError("I apologize, but I'm having trouble accessing my knowledge base at the moment. Please try again in a few moments, or explore our structured course content in the meantime.");
+      setError(error instanceof Error ? error.message : "Failed to send message");
       setMessages(prev => [...prev, {
         role: "assistant",
         content: "I'm currently experiencing some technical difficulties. While I work on resolving this, you can explore our course modules or check out the curriculum overview. Would you like me to point you to some specific resources?",
