@@ -920,7 +920,7 @@ export default function StablecoinsSection() {
                   )}
                 </div>
 
-                <Link href="/defi/module2/defi-derivatives">
+                <Link href="/defi/module2/derivatives">
                   <Button className="gap-2" variant="outline">
                     Next Topic: DeFi Derivatives
                     <ArrowRight className="h-4 w-4" />
