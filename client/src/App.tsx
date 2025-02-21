@@ -224,7 +224,7 @@ function Router() {
       <Route path="/defi/module2" component={() => <ProtectedRoute component={DefiModule2} />} />
       <Route path="/defi/module2/lending-borrowing" component={() => <ProtectedRoute component={LendingBorrowing} />} />
       <Route path="/defi/module2/stablecoins" component={() => <ProtectedRoute component={StablecoinsSection} />} />
-      <Route path="/defi/module2/derivatives" component={() => <ProtectedRoute component={DerivativesSection} />} />
+      <Route path="/defi/module2/defi-derivatives" component={() => <ProtectedRoute component={DerivativesSection} />} />
 
       <Route component={NotFound} />
     </Switch>
