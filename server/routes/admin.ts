@@ -166,12 +166,16 @@ router.patch('/feedback/:id', requireAdmin, async (req, res) => {
 // Get admin analytics data
 router.get("/analytics", requireAdmin, async (req, res) => {
   try {
+    console.log("Fetching admin analytics...");
+
     // Get total users count
     const [{ value: totalUsers }] = await db
       .select({ 
-        value: sql<number>`count(*)` 
+        value: sql<number>`count(distinct ${users.id})` 
       })
       .from(users);
+
+    console.log("Total users:", totalUsers);
 
     // Get active users (last 24 hours)
     const [{ value: activeUsers }] = await db
@@ -183,35 +187,45 @@ router.get("/analytics", requireAdmin, async (req, res) => {
         sql`${users.lastActivity} >= NOW() - INTERVAL '24 hours'`
       );
 
+    console.log("Active users:", activeUsers);
+
     // Get total enrollments
     const [{ value: totalEnrollments }] = await db
       .select({ 
-        value: sql<number>`count(*)`
+        value: sql<number>`count(distinct ${courseEnrollments.id})`
       })
       .from(courseEnrollments);
+
+    console.log("Total enrollments:", totalEnrollments);
 
     // Get completed modules
     const [{ value: completedModules }] = await db
       .select({ 
-        value: sql<number>`count(*)`
+        value: sql<number>`count(distinct ${moduleProgress.id})`
       })
       .from(moduleProgress)
       .where(eq(moduleProgress.completed, true));
 
+    console.log("Completed modules:", completedModules);
+
     // Get achievements awarded
     const [{ value: achievementsAwarded }] = await db
       .select({ 
-        value: sql<number>`count(*)`
+        value: sql<number>`count(distinct ${userAchievements.id})`
       })
       .from(userAchievements);
+
+    console.log("Achievements awarded:", achievementsAwarded);
 
     // Get pending feedback count
     const [{ value: pendingFeedback }] = await db
       .select({ 
-        value: sql<number>`count(*)`
+        value: sql<number>`count(distinct ${feedback.id})`
       })
       .from(feedback)
       .where(eq(feedback.status, 'pending'));
+
+    console.log("Pending feedback:", pendingFeedback);
 
     // Get user activity data for the last 7 days
     const userActivityData = await db
@@ -226,7 +240,9 @@ router.get("/analytics", requireAdmin, async (req, res) => {
       .groupBy(sql`date_trunc('day', ${users.lastActivity})`)
       .orderBy(sql`date_trunc('day', ${users.lastActivity})`);
 
-    res.json({
+    console.log("User activity data:", userActivityData);
+
+    const analytics = {
       totalUsers,
       activeUsers,
       totalEnrollments,
@@ -234,7 +250,10 @@ router.get("/analytics", requireAdmin, async (req, res) => {
       achievementsAwarded,
       pendingFeedback,
       userActivityData
-    });
+    };
+
+    console.log("Sending analytics response:", analytics);
+    res.json(analytics);
   } catch (error) {
     console.error("Error fetching admin analytics:", error);
     res.status(500).json({ 

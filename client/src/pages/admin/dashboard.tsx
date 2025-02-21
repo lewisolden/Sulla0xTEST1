@@ -43,17 +43,23 @@ export default function AdminDashboard() {
   const { data: analytics, isLoading, error } = useQuery<Analytics>({
     queryKey: ["admin", "analytics"],
     queryFn: async () => {
+      console.log("Fetching admin analytics...");
       const response = await fetch("/api/admin/analytics", {
         credentials: 'include'
       });
       if (!response.ok) {
-        throw new Error("Failed to fetch analytics");
+        const errorData = await response.json().catch(() => ({}));
+        console.error("Analytics fetch error:", errorData);
+        throw new Error(errorData.error || "Failed to fetch analytics");
       }
-      return response.json();
+      const data = await response.json();
+      console.log("Received analytics data:", data);
+      return data;
     },
   });
 
   if (error) {
+    console.error("Dashboard error:", error);
     return (
       <div className="container mx-auto p-6">
         <div className="bg-destructive/10 border border-destructive rounded-lg p-4">
