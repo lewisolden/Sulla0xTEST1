@@ -100,6 +100,7 @@ import StablecoinsSection from "@/pages/defi/module2/stablecoins";
 import DerivativesSection from "@/pages/defi/module2/derivatives";
 import GovernanceDAO from "@/pages/defi/module2/governance-dao";
 import DefiModule2Quiz from "@/pages/defi/module2/quiz"; // Renamed to avoid conflict
+import DefiModule3 from "@/pages/defi/module3";
 
 
 function ProtectedRoute({ component: Component, adminOnly = false, publicAccess = false, ...rest }: any) {
@@ -229,6 +230,9 @@ function Router() {
       <Route path="/defi/module2/derivatives" component={() => <ProtectedRoute component={DerivativesSection} />} />
       <Route path="/defi/module2/governance-dao" component={() => <ProtectedRoute component={GovernanceDAO} />} />
       <Route path="/defi/module2/quiz" component={() => <ProtectedRoute component={DefiModule2Quiz} />} />
+
+      {/* DeFi Module 3 Route */}
+      <Route path="/defi/module3" component={() => <ProtectedRoute component={DefiModule3} />} />
 
       <Route component={NotFound} />
     </Switch>
