@@ -16,8 +16,12 @@ interface Message {
 
 const WELCOME_MESSAGE: Message = {
   role: "assistant",
-  content: "Hello! I'm Sensei, your AI learning assistant. How can I help you with your blockchain and cryptocurrency learning journey today?",
-  timestamp: new Date()
+  content: "Hello! I'm Sensei, your dedicated AI learning assistant for blockchain and DeFi education. I can help you understand cryptocurrency concepts, guide you through course materials, and provide relevant resources from Sulla's learning platform. What would you like to learn about today?",
+  timestamp: new Date(),
+  links: [
+    { text: "Explore AI Module", url: "/ai/module1" },
+    { text: "View Course Curriculum", url: "/curriculum" }
+  ]
 };
 
 export function CourseAssistant() {
@@ -56,7 +60,11 @@ export function CourseAssistant() {
         },
         body: JSON.stringify({
           message: input,
-          context: window.location.pathname
+          context: {
+            currentPath: window.location.pathname,
+            previousMessages: messages.slice(-3), // Send last 3 messages for context
+            userProgress: {}, // This would be filled with actual user progress data
+          }
         }),
       });
 
@@ -74,11 +82,15 @@ export function CourseAssistant() {
       }]);
     } catch (error) {
       console.error('Chat error:', error);
-      setError("I'm having trouble connecting to the server. Please try again in a moment.");
+      setError("I apologize, but I'm having trouble accessing my knowledge base at the moment. Please try again in a few moments, or explore our structured course content in the meantime.");
       setMessages(prev => [...prev, {
         role: "assistant",
-        content: "I apologize, but I'm having trouble responding right now. Please try again later.",
-        timestamp: new Date()
+        content: "I'm currently experiencing some technical difficulties. While I work on resolving this, you can explore our course modules or check out the curriculum overview. Would you like me to point you to some specific resources?",
+        timestamp: new Date(),
+        links: [
+          { text: "Browse Course Modules", url: "/curriculum" },
+          { text: "View Learning Resources", url: "/library" }
+        ]
       }]);
     } finally {
       setIsLoading(false);
@@ -98,7 +110,10 @@ export function CourseAssistant() {
           >
             <Card className="w-[350px] h-[500px] flex flex-col">
               <div className="p-4 border-b flex justify-between items-center bg-primary text-primary-foreground rounded-t-lg">
-                <h3 className="font-semibold">Sensei</h3>
+                <div className="flex items-center gap-2">
+                  <MessageSquare className="h-5 w-5" />
+                  <h3 className="font-semibold">Sensei - Learning Assistant</h3>
+                </div>
                 <Button 
                   variant="ghost" 
                   size="icon"
@@ -135,7 +150,7 @@ export function CourseAssistant() {
                               <Link 
                                 key={linkIdx} 
                                 href={link.url}
-                                className="flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700"
+                                className="flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
                               >
                                 <ExternalLink className="w-3 h-3" />
                                 {link.text}
@@ -154,7 +169,7 @@ export function CourseAssistant() {
                     </div>
                   )}
                   {error && (
-                    <div className="text-sm text-red-500 text-center p-2">
+                    <div className="text-sm text-red-500 text-center p-2 bg-red-50 rounded-lg">
                       {error}
                     </div>
                   )}
@@ -172,11 +187,16 @@ export function CourseAssistant() {
                   <Input
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    placeholder="Ask me about the course..."
+                    placeholder="Ask about blockchain, crypto, or DeFi..."
                     className="flex-1"
                     disabled={isLoading}
                   />
-                  <Button type="submit" size="icon" disabled={isLoading}>
+                  <Button 
+                    type="submit" 
+                    size="icon" 
+                    disabled={isLoading}
+                    className="bg-primary hover:bg-primary/90"
+                  >
                     <Send className="h-4 w-4" />
                   </Button>
                 </form>
@@ -191,7 +211,7 @@ export function CourseAssistant() {
         >
           <Button
             onClick={() => setIsOpen(true)}
-            className="h-12 w-12 rounded-full shadow-lg"
+            className="h-12 w-12 rounded-full shadow-lg bg-primary hover:bg-primary/90"
             size="icon"
           >
             <MessageSquare className="h-6 w-6" />
