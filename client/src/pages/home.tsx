@@ -175,6 +175,53 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Begin Your Learning Adventure Section */}
+      <section className="py-20 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900">
+        <div className="container mx-auto px-4 text-center">
+          <motion.div 
+            className="max-w-4xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-4xl font-bold text-white mb-6">
+              Begin Your Learning Adventure
+            </h2>
+            <p className="text-xl text-blue-100 mb-12">
+              Join our community of learners and master the technologies shaping the future. Start your journey today with our comprehensive learning platform.
+            </p>
+            <div className="flex justify-center gap-6 mb-8">
+              <Link href="/register">
+                <a className="inline-flex items-center px-6 py-3 bg-white hover:bg-blue-50 text-blue-700 rounded-lg font-semibold transition-all duration-300 transform hover:-translate-y-1">
+                  Create Free Account
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </a>
+              </Link>
+              <Link href="/curriculum">
+                <a className="inline-flex items-center px-6 py-3 border-2 border-white hover:bg-white/10 text-white rounded-lg font-semibold transition-all duration-300">
+                  Explore Curriculum
+                  <BookOpen className="w-5 h-5 ml-2" />
+                </a>
+              </Link>
+            </div>
+            <div className="flex justify-center gap-8 text-blue-100">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-5 h-5" />
+                <span>Free to get started</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Users className="w-5 h-5" />
+                <span>Join 1,000+ learners</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Trophy className="w-5 h-5" />
+                <span>Earn certificates</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Begin Your Learning Journey Section */}
       <section className="py-20 bg-gradient-to-br from-blue-50 via-blue-100 to-white">
         <div className="container mx-auto px-4">
