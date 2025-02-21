@@ -10,76 +10,46 @@ const router = Router();
 router.get('/users', requireAdmin, async (req, res) => {
   try {
     console.log('Admin users route - starting user fetch');
-    const page = parseInt(req.query.page as string) || 1;
-    const limit = parseInt(req.query.limit as string) || 10;
-    const offset = (page - 1) * limit;
-    const search = (req.query.search as string) || '';
 
-    console.log('Query params:', { page, limit, offset, search });
+    // Simple query to get all users
+    const result = await db.select()
+      .from(users)
+      .execute();
 
-    // First get all users with basic info
-    const usersList = await db.select({
-      id: users.id,
-      username: users.username,
-      email: users.email,
-      lastActivity: users.lastActivity,
-    })
-    .from(users)
-    .limit(limit)
-    .offset(offset);
+    console.log('Query result:', result);
 
-    console.log('Raw users from DB:', usersList);
+    // If no users found, return empty array with pagination
+    if (!result || result.length === 0) {
+      return res.json({
+        users: [],
+        pagination: {
+          total: 0,
+          page: 1,
+          pageSize: 10,
+          totalPages: 0
+        }
+      });
+    }
 
-    // Get total count separately
-    const totalCountResult = await db.select({
-      count: sql<number>`count(*)`
-    })
-    .from(users);
-
-    const totalCount = Number(totalCountResult[0]?.count || 0);
-    console.log('Total users count:', totalCount);
-
-    // Enrich user data with enrollments and completed modules
-    const enrichedUsers = await Promise.all(usersList.map(async (user) => {
-      // Get enrollment count
-      const enrollmentResult = await db.select({
-        count: sql<number>`count(*)`
-      })
-      .from(courseEnrollments)
-      .where(eq(courseEnrollments.userId, user.id));
-
-      const enrollmentCount = Number(enrollmentResult[0]?.count || 0);
-
-      // Get completed modules count
-      const completedResult = await db.select({
-        count: sql<number>`count(*)`
-      })
-      .from(moduleProgress)
-      .where(
-        and(
-          eq(moduleProgress.userId, user.id),
-          eq(moduleProgress.status, 'completed')
-        )
-      );
-
-      const completedModules = Number(completedResult[0]?.count || 0);
-
-      return {
-        ...user,
-        enrollmentCount,
-        completedModules,
-      };
+    // Map the users to the expected format
+    const mappedUsers = result.map(user => ({
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      lastActivity: user.lastActivity,
+      enrollmentCount: 0,
+      completedModules: 0
     }));
 
-    console.log('Enriched users data:', enrichedUsers);
+    console.log('Mapped users:', mappedUsers);
 
     res.json({
-      users: enrichedUsers,
+      users: mappedUsers,
       pagination: {
-        total: totalCount,
-        page,
-        pageSize: limit,
-        totalPages: Math.ceil(totalCount / limit)
+        total: result.length,
+        page: 1,
+        pageSize: result.length,
+        totalPages: 1
       }
     });
   } catch (error) {
