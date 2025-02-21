@@ -15,12 +15,12 @@ const Curriculum = () => {
       title: "Module 1: Fundamentals of Cryptocurrency",
       description: "A comprehensive introduction to digital currencies, their history, and technological foundations.",
       sections: [
-        "Introduction to Digital Currencies",
+        "Digital Currencies",
         "History and Evolution of Money",
         "Bitcoin: The First Cryptocurrency",
         "Altcoins and Tokens",
-        "Cryptocurrency Market Dynamics",
-        "Basic Cryptography Concepts"
+        "Crypto Market Dynamics",
+        "Cryptography Fundamentals"
       ]
     },
     {
@@ -32,46 +32,48 @@ const Curriculum = () => {
         "Blockchain Basics",
         "Distributed Ledger Technology",
         "Consensus Mechanisms",
-        "Smart Contracts"
+        "Smart Contracts Introduction"
       ]
     },
     {
       id: 3,
       icon: LightningBoltIcon,
-      title: "Module 3: Blockchain Technology",
-      description: "Advanced exploration of blockchain development, applications, and future trends.",
+      title: "Module 3: Ethereum and Smart Contracts",
+      description: "Advanced exploration of Ethereum, smart contracts, and decentralized applications.",
       sections: [
-        "Blockchain Scalability and Interoperability",
-        "Types of Blockchains",
-        "Blockchain Development Platforms",
-        "Advanced Blockchain Concepts"
+        "Ethereum Fundamentals",
+        "Smart Contract Development",
+        "Investment and Value",
+        "Security and Risk Management",
+        {
+          title: "Key Topics",
+          subsections: [
+            "Smart Contracts",
+            "The Ethereum Virtual Machine (EVM)",
+            "Decentralized Applications (dApps)",
+            "Platform Architecture"
+          ]
+        }
       ]
     },
     {
       id: 4,
       icon: BeakerIcon,
-      title: "Course 2: Introduction to Artificial Intelligence",
-      description: "Comprehensive introduction to AI fundamentals and applications.",
+      title: "Module 4: Understanding Digital Money",
+      description: "Comprehensive comparison between traditional and digital financial systems.",
       sections: [
-        "Module 1: AI Fundamentals",
-        "Module 2: AI Technologies and Applications",
+        "Digital vs Traditional Money",
+        "Crypto Wallet Simulation",
+        "Security & Control",
+        "Payment Systems & Financial Inclusion",
+        "Digital Scarcity & Network Architecture",
         {
-          title: "Module 2 Topics",
+          title: "Practical Applications",
           subsections: [
-            "Natural Language Processing",
-            "Computer Vision",
-            "Robotics and Automation",
-            "AI Ethics and Safety"
-          ]
-        },
-        "Module 3: Advanced AI Concepts",
-        {
-          title: "Module 3 Topics",
-          subsections: [
-            "Deep Learning",
-            "Reinforcement Learning",
-            "Generative AI",
-            "Future of AI"
+            "Wallet Management",
+            "Transaction Security",
+            "Cross-border Payments",
+            "Financial Inclusion Solutions"
           ]
         }
       ]
@@ -134,7 +136,7 @@ const Curriculum = () => {
 
               <div className="text-center mt-6">
                 <Link 
-                  to={module.id <= 3 ? `/modules/module${module.id}` : '/ai'} 
+                  to={module.id <= 4 ? `/modules/module${module.id}` : '/ai'} 
                   className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
                 >
                   Start Module
