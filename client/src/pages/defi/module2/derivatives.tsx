@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider"; // Import Slider component
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { ArrowLeft, BookOpen, CheckCircle2, ArrowRight, TrendingUp, Lock, DollarSign, AlertTriangle, LineChart, Zap, CandlestickChart, Wallet } from "lucide-react";
@@ -48,7 +49,7 @@ const TradingSimulator: React.FC<TradingSimulatorProps> = ({ onPositionChange })
   const [asset, setAsset] = useState("ETH");
   const [price, setPrice] = useState(3000);
   const [leverage, setLeverage] = useState(1);
-  const [margin, setMargin] = useState(1000);
+  const [margin, setMargin] = useState(1000); // Set initial margin to $1,000
   const [position, setPosition] = useState<Position | null>(null);
   const [isLong, setIsLong] = useState(true);
   const { toast } = useToast();
@@ -164,25 +165,27 @@ const TradingSimulator: React.FC<TradingSimulatorProps> = ({ onPositionChange })
           <div className="space-y-6">
             <div>
               <Label htmlFor="leverage" className="text-lg font-medium text-blue-700">
-                Leverage (max 10x)
+                Leverage (1x - 10x)
               </Label>
-              <div className="relative">
-                <Input
+              <div className="mt-2">
+                <Slider
                   id="leverage"
-                  type="number"
-                  min="1"
-                  max="10"
-                  value={leverage}
-                  onChange={(e) => setLeverage(Number(e.target.value))}
-                  className="pl-10 text-lg"
+                  min={1}
+                  max={10}
+                  step={1}
+                  value={[leverage]}
+                  onValueChange={(value) => setLeverage(value[0])}
+                  className="w-full"
                 />
-                <Zap className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-blue-500" />
+                <div className="mt-2 text-sm text-blue-600 font-medium">
+                  Selected Leverage: {leverage}x
+                </div>
               </div>
             </div>
 
             <div>
               <Label htmlFor="margin" className="text-lg font-medium text-blue-700">
-                Margin (USDC)
+                Initial Margin (USDC)
               </Label>
               <div className="relative">
                 <Input
@@ -192,9 +195,11 @@ const TradingSimulator: React.FC<TradingSimulatorProps> = ({ onPositionChange })
                   value={margin}
                   onChange={(e) => setMargin(Number(e.target.value))}
                   className="pl-10 text-lg"
+                  disabled // Lock the initial margin to $1,000
                 />
                 <Wallet className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-blue-500" />
               </div>
+              <p className="mt-1 text-sm text-gray-500">Starting capital: $1,000 USDC</p>
             </div>
 
             <div>
@@ -258,11 +263,16 @@ const TradingSimulator: React.FC<TradingSimulatorProps> = ({ onPositionChange })
                         <span className="text-gray-600">Entry Price:</span>
                         <span className="font-bold">${position.entryPrice.toLocaleString()}</span>
                       </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-600">Liquidation Price:</span>
-                        <span className="font-bold text-red-600">
-                          ${position.liquidationPrice.toLocaleString()}
-                        </span>
+                      <div className="bg-red-50 p-4 rounded-lg border border-red-200">
+                        <div className="flex justify-between items-center">
+                          <span className="text-red-800 font-medium">Liquidation Price:</span>
+                          <span className="font-bold text-red-600">
+                            ${position.liquidationPrice.toLocaleString()}
+                          </span>
+                        </div>
+                        <p className="text-sm text-red-600 mt-2">
+                          ⚠️ If price reaches this level, your position will be liquidated and you'll lose your collateral
+                        </p>
                       </div>
                       <div className="flex justify-between items-center">
                         <span className="text-gray-600">PnL:</span>
@@ -288,7 +298,7 @@ const TradingSimulator: React.FC<TradingSimulatorProps> = ({ onPositionChange })
                 </li>
                 <li className="flex items-start gap-2">
                   <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-yellow-500"></div>
-                  <p>Positions are liquidated when losses exceed maintenance margin</p>
+                  <p>Your position will be liquidated at the liquidation price, resulting in loss of collateral</p>
                 </li>
                 <li className="flex items-start gap-2">
                   <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-yellow-500"></div>
@@ -300,6 +310,192 @@ const TradingSimulator: React.FC<TradingSimulatorProps> = ({ onPositionChange })
         </div>
       </div>
     </div>
+  );
+};
+
+
+const HyperliquidOverview: React.FC = () => {
+  return (
+    <Card className="mt-8">
+      <CardHeader className="bg-gradient-to-r from-purple-50 to-blue-50">
+        <CardTitle className="text-2xl">Understanding Hyperliquid: Next-Gen Decentralized Exchange</CardTitle>
+      </CardHeader>
+      <CardContent className="pt-6">
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Key Differences from Centralized Exchanges</h3>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-white p-4 rounded-lg border border-gray-200">
+                <h4 className="font-medium text-blue-700 mb-2">Decentralized Order Book</h4>
+                <p className="text-gray-600">
+                  Unlike centralized exchanges that maintain private order books, Hyperliquid operates a fully on-chain order book, 
+                  ensuring complete transparency and preventing market manipulation.
+                </p>
+              </div>
+              <div className="bg-white p-4 rounded-lg border border-gray-200">
+                <h4 className="font-medium text-blue-700 mb-2">Self-Custody</h4>
+                <p className="text-gray-600">
+                  Traders maintain control of their assets through smart contracts, eliminating counterparty risk 
+                  associated with centralized exchanges holding user funds.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Advanced Features</h3>
+            <ul className="space-y-4">
+              <li className="flex items-start gap-3">
+                <CheckCircle2 className="h-6 w-6 text-green-500 flex-shrink-0" />
+                <div>
+                  <h4 className="font-medium text-gray-800">Cross-Collateralization</h4>
+                  <p className="text-gray-600">Efficient capital utilization by using a single margin account for multiple positions</p>
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <CheckCircle2 className="h-6 w-6 text-green-500 flex-shrink-0" />
+                <div>
+                  <h4 className="font-medium text-gray-800">Universal Oracle Integration</h4>
+                  <p className="text-gray-600">Robust price feeds from multiple oracle providers ensuring accurate and manipulation-resistant pricing</p>
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <CheckCircle2 className="h-6 w-6 text-green-500 flex-shrink-0" />
+                <div>
+                  <h4 className="font-medium text-gray-800">Automated Risk Management</h4>
+                  <p className="text-gray-600">Smart contract-based liquidations and dynamic margin requirements</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div className="bg-blue-50 p-6 rounded-xl">
+            <h3 className="text-xl font-semibold text-blue-800 mb-3">How Hyperliquid Works</h3>
+            <div className="space-y-4">
+              <p className="text-blue-700">
+                Hyperliquid utilizes a unique hybrid architecture combining the best of centralized and decentralized systems:
+              </p>
+              <ol className="space-y-3">
+                <li className="flex items-start gap-2">
+                  <span className="bg-blue-200 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0">1</span>
+                  <p className="text-blue-700">Orders are matched off-chain for speed but settled on-chain for security</p>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="bg-blue-200 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0">2</span>
+                  <p className="text-blue-700">Zero-knowledge proofs verify trade execution without compromising performance</p>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="bg-blue-200 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0">3</span>
+                  <p className="text-blue-700">Multi-collateral system supports various assets for margin</p>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+const DerivativesQuiz: React.FC = () => {
+  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [submitted, setSubmitted] = useState(false);
+  const [score, setScore] = useState(0);
+
+  const questions = [
+    {
+      id: 1,
+      question: "What is leverage trading?",
+      options: {
+        a: "Trading with borrowed money to amplify potential returns",
+        b: "Trading only with your own capital",
+        c: "Trading without any risk",
+        d: "Trading physical assets only"
+      },
+      correct: "a"
+    },
+    {
+      id: 2,
+      question: "What happens at the liquidation price?",
+      options: {
+        a: "You make maximum profit",
+        b: "Nothing happens",
+        c: "You lose your collateral and position is closed",
+        d: "The trade is automatically extended"
+      },
+      correct: "c"
+    },
+    {
+      id: 3,
+      question: "How does Hyperliquid differ from centralized exchanges?",
+      options: {
+        a: "It's more expensive",
+        b: "It uses fully on-chain order books and self-custody",
+        c: "It's slower",
+        d: "It requires KYC"
+      },
+      correct: "b"
+    }
+  ];
+
+  const handleSubmit = () => {
+    let correct = 0;
+    questions.forEach(q => {
+      if (answers[q.id] === q.correct) correct++;
+    });
+    setScore(correct);
+    setSubmitted(true);
+  };
+
+  return (
+    <Card className="mt-8">
+      <CardHeader className="bg-gradient-to-r from-blue-50 to-purple-50">
+        <CardTitle className="text-2xl">Knowledge Check</CardTitle>
+      </CardHeader>
+      <CardContent className="pt-6">
+        <div className="space-y-6">
+          {questions.map((q) => (
+            <div key={q.id} className="space-y-4">
+              <p className="text-lg font-medium">{q.question}</p>
+              <div className="space-y-2">
+                {Object.entries(q.options).map(([key, value]) => (
+                  <div key={key} className="flex items-center">
+                    <input
+                      type="radio"
+                      id={`${q.id}-${key}`}
+                      name={`question-${q.id}`}
+                      value={key}
+                      onChange={(e) => setAnswers({ ...answers, [q.id]: e.target.value })}
+                      disabled={submitted}
+                      className="mr-2"
+                    />
+                    <label htmlFor={`${q.id}-${key}`}>{value}</label>
+                  </div>
+                ))}
+              </div>
+              {submitted && (
+                <div className={`text-sm ${answers[q.id] === q.correct ? 'text-green-600' : 'text-red-600'}`}>
+                  {answers[q.id] === q.correct ? '✓ Correct!' : '✗ Incorrect'}
+                </div>
+              )}
+            </div>
+          ))}
+
+          {!submitted ? (
+            <Button onClick={handleSubmit} className="w-full">
+              Submit Answers
+            </Button>
+          ) : (
+            <div className="text-center">
+              <p className="text-xl font-bold mb-2">Your Score: {score}/{questions.length}</p>
+              <p className="text-gray-600">
+                {score === questions.length ? 'Perfect score! Well done!' : 'Review the material and try again!'}
+              </p>
+            </div>
+          )}
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
@@ -525,6 +721,18 @@ export default function DerivativesSection() {
           </Card>
         </div>
       )
+    },
+    {
+      id: "hyperliquid-overview", // Added new section for Hyperliquid overview
+      title: "Hyperliquid Overview",
+      icon: TrendingUp,
+      content: <HyperliquidOverview />
+    },
+    {
+      id: "quiz", // Added new section for quiz
+      title: "Derivatives Quiz",
+      icon: BookOpen,
+      content: <DerivativesQuiz />
     }
   ];
 
@@ -532,7 +740,7 @@ export default function DerivativesSection() {
     updateProgress(
       3, // courseId for DeFi course
       'derivatives', // sectionId
-      true, // completed
+      true, //completed
       ((index + 1) / sections.length) * 100 // progress percentage
     );
 
@@ -627,6 +835,9 @@ export default function DerivativesSection() {
             </motion.div>
           ))}
         </motion.div>
+
+        <HyperliquidOverview />
+        <DerivativesQuiz />
       </div>
     </div>
   );
