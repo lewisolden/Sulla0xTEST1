@@ -103,11 +103,15 @@ export default function AuthPage() {
       setLocation("/account");
     } catch (error) {
       console.error('Form submission error:', error);
+      // Enhanced error message display
+      const errorMessage = error instanceof Error ? error.message : "An error occurred";
       toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "An error occurred",
+        title: "Registration Error",
+        description: errorMessage.includes("Password") 
+          ? "Password must be at least 8 characters long. Please choose a stronger password for better security."
+          : errorMessage,
         variant: "destructive",
-        duration: 5000,
+        duration: 7000, // Longer duration for password errors
       });
     }
   };
@@ -192,8 +196,8 @@ export default function AuthPage() {
                 className="border-blue-200 focus:border-blue-400 transition-colors duration-200"
               />
               {form.formState.errors.password && (
-                <p className="text-sm text-red-500 mt-1">
-                  {form.formState.errors.password.message}
+                <p className="text-sm text-red-500 mt-1 p-2 bg-red-50 rounded-md border border-red-200">
+                  <span className="font-semibold">Password Requirement:</span> {form.formState.errors.password.message}
                 </p>
               )}
             </div>

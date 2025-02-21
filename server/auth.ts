@@ -16,7 +16,7 @@ const scryptAsync = promisify(scrypt);
 export const insertUserSchema = z.object({
   username: z.string().min(3).max(50),
   email: z.string().email(),
-  password: z.string().min(8),
+  password: z.string().min(8, "Password must be at least 8 characters long. Please use a longer password for better security."),
 });
 
 export const insertAdminUserSchema = insertUserSchema.extend({
@@ -413,5 +413,5 @@ export const requireAdmin = async (req: any, res: any, next: any) => {
 
 // Placeholder for email sending function.  Needs to be implemented separately.
 async function sendWelcomeEmail(email: string, username: string): Promise<{ sent: boolean; note: string }> {
-    return {sent: false, note: "Email sending functionality not implemented"};
+  return {sent: false, note: "Email sending functionality not implemented"};
 }
