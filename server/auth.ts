@@ -63,7 +63,8 @@ const PUBLIC_ROUTES = [
   '/api/register',
   '/api/login',
   '/api/admin/login',
-  '/api/chat/test' 
+  '/api/chat/test',
+  '/api/chat/send' // Add chat endpoints to public routes
 ];
 
 function isPublicRoute(path: string): boolean {
