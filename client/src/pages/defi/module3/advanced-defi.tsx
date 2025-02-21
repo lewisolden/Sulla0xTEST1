@@ -9,6 +9,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Lightbulb, Zap, Shield, BarChart4, Coins, Lock, ArrowLeft, ArrowRight, RefreshCw } from "lucide-react";
 
+// Sections array remains unchanged
 const sections = [
   {
     id: "flash-loans",
@@ -120,7 +121,6 @@ const AdvancedDefi = () => {
   const { updateProgress } = useProgress();
   const [currentSection, setCurrentSection] = useState(0);
   const { toast } = useToast();
-  const [hasUpdatedProgress, setHasUpdatedProgress] = useState(false);
 
   // Enrollment handling with proper error states
   const { data: enrollments, isLoading: loadingEnrollments, error: enrollmentError } = useQuery({
@@ -136,25 +136,23 @@ const AdvancedDefi = () => {
     (enrollment: any) => enrollment.courseId === 3
   );
 
+  // Handle section updates
   useEffect(() => {
-    if (!isEnrolled || hasUpdatedProgress || loadingEnrollments) {
-      return;
-    }
+    if (!isEnrolled || loadingEnrollments) return;
 
-    const initializeProgress = async () => {
+    const updateSectionProgress = async () => {
       try {
         await updateProgress(
-          3,
+          3, // courseId
           sections[currentSection].id,
           true,
-          currentSection + 1,
+          3, // moduleId
           undefined,
           undefined,
           undefined,
           '/defi/module3/advanced-defi',
           'DeFi'
         );
-        setHasUpdatedProgress(true);
       } catch (error) {
         console.error('Failed to update progress:', error);
         toast({
@@ -165,17 +163,8 @@ const AdvancedDefi = () => {
       }
     };
 
-    initializeProgress();
-  }, [currentSection, updateProgress, toast, isEnrolled, hasUpdatedProgress, loadingEnrollments]);
-
-  // Update progress when section changes
-  useEffect(() => {
-    if (!isEnrolled || loadingEnrollments) {
-      return;
-    }
-
-    setHasUpdatedProgress(false);
-  }, [currentSection, isEnrolled, loadingEnrollments]);
+    updateSectionProgress();
+  }, [currentSection, isEnrolled]); // Simplified dependencies
 
   // Show loading state
   if (loadingEnrollments) {
