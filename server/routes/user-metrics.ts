@@ -21,29 +21,40 @@ router.get("/user/metrics", async (req, res) => {
     console.log("[User Metrics] Fetching metrics for user:", userId);
 
     // Calculate total learning time from all module progress records
-    // Get all module progress records for accurate time calculation
     const moduleProgressRecords = await db
       .select({
         timeSpent: moduleProgress.timeSpent,
         lastAccessed: moduleProgress.lastAccessed,
-        completed: moduleProgress.completed
+        completed: moduleProgress.completed,
+        moduleId: moduleProgress.moduleId,
+        courseId: moduleProgress.courseId
       })
       .from(moduleProgress)
       .where(eq(moduleProgress.userId, userId));
 
+    console.log("[User Metrics] Found progress records:", moduleProgressRecords.length);
+
     // Calculate total time spent including active sessions
     const totalMinutes = moduleProgressRecords.reduce((total, record) => {
+      // Base time from the record
       const baseTime = record.timeSpent || 0;
+
       // Add minimum time for completed modules without tracked time
       if (record.completed && baseTime < 5) {
+        console.log(`[User Metrics] Adding minimum time for completed module ${record.moduleId} in course ${record.courseId}`);
         return total + 5;
       }
+
+      // For active modules, ensure at least 1 minute is counted
+      if (baseTime === 0 && record.lastAccessed) {
+        console.log(`[User Metrics] Adding minimum time for active module ${record.moduleId}`);
+        return total + 1;
+      }
+
       return total + baseTime;
     }, 0);
 
-    const totalTimeResult = { total: totalMinutes };
-
-    console.log("[User Metrics] Total learning time result:", totalTimeResult);
+    console.log("[User Metrics] Total learning time calculated:", totalMinutes, "minutes");
 
     // Get module progress data
     const moduleProgressData = await db.query.moduleProgress.findMany({
@@ -97,7 +108,7 @@ router.get("/user/metrics", async (req, res) => {
         ? Math.round((quizMetrics.totalScore / quizMetrics.completed))
         : 0,
       earnedBadges: badgeCount?.count || 0,
-      totalLearningMinutes: totalTimeResult.total,
+      totalLearningMinutes: totalMinutes,
       learningStreak: streak
     };
 
