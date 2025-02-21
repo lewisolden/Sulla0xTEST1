@@ -23,7 +23,12 @@ const chatMessageSchema = z.object({
 
 // Main chat endpoint
 router.post("/send", async (req, res) => {
-  console.log('[Chat] Received message:', req.body);
+  console.log('[Chat] Received message request:', {
+    message: req.body.message,
+    path: req.body.context?.currentPath,
+    messageCount: req.body.context?.previousMessages?.length
+  });
+
   try {
     // Validate request body
     const result = chatMessageSchema.safeParse(req.body);
@@ -45,7 +50,7 @@ router.post("/send", async (req, res) => {
     }
 
     if (!apiKey.match(/^pplx-[a-zA-Z0-9]{48}$/)) {
-      console.error('[Chat] Invalid API key format');
+      console.error('[Chat] Invalid API key format:', apiKey.substring(0, 10) + '...');
       return res.status(500).json({ error: 'Invalid API key configuration' });
     }
 
@@ -91,7 +96,12 @@ router.post("/send", async (req, res) => {
       frequency_penalty: 1
     };
 
-    console.log('[Chat] Making request to Perplexity API with body:', JSON.stringify(requestBody));
+    console.log('[Chat] Making request to Perplexity API with configuration:', {
+      model: requestBody.model,
+      messageCount: requestBody.messages.length,
+      maxTokens: requestBody.max_tokens
+    });
+
     const response = await fetch('https://api.perplexity.ai/chat/completions', {
       method: 'POST',
       headers: {
@@ -109,11 +119,14 @@ router.post("/send", async (req, res) => {
         statusText: response.statusText,
         body: errorText
       });
-      throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+      throw new Error(`API request failed: ${response.status} ${response.statusText}\n${errorText}`);
     }
 
     const data = await response.json();
-    console.log('[Chat] Received API response:', data);
+    console.log('[Chat] Received API response:', {
+      status: response.status,
+      messageContent: data.choices?.[0]?.message?.content?.substring(0, 100) + '...'
+    });
 
     // Format and send response
     res.json({
