@@ -32,134 +32,33 @@ const chatMessageSchema = z.object({
   })
 });
 
-// Test endpoint for Perplexity API
-router.get("/test", async (req, res) => {
-  console.log('[Chat Test] Testing Perplexity API connection...');
-  try {
-    const apiKey = process.env.PERPLEXITY_API_KEY?.trim();
-    if (!apiKey) {
-      console.error('[Chat Test] Missing Perplexity API key');
-      return res.status(500).json({ error: 'API key configuration error' });
-    }
+// Function to get API key with enhanced error handling
+function getPerplexityApiKey() {
+  const apiKey = process.env.PERPLEXITY_API_KEY?.trim();
+  console.log('[Chat] API Key Check:', {
+    exists: Boolean(apiKey),
+    length: apiKey?.length || 0,
+    format: apiKey?.startsWith('pplx-') || false,
+    environment: process.env.NODE_ENV || 'unknown'
+  });
 
-    if (!apiKey.match(/^pplx-[a-zA-Z0-9]{48}$/)) {
-      console.error('[Chat Test] Invalid API key format:', apiKey.substring(0, 10) + '...');
-      return res.status(500).json({ error: 'Invalid API key configuration' });
-    }
-
-    console.log('[Chat Test] API key validation passed, making test request...');
-
-    const requestBody = {
-      model: "llama-3.1-sonar-small-128k-online",
-      messages: [
-        {
-          role: "system",
-          content: "You are a test response. Respond with: 'API connection successful'"
-        },
-        {
-          role: "user",
-          content: "Test connection"
-        }
-      ],
-      temperature: 0.7,
-      max_tokens: 150,
-      top_p: 0.9,
-      return_images: false,
-      return_related_questions: false,
-      top_k: 0,
-      stream: false,
-      presence_penalty: 0,
-      frequency_penalty: 1
-    };
-
-    const response = await fetch('https://api.perplexity.ai/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-      },
-      body: JSON.stringify(requestBody)
-    });
-
-    const responseText = await response.text();
-    console.log('[Chat Test] Response status:', response.status);
-    console.log('[Chat Test] Raw response:', responseText);
-
-    if (!response.ok) {
-      throw new Error(`API request failed: ${response.status} ${response.statusText}\n${responseText}`);
-    }
-
-    const data = JSON.parse(responseText);
-    console.log('[Chat Test] Parsed response:', data);
-
-    res.json({
-      success: true,
-      message: "API test successful",
-      response: data
-    });
-
-  } catch (error) {
-    console.error('[Chat Test] Error:', error);
-    res.status(500).json({
-      error: 'Chat test failed',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    });
-  }
-});
-
-// Function to generate contextual links based on content
-function generateContextualLinks(currentPath: string, message: string) {
-  const links = [];
-
-  // Default learning resources link points to glossary
-  links.push({ text: "Check Learning Resources", url: "/glossary" });
-
-  // Add topic-specific links based on message content
-  const messageLower = message.toLowerCase();
-
-  if (messageLower.includes('smart contract') || messageLower.includes('ethereum')) {
-    links.push(
-      { text: "Ethereum Smart Contracts Module", url: "/modules/module3/smart-contracts" },
-      { text: "Ethereum Fundamentals", url: "/modules/module3/ethereum-fundamentals" }
-    );
+  if (!apiKey) {
+    throw new Error('Missing Perplexity API key in environment');
   }
 
-  if (messageLower.includes('bitcoin') || messageLower.includes('cryptocurrency')) {
-    links.push(
-      { text: "Bitcoin Fundamentals", url: "/modules/module2/bitcoin-fundamentals" },
-      { text: "Crypto Market Guide", url: "/modules/module1/crypto-market" }
-    );
+  if (!apiKey.match(/^pplx-[a-zA-Z0-9]{48}$/)) {
+    throw new Error('Invalid Perplexity API key format');
   }
 
-  if (messageLower.includes('defi') || messageLower.includes('yield') || messageLower.includes('liquidity') || messageLower.includes('flash loan') || messageLower.includes('dex')) {
-    links.push(
-      { text: "DeFi Introduction", url: "/defi/module1/defi-intro" },
-      { text: "DEX & AMM Guide", url: "/defi/module1/dex-amm" },
-      { text: "Liquidity & Yield", url: "/defi/module1/liquidity-yield" }
-    );
-  }
-
-  if (messageLower.includes('security') || messageLower.includes('risk')) {
-    links.push(
-      { text: "Security Best Practices", url: "/modules/module1/security" },
-      { text: "Risk Management", url: "/modules/module2/security-risk" }
-    );
-  }
-
-  return links;
+  return apiKey;
 }
 
 // Main chat endpoint
 router.post("/send", async (req, res) => {
   console.log('[Chat] Starting chat request processing');
-  console.log('[Chat] Environment check:', {
-    nodeEnv: process.env.NODE_ENV,
-    hasApiKey: Boolean(process.env.PERPLEXITY_API_KEY),
-    apiKeyLength: process.env.PERPLEXITY_API_KEY?.length
-  });
 
   try {
+    // Validate request body
     const result = chatMessageSchema.safeParse(req.body);
     if (!result.success) {
       console.error('[Chat] Validation error:', result.error);
@@ -171,30 +70,19 @@ router.post("/send", async (req, res) => {
 
     const { message, context } = result.data;
 
-    // Get API key from environment and trim any whitespace
-    const apiKey = (process.env.PERPLEXITY_API_KEY || '').trim();
-    console.log('[Chat] API key verification:', {
-      exists: Boolean(apiKey),
-      length: apiKey.length,
-      prefix: apiKey.substring(0, 5)
-    });
-
-    if (!apiKey) {
-      console.error('[Chat] Missing API key');
+    // Get API key with enhanced error handling
+    let apiKey;
+    try {
+      apiKey = getPerplexityApiKey();
+    } catch (error) {
+      console.error('[Chat] API Key Error:', error.message);
       return res.status(500).json({
         error: 'API configuration error',
-        details: 'Missing Perplexity API key in environment'
+        details: error.message
       });
     }
 
-    if (!apiKey.match(/^pplx-[a-zA-Z0-9]{48}$/)) {
-      console.error('[Chat] Invalid API key format');
-      return res.status(500).json({
-        error: 'API configuration error',
-        details: 'Invalid Perplexity API key format. Key should start with pplx- followed by 48 characters'
-      });
-    }
-
+    // Prepare messages for the API request
     const messages = [{
       role: "system",
       content: "You are Sensei, an educational AI tutor specializing in blockchain education. " +
@@ -211,19 +99,9 @@ router.post("/send", async (req, res) => {
       content: message
     });
 
-    console.log('[Chat] Sending request to Perplexity API');
+    console.log('[Chat] Preparing API request');
 
-    const requestBody = {
-      model: "llama-3.1-sonar-small-128k-online",
-      messages,
-      temperature: 0.3,
-      max_tokens: 250,
-      top_p: 0.9,
-      stream: false,
-      presence_penalty: 0,
-      frequency_penalty: 1
-    };
-
+    // Make request to Perplexity API
     const response = await fetch('https://api.perplexity.ai/chat/completions', {
       method: 'POST',
       headers: {
@@ -231,7 +109,16 @@ router.post("/send", async (req, res) => {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKey}`
       },
-      body: JSON.stringify(requestBody)
+      body: JSON.stringify({
+        model: "llama-3.1-sonar-small-128k-online",
+        messages,
+        temperature: 0.3,
+        max_tokens: 250,
+        top_p: 0.9,
+        stream: false,
+        presence_penalty: 0,
+        frequency_penalty: 1
+      })
     });
 
     if (!response.ok) {
@@ -241,14 +128,14 @@ router.post("/send", async (req, res) => {
         statusText: response.statusText,
         body: errorText
       });
-      throw new Error(`Perplexity API request failed: ${response.status} ${response.statusText}\n${errorText}`);
+      throw new Error(`API request failed: ${response.status} ${response.statusText}\n${errorText}`);
     }
 
     const data = await response.json();
-    console.log('[Chat] Received successful response from Perplexity API');
+    console.log('[Chat] Received API response');
 
     if (!data.choices?.[0]?.message?.content) {
-      throw new Error('Invalid response format from Perplexity API');
+      throw new Error('Invalid response format from API');
     }
 
     const responseData = {
@@ -259,7 +146,7 @@ router.post("/send", async (req, res) => {
       }
     };
 
-    console.log('[Chat] Sending successful response to client');
+    console.log('[Chat] Sending successful response');
     res.json(responseData);
 
   } catch (error) {
@@ -273,5 +160,37 @@ router.post("/send", async (req, res) => {
     });
   }
 });
+
+// Function to generate contextual links based on content
+function generateContextualLinks(currentPath: string, message: string) {
+  const links = [];
+  links.push({ text: "Check Learning Resources", url: "/glossary" });
+
+  const messageLower = message.toLowerCase();
+
+  if (messageLower.includes('smart contract') || messageLower.includes('ethereum')) {
+    links.push(
+      { text: "Ethereum Smart Contracts Module", url: "/modules/module3/smart-contracts" },
+      { text: "Ethereum Fundamentals", url: "/modules/module3/ethereum-fundamentals" }
+    );
+  }
+
+  if (messageLower.includes('bitcoin') || messageLower.includes('cryptocurrency')) {
+    links.push(
+      { text: "Bitcoin Fundamentals", url: "/modules/module2/bitcoin-fundamentals" },
+      { text: "Crypto Market Guide", url: "/modules/module1/crypto-market" }
+    );
+  }
+
+  if (messageLower.includes('defi') || messageLower.includes('yield') || messageLower.includes('liquidity')) {
+    links.push(
+      { text: "DeFi Introduction", url: "/defi/module1/defi-intro" },
+      { text: "DEX & AMM Guide", url: "/defi/module1/dex-amm" },
+      { text: "Liquidity & Yield", url: "/defi/module1/liquidity-yield" }
+    );
+  }
+
+  return links;
+}
 
 export default router;
