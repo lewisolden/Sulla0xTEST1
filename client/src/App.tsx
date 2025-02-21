@@ -94,6 +94,7 @@ import BlockchainContracts from "@/pages/defi/module1/blockchain-contracts";
 import DexAmm from "@/pages/defi/module1/dex-amm";
 import LiquidityYield from "@/pages/defi/module1/liquidity-yield";
 import ModuleQuiz from "@/pages/defi/module1/quiz";  // Add this import
+import DefiModule2 from "@/pages/defi/module2";
 
 
 function ProtectedRoute({ component: Component, adminOnly = false, publicAccess = false, ...rest }: any) {
@@ -215,6 +216,9 @@ function Router() {
       <Route path="/defi/module1/dex-amm" component={() => <ProtectedRoute component={DexAmm} />} />
       <Route path="/defi/module1/liquidity-yield" component={() => <ProtectedRoute component={LiquidityYield} />} />
       <Route path="/defi/module1/quiz" component={() => <ProtectedRoute component={ModuleQuiz} />} />
+
+      {/* DeFi Module 2 Routes */}
+      <Route path="/defi/module2" component={() => <ProtectedRoute component={DefiModule2} />} />
 
       <Route component={NotFound} />
     </Switch>
