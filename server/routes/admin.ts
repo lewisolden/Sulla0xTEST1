@@ -6,7 +6,7 @@ import { gt, sql, desc, and, eq, count } from 'drizzle-orm';
 
 const router = Router();
 
-// Get all users with pagination and enrollment counts
+// Get all users with pagination and search
 router.get('/users', requireAdmin, async (req, res) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
@@ -14,54 +14,60 @@ router.get('/users', requireAdmin, async (req, res) => {
     const offset = (page - 1) * limit;
     const search = req.query.search as string;
 
-    console.log('Admin users route - Request params:', { page, limit, offset, search });
-
-    // Base query for users with enrollment counts
-    let query = db
-      .select({
-        id: users.id,
+    // First get filtered users with enrollments
+    const baseQuery = db.$with('user_stats').as(
+      db.select({
+        userId: users.id,
         username: users.username,
         email: users.email,
         lastActivity: users.lastActivity,
-        enrollmentCount: sql<number>`COUNT(DISTINCT ${courseEnrollments.id})::integer`,
-        completedModules: sql<number>`COUNT(CASE WHEN ${courseEnrollments.status} = 'completed' THEN 1 END)::integer`
+        enrollmentCount: sql<number>`count(distinct ${courseEnrollments.id})`,
+        completedCount: sql<number>`count(distinct case when ${courseEnrollments.status} = 'completed' then ${courseEnrollments.id} end)`
       })
       .from(users)
       .leftJoin(courseEnrollments, eq(users.id, courseEnrollments.userId))
-      .groupBy(users.id);
+      .groupBy(users.id)
+    );
 
-    // Add search if provided
+    let finalQuery = db.with(baseQuery).select().from(baseQuery);
+
+    // Add search condition if provided
     if (search) {
-      query = query.where(
-        sql`${users.username} ILIKE ${`%${search}%`} OR ${users.email} ILIKE ${`%${search}%`}`
+      finalQuery = finalQuery.where(
+        sql`username ilike ${'%' + search + '%'} or email ilike ${'%' + search + '%'}`
       );
     }
 
-    // Execute the query with pagination
-    const usersList = await query
+    const usersList = await finalQuery
+      .orderBy(desc(sql`lastActivity`))
       .limit(limit)
-      .offset(offset)
-      .orderBy(desc(users.lastActivity));
-
-    console.log('Found users:', usersList.length);
+      .offset(offset);
 
     // Get total count for pagination
-    const [totalCount] = await db
+    const [{ total }] = await db
       .select({
-        count: sql<number>`count(distinct ${users.id})`
+        total: count(users.id)
       })
       .from(users)
-      .leftJoin(courseEnrollments, eq(users.id, courseEnrollments.userId));
-
-    console.log('Total users count:', totalCount?.count || 0);
+      .where(search ? 
+        sql`username ilike ${'%' + search + '%'} or email ilike ${'%' + search + '%'}` : 
+        undefined
+      );
 
     res.json({
-      users: usersList,
+      users: usersList.map(user => ({
+        id: user.userId,
+        username: user.username,
+        email: user.email,
+        lastActivity: user.lastActivity,
+        enrollmentCount: Number(user.enrollmentCount),
+        completedModules: Number(user.completedCount)
+      })),
       pagination: {
-        total: Number(totalCount?.count || 0),
+        total: Number(total || 0),
         page,
         pageSize: limit,
-        totalPages: Math.ceil(Number(totalCount?.count || 0) / limit)
+        totalPages: Math.ceil(Number(total || 0) / limit)
       }
     });
   } catch (error) {
@@ -162,59 +168,52 @@ router.patch('/feedback/:id', requireAdmin, async (req, res) => {
   }
 });
 
-// Analytics endpoint with enhanced metrics
+// Analytics dashboard data
 router.get('/analytics/users', requireAdmin, async (req, res) => {
   try {
-    // Get total users count
-    const [totalCount] = await db
-      .select({
-        count: sql<number>`count(distinct ${users.id})`
-      })
-      .from(users);
-
-    // Get active users in last 7 days
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-    const [activeUsers] = await db
+    // Get total and active users
+    const [{
+      totalUsers,
+      activeUsers,
+      totalEnrollments,
+      completedModules
+    }] = await db
       .select({
-        count: sql<number>`count(distinct ${users.id})`
+        totalUsers: count(users.id),
+        activeUsers: count(sql`case when ${users.lastActivity} > ${sevenDaysAgo} then 1 end`),
+        totalEnrollments: count(courseEnrollments.id),
+        completedModules: count(sql`case when ${courseEnrollments.status} = 'completed' then 1 end`)
       })
       .from(users)
-      .where(gt(users.lastActivity, sevenDaysAgo));
-
-    // Get enrollment metrics
-    const [enrollmentMetrics] = await db
-      .select({
-        totalEnrollments: sql<number>`count(${courseEnrollments.id})::integer`,
-        completedModules: sql<number>`count(case when ${courseEnrollments.status} = 'completed' then 1 end)::integer`,
-      })
-      .from(courseEnrollments);
+      .leftJoin(courseEnrollments, eq(users.id, courseEnrollments.userId));
 
     // Get achievement count
-    const [achievementCount] = await db
+    const [{ achievementCount }] = await db
       .select({
-        count: sql<number>`count(${userAchievements.id})`
+        achievementCount: count(userAchievements.id)
       })
       .from(userAchievements);
 
     // Get pending feedback count
-    const [pendingFeedback] = await db
+    const [{ pendingCount }] = await db
       .select({
-        count: sql<number>`count(${feedback.id})`
+        pendingCount: count(feedback.id)
       })
       .from(feedback)
       .where(eq(feedback.status, 'pending'));
 
-    // Get user activity data for the last 30 days
+    // Get activity data for last 30 days
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
     const activityData = await db
       .select({
         date: sql<string>`date_trunc('day', ${users.lastActivity})::date`,
-        activeUsers: sql<number>`count(distinct ${users.id})::integer`,
-        completions: sql<number>`count(distinct case when ${courseEnrollments.status} = 'completed' then ${courseEnrollments.id} end)::integer`
+        activeUsers: count(users.id),
+        completions: count(sql`case when ${courseEnrollments.status} = 'completed' then 1 end`)
       })
       .from(users)
       .leftJoin(courseEnrollments, eq(users.id, courseEnrollments.userId))
@@ -222,21 +221,19 @@ router.get('/analytics/users', requireAdmin, async (req, res) => {
       .groupBy(sql`date_trunc('day', ${users.lastActivity})`)
       .orderBy(sql`date_trunc('day', ${users.lastActivity})`);
 
-    const response = {
-      totalUsers: Number(totalCount?.count || 0),
-      activeUsers: Number(activeUsers?.count || 0),
-      totalEnrollments: enrollmentMetrics?.totalEnrollments || 0,
-      completedModules: enrollmentMetrics?.completedModules || 0,
-      achievementsAwarded: Number(achievementCount?.count || 0),
-      pendingFeedback: Number(pendingFeedback?.count || 0),
+    res.json({
+      totalUsers: Number(totalUsers || 0),
+      activeUsers: Number(activeUsers || 0),
+      totalEnrollments: Number(totalEnrollments || 0),
+      completedModules: Number(completedModules || 0),
+      achievementsAwarded: Number(achievementCount || 0),
+      pendingFeedback: Number(pendingCount || 0),
       userActivityData: activityData.map(item => ({
         date: item.date,
-        activeUsers: item.activeUsers,
-        completions: item.completions
+        activeUsers: Number(item.activeUsers || 0),
+        completions: Number(item.completions || 0)
       }))
-    };
-
-    res.json(response);
+    });
   } catch (error) {
     console.error('Error fetching analytics:', error);
     res.status(500).json({ 
