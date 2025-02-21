@@ -7,12 +7,6 @@ import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger
-} from "@/components/ui/accordion";
 import { Lightbulb, Zap, Shield, BarChart4, Coins, Lock, ArrowLeft, ArrowRight, RefreshCw } from "lucide-react";
 
 const sections = [
@@ -126,6 +120,7 @@ const AdvancedDefi = () => {
   const { updateProgress } = useProgress();
   const [currentSection, setCurrentSection] = useState(0);
   const { toast } = useToast();
+  const [hasUpdatedProgress, setHasUpdatedProgress] = useState(false);
 
   // Enrollment handling with proper error states
   const { data: enrollments, isLoading: loadingEnrollments, error: enrollmentError } = useQuery({
@@ -142,41 +137,45 @@ const AdvancedDefi = () => {
   );
 
   useEffect(() => {
-    let mounted = true;
+    if (!isEnrolled || hasUpdatedProgress || loadingEnrollments) {
+      return;
+    }
 
     const initializeProgress = async () => {
       try {
-        if (mounted) {
-          await updateProgress(
-            3,
-            sections[currentSection].id,
-            true,
-            currentSection + 1,
-            undefined,
-            undefined,
-            undefined,
-            '/defi/module3/advanced-defi',
-            'DeFi'
-          );
-        }
+        await updateProgress(
+          3,
+          sections[currentSection].id,
+          true,
+          currentSection + 1,
+          undefined,
+          undefined,
+          undefined,
+          '/defi/module3/advanced-defi',
+          'DeFi'
+        );
+        setHasUpdatedProgress(true);
       } catch (error) {
         console.error('Failed to update progress:', error);
-        if (mounted) {
-          toast({
-            title: "Error",
-            description: "Failed to update progress",
-            variant: "destructive",
-          });
-        }
+        toast({
+          title: "Error",
+          description: "Failed to update progress",
+          variant: "destructive",
+        });
       }
     };
 
     initializeProgress();
+  }, [currentSection, updateProgress, toast, isEnrolled, hasUpdatedProgress, loadingEnrollments]);
 
-    return () => {
-      mounted = false;
-    };
-  }, [currentSection, updateProgress, toast]);
+  // Update progress when section changes
+  useEffect(() => {
+    if (!isEnrolled || loadingEnrollments) {
+      return;
+    }
+
+    setHasUpdatedProgress(false);
+  }, [currentSection, isEnrolled, loadingEnrollments]);
 
   // Show loading state
   if (loadingEnrollments) {
