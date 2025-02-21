@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useProgress } from "@/context/progress-context";
@@ -180,25 +180,34 @@ export default function DexAmm() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
-        <div className="mb-6">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-6"
+        >
           <Link href="/defi/module1">
             <Button variant="ghost" className="gap-2">
               <ArrowLeft className="h-4 w-4" /> Back to Module Overview
             </Button>
           </Link>
-        </div>
+        </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <Card>
-            <CardContent className="pt-6">
-              <h1 className="text-3xl font-bold text-blue-800 mb-6">
+          <Card className="mb-8">
+            <CardHeader className="relative overflow-hidden bg-gradient-to-r from-purple-500 to-indigo-500 pb-8">
+              <div className="absolute inset-0 bg-grid-white/20" />
+              <CardTitle className="text-3xl font-bold text-white z-10">
                 Decentralized Exchanges & Automated Market Makers
-              </h1>
-
+              </CardTitle>
+              <p className="text-purple-100 mt-2 z-10">
+                Learn about decentralized trading platforms and the algorithms that power modern DeFi exchanges
+              </p>
+            </CardHeader>
+            <CardContent className="pt-6">
               <div className="prose max-w-none">
                 <section className="mb-12">
                   <h2 className="text-2xl font-semibold text-blue-700 mb-4">
@@ -581,13 +590,28 @@ export default function DexAmm() {
 
                 {/* Quiz Section */}
                 {!showQuiz ? (
-                  <div className="text-center mt-8">
-                    <Button
-                      onClick={() => setShowQuiz(true)}
-                      className="bg-blue-600 hover:bg-blue-700 transform hover:scale-105 transition-all duration-300"
-                    >
-                      Take Topic Quiz
-                    </Button>
+                  <div className="my-8 relative overflow-hidden rounded-lg bg-gradient-to-r from-purple-500 to-indigo-500 p-6">
+                    <div className="absolute inset-0 bg-grid-white/20" />
+                    <div className="relative z-10 flex items-center gap-4">
+                      <div className="p-3 bg-white/20 rounded-full">
+                        <CheckCircle2 className="h-6 w-6 text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-xl font-semibold text-white mb-1">
+                          Ready to Test Your Knowledge?
+                        </h3>
+                        <p className="text-purple-100">
+                          Challenge yourself with our comprehensive quiz on decentralized exchanges and AMMs
+                        </p>
+                      </div>
+                      <Button
+                        onClick={() => setShowQuiz(true)}
+                        className="bg-white text-purple-600 hover:bg-purple-50"
+                        size="lg"
+                      >
+                        Start Quiz
+                      </Button>
+                    </div>
                   </div>
                 ) : (
                   <section className="bg-white rounded-xl p-6 mt-8">
