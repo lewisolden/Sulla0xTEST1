@@ -16,17 +16,17 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export function registerRoutes(app: Express): Server {
-  // Set up authentication first
-  setupAuth(app);
-
   // Add debug middleware for API routes
   app.use('/api', (req, res, next) => {
     console.log(`[API Debug] ${req.method} ${req.path} User Auth:`, req.isAuthenticated());
     next();
   });
 
-  // Register chat routes before other routes
+  // Register chat routes before other routes and auth setup
   app.use("/api/chat", chatRouter);
+
+  // Set up authentication after chat routes
+  setupAuth(app);
 
   // Register other API routes
   app.use("/api", apiRouter);
