@@ -134,12 +134,12 @@ router.post("/send", async (req, res) => {
     const messages = [{
       role: "system",
       content: "You are an educational AI tutor specializing in blockchain and cryptocurrency education. " +
-               "Provide precise, concise responses and relate your answers to our course content when possible. " +
+               "Provide concise, direct responses in 2-3 sentences maximum. " +
+               "Always reference specific course modules when possible. " +
                `The user is currently viewing: ${context.currentPath}. ` +
-               "When explaining concepts, reference specific modules or sections from our curriculum. " +
-               "For Ethereum-related questions, refer to Module 3 which covers Ethereum fundamentals, smart contracts, and DeFi concepts. " +
-               "For Bitcoin-related questions, refer to Modules 1 and 2 which cover Bitcoin fundamentals and investment strategies. " +
-               "Direct users to relevant course materials when appropriate."
+               "For Ethereum topics, reference Module 3 (Ethereum/smart contracts). " +
+               "For Bitcoin topics, reference Modules 1-2 (fundamentals/investment). " +
+               "Keep explanations brief and direct users to course materials for details."
     }];
 
     // Add the current user message
@@ -153,8 +153,8 @@ router.post("/send", async (req, res) => {
     const requestBody = {
       model: "llama-3.1-sonar-small-128k-online",
       messages,
-      temperature: 0.5, // Reduced for more focused responses
-      max_tokens: 500,
+      temperature: 0.3, 
+      max_tokens: 250, 
       top_p: 0.9,
       stream: false,
       presence_penalty: 0,
@@ -192,15 +192,15 @@ router.post("/send", async (req, res) => {
       success: true,
       response: {
         message: data.choices[0].message.content,
-        links: generateContextualLinks(context.currentPath)
+        links: generateContextualLinks(context.currentPath, message)
       }
     });
 
   } catch (error) {
     console.error('[Chat] Detailed error:', {
-      name: error.name,
-      message: error.message,
-      stack: error.stack
+      name: error instanceof Error ? error.name : 'Unknown error',
+      message: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined
     });
 
     res.status(500).json({
@@ -210,21 +210,44 @@ router.post("/send", async (req, res) => {
   }
 });
 
-function generateContextualLinks(currentPath: string) {
-  const baseLinks = [
-    { text: "View Course Materials", url: "/curriculum" },
-    { text: "Check Learning Resources", url: "/library" }
-  ];
+function generateContextualLinks(currentPath: string, message: string) {
+  const links = [];
 
-  if (currentPath.includes('/ai/')) {
-    baseLinks.push({ text: "Explore AI Modules", url: "/ai" });
-  } else if (currentPath.includes('/defi/')) {
-    baseLinks.push({ text: "DeFi Learning Path", url: "/defi/module1" });
-  } else if (currentPath.includes('/modules/')) {
-    baseLinks.push({ text: "Module Overview", url: "/modules" });
+  // Always include general resources
+  links.push({ text: "Check Learning Resources", url: "/library" });
+
+  // Add topic-specific links based on message content
+  const messageLower = message.toLowerCase();
+
+  if (messageLower.includes('smart contract') || messageLower.includes('ethereum')) {
+    links.push(
+      { text: "Smart Contracts Guide", url: "/modules/module3/smart-contracts" },
+      { text: "Ethereum Fundamentals", url: "/modules/module3/ethereum-fundamentals" }
+    );
   }
 
-  return baseLinks;
+  if (messageLower.includes('bitcoin') || messageLower.includes('cryptocurrency')) {
+    links.push(
+      { text: "Bitcoin Fundamentals", url: "/modules/module2/bitcoin-fundamentals" },
+      { text: "Crypto Market Overview", url: "/modules/module1/crypto-market" }
+    );
+  }
+
+  if (messageLower.includes('defi') || messageLower.includes('yield') || messageLower.includes('liquidity')) {
+    links.push(
+      { text: "DeFi Introduction", url: "/defi/module1/defi-intro" },
+      { text: "Liquidity & Yield", url: "/defi/module1/liquidity-yield" }
+    );
+  }
+
+  if (messageLower.includes('security') || messageLower.includes('risk')) {
+    links.push(
+      { text: "Security Best Practices", url: "/modules/module1/security" },
+      { text: "Risk Management", url: "/modules/module2/security-risk" }
+    );
+  }
+
+  return links;
 }
 
 export default router;
