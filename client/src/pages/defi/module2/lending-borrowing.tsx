@@ -6,10 +6,30 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, BookOpen, CheckCircle2, ArrowRight, Code2, Network, Shield, TrendingUp, Lock, RefreshCw, Settings, Coins, Calculator, AlertTriangle, Building2, DollarSign, Check, X } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCircle2, ArrowRight, Shield, TrendingUp, Lock, Coins, Calculator, AlertTriangle, Building2, Check, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+
+// Types for the quiz
+interface QuizQuestion {
+  id: number;
+  question: string;
+  options: string[];
+  correctAnswer: number;
+  explanation: string;
+}
+
+interface QuizProps {
+  onComplete: (score: number) => void;
+}
+
+interface QuestionProps {
+  question: QuizQuestion;
+  onAnswer: (selectedIndex: number) => void;
+  showExplanation: boolean;
+}
 
 // Animation variants
 const containerVariants = {
@@ -226,7 +246,7 @@ const InteractiveLendingCalculator = () => {
   );
 };
 
-const quiz = {
+const quiz: { questions: QuizQuestion[] } = {
   questions: [
     {
       id: 1,
@@ -267,7 +287,7 @@ const quiz = {
   ]
 };
 
-const QuizQuestion = ({ question, onAnswer, showExplanation }) => {
+const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplanation }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -320,14 +340,14 @@ const QuizQuestion = ({ question, onAnswer, showExplanation }) => {
   );
 };
 
-const InteractiveQuiz = ({ onComplete }) => {
+const InteractiveQuiz: React.FC<QuizProps> = ({ onComplete }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
   const [answers, setAnswers] = useState({});
   const [score, setScore] = useState(0);
   const { toast } = useToast();
 
-  const handleAnswer = (selectedIndex) => {
+  const handleAnswer = (selectedIndex: number) => {
     const currentQuestion = quiz.questions[currentQuestionIndex];
     const isCorrect = selectedIndex === currentQuestion.correctAnswer;
 
@@ -506,7 +526,7 @@ export default function LendingBorrowing() {
     }
   };
 
-  const handleQuizComplete = async (score) => {
+  const handleQuizComplete = async (score: number) => {
     setScore(score);
     setQuizSubmitted(true);
 
