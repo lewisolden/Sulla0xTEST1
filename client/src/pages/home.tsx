@@ -117,14 +117,23 @@ export default function Home() {
 
       {/* Why Choose Sulla Section */}
       <section className="py-20 bg-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-white"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-purple-50 opacity-70"></div>
+        <div className="absolute inset-0">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-blue-200 rounded-full filter blur-3xl opacity-20 animate-pulse"></div>
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-200 rounded-full filter blur-3xl opacity-20 animate-pulse"></div>
+        </div>
         <div className="container relative mx-auto px-4">
-          <motion.h2 
-            className="text-4xl font-bold text-blue-900 text-center mb-16"
-            {...fadeInUp}
+          <motion.div 
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
           >
-            Why Choose Sulla
-          </motion.h2>
+            <h2 className="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
+              Why Choose Sulla
+            </h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full"></div>
+          </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
@@ -132,41 +141,51 @@ export default function Home() {
                 icon: Brain,
                 title: "AI-Powered Learning",
                 description: "Personalized learning paths that adapt to your understanding and pace",
-                link: "/ai"
+                link: "/ai",
+                gradient: "from-blue-500 to-purple-500"
               },
               {
                 icon: Gamepad2,
                 title: "Games & Practical Exercises",
                 description: "Hands-on learning with interactive exercises and real-world examples",
-                link: "/games"
+                link: "/games",
+                gradient: "from-purple-500 to-pink-500"
               },
               {
                 icon: BookOpen,
                 title: "Interactive Glossary",
                 description: "Comprehensive blockchain and AI terminology guide with easy-to-understand definitions",
-                link: "/glossary"
+                link: "/glossary",
+                gradient: "from-pink-500 to-red-500"
               },
               {
                 icon: Bot,
                 title: "Sensei AI Tutor",
                 description: "Your personal AI guide through the curriculum, providing focused assistance",
-                link: "/sensei"
+                link: "/sensei",
+                gradient: "from-red-500 to-blue-500"
               }
             ].map((feature, index) => (
               <Link key={feature.title} href={feature.link}>
                 <motion.div 
-                  className="bg-gradient-to-br from-white to-blue-50 p-8 rounded-xl cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
-                  {...fadeInUp}
-                  transition={{ delay: 0.2 + (index * 0.1) }}
+                  className="relative group"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 * index }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <div className="bg-blue-100 p-3 rounded-lg inline-block mb-6">
-                    <feature.icon className="w-12 h-12 text-blue-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>
-                  <p className="text-gray-600 leading-relaxed">{feature.description}</p>
-                  <div className="mt-4 text-blue-600 hover:text-blue-700 font-medium flex items-center gap-2">
-                    Learn More
-                    <ArrowRight className="w-4 h-4" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl transform rotate-2 group-hover:rotate-0 transition-all duration-300"></div>
+                  <div className="relative bg-white p-8 rounded-xl shadow-xl group-hover:shadow-2xl transition-all duration-300 border border-blue-100">
+                    <div className={`bg-gradient-to-r ${feature.gradient} p-4 rounded-lg inline-block mb-6 transform group-hover:scale-110 transition-all duration-300`}>
+                      <feature.icon className="w-8 h-8 text-white" />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-3 text-gray-800 group-hover:text-blue-600 transition-colors duration-300">{feature.title}</h3>
+                    <p className="text-gray-600 leading-relaxed mb-4">{feature.description}</p>
+                    <div className="flex items-center text-blue-600 font-medium group-hover:text-purple-600 transition-colors duration-300">
+                      Explore
+                      <ArrowRight className="w-4 h-4 ml-2 transform group-hover:translate-x-2 transition-transform duration-300" />
+                    </div>
                   </div>
                 </motion.div>
               </Link>
@@ -267,44 +286,80 @@ export default function Home() {
       </section>
 
       {/* Begin Your Learning Journey Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 via-blue-100 to-white">
-        <div className="container mx-auto px-4">
+      <section className="py-20 bg-gradient-to-br from-blue-50 via-blue-100 to-white relative overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-blue-200 rounded-full filter blur-3xl opacity-20 animate-pulse"></div>
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-200 rounded-full filter blur-3xl opacity-20 animate-pulse"></div>
+        </div>
+        <div className="container relative mx-auto px-4">
           <motion.div 
             className="text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-4xl font-bold text-blue-900 mb-6">
+            <h2 className="text-5xl font-bold text-blue-900 mb-4">
               Begin Your Learning Journey
             </h2>
+            <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full mb-6"></div>
             <p className="text-xl text-blue-700 max-w-3xl mx-auto">
               Choose your path and start mastering the technologies of tomorrow
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {modules.map((module, index) => (
+            {[
+              {
+                icon: BookOpen,
+                title: "Blockchain Fundamentals",
+                description: "Master the basics of digital currencies and blockchain technology",
+                path: "/modules/course1",
+                badge: "Course 1",
+                gradient: "from-blue-500 to-purple-500"
+              },
+              {
+                icon: Brain,
+                title: "AI & Machine Learning",
+                description: "Explore the world of AI, machine learning, and neural networks",
+                path: "/ai/course1",
+                badge: "Course 2",
+                gradient: "from-purple-500 to-pink-500"
+              },
+              {
+                icon: Wallet,
+                title: "Advanced DeFi",
+                description: "Learn advanced decentralized finance concepts and strategies",
+                path: "/defi/course1",
+                badge: "Course 3",
+                gradient: "from-pink-500 to-red-500"
+              }
+            ].map((course, index) => (
               <motion.div
-                key={module.title}
+                key={course.title}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 + (index * 0.1) }}
+                whileHover={{ y: -10 }}
               >
-                <Link href={module.path}>
-                  <a className="block">
-                    <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                      <div className="bg-blue-100 p-4 rounded-lg inline-block mb-6">
-                        <module.icon className="w-12 h-12 text-blue-600" />
+                <Link href={course.path}>
+                  <a className="block relative group">
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-100 to-purple-100 rounded-xl transform rotate-2 group-hover:rotate-0 transition-all duration-300"></div>
+                    <div className="relative bg-white rounded-xl p-8 shadow-lg group-hover:shadow-2xl transition-all duration-300 border border-blue-100">
+                      <div className={`bg-gradient-to-r ${course.gradient} p-4 rounded-lg inline-block mb-6 transform group-hover:scale-110 transition-all duration-300`}>
+                        <course.icon className="w-12 h-12 text-white" />
                       </div>
-                      <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm font-medium mb-4 inline-block">
-                        {module.badge}
+                      <span className="bg-gradient-to-r from-blue-100 to-purple-100 text-blue-600 px-4 py-1 rounded-full text-sm font-medium mb-4 inline-block">
+                        {course.badge}
                       </span>
-                      <h3 className="text-xl font-semibold text-blue-900 mb-3">{module.title}</h3>
-                      <p className="text-blue-600 mb-6">{module.description}</p>
-                      <div className="flex items-center text-blue-600 font-medium">
+                      <h3 className="text-2xl font-semibold text-blue-900 mb-3 group-hover:text-blue-600 transition-colors duration-300">
+                        {course.title}
+                      </h3>
+                      <p className="text-blue-600 mb-6 group-hover:text-blue-700 transition-colors duration-300">
+                        {course.description}
+                      </p>
+                      <div className="flex items-center text-blue-600 font-medium group-hover:text-purple-600 transition-colors duration-300">
                         Start Learning
-                        <ArrowRight className="w-4 h-4 ml-2" />
+                        <ArrowRight className="w-5 h-5 ml-2 transform group-hover:translate-x-2 transition-transform duration-300" />
                       </div>
                     </div>
                   </a>
