@@ -155,6 +155,7 @@ const GovernanceQuiz = () => {
   const [score, setScore] = useState(0);
   const [quizStarted, setQuizStarted] = useState(false);
   const { toast } = useToast();
+  const [, setLocation] = useLocation();
 
   const questions = [
     {
@@ -303,11 +304,21 @@ const GovernanceQuiz = () => {
                       ? "Perfect score! Excellent understanding!"
                       : "Good effort! Review the material and try again!"}
                   </p>
-                  <Link href="/defi/module2">
-                    <Button className="w-full">
+                  <div className="flex flex-col gap-4">
+                    <Button
+                      onClick={() => setLocation("/defi/module2/quiz")}
+                      className="w-full bg-green-600 hover:bg-green-700 text-white"
+                    >
+                      Take Module Quiz
+                    </Button>
+                    <Button
+                      onClick={() => setLocation("/defi/module2")}
+                      variant="outline"
+                      className="w-full"
+                    >
                       Return to Module 2
                     </Button>
-                  </Link>
+                  </div>
                 </div>
               )}
             </motion.div>
