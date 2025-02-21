@@ -102,6 +102,7 @@ import GovernanceDAO from "@/pages/defi/module2/governance-dao";
 import DefiModule2Quiz from "@/pages/defi/module2/quiz"; // Renamed to avoid conflict
 import DefiModule3 from "@/pages/defi/module3";
 import AdvancedDefi from "@/pages/defi/module3/advanced-defi";
+import DefiSecurity from "@/pages/defi/module3/defi-security"; // Add import
 import DefiModule3Quiz from "@/pages/defi/module3/quiz"; // Renamed to avoid conflict
 
 
@@ -233,17 +234,10 @@ function Router() {
       <Route path="/defi/module2/governance-dao" component={() => <ProtectedRoute component={GovernanceDAO} />} />
       <Route path="/defi/module2/quiz" component={() => <ProtectedRoute component={DefiModule2Quiz} />} />
 
-      {/* DeFi Module 3 Route */}
+      {/* DeFi Module 3 Routes */}
       <Route path="/defi/module3" component={() => <ProtectedRoute component={DefiModule3} />} />
-      <Route 
-        path="/defi/module3/advanced-defi" 
-        component={() => (
-          <ProtectedRoute 
-            component={AdvancedDefi} 
-            publicAccess={true}
-          />
-        )} 
-      />
+      <Route path="/defi/module3/advanced-defi" component={() => <ProtectedRoute component={AdvancedDefi} publicAccess={true} />} />
+      <Route path="/defi/module3/defi-security" component={() => <ProtectedRoute component={DefiSecurity} publicAccess={true} />} />
       <Route path="/defi/module3/quiz" component={() => <ProtectedRoute component={DefiModule3Quiz} />} />
 
       <Route component={NotFound} />
