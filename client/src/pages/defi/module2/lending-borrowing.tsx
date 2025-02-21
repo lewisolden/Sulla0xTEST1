@@ -4,6 +4,8 @@ import { Link } from "wouter";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { 
@@ -18,7 +20,8 @@ import {
   Lock,
   Coins,
   BarChart3,
-  Scale
+  Scale,
+  Calculator
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -42,6 +45,90 @@ const itemVariants = {
       duration: 0.5
     }
   }
+};
+
+const InteractiveLendingCalculator = () => {
+  const [collateralAmount, setCollateralAmount] = useState("");
+  const [ltv, setLtv] = useState("75");
+  const [interestRate, setInterestRate] = useState("3");
+  const [term, setTerm] = useState("30");
+
+  const maxBorrow = parseFloat(collateralAmount) * (parseFloat(ltv) / 100);
+  const interest = maxBorrow * (parseFloat(interestRate) / 100) * (parseFloat(term) / 365);
+  const totalRepayment = maxBorrow + interest;
+
+  return (
+    <div className="bg-white p-6 rounded-lg shadow-lg">
+      <h3 className="text-xl font-semibold text-purple-800 mb-4 flex items-center gap-2">
+        <Calculator className="h-6 w-6" />
+        Interactive Lending Calculator
+      </h3>
+
+      <div className="grid gap-4">
+        <div>
+          <Label htmlFor="collateral">Collateral Amount (ETH)</Label>
+          <Input
+            id="collateral"
+            type="number"
+            min="0"
+            step="0.1"
+            value={collateralAmount}
+            onChange={(e) => setCollateralAmount(e.target.value)}
+            placeholder="Enter collateral amount"
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="ltv">Loan-to-Value Ratio (%)</Label>
+          <Input
+            id="ltv"
+            type="number"
+            min="0"
+            max="100"
+            value={ltv}
+            onChange={(e) => setLtv(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="interest">Annual Interest Rate (%)</Label>
+          <Input
+            id="interest"
+            type="number"
+            min="0"
+            value={interestRate}
+            onChange={(e) => setInterestRate(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="term">Loan Term (Days)</Label>
+          <Input
+            id="term"
+            type="number"
+            min="1"
+            value={term}
+            onChange={(e) => setTerm(e.target.value)}
+          />
+        </div>
+
+        <div className="mt-4 p-4 bg-purple-50 rounded-lg">
+          <h4 className="font-semibold text-purple-800 mb-2">Calculation Results</h4>
+          <div className="space-y-2">
+            <p className="text-sm text-gray-600">
+              Maximum Borrow Amount: <span className="font-medium text-purple-700">{maxBorrow.toFixed(2)} ETH</span>
+            </p>
+            <p className="text-sm text-gray-600">
+              Interest Payment: <span className="font-medium text-purple-700">{interest.toFixed(4)} ETH</span>
+            </p>
+            <p className="text-sm text-gray-600">
+              Total Repayment: <span className="font-medium text-purple-700">{totalRepayment.toFixed(4)} ETH</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default function LendingBorrowing() {
@@ -78,129 +165,93 @@ export default function LendingBorrowing() {
       )
     },
     {
-      title: "Interest Rate Mechanisms",
-      icon: Percent,
+      title: "AAVE Protocol Deep Dive",
+      icon: Building2,
       content: (
         <div className="space-y-4">
-          <div className="grid md:grid-cols-2 gap-4">
-            <Card className="p-4 bg-gradient-to-br from-purple-50 to-indigo-50">
-              <h4 className="text-purple-800 font-semibold mb-2 flex items-center gap-2">
-                <TrendingUp className="h-5 w-5" />
-                Variable Rates
-              </h4>
-              <p className="text-gray-700">
-                Dynamically adjusted based on supply and demand in the lending pool
-              </p>
-              <div className="mt-4 flex items-center gap-2">
-                <div className="h-2 w-full bg-purple-200 rounded-full overflow-hidden">
-                  <motion.div
-                    className="h-full bg-purple-500"
-                    initial={{ width: "0%" }}
-                    animate={{ width: "70%" }}
-                    transition={{ duration: 1 }}
-                  />
-                </div>
-                <span className="text-sm text-purple-700">Utilization</span>
-              </div>
-            </Card>
-            <Card className="p-4 bg-gradient-to-br from-blue-50 to-cyan-50">
-              <h4 className="text-blue-800 font-semibold mb-2 flex items-center gap-2">
-                <Lock className="h-5 w-5" />
-                Fixed Rates
-              </h4>
-              <p className="text-gray-700">
-                Stable interest rates locked for specific time periods
-              </p>
-              <div className="mt-4 flex items-center gap-2">
-                <div className="h-2 w-full bg-blue-200 rounded-full overflow-hidden">
-                  <motion.div
-                    className="h-full bg-blue-500"
-                    initial={{ width: "0%" }}
-                    animate={{ width: "30%" }}
-                    transition={{ duration: 1 }}
-                  />
-                </div>
-                <span className="text-sm text-blue-700">Usage</span>
-              </div>
-            </Card>
-          </div>
-          <div className="mt-6 bg-yellow-50 p-4 rounded-lg">
-            <h4 className="text-yellow-800 font-semibold mb-2 flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5" />
-              Important Consideration
-            </h4>
-            <p className="text-yellow-700">
-              Interest rates fluctuate based on market conditions and utilization ratios. Higher utilization leads to higher borrowing costs to maintain pool liquidity.
+          <div className="bg-gradient-to-r from-purple-50 to-indigo-50 p-6 rounded-lg">
+            <h4 className="text-purple-800 font-semibold mb-4">What is AAVE?</h4>
+            <p className="text-gray-700 mb-4">
+              AAVE is one of the leading DeFi lending protocols, allowing users to lend and borrow various cryptocurrencies. It introduces several innovative features:
             </p>
+            <div className="grid md:grid-cols-2 gap-4">
+              <Card className="bg-white">
+                <CardContent className="pt-4">
+                  <h5 className="font-medium text-purple-700 mb-2">Flash Loans</h5>
+                  <p className="text-sm text-gray-600">
+                    Uncollateralized loans that must be borrowed and repaid within the same transaction block
+                  </p>
+                </CardContent>
+              </Card>
+              <Card className="bg-white">
+                <CardContent className="pt-4">
+                  <h5 className="font-medium text-purple-700 mb-2">Rate Switching</h5>
+                  <p className="text-sm text-gray-600">
+                    Users can switch between stable and variable interest rates
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          <div className="bg-white p-4 rounded-lg border border-gray-200">
+            <h4 className="text-lg font-semibold text-purple-800 mb-3">Key Features</h4>
+            <ul className="space-y-2">
+              <li className="flex items-start gap-2">
+                <div className="mt-1 w-2 h-2 rounded-full bg-purple-500"></div>
+                <p className="text-gray-700">Multiple asset pools with different risk parameters</p>
+              </li>
+              <li className="flex items-start gap-2">
+                <div className="mt-1 w-2 h-2 rounded-full bg-purple-500"></div>
+                <p className="text-gray-700">Automated interest rate adjustments based on pool utilization</p>
+              </li>
+              <li className="flex items-start gap-2">
+                <div className="mt-1 w-2 h-2 rounded-full bg-purple-500"></div>
+                <p className="text-gray-700">Safety modules for protocol insurance</p>
+              </li>
+              <li className="flex items-start gap-2">
+                <div className="mt-1 w-2 h-2 rounded-full bg-purple-500"></div>
+                <p className="text-gray-700">Governance through AAVE token holders</p>
+              </li>
+            </ul>
           </div>
         </div>
       )
     },
     {
-      title: "Collateralization Ratios",
-      icon: Shield,
+      title: "Interactive Learning Exercise",
+      icon: Calculator,
       content: (
-        <div className="space-y-4">
-          <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-lg">
-            <h4 className="text-emerald-800 font-semibold mb-4 flex items-center gap-2">
-              <Scale className="h-6 w-6" />
-              Understanding Collateral Ratios
+        <div className="space-y-6">
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-lg">
+            <h4 className="text-xl font-semibold text-blue-800 mb-4">
+              Practice DeFi Lending
             </h4>
-            <div className="grid md:grid-cols-3 gap-4">
-              <motion.div
-                className="bg-white p-4 rounded-lg shadow-sm"
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.2 }}
-              >
-                <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center mb-2">
-                  <Coins className="h-4 w-4 text-emerald-600" />
-                </div>
-                <h5 className="font-medium text-emerald-700 mb-1">Over-collateralization</h5>
-                <p className="text-sm text-gray-600">
-                  Borrowers must provide collateral worth more than their loan value
-                </p>
-              </motion.div>
-              <motion.div
-                className="bg-white p-4 rounded-lg shadow-sm"
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.2 }}
-              >
-                <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center mb-2">
-                  <BarChart3 className="h-4 w-4 text-emerald-600" />
-                </div>
-                <h5 className="font-medium text-emerald-700 mb-1">Ratio Calculation</h5>
-                <p className="text-sm text-gray-600">
-                  Typical ratios range from 150% to 200% depending on asset volatility
-                </p>
-              </motion.div>
-              <motion.div
-                className="bg-white p-4 rounded-lg shadow-sm"
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.2 }}
-              >
-                <div className="w-8 h-8 bg-emerald-100 rounded-full flex items-center justify-center mb-2">
-                  <AlertTriangle className="h-4 w-4 text-emerald-600" />
-                </div>
-                <h5 className="font-medium text-emerald-700 mb-1">Liquidation Risk</h5>
-                <p className="text-sm text-gray-600">
-                  Positions are liquidated if collateral value falls below threshold
-                </p>
-              </motion.div>
-            </div>
+            <p className="text-gray-700 mb-6">
+              Use this interactive calculator to understand how lending and borrowing work in DeFi protocols. Experiment with different collateral amounts, LTV ratios, and loan terms to see how they affect your borrowing capacity and interest payments.
+            </p>
+            <InteractiveLendingCalculator />
           </div>
-          <div className="mt-6">
-            <h4 className="text-lg font-semibold text-gray-800 mb-3">Example Calculation</h4>
-            <div className="bg-white p-4 rounded-lg border border-gray-200">
-              <div className="flex items-center gap-4">
-                <DollarSign className="h-8 w-8 text-green-500" />
-                <div className="flex-1">
-                  <p className="text-sm text-gray-600">If you want to borrow $1,000 USDC with a 150% collateral ratio:</p>
-                  <p className="font-medium text-gray-800 mt-2">
-                    Required Collateral = $1,000 × 150% = $1,500 worth of assets
-                  </p>
-                </div>
-              </div>
-            </div>
+
+          <div className="bg-yellow-50 p-4 rounded-lg">
+            <h4 className="text-yellow-800 font-semibold mb-2 flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5" />
+              Risk Considerations
+            </h4>
+            <ul className="space-y-2 text-yellow-700">
+              <li className="flex items-start gap-2">
+                <div className="mt-1 w-2 h-2 rounded-full bg-yellow-500"></div>
+                <p>Higher LTV ratios increase your liquidation risk</p>
+              </li>
+              <li className="flex items-start gap-2">
+                <div className="mt-1 w-2 h-2 rounded-full bg-yellow-500"></div>
+                <p>Variable interest rates can change based on market conditions</p>
+              </li>
+              <li className="flex items-start gap-2">
+                <div className="mt-1 w-2 h-2 rounded-full bg-yellow-500"></div>
+                <p>Ensure you maintain a healthy collateral ratio to avoid liquidation</p>
+              </li>
+            </ul>
           </div>
         </div>
       )
