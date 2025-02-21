@@ -4,7 +4,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useProgress } from "@/context/progress-context";
-import { useScrollTop } from "@/hooks/useScrollTop";
 import {
   ArrowLeft, ArrowRight, Code2, Database, FileCode,
   LockIcon, RefreshCw, Settings, CheckCircle2, X, Check,
@@ -178,12 +177,12 @@ const BlockchainContracts = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <Card className="mb-8 overflow-hidden backdrop-blur-lg bg-white/90">
+          <Card className="mb-8 overflow-hidden">
             <CardContent className="pt-6">
               <div className="relative">
-                {/* Simplified decorative elements */}
-                <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-96 h-96 bg-gradient-to-br from-blue-400/20 via-purple-400/10 to-indigo-400/20 rounded-full blur-2xl" />
-                <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-96 h-96 bg-gradient-to-tr from-purple-400/20 via-pink-400/10 to-blue-400/20 rounded-full blur-2xl" />
+                {/* Enhanced decorative elements */}
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/30 via-purple-500/20 to-indigo-500/30 opacity-75 blur-3xl" />
+                <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/20 via-blue-500/20 to-purple-500/30 opacity-75 blur-3xl" />
 
                 {/* Enhanced Title Section */}
                 <div className="relative z-10">
@@ -191,18 +190,24 @@ const BlockchainContracts = () => {
                     <motion.div
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.5 }}
-                      className="inline-block"
+                      transition={{ duration: 0.7, type: "spring", stiffness: 100 }}
+                      className="relative"
                     >
-                      <h1 className="text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 mb-4 tracking-tight">
+                      <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-indigo-500/20 to-purple-500/20 blur-3xl transform rotate-12 scale-150" />
+                      <h1 className="relative text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 mb-4 tracking-tight">
                         Blockchain & Smart Contracts in DeFi
                       </h1>
-                      <div className="h-1.5 w-48 mx-auto bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 rounded-full mt-6" />
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: "100%" }}
+                        transition={{ duration: 1, delay: 0.3 }}
+                        className="h-1.5 w-48 mx-auto bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 rounded-full mt-6"
+                      />
                     </motion.div>
                     <motion.p
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.3 }}
+                      transition={{ duration: 0.5, delay: 0.5 }}
                       className="text-gray-600 mt-6 text-xl max-w-2xl mx-auto leading-relaxed"
                     >
                       Discover the foundational technology powering modern decentralized finance
@@ -439,22 +444,52 @@ const BlockchainContracts = () => {
                   {/* Enhanced Quiz Banner */}
                   {!showQuiz ? (
                     <div className="my-16">
-                      <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 p-[2px]">
-                        <div className="relative flex flex-col items-center justify-center rounded-xl bg-white px-8 py-12">
-                          <h3 className="text-3xl font-bold text-gray-800 mb-4">
-                            Ready to Test Your Knowledge?
-                          </h3>
-                          <p className="text-gray-600 mb-8 text-center max-w-md">
-                            Challenge yourself with our comprehensive quiz on blockchain technology and smart contracts
-                          </p>
-                          <Button
-                            onClick={() => setShowQuiz(true)}
-                            className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-12 py-6 rounded-xl text-lg font-semibold"
-                          >
-                            Start Topic Quiz
-                          </Button>
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5 }}
+                        className="relative"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-indigo-500/20 to-purple-500/20 blur-3xl transform rotate-3" />
+                        <div className="relative overflow-hidden rounded-xl bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 p-[2px]">
+                          <div className="relative flex flex-col items-center justify-center rounded-xl bg-white/95 backdrop-blur-sm px-8 py-12">
+                            <motion.div
+                              initial={{ scale: 0.9, opacity: 0 }}
+                              animate={{ scale: 1, opacity: 1 }}
+                              transition={{ duration: 0.5, delay: 0.2 }}
+                              className="absolute inset-0 bg-gradient-to-r from-blue-100/40 via-indigo-100/40 to-purple-100/40 rounded-xl"
+                            />
+                            <motion.h3
+                              initial={{ y: 20, opacity: 0 }}
+                              animate={{ y: 0, opacity: 1 }}
+                              transition={{ duration: 0.5, delay: 0.3 }}
+                              className="relative text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-indigo-700 mb-4"
+                            >
+                              Ready to Test Your Knowledge?
+                            </motion.h3>
+                            <motion.p
+                              initial={{ y: 20, opacity: 0 }}
+                              animate={{ y: 0, opacity: 1 }}
+                              transition={{ duration: 0.5, delay: 0.4 }}
+                              className="relative text-gray-600 mb-8 text-center max-w-md text-lg"
+                            >
+                              Challenge yourself with our comprehensive quiz on blockchain technology and smart contracts
+                            </motion.p>
+                            <motion.div
+                              initial={{ scale: 0.9, opacity: 0 }}
+                              animate={{ scale: 1, opacity: 1 }}
+                              transition={{ duration: 0.5, delay: 0.5 }}
+                            >
+                              <Button
+                                onClick={() => setShowQuiz(true)}
+                                className="relative bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-12 py-6 rounded-xl text-lg font-semibold transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl"
+                              >
+                                Start Topic Quiz
+                              </Button>
+                            </motion.div>
+                          </div>
                         </div>
-                      </div>
+                      </motion.div>
                     </div>
                   ) : (
                     <section className="bg-white/80 backdrop-blur-sm rounded-xl p-6 mt-8">
