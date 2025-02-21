@@ -20,103 +20,100 @@ router.get("/api/user/metrics", async (req, res) => {
   try {
     console.log("[User Metrics] Fetching metrics for user:", userId);
 
-    // Calculate total learning time from all module progress records
-    const moduleProgressRecords = await db
+    // Get all progress records including historical data
+    const [progressSummary] = await db
       .select({
-        timeSpent: moduleProgress.timeSpent,
-        lastAccessed: moduleProgress.lastAccessed,
-        completed: moduleProgress.completed,
-        moduleId: moduleProgress.moduleId,
-        courseId: moduleProgress.courseId
+        totalTimeSpent: sql<number>`COALESCE(SUM(CASE 
+          WHEN ${moduleProgress.timeSpent} > 0 THEN ${moduleProgress.timeSpent}
+          WHEN ${moduleProgress.completed} = true THEN 5
+          ELSE 0
+        END), 0)::integer`,
+        completedModules: sql<number>`COUNT(CASE WHEN ${moduleProgress.completed} = true THEN 1 END)`,
+        totalModules: sql<number>`COUNT(*)`,
       })
       .from(moduleProgress)
       .where(eq(moduleProgress.userId, userId));
 
-    console.log("[User Metrics] Found progress records:", moduleProgressRecords.length);
+    console.log("[User Metrics] Progress summary:", progressSummary);
 
-    // Calculate total time spent including active sessions
-    const totalMinutes = moduleProgressRecords.reduce((total, record) => {
-      // Base time from the record
-      const baseTime = record.timeSpent || 0;
+    // Calculate active session time
+    const activeModules = await db
+      .select({
+        moduleId: moduleProgress.moduleId,
+        lastAccessed: moduleProgress.lastAccessed,
+        timeSpent: moduleProgress.timeSpent,
+      })
+      .from(moduleProgress)
+      .where(
+        and(
+          eq(moduleProgress.userId, userId),
+          sql`${moduleProgress.lastAccessed} > NOW() - INTERVAL '1 hour'`
+        )
+      );
 
-      // Add minimum time for completed modules without tracked time
-      if (record.completed && baseTime < 5) {
-        console.log(`[User Metrics] Adding minimum time for completed module ${record.moduleId} in course ${record.courseId}`);
-        return total + 5;
-      }
+    console.log("[User Metrics] Found active modules:", activeModules.length);
 
-      // For active modules, ensure at least 1 minute is counted
-      if (baseTime === 0 && record.lastAccessed) {
-        const lastAccessTime = new Date(record.lastAccessed).getTime();
+    // Add time from active sessions
+    const activeTime = activeModules.reduce((total, module) => {
+      if (module.lastAccessed) {
+        const lastAccessTime = new Date(module.lastAccessed).getTime();
         const currentTime = new Date().getTime();
-        const timeDiff = Math.floor((currentTime - lastAccessTime) / (1000 * 60)); // Convert to minutes
+        const timeDiff = Math.floor((currentTime - lastAccessTime) / (1000 * 60));
 
         if (timeDiff < 60) { // If accessed within the last hour
-          console.log(`[User Metrics] Adding active time for module ${record.moduleId}: ${timeDiff} minutes`);
+          console.log(`[User Metrics] Adding active time for module ${module.moduleId}: ${timeDiff} minutes`);
           return total + Math.max(1, timeDiff);
         }
       }
-
-      console.log(`[User Metrics] Adding base time for module ${record.moduleId}: ${baseTime} minutes`);
-      return total + baseTime;
+      return total;
     }, 0);
 
-    console.log("[User Metrics] Total learning time calculated:", totalMinutes, "minutes");
+    const totalLearningTime = progressSummary.totalTimeSpent + activeTime;
+    console.log("[User Metrics] Total learning time calculated:", totalLearningTime, "minutes");
 
-    // Get module progress data for other metrics
-    const moduleProgressData = await db.query.moduleProgress.findMany({
-      where: eq(moduleProgress.userId, userId),
-    });
-
-    // Calculate quiz metrics
-    const quizMetrics = moduleProgressData.reduce((acc, curr) => {
-      if (curr.score !== null) {
-        acc.completed++;
-        acc.totalScore += curr.score;
-      }
-      return acc;
-    }, { completed: 0, totalScore: 0 });
-
-    // Get earned badges count
+    // Get other metrics
     const [badgeCount] = await db
       .select({ count: count() })
       .from(userAchievements)
       .where(eq(userAchievements.userId, userId));
 
     // Calculate learning streak
-    let streak = 0;
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const activityDates = new Set(
-      moduleProgressData
-        .filter(mp => mp.lastAccessed)
-        .map(mp => {
-          const date = new Date(mp.lastAccessed);
-          date.setHours(0, 0, 0, 0);
-          return date.getTime();
-        })
-    );
+    const recentActivity = await db
+      .select({
+        date: sql<string>`DATE(${moduleProgress.lastAccessed})::text`,
+      })
+      .from(moduleProgress)
+      .where(
+        and(
+          eq(moduleProgress.userId, userId),
+          sql`${moduleProgress.lastAccessed} > NOW() - INTERVAL '30 days'`
+        )
+      )
+      .groupBy(sql`DATE(${moduleProgress.lastAccessed})`);
 
-    // Check consecutive days backwards from today
+    const activityDates = new Set(recentActivity.map(a => a.date));
+    let streak = 0;
+
     for (let i = 0; i < 30; i++) {
       const checkDate = new Date(today);
       checkDate.setDate(checkDate.getDate() - i);
-      if (activityDates.has(checkDate.getTime())) {
+      const dateStr = checkDate.toISOString().split('T')[0];
+
+      if (activityDates.has(dateStr)) {
         streak++;
       } else if (streak > 0) {
         break;
       }
     }
 
-    // Prepare response with detailed logging
     const response = {
-      completedQuizzes: quizMetrics.completed,
-      quizAccuracy: quizMetrics.completed > 0
-        ? Math.round((quizMetrics.totalScore / quizMetrics.completed))
-        : 0,
+      totalLearningMinutes: Math.max(0, Math.round(totalLearningTime)),
+      completedModules: progressSummary.completedModules,
+      totalModules: progressSummary.totalModules,
       earnedBadges: badgeCount?.count || 0,
-      totalLearningMinutes: Math.max(0, Math.round(totalMinutes)), // Ensure non-negative
       learningStreak: streak
     };
 
