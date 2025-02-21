@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,18 +9,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, BookOpen, CheckCircle2, ArrowRight, Code2, Network, Shield, TrendingUp, Lock, RefreshCw, Settings, Coins, Calculator, AlertTriangle, Building2 } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCircle2, ArrowRight, Code2, Network, Shield, TrendingUp, Lock, RefreshCw, Settings, Coins, Calculator, AlertTriangle, Building2, DollarSign } from "lucide-react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 
-// Animation variants for content sections
+// Animation variants
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.1
-    }
+    transition: { staggerChildren: 0.1 }
   }
 };
 
@@ -29,9 +27,7 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      duration: 0.5
-    }
+    transition: { duration: 0.5 }
   }
 };
 
@@ -40,78 +36,191 @@ const InteractiveLendingCalculator = () => {
   const [ltv, setLtv] = useState("75");
   const [interestRate, setInterestRate] = useState("3");
   const [term, setTerm] = useState("30");
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const maxBorrow = parseFloat(collateralAmount) * (parseFloat(ltv) / 100);
   const interest = maxBorrow * (parseFloat(interestRate) / 100) * (parseFloat(term) / 365);
   const totalRepayment = maxBorrow + interest;
+  const healthFactor = 100 / (parseFloat(ltv) || 1);
+
+  useEffect(() => {
+    setIsAnimating(true);
+    const timer = setTimeout(() => setIsAnimating(false), 1000);
+    return () => clearTimeout(timer);
+  }, [collateralAmount, ltv, interestRate, term]);
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-lg">
-      <h3 className="text-xl font-semibold text-purple-800 mb-4 flex items-center gap-2">
-        <Calculator className="h-6 w-6" />
-        Interactive Lending Calculator
-      </h3>
-
-      <div className="grid gap-4">
-        <div>
-          <Label htmlFor="collateral">Collateral Amount (ETH)</Label>
-          <Input
-            id="collateral"
-            type="number"
-            min="0"
-            step="0.1"
-            value={collateralAmount}
-            onChange={(e) => setCollateralAmount(e.target.value)}
-            placeholder="Enter collateral amount"
-          />
+    <div className="space-y-8">
+      <div className="bg-gradient-to-r from-purple-100 to-indigo-100 p-8 rounded-xl shadow-lg">
+        <div className="flex items-center gap-4 mb-6">
+          <div className="p-3 bg-purple-500 rounded-lg">
+            <Calculator className="h-6 w-6 text-white" />
+          </div>
+          <h3 className="text-2xl font-bold text-purple-800">
+            DeFi Lending Simulator
+          </h3>
         </div>
 
-        <div>
-          <Label htmlFor="ltv">Loan-to-Value Ratio (%)</Label>
-          <Input
-            id="ltv"
-            type="number"
-            min="0"
-            max="100"
-            value={ltv}
-            onChange={(e) => setLtv(e.target.value)}
-          />
-        </div>
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="space-y-6">
+            <div>
+              <Label htmlFor="collateral" className="text-lg font-medium text-purple-700">
+                Collateral Amount (ETH)
+              </Label>
+              <div className="relative">
+                <Input
+                  id="collateral"
+                  type="number"
+                  min="0"
+                  step="0.1"
+                  value={collateralAmount}
+                  onChange={(e) => setCollateralAmount(e.target.value)}
+                  placeholder="Enter amount"
+                  className="pl-10 text-lg"
+                />
+                <Coins className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-purple-500" />
+              </div>
+            </div>
 
-        <div>
-          <Label htmlFor="interest">Annual Interest Rate (%)</Label>
-          <Input
-            id="interest"
-            type="number"
-            min="0"
-            value={interestRate}
-            onChange={(e) => setInterestRate(e.target.value)}
-          />
-        </div>
+            <div>
+              <Label htmlFor="ltv" className="text-lg font-medium text-purple-700">
+                Loan-to-Value Ratio (%)
+              </Label>
+              <div className="relative">
+                <Input
+                  id="ltv"
+                  type="number"
+                  min="0"
+                  max="100"
+                  value={ltv}
+                  onChange={(e) => setLtv(e.target.value)}
+                  className="pl-10 text-lg"
+                />
+                <Shield className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-purple-500" />
+              </div>
+              <motion.div 
+                className="mt-2 h-2 bg-gray-200 rounded-full overflow-hidden"
+                animate={{ scale: isAnimating ? [1, 1.02, 1] : 1 }}
+              >
+                <motion.div
+                  className="h-full bg-gradient-to-r from-green-500 to-red-500"
+                  animate={{ width: `${ltv}%` }}
+                  transition={{ duration: 0.5 }}
+                />
+              </motion.div>
+            </div>
 
-        <div>
-          <Label htmlFor="term">Loan Term (Days)</Label>
-          <Input
-            id="term"
-            type="number"
-            min="1"
-            value={term}
-            onChange={(e) => setTerm(e.target.value)}
-          />
-        </div>
+            <div>
+              <Label htmlFor="interest" className="text-lg font-medium text-purple-700">
+                Annual Interest Rate (%)
+              </Label>
+              <div className="relative">
+                <Input
+                  id="interest"
+                  type="number"
+                  min="0"
+                  value={interestRate}
+                  onChange={(e) => setInterestRate(e.target.value)}
+                  className="pl-10 text-lg"
+                />
+                <TrendingUp className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-purple-500" />
+              </div>
+            </div>
 
-        <div className="mt-4 p-4 bg-purple-50 rounded-lg">
-          <h4 className="font-semibold text-purple-800 mb-2">Calculation Results</h4>
-          <div className="space-y-2">
-            <p className="text-sm text-gray-600">
-              Maximum Borrow Amount: <span className="font-medium text-purple-700">{maxBorrow.toFixed(2)} ETH</span>
-            </p>
-            <p className="text-sm text-gray-600">
-              Interest Payment: <span className="font-medium text-purple-700">{interest.toFixed(4)} ETH</span>
-            </p>
-            <p className="text-sm text-gray-600">
-              Total Repayment: <span className="font-medium text-purple-700">{totalRepayment.toFixed(4)} ETH</span>
-            </p>
+            <div>
+              <Label htmlFor="term" className="text-lg font-medium text-purple-700">
+                Loan Term (Days)
+              </Label>
+              <div className="relative">
+                <Input
+                  id="term"
+                  type="number"
+                  min="1"
+                  value={term}
+                  onChange={(e) => setTerm(e.target.value)}
+                  className="pl-10 text-lg"
+                />
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-purple-500" />
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-6">
+            <motion.div 
+              className="bg-white p-6 rounded-xl shadow-md"
+              animate={{ scale: isAnimating ? [1, 1.02, 1] : 1 }}
+            >
+              <h4 className="text-xl font-semibold text-purple-800 mb-4">Position Summary</h4>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600">Maximum Borrow:</span>
+                  <motion.span 
+                    className="font-bold text-purple-700"
+                    animate={{ scale: isAnimating ? [1, 1.1, 1] : 1 }}
+                  >
+                    {maxBorrow.toFixed(2)} ETH
+                  </motion.span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600">Interest Payment:</span>
+                  <motion.span 
+                    className="font-bold text-purple-700"
+                    animate={{ scale: isAnimating ? [1, 1.1, 1] : 1 }}
+                  >
+                    {interest.toFixed(4)} ETH
+                  </motion.span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-600">Total Repayment:</span>
+                  <motion.span 
+                    className="font-bold text-purple-700"
+                    animate={{ scale: isAnimating ? [1, 1.1, 1] : 1 }}
+                  >
+                    {totalRepayment.toFixed(4)} ETH
+                  </motion.span>
+                </div>
+                <div className="pt-4 border-t">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-gray-600">Health Factor:</span>
+                    <span className={`font-bold ${
+                      healthFactor >= 1.5 ? 'text-green-600' : 
+                      healthFactor >= 1.1 ? 'text-yellow-600' : 
+                      'text-red-600'
+                    }`}>
+                      {healthFactor.toFixed(2)}
+                    </span>
+                  </div>
+                  <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <motion.div
+                      className={`h-full ${
+                        healthFactor >= 1.5 ? 'bg-green-500' : 
+                        healthFactor >= 1.1 ? 'bg-yellow-500' : 
+                        'bg-red-500'
+                      }`}
+                      animate={{ width: `${Math.min(100, healthFactor * 50)}%` }}
+                      transition={{ duration: 0.5 }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            <div className="bg-gradient-to-r from-yellow-50 to-orange-50 p-6 rounded-xl">
+              <div className="flex items-center gap-2 mb-3">
+                <AlertTriangle className="h-5 w-5 text-yellow-600" />
+                <h5 className="font-semibold text-yellow-800">Risk Indicators</h5>
+              </div>
+              <ul className="space-y-2 text-yellow-700">
+                <li className="flex items-start gap-2">
+                  <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-yellow-500"></div>
+                  <p>Liquidation at {(parseFloat(ltv) * 1.1).toFixed(1)}% LTV ratio</p>
+                </li>
+                <li className="flex items-start gap-2">
+                  <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-yellow-500"></div>
+                  <p>Market volatility can affect collateral value</p>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -169,6 +278,7 @@ export default function LendingBorrowing() {
 
   const sections = [
     {
+      id: "lending-borrowing",
       title: "Understanding DeFi Lending",
       icon: Building2,
       content: (
@@ -195,6 +305,7 @@ export default function LendingBorrowing() {
       )
     },
     {
+      id: "stablecoins",
       title: "AAVE Protocol Deep Dive",
       icon: Building2,
       content: (
@@ -225,68 +336,15 @@ export default function LendingBorrowing() {
                 </CardContent>
               </Card>
             </div>
-            <div className="bg-white p-4 rounded-lg border border-gray-200">
-              <h4 className="text-lg font-semibold text-purple-800 mb-3">Key Features</h4>
-              <ul className="space-y-2">
-                <li className="flex items-start gap-2">
-                  <div className="mt-1 w-2 h-2 rounded-full bg-purple-500"></div>
-                  <p className="text-gray-700">Multiple asset pools with different risk parameters</p>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="mt-1 w-2 h-2 rounded-full bg-purple-500"></div>
-                  <p className="text-gray-700">Automated interest rate adjustments based on pool utilization</p>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="mt-1 w-2 h-2 rounded-full bg-purple-500"></div>
-                  <p className="text-gray-700">Safety modules for protocol insurance</p>
-                </li>
-                <li className="flex items-start gap-2">
-                  <div className="mt-1 w-2 h-2 rounded-full bg-purple-500"></div>
-                  <p className="text-gray-700">Governance through AAVE token holders</p>
-                </li>
-              </ul>
-            </div>
           </div>
         </div>
       )
     },
     {
+      id: "defi-derivatives",
       title: "Interactive Learning Exercise",
       icon: Calculator,
-      content: (
-        <div className="space-y-6">
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-lg">
-            <h4 className="text-xl font-semibold text-blue-800 mb-4">
-              Practice DeFi Lending
-            </h4>
-            <p className="text-gray-700 mb-6">
-              Use this interactive calculator to understand how lending and borrowing work in DeFi protocols. Experiment with different collateral amounts, LTV ratios, and loan terms to see how they affect your borrowing capacity and interest payments.
-            </p>
-            <InteractiveLendingCalculator />
-          </div>
-
-          <div className="bg-yellow-50 p-4 rounded-lg">
-            <h4 className="text-yellow-800 font-semibold mb-2 flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5" />
-              Risk Considerations
-            </h4>
-            <ul className="space-y-2 text-yellow-700">
-              <li className="flex items-start gap-2">
-                <div className="mt-1 w-2 h-2 rounded-full bg-yellow-500"></div>
-                <p>Higher LTV ratios increase your liquidation risk</p>
-              </li>
-              <li className="flex items-start gap-2">
-                <div className="mt-1 w-2 h-2 rounded-full bg-yellow-500"></div>
-                <p>Variable interest rates can change based on market conditions</p>
-              </li>
-              <li className="flex items-start gap-2">
-                <div className="mt-1 w-2 h-2 rounded-full bg-yellow-500"></div>
-                <p>Ensure you maintain a healthy collateral ratio to avoid liquidation</p>
-              </li>
-            </ul>
-          </div>
-        </div>
-      )
+      content: <InteractiveLendingCalculator />
     }
   ];
 
@@ -301,8 +359,8 @@ export default function LendingBorrowing() {
         type: 'section',
         progress: ((index + 1) / sections.length) * 100,
         timestamp: new Date().toISOString(),
-        userId: 'current', 
-        metadata: {} 
+        userId: 'current',
+        metadata: {}
       });
 
       toast({
@@ -343,8 +401,8 @@ export default function LendingBorrowing() {
           type: 'quiz',
           progress: 100,
           timestamp: new Date().toISOString(),
-          userId: 'current', 
-          metadata: { score: calculatedScore } 
+          userId: 'current',
+          metadata: { score: calculatedScore }
         });
 
         toast({
