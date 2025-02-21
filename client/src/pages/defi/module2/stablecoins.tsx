@@ -499,7 +499,7 @@ const InteractiveQuiz: React.FC<QuizProps> = ({ onComplete }) => {
   );
 };
 
-const StablecoinsSection = () => {
+export default function StablecoinsSection() {
   useScrollTop();
   const { progress, updateProgress } = useProgress();
   const { toast } = useToast();
@@ -752,7 +752,7 @@ const StablecoinsSection = () => {
         progress: 100,
         timestamp: new Date().toISOString(),
         userId: 'current',
-        metadata: {
+        metadata: { 
           score,
           passingThreshold: 70
         }
@@ -792,11 +792,11 @@ const StablecoinsSection = () => {
               <CardTitle className="text-3xl font-bold">
                 Stablecoins in DeFi
               </CardTitle>
-              <p className="text-blue-100 mt-2">
-                Explore the foundations of price stability in the cryptocurrency ecosystem
+              <p className="text-blue-100 mt-2Explore the foundations of price stability in the cryptocurrency ecosystem
               </p>
             </CardHeader>
-            <CardContent className="pt-6">                <div className="mb-6">
+            <CardContent className="pt-6">
+                <div className="mb-6">
                   <div className="flex justify-between items-center mb-2">
                     <p className="text-sm text-gray-500">Section Progress</p>
                     <p className="text-sm font-medium text-blue-600">
@@ -934,6 +934,4 @@ const StablecoinsSection = () => {
       </div>
     </div>
   );
-};
-
-export default StablecoinsSection;
+}
