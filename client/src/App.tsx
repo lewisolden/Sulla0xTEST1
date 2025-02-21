@@ -106,6 +106,7 @@ import DefiSecurity from "@/pages/defi/module3/defi-security"; // Add import
 import DefiModule3Quiz from "@/pages/defi/module3/quiz"; // Renamed to avoid conflict
 import DefiAnalytics from "@/pages/defi/module3/defi-analytics"; // Add import
 import DefiInnovation from "@/pages/defi/module3/defi-innovation"; // Add import
+import DefiModule4 from "@/pages/defi/module4"; //Added import for Module 4
 
 
 function ProtectedRoute({ component: Component, adminOnly = false, publicAccess = false, ...rest }: any) {
@@ -243,6 +244,7 @@ function Router() {
       <Route path="/defi/module3/defi-analytics" component={() => <ProtectedRoute component={DefiAnalytics} publicAccess={true} />} />
       <Route path="/defi/module3/defi-innovation" component={() => <ProtectedRoute component={DefiInnovation} publicAccess={true} />} />
       <Route path="/defi/module3/quiz" component={() => <ProtectedRoute component={DefiModule3Quiz} />} />
+      <Route path="/defi/module4" component={() => <ProtectedRoute component={DefiModule4} />} />  {/*Added route for Module 4*/}
 
       <Route component={NotFound} />
     </Switch>
