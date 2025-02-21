@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, BookOpen, CheckCircle2, ArrowRight, Network, Shield, TrendingUp, Lock, RefreshCw, Settings, Coins } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCircle2, ArrowRight, Network, Shield, TrendingUp, Lock, RefreshCw, Settings, Coins, Code } from "lucide-react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 
@@ -265,7 +265,7 @@ export default function DefiModule2() {
                               className="bg-white p-4 rounded-lg shadow-sm"
                             >
                               <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mb-2">
-                                <Code2 className="h-4 w-4 text-purple-600" />
+                                <Code className="h-4 w-4 text-purple-600" />
                               </div>
                               <h4 className="font-medium text-purple-700 mb-1">DeFi Fundamentals</h4>
                               <p className="text-sm text-gray-600">Complete Module 1 content</p>
