@@ -192,21 +192,12 @@ export function setupAuth(app: Express) {
   app.post("/api/admin/login", async (req, res, next) => {
     console.log('Admin login attempt:', { username: req.body.username });
 
+    if (!req.body.username || !req.body.password) {
+      return res.status(400).json({ error: "Username and password are required" });
+    }
+
     try {
-      const [existingAdmin] = await db
-        .select()
-        .from(adminUsers)
-        .where(eq(adminUsers.username, req.body.username))
-        .limit(1);
-
-      if (!existingAdmin) {
-        console.log('Admin login failed: User not found');
-        return res.status(401).json({
-          error: "Invalid credentials"
-        });
-      }
-
-      passport.authenticate("admin-local", async (err: any, admin: Express.User | false, info: IVerifyOptions) => {
+      passport.authenticate("admin-local", (err: any, admin: Express.User | false, info: IVerifyOptions) => {
         if (err) {
           console.error("Admin login error:", err);
           return res.status(500).json({ error: "Internal server error" });
@@ -214,18 +205,14 @@ export function setupAuth(app: Express) {
 
         if (!admin) {
           console.log('Admin login failed:', info?.message);
-          return res.status(401).json({
-            error: info?.message || "Invalid credentials"
-          });
+          return res.status(401).json({ error: info?.message || "Invalid credentials" });
         }
 
-        try {
-          await new Promise((resolve, reject) => {
-            req.logIn(admin, (err) => {
-              if (err) reject(err);
-              else resolve(admin);
-            });
-          });
+        req.logIn(admin, (err) => {
+          if (err) {
+            console.error("Session error:", err);
+            return res.status(500).json({ error: "Failed to create session" });
+          }
 
           console.log('Admin login successful:', { id: admin.id, username: admin.username });
           return res.json({
@@ -236,13 +223,10 @@ export function setupAuth(app: Express) {
               role: 'admin'
             }
           });
-        } catch (error) {
-          console.error("Session error:", error);
-          return res.status(500).json({ error: "Failed to create session" });
-        }
+        });
       })(req, res, next);
     } catch (error) {
-      console.error("Admin login database error:", error);
+      console.error("Admin login error:", error);
       return res.status(500).json({ error: "Internal server error" });
     }
   });
