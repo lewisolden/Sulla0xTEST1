@@ -93,12 +93,13 @@ import DefiIntro from "@/pages/defi/module1/defi-intro";
 import BlockchainContracts from "@/pages/defi/module1/blockchain-contracts";
 import DexAmm from "@/pages/defi/module1/dex-amm";
 import LiquidityYield from "@/pages/defi/module1/liquidity-yield";
-import ModuleQuiz from "@/pages/defi/module1/quiz";  
+import ModuleQuiz from "@/pages/defi/module1/quiz";  // Module 1 quiz
 import DefiModule2 from "@/pages/defi/module2";
 import LendingBorrowing from "@/pages/defi/module2/lending-borrowing";
 import StablecoinsSection from "@/pages/defi/module2/stablecoins";
 import DerivativesSection from "@/pages/defi/module2/derivatives";
 import GovernanceDAO from "@/pages/defi/module2/governance-dao";
+import DefiModule2Quiz from "@/pages/defi/module2/quiz"; // Renamed to avoid conflict
 
 
 function ProtectedRoute({ component: Component, adminOnly = false, publicAccess = false, ...rest }: any) {
@@ -227,6 +228,7 @@ function Router() {
       <Route path="/defi/module2/stablecoins" component={() => <ProtectedRoute component={StablecoinsSection} />} />
       <Route path="/defi/module2/derivatives" component={() => <ProtectedRoute component={DerivativesSection} />} />
       <Route path="/defi/module2/governance-dao" component={() => <ProtectedRoute component={GovernanceDAO} />} />
+      <Route path="/defi/module2/quiz" component={() => <ProtectedRoute component={DefiModule2Quiz} />} />
 
       <Route component={NotFound} />
     </Switch>
