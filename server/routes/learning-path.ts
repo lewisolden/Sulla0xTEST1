@@ -81,7 +81,6 @@ router.get("/api/learning-path", async (req, res) => {
 // Update module progress
 router.post("/api/learning-path/progress", async (req, res) => {
   try {
-    // Check authentication
     if (!req.isAuthenticated()) {
       console.error("[Learning Path] Unauthenticated request");
       return res.status(401).json({ error: "Unauthorized - Please log in" });
@@ -108,6 +107,10 @@ router.post("/api/learning-path/progress", async (req, res) => {
       console.error("[Learning Path] Missing required fields");
       return res.status(400).json({ error: "Missing required fields" });
     }
+
+    // Ensure timeSpent is a number and not negative
+    const validatedTimeSpent = Math.max(0, parseInt(timeSpent) || 0);
+    console.log("[Learning Path] Validated time spent:", validatedTimeSpent);
 
     // If this is a quiz completion
     if (quizScore !== undefined) {
@@ -209,12 +212,18 @@ router.post("/api/learning-path/progress", async (req, res) => {
           let progressUpdate;
           if (existingProgress) {
             // Update existing record
+            console.log("[Learning Path] Updating existing progress record", {
+              existingTimeSpent: existingProgress.timeSpent,
+              newTimeToAdd: validatedTimeSpent,
+              totalTimeWillBe: (existingProgress.timeSpent || 0) + validatedTimeSpent
+            });
+
             [progressUpdate] = await tx.update(moduleProgress)
               .set({
                 completed: completed || existingProgress.completed,
                 lastAccessed: new Date(),
                 completedAt: completed ? new Date() : existingProgress.completedAt,
-                timeSpent: existingProgress.timeSpent + (timeSpent || 0)
+                timeSpent: (existingProgress.timeSpent || 0) + validatedTimeSpent
               })
               .where(and(
                 eq(moduleProgress.userId, userId),
@@ -225,13 +234,14 @@ router.post("/api/learning-path/progress", async (req, res) => {
               .returning();
           } else {
             // Insert new record
+            console.log("[Learning Path] Creating new progress record with time:", validatedTimeSpent);
             [progressUpdate] = await tx.insert(moduleProgress)
               .values({
                 userId,
                 moduleId: parseInt(moduleId, 10),
                 courseId: parseInt(courseId, 10),
                 sectionId,
-                timeSpent: timeSpent || 0,
+                timeSpent: validatedTimeSpent,
                 completed: completed || false,
                 lastAccessed: new Date(),
                 completedAt: completed ? new Date() : null
@@ -249,7 +259,7 @@ router.post("/api/learning-path/progress", async (req, res) => {
           return { progressUpdate, courseProgress: updatedProgress };
         });
 
-        console.log("[Learning Path] Regular progress updated:", result);
+        console.log("[Learning Path] Progress updated successfully:", result);
         res.json({
           success: true,
           progress: result.courseProgress
