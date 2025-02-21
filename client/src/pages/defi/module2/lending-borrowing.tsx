@@ -3,26 +3,14 @@ import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { 
-  ArrowLeft, 
-  Building2, 
-  Percent, 
-  Shield, 
-  AlertTriangle, 
-  BookOpen,
-  DollarSign,
-  TrendingUp,
-  Lock,
-  Coins,
-  BarChart3,
-  Scale,
-  Calculator
-} from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCircle2, ArrowRight, Code2, Network, Shield, TrendingUp, Lock, RefreshCw, Settings, Coins, Calculator, AlertTriangle, Building2 } from "lucide-react";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 
 // Animation variants for content sections
@@ -131,11 +119,53 @@ const InteractiveLendingCalculator = () => {
   );
 };
 
+const quiz = {
+  questions: [
+    {
+      id: 1,
+      question: "What is the main purpose of over-collateralization in DeFi lending?",
+      options: [
+        "To increase protocol revenue",
+        "To protect lenders against default risk",
+        "To encourage more borrowing",
+        "To maintain token price stability"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 2,
+      question: "Which feature allows AAVE users to borrow and repay within the same transaction block?",
+      options: [
+        "Quick loans",
+        "Flash loans",
+        "Instant loans",
+        "Lightning loans"
+      ],
+      correctAnswer: 1
+    },
+    {
+      id: 3,
+      question: "What happens when a borrower's collateral value falls below the required threshold?",
+      options: [
+        "The loan is automatically refinanced",
+        "The borrower receives a warning",
+        "The position is liquidated",
+        "Interest rates are increased"
+      ],
+      correctAnswer: 2
+    }
+  ]
+};
+
 export default function LendingBorrowing() {
   useScrollTop();
   const { progress, updateProgress } = useProgress();
   const { toast } = useToast();
   const [currentSection, setCurrentSection] = useState(0);
+  const [currentTab, setCurrentTab] = useState("content");
+  const [selectedAnswers, setSelectedAnswers] = useState<{[key: number]: number}>({});
+  const [quizSubmitted, setQuizSubmitted] = useState(false);
+  const [score, setScore] = useState(0);
 
   const sections = [
     {
@@ -170,7 +200,10 @@ export default function LendingBorrowing() {
       content: (
         <div className="space-y-4">
           <div className="bg-gradient-to-r from-purple-50 to-indigo-50 p-6 rounded-lg">
-            <h4 className="text-purple-800 font-semibold mb-4">What is AAVE?</h4>
+            <div className="flex items-center gap-3 mb-4">
+              <Building2 className="h-8 w-8 text-purple-600" />
+              <h4 className="text-purple-800 font-semibold">What is AAVE?</h4>
+            </div>
             <p className="text-gray-700 mb-4">
               AAVE is one of the leading DeFi lending protocols, allowing users to lend and borrow various cryptocurrencies. It introduces several innovative features:
             </p>
@@ -192,28 +225,27 @@ export default function LendingBorrowing() {
                 </CardContent>
               </Card>
             </div>
-          </div>
-
-          <div className="bg-white p-4 rounded-lg border border-gray-200">
-            <h4 className="text-lg font-semibold text-purple-800 mb-3">Key Features</h4>
-            <ul className="space-y-2">
-              <li className="flex items-start gap-2">
-                <div className="mt-1 w-2 h-2 rounded-full bg-purple-500"></div>
-                <p className="text-gray-700">Multiple asset pools with different risk parameters</p>
-              </li>
-              <li className="flex items-start gap-2">
-                <div className="mt-1 w-2 h-2 rounded-full bg-purple-500"></div>
-                <p className="text-gray-700">Automated interest rate adjustments based on pool utilization</p>
-              </li>
-              <li className="flex items-start gap-2">
-                <div className="mt-1 w-2 h-2 rounded-full bg-purple-500"></div>
-                <p className="text-gray-700">Safety modules for protocol insurance</p>
-              </li>
-              <li className="flex items-start gap-2">
-                <div className="mt-1 w-2 h-2 rounded-full bg-purple-500"></div>
-                <p className="text-gray-700">Governance through AAVE token holders</p>
-              </li>
-            </ul>
+            <div className="bg-white p-4 rounded-lg border border-gray-200">
+              <h4 className="text-lg font-semibold text-purple-800 mb-3">Key Features</h4>
+              <ul className="space-y-2">
+                <li className="flex items-start gap-2">
+                  <div className="mt-1 w-2 h-2 rounded-full bg-purple-500"></div>
+                  <p className="text-gray-700">Multiple asset pools with different risk parameters</p>
+                </li>
+                <li className="flex items-start gap-2">
+                  <div className="mt-1 w-2 h-2 rounded-full bg-purple-500"></div>
+                  <p className="text-gray-700">Automated interest rate adjustments based on pool utilization</p>
+                </li>
+                <li className="flex items-start gap-2">
+                  <div className="mt-1 w-2 h-2 rounded-full bg-purple-500"></div>
+                  <p className="text-gray-700">Safety modules for protocol insurance</p>
+                </li>
+                <li className="flex items-start gap-2">
+                  <div className="mt-1 w-2 h-2 rounded-full bg-purple-500"></div>
+                  <p className="text-gray-700">Governance through AAVE token holders</p>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       )
@@ -268,7 +300,9 @@ export default function LendingBorrowing() {
         subsectionId: `subsection-${index + 1}`,
         type: 'section',
         progress: ((index + 1) / sections.length) * 100,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        userId: 'current', 
+        metadata: {} 
       });
 
       toast({
@@ -284,6 +318,50 @@ export default function LendingBorrowing() {
         title: "Error",
         description: "Failed to update progress",
         variant: "destructive",
+      });
+    }
+  };
+
+  const handleQuizSubmit = async () => {
+    const totalQuestions = quiz.questions.length;
+    const correctAnswers = quiz.questions.filter(
+      (q) => selectedAnswers[q.id] === q.correctAnswer
+    ).length;
+    const calculatedScore = (correctAnswers / totalQuestions) * 100;
+
+    setScore(calculatedScore);
+    setQuizSubmitted(true);
+
+    if (calculatedScore >= 70) {
+      try {
+        await updateProgress({
+          courseId: 3,
+          moduleId: 4,
+          sectionId: 'lending-borrowing',
+          completed: true,
+          subsectionId: 'quiz',
+          type: 'quiz',
+          progress: 100,
+          timestamp: new Date().toISOString(),
+          userId: 'current', 
+          metadata: { score: calculatedScore } 
+        });
+
+        toast({
+          title: "Quiz Completed!",
+          description: `You scored ${calculatedScore}%. Great job!`,
+        });
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to update progress",
+          variant: "destructive",
+        });
+      }
+    } else {
+      toast({
+        title: "Quiz Result",
+        description: `You scored ${calculatedScore}%. Try again to achieve at least 70%.`,
       });
     }
   };
@@ -321,8 +399,8 @@ export default function LendingBorrowing() {
                     {Math.round((currentSection / sections.length) * 100)}%
                   </p>
                 </div>
-                <Progress 
-                  value={(currentSection / sections.length) * 100} 
+                <Progress
+                  value={(currentSection / sections.length) * 100}
                   className="bg-purple-100"
                 />
               </div>
@@ -330,45 +408,131 @@ export default function LendingBorrowing() {
           </Card>
         </motion.div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="space-y-6"
-        >
-          {sections.map((section, index) => (
+        <Tabs value={currentTab} onValueChange={setCurrentTab} className="mt-6">
+          <TabsList className="w-full justify-center">
+            <TabsTrigger value="content">Content</TabsTrigger>
+            <TabsTrigger value="quiz">Topic Quiz</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="content">
             <motion.div
-              key={index}
-              variants={itemVariants}
-              className={`${
-                index === currentSection ? 'border-2 border-purple-500' : ''
-              } rounded-lg overflow-hidden`}
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="space-y-6"
             >
-              <Card>
-                <CardHeader className="bg-gradient-to-r from-purple-50 to-indigo-50">
-                  <div className="flex items-center gap-3">
-                    <section.icon className="h-6 w-6 text-purple-500" />
-                    <CardTitle className="text-xl font-semibold text-purple-800">
-                      {section.title}
-                    </CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent className="pt-6">
-                  {section.content}
-                  <div className="mt-6 flex justify-end">
+              {sections.map((section, index) => (
+                <motion.div
+                  key={index}
+                  variants={itemVariants}
+                  className={`${
+                    index === currentSection ? 'border-2 border-purple-500' : ''
+                  } rounded-lg overflow-hidden`}
+                >
+                  <Card>
+                    <CardHeader className="bg-gradient-to-r from-purple-50 to-indigo-50">
+                      <div className="flex items-center gap-3">
+                        <section.icon className="h-6 w-6 text-purple-500" />
+                        <CardTitle className="text-xl font-semibold text-purple-800">
+                          {section.title}
+                        </CardTitle>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="pt-6">
+                      {section.content}
+                      <div className="mt-6 flex justify-end">
+                        <Button
+                          onClick={() => handleSectionComplete(index)}
+                          className="bg-purple-600 hover:bg-purple-700"
+                          disabled={index !== currentSection}
+                        >
+                          {index === sections.length - 1 ? "Complete Topic" : "Next Section"}
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </motion.div>
+          </TabsContent>
+
+          <TabsContent value="quiz">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-2xl font-bold text-purple-800">
+                  Topic Quiz: Lending & Borrowing
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {quiz.questions.map((q) => (
+                    <div key={q.id} className="p-4 bg-white rounded-lg shadow">
+                      <h3 className="text-lg font-medium text-gray-800 mb-4">
+                        {q.question}
+                      </h3>
+                      <div className="space-y-2">
+                        {q.options.map((option, idx) => (
+                          <div
+                            key={idx}
+                            className={`p-3 rounded-lg border cursor-pointer transition-all ${
+                              selectedAnswers[q.id] === idx
+                                ? 'border-purple-500 bg-purple-50'
+                                : 'border-gray-200 hover:border-purple-200'
+                            }`}
+                            onClick={() => !quizSubmitted && setSelectedAnswers({
+                              ...selectedAnswers,
+                              [q.id]: idx
+                            })}
+                          >
+                            <p className="text-gray-700">{option}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+
+                  <div className="flex justify-between items-center mt-6">
+                    <Link href="/defi/module2/stablecoins">
+                      <Button variant="outline" className="gap-2">
+                        <ArrowRight className="h-4 w-4" />
+                        Next Topic: Stablecoins
+                      </Button>
+                    </Link>
+
                     <Button
-                      onClick={() => handleSectionComplete(index)}
+                      onClick={handleQuizSubmit}
+                      disabled={quizSubmitted || Object.keys(selectedAnswers).length !== quiz.questions.length}
                       className="bg-purple-600 hover:bg-purple-700"
-                      disabled={index !== currentSection}
                     >
-                      {index === sections.length - 1 ? "Complete Topic" : "Next Section"}
+                      {quizSubmitted ? (
+                        <div className="flex items-center gap-2">
+                          <CheckCircle2 className="h-4 w-4" />
+                          {score >= 70 ? "Completed!" : "Try Again"}
+                        </div>
+                      ) : (
+                        "Submit Quiz"
+                      )}
                     </Button>
                   </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
-        </motion.div>
+
+                  {quizSubmitted && (
+                    <div className={`mt-6 p-4 rounded-lg ${
+                      score >= 70 ? 'bg-green-50 text-green-800' : 'bg-yellow-50 text-yellow-800'
+                    }`}>
+                      <h4 className="font-semibold mb-2">Quiz Results</h4>
+                      <p>You scored: {score}%</p>
+                      {score < 70 && (
+                        <p className="mt-2">
+                          You need 70% to pass. Review the material and try again!
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
