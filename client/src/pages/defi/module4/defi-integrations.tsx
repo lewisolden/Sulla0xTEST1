@@ -301,7 +301,7 @@ export default function DefiIntegrations() {
           4,
           undefined,
           finalScore,
-          '/defi/module4/defi-infrastructure',
+          '/defi/module4/quiz',
           undefined,
           'DeFi'
         );
@@ -502,9 +502,9 @@ export default function DefiIntegrations() {
                   ) : (
                     <p className="text-yellow-500 font-semibold mb-6">Keep learning! Review the material and try again to improve your score.</p>
                   )}
-                  <Link href="/defi/module4/defi-infrastructure">
+                  <Link href="/defi/module4/quiz">
                     <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white transition duration-300 ease-in-out transform hover:scale-105">
-                      Continue to DeFi Infrastructure
+                      Continue to Module Quiz
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>
