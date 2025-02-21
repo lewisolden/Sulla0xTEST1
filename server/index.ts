@@ -27,6 +27,17 @@ app.use(express.urlencoded({ extended: false }));
 // Trust proxy - required for secure cookies in production
 app.set('trust proxy', 1);
 
+// Add API middleware before auth setup
+app.use('/api', (req, res, next) => {
+  // Set JSON content type for all API routes
+  res.setHeader('Content-Type', 'application/json');
+  console.log(`[API Debug] ${req.method} ${req.path}`);
+  next();
+});
+
+// Set up authentication
+setupAuth(app);
+
 // Add request logging middleware
 app.use((req, res, next) => {
   const start = Date.now();
@@ -57,7 +68,7 @@ const tryPorts = [5000, 5001, 5002, 5003];
   try {
     log("Starting server initialization...");
 
-    // Register routes BEFORE setting up Vite or static serving
+    // Register routes after auth setup
     server = registerRoutes(app);
 
     const isProduction = process.env.NODE_ENV === 'production';
@@ -148,7 +159,7 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   if (_req.path.startsWith('/api/')) {
     res.status(status).json({ error: message });
   } else {
-    res.status(status).send({error: message}); // send for non-api routes
+    res.status(status).send(message); // send for non-api routes
   }
   console.error(err);
 });

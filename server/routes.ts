@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { db } from "@db";
-import { setupAuth, requireAdmin } from "./auth";
+import { requireAdmin } from "./auth";
 import enrollmentsRouter from "./routes/enrollments";
 import userMetricsRouter from "./routes/user-metrics";
 import apiRouter from "./routes/api";
@@ -16,19 +16,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export function registerRoutes(app: Express): Server {
-  // Add debug middleware for API routes
-  app.use('/api', (req, res, next) => {
-    // Set JSON content type for all API routes
-    res.setHeader('Content-Type', 'application/json');
-    console.log(`[API Debug] ${req.method} ${req.path} User Auth:`, req.isAuthenticated());
-    next();
-  });
-
-  // Register chat routes before other routes and auth setup
+  // Register chat routes first (no auth required)
   app.use("/api/chat", chatRouter);
-
-  // Set up authentication after chat routes
-  setupAuth(app);
 
   // Register other API routes
   app.use("/api/admin", requireAdmin, adminRouter);
