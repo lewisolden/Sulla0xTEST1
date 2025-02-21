@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { db } from '@db';
 import { users, adminUsers, courseEnrollments, moduleProgress, userAchievements, feedback } from '@db/schema';
 import { requireAdmin } from '../auth';
-import { gt, count, sql, desc, and, eq } from 'drizzle-orm';
+import { gt, sql, desc, and, eq } from 'drizzle-orm';
 
 const router = Router();
 
@@ -17,52 +17,61 @@ router.get('/users', requireAdmin, async (req, res) => {
 
     console.log('Query params:', { page, limit, offset, search });
 
-    // Get total count with proper error handling
-    const usersList = await db.query.users.findMany({
-      columns: {
-        id: true,
-        username: true,
-        email: true,
-        lastActivity: true,
-        learningPreferences: true
-      },
-      where: search ? 
-        sql`username ILIKE ${`%${search}%`} OR email ILIKE ${`%${search}%`}` : 
-        undefined,
-      orderBy: [desc(users.lastActivity)],
-      limit: limit,
-      offset: offset
-    });
+    // First get all users with basic info
+    const usersList = await db.select({
+      id: users.id,
+      username: users.username,
+      email: users.email,
+      lastActivity: users.lastActivity,
+    })
+    .from(users)
+    .limit(limit)
+    .offset(offset);
 
-    console.log('Fetched users:', usersList.length);
+    console.log('Raw users from DB:', usersList);
 
-    // Transform the user data
+    // Get total count separately
+    const totalCountResult = await db.select({
+      count: sql<number>`count(*)`
+    })
+    .from(users);
+
+    const totalCount = Number(totalCountResult[0]?.count || 0);
+    console.log('Total users count:', totalCount);
+
+    // Enrich user data with enrollments and completed modules
     const enrichedUsers = await Promise.all(usersList.map(async (user) => {
       // Get enrollment count
-      const enrollmentCount = await db.query.courseEnrollments.count({
-        where: eq(courseEnrollments.userId, user.id)
-      });
+      const enrollmentResult = await db.select({
+        count: sql<number>`count(*)`
+      })
+      .from(courseEnrollments)
+      .where(eq(courseEnrollments.userId, user.id));
+
+      const enrollmentCount = Number(enrollmentResult[0]?.count || 0);
 
       // Get completed modules count
-      const completedModules = await db.query.moduleProgress.count({
-        where: and(
+      const completedResult = await db.select({
+        count: sql<number>`count(*)`
+      })
+      .from(moduleProgress)
+      .where(
+        and(
           eq(moduleProgress.userId, user.id),
           eq(moduleProgress.status, 'completed')
         )
-      });
+      );
+
+      const completedModules = Number(completedResult[0]?.count || 0);
 
       return {
         ...user,
         enrollmentCount,
-        completedModules
+        completedModules,
       };
     }));
 
-    // Get total count for pagination
-    const totalCount = await db.query.users.count();
-
-    console.log('Total users count:', totalCount);
-    console.log('Enriched users:', enrichedUsers.length);
+    console.log('Enriched users data:', enrichedUsers);
 
     res.json({
       users: enrichedUsers,
