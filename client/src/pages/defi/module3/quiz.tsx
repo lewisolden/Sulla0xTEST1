@@ -5,6 +5,8 @@ import { Progress } from "@/components/ui/progress";
 import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import { useProgress } from "@/context/progress-context";
+import { Link } from "wouter";
+import { ArrowRight } from "lucide-react";
 
 const questions = [
   {
@@ -96,15 +98,15 @@ export default function DefiModule3Quiz() {
       setShowResults(true);
       const finalScore = (score / questions.length) * 100;
       updateProgress(
-        3, // moduleId for Module 3
-        'defi-module3-quiz', // sectionId
-        finalScore >= 70, // completed (pass threshold 70%)
-        1, // courseId (1 for DeFi course)
-        undefined, // timeSpent
-        finalScore, // quizScore
-        '/defi/module3/quiz', // lastQuizPath
-        undefined, // lastCompletedPath
-        'DeFi' // courseName
+        3, 
+        'defi-module3-quiz', 
+        finalScore >= 70, 
+        1, 
+        undefined, 
+        finalScore, 
+        '/defi/module3/quiz', 
+        undefined, 
+        'DeFi' 
       );
     }
   };
@@ -127,13 +129,11 @@ export default function DefiModule3Quiz() {
                 value={(currentQuestion / questions.length) * 100} 
                 className="mb-6"
               />
-
               <div className="mb-6">
                 <h2 className="text-xl font-semibold mb-4">
                   Question {currentQuestion + 1} of {questions.length}
                 </h2>
                 <p className="text-lg mb-4">{questions[currentQuestion].question}</p>
-
                 <div className="space-y-3">
                   {questions[currentQuestion].options.map((option, index) => (
                     <Button
@@ -147,7 +147,6 @@ export default function DefiModule3Quiz() {
                   ))}
                 </div>
               </div>
-
               <Button 
                 className="w-full"
                 onClick={handleNextQuestion}
@@ -166,12 +165,18 @@ export default function DefiModule3Quiz() {
                 className="mb-6"
               />
               {score === questions.length ? (
-                <p className="text-green-500 font-semibold">Perfect score! You've mastered advanced DeFi concepts!</p>
+                <p className="text-green-500 font-semibold mb-6">Perfect score! You've mastered advanced DeFi concepts!</p>
               ) : score >= questions.length * 0.7 ? (
-                <p className="text-blue-500 font-semibold">Great job! You have a strong understanding of advanced DeFi concepts.</p>
+                <p className="text-blue-500 font-semibold mb-6">Great job! You have a strong understanding of advanced DeFi concepts.</p>
               ) : (
-                <p className="text-yellow-500 font-semibold">Keep learning! Review the material and try again to improve your score.</p>
+                <p className="text-yellow-500 font-semibold mb-6">Keep learning! Review the material and try again to improve your score.</p>
               )}
+              <Link href="/defi/module4">
+                <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white transition duration-300 ease-in-out transform hover:scale-105">
+                  Continue to Module 4
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
             </div>
           )}
         </Card>
