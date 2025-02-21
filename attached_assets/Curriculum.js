@@ -26,13 +26,22 @@ const Curriculum = () => {
     {
       id: 2,
       icon: AcademicCapIcon,
-      title: "Module 2: What is a Blockchain?",
-      description: "Deep dive into blockchain technology, its structure, and fundamental principles.",
+      title: "Module 2: Bitcoin Deep Dive",
+      description: "Comprehensive exploration of Bitcoin's technology, economics, and ecosystem.",
       sections: [
-        "Blockchain Basics",
-        "Distributed Ledger Technology",
-        "Consensus Mechanisms",
-        "Smart Contracts Introduction"
+        "Bitcoin Protocol Architecture",
+        "Mining and Consensus",
+        "Bitcoin Scripting",
+        "Network and Transactions",
+        {
+          title: "Advanced Topics",
+          subsections: [
+            "Lightning Network",
+            "Segwit and Taproot",
+            "Bitcoin Economics",
+            "Security Model"
+          ]
+        }
       ]
     },
     {
@@ -136,7 +145,7 @@ const Curriculum = () => {
 
               <div className="text-center mt-6">
                 <Link 
-                  to={module.id <= 4 ? `/modules/module${module.id}` : '/ai'} 
+                  to={`/modules/module${module.id}`}
                   className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
                 >
                   Start Module

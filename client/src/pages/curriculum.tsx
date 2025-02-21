@@ -44,27 +44,31 @@ const courses = [
       },
       {
         id: 2,
-        icon: GraduationCap,
-        title: "Module 2: What is a Blockchain?",
-        description: "Deep dive into blockchain technology, its structure, and fundamental principles.",
+        icon: Wallet,
+        title: "Module 2: Bitcoin Deep Dive",
+        description: "Comprehensive exploration of Bitcoin's technology, protocol architecture, and real-world impact.",
         sections: [
-          "Blockchain Basics",
-          "Distributed Ledger Technology",
-          "Consensus Mechanisms",
-          "Smart Contracts"
+          "Bitcoin Protocol Architecture",
+          "Mining and Consensus",
+          "Transaction Mechanics",
+          "Network Security",
+          "Real-world Applications",
+          "Module Quiz"
         ],
         path: "/modules/module2"
       },
       {
         id: 3,
-        icon: Zap,
-        title: "Module 3: Blockchain Technology",
-        description: "Advanced exploration of blockchain development, applications, and future trends.",
+        icon: Code,
+        title: "Module 3: Ethereum and Smart Contracts",
+        description: "Learn about Ethereum, smart contracts, and decentralized applications (dApps).",
         sections: [
-          "Blockchain Scalability and Interoperability",
-          "Types of Blockchains",
-          "Blockchain Development Platforms",
-          "Advanced Blockchain Concepts"
+          "Ethereum Fundamentals",
+          "Smart Contract Basics",
+          "Decentralized Applications",
+          "Gas and Network Economics",
+          "Development Tools",
+          "Module Quiz"
         ],
         path: "/modules/module3"
       }
@@ -178,7 +182,7 @@ const courses = [
           "4.3 DeFi Integrations",
           "4.4 Future of DeFi Infrastructure"
         ],
-        path: "/defi/module4" 
+        path: "/defi/module4"
       }
     ]
   }

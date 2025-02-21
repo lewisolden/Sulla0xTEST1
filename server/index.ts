@@ -77,36 +77,38 @@ const tryPorts = [5000, 5001, 5002, 5003];
     }
 
     // Try ports sequentially until one works
+    let serverStarted = false;
     for (const port of tryPorts) {
       try {
-        await new Promise((resolve, reject) => {
-          server.listen(port, "0.0.0.0", () => {
-            log(`Server successfully started on port ${port}`);
-            resolve(true);
-          });
+        await new Promise<void>((resolve, reject) => {
+          if (serverStarted) {
+            resolve();
+            return;
+          }
 
-          server.on('error', (error: Error) => {
+          server.once('error', (error: Error) => {
             if ((error as any).code === 'EADDRINUSE') {
               log(`Port ${port} is in use, trying next port...`);
-              resolve(false);
+              resolve();
             } else {
               reject(error);
             }
           });
+
+          server.listen(port, "0.0.0.0", () => {
+            log(`Server successfully started on port ${port}`);
+            serverStarted = true;
+            resolve();
+          });
         });
 
-        // If we get here and server is listening, we found a working port
-        if (server.listening) {
-          break;
-        }
+        if (serverStarted) break;
       } catch (error) {
         log(`Error trying port ${port}: ${error}`);
-        // Continue to next port
+        if (port === tryPorts[tryPorts.length - 1]) {
+          throw new Error('Failed to find an available port');
+        }
       }
-    }
-
-    if (!server.listening) {
-      throw new Error('Failed to find an available port');
     }
 
     // Initialize services in the background
