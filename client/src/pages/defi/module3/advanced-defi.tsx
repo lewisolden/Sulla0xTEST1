@@ -7,11 +7,11 @@ import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { 
-  Accordion, 
-  AccordionContent, 
-  AccordionItem, 
-  AccordionTrigger 
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger
 } from "@/components/ui/accordion";
 import { Lightbulb, Zap, Shield, BarChart4, Coins, Lock, ArrowLeft, ArrowRight, RefreshCw } from "lucide-react";
 
@@ -24,7 +24,7 @@ const sections = [
     content: () => (
       <div className="space-y-4">
         <p className="text-gray-800">
-          Flash loans are a groundbreaking DeFi innovation that allows users to borrow assets without collateral, 
+          Flash loans are a groundbreaking DeFi innovation that allows users to borrow assets without collateral,
           provided the loan is repaid within the same transaction block.
         </p>
         <div className="grid gap-4">
@@ -57,7 +57,7 @@ const sections = [
     content: () => (
       <div className="space-y-4">
         <p className="text-gray-800">
-          Concentrated liquidity represents a paradigm shift in AMM design, allowing LPs to provide liquidity 
+          Concentrated liquidity represents a paradigm shift in AMM design, allowing LPs to provide liquidity
           within specific price ranges for maximum capital efficiency.
         </p>
         <div className="grid md:grid-cols-2 gap-4">
@@ -125,11 +125,10 @@ const sections = [
 const AdvancedDefi = () => {
   const { updateProgress } = useProgress();
   const [currentSection, setCurrentSection] = useState(0);
-  const [isLoaded, setIsLoaded] = useState(false);
   const { toast } = useToast();
 
-  // Enrollment handling
-  const { data: enrollments, isLoading: loadingEnrollments } = useQuery({
+  // Enrollment handling with proper error states
+  const { data: enrollments, isLoading: loadingEnrollments, error: enrollmentError } = useQuery({
     queryKey: ['enrollments'],
     queryFn: async () => {
       const response = await fetch('/api/enrollments');
@@ -143,38 +142,73 @@ const AdvancedDefi = () => {
   );
 
   useEffect(() => {
-    try {
-      updateProgress(
-        3,
-        sections[currentSection].id,
-        true,
-        currentSection + 1,
-        undefined,
-        undefined,
-        undefined,
-        '/defi/module3/advanced-defi',
-        'DeFi'
-      );
-      setIsLoaded(true);
-    } catch (error) {
-      console.error('Failed to update progress:', error);
-      toast({
-        title: "Error",
-        description: "Failed to update progress",
-        variant: "destructive",
-      });
-    }
-  }, [updateProgress, currentSection, toast]);
+    let mounted = true;
 
-  if (!isLoaded || loadingEnrollments) {
+    const initializeProgress = async () => {
+      try {
+        if (mounted) {
+          await updateProgress(
+            3,
+            sections[currentSection].id,
+            true,
+            currentSection + 1,
+            undefined,
+            undefined,
+            undefined,
+            '/defi/module3/advanced-defi',
+            'DeFi'
+          );
+        }
+      } catch (error) {
+        console.error('Failed to update progress:', error);
+        if (mounted) {
+          toast({
+            title: "Error",
+            description: "Failed to update progress",
+            variant: "destructive",
+          });
+        }
+      }
+    };
+
+    initializeProgress();
+
+    return () => {
+      mounted = false;
+    };
+  }, [currentSection, updateProgress, toast]);
+
+  // Show loading state
+  if (loadingEnrollments) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-        >
-          <RefreshCw className="h-8 w-8 text-purple-500" />
-        </motion.div>
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-5xl mx-auto flex flex-col items-center justify-center min-h-[50vh]">
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            className="mb-4"
+          >
+            <RefreshCw className="h-8 w-8 text-purple-500" />
+          </motion.div>
+          <p className="text-gray-600">Loading course content...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (enrollmentError) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-5xl mx-auto text-center">
+          <h1 className="text-2xl font-bold text-red-600 mb-4">Error Loading Course</h1>
+          <p className="text-gray-600 mb-4">Failed to load course content. Please try again later.</p>
+          <Link href="/defi/module3">
+            <Button variant="outline" className="gap-2">
+              <ArrowLeft className="h-4 w-4" /> Back to Module 3
+            </Button>
+          </Link>
+        </div>
       </div>
     );
   }
