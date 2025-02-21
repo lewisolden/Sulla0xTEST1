@@ -165,6 +165,8 @@ router.patch('/feedback/:id', requireAdmin, async (req, res) => {
 // Analytics dashboard data
 router.get('/analytics/users', requireAdmin, async (req, res) => {
   try {
+    console.log('Fetching admin analytics - starting');
+
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
@@ -183,6 +185,8 @@ router.get('/analytics/users', requireAdmin, async (req, res) => {
       })
       .from(users)
       .leftJoin(courseEnrollments, eq(users.id, courseEnrollments.userId));
+
+    console.log('Basic metrics fetched:', { totalUsers, activeUsers, totalEnrollments, completedModules });
 
     // Get achievement count
     const [{ achievementCount }] = await db
@@ -215,16 +219,7 @@ router.get('/analytics/users', requireAdmin, async (req, res) => {
       .groupBy(sql`date_trunc('day', ${users.lastActivity})`)
       .orderBy(sql`date_trunc('day', ${users.lastActivity})`);
 
-    console.log('Sending analytics response:', {
-      totalUsers,
-      activeUsers,
-      totalEnrollments,
-      completedModules,
-      achievementCount,
-      pendingCount
-    });
-
-    res.json({
+    const response = {
       totalUsers: Number(totalUsers || 0),
       activeUsers: Number(activeUsers || 0),
       totalEnrollments: Number(totalEnrollments || 0),
@@ -236,7 +231,10 @@ router.get('/analytics/users', requireAdmin, async (req, res) => {
         activeUsers: Number(item.activeUsers || 0),
         completions: Number(item.completions || 0)
       }))
-    });
+    };
+
+    console.log('Admin analytics response ready:', response);
+    res.json(response);
   } catch (error) {
     console.error('Error fetching analytics:', error);
     res.status(500).json({ 

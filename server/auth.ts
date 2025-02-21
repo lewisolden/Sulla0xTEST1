@@ -5,10 +5,9 @@ import session from "express-session";
 import createMemoryStore from "memorystore";
 import { scrypt, randomBytes, timingSafeEqual } from "crypto";
 import { promisify } from "util";
-import { users, adminUsers, type SelectUser, type SelectAdminUser, insertUserSchema, insertAdminUserSchema } from "@db/schema";
+import { users, adminUsers, type SelectUser, type SelectAdminUser } from "@db/schema";
 import { db } from "@db";
 import { eq, or } from "drizzle-orm";
-import { sendWelcomeEmail } from './services/email';
 
 const scryptAsync = promisify(scrypt);
 
@@ -36,26 +35,36 @@ declare global {
 }
 
 export const requireAdmin = async (req: any, res: any, next: any) => {
-  console.log('Admin check - isAuthenticated:', req.isAuthenticated());
-  console.log('Admin check - user:', req.user);
-
   if (!req.isAuthenticated()) {
+    console.log('Admin check failed - not authenticated');
     return res.status(401).json({ error: "Not authenticated" });
   }
 
-  const [admin] = await db
-    .select()
-    .from(adminUsers)
-    .where(eq(adminUsers.id, req.user.id))
-    .limit(1);
+  try {
+    // Check if the user has admin role
+    if (req.user?.role !== 'admin') {
+      console.log('Admin check failed - not an admin user');
+      return res.status(403).json({ error: "Not authorized" });
+    }
 
-  console.log('Admin check - admin record:', admin);
+    // Additional admin verification from database
+    const [admin] = await db
+      .select()
+      .from(adminUsers)
+      .where(eq(adminUsers.id, req.user.id))
+      .limit(1);
 
-  if (!admin) {
-    return res.status(403).json({ error: "Not authorized" });
+    if (!admin) {
+      console.log('Admin check failed - admin record not found');
+      return res.status(403).json({ error: "Not authorized" });
+    }
+
+    console.log('Admin check passed for user:', req.user.id);
+    next();
+  } catch (error) {
+    console.error('Error in admin check:', error);
+    return res.status(500).json({ error: "Internal server error" });
   }
-
-  next();
 };
 
 const PUBLIC_ROUTES = [
