@@ -9,18 +9,22 @@ const router = Router();
 // Get all users with pagination
 router.get('/users', requireAdmin, async (req, res) => {
   try {
-    console.log('Admin users route - fetching users');
+    console.log('Admin users route - starting user fetch');
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
     const offset = (page - 1) * limit;
     const search = (req.query.search as string) || '';
+
+    console.log('Query params:', { page, limit, offset, search });
 
     // Get total count
     const [totalCount] = await db
       .select({ count: count() })
       .from(users);
 
-    // Get paginated users
+    console.log('Total users count:', totalCount);
+
+    // Get paginated users with more detailed logging
     const allUsers = await db
       .select({
         id: users.id,
@@ -39,9 +43,12 @@ router.get('/users', requireAdmin, async (req, res) => {
       .limit(limit)
       .offset(offset);
 
-    // Get enrollment counts for each user
+    console.log('Fetched users:', allUsers.length);
+
+    // Get enrollment counts with detailed logging
     const userEnrollments = await Promise.all(
       allUsers.map(async (user) => {
+        console.log('Fetching enrollments for user:', user.id);
         const [enrollmentCount] = await db
           .select({ count: count() })
           .from(courseEnrollments)
@@ -50,11 +57,12 @@ router.get('/users', requireAdmin, async (req, res) => {
         return {
           ...user,
           enrollmentCount: enrollmentCount.count,
-          completedModules: 0,
+          completedModules: 0, // We'll enhance this later
         };
       })
     );
 
+    console.log('Sending response with users:', userEnrollments.length);
     res.json({
       users: userEnrollments,
       pagination: {
@@ -65,7 +73,7 @@ router.get('/users', requireAdmin, async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Error fetching users:', error);
+    console.error('Error in admin users route:', error);
     res.status(500).json({ 
       error: 'Failed to fetch users',
       details: error instanceof Error ? error.message : 'Unknown error'
