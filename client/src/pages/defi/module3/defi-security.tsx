@@ -10,13 +10,13 @@ import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import { 
-  Shield, 
-  AlertTriangle, 
-  Lock, 
-  Key, 
-  ArrowLeft, 
-  ArrowRight, 
+import {
+  Shield,
+  AlertTriangle,
+  Lock,
+  Key,
+  ArrowLeft,
+  ArrowRight,
   RefreshCw,
   CheckCircle2,
   XCircle,
@@ -25,6 +25,8 @@ import {
   Wallet,
   Code
 } from "lucide-react";
+import { useScrollTop } from "@/hooks/useScrollTop"; //This line was already present in the original
+
 
 // Security Audit Simulator Interface
 interface SecurityAuditResult {
@@ -54,7 +56,7 @@ contract VulnerableVault {
         balances[msg.sender] -= amount;
     }
 }`);
-  
+
   const [auditResult, setAuditResult] = useState<SecurityAuditResult | null>(null);
   const { toast } = useToast();
 
@@ -367,6 +369,7 @@ const SecurityQuiz = () => {
 };
 
 const DefiSecurity = () => {
+  useScrollTop(); // Add hook call at the beginning
   const { updateProgress } = useProgress();
   const { toast } = useToast();
 
