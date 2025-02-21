@@ -9,7 +9,6 @@ router.use((req, res, next) => {
     method: req.method,
     path: req.path,
     url: req.url,
-    headers: req.headers,
     body: req.body
   });
   next();
@@ -28,7 +27,7 @@ const chatMessageSchema = z.object({
         text: z.string(),
         url: z.string()
       })).optional()
-    })),
+    })).optional().default([]),
     userProgress: z.record(z.unknown()).optional()
   })
 });
@@ -111,11 +110,7 @@ router.get("/test", async (req, res) => {
 
 // Main chat endpoint
 router.post("/send", async (req, res) => {
-  console.log('[Chat] Received message request:', {
-    message: req.body.message,
-    path: req.body.context?.currentPath,
-    messageCount: req.body.context?.previousMessages?.length
-  });
+  console.log('[Chat] Request body:', JSON.stringify(req.body, null, 2));
 
   try {
     const result = chatMessageSchema.safeParse(req.body);
@@ -131,32 +126,18 @@ router.post("/send", async (req, res) => {
     const apiKey = process.env.PERPLEXITY_API_KEY?.trim();
 
     if (!apiKey) {
-      console.error('[Chat] Missing Perplexity API key');
+      console.error('[Chat] Missing API key');
       return res.status(500).json({ error: 'API configuration error' });
     }
 
-    let systemMessage = "You are an AI tutor specialized in blockchain and cryptocurrency education. ";
-    systemMessage += `The user is currently viewing: ${context.currentPath}. `;
-    systemMessage += "Focus on providing accurate, educational responses related to blockchain concepts. Be clear and concise. Use examples when explaining complex topics.";
-
-    // Initialize with system message and user's current message
-    const messages = [
-      {
-        role: "system",
-        content: systemMessage
-      }
-    ];
-
-    // Add previous messages ensuring alternating pattern
-    if (context.previousMessages && context.previousMessages.length > 0) {
-      const filteredMessages = context.previousMessages.slice(-4); // Keep last 4 messages
-      for (const msg of filteredMessages) {
-        messages.push({
-          role: msg.role,
-          content: msg.content
-        });
-      }
-    }
+    // Construct messages array with system prompt
+    const messages = [{
+      role: "system",
+      content: "You are an AI tutor specialized in blockchain and cryptocurrency education. " +
+               `The user is currently viewing: ${context.currentPath}. ` +
+               "Focus on providing accurate, educational responses related to blockchain concepts. " +
+               "Be clear and concise. Use examples when explaining complex topics."
+    }];
 
     // Add the current user message
     messages.push({
@@ -164,19 +145,7 @@ router.post("/send", async (req, res) => {
       content: message
     });
 
-    // Ensure messages alternate between user and assistant
-    const isValid = messages.slice(1).every((msg, i, arr) => {
-      if (i === 0) return msg.role === "user" || msg.role === "assistant";
-      return msg.role !== arr[i - 1].role;
-    });
-
-    if (!isValid) {
-      console.error('[Chat] Invalid message sequence:', messages);
-      return res.status(400).json({ 
-        error: 'Invalid message sequence',
-        details: 'Messages must alternate between user and assistant roles'
-      });
-    }
+    console.log('[Chat] Final messages array:', JSON.stringify(messages, null, 2));
 
     const requestBody = {
       model: "llama-3.1-sonar-small-128k-online",
@@ -184,20 +153,12 @@ router.post("/send", async (req, res) => {
       temperature: 0.7,
       max_tokens: 500,
       top_p: 0.9,
-      return_images: false,
-      return_related_questions: false,
-      top_k: 0,
       stream: false,
       presence_penalty: 0,
       frequency_penalty: 1
     };
 
-    console.log('[Chat] Making API request with:', {
-      model: requestBody.model,
-      messageCount: requestBody.messages.length,
-      systemMessage: systemMessage.substring(0, 50) + '...',
-      messages: requestBody.messages
-    });
+    console.log('[Chat] Making API request:', JSON.stringify(requestBody, null, 2));
 
     const response = await fetch('https://api.perplexity.ai/chat/completions', {
       method: 'POST',
@@ -214,35 +175,31 @@ router.post("/send", async (req, res) => {
     console.log('[Chat] Raw response:', responseText);
 
     if (!response.ok) {
-      console.error('[Chat] API error:', {
-        status: response.status,
-        statusText: response.statusText,
-        body: responseText
-      });
       throw new Error(`API request failed: ${response.status} ${response.statusText}\n${responseText}`);
     }
 
-    try {
-      const data = JSON.parse(responseText);
-      console.log('[Chat] Successfully parsed response:', {
-        messageLength: data.choices?.[0]?.message?.content?.length || 0,
-        response: data
-      });
+    const data = JSON.parse(responseText);
+    console.log('[Chat] Parsed response:', data);
 
-      res.json({
-        success: true,
-        response: {
-          message: data.choices[0].message.content,
-          links: generateContextualLinks(context.currentPath)
-        }
-      });
-    } catch (parseError) {
-      console.error('[Chat] JSON parse error:', parseError);
-      throw new Error('Failed to parse API response');
+    if (!data.choices?.[0]?.message?.content) {
+      throw new Error('Invalid response format from API');
     }
 
+    res.json({
+      success: true,
+      response: {
+        message: data.choices[0].message.content,
+        links: generateContextualLinks(context.currentPath)
+      }
+    });
+
   } catch (error) {
-    console.error('[Chat] Error:', error);
+    console.error('[Chat] Detailed error:', {
+      name: error.name,
+      message: error.message,
+      stack: error.stack
+    });
+
     res.status(500).json({
       error: 'Failed to process chat message',
       details: error instanceof Error ? error.message : 'Unknown error'
