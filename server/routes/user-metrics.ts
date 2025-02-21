@@ -21,16 +21,27 @@ router.get("/user/metrics", async (req, res) => {
     console.log("[User Metrics] Fetching metrics for user:", userId);
 
     // Calculate total learning time from all module progress records
-    const [totalTimeResult] = await db
-      .select({ 
-        total: sql<number>`COALESCE(SUM(CASE 
-          WHEN ${moduleProgress.timeSpent} IS NULL THEN 5 
-          WHEN ${moduleProgress.timeSpent} = 0 THEN 5 
-          ELSE ${moduleProgress.timeSpent} 
-        END), 0)::integer`
+    // Get all module progress records for accurate time calculation
+    const moduleProgressRecords = await db
+      .select({
+        timeSpent: moduleProgress.timeSpent,
+        lastAccessed: moduleProgress.lastAccessed,
+        completed: moduleProgress.completed
       })
       .from(moduleProgress)
       .where(eq(moduleProgress.userId, userId));
+
+    // Calculate total time spent including active sessions
+    const totalMinutes = moduleProgressRecords.reduce((total, record) => {
+      const baseTime = record.timeSpent || 0;
+      // Add minimum time for completed modules without tracked time
+      if (record.completed && baseTime < 5) {
+        return total + 5;
+      }
+      return total + baseTime;
+    }, 0);
+
+    const totalTimeResult = { total: totalMinutes };
 
     console.log("[User Metrics] Total learning time result:", totalTimeResult);
 

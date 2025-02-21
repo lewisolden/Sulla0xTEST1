@@ -23,13 +23,19 @@ export function registerRoutes(app: Express): Server {
   // Set up authentication first
   setupAuth(app);
 
+  // Add debug middleware for API routes
+  app.use('/api', (req, res, next) => {
+    console.log(`[API Debug] ${req.method} ${req.path}`);
+    next();
+  });
+
   // Register API routes with proper prefixes and authentication middleware
+  app.use("/api/chat", chatRouter); // Mount chat router first at /api/chat
   app.use("/api", apiRouter);
   app.use("/api", enrollmentsRouter);
-  app.use("/api/admin", requireAdmin, adminRouter);
+  app.use("/api", adminRouter);
   app.use("/api", learningPathRouter);
   app.use("/api", userMetricsRouter);
-  app.use("/api", chatRouter);
 
   // Create and return the HTTP server
   const httpServer = createServer(app);
