@@ -3,6 +3,18 @@ import { z } from 'zod';
 
 const router = Router();
 
+// Add router-level logging middleware
+router.use((req, res, next) => {
+  console.log('[Chat Router] Incoming request:', {
+    method: req.method,
+    path: req.path,
+    url: req.url,
+    headers: req.headers,
+    body: req.body
+  });
+  next();
+});
+
 // Message schema validation
 const chatMessageSchema = z.object({
   message: z.string().min(1, "Message cannot be empty"),
@@ -21,6 +33,82 @@ const chatMessageSchema = z.object({
   })
 });
 
+// Test endpoint for Perplexity API
+router.get("/test", async (req, res) => {
+  console.log('[Chat Test] Testing Perplexity API connection...');
+  try {
+    const apiKey = process.env.PERPLEXITY_API_KEY?.trim();
+    if (!apiKey) {
+      console.error('[Chat Test] Missing Perplexity API key');
+      return res.status(500).json({ error: 'API key configuration error' });
+    }
+
+    if (!apiKey.match(/^pplx-[a-zA-Z0-9]{48}$/)) {
+      console.error('[Chat Test] Invalid API key format:', apiKey.substring(0, 10) + '...');
+      return res.status(500).json({ error: 'Invalid API key configuration' });
+    }
+
+    console.log('[Chat Test] API key validation passed, making test request...');
+
+    const requestBody = {
+      model: "llama-3.1-sonar-small-128k-online",
+      messages: [
+        {
+          role: "system",
+          content: "You are a test response. Respond with: 'API connection successful'"
+        },
+        {
+          role: "user",
+          content: "Test connection"
+        }
+      ],
+      temperature: 0.7,
+      max_tokens: 150,
+      top_p: 0.9,
+      return_images: false,
+      return_related_questions: false,
+      top_k: 0,
+      stream: false,
+      presence_penalty: 0,
+      frequency_penalty: 1
+    };
+
+    const response = await fetch('https://api.perplexity.ai/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      },
+      body: JSON.stringify(requestBody)
+    });
+
+    const responseText = await response.text();
+    console.log('[Chat Test] Response status:', response.status);
+    console.log('[Chat Test] Raw response:', responseText);
+
+    if (!response.ok) {
+      throw new Error(`API request failed: ${response.status} ${response.statusText}\n${responseText}`);
+    }
+
+    const data = JSON.parse(responseText);
+    console.log('[Chat Test] Parsed response:', data);
+
+    res.json({ 
+      success: true, 
+      message: "API test successful",
+      response: data 
+    });
+
+  } catch (error) {
+    console.error('[Chat Test] Error:', error);
+    res.status(500).json({
+      error: 'Chat test failed',
+      details: error instanceof Error ? error.message : 'Unknown error'
+    });
+  }
+});
+
 // Main chat endpoint
 router.post("/send", async (req, res) => {
   console.log('[Chat] Received message request:', {
@@ -30,20 +118,18 @@ router.post("/send", async (req, res) => {
   });
 
   try {
-    // Validate request body
     const result = chatMessageSchema.safeParse(req.body);
     if (!result.success) {
       console.error('[Chat] Validation error:', result.error);
       return res.status(400).json({ 
-        error: 'Invalid request',
+        error: 'Invalid request format',
         details: result.error.errors
       });
     }
 
     const { message, context } = result.data;
-
-    // Check API key
     const apiKey = process.env.PERPLEXITY_API_KEY?.trim();
+
     if (!apiKey) {
       console.error('[Chat] Missing Perplexity API key');
       return res.status(500).json({ error: 'API configuration error' });
@@ -54,24 +140,16 @@ router.post("/send", async (req, res) => {
       return res.status(500).json({ error: 'Invalid API key configuration' });
     }
 
-    // Prepare system message based on context
     let systemMessage = "You are an AI tutor specialized in blockchain and cryptocurrency education. ";
+    systemMessage += `The user is currently viewing: ${context.currentPath}. `;
+    systemMessage += "Focus on providing accurate, educational responses related to blockchain concepts. Be clear and concise. Use examples when explaining complex topics.";
 
-    // Add context about current location in the course
-    if (context.currentPath) {
-      systemMessage += `The user is currently viewing: ${context.currentPath}. `;
-    }
-
-    systemMessage += "Focus on providing accurate, educational responses related to the current course material. Keep responses clear, concise, and engaging. Provide practical examples when explaining complex blockchain and cryptocurrency concepts. Use analogies when helpful. Avoid technical jargon unless specifically asked about technical details.";
-
-    // Get previous conversation context
     const previousConversation = context.previousMessages
       ?.map(msg => ({
         role: msg.role,
         content: msg.content
       })) || [];
 
-    // Prepare the chat request
     const requestBody = {
       model: "llama-3.1-sonar-small-128k-online",
       messages: [
@@ -96,10 +174,10 @@ router.post("/send", async (req, res) => {
       frequency_penalty: 1
     };
 
-    console.log('[Chat] Making request to Perplexity API with configuration:', {
+    console.log('[Chat] Making API request with:', {
       model: requestBody.model,
       messageCount: requestBody.messages.length,
-      maxTokens: requestBody.max_tokens
+      systemMessage: systemMessage.substring(0, 50) + '...'
     });
 
     const response = await fetch('https://api.perplexity.ai/chat/completions', {
@@ -112,30 +190,35 @@ router.post("/send", async (req, res) => {
       body: JSON.stringify(requestBody)
     });
 
+    const responseText = await response.text();
+    console.log('[Chat] Response status:', response.status);
+
     if (!response.ok) {
-      const errorText = await response.text();
       console.error('[Chat] API error:', {
         status: response.status,
         statusText: response.statusText,
-        body: errorText
+        body: responseText
       });
-      throw new Error(`API request failed: ${response.status} ${response.statusText}\n${errorText}`);
+      throw new Error(`API request failed: ${response.status} ${response.statusText}\n${responseText}`);
     }
 
-    const data = await response.json();
-    console.log('[Chat] Received API response:', {
-      status: response.status,
-      messageContent: data.choices?.[0]?.message?.content?.substring(0, 100) + '...'
-    });
+    try {
+      const data = JSON.parse(responseText);
+      console.log('[Chat] Successfully parsed response:', {
+        messageLength: data.choices?.[0]?.message?.content?.length || 0
+      });
 
-    // Format and send response
-    res.json({
-      success: true,
-      response: {
-        message: data.choices[0].message.content,
-        links: generateContextualLinks(context.currentPath)
-      }
-    });
+      res.json({
+        success: true,
+        response: {
+          message: data.choices[0].message.content,
+          links: generateContextualLinks(context.currentPath)
+        }
+      });
+    } catch (parseError) {
+      console.error('[Chat] JSON parse error:', parseError);
+      throw new Error('Failed to parse API response');
+    }
 
   } catch (error) {
     console.error('[Chat] Error:', error);
@@ -152,7 +235,6 @@ function generateContextualLinks(currentPath: string) {
     { text: "Check Learning Resources", url: "/library" }
   ];
 
-  // Add context-specific links based on current path
   if (currentPath.includes('/ai/')) {
     baseLinks.push({ text: "Explore AI Modules", url: "/ai" });
   } else if (currentPath.includes('/defi/')) {

@@ -32,6 +32,16 @@ app.use((req, res, next) => {
   const start = Date.now();
   log(`${req.method} ${req.path} - Starting request`);
 
+  // Add detailed logging for API routes
+  if (req.path.startsWith('/api/')) {
+    console.log('[API Request]', {
+      method: req.method,
+      path: req.path,
+      headers: req.headers,
+      body: req.body
+    });
+  }
+
   res.on('finish', () => {
     const duration = Date.now() - start;
     log(`${req.method} ${req.path} ${res.statusCode} - ${duration}ms`);
@@ -121,6 +131,11 @@ const tryPorts = [5000, 5001, 5002, 5003];
 
 // Add catch-all handler for API routes that aren't found
 app.use('/api/*', (req, res) => {
+  console.log('[API 404]', {
+    method: req.method,
+    path: req.path,
+    headers: req.headers
+  });
   res.status(404).json({ error: 'API endpoint not found' });
 });
 
