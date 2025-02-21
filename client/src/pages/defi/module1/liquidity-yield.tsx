@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useProgress } from "@/context/progress-context";
@@ -376,13 +376,17 @@ export default function LiquidityYield() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
-        <div className="mb-6">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-6"
+        >
           <Link href="/defi/module1/dex-amm">
             <Button variant="ghost" className="gap-2">
               <ArrowLeft className="h-4 w-4" /> Previous Section
             </Button>
           </Link>
-        </div>
+        </motion.div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -390,11 +394,16 @@ export default function LiquidityYield() {
           transition={{ duration: 0.5 }}
         >
           <Card>
-            <CardContent className="pt-6">
-              <h1 className="text-3xl font-bold text-blue-800 mb-6">
+            <CardHeader className="relative overflow-hidden bg-gradient-to-r from-purple-500 to-indigo-500 pb-8">
+              <div className="absolute inset-0 bg-grid-white/20" />
+              <CardTitle className="text-3xl font-bold text-white z-10">
                 Yield Farming & Liquidity Provision
-              </h1>
-
+              </CardTitle>
+              <p className="text-purple-100 mt-2 z-10">
+                Master the art of earning passive income in DeFi through liquidity provision and yield optimization
+              </p>
+            </CardHeader>
+            <CardContent className="pt-6">
               <div className="prose max-w-none">
                 <section className="mb-12">
                   <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-8 mb-8">
