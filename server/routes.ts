@@ -29,11 +29,11 @@ export function registerRoutes(app: Express): Server {
   setupAuth(app);
 
   // Register other API routes
-  app.use("/api/admin", adminRouter); // Changed to mount admin routes under /api/admin
+  app.use("/api/admin", adminRouter);
   app.use("/api", apiRouter);
   app.use("/api", enrollmentsRouter);
   app.use("/api", learningPathRouter);
-  app.use("/api", userMetricsRouter);
+  app.use("/", userMetricsRouter);
 
   // Add catch-all handler for API routes
   app.use('/api/*', (req, res) => {
