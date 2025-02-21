@@ -130,13 +130,16 @@ router.post("/send", async (req, res) => {
       return res.status(500).json({ error: 'API configuration error' });
     }
 
-    // Construct messages array with system prompt
+    // Construct messages array with enhanced system prompt
     const messages = [{
       role: "system",
-      content: "You are an AI tutor specialized in blockchain and cryptocurrency education. " +
+      content: "You are an educational AI tutor specializing in blockchain and cryptocurrency education. " +
+               "Provide precise, concise responses and relate your answers to our course content when possible. " +
                `The user is currently viewing: ${context.currentPath}. ` +
-               "Focus on providing accurate, educational responses related to blockchain concepts. " +
-               "Be clear and concise. Use examples when explaining complex topics."
+               "When explaining concepts, reference specific modules or sections from our curriculum. " +
+               "For Ethereum-related questions, refer to Module 3 which covers Ethereum fundamentals, smart contracts, and DeFi concepts. " +
+               "For Bitcoin-related questions, refer to Modules 1 and 2 which cover Bitcoin fundamentals and investment strategies. " +
+               "Direct users to relevant course materials when appropriate."
     }];
 
     // Add the current user message
@@ -150,7 +153,7 @@ router.post("/send", async (req, res) => {
     const requestBody = {
       model: "llama-3.1-sonar-small-128k-online",
       messages,
-      temperature: 0.7,
+      temperature: 0.5, // Reduced for more focused responses
       max_tokens: 500,
       top_p: 0.9,
       stream: false,
