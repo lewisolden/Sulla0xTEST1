@@ -219,18 +219,18 @@ const handleContinueLearning = (course: any) => {
     return;
   }
 
-  const { progress } = useProgress();
+  // Get progress data for the course
   const courseProgress = progress.filter(p => p.courseId === course.id);
   const lastProgress = courseProgress.length > 0 ? courseProgress[courseProgress.length - 1] : null;
 
-  // Handle different course types
-  if (course.id === 1) { // Introduction to Cryptocurrency
-    setLocation(lastProgress?.lastQuizPath || "/modules/module1");
-  } else if (course.id === 2) { // Introduction to AI
-    setLocation(lastProgress?.lastQuizPath || "/ai/module1");
-  } else if (course.id === 3) { // Mastering DeFi
-    setLocation(lastProgress?.lastCompletedPath || "/defi/module1");
+  // Handle different course types and set the correct path
+  let path = course.defaultPath; // Default path from the course object
+
+  if (lastProgress) {
+    path = lastProgress.lastQuizPath || lastProgress.lastCompletedPath || course.defaultPath;
   }
+
+  setLocation(path);
 };
 
 export default function Curriculum() {
@@ -242,6 +242,7 @@ export default function Curriculum() {
   const [, setLocation] = useLocationHook();
   const [coursesProgress, setCoursesProgress] = useState<{[key: string]: number}>({});
   const { user } = useAuth();
+  const { progress } = useProgress();
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -569,8 +570,8 @@ export default function Curriculum() {
                         </div>
 
                         <div className="mt-6 text-center">
-                          <Link onClick={() => handleContinueLearning(currentCourse)}>
-                            <Button className="bg-blue-600 hover:bg-blue-700">
+                          <Link href={module.path}> {/*Corrected Link */}
+                            <Button className="w-full bg-blue-600 hover:bg-blue-700"> {/*Added w-full */}
                               Continue Learning
                             </Button>
                           </Link>
