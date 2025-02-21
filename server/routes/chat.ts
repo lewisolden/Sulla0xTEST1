@@ -139,18 +139,48 @@ router.post("/send", async (req, res) => {
     systemMessage += `The user is currently viewing: ${context.currentPath}. `;
     systemMessage += "Focus on providing accurate, educational responses related to blockchain concepts. Be clear and concise. Use examples when explaining complex topics.";
 
+    // Initialize with system message and user's current message
+    const messages = [
+      {
+        role: "system",
+        content: systemMessage
+      }
+    ];
+
+    // Add previous messages ensuring alternating pattern
+    if (context.previousMessages && context.previousMessages.length > 0) {
+      const filteredMessages = context.previousMessages.slice(-4); // Keep last 4 messages
+      for (const msg of filteredMessages) {
+        messages.push({
+          role: msg.role,
+          content: msg.content
+        });
+      }
+    }
+
+    // Add the current user message
+    messages.push({
+      role: "user",
+      content: message
+    });
+
+    // Ensure messages alternate between user and assistant
+    const isValid = messages.slice(1).every((msg, i, arr) => {
+      if (i === 0) return msg.role === "user" || msg.role === "assistant";
+      return msg.role !== arr[i - 1].role;
+    });
+
+    if (!isValid) {
+      console.error('[Chat] Invalid message sequence:', messages);
+      return res.status(400).json({ 
+        error: 'Invalid message sequence',
+        details: 'Messages must alternate between user and assistant roles'
+      });
+    }
+
     const requestBody = {
       model: "llama-3.1-sonar-small-128k-online",
-      messages: [
-        {
-          role: "system",
-          content: systemMessage
-        },
-        {
-          role: "user",
-          content: message
-        }
-      ],
+      messages,
       temperature: 0.7,
       max_tokens: 500,
       top_p: 0.9,
@@ -161,15 +191,6 @@ router.post("/send", async (req, res) => {
       presence_penalty: 0,
       frequency_penalty: 1
     };
-
-    // Add previous messages if they exist, maintaining the correct alternating order
-    if (context.previousMessages && context.previousMessages.length > 0) {
-      const filteredMessages = context.previousMessages.slice(-4); // Keep last 4 messages
-      requestBody.messages.splice(1, 0, ...filteredMessages.map(msg => ({
-        role: msg.role,
-        content: msg.content
-      })));
-    }
 
     console.log('[Chat] Making API request with:', {
       model: requestBody.model,
