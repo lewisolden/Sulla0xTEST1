@@ -62,7 +62,7 @@ export function CourseAssistant() {
           message: input,
           context: {
             currentPath: window.location.pathname,
-            previousMessages: messages.map(msg => ({
+            previousMessages: messages.slice(-5).map(msg => ({
               role: msg.role,
               content: msg.content,
               timestamp: msg.timestamp.toISOString(),
@@ -73,11 +73,12 @@ export function CourseAssistant() {
         }),
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.error || `Server error: ${response.status}`);
+        const errorData = await response.json();
+        throw new Error(errorData.error || errorData.details || `Server error: ${response.status}`);
       }
+
+      const data = await response.json();
 
       if (!data.success || !data.response) {
         throw new Error("Invalid response format from server");
@@ -87,20 +88,24 @@ export function CourseAssistant() {
         role: "assistant",
         content: data.response.message,
         timestamp: new Date(),
-        links: data.response.links
+        links: data.response.links || []
       }]);
     } catch (error) {
       console.error('Chat error:', error);
-      setError(error instanceof Error ? error.message : "Failed to send message");
-      setMessages(prev => [...prev, {
-        role: "assistant",
-        content: "I'm having trouble connecting to my knowledge base. Please try again in a moment, or let me know if you'd like to explore our course materials instead.",
-        timestamp: new Date(),
-        links: [
-          { text: "Browse Course Modules", url: "/curriculum" },
-          { text: "View Learning Resources", url: "/library" }
-        ]
-      }]);
+      const errorMessage = error instanceof Error ? error.message : "Failed to send message";
+      setError(errorMessage);
+
+      if (!errorMessage.includes("Failed to fetch")) {
+        setMessages(prev => [...prev, {
+          role: "assistant",
+          content: "I'm having trouble processing your request. Please try again in a moment.",
+          timestamp: new Date(),
+          links: [
+            { text: "Browse Course Modules", url: "/curriculum" },
+            { text: "View Learning Resources", url: "/library" }
+          ]
+        }]);
+      }
     } finally {
       setIsLoading(false);
     }
