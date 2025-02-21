@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, BookOpen, CheckCircle2, ArrowRight, Code2, Network, Shield, TrendingUp, Lock, RefreshCw, Settings, Coins } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCircle2, ArrowRight, Network, Shield, TrendingUp, Lock, RefreshCw, Settings, Coins } from "lucide-react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 
@@ -17,6 +17,7 @@ const sections = [
     title: "2.1 Lending & Borrowing",
     description: "Explore DeFi lending platforms, interest rate mechanisms, and risk management in borrowing",
     icon: Coins,
+    path: "/defi/module2/lending-borrowing",
     subsections: [
       "DeFi Lending Protocols",
       "Interest Rate Models",
@@ -29,6 +30,7 @@ const sections = [
     title: "2.2 Stablecoins & Oracles",
     description: "Understand different types of stablecoins and the role of price oracles in DeFi",
     icon: Lock,
+    path: "/defi/module2/stablecoins",
     subsections: [
       "Types of Stablecoins",
       "Price Stability Mechanisms",
@@ -41,6 +43,7 @@ const sections = [
     title: "2.3 DeFi Derivatives",
     description: "Learn about synthetic assets, options, and perpetual futures in DeFi",
     icon: TrendingUp,
+    path: "/defi/module2/derivatives",
     subsections: [
       "Synthetic Assets",
       "Options Protocols",
@@ -51,13 +54,14 @@ const sections = [
   {
     id: "governance-dao",
     title: "2.4 Governance & DAOs",
-    description: "Explore decentralized governance mechanisms and DAO structures",
+    description: "Explore decentralized governance mechanisms, DAO structures, and oracle networks",
     icon: Network,
+    path: "/defi/module2/governance-dao",
     subsections: [
       "Governance Tokens",
       "Voting Mechanisms",
       "DAO Structures",
-      "Treasury Management"
+      "Oracle Networks"
     ]
   }
 ];
@@ -356,23 +360,23 @@ export default function DefiModule2() {
                             ))}
                           </div>
                         </motion.div>
-                      </div>
 
-                      <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.8 }}
-                        className="mt-8 flex justify-center"
-                      >
-                        <Link href="/defi/module2/lending-borrowing">
-                          <Button
-                            size="lg"
-                            className="bg-purple-600 hover:bg-purple-700 transform hover:scale-105 transition-all duration-300"
-                          >
-                            Start First Topic
-                          </Button>
-                        </Link>
-                      </motion.div>
+                        <motion.div
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5, delay: 0.8 }}
+                          className="mt-8 flex justify-center"
+                        >
+                          <Link href="/defi/module2/lending-borrowing">
+                            <Button
+                              size="lg"
+                              className="bg-purple-600 hover:bg-purple-700 transform hover:scale-105 transition-all duration-300"
+                            >
+                              Start First Topic
+                            </Button>
+                          </Link>
+                        </motion.div>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -397,7 +401,7 @@ export default function DefiModule2() {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.5, delay: index * 0.1 }}
                     >
-                      <Link href={`/defi/module2/${section.id}`}>
+                      <Link href={section.path}> {/* Use the new path property */}
                         <Card className="transition-all duration-300 hover:shadow-lg hover:scale-[1.02] cursor-pointer">
                           <CardContent className="p-6">
                             <div className="flex justify-between items-start">
