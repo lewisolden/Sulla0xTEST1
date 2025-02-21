@@ -111,7 +111,7 @@ import InstitutionalDefi from "@/pages/defi/module4/institutional-defi"; // Add 
 import DefiGovernance from "@/pages/defi/module4/defi-governance"; // Add this import
 import DefiIntegrations from "@/pages/defi/module4/defi-integrations"; // Add this import
 import DefiInfrastructure from "@/pages/defi/module4/defi-infrastructure"; // Add this import
-
+import DefiModule4Quiz from "@/pages/defi/module4/quiz"; // Added import for Module 4 quiz
 
 function ProtectedRoute({ component: Component, adminOnly = false, publicAccess = false, ...rest }: any) {
   const { user, isLoading } = useAuth();
@@ -253,6 +253,7 @@ function Router() {
       <Route path="/defi/module4/defi-governance" component={() => <ProtectedRoute component={DefiGovernance} publicAccess={true} />} />
       <Route path="/defi/module4/defi-integrations" component={() => <ProtectedRoute component={DefiIntegrations} publicAccess={true} />} />
       <Route path="/defi/module4/defi-infrastructure" component={() => <ProtectedRoute component={DefiInfrastructure} publicAccess={true} />} />
+      <Route path="/defi/module4/quiz" component={() => <ProtectedRoute component={DefiModule4Quiz} />} />
 
       <Route component={NotFound} />
     </Switch>
