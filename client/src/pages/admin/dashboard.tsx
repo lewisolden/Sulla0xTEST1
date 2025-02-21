@@ -45,17 +45,25 @@ export default function AdminDashboard() {
     queryFn: async () => {
       console.log("Fetching admin analytics...");
       const response = await fetch("/api/admin/analytics", {
-        credentials: 'include'
+        credentials: 'include',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
       });
+
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
         console.error("Analytics fetch error:", errorData);
         throw new Error(errorData.error || "Failed to fetch analytics");
       }
+
       const data = await response.json();
       console.log("Received analytics data:", data);
       return data;
     },
+    retry: 1,
+    refetchOnWindowFocus: false
   });
 
   if (error) {
@@ -101,7 +109,7 @@ export default function AdminDashboard() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {metrics.map((metric, i) => (
-          <Card key={i} className={`bg-${metric.color}-50`}>
+          <Card key={i}>
             <CardContent className="pt-6">
               {isLoading ? (
                 <>

@@ -166,73 +166,84 @@ router.patch('/feedback/:id', requireAdmin, async (req, res) => {
 // Get admin analytics data
 router.get("/analytics", requireAdmin, async (req, res) => {
   try {
-    console.log("Fetching admin analytics...");
+    console.log("Starting admin analytics fetch");
+    console.log("User:", req.user); // Log the authenticated user
+
+    if (!req.user) {
+      return res.status(401).json({ error: "Unauthorized - No user found" });
+    }
 
     // Get total users count
-    const [{ value: totalUsers }] = await db
+    const totalUsersResult = await db
       .select({ 
-        value: sql<number>`count(distinct ${users.id})` 
+        count: sql<number>`count(*)::int`
       })
       .from(users);
 
-    console.log("Total users:", totalUsers);
+    const totalUsers = totalUsersResult[0]?.count || 0;
+    console.log("Total users count:", totalUsers);
 
     // Get active users (last 24 hours)
-    const [{ value: activeUsers }] = await db
+    const activeUsersResult = await db
       .select({ 
-        value: sql<number>`count(distinct ${users.id})`
+        count: sql<number>`count(distinct ${users.id})::int`
       })
       .from(users)
       .where(
         sql`${users.lastActivity} >= NOW() - INTERVAL '24 hours'`
       );
 
-    console.log("Active users:", activeUsers);
+    const activeUsers = activeUsersResult[0]?.count || 0;
+    console.log("Active users count:", activeUsers);
 
     // Get total enrollments
-    const [{ value: totalEnrollments }] = await db
+    const totalEnrollmentsResult = await db
       .select({ 
-        value: sql<number>`count(distinct ${courseEnrollments.id})`
+        count: sql<number>`count(*)::int`
       })
       .from(courseEnrollments);
 
+    const totalEnrollments = totalEnrollmentsResult[0]?.count || 0;
     console.log("Total enrollments:", totalEnrollments);
 
     // Get completed modules
-    const [{ value: completedModules }] = await db
+    const completedModulesResult = await db
       .select({ 
-        value: sql<number>`count(distinct ${moduleProgress.id})`
+        count: sql<number>`count(*)::int`
       })
       .from(moduleProgress)
       .where(eq(moduleProgress.completed, true));
 
+    const completedModules = completedModulesResult[0]?.count || 0;
     console.log("Completed modules:", completedModules);
 
     // Get achievements awarded
-    const [{ value: achievementsAwarded }] = await db
+    const achievementsAwardedResult = await db
       .select({ 
-        value: sql<number>`count(distinct ${userAchievements.id})`
+        count: sql<number>`count(*)::int`
       })
       .from(userAchievements);
 
+    const achievementsAwarded = achievementsAwardedResult[0]?.count || 0;
     console.log("Achievements awarded:", achievementsAwarded);
 
     // Get pending feedback count
-    const [{ value: pendingFeedback }] = await db
+    const pendingFeedbackResult = await db
       .select({ 
-        value: sql<number>`count(distinct ${feedback.id})`
+        count: sql<number>`count(*)::int`
       })
       .from(feedback)
       .where(eq(feedback.status, 'pending'));
 
+    const pendingFeedback = pendingFeedbackResult[0]?.count || 0;
     console.log("Pending feedback:", pendingFeedback);
 
     // Get user activity data for the last 7 days
     const userActivityData = await db
       .select({
         date: sql<string>`to_char(date_trunc('day', ${users.lastActivity}), 'YYYY-MM-DD')`,
-        activeUsers: sql<number>`count(distinct ${users.id})`,
-        completions: sql<number>`count(distinct case when ${moduleProgress.completed} = true then ${moduleProgress.id} end)`
+        activeUsers: sql<number>`count(distinct ${users.id})::int`,
+        completions: sql<number>`count(distinct case when ${moduleProgress.completed} = true then ${moduleProgress.id} end)::int`
       })
       .from(users)
       .leftJoin(moduleProgress, eq(users.id, moduleProgress.userId))
@@ -249,14 +260,18 @@ router.get("/analytics", requireAdmin, async (req, res) => {
       completedModules,
       achievementsAwarded,
       pendingFeedback,
-      userActivityData
+      userActivityData: userActivityData.map(record => ({
+        ...record,
+        activeUsers: Number(record.activeUsers),
+        completions: Number(record.completions)
+      }))
     };
 
     console.log("Sending analytics response:", analytics);
-    res.json(analytics);
+    return res.json(analytics);
   } catch (error) {
     console.error("Error fetching admin analytics:", error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       error: "Failed to fetch analytics",
       details: error instanceof Error ? error.message : 'Unknown error'
     });
