@@ -57,10 +57,6 @@ export default function AccountPage() {
   const { user, logoutMutation } = useAuth();
   const { progress, getLastAccessedRoute } = useProgress();
   const [activeTab, setActiveTab] = useState("dashboard");
-  const [feedbackType, setFeedbackType] = useState("course");
-  const [selectedCourse, setSelectedCourse] = useState("");
-  const [rating, setRating] = useState<number>(0);
-  const [feedbackText, setFeedbackText] = useState("");
   const { toast } = useToast();
 
   const { data: metrics, isLoading: loadingMetrics } = useQuery<UserMetrics>({
@@ -73,8 +69,17 @@ export default function AccountPage() {
         }
       });
       if (!response.ok) throw new Error('Failed to fetch user metrics');
-      return response.json();
-    }
+      const data = await response.json();
+      return {
+        totalLearningMinutes: data.totalLearningMinutes || 0,
+        completedQuizzes: data.completedQuizzes || 0,
+        earnedBadges: data.earnedBadges || 0,
+        learningStreak: data.learningStreak || 0,
+        courseStats: data.courseStats || []
+      };
+    },
+    retry: 2,
+    retryDelay: 1000
   });
 
   const { data: enrollments, isLoading: loadingEnrollments } = useQuery<Enrollment[]>({
@@ -101,12 +106,10 @@ export default function AccountPage() {
         stat => stat.courseId === enrollment.courseId
       );
 
-      // Use the continuePath from courseStats if available
       if (courseStats?.continuePath) {
         return courseStats.continuePath;
       }
 
-      // Default paths if no progress is available
       switch (enrollment.courseId) {
         case 1:
           return '/modules/module1';
@@ -129,7 +132,6 @@ export default function AccountPage() {
     return `${hours}h ${remainingMinutes}m`;
   };
 
-  // Calculate total metrics across all courses
   const totalLearningTime = metrics?.courseStats?.reduce((acc, stat) => acc + (stat.totalLearningTime || 0), 0) || 0;
   const totalCompletedQuizzes = metrics?.courseStats?.reduce((acc, stat) => acc + (stat.completedQuizzes || 0), 0) || 0;
 
@@ -170,7 +172,6 @@ export default function AccountPage() {
         throw new Error('Failed to submit feedback');
       }
 
-      // Reset form
       setFeedbackType("course");
       setSelectedCourse("");
       setRating(0);
@@ -205,6 +206,12 @@ export default function AccountPage() {
       });
     }
   };
+
+  const [selectedCourse, setSelectedCourse] = useState("");
+  const [rating, setRating] = useState<number>(0);
+  const [feedbackText, setFeedbackText] = useState("");
+  const [feedbackType, setFeedbackType] = useState("course");
+
 
   if (!user) return null;
 
@@ -244,7 +251,7 @@ export default function AccountPage() {
                     <div>
                       <p className="text-sm text-blue-600">Learning Time</p>
                       <p className="text-2xl font-bold text-blue-900">
-                        {loadingMetrics ? "..." : formatLearningTime(totalLearningTime)}
+                        {loadingMetrics ? "..." : formatLearningTime(metrics?.totalLearningMinutes || 0)}
                       </p>
                     </div>
                   </div>
@@ -260,7 +267,7 @@ export default function AccountPage() {
                     <div>
                       <p className="text-sm text-green-600">Completed Quizzes</p>
                       <p className="text-2xl font-bold text-green-900">
-                        {loadingMetrics ? "..." : totalCompletedQuizzes}
+                        {loadingMetrics ? "..." : metrics?.completedQuizzes || 0}
                       </p>
                     </div>
                   </div>
