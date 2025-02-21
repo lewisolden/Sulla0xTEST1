@@ -29,9 +29,9 @@ export function registerRoutes(app: Express): Server {
   setupAuth(app);
 
   // Register other API routes
+  app.use("/api/admin", adminRouter); // Changed to mount admin routes under /api/admin
   app.use("/api", apiRouter);
   app.use("/api", enrollmentsRouter);
-  app.use("/api", adminRouter); // Make sure adminRouter is registered
   app.use("/api", learningPathRouter);
   app.use("/api", userMetricsRouter);
 
