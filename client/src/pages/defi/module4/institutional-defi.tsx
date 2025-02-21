@@ -254,18 +254,14 @@ export default function InstitutionalDefi() {
   const [activeTab, setActiveTab] = useState("overview");
   const [quizStarted, setQuizStarted] = useState(false);
   const [showExplanation, setShowExplanation] = useState(false);
-  const [userAnswer, setUserAnswer] = useState<string | null>(null);
-
 
   const handleStartQuiz = () => {
-    setShowQuiz(true);
-  };
-
-  const handleAnswerSelection = (answerIndex: number) => {
-    setSelectedAnswer(answerIndex);
+    setQuizStarted(true);
   };
 
   const handleAnswer = (answerIndex: number) => {
+    if (showExplanation) return; // Prevent multiple selections while showing explanation
+
     setSelectedAnswer(answerIndex);
     setShowExplanation(true);
 
@@ -274,52 +270,39 @@ export default function InstitutionalDefi() {
       setScore(score + 1);
       toast({
         title: "Correct! 🎉",
-        description: "Great job! Moving to next question...",
+        description: "Great job! Let's look at why this is correct.",
         variant: "default",
       });
     } else {
       toast({
         title: "Incorrect",
-        description: "Let's understand why before moving on.",
+        description: "Let's understand the correct answer.",
         variant: "destructive",
       });
     }
 
+    // Auto advance after showing explanation
     setTimeout(() => {
       if (currentQuestion < quizQuestions.length - 1) {
-        setShowExplanation(false);
-        setSelectedAnswer(null);
         setCurrentQuestion(currentQuestion + 1);
+        setSelectedAnswer(null);
+        setShowExplanation(false);
+      } else {
+        setShowResults(true);
+        const finalScore = ((score + (isCorrect ? 1 : 0)) / quizQuestions.length) * 100;
+        updateProgress(
+          4,
+          'institutional-defi',
+          finalScore >= 70,
+          3,
+          undefined,
+          finalScore,
+          '/defi/module4/defi-governance',
+          undefined,
+          'DeFi'
+        );
       }
-    }, 3000);
-  };
-
-  const handleNextQuestion = () => {
-    if (selectedAnswer === null) {
-      toast({
-        title: "Please select an answer",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    handleAnswer(selectedAnswer);
-
-    if (currentQuestion === quizQuestions.length - 1) {
-      setShowResults(true);
-      const finalScore = (score / quizQuestions.length) * 100;
-      updateProgress(
-        4,
-        'institutional-defi',
-        finalScore >= 70,
-        3,
-        undefined,
-        finalScore,
-        '/defi/module4/defi-governance',
-        undefined,
-        'DeFi'
-      );
-    }
+    }, 3000); // Show explanation for 3 seconds before advancing
   };
 
   return (
@@ -339,9 +322,8 @@ export default function InstitutionalDefi() {
           transition={{ duration: 0.5 }}
           className="space-y-8"
         >
-          {!showQuiz ? (
+          {!showResults ? (
             <>
-              {/* Title Section */}
               <Card>
                 <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
                   <CardTitle className="text-3xl">
@@ -413,7 +395,6 @@ export default function InstitutionalDefi() {
                 </CardContent>
               </Card>
 
-              {/* Main Content Tabs */}
               <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
                 <TabsList className="grid w-full grid-cols-3">
                   {sections.map((section) => (
@@ -439,56 +420,62 @@ export default function InstitutionalDefi() {
                 ))}
               </Tabs>
 
-              {/* Start Quiz Button */}
               <Card>
                 <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
-                  <CardTitle className="text-2xl">Test Your Analytics Knowledge</CardTitle>
+                  <CardTitle className="text-2xl">Test Your Knowledge</CardTitle>
                   <p className="text-blue-100 mt-2">
-                    Verify your understanding of DeFi analytics concepts
+                    Verify your understanding of Institutional DeFi concepts
                   </p>
                 </CardHeader>
                 <CardContent className="pt-6">
                   {!quizStarted ? (
                     <div className="text-center space-y-4">
                       <p className="text-gray-600">
-                        Ready to test your knowledge of DeFi analytics, metrics interpretation,
-                        and data analysis?
+                        Ready to test your knowledge of Institutional DeFi concepts and implementation?
                       </p>
-                      <Button onClick={() => setQuizStarted(true)} className="w-full md:w-auto">
+                      <Button onClick={handleStartQuiz} className="w-full md:w-auto">
                         Start Quiz
                       </Button>
                     </div>
                   ) : (
-                    <div>
+                    <div className="space-y-6">
                       <Progress value={(currentQuestion / quizQuestions.length) * 100} className="mb-6" />
-                      <div className="mb-6">
-                        <h3 className="text-xl font-semibold mb-4">
-                          Question {currentQuestion + 1} of {quizQuestions.length}
-                        </h3>
-                        <p className="text-lg mb-4">{quizQuestions[currentQuestion].question}</p>
+                      <div className="space-y-4">
+                        <div className="flex justify-between items-center">
+                          <h3 className="text-xl font-semibold">
+                            Question {currentQuestion + 1}/{quizQuestions.length}
+                          </h3>
+                          <span className="text-sm font-medium text-blue-600">
+                            Score: {score}/{quizQuestions.length}
+                          </span>
+                        </div>
+                        <p className="text-lg">{quizQuestions[currentQuestion].question}</p>
                         <div className="space-y-3">
                           {quizQuestions[currentQuestion].options.map((option, index) => (
                             <Button
                               key={index}
-                              variant={selectedAnswer === index ? "default" : "outline"}
+                              onClick={() => handleAnswer(index)}
+                              variant={selectedAnswer === index ? 
+                                (index === quizQuestions[currentQuestion].correctAnswer ? "default" : "destructive")
+                                : "outline"}
+                              disabled={showExplanation}
                               className="w-full justify-start text-left"
-                              onClick={() => handleAnswerSelection(index)}
                             >
                               {option}
                             </Button>
                           ))}
                         </div>
                         {showExplanation && (
-                          <div className="mt-4">
-                            <p className="text-gray-600 italic">
-                              {quizQuestions[currentQuestion].explanation}
-                            </p>
-                          </div>
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="bg-blue-50 p-4 rounded-lg"
+                          >
+                            <h4 className="font-medium text-blue-800 mb-2">Explanation</h4>
+                            <p className="text-blue-700">{quizQuestions[currentQuestion].explanation}</p>
+                          </motion.div>
                         )}
                       </div>
-                      <Button className="w-full" onClick={handleNextQuestion}>
-                        {currentQuestion === quizQuestions.length - 1 ? "Finish Quiz" : "Next Question"}
-                      </Button>
                     </div>
                   )}
                 </CardContent>
@@ -497,35 +484,26 @@ export default function InstitutionalDefi() {
           ) : (
             <Card>
               <CardContent className="p-6">
-                <h2 className="text-2xl font-semibold text-blue-800 mb-6 text-center">
-                  Institutional DeFi Quiz
-                </h2>
-
-                {showResults && (
-                  <div className="text-center">
-                    <h3 className="text-2xl font-bold mb-4">Quiz Complete!</h3>
-                    <p className="text-xl mb-4">
-                      Your score: {score} out of {quizQuestions.length}
-                    </p>
-                    <Progress
-                      value={(score / quizQuestions.length) * 100}
-                      className="mb-6"
-                    />
-                    {score === quizQuestions.length ? (
-                      <p className="text-green-500 font-semibold mb-6">Perfect score! You've mastered institutional DeFi concepts!</p>
-                    ) : score >= quizQuestions.length * 0.7 ? (
-                      <p className="text-blue-500 font-semibold mb-6">Great job! You have a strong understanding of institutional DeFi.</p>
-                    ) : (
-                      <p className="text-yellow-500 font-semibold mb-6">Keep learning! Review the material and try again to improve your score.</p>
-                    )}
-                    <Link href="/defi/module4/defi-governance">
-                      <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white transition duration-300 ease-in-out transform hover:scale-105">
-                        Continue to DeFi Governance
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </Link>
-                  </div>
-                )}
+                <div className="text-center">
+                  <h3 className="text-2xl font-bold mb-4">Quiz Complete!</h3>
+                  <p className="text-xl mb-4">
+                    Your score: {score}/{quizQuestions.length}
+                  </p>
+                  <Progress value={(score / quizQuestions.length) * 100} className="mb-6" />
+                  {score === quizQuestions.length ? (
+                    <p className="text-green-500 font-semibold mb-6">Perfect score! You've mastered Institutional DeFi concepts!</p>
+                  ) : score >= quizQuestions.length * 0.7 ? (
+                    <p className="text-blue-500 font-semibold mb-6">Great job! You have a strong understanding of Institutional DeFi.</p>
+                  ) : (
+                    <p className="text-yellow-500 font-semibold mb-6">Keep learning! Review the material and try again to improve your score.</p>
+                  )}
+                  <Link href="/defi/module4/defi-governance">
+                    <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white transition duration-300 ease-in-out transform hover:scale-105">
+                      Continue to DeFi Governance
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                </div>
               </CardContent>
             </Card>
           )}
