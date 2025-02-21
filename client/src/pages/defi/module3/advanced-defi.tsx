@@ -1,19 +1,18 @@
 import React, { useEffect } from "react";
 import { Card } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { motion } from "framer-motion";
+import { useProgress } from "@/context/progress-context";
 import { 
   Accordion, 
   AccordionContent, 
   AccordionItem, 
   AccordionTrigger 
 } from "@/components/ui/accordion";
-import { Progress } from "@/components/ui/progress";
-import { motion } from "framer-motion";
-import { useProgress } from "@/context/progress-context";
 
-export default function AdvancedDefi() {
+const AdvancedDefi: React.FC = () => {
   const { updateProgress } = useProgress();
 
-  // Update progress when component mounts
   useEffect(() => {
     updateProgress(
       3, // moduleId for Module 3
@@ -199,4 +198,6 @@ export default function AdvancedDefi() {
       </motion.div>
     </div>
   );
-}
+};
+
+export default AdvancedDefi;

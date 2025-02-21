@@ -100,7 +100,7 @@ export default function DefiModule3Quiz() {
         'defi-module3-quiz', // sectionId
         finalScore >= 70, // completed (pass threshold 70%)
         1, // courseId (1 for DeFi course)
-        undefined, // timeSpent (optional)
+        undefined, // timeSpent
         finalScore, // quizScore
         '/defi/module3/quiz', // lastQuizPath
         undefined, // lastCompletedPath
