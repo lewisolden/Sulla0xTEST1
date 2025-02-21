@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import Link from "next/link";
+import { Link } from "wouter";
 import {
   BarChart,
   Bar,
@@ -22,7 +22,7 @@ import {
   BarChart3,
   ChevronRight,
   AlertCircle,
-  Award, // Added Award icon import
+  Award,
 } from "lucide-react";
 
 interface Analytics {
