@@ -7,8 +7,8 @@ import { courseEnrollments } from "@db/schema";
 const router = Router();
 
 // Test endpoint for Perplexity API
-router.post("/test", async (req, res) => {
-  console.log('[Chat Test] Received request to /test');
+router.post("/chat/test", async (req, res) => {
+  console.log('[Chat Test] Received request to /chat/test');
   try {
     // Remove authentication check for test endpoint
     // Check if API key exists and validate format

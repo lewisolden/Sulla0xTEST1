@@ -30,12 +30,17 @@ export function registerRoutes(app: Express): Server {
   });
 
   // Register API routes with proper prefixes and authentication middleware
-  app.use("/api/chat", chatRouter); // Mount chat router first at /api/chat
+  app.use("/api", chatRouter); // Mount chat router at /api
   app.use("/api", apiRouter);
   app.use("/api", enrollmentsRouter);
   app.use("/api", adminRouter);
   app.use("/api", learningPathRouter);
   app.use("/api", userMetricsRouter);
+
+  // Add catch-all handler for API routes that aren't found
+  app.use('/api/*', (req, res) => {
+    res.status(404).json({ error: 'API endpoint not found' });
+  });
 
   // Create and return the HTTP server
   const httpServer = createServer(app);
