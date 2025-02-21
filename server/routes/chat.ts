@@ -93,10 +93,10 @@ router.get("/test", async (req, res) => {
     const data = JSON.parse(responseText);
     console.log('[Chat Test] Parsed response:', data);
 
-    res.json({ 
-      success: true, 
+    res.json({
+      success: true,
       message: "API test successful",
-      response: data 
+      response: data
     });
 
   } catch (error) {
@@ -158,7 +158,7 @@ router.post("/send", async (req, res) => {
     const result = chatMessageSchema.safeParse(req.body);
     if (!result.success) {
       console.error('[Chat] Validation error:', result.error);
-      return res.status(400).json({ 
+      return res.status(400).json({
         error: 'Invalid request format',
         details: result.error.errors
       });
@@ -169,10 +169,20 @@ router.post("/send", async (req, res) => {
 
     if (!apiKey) {
       console.error('[Chat] Missing API key');
-      return res.status(500).json({ error: 'API configuration error' });
+      return res.status(500).json({
+        error: 'API configuration error',
+        details: 'Missing Perplexity API key configuration'
+      });
     }
 
-    // Construct messages array with enhanced system prompt focused on internal content
+    if (!apiKey.match(/^pplx-[a-zA-Z0-9]{48}$/)) {
+      console.error('[Chat] Invalid API key format:', apiKey.substring(0, 10) + '...');
+      return res.status(500).json({
+        error: 'API configuration error',
+        details: 'Invalid Perplexity API key format'
+      });
+    }
+
     const messages = [{
       role: "system",
       content: "You are Sensei, an educational AI tutor specializing in blockchain education. " +
@@ -188,6 +198,8 @@ router.post("/send", async (req, res) => {
       role: "user",
       content: message
     });
+
+    console.log('[Chat] Sending request to Perplexity API with messages:', JSON.stringify(messages, null, 2));
 
     const requestBody = {
       model: "llama-3.1-sonar-small-128k-online",
@@ -211,13 +223,20 @@ router.post("/send", async (req, res) => {
     });
 
     if (!response.ok) {
-      throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+      const errorText = await response.text();
+      console.error('[Chat] Perplexity API error:', {
+        status: response.status,
+        statusText: response.statusText,
+        body: errorText
+      });
+      throw new Error(`Perplexity API request failed: ${response.status} ${response.statusText}\n${errorText}`);
     }
 
     const data = await response.json();
+    console.log('[Chat] Perplexity API response:', JSON.stringify(data, null, 2));
 
     if (!data.choices?.[0]?.message?.content) {
-      throw new Error('Invalid response format from API');
+      throw new Error('Invalid response format from Perplexity API');
     }
 
     res.json({
@@ -230,9 +249,12 @@ router.post("/send", async (req, res) => {
 
   } catch (error) {
     console.error('[Chat] Error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    console.error('[Chat] Detailed error:', errorMessage);
+
     res.status(500).json({
       error: 'Failed to process chat message',
-      details: error instanceof Error ? error.message : 'Unknown error'
+      details: errorMessage
     });
   }
 });
