@@ -13,21 +13,32 @@ async function hashPassword(password: string) {
 
 async function createInitialAdmin() {
   try {
+    // Check if admin already exists
+    const [existingAdmin] = await db
+      .select()
+      .from(adminUsers)
+      .where(eq(adminUsers.username, "admin"))
+      .limit(1);
+
+    if (existingAdmin) {
+      console.log("Admin user already exists");
+      return;
+    }
+
     const hashedPassword = await hashPassword("admin123");
-    const now = new Date();
-    
+
     const [admin] = await db
       .insert(adminUsers)
       .values({
         username: "admin",
         email: "admin@example.com",
         password: hashedPassword,
-        role: "admin",
-        createdAt: now,
-        updatedAt: now
+        role: "admin" as const,
+        createdAt: new Date(),
+        updatedAt: new Date()
       })
       .returning();
-      
+
     console.log("Admin user created successfully:", admin.id);
   } catch (error) {
     console.error("Failed to create admin user:", error);
