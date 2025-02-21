@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, ArrowRight, Wallet, Building2, Lock, Globe, CheckCircle2, X, Check } from "lucide-react";
-import { motion } from "framer-motion";
+import { ArrowLeft, ArrowRight, Wallet, Building2, Lock, Globe, CheckCircle2, X, Check, BookOpen } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useToast } from "@/hooks/use-toast";
 
-// Quiz questions with explanations
+// Quiz questions remain the same
 const quizQuestions = [
   {
     question: "What is the primary difference between DeFi and traditional finance?",
@@ -44,6 +46,30 @@ const quizQuestions = [
   }
 ];
 
+// Features array remains the same
+const features = [
+  {
+    icon: Globe,
+    title: "Permissionless Access",
+    description: "Anyone with an internet connection can access DeFi services without traditional barriers. No bank accounts, credit checks, or identity verification required."
+  },
+  {
+    icon: Lock,
+    title: "Trustless Operations",
+    description: "Smart contracts automatically enforce rules without requiring trust in intermediaries. All transactions are verifiable on the blockchain."
+  },
+  {
+    icon: Building2,
+    title: "Financial Innovation",
+    description: "Novel financial instruments like flash loans, yield farming, and liquidity mining enable new ways of generating returns and managing assets."
+  },
+  {
+    icon: Wallet,
+    title: "Asset Control",
+    description: "Users maintain full custody of their assets with private keys, eliminating counterparty risk and the need for traditional custodians."
+  }
+];
+
 export default function DefiIntro() {
   useScrollTop();
   const { updateProgress } = useProgress();
@@ -54,10 +80,15 @@ export default function DefiIntro() {
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showExplanation, setShowExplanation] = useState(false);
+  const { toast } = useToast();
 
   const handleComplete = async () => {
     await updateProgress(3, "defi-intro", true, 3);
     setIsCompleted(true);
+    toast({
+      title: "Progress Updated",
+      description: "Section completed successfully!",
+    });
   };
 
   const handleAnswer = (selectedOption: number) => {
@@ -66,6 +97,17 @@ export default function DefiIntro() {
 
     if (selectedOption === quizQuestions[currentQuestion].correctAnswer) {
       setScore(prev => prev + 1);
+      toast({
+        title: "Correct!",
+        description: "Great job! Let's see why.",
+        variant: "default",
+      });
+    } else {
+      toast({
+        title: "Incorrect",
+        description: "Not quite. Let's learn why.",
+        variant: "destructive",
+      });
     }
 
     setTimeout(() => {
@@ -79,32 +121,9 @@ export default function DefiIntro() {
     }, 3000);
   };
 
-  const features = [
-    {
-      icon: Globe,
-      title: "Permissionless Access",
-      description: "Anyone with an internet connection can access DeFi services without traditional barriers. No bank accounts, credit checks, or identity verification required."
-    },
-    {
-      icon: Lock,
-      title: "Trustless Operations",
-      description: "Smart contracts automatically enforce rules without requiring trust in intermediaries. All transactions are verifiable on the blockchain."
-    },
-    {
-      icon: Building2,
-      title: "Financial Innovation",
-      description: "Novel financial instruments like flash loans, yield farming, and liquidity mining enable new ways of generating returns and managing assets."
-    },
-    {
-      icon: Wallet,
-      title: "Asset Control",
-      description: "Users maintain full custody of their assets with private keys, eliminating counterparty risk and the need for traditional custodians."
-    }
-  ];
-
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <div className="mb-6">
           <Link href="/defi/module1">
             <Button variant="ghost" className="gap-2">
@@ -113,57 +132,80 @@ export default function DefiIntro() {
           </Link>
         </div>
 
-        <Card>
-          <CardContent className="pt-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <h1 className="text-3xl font-bold text-blue-800 mb-6">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Card className="mb-8">
+            <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
+              <CardTitle className="text-3xl font-bold">
                 Introduction to DeFi
-              </h1>
+              </CardTitle>
+              <p className="text-blue-100 mt-2">
+                Discover the revolutionary world of decentralized finance
+              </p>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <div className="mb-6">
+                <div className="flex justify-between items-center mb-2">
+                  <p className="text-sm text-gray-500">Learning Progress</p>
+                  <p className="text-sm font-medium text-blue-600">
+                    {showQuiz ? "Quiz in Progress" : "Reading Material"}
+                  </p>
+                </div>
+                <Progress
+                  value={showQuiz ? ((currentQuestion + 1) / quizQuestions.length) * 100 : 50}
+                  className="bg-blue-100"
+                />
+              </div>
 
               <div className="prose max-w-none">
                 <section className="mb-8">
                   <h2 className="text-2xl font-semibold text-blue-700 mb-4">
                     What is DeFi?
                   </h2>
-                  <p className="text-gray-700 mb-6">
-                    Decentralized Finance (DeFi) represents a revolutionary shift in how financial services are delivered and accessed. Unlike traditional financial systems that rely on centralized intermediaries like banks and brokerages, DeFi leverages blockchain technology and smart contracts to provide financial services in a trustless, transparent, and permissionless manner.
-                  </p>
+                  <div className="bg-blue-50 p-4 rounded-lg mb-6">
+                    <div className="flex items-center gap-2 mb-2">
+                      <BookOpen className="h-5 w-5 text-blue-600" />
+                      <h3 className="font-semibold text-blue-800">Key Concept</h3>
+                    </div>
+                    <p className="text-gray-700">
+                      Decentralized Finance (DeFi) represents a revolutionary shift in how financial services are delivered and accessed. Unlike traditional financial systems that rely on centralized intermediaries like banks and brokerages, DeFi leverages blockchain technology and smart contracts to provide financial services in a trustless, transparent, and permissionless manner.
+                    </p>
+                  </div>
                   <p className="text-gray-700 mb-6">
                     DeFi applications (dApps) enable users to lend, borrow, trade, and invest without traditional intermediaries. This not only reduces costs and increases efficiency but also opens up financial services to anyone with an internet connection, regardless of their location or economic status.
                   </p>
 
-                  {/* Comparison Diagram */}
-                  <div className="grid md:grid-cols-2 gap-8 mb-12 bg-gray-50 p-6 rounded-lg">
+                  {/* Enhanced Comparison Section */}
+                  <div className="grid md:grid-cols-2 gap-8 mb-12">
                     <motion.div
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.5 }}
-                      className="bg-white p-6 rounded-lg shadow-md"
+                      className="bg-gradient-to-br from-red-50 to-red-100 p-6 rounded-xl shadow-md"
                     >
                       <h3 className="text-xl font-semibold text-red-600 mb-4 flex items-center gap-2">
                         <Building2 className="h-6 w-6" />
                         Traditional Finance
                       </h3>
-                      <ul className="space-y-3 text-gray-700">
+                      <ul className="space-y-3">
                         <li className="flex items-start gap-2">
                           <X className="h-5 w-5 text-red-500 mt-1" />
-                          Requires intermediaries
+                          <span className="text-gray-700">Requires intermediaries</span>
                         </li>
                         <li className="flex items-start gap-2">
                           <X className="h-5 w-5 text-red-500 mt-1" />
-                          Limited access hours
+                          <span className="text-gray-700">Limited access hours</span>
                         </li>
                         <li className="flex items-start gap-2">
                           <X className="h-5 w-5 text-red-500 mt-1" />
-                          High fees
+                          <span className="text-gray-700">High fees</span>
                         </li>
                         <li className="flex items-start gap-2">
                           <X className="h-5 w-5 text-red-500 mt-1" />
-                          Geographic restrictions
+                          <span className="text-gray-700">Geographic restrictions</span>
                         </li>
                       </ul>
                     </motion.div>
@@ -172,34 +214,34 @@ export default function DefiIntro() {
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.5, delay: 0.2 }}
-                      className="bg-white p-6 rounded-lg shadow-md"
+                      className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-xl shadow-md"
                     >
                       <h3 className="text-xl font-semibold text-green-600 mb-4 flex items-center gap-2">
                         <Globe className="h-6 w-6" />
                         DeFi
                       </h3>
-                      <ul className="space-y-3 text-gray-700">
+                      <ul className="space-y-3">
                         <li className="flex items-start gap-2">
                           <CheckCircle2 className="h-5 w-5 text-green-500 mt-1" />
-                          Trustless & automated
+                          <span className="text-gray-700">Trustless & automated</span>
                         </li>
                         <li className="flex items-start gap-2">
                           <CheckCircle2 className="h-5 w-5 text-green-500 mt-1" />
-                          24/7 availability
+                          <span className="text-gray-700">24/7 availability</span>
                         </li>
                         <li className="flex items-start gap-2">
                           <CheckCircle2 className="h-5 w-5 text-green-500 mt-1" />
-                          Lower costs
+                          <span className="text-gray-700">Lower costs</span>
                         </li>
                         <li className="flex items-start gap-2">
                           <CheckCircle2 className="h-5 w-5 text-green-500 mt-1" />
-                          Global access
+                          <span className="text-gray-700">Global access</span>
                         </li>
                       </ul>
                     </motion.div>
                   </div>
 
-                  {/* Interactive Feature Cards */}
+                  {/* Enhanced Feature Cards */}
                   <div className="grid md:grid-cols-2 gap-6 mb-8">
                     {features.map((feature, index) => (
                       <motion.div
@@ -207,7 +249,7 @@ export default function DefiIntro() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: index * 0.1 }}
-                        className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
+                        className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
                       >
                         <feature.icon className="h-8 w-8 text-blue-500 mb-4" />
                         <h3 className="text-lg font-semibold text-blue-700 mb-2">{feature.title}</h3>
@@ -215,78 +257,19 @@ export default function DefiIntro() {
                       </motion.div>
                     ))}
                   </div>
-
-                  {/* DeFi Ecosystem Visualization */}
-                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-8 rounded-lg mb-8">
-                    <h3 className="text-xl font-semibold text-blue-800 mb-6 text-center">
-                      The DeFi Ecosystem
-                    </h3>
-                    <div className="grid grid-cols-3 gap-4 text-center">
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.5 }}
-                        className="bg-white p-4 rounded-lg shadow-sm"
-                      >
-                        <h4 className="font-semibold text-blue-700 mb-2">Lending & Borrowing</h4>
-                        <p className="text-sm text-gray-600">Earn interest or get loans without banks</p>
-                      </motion.div>
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.5, delay: 0.2 }}
-                        className="bg-white p-4 rounded-lg shadow-sm"
-                      >
-                        <h4 className="font-semibold text-blue-700 mb-2">Decentralized Exchange</h4>
-                        <p className="text-sm text-gray-600">Trade assets without intermediaries</p>
-                      </motion.div>
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.5, delay: 0.4 }}
-                        className="bg-white p-4 rounded-lg shadow-sm"
-                      >
-                        <h4 className="font-semibold text-blue-700 mb-2">Yield Farming</h4>
-                        <p className="text-sm text-gray-600">Optimize returns across protocols</p>
-                      </motion.div>
-                    </div>
-                  </div>
-
-                  {/* Key Advantages Section */}
-                  <div className="bg-blue-50 p-6 rounded-lg mb-8">
-                    <h3 className="text-xl font-semibold text-blue-800 mb-4">The DeFi Advantage</h3>
-                    <ul className="space-y-3">
-                      <li className="flex items-start gap-3">
-                        <CheckCircle2 className="h-6 w-6 text-green-500 mt-1" />
-                        <span className="text-gray-700">24/7 market access with no trading hours or holidays</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <CheckCircle2 className="h-6 w-6 text-green-500 mt-1" />
-                        <span className="text-gray-700">Lower fees due to automated processes and reduced overhead</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <CheckCircle2 className="h-6 w-6 text-green-500 mt-1" />
-                        <span className="text-gray-700">Instant settlement of trades and transactions</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <CheckCircle2 className="h-6 w-6 text-green-500 mt-1" />
-                        <span className="text-gray-700">Full transparency with all transactions visible on the blockchain</span>
-                      </li>
-                    </ul>
-                  </div>
                 </section>
 
                 {!showQuiz ? (
                   <div className="mt-8 text-center">
                     <Button
                       onClick={() => setShowQuiz(true)}
-                      className="bg-blue-600 hover:bg-blue-700 transform hover:scale-105 transition-all duration-300"
+                      className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white transform hover:scale-105 transition-all duration-300"
                     >
                       Take Topic Quiz
                     </Button>
                   </div>
                 ) : (
-                  <section className="bg-gray-50 rounded-lg p-6 mt-8">
+                  <section className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-6 mt-8">
                     <h2 className="text-2xl font-semibold text-blue-700 mb-4">
                       Topic Quiz
                     </h2>
@@ -299,7 +282,7 @@ export default function DefiIntro() {
                           </div>
                           <div className="w-full bg-gray-200 rounded-full h-2">
                             <motion.div
-                              className="bg-blue-600 h-2 rounded-full"
+                              className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full"
                               initial={{ width: `${((currentQuestion) / quizQuestions.length) * 100}%` }}
                               animate={{ width: `${((currentQuestion + 1) / quizQuestions.length) * 100}%` }}
                               transition={{ duration: 0.5 }}
@@ -320,7 +303,7 @@ export default function DefiIntro() {
                             {quizQuestions[currentQuestion].options.map((option, index) => {
                               const isSelected = selectedAnswer === index;
                               const isCorrect = index === quizQuestions[currentQuestion].correctAnswer;
-                              let buttonStyle = "w-full justify-start text-left transition-all duration-300";
+                              let buttonStyle = "w-full justify-start text-left transition-all duration-300 hover:bg-blue-50";
 
                               if (isSelected) {
                                 buttonStyle += isCorrect
@@ -364,45 +347,31 @@ export default function DefiIntro() {
                           </div>
                         </motion.div>
 
-                        {showExplanation && (
-                          <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.2 }}
-                            className="space-y-4"
-                          >
+                        <AnimatePresence>
+                          {showExplanation && (
                             <motion.div
-                              initial={{ scale: 0 }}
-                              animate={{ scale: 1 }}
-                              transition={{ type: "spring", stiffness: 200, damping: 10 }}
-                              className="flex justify-center"
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: 'auto' }}
+                              exit={{ opacity: 0, height: 0 }}
+                              className="mt-4"
                             >
-                              <div
-                                className={`text-lg font-semibold px-4 py-2 rounded-full ${
+                              <div className={`p-4 rounded-lg ${
+                                selectedAnswer === quizQuestions[currentQuestion].correctAnswer
+                                  ? "bg-green-50 border border-green-200"
+                                  : "bg-red-50 border border-red-200"
+                              }`}>
+                                <p className={`text-sm ${
                                   selectedAnswer === quizQuestions[currentQuestion].correctAnswer
-                                    ? "bg-green-100 text-green-800"
-                                    : "bg-red-100 text-red-800"
-                                }`}
-                              >
-                                {selectedAnswer === quizQuestions[currentQuestion].correctAnswer ? "Correct!" : "Incorrect!"}
+                                    ? "text-green-800"
+                                    : "text-red-800"
+                                }`}>
+                                  <span className="font-semibold">Explanation: </span>
+                                  {quizQuestions[currentQuestion].explanation}
+                                </p>
                               </div>
                             </motion.div>
-
-                            <div className={`p-4 rounded-lg ${
-                              selectedAnswer === quizQuestions[currentQuestion].correctAnswer
-                                ? "bg-green-50 border border-green-200"
-                                : "bg-red-50 border border-red-200"
-                            }`}>
-                              <p className={`text-sm ${
-                                selectedAnswer === quizQuestions[currentQuestion].correctAnswer
-                                  ? "text-green-800"
-                                  : "text-red-800"
-                              }`}>
-                                {quizQuestions[currentQuestion].explanation}
-                              </p>
-                            </div>
-                          </motion.div>
-                        )}
+                          )}
+                        </AnimatePresence>
                       </div>
                     ) : (
                       <motion.div
@@ -443,7 +412,7 @@ export default function DefiIntro() {
                             setShowExplanation(false);
                           }}
                           variant="outline"
-                          className="transform hover:scale-105 transition-all duration-300"
+                          className="bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600 transform hover:scale-105 transition-all duration-300"
                         >
                           Retake Quiz
                         </Button>
@@ -462,23 +431,23 @@ export default function DefiIntro() {
                   <div className="flex gap-4">
                     <Button
                       onClick={handleComplete}
-                      className="bg-green-600 hover:bg-green-700"
+                      className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white"
                       disabled={isCompleted}
                     >
                       {isCompleted ? "Completed" : "Mark as Complete"}
                     </Button>
 
                     <Link href="/defi/module1/blockchain-contracts">
-                      <Button className="gap-2">
+                      <Button className="gap-2 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white">
                         Next Section <ArrowRight className="h-4 w-4" />
                       </Button>
                     </Link>
                   </div>
                 </div>
               </div>
-            </motion.div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </motion.div>
       </div>
     </div>
   );
