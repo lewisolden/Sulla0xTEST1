@@ -5,7 +5,7 @@ import { eq, and, count, sql } from "drizzle-orm";
 
 const router = Router();
 
-router.get("/user/metrics", async (req, res) => {
+router.get("/api/user/metrics", async (req, res) => {
   if (!req.isAuthenticated()) {
     console.error("[User Metrics] Unauthenticated request");
     return res.status(401).json({ error: "Unauthorized - Please log in" });
@@ -47,16 +47,23 @@ router.get("/user/metrics", async (req, res) => {
 
       // For active modules, ensure at least 1 minute is counted
       if (baseTime === 0 && record.lastAccessed) {
-        console.log(`[User Metrics] Adding minimum time for active module ${record.moduleId}`);
-        return total + 1;
+        const lastAccessTime = new Date(record.lastAccessed).getTime();
+        const currentTime = new Date().getTime();
+        const timeDiff = Math.floor((currentTime - lastAccessTime) / (1000 * 60)); // Convert to minutes
+
+        if (timeDiff < 60) { // If accessed within the last hour
+          console.log(`[User Metrics] Adding active time for module ${record.moduleId}: ${timeDiff} minutes`);
+          return total + Math.max(1, timeDiff);
+        }
       }
 
+      console.log(`[User Metrics] Adding base time for module ${record.moduleId}: ${baseTime} minutes`);
       return total + baseTime;
     }, 0);
 
     console.log("[User Metrics] Total learning time calculated:", totalMinutes, "minutes");
 
-    // Get module progress data
+    // Get module progress data for other metrics
     const moduleProgressData = await db.query.moduleProgress.findMany({
       where: eq(moduleProgress.userId, userId),
     });
@@ -102,13 +109,14 @@ router.get("/user/metrics", async (req, res) => {
       }
     }
 
+    // Prepare response with detailed logging
     const response = {
       completedQuizzes: quizMetrics.completed,
       quizAccuracy: quizMetrics.completed > 0
         ? Math.round((quizMetrics.totalScore / quizMetrics.completed))
         : 0,
       earnedBadges: badgeCount?.count || 0,
-      totalLearningMinutes: totalMinutes,
+      totalLearningMinutes: Math.max(0, Math.round(totalMinutes)), // Ensure non-negative
       learningStreak: streak
     };
 
