@@ -20,7 +20,8 @@ const quizQuestions = [
       "Minimal security measures",
       "Decentralized governance only"
     ],
-    correctAnswer: 0
+    correctAnswer: 0,
+    explanation: "Institutional adoption hinges on robust regulatory compliance and KYC/AML integration to prevent illicit activities and meet legal standards."
   },
   {
     question: "Which feature is essential for institutional-grade custody solutions?",
@@ -30,7 +31,8 @@ const quizQuestions = [
       "Simple password protection",
       "Manual transaction approval only"
     ],
-    correctAnswer: 1
+    correctAnswer: 1,
+    explanation: "Multi-signature and MPC (Multi-Party Computation) technology are crucial for secure and robust institutional-grade custody, offering enhanced security and control over assets."
   },
   {
     question: "What role do smart contract audits play in institutional DeFi?",
@@ -40,7 +42,8 @@ const quizQuestions = [
       "They provide essential risk mitigation and security verification",
       "They are only required for small protocols"
     ],
-    correctAnswer: 2
+    correctAnswer: 2,
+    explanation: "Smart contract audits are vital for institutional DeFi, providing independent verification of code security and mitigating potential risks associated with smart contract vulnerabilities."
   },
   {
     question: "How do institutions typically approach DeFi liquidity provision?",
@@ -50,7 +53,8 @@ const quizQuestions = [
       "Using unaudited protocols only",
       "Through regulated venues and managed risk frameworks"
     ],
-    correctAnswer: 3
+    correctAnswer: 3,
+    explanation: "Institutions prioritize regulated venues and managed risk frameworks when providing liquidity to DeFi protocols, ensuring compliance and minimizing exposure to potential risks."
   },
   {
     question: "Which compliance feature is crucial for institutional DeFi platforms?",
@@ -60,7 +64,8 @@ const quizQuestions = [
       "No reporting requirements",
       "Minimal documentation"
     ],
-    correctAnswer: 0
+    correctAnswer: 0,
+    explanation: "Transaction monitoring and reporting are essential for compliance in institutional DeFi, enabling regulatory bodies to track activities and prevent illicit finance."
   }
 ];
 
@@ -248,6 +253,8 @@ export default function InstitutionalDefi() {
   const { updateProgress } = useProgress();
   const [activeTab, setActiveTab] = useState("overview");
   const [quizStarted, setQuizStarted] = useState(false);
+  const [showExplanation, setShowExplanation] = useState(false);
+  const [userAnswer, setUserAnswer] = useState<string | null>(null);
 
 
   const handleStartQuiz = () => {
@@ -256,6 +263,35 @@ export default function InstitutionalDefi() {
 
   const handleAnswerSelection = (answerIndex: number) => {
     setSelectedAnswer(answerIndex);
+  };
+
+  const handleAnswer = (answerIndex: number) => {
+    setSelectedAnswer(answerIndex);
+    setShowExplanation(true);
+
+    const isCorrect = answerIndex === quizQuestions[currentQuestion].correctAnswer;
+    if (isCorrect) {
+      setScore(score + 1);
+      toast({
+        title: "Correct! 🎉",
+        description: "Great job! Moving to next question...",
+        variant: "default",
+      });
+    } else {
+      toast({
+        title: "Incorrect",
+        description: "Let's understand why before moving on.",
+        variant: "destructive",
+      });
+    }
+
+    setTimeout(() => {
+      if (currentQuestion < quizQuestions.length - 1) {
+        setShowExplanation(false);
+        setSelectedAnswer(null);
+        setCurrentQuestion(currentQuestion + 1);
+      }
+    }, 3000);
   };
 
   const handleNextQuestion = () => {
@@ -267,14 +303,9 @@ export default function InstitutionalDefi() {
       return;
     }
 
-    if (selectedAnswer === quizQuestions[currentQuestion].correctAnswer) {
-      setScore(score + 1);
-    }
+    handleAnswer(selectedAnswer);
 
-    if (currentQuestion < quizQuestions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
-      setSelectedAnswer(null);
-    } else {
+    if (currentQuestion === quizQuestions.length - 1) {
       setShowResults(true);
       const finalScore = (score / quizQuestions.length) * 100;
       updateProgress(
@@ -284,7 +315,7 @@ export default function InstitutionalDefi() {
         3,
         undefined,
         finalScore,
-        '/defi/module4/institutional-defi',
+        '/defi/module4/defi-governance',
         undefined,
         'DeFi'
       );
@@ -447,6 +478,13 @@ export default function InstitutionalDefi() {
                             </Button>
                           ))}
                         </div>
+                        {showExplanation && (
+                          <div className="mt-4">
+                            <p className="text-gray-600 italic">
+                              {quizQuestions[currentQuestion].explanation}
+                            </p>
+                          </div>
+                        )}
                       </div>
                       <Button className="w-full" onClick={handleNextQuestion}>
                         {currentQuestion === quizQuestions.length - 1 ? "Finish Quiz" : "Next Question"}
@@ -463,35 +501,7 @@ export default function InstitutionalDefi() {
                   Institutional DeFi Quiz
                 </h2>
 
-                {!showResults ? (
-                  <>
-                    <Progress
-                      value={(currentQuestion / quizQuestions.length) * 100}
-                      className="mb-6"
-                    />
-                    <div className="mb-6">
-                      <h3 className="text-xl font-semibold mb-4">
-                        Question {currentQuestion + 1} of {quizQuestions.length}
-                      </h3>
-                      <p className="text-lg mb-4">{quizQuestions[currentQuestion].question}</p>
-                      <div className="space-y-3">
-                        {quizQuestions[currentQuestion].options.map((option, index) => (
-                          <Button
-                            key={index}
-                            variant={selectedAnswer === index ? "default" : "outline"}
-                            className="w-full justify-start text-left"
-                            onClick={() => handleAnswerSelection(index)}
-                          >
-                            {option}
-                          </Button>
-                        ))}
-                      </div>
-                    </div>
-                    <Button className="w-full" onClick={handleNextQuestion}>
-                      {currentQuestion === quizQuestions.length - 1 ? "Finish Quiz" : "Next Question"}
-                    </Button>
-                  </>
-                ) : (
+                {showResults && (
                   <div className="text-center">
                     <h3 className="text-2xl font-bold mb-4">Quiz Complete!</h3>
                     <p className="text-xl mb-4">
@@ -508,9 +518,9 @@ export default function InstitutionalDefi() {
                     ) : (
                       <p className="text-yellow-500 font-semibold mb-6">Keep learning! Review the material and try again to improve your score.</p>
                     )}
-                    <Link href="/defi/module3/quiz">
+                    <Link href="/defi/module4/defi-governance">
                       <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white transition duration-300 ease-in-out transform hover:scale-105">
-                        Continue to Module 3 Quiz
+                        Continue to DeFi Governance
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </Link>
