@@ -53,17 +53,6 @@ export function CourseAssistant() {
     setIsLoading(true);
 
     try {
-      console.log("Sending chat request with:", {
-        message: input,
-        context: {
-          currentPath: window.location.pathname,
-          previousMessages: messages.map(msg => ({
-            ...msg,
-            timestamp: msg.timestamp.toISOString()
-          }))
-        }
-      });
-
       const response = await fetch('/api/chat/send', {
         method: 'POST',
         headers: {
@@ -74,21 +63,21 @@ export function CourseAssistant() {
           context: {
             currentPath: window.location.pathname,
             previousMessages: messages.map(msg => ({
-              ...msg,
-              timestamp: msg.timestamp.toISOString()
+              role: msg.role,
+              content: msg.content,
+              timestamp: msg.timestamp.toISOString(),
+              links: msg.links
             })),
             userProgress: {},
           }
         }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || `Server error: ${response.status}`);
-      }
-
       const data = await response.json();
-      console.log("Received chat response:", data);
+
+      if (!response.ok) {
+        throw new Error(data.error || `Server error: ${response.status}`);
+      }
 
       if (!data.success || !data.response) {
         throw new Error("Invalid response format from server");
@@ -105,7 +94,7 @@ export function CourseAssistant() {
       setError(error instanceof Error ? error.message : "Failed to send message");
       setMessages(prev => [...prev, {
         role: "assistant",
-        content: "I'm currently experiencing some technical difficulties. While I work on resolving this, you can explore our course modules or check out the curriculum overview. Would you like me to point you to some specific resources?",
+        content: "I'm having trouble connecting to my knowledge base. Please try again in a moment, or let me know if you'd like to explore our course materials instead.",
         timestamp: new Date(),
         links: [
           { text: "Browse Course Modules", url: "/curriculum" },

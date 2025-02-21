@@ -11,7 +11,7 @@ const chatMessageSchema = z.object({
     previousMessages: z.array(z.object({
       role: z.enum(["user", "assistant"]),
       content: z.string(),
-      timestamp: z.date(),
+      timestamp: z.string(),
       links: z.array(z.object({
         text: z.string(),
         url: z.string()
@@ -38,9 +38,15 @@ router.post("/send", async (req, res) => {
     const { message, context } = result.data;
 
     // Check API key
-    if (!process.env.PERPLEXITY_API_KEY) {
+    const apiKey = process.env.PERPLEXITY_API_KEY?.trim();
+    if (!apiKey) {
       console.error('[Chat] Missing Perplexity API key');
       return res.status(500).json({ error: 'API configuration error' });
+    }
+
+    if (!apiKey.match(/^pplx-[a-zA-Z0-9]{48}$/)) {
+      console.error('[Chat] Invalid API key format');
+      return res.status(500).json({ error: 'Invalid API key configuration' });
     }
 
     // Prepare system message based on context
@@ -91,7 +97,7 @@ router.post("/send", async (req, res) => {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.PERPLEXITY_API_KEY}`
+        'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify(requestBody)
     });
