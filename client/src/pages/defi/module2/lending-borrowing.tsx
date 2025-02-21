@@ -3,14 +3,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, BookOpen, CheckCircle2, ArrowRight, Code2, Network, Shield, TrendingUp, Lock, RefreshCw, Settings, Coins, Calculator, AlertTriangle, Building2, DollarSign } from "lucide-react";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { ArrowLeft, BookOpen, CheckCircle2, ArrowRight, Code2, Network, Shield, TrendingUp, Lock, RefreshCw, Settings, Coins, Calculator, AlertTriangle, Building2, DollarSign, Check, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 // Animation variants
@@ -98,7 +96,7 @@ const InteractiveLendingCalculator = () => {
                 />
                 <Shield className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-purple-500" />
               </div>
-              <motion.div 
+              <motion.div
                 className="mt-2 h-2 bg-gray-200 rounded-full overflow-hidden"
                 animate={{ scale: isAnimating ? [1, 1.02, 1] : 1 }}
               >
@@ -146,7 +144,7 @@ const InteractiveLendingCalculator = () => {
           </div>
 
           <div className="space-y-6">
-            <motion.div 
+            <motion.div
               className="bg-white p-6 rounded-xl shadow-md"
               animate={{ scale: isAnimating ? [1, 1.02, 1] : 1 }}
             >
@@ -154,7 +152,7 @@ const InteractiveLendingCalculator = () => {
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600">Maximum Borrow:</span>
-                  <motion.span 
+                  <motion.span
                     className="font-bold text-purple-700"
                     animate={{ scale: isAnimating ? [1, 1.1, 1] : 1 }}
                   >
@@ -163,7 +161,7 @@ const InteractiveLendingCalculator = () => {
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600">Interest Payment:</span>
-                  <motion.span 
+                  <motion.span
                     className="font-bold text-purple-700"
                     animate={{ scale: isAnimating ? [1, 1.1, 1] : 1 }}
                   >
@@ -172,7 +170,7 @@ const InteractiveLendingCalculator = () => {
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600">Total Repayment:</span>
-                  <motion.span 
+                  <motion.span
                     className="font-bold text-purple-700"
                     animate={{ scale: isAnimating ? [1, 1.1, 1] : 1 }}
                   >
@@ -183,9 +181,9 @@ const InteractiveLendingCalculator = () => {
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-gray-600">Health Factor:</span>
                     <span className={`font-bold ${
-                      healthFactor >= 1.5 ? 'text-green-600' : 
-                      healthFactor >= 1.1 ? 'text-yellow-600' : 
-                      'text-red-600'
+                      healthFactor >= 1.5 ? 'text-green-600' :
+                        healthFactor >= 1.1 ? 'text-yellow-600' :
+                          'text-red-600'
                     }`}>
                       {healthFactor.toFixed(2)}
                     </span>
@@ -193,9 +191,9 @@ const InteractiveLendingCalculator = () => {
                   <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
                     <motion.div
                       className={`h-full ${
-                        healthFactor >= 1.5 ? 'bg-green-500' : 
-                        healthFactor >= 1.1 ? 'bg-yellow-500' : 
-                        'bg-red-500'
+                        healthFactor >= 1.5 ? 'bg-green-500' :
+                          healthFactor >= 1.1 ? 'bg-yellow-500' :
+                            'bg-red-500'
                       }`}
                       animate={{ width: `${Math.min(100, healthFactor * 50)}%` }}
                       transition={{ duration: 0.5 }}
@@ -239,7 +237,8 @@ const quiz = {
         "To encourage more borrowing",
         "To maintain token price stability"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      explanation: "Over-collateralization is a crucial risk management mechanism that protects lenders by ensuring borrowers provide more collateral value than their loan amount. This acts as a buffer against market volatility and potential defaults."
     },
     {
       id: 2,
@@ -250,7 +249,8 @@ const quiz = {
         "Instant loans",
         "Lightning loans"
       ],
-      correctAnswer: 1
+      correctAnswer: 1,
+      explanation: "Flash loans are a unique DeFi innovation that allows users to borrow and repay within the same transaction block without collateral. They're commonly used for arbitrage and debt refinancing."
     },
     {
       id: 3,
@@ -261,9 +261,135 @@ const quiz = {
         "The position is liquidated",
         "Interest rates are increased"
       ],
-      correctAnswer: 2
+      correctAnswer: 2,
+      explanation: "When collateral value drops below the required threshold, the position is automatically liquidated to protect lenders. This is why maintaining a healthy collateralization ratio is crucial."
     }
   ]
+};
+
+const QuizQuestion = ({ question, onAnswer, showExplanation }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className="space-y-4"
+    >
+      <h3 className="text-xl font-medium text-gray-800 mb-4">
+        {question.question}
+      </h3>
+      <div className="space-y-3">
+        {question.options.map((option, idx) => (
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: idx * 0.1 }}
+          >
+            <Button
+              variant="outline"
+              className={`w-full justify-start text-left p-4 ${
+                showExplanation && idx === question.correctAnswer
+                  ? 'bg-green-50 border-green-500 text-green-700'
+                  : ''
+              }`}
+              onClick={() => onAnswer(idx)}
+            >
+              {option}
+            </Button>
+          </motion.div>
+        ))}
+      </div>
+
+      <AnimatePresence>
+        {showExplanation && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="mt-4 p-4 bg-blue-50 rounded-lg"
+          >
+            <p className="text-blue-800">
+              <span className="font-semibold">Explanation: </span>
+              {question.explanation}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+};
+
+const InteractiveQuiz = ({ onComplete }) => {
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [showExplanation, setShowExplanation] = useState(false);
+  const [answers, setAnswers] = useState({});
+  const [score, setScore] = useState(0);
+  const { toast } = useToast();
+
+  const handleAnswer = (selectedIndex) => {
+    const currentQuestion = quiz.questions[currentQuestionIndex];
+    const isCorrect = selectedIndex === currentQuestion.correctAnswer;
+
+    setAnswers(prev => ({
+      ...prev,
+      [currentQuestion.id]: selectedIndex
+    }));
+
+    // Show correct/incorrect toast
+    toast({
+      title: isCorrect ? "Correct!" : "Incorrect",
+      description: isCorrect ? "Great job! Let's see why." : "Not quite. Let's learn why.",
+      variant: isCorrect ? "default" : "destructive",
+    });
+
+    // Show explanation
+    setShowExplanation(true);
+
+    // Auto advance after 3 seconds
+    setTimeout(() => {
+      if (currentQuestionIndex < quiz.questions.length - 1) {
+        setCurrentQuestionIndex(prev => prev + 1);
+        setShowExplanation(false);
+      } else {
+        // Calculate final score
+        const correctAnswers = Object.entries(answers).filter(
+          ([questionId, answer]) =>
+            answer === quiz.questions.find(q => q.id === parseInt(questionId)).correctAnswer
+        ).length;
+        const finalScore = (correctAnswers / quiz.questions.length) * 100;
+        setScore(finalScore);
+        onComplete(finalScore);
+      }
+    }, 3000);
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-bold text-purple-800">
+          Topic Quiz: Lending & Borrowing
+        </h2>
+        <span className="text-sm text-gray-600">
+          Question {currentQuestionIndex + 1} of {quiz.questions.length}
+        </span>
+      </div>
+
+      <Progress
+        value={(currentQuestionIndex / quiz.questions.length) * 100}
+        className="mb-6"
+      />
+
+      <AnimatePresence mode="wait">
+        <QuizQuestion
+          key={currentQuestionIndex}
+          question={quiz.questions[currentQuestionIndex]}
+          onAnswer={handleAnswer}
+          showExplanation={showExplanation}
+        />
+      </AnimatePresence>
+    </div>
+  );
 };
 
 export default function LendingBorrowing() {
@@ -380,17 +506,11 @@ export default function LendingBorrowing() {
     }
   };
 
-  const handleQuizSubmit = async () => {
-    const totalQuestions = quiz.questions.length;
-    const correctAnswers = quiz.questions.filter(
-      (q) => selectedAnswers[q.id] === q.correctAnswer
-    ).length;
-    const calculatedScore = (correctAnswers / totalQuestions) * 100;
-
-    setScore(calculatedScore);
+  const handleQuizComplete = async (score) => {
+    setScore(score);
     setQuizSubmitted(true);
 
-    if (calculatedScore >= 70) {
+    if (score >= 70) {
       try {
         await updateProgress({
           courseId: 3,
@@ -402,12 +522,12 @@ export default function LendingBorrowing() {
           progress: 100,
           timestamp: new Date().toISOString(),
           userId: 'current',
-          metadata: { score: calculatedScore }
+          metadata: { score }
         });
 
         toast({
           title: "Quiz Completed!",
-          description: `You scored ${calculatedScore}%. Great job!`,
+          description: `You scored ${score}%. Great job!`,
         });
       } catch (error) {
         toast({
@@ -419,13 +539,13 @@ export default function LendingBorrowing() {
     } else {
       toast({
         title: "Quiz Result",
-        description: `You scored ${calculatedScore}%. Try again to achieve at least 70%.`,
+        description: `You scored ${score}%. Try again to achieve at least 70%.`,
       });
     }
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-purple-100 to-white">
+    <div className="container mx-auto px-4 py-8">
       <div className="max-w-5xl mx-auto">
         <div className="mb-6">
           <Link href="/defi/module2">
@@ -515,80 +635,41 @@ export default function LendingBorrowing() {
           </TabsContent>
 
           <TabsContent value="quiz">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-2xl font-bold text-purple-800">
-                  Topic Quiz: Lending & Borrowing
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  {quiz.questions.map((q) => (
-                    <div key={q.id} className="p-4 bg-white rounded-lg shadow">
-                      <h3 className="text-lg font-medium text-gray-800 mb-4">
-                        {q.question}
-                      </h3>
-                      <div className="space-y-2">
-                        {q.options.map((option, idx) => (
-                          <div
-                            key={idx}
-                            className={`p-3 rounded-lg border cursor-pointer transition-all ${
-                              selectedAnswers[q.id] === idx
-                                ? 'border-purple-500 bg-purple-50'
-                                : 'border-gray-200 hover:border-purple-200'
-                            }`}
-                            onClick={() => !quizSubmitted && setSelectedAnswers({
-                              ...selectedAnswers,
-                              [q.id]: idx
-                            })}
-                          >
-                            <p className="text-gray-700">{option}</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
+            <div className="mt-12">
+              <Card className="overflow-hidden">
+                <CardHeader className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white">
+                  <CardTitle className="text-2xl">Test Your Knowledge</CardTitle>
+                  <p className="text-purple-100">
+                    Complete the quiz to test your understanding of DeFi lending concepts
+                  </p>
+                </CardHeader>
+                <CardContent className="pt-6">
+                  <InteractiveQuiz onComplete={handleQuizComplete} />
+                </CardContent>
+              </Card>
 
-                  <div className="flex justify-between items-center mt-6">
-                    <Link href="/defi/module2/stablecoins">
-                      <Button variant="outline" className="gap-2">
-                        <ArrowRight className="h-4 w-4" />
-                        Next Topic: Stablecoins
-                      </Button>
-                    </Link>
-
-                    <Button
-                      onClick={handleQuizSubmit}
-                      disabled={quizSubmitted || Object.keys(selectedAnswers).length !== quiz.questions.length}
-                      className="bg-purple-600 hover:bg-purple-700"
-                    >
-                      {quizSubmitted ? (
-                        <div className="flex items-center gap-2">
-                          <CheckCircle2 className="h-4 w-4" />
-                          {score >= 70 ? "Completed!" : "Try Again"}
-                        </div>
-                      ) : (
-                        "Submit Quiz"
-                      )}
-                    </Button>
+              {quizSubmitted && (
+                <div className="mt-6 flex justify-between items-center">
+                  <div className={`p-4 rounded-lg ${
+                    score >= 70 ? 'bg-green-50 text-green-800' : 'bg-yellow-50 text-yellow-800'
+                  }`}>
+                    <h4 className="font-semibold mb-2">Final Score: {score}%</h4>
+                    {score >= 70 ? (
+                      <p>Excellent work! You've mastered the basics of DeFi lending.</p>
+                    ) : (
+                      <p>Review the material and try again to achieve a passing score of 70%.</p>
+                    )}
                   </div>
 
-                  {quizSubmitted && (
-                    <div className={`mt-6 p-4 rounded-lg ${
-                      score >= 70 ? 'bg-green-50 text-green-800' : 'bg-yellow-50 text-yellow-800'
-                    }`}>
-                      <h4 className="font-semibold mb-2">Quiz Results</h4>
-                      <p>You scored: {score}%</p>
-                      {score < 70 && (
-                        <p className="mt-2">
-                          You need 70% to pass. Review the material and try again!
-                        </p>
-                      )}
-                    </div>
-                  )}
+                  <Link href="/defi/module2/stablecoins">
+                    <Button className="gap-2" variant="outline">
+                      Next Topic: Stablecoins
+                      <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  </Link>
                 </div>
-              </CardContent>
-            </Card>
+              )}
+            </div>
           </TabsContent>
         </Tabs>
       </div>
