@@ -6,7 +6,65 @@ import { useToast } from "@/hooks/use-toast";
 import { motion } from "framer-motion";
 import { useProgress } from "@/context/progress-context";
 import { Link } from "wouter";
-import { ArrowRight, BookOpen, Code, Share2, Zap } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+
+const questions = [
+  {
+    id: 1,
+    question: "What is a key characteristic of flash loans in DeFi?",
+    options: [
+      "They require high collateral",
+      "They must be repaid within the same transaction block",
+      "They have a 24-hour repayment period",
+      "They can only be used for staking"
+    ],
+    correctAnswer: 1
+  },
+  {
+    id: 2,
+    question: "Which of the following is a concentrated liquidity feature?",
+    options: [
+      "Equal distribution across all price ranges",
+      "Liquidity provided only in specific price ranges",
+      "Fixed fee percentages",
+      "Unlimited pool size"
+    ],
+    correctAnswer: 1
+  },
+  {
+    id: 3,
+    question: "What is MEV in DeFi?",
+    options: [
+      "Maximum Exchange Volume",
+      "Miner Extractable Value",
+      "Minimum Entry Value",
+      "Multiple Exchange Verification"
+    ],
+    correctAnswer: 1
+  },
+  {
+    id: 4,
+    question: "Which strategy helps mitigate impermanent loss?",
+    options: [
+      "Increasing leverage",
+      "Single-sided liquidity provision",
+      "Delta-neutral positions",
+      "Avoiding liquidity pools entirely"
+    ],
+    correctAnswer: 2
+  },
+  {
+    id: 5,
+    question: "What is a key aspect of protocol-owned liquidity?",
+    options: [
+      "All liquidity is provided by users",
+      "The protocol owns and controls its liquidity",
+      "Liquidity is controlled by external market makers",
+      "Liquidity is always locked for a fixed period"
+    ],
+    correctAnswer: 1
+  }
+];
 
 export default function DefiIntegrations() {
   const [showQuiz, setShowQuiz] = useState(false);
@@ -40,7 +98,7 @@ export default function DefiIntegrations() {
           <div className="space-y-6">
             <section>
               <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
-                <Code className="h-6 w-6 text-blue-500" />
+                {/* Icon removed as per edited code example */}
                 Cross-Chain Integrations
               </h2>
               <p className="text-gray-700 dark:text-gray-300 mb-4">
@@ -56,7 +114,7 @@ export default function DefiIntegrations() {
 
             <section>
               <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
-                <Share2 className="h-6 w-6 text-green-500" />
+                {/* Icon removed as per edited code example */}
                 API and Oracle Integrations
               </h2>
               <p className="text-gray-700 dark:text-gray-300 mb-4">
@@ -72,7 +130,7 @@ export default function DefiIntegrations() {
 
             <section>
               <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
-                <BookOpen className="h-6 w-6 text-yellow-500" />
+                {/* Icon removed as per edited code example */}
                 Traditional Finance (TradFi) Integration
               </h2>
               <p className="text-gray-700 dark:text-gray-300 mb-4">
@@ -88,7 +146,7 @@ export default function DefiIntegrations() {
 
             <section>
               <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
-                <Zap className="h-6 w-6 text-red-500" />
+                {/* Icon removed as per edited code example */}
                 Smart Contract Integrations
               </h2>
               <p className="text-gray-700 dark:text-gray-300 mb-4">
@@ -103,7 +161,7 @@ export default function DefiIntegrations() {
             </section>
 
             <div className="mt-8">
-              <Button 
+              <Button
                 onClick={handleStartQuiz}
                 className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 transition-all duration-200"
               >
@@ -125,64 +183,6 @@ function DefiIntegrationsQuiz() {
   const [showResults, setShowResults] = useState(false);
   const { toast } = useToast();
   const { updateProgress } = useProgress();
-
-  const questions = [
-    {
-      id: 1,
-      question: "Which component is essential for enabling cross-chain asset transfers?",
-      options: [
-        "Social media integration",
-        "Bridge protocols",
-        "Email notifications",
-        "Mobile applications"
-      ],
-      correctAnswer: 1
-    },
-    {
-      id: 2,
-      question: "What role do oracles play in DeFi integrations?",
-      options: [
-        "They provide website hosting",
-        "They manage user accounts",
-        "They provide external data feeds",
-        "They create smart contracts"
-      ],
-      correctAnswer: 2
-    },
-    {
-      id: 3,
-      question: "Which is a key component of TradFi integration?",
-      options: [
-        "Social media marketing",
-        "Gaming features",
-        "Fiat on/off ramps",
-        "NFT marketplaces"
-      ],
-      correctAnswer: 2
-    },
-    {
-      id: 4,
-      question: "What enables complex DeFi functionality across protocols?",
-      options: [
-        "Smart contract integrations",
-        "Social networking",
-        "Email marketing",
-        "Mobile apps"
-      ],
-      correctAnswer: 0
-    },
-    {
-      id: 5,
-      question: "Which is crucial for institutional DeFi access?",
-      options: [
-        "Social media presence",
-        "API gateways",
-        "Gaming features",
-        "NFT collections"
-      ],
-      correctAnswer: 1
-    }
-  ];
 
   const handleAnswerSelection = (answerIndex: number) => {
     setSelectedAnswer(answerIndex);
@@ -206,7 +206,7 @@ function DefiIntegrationsQuiz() {
       setSelectedAnswer(null);
     } else {
       setShowResults(true);
-      const finalScore = ((score + (selectedAnswer === questions[currentQuestion].correctAnswer ? 1 : 0)) / questions.length) * 100;
+      const finalScore = (score / questions.length) * 100;
       updateProgress(
         4,
         'defi-module4-integrations-quiz',
