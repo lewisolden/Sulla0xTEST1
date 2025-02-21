@@ -822,61 +822,78 @@ const DerivativesSection = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="space-y-8">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <Link href="/defi/module2" className="text-blue-600 hover:text-blue-800">
-              <ArrowLeft className="h-6 w-6" />
-            </Link>
-            <h1 className="text-3xl font-bold text-gray-900">DeFi Derivatives</h1>
-          </div>
-          <Progress value={typeof progress === 'number' ? progress : 0} className="w-32" />
-        </div>
+      <div className="max-w-4xl mx-auto space-y-8">
+        <div className="space-y-8">
+          <Card>
+            <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
+              <CardTitle className="text-3xl font-bold">
+                DeFi Derivatives
+              </CardTitle>
+              <p className="text-blue-100 mt-2">
+                Master the fundamentals of decentralized derivatives trading and advanced financial instruments
+              </p>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <div className="mb-6">
+                <div className="flex justify-between items-center mb-2">
+                  <p className="text-sm text-gray-500">Section Progress</p>
+                  <p className="text-sm font-medium text-blue-600">
+                    {Math.round((currentSection / sections.length) * 100)}%
+                  </p>
+                </div>
+                <Progress
+                  value={(currentSection / sections.length) * 100}
+                  className="bg-blue-100"
+                />
+              </div>
+            </CardContent>
+          </Card>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="space-y-6"
-        >
-          {sections.map((section, index) => (
-            <motion.div
-              key={section.id}
-              variants={itemVariants}
-              className={`${
-                index === currentSection ? 'border-2 border-blue-500' : ''
-              } rounded-lg overflow-hidden`}
-            >
-              <Card>
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-blue-500 rounded-lg">
-                        <section.icon className="h-6 w-6 text-white" />
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="space-y-6"
+          >
+            {sections.map((section, index) => (
+              <motion.div
+                key={section.id}
+                variants={itemVariants}
+                className={`${
+                  index === currentSection ? 'border-2 border-blue-500' : ''
+                } rounded-lg overflow-hidden`}
+              >
+                <Card>
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 bg-blue-500 rounded-lg">
+                          <section.icon className="h-6 w-6 text-white" />
+                        </div>
+                        <CardTitle className="text-xl font-semibold text-blue-800">
+                          {section.title}
+                        </CardTitle>
                       </div>
-                      <CardTitle className="text-xl font-semibold text-blue-800">
-                        {section.title}
-                      </CardTitle>
+                      {index < currentSection && (
+                        <CheckCircle2 className="h-6 w-6 text-green-500" />
+                      )}
                     </div>
-                    {index < currentSection && (
-                      <CheckCircle2 className="h-6 w-6 text-green-500" />
-                    )}
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  {section.content}
-                </CardContent>
-                {currentSection === index && index < sections.length - 1 && (
-                  <CardFooter>
-                    <Button onClick={() => handleSectionComplete(index)} className="ml-auto">
-                      Complete Section
-                    </Button>
-                  </CardFooter>
-                )}
-              </Card>
-            </motion.div>
-          ))}
-        </motion.div>
+                  </CardHeader>
+                  <CardContent>
+                    {section.content}
+                  </CardContent>
+                  {currentSection === index && index < sections.length - 1 && (
+                    <CardFooter>
+                      <Button onClick={() => handleSectionComplete(index)} className="ml-auto">
+                        Complete Section
+                      </Button>
+                    </CardFooter>
+                  )}
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
       </div>
     </div>
   );
