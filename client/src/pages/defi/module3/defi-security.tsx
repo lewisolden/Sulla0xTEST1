@@ -349,9 +349,9 @@ const SecurityQuiz = () => {
                         ? "Perfect score! You're well-versed in DeFi security!"
                         : "Good effort! Review the security concepts and try again!"}
                     </p>
-                    <Link href="/defi/module3">
+                    <Link href="/defi/module3/defi-analytics">
                       <Button className="w-full bg-green-600 hover:bg-green-700">
-                        Return to Module 3
+                        Continue to DeFi Analytics
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </Link>
