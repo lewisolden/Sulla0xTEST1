@@ -63,7 +63,7 @@ const PUBLIC_ROUTES = [
   '/api/register',
   '/api/login',
   '/api/admin/login',
-  '/api/chat/test' // Added chat test endpoint to public routes
+  '/api/chat/test' // Updated to match the full path
 ];
 
 function isPublicRoute(path: string): boolean {
