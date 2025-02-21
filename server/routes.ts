@@ -31,12 +31,16 @@ export function registerRoutes(app: Express): Server {
   // Register other API routes
   app.use("/api", apiRouter);
   app.use("/api", enrollmentsRouter);
-  app.use("/api", adminRouter);
+  app.use("/api", adminRouter); // Make sure adminRouter is registered
   app.use("/api", learningPathRouter);
   app.use("/api", userMetricsRouter);
 
-  // Add catch-all handler for API routes that aren't found
+  // Add catch-all handler for API routes
   app.use('/api/*', (req, res) => {
+    console.log('[API 404]', {
+      method: req.method,
+      path: req.path
+    });
     res.status(404).json({ error: 'API endpoint not found' });
   });
 

@@ -3,8 +3,10 @@ import { db } from '@db';
 import { users, adminUsers, courseEnrollments, moduleProgress, userAchievements, feedback } from '@db/schema';
 import { requireAdmin } from '../auth';
 import { gt, sql, desc, and, eq, count } from 'drizzle-orm';
+import express from "express";
+//import { eq } from "drizzle-orm"; //already imported above
 
-const router = Router();
+const router = express.Router();
 
 // Get all users with pagination and search
 router.get('/users', requireAdmin, async (req, res) => {
@@ -162,85 +164,68 @@ router.patch('/feedback/:id', requireAdmin, async (req, res) => {
   }
 });
 
-// Analytics dashboard data
-router.get('/analytics/users', requireAdmin, async (req, res) => {
+// Analytics dashboard data - REPLACED with edited code
+router.get("/admin/analytics/users", requireAdmin, async (req, res) => {
   try {
-    console.log('Fetching admin analytics - starting');
-
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-
-    // Get total and active users
-    const [{
-      totalUsers,
-      activeUsers,
-      totalEnrollments,
-      completedModules
-    }] = await db
-      .select({
-        totalUsers: count(users.id),
-        activeUsers: count(sql`case when ${users.lastActivity} > ${sevenDaysAgo} then 1 end`),
-        totalEnrollments: count(courseEnrollments.id),
-        completedModules: count(sql`case when ${courseEnrollments.status} = 'completed' then 1 end`)
-      })
+    const [totalUsers] = await db
+      .select({ count: users.id })
       .from(users)
-      .leftJoin(courseEnrollments, eq(users.id, courseEnrollments.userId));
+      .count();
 
-    console.log('Basic metrics fetched:', { totalUsers, activeUsers, totalEnrollments, completedModules });
+    const activeUsers = await db
+      .select()
+      .from(users)
+      .where(
+        eq(users.lastActivity as any, 
+          db.sql`date_trunc('day', now())`)
+      );
 
-    // Get achievement count
-    const [{ achievementCount }] = await db
-      .select({
-        achievementCount: count(userAchievements.id)
-      })
-      .from(userAchievements);
+    const [totalEnrollments] = await db
+      .select({ count: courseEnrollments.id })
+      .from(courseEnrollments)
+      .count();
 
-    // Get pending feedback count
-    const [{ pendingCount }] = await db
-      .select({
-        pendingCount: count(feedback.id)
-      })
+    const [completedModules] = await db
+      .select({ count: moduleProgress.id })
+      .from(moduleProgress)
+      .where(eq(moduleProgress.completed, true))
+      .count();
+
+    const [achievementsAwarded] = await db
+      .select({ count: userAchievements.id })
+      .from(userAchievements)
+      .count();
+
+    const [pendingFeedback] = await db
+      .select({ count: feedback.id })
       .from(feedback)
-      .where(eq(feedback.status, 'pending'));
+      .where(eq(feedback.status, 'pending'))
+      .count();
 
-    // Get activity data for last 30 days
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
-    const activityData = await db
+    // Get user activity data for the last 7 days
+    const userActivityData = await db
       .select({
-        date: sql<string>`date_trunc('day', ${users.lastActivity})::date`,
-        activeUsers: count(users.id),
-        completions: count(sql`case when ${courseEnrollments.status} = 'completed' then 1 end`)
+        date: users.lastActivity,
+        count: users.id
       })
       .from(users)
-      .leftJoin(courseEnrollments, eq(users.id, courseEnrollments.userId))
-      .where(gt(users.lastActivity, thirtyDaysAgo))
-      .groupBy(sql`date_trunc('day', ${users.lastActivity})`)
-      .orderBy(sql`date_trunc('day', ${users.lastActivity})`);
+      .where(
+        db.sql`${users.lastActivity} >= now() - interval '7 days'`
+      )
+      .groupBy(users.lastActivity);
 
-    const response = {
-      totalUsers: Number(totalUsers || 0),
-      activeUsers: Number(activeUsers || 0),
-      totalEnrollments: Number(totalEnrollments || 0),
-      completedModules: Number(completedModules || 0),
-      achievementsAwarded: Number(achievementCount || 0),
-      pendingFeedback: Number(pendingCount || 0),
-      userActivityData: activityData.map(item => ({
-        date: item.date,
-        activeUsers: Number(item.activeUsers || 0),
-        completions: Number(item.completions || 0)
-      }))
-    };
-
-    console.log('Admin analytics response ready:', response);
-    res.json(response);
-  } catch (error) {
-    console.error('Error fetching analytics:', error);
-    res.status(500).json({ 
-      error: 'Failed to fetch analytics',
-      details: error instanceof Error ? error.message : 'Unknown error'
+    res.json({
+      totalUsers: totalUsers?.count || 0,
+      activeUsers: activeUsers?.length || 0,
+      totalEnrollments: totalEnrollments?.count || 0,
+      completedModules: completedModules?.count || 0,
+      achievementsAwarded: achievementsAwarded?.count || 0,
+      pendingFeedback: pendingFeedback?.count || 0,
+      userActivityData
     });
+  } catch (error) {
+    console.error("Error fetching admin analytics:", error);
+    res.status(500).json({ error: "Failed to fetch analytics" });
   }
 });
 
