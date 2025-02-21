@@ -5,6 +5,7 @@ const router = Router();
 
 // Add router-level logging middleware
 router.use((req, res, next) => {
+  res.setHeader('Content-Type', 'application/json');
   console.log('[Chat Router] Incoming request:', {
     method: req.method,
     path: req.path,
@@ -101,60 +102,72 @@ router.post("/send", async (req, res) => {
 
     console.log('[Chat] Preparing API request');
 
-    // Make request to Perplexity API
-    const response = await fetch('https://api.perplexity.ai/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-      },
-      body: JSON.stringify({
-        model: "llama-3.1-sonar-small-128k-online",
-        messages,
-        temperature: 0.3,
-        max_tokens: 250,
-        top_p: 0.9,
-        stream: false,
-        presence_penalty: 0,
-        frequency_penalty: 1
-      })
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('[Chat] Perplexity API error:', {
-        status: response.status,
-        statusText: response.statusText,
-        body: errorText
+    try {
+      // Make request to Perplexity API
+      const response = await fetch('https://api.perplexity.ai/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: "llama-3.1-sonar-small-128k-online",
+          messages,
+          temperature: 0.3,
+          max_tokens: 250,
+          top_p: 0.9,
+          stream: false,
+          presence_penalty: 0,
+          frequency_penalty: 1
+        })
       });
-      throw new Error(`API request failed: ${response.status} ${response.statusText}\n${errorText}`);
-    }
 
-    const data = await response.json();
-    console.log('[Chat] Received API response');
+      const responseText = await response.text();
+      let data;
 
-    if (!data.choices?.[0]?.message?.content) {
-      throw new Error('Invalid response format from API');
-    }
-
-    const responseData = {
-      success: true,
-      response: {
-        message: data.choices[0].message.content,
-        links: generateContextualLinks(context.currentPath, message)
+      try {
+        data = JSON.parse(responseText);
+      } catch (e) {
+        console.error('[Chat] Failed to parse API response:', responseText);
+        throw new Error('Invalid JSON response from API');
       }
-    };
 
-    console.log('[Chat] Sending successful response');
-    res.json(responseData);
+      if (!response.ok) {
+        console.error('[Chat] Perplexity API error:', {
+          status: response.status,
+          statusText: response.statusText,
+          body: data
+        });
+        throw new Error(`API request failed: ${response.status} ${response.statusText}`);
+      }
+
+      if (!data.choices?.[0]?.message?.content) {
+        throw new Error('Invalid response format from API');
+      }
+
+      const responseData = {
+        success: true,
+        response: {
+          message: data.choices[0].message.content,
+          links: generateContextualLinks(context.currentPath, message)
+        }
+      };
+
+      console.log('[Chat] Sending successful response');
+      return res.json(responseData);
+
+    } catch (apiError) {
+      console.error('[Chat] API request error:', apiError);
+      throw new Error(`API request failed: ${apiError.message}`);
+    }
 
   } catch (error) {
     console.error('[Chat] Error:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     console.error('[Chat] Detailed error:', errorMessage);
 
-    res.status(500).json({
+    return res.status(500).json({
       error: 'Failed to process chat message',
       details: errorMessage
     });

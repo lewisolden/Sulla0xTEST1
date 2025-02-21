@@ -18,6 +18,8 @@ const __dirname = path.dirname(__filename);
 export function registerRoutes(app: Express): Server {
   // Add debug middleware for API routes
   app.use('/api', (req, res, next) => {
+    // Set JSON content type for all API routes
+    res.setHeader('Content-Type', 'application/json');
     console.log(`[API Debug] ${req.method} ${req.path} User Auth:`, req.isAuthenticated());
     next();
   });
@@ -29,7 +31,7 @@ export function registerRoutes(app: Express): Server {
   setupAuth(app);
 
   // Register other API routes
-  app.use("/api/admin", adminRouter);
+  app.use("/api/admin", requireAdmin, adminRouter);
   app.use("/api", apiRouter);
   app.use("/api", enrollmentsRouter);
   app.use("/api", learningPathRouter);
@@ -39,7 +41,8 @@ export function registerRoutes(app: Express): Server {
   app.use('/api/*', (req, res) => {
     console.log('[API 404]', {
       method: req.method,
-      path: req.path
+      path: req.path,
+      headers: req.headers
     });
     res.status(404).json({ error: 'API endpoint not found' });
   });

@@ -57,10 +57,7 @@ const tryPorts = [5000, 5001, 5002, 5003];
   try {
     log("Starting server initialization...");
 
-    // Setup authentication first
-    setupAuth(app);
-
-    // Then register routes
+    // Register routes BEFORE setting up Vite or static serving
     server = registerRoutes(app);
 
     const isProduction = process.env.NODE_ENV === 'production';
@@ -146,6 +143,12 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   const status = err.status || err.statusCode || 500;
   const message = err.message || "Internal Server Error";
   log(`Error: ${message}`);
-  res.status(status).json({ error: message });
+
+  // Always return JSON for API routes
+  if (_req.path.startsWith('/api/')) {
+    res.status(status).json({ error: message });
+  } else {
+    res.status(status).send({error: message}); // send for non-api routes
+  }
   console.error(err);
 });
