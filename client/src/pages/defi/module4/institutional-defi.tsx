@@ -4,8 +4,9 @@ import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
-import { Building2, ArrowLeft, Shield, Landmark, BarChart3, Scale, BadgeCheck } from "lucide-react";
+import { Building2, ArrowLeft, Shield, Landmark, BarChart3, Scale, BadgeCheck, ChartBar, Network, Lock, BookOpen, ArrowRight } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { useProgress } from "@/context/progress-context";
 
@@ -63,6 +64,179 @@ const quizQuestions = [
   }
 ];
 
+const sections = [
+  {
+    id: "overview",
+    title: "Overview",
+    icon: BookOpen,
+    content: (
+      <div className="space-y-6">
+        <div className="prose max-w-none">
+          <h3 className="text-2xl font-bold text-blue-800">The Institutional DeFi Revolution</h3>
+          <p className="text-gray-700 leading-relaxed">
+            Institutional DeFi represents a transformative convergence of traditional finance and decentralized technologies. 
+            As major financial institutions increasingly explore blockchain solutions, the DeFi ecosystem is evolving to 
+            meet enterprise-grade requirements while maintaining the core benefits of decentralization.
+          </p>
+        </div>
+        <div className="grid md:grid-cols-3 gap-6 mt-6">
+          <Card className="bg-gradient-to-br from-blue-50 to-indigo-50">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Shield className="h-8 w-8 text-blue-600" />
+                <h4 className="text-lg font-semibold text-blue-800">Enterprise Security</h4>
+              </div>
+              <p className="text-gray-600">
+                Institutional-grade security measures including multi-signature wallets, hardware security modules, and comprehensive audit trails.
+              </p>
+            </CardContent>
+          </Card>
+          <Card className="bg-gradient-to-br from-purple-50 to-blue-50">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Scale className="h-8 w-8 text-purple-600" />
+                <h4 className="text-lg font-semibold text-purple-800">Regulatory Compliance</h4>
+              </div>
+              <p className="text-gray-600">
+                Built-in compliance frameworks supporting KYC/AML requirements, reporting standards, and regulatory oversight.
+              </p>
+            </CardContent>
+          </Card>
+          <Card className="bg-gradient-to-br from-indigo-50 to-blue-50">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <Network className="h-8 w-8 text-indigo-600" />
+                <h4 className="text-lg font-semibold text-indigo-800">Market Integration</h4>
+              </div>
+              <p className="text-gray-600">
+                Seamless integration with traditional financial systems, enabling efficient capital flow between TradFi and DeFi.
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    )
+  },
+  {
+    id: "infrastructure",
+    title: "Infrastructure",
+    icon: Building2,
+    content: (
+      <div className="space-y-6">
+        <div className="prose max-w-none">
+          <h3 className="text-2xl font-bold text-blue-800">Enterprise-Grade Infrastructure</h3>
+          <div className="grid md:grid-cols-2 gap-8 mt-6">
+            <div>
+              <h4 className="text-xl font-semibold text-blue-700 mb-4">Custody Solutions</h4>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3">
+                  <Lock className="h-5 w-5 text-blue-600 mt-1" />
+                  <span className="text-gray-700">Multi-signature wallet architectures</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Shield className="h-5 w-5 text-blue-600 mt-1" />
+                  <span className="text-gray-700">Hardware Security Module (HSM) integration</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <BarChart3 className="h-5 w-5 text-blue-600 mt-1" />
+                  <span className="text-gray-700">Real-time monitoring and reporting</span>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-xl font-semibold text-blue-700 mb-4">Trading Infrastructure</h4>
+              <ul className="space-y-3">
+                <li className="flex items-start gap-3">
+                  <Network className="h-5 w-5 text-blue-600 mt-1" />
+                  <span className="text-gray-700">High-throughput order matching</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <ChartBar className="h-5 w-5 text-blue-600 mt-1" />
+                  <span className="text-gray-700">Advanced risk management systems</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Scale className="h-5 w-5 text-blue-600 mt-1" />
+                  <span className="text-gray-700">Automated compliance checks</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  },
+  {
+    id: "implementation",
+    title: "Implementation",
+    icon: BadgeCheck,
+    content: (
+      <div className="space-y-6">
+        <div className="prose max-w-none">
+          <h3 className="text-2xl font-bold text-blue-800">Implementation Examples</h3>
+          <div className="grid md:grid-cols-2 gap-8 mt-6">
+            <Card className="bg-gradient-to-br from-blue-50 to-indigo-50">
+              <CardContent className="p-6">
+                <h4 className="text-xl font-semibold text-blue-800 mb-4">Enterprise Solutions</h4>
+                <ul className="space-y-4">
+                  <li className="flex items-center gap-3">
+                    <BadgeCheck className="h-5 w-5 text-green-500" />
+                    <div>
+                      <span className="font-semibold">Fireblocks</span>
+                      <p className="text-sm text-gray-600">Institutional-grade digital asset custody</p>
+                    </div>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <BadgeCheck className="h-5 w-5 text-green-500" />
+                    <div>
+                      <span className="font-semibold">Aave Arc</span>
+                      <p className="text-sm text-gray-600">Permissioned lending protocol for institutions</p>
+                    </div>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <BadgeCheck className="h-5 w-5 text-green-500" />
+                    <div>
+                      <span className="font-semibold">Compound Treasury</span>
+                      <p className="text-sm text-gray-600">Institutional fixed-rate lending service</p>
+                    </div>
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+            <Card className="bg-gradient-to-br from-purple-50 to-blue-50">
+              <CardContent className="p-6">
+                <h4 className="text-xl font-semibold text-purple-800 mb-4">Compliance Tools</h4>
+                <ul className="space-y-4">
+                  <li className="flex items-center gap-3">
+                    <BadgeCheck className="h-5 w-5 text-green-500" />
+                    <div>
+                      <span className="font-semibold">TRM Labs</span>
+                      <p className="text-sm text-gray-600">Blockchain intelligence and monitoring</p>
+                    </div>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <BadgeCheck className="h-5 w-5 text-green-500" />
+                    <div>
+                      <span className="font-semibold">Chainalysis KYT</span>
+                      <p className="text-sm text-gray-600">Real-time transaction monitoring</p>
+                    </div>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <BadgeCheck className="h-5 w-5 text-green-500" />
+                    <div>
+                      <span className="font-semibold">Elliptic</span>
+                      <p className="text-sm text-gray-600">Crypto asset risk management</p>
+                    </div>
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    )
+  }
+];
+
 export default function InstitutionalDefi() {
   useScrollTop();
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -72,6 +246,7 @@ export default function InstitutionalDefi() {
   const [showResults, setShowResults] = useState(false);
   const { toast } = useToast();
   const { updateProgress } = useProgress();
+  const [activeTab, setActiveTab] = useState("overview");
 
   const handleStartQuiz = () => {
     setShowQuiz(true);
@@ -138,13 +313,13 @@ export default function InstitutionalDefi() {
                 <CardContent className="p-6">
                   <div className="flex items-center gap-4 mb-6">
                     <Building2 className="h-12 w-12 text-blue-600" />
-                    <h1 className="text-3xl font-bold text-blue-800">
+                    <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                       Institutional DeFi: Enterprise Solutions & Compliance
                     </h1>
                   </div>
 
                   <div className="prose max-w-none">
-                    <p className="text-gray-600 text-lg">
+                    <p className="text-gray-600 text-lg leading-relaxed">
                       Explore how traditional financial institutions are adopting DeFi technology,
                       the regulatory frameworks being developed, and the enterprise-grade solutions
                       enabling institutional participation in decentralized finance.
@@ -153,120 +328,40 @@ export default function InstitutionalDefi() {
                 </CardContent>
               </Card>
 
-              {/* Key Concepts Section */}
-              <Card>
-                <CardContent className="p-6">
-                  <h2 className="text-2xl font-semibold text-blue-800 mb-6">
-                    Key Institutional DeFi Concepts
-                  </h2>
+              {/* Main Content Tabs */}
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+                <TabsList className="grid w-full grid-cols-3">
+                  {sections.map((section) => (
+                    <TabsTrigger
+                      key={section.id}
+                      value={section.id}
+                      className="flex items-center gap-2"
+                    >
+                      <section.icon className="h-4 w-4" />
+                      {section.title}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
 
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="space-y-4">
-                      <div className="flex items-start gap-3">
-                        <Shield className="h-6 w-6 text-blue-600 mt-1" />
-                        <div>
-                          <h3 className="font-semibold text-gray-800">Regulatory Compliance</h3>
-                          <p className="text-gray-600">
-                            Integration of KYC/AML procedures, reporting requirements, and
-                            compliance frameworks within DeFi protocols.
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start gap-3">
-                        <Landmark className="h-6 w-6 text-blue-600 mt-1" />
-                        <div>
-                          <h3 className="font-semibold text-gray-800">Institutional Custody</h3>
-                          <p className="text-gray-600">
-                            Advanced custody solutions using multi-signature wallets and MPC
-                            technology for secure asset management.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-4">
-                      <div className="flex items-start gap-3">
-                        <BarChart3 className="h-6 w-6 text-blue-600 mt-1" />
-                        <div>
-                          <h3 className="font-semibold text-gray-800">Risk Management</h3>
-                          <p className="text-gray-600">
-                            Sophisticated risk assessment tools and insurance solutions for
-                            institutional-grade security.
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-start gap-3">
-                        <Scale className="h-6 w-6 text-blue-600 mt-1" />
-                        <div>
-                          <h3 className="font-semibold text-gray-800">Governance & Control</h3>
-                          <p className="text-gray-600">
-                            Enterprise-level governance frameworks and controlled access to
-                            DeFi protocols.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Implementation Examples */}
-              <Card>
-                <CardContent className="p-6">
-                  <h2 className="text-2xl font-semibold text-blue-800 mb-6">
-                    Implementation Examples
-                  </h2>
-
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div className="bg-gray-50 rounded-lg p-4">
-                      <h3 className="font-semibold text-gray-800 mb-2">Compliance Solutions</h3>
-                      <ul className="space-y-2">
-                        <li className="flex items-center gap-2 text-gray-600">
-                          <BadgeCheck className="h-4 w-4 text-green-500" />
-                          <span>Fireblocks (Institutional custody)</span>
-                        </li>
-                        <li className="flex items-center gap-2 text-gray-600">
-                          <BadgeCheck className="h-4 w-4 text-green-500" />
-                          <span>TRM Labs (Transaction monitoring)</span>
-                        </li>
-                        <li className="flex items-center gap-2 text-gray-600">
-                          <BadgeCheck className="h-4 w-4 text-green-500" />
-                          <span>Chainalysis (Compliance tracking)</span>
-                        </li>
-                      </ul>
-                    </div>
-
-                    <div className="bg-gray-50 rounded-lg p-4">
-                      <h3 className="font-semibold text-gray-800 mb-2">Enterprise Platforms</h3>
-                      <ul className="space-y-2">
-                        <li className="flex items-center gap-2 text-gray-600">
-                          <BadgeCheck className="h-4 w-4 text-green-500" />
-                          <span>Aave Arc (Permissioned lending)</span>
-                        </li>
-                        <li className="flex items-center gap-2 text-gray-600">
-                          <BadgeCheck className="h-4 w-4 text-green-500" />
-                          <span>Compound Treasury (Institutional yield)</span>
-                        </li>
-                        <li className="flex items-center gap-2 text-gray-600">
-                          <BadgeCheck className="h-4 w-4 text-green-500" />
-                          <span>Anchorage Digital (Regulated custody)</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                {sections.map((section) => (
+                  <TabsContent key={section.id} value={section.id}>
+                    <Card>
+                      <CardContent className="p-6">
+                        {section.content}
+                      </CardContent>
+                    </Card>
+                  </TabsContent>
+                ))}
+              </Tabs>
 
               {/* Start Quiz Button */}
               <div className="flex justify-center">
                 <Button
                   size="lg"
                   onClick={handleStartQuiz}
-                  className="bg-blue-600 hover:bg-blue-700"
+                  className="bg-blue-600 hover:bg-blue-700 transform transition-all duration-200 hover:scale-105"
                 >
-                  Start Quiz
+                  Test Your Knowledge
                 </Button>
               </div>
             </>
@@ -325,9 +420,10 @@ export default function InstitutionalDefi() {
                     ) : (
                       <p className="text-yellow-500 font-semibold mb-6">Keep learning! Review the material and try again to improve your score.</p>
                     )}
-                    <Link href="/defi/module4/quiz">
-                      <Button className="w-full bg-blue-600 hover:bg-blue-700">
-                        Continue to Module 4 Quiz
+                    <Link href="/defi/module3/quiz">
+                      <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white transition duration-300 ease-in-out transform hover:scale-105">
+                        Continue to Module 3 Quiz
+                        <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </Link>
                   </div>
