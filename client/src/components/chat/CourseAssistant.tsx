@@ -19,7 +19,7 @@ const WELCOME_MESSAGE: Message = {
   content: "Hello! I'm Sensei, your dedicated AI learning assistant for blockchain and DeFi education. I can help you understand cryptocurrency concepts, guide you through course materials, and provide relevant resources from Sulla's learning platform. What would you like to learn about today?",
   timestamp: new Date(),
   links: [
-    { text: "Explore AI Module", url: "/ai/module1" },
+    { text: "Check Learning Resources", url: "/glossary" },
     { text: "View Course Curriculum", url: "/curriculum" }
   ]
 };

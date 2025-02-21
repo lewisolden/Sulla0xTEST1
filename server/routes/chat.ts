@@ -108,6 +108,48 @@ router.get("/test", async (req, res) => {
   }
 });
 
+// Function to generate contextual links based on content
+function generateContextualLinks(currentPath: string, message: string) {
+  const links = [];
+
+  // Default learning resources link points to glossary
+  links.push({ text: "Check Learning Resources", url: "/glossary" });
+
+  // Add topic-specific links based on message content
+  const messageLower = message.toLowerCase();
+
+  if (messageLower.includes('smart contract') || messageLower.includes('ethereum')) {
+    links.push(
+      { text: "Ethereum Smart Contracts Module", url: "/modules/module3/smart-contracts" },
+      { text: "Ethereum Fundamentals", url: "/modules/module3/ethereum-fundamentals" }
+    );
+  }
+
+  if (messageLower.includes('bitcoin') || messageLower.includes('cryptocurrency')) {
+    links.push(
+      { text: "Bitcoin Fundamentals", url: "/modules/module2/bitcoin-fundamentals" },
+      { text: "Crypto Market Guide", url: "/modules/module1/crypto-market" }
+    );
+  }
+
+  if (messageLower.includes('defi') || messageLower.includes('yield') || messageLower.includes('liquidity') || messageLower.includes('flash loan') || messageLower.includes('dex')) {
+    links.push(
+      { text: "DeFi Introduction", url: "/defi/module1/defi-intro" },
+      { text: "DEX & AMM Guide", url: "/defi/module1/dex-amm" },
+      { text: "Liquidity & Yield", url: "/defi/module1/liquidity-yield" }
+    );
+  }
+
+  if (messageLower.includes('security') || messageLower.includes('risk')) {
+    links.push(
+      { text: "Security Best Practices", url: "/modules/module1/security" },
+      { text: "Risk Management", url: "/modules/module2/security-risk" }
+    );
+  }
+
+  return links;
+}
+
 // Main chat endpoint
 router.post("/send", async (req, res) => {
   console.log('[Chat] Request body:', JSON.stringify(req.body, null, 2));
@@ -130,38 +172,33 @@ router.post("/send", async (req, res) => {
       return res.status(500).json({ error: 'API configuration error' });
     }
 
-    // Construct messages array with enhanced system prompt
+    // Construct messages array with enhanced system prompt focused on internal content
     const messages = [{
       role: "system",
-      content: "You are an educational AI tutor specializing in blockchain and cryptocurrency education. " +
-               "Provide concise, direct responses in 2-3 sentences maximum. " +
-               "Always reference specific course modules when possible. " +
+      content: "You are Sensei, an educational AI tutor specializing in blockchain education. " +
+               "Provide brief, direct responses (2-3 sentences) and always reference Sulla's course modules. " +
                `The user is currently viewing: ${context.currentPath}. ` +
-               "For Ethereum topics, reference Module 3 (Ethereum/smart contracts). " +
-               "For Bitcoin topics, reference Modules 1-2 (fundamentals/investment). " +
-               "Keep explanations brief and direct users to course materials for details."
+               "For Ethereum topics, direct users to Module 3. " +
+               "For Bitcoin topics, reference Modules 1-2. " +
+               "For DeFi topics, reference the DeFi modules. " +
+               "Focus on guiding users to our course materials rather than external resources."
     }];
 
-    // Add the current user message
     messages.push({
       role: "user",
       content: message
     });
 
-    console.log('[Chat] Final messages array:', JSON.stringify(messages, null, 2));
-
     const requestBody = {
       model: "llama-3.1-sonar-small-128k-online",
       messages,
-      temperature: 0.3, 
-      max_tokens: 250, 
+      temperature: 0.3,
+      max_tokens: 250,
       top_p: 0.9,
       stream: false,
       presence_penalty: 0,
       frequency_penalty: 1
     };
-
-    console.log('[Chat] Making API request:', JSON.stringify(requestBody, null, 2));
 
     const response = await fetch('https://api.perplexity.ai/chat/completions', {
       method: 'POST',
@@ -173,16 +210,11 @@ router.post("/send", async (req, res) => {
       body: JSON.stringify(requestBody)
     });
 
-    const responseText = await response.text();
-    console.log('[Chat] Response status:', response.status);
-    console.log('[Chat] Raw response:', responseText);
-
     if (!response.ok) {
-      throw new Error(`API request failed: ${response.status} ${response.statusText}\n${responseText}`);
+      throw new Error(`API request failed: ${response.status} ${response.statusText}`);
     }
 
-    const data = JSON.parse(responseText);
-    console.log('[Chat] Parsed response:', data);
+    const data = await response.json();
 
     if (!data.choices?.[0]?.message?.content) {
       throw new Error('Invalid response format from API');
@@ -197,57 +229,12 @@ router.post("/send", async (req, res) => {
     });
 
   } catch (error) {
-    console.error('[Chat] Detailed error:', {
-      name: error instanceof Error ? error.name : 'Unknown error',
-      message: error instanceof Error ? error.message : String(error),
-      stack: error instanceof Error ? error.stack : undefined
-    });
-
+    console.error('[Chat] Error:', error);
     res.status(500).json({
       error: 'Failed to process chat message',
       details: error instanceof Error ? error.message : 'Unknown error'
     });
   }
 });
-
-function generateContextualLinks(currentPath: string, message: string) {
-  const links = [];
-
-  // Always include general resources
-  links.push({ text: "Check Learning Resources", url: "/library" });
-
-  // Add topic-specific links based on message content
-  const messageLower = message.toLowerCase();
-
-  if (messageLower.includes('smart contract') || messageLower.includes('ethereum')) {
-    links.push(
-      { text: "Smart Contracts Guide", url: "/modules/module3/smart-contracts" },
-      { text: "Ethereum Fundamentals", url: "/modules/module3/ethereum-fundamentals" }
-    );
-  }
-
-  if (messageLower.includes('bitcoin') || messageLower.includes('cryptocurrency')) {
-    links.push(
-      { text: "Bitcoin Fundamentals", url: "/modules/module2/bitcoin-fundamentals" },
-      { text: "Crypto Market Overview", url: "/modules/module1/crypto-market" }
-    );
-  }
-
-  if (messageLower.includes('defi') || messageLower.includes('yield') || messageLower.includes('liquidity')) {
-    links.push(
-      { text: "DeFi Introduction", url: "/defi/module1/defi-intro" },
-      { text: "Liquidity & Yield", url: "/defi/module1/liquidity-yield" }
-    );
-  }
-
-  if (messageLower.includes('security') || messageLower.includes('risk')) {
-    links.push(
-      { text: "Security Best Practices", url: "/modules/module1/security" },
-      { text: "Risk Management", url: "/modules/module2/security-risk" }
-    );
-  }
-
-  return links;
-}
 
 export default router;
