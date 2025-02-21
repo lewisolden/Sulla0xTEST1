@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useProgress } from "@/context/progress-context";
+import { useScrollTop } from "@/hooks/useScrollTop"; // Added import
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -335,6 +336,7 @@ const AdvancedDefiQuiz = () => {
 };
 
 const AdvancedDefi = () => {
+  useScrollTop(); // Added hook call
   const { updateProgress } = useProgress();
   const { toast } = useToast();
 
