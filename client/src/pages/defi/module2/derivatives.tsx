@@ -70,7 +70,7 @@ const TradingSimulator: React.FC<TradingSimulatorProps> = ({ onPositionChange })
       // Calculate PnL and check liquidation
       const currentPnl = calculatePnL(position, price, isLong);
       const updatedPosition = { ...position, pnl: currentPnl };
-      
+
       if (price <= position.liquidationPrice && isLong) {
         handleLiquidation();
       } else if (price >= position.liquidationPrice && !isLong) {
@@ -251,7 +251,7 @@ const TradingSimulator: React.FC<TradingSimulatorProps> = ({ onPositionChange })
                     <span className="text-gray-600">Current Price:</span>
                     <span className="font-bold">${price.toLocaleString()}</span>
                   </div>
-                  
+
                   {position && (
                     <>
                       <div className="flex justify-between items-center">
@@ -529,18 +529,12 @@ export default function DerivativesSection() {
   ];
 
   const handleSectionComplete = (index: number) => {
-    updateProgress({
-      courseId: 3,
-      moduleId: 4,
-      sectionId: 'derivatives',
-      completed: true,
-      subsectionId: `subsection-${index + 1}`,
-      type: 'section',
-      progress: ((index + 1) / sections.length) * 100,
-      timestamp: new Date().toISOString(),
-      userId: 'current',
-      metadata: {}
-    });
+    updateProgress(
+      3, // courseId for DeFi course
+      'derivatives', // sectionId
+      true, // completed
+      ((index + 1) / sections.length) * 100 // progress percentage
+    );
 
     toast({
       title: "Progress Updated",
