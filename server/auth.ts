@@ -63,7 +63,7 @@ const PUBLIC_ROUTES = [
   '/api/register',
   '/api/login',
   '/api/admin/login',
-  '/api/chat/test' // Updated to match the full path
+  '/api/chat/test' 
 ];
 
 function isPublicRoute(path: string): boolean {
@@ -105,7 +105,6 @@ export function setupAuth(app: Express) {
     if (req.path.startsWith('/api/')) {
       return res.status(401).json({ error: "Not authenticated" });
     }
-    // For non-API routes, allow the request to continue to be handled by the client-side router
     next();
   });
 

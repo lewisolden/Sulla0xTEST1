@@ -21,7 +21,7 @@ export function registerRoutes(app: Express): Server {
 
   // Add debug middleware for API routes
   app.use('/api', (req, res, next) => {
-    console.log(`[API Debug] ${req.method} ${req.path}`);
+    console.log(`[API Debug] ${req.method} ${req.path} User Auth:`, req.isAuthenticated());
     next();
   });
 

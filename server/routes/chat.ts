@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { z } from 'zod';
 import { db } from "@db";
-import { eq } from 'drizzle-orm';
+import { eq, and } from 'drizzle-orm';
 import { courseEnrollments } from "@db/schema";
 
 const router = Router();
@@ -95,6 +95,18 @@ router.get("/test", async (req, res) => {
 
 // Main chat endpoint
 router.post("/send", async (req, res) => {
+  // Check authentication
+  if (!req.isAuthenticated()) {
+    console.error('[Chat] Unauthenticated request');
+    return res.status(401).json({ error: "Not authenticated - Please log in" });
+  }
+
+  const userId = req.user?.id;
+  if (!userId) {
+    console.error('[Chat] No user ID in authenticated session');
+    return res.status(401).json({ error: "Invalid session" });
+  }
+
   console.log('[Chat] Received message:', req.body);
   try {
     // Validate request body
@@ -113,6 +125,20 @@ router.post("/send", async (req, res) => {
     if (!process.env.PERPLEXITY_API_KEY) {
       console.error('[Chat] Missing Perplexity API key');
       return res.status(500).json({ error: 'API configuration error' });
+    }
+
+    // If courseId is provided, verify enrollment
+    if (courseId) {
+      const enrollment = await db.query.courseEnrollments.findFirst({
+        where: and(
+          eq(courseEnrollments.userId, userId),
+          eq(courseEnrollments.courseId, courseId)
+        )
+      });
+
+      if (!enrollment) {
+        return res.status(403).json({ error: "Not enrolled in this course" });
+      }
     }
 
     // Prepare system message based on context
