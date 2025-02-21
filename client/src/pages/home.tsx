@@ -3,8 +3,11 @@ import { BookOpen, GraduationCap, Brain, Target, Trophy, Code, Gamepad2, Wallet,
 import ModuleCard from "@/components/modules/module-card";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { useScrollTop } from "@/hooks/useScrollTop";
 
 export default function Home() {
+  useScrollTop();
+
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
