@@ -48,10 +48,10 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       queryFn: getQueryFn() as QueryFunction<unknown, readonly unknown[]>,
-      refetchInterval: false,
-      refetchOnWindowFocus: false,
-      staleTime: Infinity,
-      retry: false,
+      refetchInterval: 5000, // Refetch every 5 seconds
+      refetchOnWindowFocus: true,
+      staleTime: 0, // Data is considered stale immediately
+      retry: true,
     },
     mutations: {
       retry: false,

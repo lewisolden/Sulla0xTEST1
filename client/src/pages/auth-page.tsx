@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card } from "@/components/ui/card";
@@ -46,13 +46,13 @@ export default function AuthPage() {
   const { toast } = useToast();
 
   // Immediately show a visible notification when the component mounts
-  useState(() => {
+  useEffect(() => {
     console.log("AuthPage mounted, showing initial toast");
     toast({
       title: isRegisterPage ? "Registration Page" : "Login Page",
       description: "Welcome to Sulla Learning Platform!",
     });
-  });
+  }, []);
 
   const form = useForm<InsertUser>({
     resolver: zodResolver(insertUserSchema),
