@@ -550,6 +550,160 @@ export default function StablecoinsSection() {
       )
     },
     {
+      id: "collateralization",
+      title: "Collateralization & Redemption",
+      icon: Lock,
+      content: (
+        <div className="space-y-6">
+          <div className="grid md:grid-cols-2 gap-6">
+            <Card className="border-blue-200">
+              <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-100">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-blue-500 rounded-lg">
+                    <Building2 className="h-6 w-6 text-white" />
+                  </div>
+                  <CardTitle className="text-xl">Collateralization Process</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="font-medium text-gray-700 mb-2">Traditional Backing (1:1)</h4>
+                    <ul className="space-y-2">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle2 className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
+                        <span className="text-gray-600">Each stablecoin is backed by one unit of fiat currency (e.g., 1 USDC = $1 USD in reserve)</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle2 className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
+                        <span className="text-gray-600">Regular audits verify the backing reserves</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-700 mb-2">Crypto Overcollateralization</h4>
+                    <ul className="space-y-2">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle2 className="h-5 w-5 text-purple-500 flex-shrink-0 mt-0.5" />
+                        <span className="text-gray-600">Multiple crypto assets locked as collateral (150-200% ratio)</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle2 className="h-5 w-5 text-purple-500 flex-shrink-0 mt-0.5" />
+                        <span className="text-gray-600">Smart contracts automatically manage collateral ratios</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-green-200">
+              <CardHeader className="bg-gradient-to-r from-green-50 to-green-100">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-green-500 rounded-lg">
+                    <ArrowRight className="h-6 w-6 text-white" />
+                  </div>
+                  <CardTitle className="text-xl">Redemption Mechanisms</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="font-medium text-gray-700 mb-2">Direct Redemption</h4>
+                    <ul className="space-y-2">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                        <span className="text-gray-600">Users can redeem stablecoins directly for the underlying asset</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                        <span className="text-gray-600">KYC/AML verification often required for fiat redemption</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-medium text-gray-700 mb-2">Market-Based Redemption</h4>
+                    <ul className="space-y-2">
+                      <li className="flex items-start gap-2">
+                        <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                        <span className="text-gray-600">Trade stablecoins on exchanges for other assets</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                        <span className="text-gray-600">Arbitrage opportunities help maintain the peg</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Card className="border-purple-200">
+            <CardHeader className="bg-gradient-to-r from-purple-50 to-purple-100">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-purple-500 rounded-lg">
+                  <TrendingUp className="h-6 w-6 text-white" />
+                </div>
+                <CardTitle className="text-xl">Cross-Chain Operations</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-medium text-gray-700 mb-2">Native Implementations</h4>
+                  <ul className="space-y-2">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="h-5 w-5 text-purple-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-600">Dedicated versions on each blockchain (e.g., USDC on Ethereum, Solana, Avalanche)</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="h-5 w-5 text-purple-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-600">Each version maintains its own smart contracts and reserves</span>
+                    </li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-700 mb-2">Bridge Mechanisms</h4>
+                  <ul className="space-y-2">
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="h-5 w-5 text-purple-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-600">Cross-chain bridges enable transfers between different blockchains</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <CheckCircle2 className="h-5 w-5 text-purple-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-600">Lock and mint mechanism preserves total supply across chains</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <div className="mt-6 bg-yellow-50 p-4 rounded-lg">
+                <div className="flex items-center gap-2 mb-2">
+                  <AlertTriangle className="h-5 w-5 text-yellow-600" />
+                  <h5 className="font-semibold text-yellow-800">Important Considerations</h5>
+                </div>
+                <ul className="space-y-2 text-yellow-700">
+                  <li className="flex items-start gap-2">
+                    <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-yellow-500"></div>
+                    <p>Bridge security varies - research thoroughly before using</p>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-yellow-500"></div>
+                    <p>Different chains may have varying transaction fees and confirmation times</p>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-yellow-500"></div>
+                    <p>Liquidity depth can vary significantly across chains</p>
+                  </li>
+                </ul>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )
+    },
+    {
       id: "simulator",
       title: "Interactive Stablecoin Simulator",
       icon: ChartLine,
@@ -638,21 +792,21 @@ export default function StablecoinsSection() {
               </p>
             </CardHeader>
             <CardContent className="pt-6">
-              <div className="mb-6">
-                <div className="flex justify-between items-center mb-2">
-                  <p className="text-sm text-gray-500">Section Progress</p>
-                  <p className="text-sm font-medium text-blue-600">
-                    {Math.round((currentSection / sections.length) * 100)}%
-                  </p>
+                <div className="mb-6">
+                  <div className="flex justify-between items-center mb-2">
+                    <p className="text-sm text-gray-500">Section Progress</p>
+                    <p className="text-sm font-medium text-blue-600">
+                      {Math.round((currentSection / sections.length) * 100)}%
+                    </p>
+                  </div>
+                  <Progress
+                    value={(currentSection / sections.length) * 100}
+                    className="bg-blue-100"
+                  />
                 </div>
-                <Progress
-                  value={(currentSection / sections.length) * 100}
-                  className="bg-blue-100"
-                />
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
+              </CardContent>
+            </Card>
+          </motion.div>
 
         <motion.div
           variants={containerVariants}
