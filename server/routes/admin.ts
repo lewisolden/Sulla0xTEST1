@@ -4,7 +4,6 @@ import { users, adminUsers, courseEnrollments, moduleProgress, userAchievements,
 import { requireAdmin } from '../auth';
 import { gt, sql, desc, and, eq, count } from 'drizzle-orm';
 import express from "express";
-//import { eq } from "drizzle-orm"; //already imported above
 
 const router = express.Router();
 
@@ -164,68 +163,84 @@ router.patch('/feedback/:id', requireAdmin, async (req, res) => {
   }
 });
 
-// Analytics dashboard data - REPLACED with edited code
-router.get("/admin/analytics/users", requireAdmin, async (req, res) => {
+// Get admin analytics data
+router.get("/analytics", requireAdmin, async (req, res) => {
   try {
-    const [totalUsers] = await db
-      .select({ count: users.id })
-      .from(users)
-      .count();
+    // Get total users count
+    const [{ value: totalUsers }] = await db
+      .select({ 
+        value: sql<number>`count(*)` 
+      })
+      .from(users);
 
-    const activeUsers = await db
-      .select()
+    // Get active users (last 24 hours)
+    const [{ value: activeUsers }] = await db
+      .select({ 
+        value: sql<number>`count(distinct ${users.id})`
+      })
       .from(users)
       .where(
-        eq(users.lastActivity as any, 
-          db.sql`date_trunc('day', now())`)
+        sql`${users.lastActivity} >= NOW() - INTERVAL '24 hours'`
       );
 
-    const [totalEnrollments] = await db
-      .select({ count: courseEnrollments.id })
-      .from(courseEnrollments)
-      .count();
+    // Get total enrollments
+    const [{ value: totalEnrollments }] = await db
+      .select({ 
+        value: sql<number>`count(*)`
+      })
+      .from(courseEnrollments);
 
-    const [completedModules] = await db
-      .select({ count: moduleProgress.id })
+    // Get completed modules
+    const [{ value: completedModules }] = await db
+      .select({ 
+        value: sql<number>`count(*)`
+      })
       .from(moduleProgress)
-      .where(eq(moduleProgress.completed, true))
-      .count();
+      .where(eq(moduleProgress.completed, true));
 
-    const [achievementsAwarded] = await db
-      .select({ count: userAchievements.id })
-      .from(userAchievements)
-      .count();
+    // Get achievements awarded
+    const [{ value: achievementsAwarded }] = await db
+      .select({ 
+        value: sql<number>`count(*)`
+      })
+      .from(userAchievements);
 
-    const [pendingFeedback] = await db
-      .select({ count: feedback.id })
+    // Get pending feedback count
+    const [{ value: pendingFeedback }] = await db
+      .select({ 
+        value: sql<number>`count(*)`
+      })
       .from(feedback)
-      .where(eq(feedback.status, 'pending'))
-      .count();
+      .where(eq(feedback.status, 'pending'));
 
     // Get user activity data for the last 7 days
     const userActivityData = await db
       .select({
-        date: users.lastActivity,
-        count: users.id
+        date: sql<string>`to_char(date_trunc('day', ${users.lastActivity}), 'YYYY-MM-DD')`,
+        activeUsers: sql<number>`count(distinct ${users.id})`,
+        completions: sql<number>`count(distinct case when ${moduleProgress.completed} = true then ${moduleProgress.id} end)`
       })
       .from(users)
-      .where(
-        db.sql`${users.lastActivity} >= now() - interval '7 days'`
-      )
-      .groupBy(users.lastActivity);
+      .leftJoin(moduleProgress, eq(users.id, moduleProgress.userId))
+      .where(sql`${users.lastActivity} >= NOW() - INTERVAL '7 days'`)
+      .groupBy(sql`date_trunc('day', ${users.lastActivity})`)
+      .orderBy(sql`date_trunc('day', ${users.lastActivity})`);
 
     res.json({
-      totalUsers: totalUsers?.count || 0,
-      activeUsers: activeUsers?.length || 0,
-      totalEnrollments: totalEnrollments?.count || 0,
-      completedModules: completedModules?.count || 0,
-      achievementsAwarded: achievementsAwarded?.count || 0,
-      pendingFeedback: pendingFeedback?.count || 0,
+      totalUsers,
+      activeUsers,
+      totalEnrollments,
+      completedModules,
+      achievementsAwarded,
+      pendingFeedback,
       userActivityData
     });
   } catch (error) {
     console.error("Error fetching admin analytics:", error);
-    res.status(500).json({ error: "Failed to fetch analytics" });
+    res.status(500).json({ 
+      error: "Failed to fetch analytics",
+      details: error instanceof Error ? error.message : 'Unknown error'
+    });
   }
 });
 
