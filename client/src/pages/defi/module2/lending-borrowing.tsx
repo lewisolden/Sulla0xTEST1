@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { ArrowLeft, BookOpen, CheckCircle2, ArrowRight, Shield, TrendingUp, Lock, Coins, Calculator, AlertTriangle, Building2, Check, X } from "lucide-react";
@@ -417,8 +416,7 @@ export default function LendingBorrowing() {
   const { progress, updateProgress } = useProgress();
   const { toast } = useToast();
   const [currentSection, setCurrentSection] = useState(0);
-  const [currentTab, setCurrentTab] = useState("content");
-  const [selectedAnswers, setSelectedAnswers] = useState<{[key: number]: number}>({});
+  const [showQuiz, setShowQuiz] = useState(false);
   const [quizSubmitted, setQuizSubmitted] = useState(false);
   const [score, setScore] = useState(0);
 
@@ -606,92 +604,125 @@ export default function LendingBorrowing() {
           </Card>
         </motion.div>
 
-        <Tabs value={currentTab} onValueChange={setCurrentTab} className="mt-6">
-          <TabsList className="w-full justify-center">
-            <TabsTrigger value="content">Content</TabsTrigger>
-            <TabsTrigger value="quiz">Topic Quiz</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="content">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="space-y-6"
+        >
+          {sections.map((section, index) => (
             <motion.div
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              className="space-y-6"
+              key={index}
+              variants={itemVariants}
+              className={`${
+                index === currentSection ? 'border-2 border-purple-500' : ''
+              } rounded-lg overflow-hidden`}
             >
-              {sections.map((section, index) => (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  className={`${
-                    index === currentSection ? 'border-2 border-purple-500' : ''
-                  } rounded-lg overflow-hidden`}
-                >
-                  <Card>
-                    <CardHeader className="bg-gradient-to-r from-purple-50 to-indigo-50">
-                      <div className="flex items-center gap-3">
-                        <section.icon className="h-6 w-6 text-purple-500" />
-                        <CardTitle className="text-xl font-semibold text-purple-800">
-                          {section.title}
-                        </CardTitle>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="pt-6">
-                      {section.content}
-                      <div className="mt-6 flex justify-end">
-                        <Button
-                          onClick={() => handleSectionComplete(index)}
-                          className="bg-purple-600 hover:bg-purple-700"
-                          disabled={index !== currentSection}
-                        >
-                          {index === sections.length - 1 ? "Complete Topic" : "Next Section"}
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </motion.div>
-          </TabsContent>
-
-          <TabsContent value="quiz">
-            <div className="mt-12">
-              <Card className="overflow-hidden">
-                <CardHeader className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white">
-                  <CardTitle className="text-2xl">Test Your Knowledge</CardTitle>
-                  <p className="text-purple-100">
-                    Complete the quiz to test your understanding of DeFi lending concepts
-                  </p>
+              <Card>
+                <CardHeader className="bg-gradient-to-r from-purple-50 to-indigo-50">
+                  <div className="flex items-center gap-3">
+                    <section.icon className="h-6 w-6 text-purple-500" />
+                    <CardTitle className="text-xl font-semibold text-purple-800">
+                      {section.title}
+                    </CardTitle>
+                  </div>
                 </CardHeader>
                 <CardContent className="pt-6">
-                  <InteractiveQuiz onComplete={handleQuizComplete} />
+                  {section.content}
+                  <div className="mt-6 flex justify-end">
+                    <Button
+                      onClick={() => handleSectionComplete(index)}
+                      className="bg-purple-600 hover:bg-purple-700"
+                      disabled={index !== currentSection}
+                    >
+                      {index === sections.length - 1 ? "Complete Topic" : "Next Section"}
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
+            </motion.div>
+          ))}
+        </motion.div>
 
-              {quizSubmitted && (
-                <div className="mt-6 flex justify-between items-center">
-                  <div className={`p-4 rounded-lg ${
-                    score >= 70 ? 'bg-green-50 text-green-800' : 'bg-yellow-50 text-yellow-800'
-                  }`}>
-                    <h4 className="font-semibold mb-2">Final Score: {score}%</h4>
-                    {score >= 70 ? (
-                      <p>Excellent work! You've mastered the basics of DeFi lending.</p>
-                    ) : (
-                      <p>Review the material and try again to achieve a passing score of 70%.</p>
-                    )}
+        {/* Quiz Section */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="mt-12"
+        >
+          <Card className="overflow-hidden border-2 border-purple-200 hover:border-purple-300 transition-all">
+            <CardHeader
+              className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white cursor-pointer"
+              onClick={() => setShowQuiz(!showQuiz)}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-white/20 rounded-lg">
+                    <CheckCircle2 className="h-6 w-6 text-white" />
                   </div>
-
-                  <Link href="/defi/module2/stablecoins">
-                    <Button className="gap-2" variant="outline">
-                      Next Topic: Stablecoins
-                      <ArrowRight className="h-4 w-4" />
-                    </Button>
-                  </Link>
+                  <div>
+                    <CardTitle className="text-2xl">Test Your Knowledge</CardTitle>
+                    <p className="text-purple-100 mt-1">
+                      Complete the quiz to test your understanding of DeFi lending concepts
+                    </p>
+                  </div>
                 </div>
+                <Button
+                  variant="secondary"
+                  className="bg-white/20 hover:bg-white/30"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowQuiz(!showQuiz);
+                  }}
+                >
+                  {showQuiz ? "Hide Quiz" : "Start Quiz"}
+                </Button>
+              </div>
+            </CardHeader>
+
+            <AnimatePresence>
+              {showQuiz && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <CardContent className="pt-6">
+                    <InteractiveQuiz onComplete={handleQuizComplete} />
+                  </CardContent>
+                </motion.div>
               )}
-            </div>
-          </TabsContent>
-        </Tabs>
+            </AnimatePresence>
+          </Card>
+
+          {quizSubmitted && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-6 flex justify-between items-center"
+            >
+              <div className={`p-4 rounded-lg ${
+                score >= 70 ? 'bg-green-50 text-green-800' : 'bg-yellow-50 text-yellow-800'
+              }`}>
+                <h4 className="font-semibold mb-2">Final Score: {score}%</h4>
+                {score >= 70 ? (
+                  <p>Excellent work! You've mastered the basics of DeFi lending.</p>
+                ) : (
+                  <p>Review the material and try again to achieve a passing score of 70%.</p>
+                )}
+              </div>
+
+              <Link href="/defi/module2/stablecoins">
+                <Button className="gap-2" variant="outline">
+                  Next Topic: Stablecoins
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </Link>
+            </motion.div>
+          )}
+        </motion.div>
       </div>
     </div>
   );
