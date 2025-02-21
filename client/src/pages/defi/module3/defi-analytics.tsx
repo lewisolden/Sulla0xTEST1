@@ -274,9 +274,9 @@ const AnalyticsQuiz = () => {
                         ? "Perfect score! You're well-versed in DeFi analytics!"
                         : "Good effort! Review the analytics concepts and try again!"}
                     </p>
-                    <Link href="/defi/module3">
+                    <Link href="/defi/module3/defi-innovation">
                       <Button className="w-full bg-green-600 hover:bg-green-700">
-                        Complete DeFi Module 3
+                        Continue to DeFi Innovation
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </Link>
