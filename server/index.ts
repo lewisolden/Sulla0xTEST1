@@ -5,7 +5,6 @@ import { setupAuth } from "./auth";
 import { db } from "@db";
 import { users } from "@db/schema";
 import { verifyEmailService } from "./services/email";
-import chatRouter from "./routes/chat";
 
 // Force Vite to allow all hosts in development
 process.env.VITE_DEV_SERVER_FORCE_ALLOW_ALL_HOSTS = 'true';
@@ -41,9 +40,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// Register chat routes
-app.use('/api', chatRouter);
-
 const PORT = process.env.PORT || 5000;
 let server: any = null;
 
@@ -56,20 +52,6 @@ let server: any = null;
 
     // Then register routes
     server = registerRoutes(app);
-
-    // Add catch-all handler for API routes that aren't found
-    app.use('/api/*', (req, res) => {
-      res.status(404).json({ error: 'API endpoint not found' });
-    });
-
-    // Error handling middleware
-    app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-      const status = err.status || err.statusCode || 500;
-      const message = err.message || "Internal Server Error";
-      log(`Error: ${message}`);
-      res.status(status).json({ error: message });
-      console.error(err);
-    });
 
     const isProduction = process.env.NODE_ENV === 'production';
 
@@ -131,3 +113,17 @@ let server: any = null;
     process.exit(1);
   }
 })();
+
+// Add catch-all handler for API routes that aren't found
+app.use('/api/*', (req, res) => {
+  res.status(404).json({ error: 'API endpoint not found' });
+});
+
+// Error handling middleware
+app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+  const status = err.status || err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+  log(`Error: ${message}`);
+  res.status(status).json({ error: message });
+  console.error(err);
+});

@@ -10,10 +10,6 @@ import learningPathRouter from "./routes/learning-path";
 import chatRouter from "./routes/chat";
 import path from 'path';
 import { fileURLToPath } from 'url';
-import type { Browser } from 'puppeteer';
-import puppeteer from 'puppeteer';
-import { sendTestEmail } from './services/email';
-import { verifyEmailService } from './services/email';
 
 // ES Module path handling
 const __filename = fileURLToPath(import.meta.url);
@@ -29,8 +25,10 @@ export function registerRoutes(app: Express): Server {
     next();
   });
 
-  // Register API routes with proper prefixes and authentication middleware
-  app.use("/api", chatRouter); // Mount chat router at /api
+  // Register chat routes before other routes
+  app.use("/api/chat", chatRouter);
+
+  // Register other API routes
   app.use("/api", apiRouter);
   app.use("/api", enrollmentsRouter);
   app.use("/api", adminRouter);
