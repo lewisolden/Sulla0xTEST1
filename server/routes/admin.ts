@@ -18,67 +18,54 @@ router.get('/users', requireAdmin, async (req, res) => {
     console.log('Query params:', { page, limit, offset, search });
 
     // Get total count with proper error handling
-    const totalCountResult = await db
-      .select({ value: count() })
-      .from(users);
+    const usersList = await db.query.users.findMany({
+      columns: {
+        id: true,
+        username: true,
+        email: true,
+        lastActivity: true,
+        learningPreferences: true
+      },
+      where: search ? 
+        sql`username ILIKE ${`%${search}%`} OR email ILIKE ${`%${search}%`}` : 
+        undefined,
+      orderBy: [desc(users.lastActivity)],
+      limit: limit,
+      offset: offset
+    });
 
-    const totalCount = totalCountResult[0]?.value || 0;
+    console.log('Fetched users:', usersList.length);
+
+    // Transform the user data
+    const enrichedUsers = await Promise.all(usersList.map(async (user) => {
+      // Get enrollment count
+      const enrollmentCount = await db.query.courseEnrollments.count({
+        where: eq(courseEnrollments.userId, user.id)
+      });
+
+      // Get completed modules count
+      const completedModules = await db.query.moduleProgress.count({
+        where: and(
+          eq(moduleProgress.userId, user.id),
+          eq(moduleProgress.status, 'completed')
+        )
+      });
+
+      return {
+        ...user,
+        enrollmentCount,
+        completedModules
+      };
+    }));
+
+    // Get total count for pagination
+    const totalCount = await db.query.users.count();
+
     console.log('Total users count:', totalCount);
+    console.log('Enriched users:', enrichedUsers.length);
 
-    // Get paginated users with proper error handling
-    const allUsers = await db
-      .select({
-        id: users.id,
-        username: users.username,
-        email: users.email,
-        lastActivity: users.lastActivity,
-        learningPreferences: users.learningPreferences
-      })
-      .from(users)
-      .where(
-        search 
-          ? sql`${users.username} ILIKE ${`%${search}%`} OR ${users.email} ILIKE ${`%${search}%`}`
-          : sql`1=1`
-      )
-      .orderBy(desc(users.lastActivity))
-      .limit(limit)
-      .offset(offset);
-
-    console.log('Fetched users:', allUsers.length);
-
-    // Get enrollment counts with proper error handling
-    const userEnrollments = await Promise.all(
-      allUsers.map(async (user) => {
-        console.log('Fetching enrollments for user:', user.id);
-        const enrollmentCountResult = await db
-          .select({ value: count() })
-          .from(courseEnrollments)
-          .where(eq(courseEnrollments.userId, user.id));
-
-        const enrollmentCount = enrollmentCountResult[0]?.value || 0;
-
-        // Get completed modules count
-        const completedModulesResult = await db
-          .select({ value: count() })
-          .from(moduleProgress)
-          .where(and(
-            eq(moduleProgress.userId, user.id),
-            eq(moduleProgress.status, 'completed')
-          ));
-
-        const completedModules = completedModulesResult[0]?.value || 0;
-
-        return {
-          ...user,
-          enrollmentCount,
-          completedModules,
-        };
-      })
-    );
-
-    console.log('Sending response with users:', userEnrollments.length);
     res.json({
-      users: userEnrollments,
+      users: enrichedUsers,
       pagination: {
         total: totalCount,
         page,
