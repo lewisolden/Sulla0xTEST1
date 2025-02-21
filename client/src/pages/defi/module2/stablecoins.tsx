@@ -444,17 +444,14 @@ const InteractiveQuiz: React.FC<QuizProps> = ({ onComplete }) => {
       [currentQuestion.id]: selectedIndex
     }));
 
-    // Show correct/incorrect toast
     toast({
       title: isCorrect ? "Correct!" : "Incorrect",
       description: isCorrect ? "Great job! Let's see why." : "Not quite. Let's learn why.",
       variant: isCorrect ? "default" : "destructive",
     });
 
-    // Show explanation
     setShowExplanation(true);
 
-    // Auto advance after 3 seconds
     setTimeout(() => {
       if (currentQuestionIndex < quiz.questions.length - 1) {
         setCurrentQuestionIndex(prev => prev + 1);
@@ -462,8 +459,10 @@ const InteractiveQuiz: React.FC<QuizProps> = ({ onComplete }) => {
       } else {
         // Calculate final score
         const correctAnswers = Object.entries(answers).filter(
-          ([questionId, answer]) =>
-            answer === quiz.questions.find(q => q.id === parseInt(questionId)).correctAnswer
+          ([questionId, answer]) => {
+            const question = quiz.questions.find(q => q.id === parseInt(questionId));
+            return question && answer === question.correctAnswer;
+          }
         ).length;
         const finalScore = (correctAnswers / quiz.questions.length) * 100;
         setScore(finalScore);
@@ -713,16 +712,19 @@ export default function StablecoinsSection() {
 
   const handleSectionComplete = (index: number) => {
     updateProgress({
+      type: 'section',
       courseId: 3,
       moduleId: 4,
       sectionId: 'stablecoins',
-      completed: true,
       subsectionId: `subsection-${index + 1}`,
-      type: 'section',
+      completed: true,
       progress: ((index + 1) / sections.length) * 100,
       timestamp: new Date().toISOString(),
       userId: 'current',
-      metadata: {}
+      metadata: {
+        sectionIndex: index,
+        totalSections: sections.length
+      }
     });
 
     toast({
@@ -741,16 +743,19 @@ export default function StablecoinsSection() {
 
     if (score >= 70) {
       updateProgress({
+        type: 'quiz',
         courseId: 3,
         moduleId: 4,
         sectionId: 'stablecoins',
-        completed: true,
         subsectionId: 'quiz',
-        type: 'quiz',
+        completed: true,
         progress: 100,
         timestamp: new Date().toISOString(),
         userId: 'current',
-        metadata: { score }
+        metadata: { 
+          score,
+          passingThreshold: 70
+        }
       });
 
       toast({
@@ -787,8 +792,7 @@ export default function StablecoinsSection() {
               <CardTitle className="text-3xl font-bold">
                 Stablecoins in DeFi
               </CardTitle>
-              <p className="text-blue-100 mt-2">
-                Explore the foundations of price stability in the cryptocurrency ecosystem
+              <p className="text-blue-100 mt-2Explore the foundations of price stability in the cryptocurrency ecosystem
               </p>
             </CardHeader>
             <CardContent className="pt-6">
