@@ -1,8 +1,5 @@
 import { Router } from 'express';
 import { z } from 'zod';
-import { db } from "@db";
-import { eq, and } from 'drizzle-orm';
-import { courseEnrollments } from "@db/schema";
 
 const router = Router();
 
