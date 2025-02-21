@@ -144,12 +144,6 @@ router.post("/send", async (req, res) => {
     systemMessage += `The user is currently viewing: ${context.currentPath}. `;
     systemMessage += "Focus on providing accurate, educational responses related to blockchain concepts. Be clear and concise. Use examples when explaining complex topics.";
 
-    const previousConversation = context.previousMessages
-      ?.map(msg => ({
-        role: msg.role,
-        content: msg.content
-      })) || [];
-
     const requestBody = {
       model: "llama-3.1-sonar-small-128k-online",
       messages: [
@@ -157,7 +151,6 @@ router.post("/send", async (req, res) => {
           role: "system",
           content: systemMessage
         },
-        ...previousConversation,
         {
           role: "user",
           content: message
@@ -173,6 +166,15 @@ router.post("/send", async (req, res) => {
       presence_penalty: 0,
       frequency_penalty: 1
     };
+
+    // Add previous messages if they exist, maintaining the correct alternating order
+    if (context.previousMessages && context.previousMessages.length > 0) {
+      const filteredMessages = context.previousMessages.slice(-4); // Keep last 4 messages
+      requestBody.messages.splice(1, 0, ...filteredMessages.map(msg => ({
+        role: msg.role,
+        content: msg.content
+      })));
+    }
 
     console.log('[Chat] Making API request with:', {
       model: requestBody.model,
