@@ -20,31 +20,21 @@ router.get("/api/user/metrics", async (req, res) => {
   try {
     console.log("[User Metrics] Fetching metrics for user:", userId);
 
-    // Get course enrollments with progress
-    const userEnrollments = await db
+    // Get total learning time
+    const [timeStats] = await db
       .select({
-        courseId: courseEnrollments.courseId,
-        title: courses.title,
-        totalTimeSpent: sql<number>`COALESCE(SUM(${moduleProgress.timeSpent}), 0)::integer`,
-        completedQuizzes: sql<number>`COUNT(DISTINCT CASE WHEN ${userQuizResponses.completed} = true THEN ${userQuizResponses.id} END)`,
-        continuePath: sql<string>`COALESCE(MAX(${moduleProgress.path}), '/modules/module1')`
+        totalTimeSpent: sql<number>`COALESCE(SUM(${moduleProgress.timeSpent}), 0)::integer`
       })
-      .from(courseEnrollments)
-      .leftJoin(courses, eq(courses.id, courseEnrollments.courseId))
-      .leftJoin(moduleProgress, and(
-        eq(moduleProgress.userId, courseEnrollments.userId),
-        eq(moduleProgress.courseId, courseEnrollments.courseId)
-      ))
-      .leftJoin(userQuizResponses, and(
-        eq(userQuizResponses.userId, courseEnrollments.userId),
-        eq(userQuizResponses.courseId, courseEnrollments.courseId)
-      ))
-      .where(eq(courseEnrollments.userId, userId))
-      .groupBy(courseEnrollments.courseId, courses.title);
+      .from(moduleProgress)
+      .where(eq(moduleProgress.userId, userId));
 
-    // Calculate total learning time and completed quizzes
-    const totalLearningTime = userEnrollments.reduce((acc, enrollment) => acc + enrollment.totalTimeSpent, 0);
-    const totalCompletedQuizzes = userEnrollments.reduce((acc, enrollment) => acc + Number(enrollment.completedQuizzes), 0);
+    // Get completed quizzes count
+    const [quizStats] = await db
+      .select({
+        completedQuizzes: sql<number>`COUNT(*)::integer`
+      })
+      .from(userQuizResponses)
+      .where(eq(userQuizResponses.userId, userId));
 
     // Get badge count
     const [badgeCount] = await db
@@ -84,17 +74,38 @@ router.get("/api/user/metrics", async (req, res) => {
       }
     }
 
+    // Get course-specific stats
+    const courseStats = await db
+      .select({
+        courseId: courseEnrollments.courseId,
+        title: courses.title,
+        totalLearningTime: sql<number>`COALESCE(SUM(${moduleProgress.timeSpent}), 0)::integer`,
+        completedQuizzes: sql<number>`COUNT(DISTINCT ${userQuizResponses.id})::integer`
+      })
+      .from(courseEnrollments)
+      .leftJoin(courses, eq(courses.id, courseEnrollments.courseId))
+      .leftJoin(moduleProgress, and(
+        eq(moduleProgress.userId, courseEnrollments.userId),
+        eq(moduleProgress.courseId, courseEnrollments.courseId)
+      ))
+      .leftJoin(userQuizResponses, and(
+        eq(userQuizResponses.userId, courseEnrollments.userId),
+        eq(userQuizResponses.courseId, courseEnrollments.courseId)
+      ))
+      .where(eq(courseEnrollments.userId, userId))
+      .groupBy(courseEnrollments.courseId, courses.title);
+
     const response = {
-      totalLearningMinutes: Math.max(0, Math.round(totalLearningTime)),
-      completedQuizzes: totalCompletedQuizzes,
+      totalLearningMinutes: timeStats.totalTimeSpent || 0,
+      completedQuizzes: quizStats.completedQuizzes || 0,
       earnedBadges: badgeCount?.count || 0,
       learningStreak: streak,
-      courseStats: userEnrollments.map(enrollment => ({
-        courseId: enrollment.courseId,
-        title: enrollment.title,
-        totalLearningTime: enrollment.totalTimeSpent,
-        completedQuizzes: Number(enrollment.completedQuizzes),
-        continuePath: enrollment.continuePath
+      courseStats: courseStats.map(stat => ({
+        courseId: stat.courseId,
+        title: stat.title,
+        totalLearningTime: stat.totalLearningTime,
+        completedQuizzes: stat.completedQuizzes,
+        continuePath: `/modules/module${stat.courseId}` // Default path based on courseId
       }))
     };
 
