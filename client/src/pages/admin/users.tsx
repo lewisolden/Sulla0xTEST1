@@ -28,7 +28,7 @@ interface User {
   email: string;
   lastActivity: string;
   enrollmentCount: number;
-  completedModules: number;
+  completedCount: number; // Renamed to match backend response
 }
 
 interface UsersResponse {
@@ -207,7 +207,7 @@ export default function AdminUsers() {
                     {new Date(user.lastActivity).toLocaleDateString()}
                   </TableCell>
                   <TableCell>{user.enrollmentCount}</TableCell>
-                  <TableCell>{user.completedModules}</TableCell>
+                  <TableCell>{user.completedCount}</TableCell> {/* Corrected field name */}
                   <TableCell>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
