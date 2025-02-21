@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "wouter";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -8,8 +7,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, BookOpen, CheckCircle2, ArrowRight, Shield, TrendingUp, Lock, Coins, DollarSign, AlertTriangle, Building2, Bank, ChartLine } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCircle2, ArrowRight, Shield, TrendingUp, Lock, Coins, DollarSign, AlertTriangle, Building2, ChartLine } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Link } from "wouter";
 
 // Types for components
 interface StablecoinSimulatorProps {
@@ -50,12 +50,12 @@ const StablecoinSimulator: React.FC<StablecoinSimulatorProps> = ({ onUpdate }) =
       const fluctuation = (Math.random() - 0.5) * 0.02;
       const newPrice = Number((marketPrice + fluctuation).toFixed(4));
       setMarketPrice(newPrice);
-      
+
       // Calculate volatility
       const priceDeviation = Math.abs(1 - newPrice);
       setVolatility(priceDeviation * 100);
       onUpdate?.(priceDeviation * 100);
-      
+
       // Trigger animation
       setIsAnimating(true);
       setTimeout(() => setIsAnimating(false), 500);
@@ -155,8 +155,8 @@ const StablecoinSimulator: React.FC<StablecoinSimulatorProps> = ({ onUpdate }) =
                     <span className="text-gray-600">Stability Score:</span>
                     <span className={`font-bold ${
                       stabilityScore > 90 ? 'text-green-600' :
-                      stabilityScore > 70 ? 'text-yellow-600' :
-                      'text-red-600'
+                        stabilityScore > 70 ? 'text-yellow-600' :
+                          'text-red-600'
                     }`}>
                       {stabilityScore.toFixed(1)}
                     </span>
@@ -197,7 +197,7 @@ const StablecoinSimulator: React.FC<StablecoinSimulatorProps> = ({ onUpdate }) =
 
 const StablecoinComparison: React.FC<StablecoinComparisonProps> = ({ type }) => {
   const getTypeInfo = () => {
-    switch(type) {
+    switch (type) {
       case 'fiat':
         return {
           title: "Fiat-Collateralized Stablecoins",
@@ -500,7 +500,7 @@ const InteractiveQuiz: React.FC<QuizProps> = ({ onComplete }) => {
   );
 };
 
-export default function Stablecoins() {
+export default function StablecoinsSection() {
   useScrollTop();
   const { progress, updateProgress } = useProgress();
   const { toast } = useToast();
@@ -517,18 +517,18 @@ export default function Stablecoins() {
       content: (
         <div className="space-y-4">
           <p className="text-gray-700 text-lg">
-            Stablecoins are cryptocurrencies designed to maintain a stable value relative to a reference asset, 
-            typically a fiat currency like the US dollar. They serve as a bridge between traditional finance 
+            Stablecoins are cryptocurrencies designed to maintain a stable value relative to a reference asset,
+            typically a fiat currency like the US dollar. They serve as a bridge between traditional finance
             and the crypto ecosystem, offering the benefits of blockchain technology while minimizing price volatility.
           </p>
-          
+
           <div className="mt-6 bg-blue-50 p-4 rounded-lg">
             <h4 className="text-blue-800 font-semibold mb-2 flex items-center gap-2">
               <BookOpen className="h-5 w-5" />
               Key Concept
             </h4>
             <p className="text-blue-700">
-              Stablecoins achieve price stability through various mechanisms, including collateralization 
+              Stablecoins achieve price stability through various mechanisms, including collateralization
               with other assets or algorithmic supply adjustments.
             </p>
           </div>
@@ -623,6 +623,7 @@ export default function Stablecoins() {
       toast({
         title: "Quiz Result",
         description: `You scored ${score}%. Try again to achieve at least 70%.`,
+        variant: "destructive"
       });
     }
   };

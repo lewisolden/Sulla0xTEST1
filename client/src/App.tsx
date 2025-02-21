@@ -96,6 +96,7 @@ import LiquidityYield from "@/pages/defi/module1/liquidity-yield";
 import ModuleQuiz from "@/pages/defi/module1/quiz";  
 import DefiModule2 from "@/pages/defi/module2";
 import LendingBorrowing from "@/pages/defi/module2/lending-borrowing";
+import StablecoinsSection from "@/pages/defi/module2/stablecoins";
 
 
 function ProtectedRoute({ component: Component, adminOnly = false, publicAccess = false, ...rest }: any) {
@@ -221,6 +222,7 @@ function Router() {
       {/* DeFi Module 2 Routes */}
       <Route path="/defi/module2" component={() => <ProtectedRoute component={DefiModule2} />} />
       <Route path="/defi/module2/lending-borrowing" component={() => <ProtectedRoute component={LendingBorrowing} />} />
+      <Route path="/defi/module2/stablecoins" component={() => <ProtectedRoute component={StablecoinsSection} />} />
 
       <Route component={NotFound} />
     </Switch>
