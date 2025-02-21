@@ -751,7 +751,7 @@ export default function DerivativesSection() {
                       <span className="text-gray-600">Dynamic fee structure incentivizing liquidity provision</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <CheckCircle2 className="h5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
                       <span className="text-gray-600">Cross-margin efficiency for capital utilization</span>
                     </li>
                   </ul>
