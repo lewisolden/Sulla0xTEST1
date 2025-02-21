@@ -215,6 +215,15 @@ router.get('/analytics/users', requireAdmin, async (req, res) => {
       .groupBy(sql`date_trunc('day', ${users.lastActivity})`)
       .orderBy(sql`date_trunc('day', ${users.lastActivity})`);
 
+    console.log('Sending analytics response:', {
+      totalUsers,
+      activeUsers,
+      totalEnrollments,
+      completedModules,
+      achievementCount,
+      pendingCount
+    });
+
     res.json({
       totalUsers: Number(totalUsers || 0),
       activeUsers: Number(activeUsers || 0),

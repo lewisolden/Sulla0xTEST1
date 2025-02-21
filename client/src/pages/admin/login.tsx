@@ -46,8 +46,8 @@ export default function AdminLogin() {
         description: "Logged in successfully",
       });
 
-      // Redirect to admin dashboard after successful login
-      setLocation("/admin/dashboard");
+      // Redirect to admin dashboard
+      setLocation("/admin");
     } catch (error: any) {
       setError(error.message);
       toast({

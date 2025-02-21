@@ -179,6 +179,7 @@ function Router() {
 
       {/* Admin routes */}
       <Route path="/admin/login" component={AdminLogin} />
+      <Route path="/admin/dashboard" component={() => <ProtectedRoute component={AdminDashboard} adminOnly />} />
       <Route path="/admin" component={() => <ProtectedRoute component={AdminDashboard} adminOnly />} />
       <Route path="/admin/users" component={() => <ProtectedRoute component={AdminUsers} adminOnly />} />
       <Route path="/admin/analytics" component={() => <ProtectedRoute component={AdminAnalytics} adminOnly />} />
