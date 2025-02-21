@@ -53,7 +53,7 @@ export function CourseAssistant() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/chat', {
+      const response = await fetch('/api/chat/send', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -62,8 +62,8 @@ export function CourseAssistant() {
           message: input,
           context: {
             currentPath: window.location.pathname,
-            previousMessages: messages.slice(-3), // Send last 3 messages for context
-            userProgress: {}, // This would be filled with actual user progress data
+            previousMessages: messages.slice(-3), 
+            userProgress: {}, 
           }
         }),
       });
@@ -76,9 +76,9 @@ export function CourseAssistant() {
 
       setMessages(prev => [...prev, {
         role: "assistant",
-        content: data.response,
+        content: data.response.message,
         timestamp: new Date(),
-        links: data.links
+        links: data.response.links
       }]);
     } catch (error) {
       console.error('Chat error:', error);

@@ -6,8 +6,19 @@ const router = Router();
 // Message schema validation
 const chatMessageSchema = z.object({
   message: z.string().min(1, "Message cannot be empty"),
-  courseId: z.number().optional(),
-  context: z.string().optional()
+  context: z.object({
+    currentPath: z.string(),
+    previousMessages: z.array(z.object({
+      role: z.enum(["user", "assistant"]),
+      content: z.string(),
+      timestamp: z.date(),
+      links: z.array(z.object({
+        text: z.string(),
+        url: z.string()
+      })).optional()
+    })),
+    userProgress: z.record(z.unknown()).optional()
+  })
 });
 
 // Test endpoint for Perplexity API
@@ -104,7 +115,7 @@ router.post("/send", async (req, res) => {
       });
     }
 
-    const { message, courseId, context } = result.data;
+    const { message, context } = result.data;
 
     // Check API key
     if (!process.env.PERPLEXITY_API_KEY) {
@@ -114,10 +125,21 @@ router.post("/send", async (req, res) => {
 
     // Prepare system message based on context
     let systemMessage = "You are an AI tutor specialized in blockchain and cryptocurrency education. ";
-    if (courseId) {
-      systemMessage += "Focus on providing accurate, educational responses related to the current course material. ";
+
+    // Add context about current location in the course
+    if (context.currentPath) {
+      systemMessage += `The user is currently viewing: ${context.currentPath}. `;
     }
-    systemMessage += "Keep responses clear, concise, and engaging. Provide practical examples when explaining complex blockchain and cryptocurrency concepts. Use analogies when helpful. Avoid technical jargon unless specifically asked about technical details.";
+
+    systemMessage += "Focus on providing accurate, educational responses related to the current course material. Keep responses clear, concise, and engaging. Provide practical examples when explaining complex blockchain and cryptocurrency concepts. Use analogies when helpful. Avoid technical jargon unless specifically asked about technical details.";
+
+    // Get previous conversation context
+    const previousConversation = context.previousMessages
+      ?.slice(-3)
+      .map(msg => ({
+        role: msg.role,
+        content: msg.content
+      })) || [];
 
     // Prepare the chat request
     const requestBody = {
@@ -127,6 +149,7 @@ router.post("/send", async (req, res) => {
           role: "system",
           content: systemMessage
         },
+        ...previousConversation,
         {
           role: "user",
           content: message
@@ -143,14 +166,7 @@ router.post("/send", async (req, res) => {
       frequency_penalty: 1
     };
 
-    if (context) {
-      requestBody.messages.splice(1, 0, {
-        role: "system",
-        content: `Additional context: ${context}`
-      });
-    }
-
-    console.log('[Chat] Making request to Perplexity API');
+    console.log('[Chat] Making request to Perplexity API with body:', JSON.stringify(requestBody));
     const response = await fetch('https://api.perplexity.ai/chat/completions', {
       method: 'POST',
       headers: {
@@ -179,11 +195,10 @@ router.post("/send", async (req, res) => {
       success: true,
       response: {
         message: data.choices[0].message.content,
-        citations: data.citations || [],
-        metadata: {
-          model: data.model,
-          usage: data.usage
-        }
+        links: [
+          { text: "View Course Materials", url: "/curriculum" },
+          { text: "Check Learning Resources", url: "/library" }
+        ]
       }
     });
 
