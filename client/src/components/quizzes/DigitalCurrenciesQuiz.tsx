@@ -4,7 +4,11 @@ import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { useProgress } from "@/context/progress-context";
 import { Link } from "wouter";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CheckCircle, XCircle } from "lucide-react";
+
+interface DigitalCurrenciesQuizProps {
+  onComplete: () => void;
+}
 
 const quizQuestions = [
   {
@@ -64,7 +68,7 @@ const quizQuestions = [
   }
 ];
 
-const DigitalCurrenciesQuiz = () => {
+const DigitalCurrenciesQuiz: React.FC<DigitalCurrenciesQuizProps> = ({ onComplete }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
@@ -75,24 +79,37 @@ const DigitalCurrenciesQuiz = () => {
   const handleAnswerSelect = (optionIndex: number) => {
     setSelectedAnswer(optionIndex);
     setShowExplanation(true);
-  };
 
-  const moveToNextQuestion = () => {
-    const isCorrect = selectedAnswer === quizQuestions[currentQuestion].correctAnswer;
-
+    const isCorrect = optionIndex === quizQuestions[currentQuestion].correctAnswer;
     if (isCorrect) {
       setScore(prev => prev + 1);
     }
 
-    if (currentQuestion < quizQuestions.length - 1) {
-      setCurrentQuestion(prev => prev + 1);
-      setSelectedAnswer(null);
-      setShowExplanation(false);
-    } else {
-      setShowResult(true);
-      const passThreshold = quizQuestions.length * 0.6;
-      updateProgress(1, 'digital-currencies-quiz', score >= passThreshold);
-    }
+    setTimeout(() => {
+      if (currentQuestion < quizQuestions.length - 1) {
+        setCurrentQuestion(prev => prev + 1);
+        setSelectedAnswer(null);
+        setShowExplanation(false);
+      } else {
+        setShowResult(true);
+        const finalScore = ((score + (isCorrect ? 1 : 0)) / quizQuestions.length) * 100;
+        updateProgress(
+          1, // moduleId
+          'digital-currencies', // sectionId
+          finalScore >= 60, // completed
+          1, // courseId
+          undefined, // timeSpent: optional
+          finalScore, // quizScore
+          '/modules/module1/digital-currencies', // lastQuizPath
+          undefined, // lastCompletedPath: optional
+          'Blockchain Fundamentals' // courseName
+        );
+
+        if (finalScore >= 60) {
+          onComplete();
+        }
+      }
+    }, 3000);
   };
 
   const restartQuiz = () => {
@@ -106,7 +123,7 @@ const DigitalCurrenciesQuiz = () => {
   if (showResult) {
     return (
       <div className="container mx-auto px-4 py-8 max-w-2xl">
-        <Card className="p-8 text-center">
+        <Card className="p-8 text-center bg-gradient-to-br from-blue-50 to-indigo-50">
           <h2 className="text-3xl font-bold mb-4 text-blue-800">
             Quiz Completed!
           </h2>
@@ -115,13 +132,15 @@ const DigitalCurrenciesQuiz = () => {
           </p>
           {score >= 3 ? (
             <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-4">
-              <p className="text-green-700">
-                🎉 Congratulations! You've passed the Digital Currencies quiz!
+              <p className="text-green-700 flex items-center gap-2">
+                <CheckCircle className="h-5 w-5" />
+                Congratulations! You've passed the Digital Currencies quiz!
               </p>
             </div>
           ) : (
             <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4">
-              <p className="text-red-700">
+              <p className="text-red-700 flex items-center gap-2">
+                <XCircle className="h-5 w-5" />
                 You didn't pass this time. Review the content and try again.
               </p>
             </div>
@@ -153,16 +172,16 @@ const DigitalCurrenciesQuiz = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-3xl">
-      <Card className="p-8">
+      <Card className="p-8 bg-gradient-to-br from-blue-50 to-indigo-50">
         <div className="mb-6">
-          <h2 className="text-2xl font-bold text-blue-800 mb-4">
+          <h2 className="text-2xl font-bold text-blue-800 mb-4 flex items-center justify-between">
             Digital Currencies Quiz
-            <span className="text-sm ml-4 text-gray-600">
+            <span className="text-sm ml-4 text-gray-600 bg-white px-3 py-1 rounded-full">
               Question {currentQuestion + 1} of {quizQuestions.length}
             </span>
           </h2>
 
-          <div className="bg-blue-50 rounded-lg p-6 mb-6">
+          <div className="bg-white rounded-lg p-6 mb-6 shadow-sm">
             <p className="text-lg text-gray-700">
               {currentQuizQuestion.question}
             </p>
@@ -176,12 +195,12 @@ const DigitalCurrenciesQuiz = () => {
                 className={`
                   w-full p-6 rounded-lg text-left transition-all duration-300
                   ${selectedAnswer === null 
-                    ? 'bg-gray-100 hover:bg-blue-100' 
+                    ? 'bg-white hover:bg-blue-50 border border-gray-200' 
                     : index === currentQuizQuestion.correctAnswer 
-                      ? 'bg-green-200' 
+                      ? 'bg-green-100 border-2 border-green-500' 
                       : selectedAnswer === index 
-                        ? 'bg-red-200' 
-                        : 'bg-gray-100'}
+                        ? 'bg-red-100 border-2 border-red-500' 
+                        : 'bg-white border border-gray-200'}
                   whitespace-normal break-words
                 `}
                 disabled={selectedAnswer !== null}
@@ -192,31 +211,24 @@ const DigitalCurrenciesQuiz = () => {
           </div>
 
           {showExplanation && (
-            <div className={`
-              mt-8 p-6 rounded-lg
-              ${selectedAnswer === currentQuizQuestion.correctAnswer 
-                ? 'bg-green-100 border-l-4 border-green-500' 
-                : 'bg-red-100 border-l-4 border-red-500'}
-            `}>
-              <h3 className="font-bold mb-3 text-lg">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`
+                mt-8 p-6 rounded-lg
+                ${selectedAnswer === currentQuizQuestion.correctAnswer 
+                  ? 'bg-green-100 border-l-4 border-green-500' 
+                  : 'bg-red-100 border-l-4 border-red-500'}
+              `}
+            >
+              <h3 className="font-bold mb-3 text-lg flex items-center gap-2">
                 {selectedAnswer === currentQuizQuestion.correctAnswer 
-                  ? '✅ Correct!' 
-                  : '❌ Incorrect'}
+                  ? <><CheckCircle className="h-5 w-5 text-green-600" /> Correct!</>
+                  : <><XCircle className="h-5 w-5 text-red-600" /> Incorrect</>}
               </h3>
               <p className="text-lg leading-relaxed">{currentQuizQuestion.explanation}</p>
-            </div>
-          )}
-
-          {selectedAnswer !== null && (
-            <Button
-              onClick={moveToNextQuestion}
-              className="mt-8 w-full bg-blue-500 hover:bg-blue-600"
-              size="lg"
-            >
-              {currentQuestion < quizQuestions.length - 1 
-                ? 'Next Question' 
-                : 'Finish Quiz'}
-            </Button>
+              <p className="text-sm mt-4 text-gray-600">Advancing to next question in 3 seconds...</p>
+            </motion.div>
           )}
         </div>
       </Card>
