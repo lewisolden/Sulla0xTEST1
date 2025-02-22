@@ -16,14 +16,14 @@ import {
   Building2,
   PiggyBank,
   Send,
-  ShieldCheck,
   Banknote,
   Landmark,
   LineChart,
   GraduationCap,
   Lock,
   Shield,
-  X
+  X,
+  Check
 } from "lucide-react";
 
 // Enhanced Financial Inclusion Diagram Component with Animation
@@ -156,7 +156,6 @@ const ApplicationShowcase = () => {
 
 const PracticalApplicationsSection = () => {
   useScrollTop();
-  const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showQuiz, setShowQuiz] = useState(false);
   const { updateProgress } = useProgress();
@@ -169,50 +168,13 @@ const PracticalApplicationsSection = () => {
       setScrollProgress(scrollPercent);
 
       if (scrollPercent > 95) {
-        setIsFullyRead(true);
-        updateProgress({
-          moduleId: 'module1',
-          sectionId: 'practical-applications',
-          completed: true,
-          score: 100,
-          totalSections: 8,
-          currentSection: 6,
-          nextSection: 'security'
-        });
+        setShowQuiz(true);
       }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [updateProgress]);
-
-  if (showQuiz) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          <Card className="border-2 border-slate-200 dark:border-slate-800">
-            <CardContent className="pt-6">
-              <motion.div
-                className="space-y-4"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-              >
-                <Button
-                  variant="ghost"
-                  onClick={() => setShowQuiz(false)}
-                  className="mb-4"
-                >
-                  <ArrowLeft className="h-4 w-4 mr-2" /> Back to Content
-                </Button>
-
-                <PracticalApplicationsQuiz />
-              </motion.div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  }
+  }, []);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
@@ -221,8 +183,7 @@ const PracticalApplicationsSection = () => {
           <div className="space-y-4">
             <Link href="/modules/module1">
               <Button variant="ghost" className="gap-2">
-                <ArrowLeft className="h-4 w-4" />
-                Back to Module Overview
+                <ArrowLeft className="h-4 w-4" /> Back to Module Overview
               </Button>
             </Link>
 
@@ -248,236 +209,207 @@ const PracticalApplicationsSection = () => {
             </div>
           </div>
 
-          <div className="space-y-8">
-            <Card className="border-2 border-slate-200 dark:border-slate-800">
-              <CardContent className="p-6">
-                <section>
-                  <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">Overview</h2>
-                  <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
-                    Blockchain technology is revolutionizing various sectors beyond just cryptocurrencies.
-                    From financial services to supply chain management, its applications are creating new
-                    possibilities for business and society. Let's explore how this technology is being
-                    implemented in real-world scenarios.
-                  </p>
-                  <ApplicationShowcase />
-                </section>
-              </CardContent>
-            </Card>
+          <Card className="border-2 border-slate-200 dark:border-slate-800">
+            <CardContent className="p-6">
+              <section>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">Overview</h2>
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                  Blockchain technology is revolutionizing various sectors beyond just cryptocurrencies.
+                  From financial services to supply chain management, its applications are creating new
+                  possibilities for business and society. Let's explore how this technology is being
+                  implemented in real-world scenarios.
+                </p>
+                <ApplicationShowcase />
+              </section>
+            </CardContent>
+          </Card>
 
-            <Card className="border-2 border-slate-200 dark:border-slate-800">
-              <CardContent className="p-6">
-                <section>
-                  <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">Financial Applications</h2>
-                  <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
-                    Financial inclusion is one of the most significant impacts of blockchain technology,
-                    providing access to financial services for the unbanked and underbanked populations worldwide.
-                  </p>
-                  <FinancialInclusionDiagram />
-                </section>
-              </CardContent>
-            </Card>
+          <Card className="border-2 border-slate-200 dark:border-slate-800">
+            <CardContent className="p-6">
+              <section>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">Financial Applications</h2>
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                  Financial inclusion is one of the most significant impacts of blockchain technology,
+                  providing access to financial services for the unbanked and underbanked populations worldwide.
+                </p>
+                <FinancialInclusionDiagram />
+              </section>
+            </CardContent>
+          </Card>
 
-            <Card className="border-2 border-slate-200 dark:border-slate-800">
-              <CardContent className="p-6">
-                <section>
-                  <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">Technical Applications</h2>
-                  <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
-                    Blockchain's technical capabilities extend far beyond financial transactions,
-                    enabling new solutions across various industries.
-                  </p>
-                  <div className="grid gap-6">
-                    {[
-                      {
-                        icon: FileText,
-                        title: "Supply Chain Management",
-                        description: "Track products from origin to consumer with immutable records",
-                        features: [
-                          "Real-time tracking and verification",
-                          "Counterfeit prevention",
-                          "Automated compliance",
-                          "Inventory optimization"
-                        ],
-                        color: "blue"
-                      },
-                      {
-                        icon: Shield,
-                        title: "Healthcare Records",
-                        description: "Secure and interoperable medical data management",
-                        features: [
-                          "Patient data privacy",
-                          "Cross-institution sharing",
-                          "Clinical trial tracking",
-                          "Drug supply verification"
-                        ],
-                        color: "green"
-                      },
-                      {
-                        icon: Lock,
-                        title: "Digital Identity",
-                        description: "Decentralized identity verification and management",
-                        features: [
-                          "Self-sovereign identity",
-                          "Credential verification",
-                          "Access control",
-                          "Privacy preservation"
-                        ],
-                        color: "purple"
-                      }
-                    ].map((item, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className={`bg-${item.color}-50 p-6 rounded-lg shadow-lg`}
-                      >
-                        <div className="flex items-start gap-4">
-                          <div className={`p-3 bg-${item.color}-100 rounded-full`}>
-                            <item.icon className={`w-6 h-6 text-${item.color}-600`} />
-                          </div>
-                          <div>
-                            <h3 className={`text-xl font-bold text-${item.color}-800 mb-2`}>
-                              {item.title}
-                            </h3>
-                            <p className="text-gray-600 mb-4">{item.description}</p>
-                            <ul className="space-y-2">
-                              {item.features.map((feature, i) => (
-                                <li key={i} className="flex items-center gap-2">
-                                  <div className={`w-2 h-2 rounded-full bg-${item.color}-400`} />
-                                  <span className="text-sm text-gray-600">{feature}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
+          <Card className="border-2 border-slate-200 dark:border-slate-800">
+            <CardContent className="p-6">
+              <section>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">Technical Applications</h2>
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                  Blockchain's technical capabilities extend far beyond financial transactions,
+                  enabling new solutions across various industries.
+                </p>
+                <div className="grid gap-6">
+                  {[
+                    {
+                      icon: FileText,
+                      title: "Supply Chain Management",
+                      description: "Track products from origin to consumer with immutable records",
+                      features: [
+                        "Real-time tracking and verification",
+                        "Counterfeit prevention",
+                        "Automated compliance",
+                        "Inventory optimization"
+                      ],
+                      color: "blue"
+                    },
+                    {
+                      icon: Shield,
+                      title: "Healthcare Records",
+                      description: "Secure and interoperable medical data management",
+                      features: [
+                        "Patient data privacy",
+                        "Cross-institution sharing",
+                        "Clinical trial tracking",
+                        "Drug supply verification"
+                      ],
+                      color: "green"
+                    },
+                    {
+                      icon: Lock,
+                      title: "Digital Identity",
+                      description: "Decentralized identity verification and management",
+                      features: [
+                        "Self-sovereign identity",
+                        "Credential verification",
+                        "Access control",
+                        "Privacy preservation"
+                      ],
+                      color: "purple"
+                    }
+                  ].map((item, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className={`bg-${item.color}-50 p-6 rounded-lg shadow-lg`}
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className={`p-3 bg-${item.color}-100 rounded-full`}>
+                          <item.icon className={`w-6 h-6 text-${item.color}-600`} />
                         </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </section>
-              </CardContent>
-            </Card>
-
-            <Card className="border-2 border-slate-200 dark:border-slate-800">
-              <CardContent className="p-6">
-                <section>
-                  <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">Social Impact</h2>
-                  <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
-                    Blockchain technology is enabling positive social change through transparency,
-                    accountability, and improved resource distribution.
-                  </p>
-                  <div className="grid gap-6">
-                    {[
-                      {
-                        icon: Heart,
-                        title: "Humanitarian Aid",
-                        description: "Transparent and efficient distribution of aid",
-                        impact: [
-                          "Direct beneficiary payments",
-                          "Aid fund tracking",
-                          "Reduced fraud",
-                          "Faster emergency response"
-                        ],
-                        color: "rose"
-                      },
-                      {
-                        icon: Globe2,
-                        title: "Environmental Protection",
-                        description: "Supporting sustainability and conservation efforts",
-                        impact: [
-                          "Carbon credit tracking",
-                          "Environmental compliance",
-                          "Conservation funding",
-                          "Waste management"
-                        ],
-                        color: "emerald"
-                      },
-                      {
-                        icon: Users,
-                        title: "Community Empowerment",
-                        description: "Enabling local governance and cooperation",
-                        impact: [
-                          "Decentralized governance",
-                          "Community voting",
-                          "Resource sharing",
-                          "Local economies"
-                        ],
-                        color: "indigo"
-                      }
-                    ].map((item, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className={`bg-${item.color}-50 p-6 rounded-lg shadow-lg`}
-                      >
-                        <div className="flex items-start gap-4">
-                          <div className={`p-3 bg-${item.color}-100 rounded-full`}>
-                            <item.icon className={`w-6 h-6 text-${item.color}-600`} />
-                          </div>
-                          <div>
-                            <h3 className={`text-xl font-bold text-${item.color}-800 mb-2`}>
-                              {item.title}
-                            </h3>
-                            <p className="text-gray-600 mb-4">{item.description}</p>
-                            <ul className="space-y-2">
-                              {item.impact.map((point, i) => (
-                                <li key={i} className="flex items-center gap-2">
-                                  <div className={`w-2 h-2 rounded-full bg-${item.color}-400`} />
-                                  <span className="text-sm text-gray-600">{point}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
+                        <div>
+                          <h3 className={`text-xl font-bold text-${item.color}-800 mb-2`}>
+                            {item.title}
+                          </h3>
+                          <p className="text-gray-600 mb-4">{item.description}</p>
+                          <ul className="space-y-2">
+                            {item.features.map((feature, i) => (
+                              <li key={i} className="flex items-center gap-2">
+                                <div className={`w-2 h-2 rounded-full bg-${item.color}-400`} />
+                                <span className="text-sm text-gray-600">{feature}</span>
+                              </li>
+                            ))}
+                          </ul>
                         </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </section>
-              </CardContent>
-            </Card>
-
-            {isFullyRead && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
-                className="space-y-6"
-              >
-                <Card className="bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500 p-4">
-                  <p className="text-green-700 dark:text-green-300">
-                    🎉 Congratulations! You've completed the Practical Applications section!
-                  </p>
-                </Card>
-
-                <div className="flex flex-col md:flex-row gap-4">
-                  <Button
-                    onClick={() => setShowQuiz(true)}
-                    className="w-full md:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white"
-                    size="lg"
-                  >
-                    Take Topic Quiz
-                  </Button>
-
-                  <div className="flex flex-1 justify-end gap-4">
-                    <Link href="/modules/module1/security">
-                      <Button variant="outline" className="w-full md:w-auto">
-                        <ArrowLeft className="mr-2 h-4 w-4" />
-                        Previous Topic
-                      </Button>
-                    </Link>
-
-                    <Link href="/modules/module1/getting-started">
-                      <Button className="w-full md:w-auto bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
-                        Next Topic
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </Link>
-                  </div>
+                      </div>
+                    </motion.div>
+                  ))}
                 </div>
-              </motion.div>
-            )}
-          </div>
+              </section>
+            </CardContent>
+          </Card>
+
+          <Card className="border-2 border-slate-200 dark:border-slate-800">
+            <CardContent className="p-6">
+              <section>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">Social Impact</h2>
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                  Blockchain technology is enabling positive social change through transparency,
+                  accountability, and improved resource distribution.
+                </p>
+                <div className="grid gap-6">
+                  {[
+                    {
+                      icon: Heart,
+                      title: "Humanitarian Aid",
+                      description: "Transparent and efficient distribution of aid",
+                      impact: [
+                        "Direct beneficiary payments",
+                        "Aid fund tracking",
+                        "Reduced fraud",
+                        "Faster emergency response"
+                      ],
+                      color: "rose"
+                    },
+                    {
+                      icon: Globe2,
+                      title: "Environmental Protection",
+                      description: "Supporting sustainability and conservation efforts",
+                      impact: [
+                        "Carbon credit tracking",
+                        "Environmental compliance",
+                        "Conservation funding",
+                        "Waste management"
+                      ],
+                      color: "emerald"
+                    },
+                    {
+                      icon: Users,
+                      title: "Community Empowerment",
+                      description: "Enabling local governance and cooperation",
+                      impact: [
+                        "Decentralized governance",
+                        "Community voting",
+                        "Resource sharing",
+                        "Local economies"
+                      ],
+                      color: "indigo"
+                    }
+                  ].map((item, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className={`bg-${item.color}-50 p-6 rounded-lg shadow-lg`}
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className={`p-3 bg-${item.color}-100 rounded-full`}>
+                          <item.icon className={`w-6 h-6 text-${item.color}-600`} />
+                        </div>
+                        <div>
+                          <h3 className={`text-xl font-bold text-${item.color}-800 mb-2`}>
+                            {item.title}
+                          </h3>
+                          <p className="text-gray-600 mb-4">{item.description}</p>
+                          <ul className="space-y-2">
+                            {item.impact.map((point, i) => (
+                              <li key={i} className="flex items-center gap-2">
+                                <div className={`w-2 h-2 rounded-full bg-${item.color}-400`} />
+                                <span className="text-sm text-gray-600">{point}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </section>
+            </CardContent>
+          </Card>
+
+          {showQuiz && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Card className="border-2 border-slate-200 dark:border-slate-800">
+                <CardContent className="pt-6">
+                  <PracticalApplicationsQuiz />
+                </CardContent>
+              </Card>
+            </motion.div>
+          )}
         </div>
       </div>
     </div>
@@ -517,7 +449,7 @@ const PracticalApplicationsQuiz = () => {
           score: Math.round((score / questions.length) * 100),
           totalSections: 8,
           currentSection: 6,
-          nextSection: 'security'
+          nextSection: 'getting-started'
         });
       }
     }, 2000);
@@ -527,7 +459,7 @@ const PracticalApplicationsQuiz = () => {
     return (
       <div className="space-y-6">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">Quiz Completed!</h2>
+          <h2 className="text-2xl font-bold text-blue-800 mb-4">Quiz Completed!</h2>
           <p className="text-xl mb-6">You scored {score} out of {questions.length}</p>
           <div className="mb-8">
             {score >= questions.length * 0.7 ? (
@@ -551,12 +483,11 @@ const PracticalApplicationsQuiz = () => {
             )}
           </div>
           <div className="flex justify-center gap-4">
-            <Button onClick={() => setShowQuiz(false)} variant="outline">
-              Return to Content
-            </Button>
-            <Button onClick={() => window.location.reload()} className="bg-blue-600 hover:bg-blue-700 text-white">
-              Restart Quiz
-            </Button>
+            <Link href="/modules/module1/getting-started">
+              <Button className="gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
+                Next Topic <ArrowRight className="h-4 w-4" />
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
@@ -567,9 +498,6 @@ const PracticalApplicationsQuiz = () => {
     <div className="space-y-8">
       <div>
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
-            Test Your Knowledge
-          </h2>
           <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
             Question {currentQuestion + 1} of {questions.length}
           </span>
@@ -583,7 +511,7 @@ const PracticalApplicationsQuiz = () => {
             {questions[currentQuestion].question}
           </p>
 
-          <div className="space-y-4">
+          <div className="grid gap-3">
             {questions[currentQuestion].options.map((option, index) => {
               const isSelected = selectedAnswer === index;
               const isCorrect = index === questions[currentQuestion].correctAnswer;
@@ -596,26 +524,24 @@ const PracticalApplicationsQuiz = () => {
                   transition={{ delay: index * 0.1 }}
                 >
                   <Button
-                    className={`w-full justify-start p-4 text-left ${
+                    variant="outline"
+                    className={`w-full justify-start text-left p-4 relative ${
                       isSelected
                         ? isCorrect
-                          ? "bg-green-100 border-green-500 text-green-700"
-                          : "bg-red-100 border-red-500 text-red-700"
-                        : "bg-white hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800"
+                          ? "bg-green-100 border-green-500 hover:bg-green-100"
+                          : "bg-red-100 border-red-500 hover:bg-red-100"
+                        : "hover:bg-blue-50"
                     }`}
-                    variant="outline"
-                    onClick={() => handleAnswerSelect(index)}
-                    disabled={selectedAnswer !== null}
+                    onClick={() => !showExplanation && handleAnswerSelect(index)}
+                    disabled={showExplanation}
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="flex-shrink-0 w-6">
-                        {String.fromCharCode(65 + index)}.
-                      </div>
-                      <div className="flex-1">{option}</div>
+                    <div className="flex items-center gap-4">
+                      <span>{String.fromCharCode(65 + index)}.</span>
+                      <span>{option}</span>
                       {isSelected && (
-                        <div className="flex-shrink-0">
+                        <div className="absolute right-4">
                           {isCorrect ? (
-                            <ShieldCheck className="h-5 w-5 text-green-600" />
+                            <Check className="h-5 w-5 text-green-600" />
                           ) : (
                             <X className="h-5 w-5 text-red-600" />
                           )}
@@ -632,7 +558,7 @@ const PracticalApplicationsQuiz = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className={`mt-6 p-6 rounded-lg ${
+              className={`mt-4 p-4 rounded-lg ${
                 selectedAnswer === questions[currentQuestion].correctAnswer
                   ? "bg-green-100 text-green-800"
                   : "bg-red-100 text-red-800"
