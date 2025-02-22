@@ -109,7 +109,8 @@ export default function DefiModule2() {
         title: "Successfully enrolled!",
         description: "You can now access all course materials.",
       });
-      window.location.reload();
+      // Instead of reloading the whole page, navigate to the DeFi course path
+      window.location.href = '/defi/module1';
     },
     onError: (error: Error) => {
       toast({
