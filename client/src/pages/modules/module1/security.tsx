@@ -25,6 +25,7 @@ export default function SecurityPage() {
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showQuiz, setShowQuiz] = useState(false);
+  const [quizCompleted, setQuizCompleted] = useState(false);
   const { updateProgress } = useProgress();
 
   useEffect(() => {
@@ -48,8 +49,21 @@ export default function SecurityPage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [updateProgress]);
 
+  const handleQuizComplete = (score: number) => {
+    setQuizCompleted(true);
+    setTimeout(() => {
+      window.location.href = '/modules/module1/applications';
+    }, 5000);
+  };
+
   return (
-    <CourseSection>
+    <CourseSection 
+      title="Security in Cryptocurrency"
+      backLink="/modules/module1"
+      backText="Back to Module Overview"
+      currentSection={7}
+      totalSections={9}
+    >
       <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
         <div 
           className="h-full bg-blue-600" 
@@ -250,10 +264,13 @@ export default function SecurityPage() {
                   </ul>
                 </KeyConceptBox>
 
-                <div className="bg-white/80 p-6 rounded-lg shadow-lg">
-                  <h3 className="text-xl font-semibold text-emerald-800 mb-4">Security Diagrams</h3>
-                  <div className="space-y-4">
+                <div className="flex flex-col gap-6">
+                  <div className="bg-white/80 p-4 rounded-lg shadow-lg h-[200px] overflow-hidden">
+                    <h3 className="text-lg font-semibold text-emerald-800 mb-2">Security Overview</h3>
                     <SecurityDiagram />
+                  </div>
+                  <div className="bg-white/80 p-4 rounded-lg shadow-lg h-[200px] overflow-hidden">
+                    <h3 className="text-lg font-semibold text-emerald-800 mb-2">Common Threats</h3>
                     <SecurityThreats />
                   </div>
                 </div>
@@ -269,23 +286,34 @@ export default function SecurityPage() {
               className="mt-12"
             >
               <QuizContainer>
-                <SecurityQuiz />
+                <SecurityQuiz onComplete={handleQuizComplete} />
+                {quizCompleted && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="text-center my-4 text-green-600"
+                  >
+                    Quiz completed! Moving to next section in 5 seconds...
+                  </motion.div>
+                )}
               </QuizContainer>
 
-              <div className="flex justify-between mt-8">
-                <Link href="/modules/module1/digital-currencies">
-                  <Button variant="outline" className="gap-2">
-                    <ArrowLeft className="h-4 w-4" />
-                    Previous Topic
-                  </Button>
-                </Link>
-                <Link href="/modules/module1/applications">
-                  <Button className="bg-blue-600 hover:bg-blue-700 gap-2">
-                    Next Topic
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </Link>
-              </div>
+              {!quizCompleted && (
+                <div className="flex justify-between mt-8">
+                  <Link href="/modules/module1/digital-currencies">
+                    <Button variant="outline" className="gap-2">
+                      <ArrowLeft className="h-4 w-4" />
+                      Previous Topic
+                    </Button>
+                  </Link>
+                  <Link href="/modules/module1/applications">
+                    <Button className="bg-blue-600 hover:bg-blue-700 gap-2">
+                      Next Topic
+                      <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  </Link>
+                </div>
+              )}
             </motion.div>
           )}
         </motion.div>
