@@ -5,7 +5,7 @@ import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { 
+import {
   ArrowLeft, ArrowRight, TrendingUp, ShieldCheck, PieChart,
   Shield, Key, Lock, Eye, ExternalLink, AlertOctagon,
   AlertTriangle, CheckCircle2, XCircle, Info, History,
@@ -23,7 +23,7 @@ const BitcoinLogo = () => (
     fill="none"
     className="inline-block mr-4"
   >
-    <circle cx="12" cy="12" r="12" fill="#F7931A"/>
+    <circle cx="12" cy="12" r="12" fill="#F7931A" />
     <path
       d="M16.662 10.661c.235-1.57-0.962-2.412-2.596-2.974l.53-2.126-1.295-.323-.517 2.072c-.34-.085-.69-.165-1.039-.244l.52-2.083-1.294-.323-.53 2.126c-.282-.064-.559-.128-.827-.194l.001-.006-1.785-.446-.344 1.382s.962.22.942.234c.525.131.62.48.604.756l-.606 2.432c.036.009.083.022.135.043l-.137-.034-.85 3.41c-.064.16-.228.4-.595.308.013.019-.942-.235-.942-.235l-.644 1.487 1.684.42c.313.079.62.161.922.238l-.536 2.15 1.293.323.53-2.127c.354.096.698.184 1.034.268l-.528 2.117 1.294.323.536-2.148c2.211.419 3.873.25 4.572-1.75.564-1.61-.028-2.538-1.191-3.144.847-.195 1.485-.752 1.655-1.903zm-2.961 4.153c-.4 1.61-3.11.74-3.99.522l.712-2.854c.879.22 3.697.654 3.278 2.332zm.401-4.176c-.366 1.465-2.621.72-3.353.538l.645-2.587c.731.182 3.089.522 2.708 2.049z"
       fill="white"
@@ -57,8 +57,8 @@ export default function BitcoinInvestmentSection() {
 
   const contentVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: {
         duration: 0.5,
@@ -355,62 +355,93 @@ export default function BitcoinInvestmentSection() {
               </Card>
             </div>
 
-            <Card className="mt-6 p-6 bg-gradient-to-br from-blue-50 via-white to-blue-50">
-              <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600 mb-3">Risk Mitigation Strategies</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <h4 className="font-semibold text-orange-700 mb-2 flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-green-500" />
-                    Do's
+            <Card className="mt-6 p-6 bg-gradient-to-br from-orange-50 via-white to-orange-50 border border-orange-200 transition-all duration-300 hover:shadow-xl">
+              <h3 className="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600 mb-6">Risk Mitigation Strategies</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="bg-gradient-to-br from-green-50 via-white to-green-50 p-6 rounded-lg border border-green-200 shadow-md hover:shadow-lg transition-all duration-300">
+                  <h4 className="font-semibold text-green-700 mb-4 flex items-center gap-2 text-lg">
+                    <CheckCircle2 className="h-6 w-6 text-green-500" />
+                    Recommended Practices
                   </h4>
-                  <ul className="space-y-2 text-gray-700">
-                    <li className="flex items-center gap-2">
-                      <Shield className="h-4 w-4 text-green-500" />
-                      Only invest what you can afford to lose
+                  <ul className="space-y-4">
+                    <li className="flex items-center gap-3 p-2 hover:bg-green-50 rounded-lg transition-colors">
+                      <Shield className="h-5 w-5 text-green-600" />
+                      <div>
+                        <span className="font-medium">Safe Investment</span>
+                        <p className="text-sm text-gray-600">Only invest what you can afford to lose</p>
+                      </div>
                     </li>
-                    <li className="flex items-center gap-2">
-                      <Lock className="h-4 w-4 text-green-500" />
-                      Use reputable exchanges and wallets
+                    <li className="flex items-center gap-3 p-2 hover:bg-green-50 rounded-lg transition-colors">
+                      <Lock className="h-5 w-5 text-green-600" />
+                      <div>
+                        <span className="font-medium">Secure Storage</span>
+                        <p className="text-sm text-gray-600">Use reputable exchanges and wallets</p>
+                      </div>
                     </li>
-                    <li className="flex items-center gap-2">
-                      <Key className="h-4 w-4 text-green-500" />
-                      Implement strong security measures
+                    <li className="flex items-center gap-3 p-2 hover:bg-green-50 rounded-lg transition-colors">
+                      <Key className="h-5 w-5 text-green-600" />
+                      <div>
+                        <span className="font-medium">Strong Security</span>
+                        <p className="text-sm text-gray-600">Implement robust security measures</p>
+                      </div>
                     </li>
-                    <li className="flex items-center gap-2">
-                      <PieChart className="h-4 w-4 text-green-500" />
-                      Diversify your investment portfolio
+                    <li className="flex items-center gap-3 p-2 hover:bg-green-50 rounded-lg transition-colors">
+                      <PieChart className="h-5 w-5 text-green-600" />
+                      <div>
+                        <span className="font-medium">Portfolio Balance</span>
+                        <p className="text-sm text-gray-600">Diversify your investment portfolio</p>
+                      </div>
                     </li>
-                    <li className="flex items-center gap-2">
-                      <Landmark className="h-4 w-4 text-green-500" />
-                      Stay informed about regulations
+                    <li className="flex items-center gap-3 p-2 hover:bg-green-50 rounded-lg transition-colors">
+                      <Landmark className="h-5 w-5 text-green-600" />
+                      <div>
+                        <span className="font-medium">Regulatory Awareness</span>
+                        <p className="text-sm text-gray-600">Stay informed about regulations</p>
+                      </div>
                     </li>
                   </ul>
                 </div>
-                <div>
-                  <h4 className="font-semibold text-red-700 mb-2 flex items-center gap-2">
-                    <XCircle className="h-5 w-5 text-red-500" />
-                    Don'ts
+
+                <div className="bg-gradient-to-br from-red-50 via-white to-red-50 p-6 rounded-lg border border-red-200 shadow-md hover:shadow-lg transition-all duration-300">
+                  <h4 className="font-semibold text-red-700 mb-4 flex items-center gap-2 text-lg">
+                    <XCircle className="h-6 w-6 text-red-500" />
+                    Practices to Avoid
                   </h4>
-                  <ul className="space-y-2 text-gray-700">
-                    <li className="flex items-center gap-2">
-                      <AlertTriangle className="h-4 w-4 text-red-500" />
-                      Don't invest with borrowed money
+                  <ul className="space-y-4">
+                    <li className="flex items-center gap-3 p-2 hover:bg-red-50 rounded-lg transition-colors">
+                      <AlertTriangle className="h-5 w-5 text-red-600" />
+                      <div>
+                        <span className="font-medium">Borrowed Funds</span>
+                        <p className="text-sm text-gray-600">Never invest with borrowed money</p>
+                      </div>
                     </li>
-                    <li className="flex items-center gap-2">
-                      <AlertOctagon className="h-4 w-4 text-red-500" />
-                      Don't store large amounts on exchanges
+                    <li className="flex items-center gap-3 p-2 hover:bg-red-50 rounded-lg transition-colors">
+                      <AlertOctagon className="h-5 w-5 text-red-600" />
+                      <div>
+                        <span className="font-medium">Exchange Storage</span>
+                        <p className="text-sm text-gray-600">Don't keep large amounts on exchanges</p>
+                      </div>
                     </li>
-                    <li className="flex items-center gap-2">
-                      <Eye className="h-4 w-4 text-red-500" />
-                      Don't share private keys or seed phrases
+                    <li className="flex items-center gap-3 p-2 hover:bg-red-50 rounded-lg transition-colors">
+                      <Eye className="h-5 w-5 text-red-600" />
+                      <div>
+                        <span className="font-medium">Private Information</span>
+                        <p className="text-sm text-gray-600">Never share private keys or seed phrases</p>
+                      </div>
                     </li>
-                    <li className="flex items-center gap-2">
-                      <Info className="h-4 w-4 text-red-500" />
-                      Don't make emotional investment decisions
+                    <li className="flex items-center gap-3 p-2 hover:bg-red-50 rounded-lg transition-colors">
+                      <Info className="h-5 w-5 text-red-600" />
+                      <div>
+                        <span className="font-medium">Emotional Trading</span>
+                        <p className="text-sm text-gray-600">Avoid emotional investment decisions</p>
+                      </div>
                     </li>
-                    <li className="flex items-center gap-2">
-                      <History className="h-4 w-4 text-red-500" />
-                      Don't ignore tax obligations
+                    <li className="flex items-center gap-3 p-2 hover:bg-red-50 rounded-lg transition-colors">
+                      <History className="h-5 w-5 text-red-600" />
+                      <div>
+                        <span className="font-medium">Tax Compliance</span>
+                        <p className="text-sm text-gray-600">Don't ignore tax obligations</p>
+                      </div>
                     </li>
                   </ul>
                 </div>
@@ -428,7 +459,7 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="bg-gradient-to-br from-white via-teal-50 to-white rounded-lg shadow-lg p-8 border border-teal-100 transition-all duration-300 hover:shadow-xl"
+            className="bg-gradient-to-br from-white via-teal-50 to-white rounded-lg shadow-lg p-8 mt-8 border border-teal-100 transition-all duration-300 hover:shadow-xl"
           >
             <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-cyan-600 mb-6">Bitcoin ETFs Explained</h2>
             <p>
@@ -446,14 +477,16 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="bg-gradient-to-br from-white via-indigo-50 to-white rounded-lg shadow-lg p-8 mt-8 border border-indigo-100 transition-all duration-300 hover:shadow-xl"
+            className="bg-gradient-to-br from-white via-orange-50 to-white rounded-lg shadow-lg p-8 mt-8 border border-orange-100 transition-all duration-300 hover:shadow-xl"
           >
-            <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-600 mb-6">Practice Investment Strategies</h2>
+            <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600 mb-6">Practice Investment Strategies</h2>
             <p className="text-gray-700 mb-6">
               Now that you understand the different investment options, try out our interactive
               investment simulator to practice making investment decisions in a risk-free environment.
             </p>
-            <BitcoinInvestmentExercise />
+            <div className="bg-gradient-to-br from-orange-50 via-white to-orange-50 p-6 rounded-lg border border-orange-200 shadow-md">
+              <BitcoinInvestmentExercise />
+            </div>
           </motion.section>
 
           {isFullyRead && (
