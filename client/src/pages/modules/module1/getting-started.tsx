@@ -370,10 +370,10 @@ const GettingStartedSection = () => {
         <Card className="mb-8">
           <CardContent className="p-6 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 text-white rounded-t-lg">
             <h1 className="text-4xl font-bold mb-2">
-              Getting Started Safely with Cryptocurrency
+              Getting Started with Cryptocurrency
             </h1>
             <p className="text-blue-100">
-              Learn essential security practices and fundamental concepts for your crypto journey
+              Master the essential concepts and best practices for safely entering the world of digital assets
             </p>
           </CardContent>
         </Card>
