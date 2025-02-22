@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { useProgress } from "@/context/progress-context";
 import { Link } from "wouter";
-import { ArrowRight, CheckCircle, XCircle } from "lucide-react";
+import { ArrowRight, CheckCircle, XCircle, Award } from "lucide-react";
 
 interface DigitalCurrenciesQuizProps {
   onComplete: () => void;
@@ -94,19 +94,21 @@ const DigitalCurrenciesQuiz: React.FC<DigitalCurrenciesQuizProps> = ({ onComplet
         setShowResult(true);
         const finalScore = ((score + (isCorrect ? 1 : 0)) / quizQuestions.length) * 100;
         updateProgress(
-          1, // moduleId
-          'digital-currencies', // sectionId
-          finalScore >= 60, // completed
-          1, // courseId
-          undefined, // timeSpent
-          finalScore, // quizScore
-          '/modules/module1/digital-currencies', // lastQuizPath
-          undefined, // lastCompletedPath
-          'Blockchain Fundamentals' // courseName
+          1,
+          'digital-currencies',
+          finalScore >= 60,
+          1,
+          undefined,
+          finalScore,
+          '/modules/module1/digital-currencies',
+          undefined,
+          'Blockchain Fundamentals'
         );
 
         if (finalScore >= 60) {
-          onComplete();
+          setTimeout(() => {
+            onComplete();
+          }, 3000);
         }
       }
     }, 3000);
@@ -121,44 +123,54 @@ const DigitalCurrenciesQuiz: React.FC<DigitalCurrenciesQuizProps> = ({ onComplet
   };
 
   if (showResult) {
+    const percentage = (score / quizQuestions.length) * 100;
     return (
       <div className="container mx-auto px-4 py-8 max-w-2xl">
         <Card className="p-8 text-center bg-gradient-to-br from-blue-50 to-indigo-50">
-          <h2 className="text-3xl font-bold mb-4 text-blue-800">
-            Quiz Completed!
+          <div className="flex items-center justify-center mb-6">
+            <Award className={`h-16 w-16 ${percentage >= 60 ? 'text-green-500' : 'text-red-500'}`} />
+          </div>
+          <h2 className="text-2xl font-bold mb-4 text-blue-800">
+            Quiz Complete!
           </h2>
-          <p className="text-xl mb-4">
-            You scored {score} out of {quizQuestions.length}
-          </p>
-          {score >= 3 ? (
+          <div className="text-xl mb-6">
+            <p className="font-semibold">Your Score:</p>
+            <p className={`text-3xl font-bold ${percentage >= 60 ? 'text-green-600' : 'text-red-600'}`}>
+              {percentage}%
+            </p>
+            <p className="text-gray-600 mt-2">
+              ({score} out of {quizQuestions.length} correct)
+            </p>
+          </div>
+          {percentage >= 60 ? (
             <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-4">
-              <p className="text-green-700 flex items-center gap-2">
+              <p className="text-green-700 flex items-center gap-2 justify-center">
                 <CheckCircle className="h-5 w-5" />
-                Congratulations! You've passed the Digital Currencies quiz!
+                Congratulations! You've passed!
               </p>
+              <p className="text-sm text-green-600 mt-2">Moving to next section in 3 seconds...</p>
             </div>
           ) : (
             <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4">
-              <p className="text-red-700 flex items-center gap-2">
+              <p className="text-red-700 flex items-center gap-2 justify-center">
                 <XCircle className="h-5 w-5" />
-                You didn't pass this time. Review the content and try again.
+                Keep learning and try again
               </p>
             </div>
           )}
           <div className="flex flex-col space-y-4">
             <Button 
               onClick={restartQuiz}
-              className="bg-blue-500 hover:bg-blue-600"
+              className="w-full bg-blue-500 hover:bg-blue-600"
             >
-              Restart Quiz
+              Retry Quiz
             </Button>
-            {score >= 3 && (
+            {percentage >= 60 && (
               <Link href="/modules/module1/security">
                 <Button 
                   className="w-full bg-green-600 hover:bg-green-700"
-                  size="lg"
                 >
-                  Next Topic <ArrowRight className="ml-2 h-4 w-4" />
+                  Continue to Security <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
             )}
@@ -171,69 +183,67 @@ const DigitalCurrenciesQuiz: React.FC<DigitalCurrenciesQuizProps> = ({ onComplet
   const currentQuizQuestion = quizQuestions[currentQuestion];
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-3xl">
-      <Card className="p-8 bg-gradient-to-br from-blue-50 to-indigo-50">
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-blue-800 mb-4 flex items-center justify-between">
-            Digital Currencies Quiz
-            <span className="text-sm ml-4 text-gray-600 bg-white px-3 py-1 rounded-full">
-              Question {currentQuestion + 1} of {quizQuestions.length}
-            </span>
-          </h2>
+    <div className="container mx-auto px-4 py-4 max-w-2xl">
+      <div className="mb-6">
+        <h3 className="text-xl font-semibold text-blue-800 mb-4 flex items-center justify-between">
+          Question {currentQuestion + 1} of {quizQuestions.length}
+          <span className="text-sm text-gray-600 bg-white px-3 py-1 rounded-full">
+            Score: {score}
+          </span>
+        </h3>
 
-          <div className="bg-white rounded-lg p-6 mb-6 shadow-sm">
-            <p className="text-lg text-gray-700">
-              {currentQuizQuestion.question}
-            </p>
-          </div>
-
-          <div className="grid gap-4">
-            {currentQuizQuestion.options.map((option, index) => (
-              <motion.button
-                key={index}
-                onClick={() => handleAnswerSelect(index)}
-                className={`
-                  w-full p-6 rounded-lg text-left transition-all duration-300
-                  ${selectedAnswer === null 
-                    ? 'bg-white hover:bg-blue-50 border border-gray-200' 
-                    : index === currentQuizQuestion.correctAnswer 
-                      ? 'bg-green-100 border-2 border-green-500' 
-                      : selectedAnswer === index 
-                        ? 'bg-red-100 border-2 border-red-500' 
-                        : 'bg-white border border-gray-200'}
-                  whitespace-normal break-words hover:shadow-md
-                `}
-                disabled={selectedAnswer !== null}
-                whileHover={{ scale: selectedAnswer === null ? 1.02 : 1 }}
-                whileTap={{ scale: selectedAnswer === null ? 0.98 : 1 }}
-              >
-                <span className="text-lg">{option}</span>
-              </motion.button>
-            ))}
-          </div>
-
-          {showExplanation && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className={`
-                mt-8 p-6 rounded-lg
-                ${selectedAnswer === currentQuizQuestion.correctAnswer 
-                  ? 'bg-green-100 border-l-4 border-green-500' 
-                  : 'bg-red-100 border-l-4 border-red-500'}
-              `}
-            >
-              <h3 className="font-bold mb-3 text-lg flex items-center gap-2">
-                {selectedAnswer === currentQuizQuestion.correctAnswer 
-                  ? <><CheckCircle className="h-5 w-5 text-green-600" /> Correct!</>
-                  : <><XCircle className="h-5 w-5 text-red-600" /> Incorrect</>}
-              </h3>
-              <p className="text-lg leading-relaxed">{currentQuizQuestion.explanation}</p>
-              <p className="text-sm mt-4 text-gray-600">Advancing to next question in 3 seconds...</p>
-            </motion.div>
-          )}
+        <div className="bg-white rounded-lg p-4 mb-4 shadow-sm">
+          <p className="text-lg text-gray-700">
+            {currentQuizQuestion.question}
+          </p>
         </div>
-      </Card>
+
+        <div className="grid gap-3">
+          {currentQuizQuestion.options.map((option, index) => (
+            <motion.button
+              key={index}
+              onClick={() => handleAnswerSelect(index)}
+              className={`
+                w-full p-4 rounded-lg text-left transition-all duration-300
+                ${selectedAnswer === null 
+                  ? 'bg-white hover:bg-blue-50 border border-gray-200' 
+                  : index === currentQuizQuestion.correctAnswer 
+                    ? 'bg-green-100 border-2 border-green-500' 
+                    : selectedAnswer === index 
+                      ? 'bg-red-100 border-2 border-red-500' 
+                      : 'bg-white border border-gray-200'}
+                whitespace-normal break-words hover:shadow-md
+              `}
+              disabled={selectedAnswer !== null}
+              whileHover={{ scale: selectedAnswer === null ? 1.02 : 1 }}
+              whileTap={{ scale: selectedAnswer === null ? 0.98 : 1 }}
+            >
+              <span className="text-base">{option}</span>
+            </motion.button>
+          ))}
+        </div>
+
+        {showExplanation && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`
+              mt-6 p-4 rounded-lg
+              ${selectedAnswer === currentQuizQuestion.correctAnswer 
+                ? 'bg-green-100 border-l-4 border-green-500' 
+                : 'bg-red-100 border-l-4 border-red-500'}
+            `}
+          >
+            <h3 className="font-bold mb-2 text-base flex items-center gap-2">
+              {selectedAnswer === currentQuizQuestion.correctAnswer 
+                ? <><CheckCircle className="h-5 w-5 text-green-600" /> Correct!</>
+                : <><XCircle className="h-5 w-5 text-red-600" /> Incorrect</>}
+            </h3>
+            <p className="text-base leading-relaxed">{currentQuizQuestion.explanation}</p>
+            <p className="text-sm mt-3 text-gray-600">Next question in 3 seconds...</p>
+          </motion.div>
+        )}
+      </div>
     </div>
   );
 };

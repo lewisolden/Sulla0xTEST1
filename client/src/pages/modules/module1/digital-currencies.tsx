@@ -35,6 +35,7 @@ export default function DigitalCurrenciesSection() {
   const { updateProgress } = useProgress();
 
   useEffect(() => {
+    // Only scroll to top on initial component mount
     window.scrollTo(0, 0);
 
     const handleScroll = () => {
@@ -43,7 +44,7 @@ export default function DigitalCurrenciesSection() {
       const scrollPercent = (scrollTop / scrollHeight) * 100;
       setScrollProgress(scrollPercent);
 
-      if (scrollPercent > 95) {
+      if (scrollPercent > 95 && !isFullyRead) {
         setIsFullyRead(true);
         updateProgress(
           1, // moduleId
@@ -61,7 +62,7 @@ export default function DigitalCurrenciesSection() {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [updateProgress]);
+  }, [updateProgress, isFullyRead]);
 
   const handleQuizComplete = () => {
     navigate('/modules/module1/security');
