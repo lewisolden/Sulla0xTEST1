@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -70,6 +70,7 @@ export default function DefiModule2() {
   useScrollTop();
   const { progress } = useProgress();
   const { toast } = useToast();
+  const [, setLocation] = useLocation();
 
   // Filter progress for DeFi module 2
   const moduleProgress = progress.filter(p => p.moduleId === 4 && p.courseId === 3);
@@ -109,8 +110,8 @@ export default function DefiModule2() {
         title: "Successfully enrolled!",
         description: "You can now access all course materials.",
       });
-      // Instead of reloading the whole page, navigate to the DeFi course path
-      window.location.href = '/defi/module1';
+      // Directly navigate to the first DeFi module
+      setLocation('/defi/module1');
     },
     onError: (error: Error) => {
       toast({
