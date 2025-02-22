@@ -499,6 +499,65 @@ const InteractiveQuiz: React.FC<QuizProps> = ({ onComplete }) => {
   );
 };
 
+const handleSectionComplete = (index: number) => {
+  updateProgress({
+    moduleId: 2,
+    sectionId: 'stablecoins',
+    subsectionId: `subsection-${index + 1}`,
+    progress: ((index + 1) / sections.length) * 100,
+    status: 'completed',
+    timestamp: new Date().toISOString(),
+    type: 'section',
+    courseId: 3,
+    data: {
+      sectionIndex: index,
+      totalSections: sections.length
+    }
+  });
+
+  toast({
+    title: "Progress Updated",
+    description: "Section completed successfully!",
+  });
+
+  if (index < sections.length - 1) {
+    setCurrentSection(index + 1);
+  }
+};
+
+const handleQuizComplete = (score: number) => {
+  setScore(score);
+  setQuizSubmitted(true);
+
+  if (score >= 70) {
+    updateProgress({
+      moduleId: 2,
+      sectionId: 'stablecoins',
+      subsectionId: 'quiz',
+      progress: 100,
+      status: 'completed',
+      timestamp: new Date().toISOString(),
+      type: 'quiz',
+      courseId: 3,
+      data: {
+        score,
+        passingThreshold: 70
+      }
+    });
+
+    toast({
+      title: "Quiz Completed!",
+      description: `You scored ${score}%. Great job!`,
+    });
+  } else {
+    toast({
+      title: "Quiz Result",
+      description: `You scored ${score}%. Try again to achieve at least 70%.`,
+      variant: "destructive"
+    });
+  }
+};
+
 export default function StablecoinsSection() {
   useScrollTop();
   const { progress, updateProgress } = useProgress();
@@ -751,8 +810,7 @@ export default function StablecoinsSection() {
         type: 'quiz',
         courseId: 3,
         data: {
-          score,
-          passingThreshold: 70
+          score,          passingThreshold: 70
         }
       });
 
