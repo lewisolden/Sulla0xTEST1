@@ -6,8 +6,10 @@ import {
   LightningBoltIcon,
   BeakerIcon
 } from '@heroicons/react/outline';
+import { useAuth } from '@/hooks/use-auth'; // Add auth hook import
 
 const Curriculum = () => {
+  const { user } = useAuth(); // Get auth state
   const modules = [
     {
       id: 1,
@@ -145,10 +147,10 @@ const Curriculum = () => {
 
               <div className="text-center mt-6">
                 <Link 
-                  to={`/modules/module${module.id}`}
+                  to={user ? `/modules/module${module.id}` : "/login"}
                   className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
                 >
-                  Start Module
+                  {user ? "Start Module" : "Enroll Now"}
                 </Link>
               </div>
             </div>
@@ -160,10 +162,10 @@ const Curriculum = () => {
             Ready to begin your learning journey?
           </p>
           <Link 
-            to="/modules" 
+            to={user ? "/modules" : "/login"}
             className="bg-blue-600 text-white px-8 py-3 rounded-lg text-xl hover:bg-blue-700 transition duration-300"
           >
-            Begin Your Learning Path
+            {user ? "Begin Your Learning Path" : "Get Started"}
           </Link>
         </div>
       </div>
