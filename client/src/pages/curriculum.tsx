@@ -323,7 +323,16 @@ export default function Curriculum() {
         title: "Successfully enrolled!",
         description: "You can now access all course materials.",
       });
-      window.location.reload();
+
+      // Instead of reloading, navigate directly to the appropriate module based on course
+      const courseIdNumber = Number(currentCourse.id);
+      if (courseIdNumber === 3) {
+        setLocation('/defi/module1');
+      } else if (courseIdNumber === 2) {
+        setLocation('/ai/module1');
+      } else {
+        setLocation('/modules/module1');
+      }
     },
     onError: (error: Error) => {
       toast({
