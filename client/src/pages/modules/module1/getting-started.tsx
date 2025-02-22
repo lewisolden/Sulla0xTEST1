@@ -6,7 +6,7 @@ import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ArrowLeft, ArrowRight, Wallet } from "lucide-react";
-import DigitalCurrenciesQuiz from "@/components/quizzes/DigitalCurrenciesQuiz";
+import { GettingStartedQuiz } from "@/components/quizzes/GettingStartedQuiz";
 import { SecurityIcon, WalletIcon } from "@/components/icons/CryptoIcons";
 import { GettingStartedDiagram } from "@/components/diagrams/GettingStartedDiagram";
 import { Input } from "@/components/ui/input";
@@ -225,49 +225,11 @@ const SEED_WORD_LIST = [
   'youth', 'zebra', 'zero', 'zone', 'zoo'
 ];
 
-interface GettingStartedQuizProps {
-  onComplete: () => void;
-}
-
-interface ResourceCardProps {
-  icon: LucideIcon;
-  title: string;
-  description: string;
-  tags: string[];
-  color: string;
-}
-
-const ResourceCard = ({ icon: Icon, title, description, tags, color }: ResourceCardProps) => (
-  <motion.div
-    whileHover={{ scale: 1.02 }}
-    className={`bg-white rounded-xl shadow-lg p-6 border-l-4 ${color}`}
-  >
-    <div className="flex items-start space-x-4">
-      <div className={`p-3 rounded-lg ${color.replace('border-', 'bg-').replace('-500', '-100')}`}>
-        <Icon className={`w-6 h-6 ${color.replace('border-', 'text-')}`} />
-      </div>
-      <div className="flex-1">
-        <h3 className="font-semibold text-lg mb-2">{title}</h3>
-        <p className="text-gray-600 mb-3">{description}</p>
-        <div className="flex flex-wrap gap-2">
-          {tags.map((tag, index) => (
-            <span
-              key={index}
-              className={`px-2 py-1 rounded-full text-sm ${color.replace('border-', 'bg-').replace('-500', '-100')} ${color.replace('border-', 'text-')}`}
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-      </div>
-    </div>
-  </motion.div>
-);
-
 const GettingStartedSection = () => {
   useScrollTop();
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [showQuiz, setShowQuiz] = useState(false);
   const { updateProgress } = useProgress();
   const { toast } = useToast();
 
@@ -352,19 +314,39 @@ const GettingStartedSection = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [updateProgress]);
 
-  const handleQuizComplete = () => {
-    updateProgress(
-      1, // moduleId
-      'getting-started', // sectionId
-      true, // completed
-      1, // score
-      'Getting Started with Cryptocurrency', // sectionTitle
-      100, // progressPercentage
-      '/modules/module1/getting-started', // route
-      undefined, // subsectionId
-      'Cryptocurrency Fundamentals' // courseName
-    );
-  };
+  interface ResourceCardProps {
+    icon: LucideIcon;
+    title: string;
+    description: string;
+    tags: string[];
+    color: string;
+  }
+
+  const ResourceCard = ({ icon: Icon, title, description, tags, color }: ResourceCardProps) => (
+    <motion.div
+      whileHover={{ scale: 1.02 }}
+      className={`bg-white rounded-xl shadow-lg p-6 border-l-4 ${color}`}
+    >
+      <div className="flex items-start space-x-4">
+        <div className={`p-3 rounded-lg ${color.replace('border-', 'bg-').replace('-500', '-100')}`}>
+          <Icon className={`w-6 h-6 ${color.replace('border-', 'text-')}`} />
+        </div>
+        <div className="flex-1">
+          <h3 className="font-semibold text-lg mb-2">{title}</h3>
+          <p className="text-gray-600 mb-3">{description}</p>
+          <div className="flex flex-wrap gap-2">{tags.map((tag, index) => (
+              <span
+                key={index}
+                className={`px-2 py-1 rounded-full text-sm ${color.replace('border-', 'bg-').replace('-500', '-100')} ${color.replace('border-', 'text-')}`}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -550,33 +532,6 @@ const GettingStartedSection = () => {
           </Card>
         )}
 
-        <Card className="mb-8">
-          <CardContent className="p-6 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 text-white rounded-t-lg">
-            <h2 className="text-2xl font-bold mb-2">Knowledge Check</h2>
-            <p className="text-blue-100">
-              Test your understanding with this quick quiz
-            </p>
-          </CardContent>
-          <CardContent className="p-6">
-            <DigitalCurrenciesQuiz onComplete={handleQuizComplete} />
-          </CardContent>
-        </Card>
-
-        <div className="flex justify-between items-center mt-8">
-          <Link href="/modules/module1/applications">
-            <Button variant="outline" className="gap-2">
-              <ArrowLeft className="h-4 w-4" />
-              Previous: Applications
-            </Button>
-          </Link>
-          <Link href="/modules/module1/quiz">
-            <Button className="bg-blue-600 hover:bg-blue-700 gap-2">
-              Take Module Quiz
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </Link>
-        </div>
-
         <Card className="mb-6">
           <CardContent className="prose max-w-none p-6">
             <section>
@@ -623,6 +578,101 @@ const GettingStartedSection = () => {
                   💡 Pro Tip: Don't feel pressured to invest right away. It's okay to spend time learning
                   and observing. Many successful crypto users spent months learning before making their first transaction.
                 </p>
+              </div>
+            </section>
+
+            <section className="mt-8">
+              <h2 className="text-2xl font-bold text-blue-700">Security Best Practices</h2>
+              <div className="flex items-center gap-4 mb-4">
+                <WalletIcon size={32} className="text-blue-600" />
+                <p className="text-gray-700">
+                  Think of cryptocurrency security like protecting your home - you need multiple layers of protection.
+                  Here's how to keep your digital assets safe:
+                </p>
+              </div>
+
+              <div className="bg-white p-6 rounded-lg border border-gray-200 mb-6">
+                <ul className="list-disc pl-5 space-y-4 text-gray-700">
+                  <li>
+                    <strong>Strong Passwords:</strong> Use unique, complex passwords for each account.
+                    Think: "MyFirst#Crypto2024!" instead of "password123"
+                  </li>
+                  <li>
+                    <strong>Two-Factor Authentication (2FA):</strong> It's like having both a key and an alarm
+                    code for your house - even if someone gets your password, they can't get in without the second factor
+                  </li>
+                  <li>
+                    <strong>Secure Storage:</strong> Keep your private keys and recovery phrases as safe as you'd
+                    keep your passport or birth certificate
+                  </li>
+                  <li>
+                    <strong>Hardware Wallets:</strong> For larger amounts, use a hardware wallet - it's like
+                    having a personal safe for your digital money
+                  </li>
+                  <li>
+                    <strong>Phishing Awareness:</strong> Be cautious of unexpected emails or messages asking
+                    about your crypto - legitimate services will never ask for your private keys
+                  </li>
+                  <li>
+                    <strong>Regular Updates:</strong> Keep your software up-to-date, just like you'd maintain
+                    your car to keep it running safely
+                  </li>
+                  <li>
+                    <strong>Double-Check Everything:</strong> Verify all transaction details carefully - crypto
+                    transactions can't be reversed like bank transfers
+                  </li>
+                </ul>
+              </div>
+
+              <div className="bg-red-50 p-4 rounded-lg mb-6">
+                <h4 className="text-red-800 font-semibold mb-2">⚠️ Warning Signs to Watch For:</h4>
+                <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                  <li>Anyone pressuring you to invest quickly</li>
+                  <li>Promises of guaranteed returns</li>
+                  <li>Requests to share your private keys or recovery phrases</li>
+                  <li>Unsolicited investment advice from strangers</li>
+                  <li>Websites with URLs that look slightly different from official ones</li>
+                </ul>
+              </div>
+            </section>
+
+            <section className="mt-8">
+              <h2 className="text-2xl font-bold text-blue-700">Practical Storage Tips</h2>
+              <div className="bg-yellow-50 p-6 rounded-lg mb-6">
+                <h3 className="text-xl font-semibold text-yellow-800 mb-4">Essential Security Guidelines</h3>
+                <div className="space-y-4">
+                  <div className="bg-white p-4 rounded-lg">
+                    <h4 className="font-semibold text-yellow-800 mb-2">Never Share Private Information</h4>
+                    <p className="text-gray-700">
+                      Your private keys and recovery phrases are like the master key to your house - never share
+                      them with anyone, not even if they claim to be support staff.
+                    </p>
+                  </div>
+
+                  <div className="bg-white p-4 rounded-lg">
+                    <h4 className="font-semibold text-yellow-800 mb-2">Use Multiple Wallets</h4>
+                    <p className="text-gray-700">
+                      Consider having separate wallets for different purposes - like having a checking account
+                      for daily use and a savings account for long-term storage.
+                    </p>
+                  </div>
+
+                  <div className="bg-white p-4 rounded-lg">
+                    <h4 className="font-semibold text-yellow-800 mb-2">Backup Everything</h4>
+                    <p className="text-gray-700">
+                      Store your wallet information in multiple secure locations, like keeping copies of important
+                      documents in both a home safe and a bank vault.
+                    </p>
+                  </div>
+
+                  <div className="bg-white p-4 rounded-lg">
+                    <h4 className="font-semibold text-yellow-800 mb-2">Test Before Large Transfers</h4>
+                    <p className="text-gray-700">
+                      Always send a small test amount first when using a new wallet or address - think of it
+                      like trying a new route before making a long journey.
+                    </p>
+                  </div>
+                </div>
               </div>
             </section>
 
@@ -713,8 +763,7 @@ const GettingStartedSection = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="mt-8"
+            className="mt-8 space-y-6"
           >
             <Card className="bg-green-100 border-l-4 border-green-500 p-4">
               <p className="text-green-700">
@@ -722,17 +771,41 @@ const GettingStartedSection = () => {
               </p>
             </Card>
 
+            <Button
+              onClick={() => setShowQuiz(!showQuiz)}
+              className="w-full bg-purple-600 hover:bg-purple-700"
+              size="lg"
+            >
+              {showQuiz ? "Hide Quiz" : "Take Topic Quiz"}
+            </Button>
+
+            {showQuiz && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <Card className="mt-4">
+                  <CardContent className="p-6">
+                    <h2 className="text-2xl font-bold text-blue-800 mb-4">Topic Quiz</h2>
+                    <GettingStartedQuiz />
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
 
             <div className="flex justify-between mt-4">
               <Link href="/modules/module1/applications">
                 <Button variant="outline" className="gap-2">
                   <ArrowLeft className="h-4 w-4" />
-                  Previous: Applications
+                  Previous Topic
                 </Button>
               </Link>
-              <Link href="/modules/module1/digital-currencies">
-                <Button className="gap-2">
-                  Next: Digital Currencies
+              <Link href="/modules/module1/quiz">
+                <Button
+                  className="bg-blue-600 hover:bg-blue-700 gap-2"
+                >
+                  Take Module Quiz
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
