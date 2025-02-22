@@ -2,13 +2,43 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Link } from "wouter";
 import { ArrowLeft, Wallet, Shield, Brain, ArrowRight } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import WalletSimulator from "@/components/exercises/WalletSimulator";
 import SecurityWorkshop from "@/components/exercises/SecurityWorkshop";
 import AssessmentCenter from "@/components/exercises/AssessmentCenter";
+
+const ExerciseSection = ({
+  title,
+  description,
+  icon: Icon,
+  children,
+  className = "",
+}: {
+  title: string;
+  description: string;
+  icon: any;
+  children: React.ReactNode;
+  className?: string;
+}) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.5 }}
+    className={`mb-8 ${className}`}
+  >
+    <Card className="p-6 bg-gradient-to-br from-orange-50 via-white to-red-50 border-2 border-transparent hover:border-orange-200 transition-all duration-300">
+      <div className="flex items-center gap-3 mb-4">
+        <Icon className="h-6 w-6 text-orange-600" />
+        <h2 className="text-2xl font-semibold text-gray-900">{title}</h2>
+      </div>
+      <p className="text-gray-600 mb-6">{description}</p>
+      {children}
+    </Card>
+  </motion.div>
+);
 
 const ExercisePreview = ({
   icon: Icon,
@@ -40,26 +70,6 @@ const ExercisePreview = ({
 
 export default function ModuleExercises() {
   useScrollTop();
-  const [activeTab, setActiveTab] = useState("wallet");
-
-  const contentVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut"
-      }
-    },
-    exit: {
-      opacity: 0,
-      y: -20,
-      transition: {
-        duration: 0.3
-      }
-    }
-  };
 
   return (
     <AnimatePresence mode="wait">
@@ -94,81 +104,49 @@ export default function ModuleExercises() {
             </p>
           </motion.div>
 
-          <Card className="p-6">
-            <div className="prose max-w-none mb-6">
-              <p className="text-gray-600">
-                Welcome to the practical exercises section of Module 2. Here you'll get hands-on experience with Bitcoin concepts through interactive simulations, security workshops, and real-world assessments.
-              </p>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+            <ExercisePreview
+              icon={Wallet}
+              title="Interactive Wallet Simulation"
+              description="Practice creating and managing a Bitcoin wallet in a safe environment. Learn about key management, transactions, and security best practices."
+            />
+            <ExercisePreview
+              icon={Shield}
+              title="Security Best Practices"
+              description="Test your knowledge of security protocols and learn to identify common threats and scams in the cryptocurrency space."
+            />
+            <ExercisePreview
+              icon={Brain}
+              title="Knowledge Assessment"
+              description="Evaluate your understanding of Bitcoin concepts through interactive quizzes and real-world scenarios."
+            />
+          </div>
 
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-              <TabsList className="grid grid-cols-3 gap-4 bg-muted p-2">
-                <TabsTrigger value="wallet" className="flex items-center gap-2">
-                  <Wallet className="h-4 w-4" />
-                  Wallet Practice
-                </TabsTrigger>
-                <TabsTrigger value="security" className="flex items-center gap-2">
-                  <Shield className="h-4 w-4" />
-                  Security Workshop
-                </TabsTrigger>
-                <TabsTrigger value="assessment" className="flex items-center gap-2">
-                  <Brain className="h-4 w-4" />
-                  Assessment Center
-                </TabsTrigger>
-              </TabsList>
+          <div className="space-y-8">
+            <ExerciseSection
+              title="Wallet Practice"
+              description="Get hands-on experience with Bitcoin wallet management in a risk-free environment."
+              icon={Wallet}
+            >
+              <WalletSimulator />
+            </ExerciseSection>
 
-              <TabsContent value="wallet">
-                <motion.div
-                  variants={contentVariants}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                >
-                  <WalletSimulator />
-                </motion.div>
-              </TabsContent>
+            <ExerciseSection
+              title="Security Workshop"
+              description="Learn and practice essential security measures to protect your cryptocurrency assets."
+              icon={Shield}
+            >
+              <SecurityWorkshop />
+            </ExerciseSection>
 
-              <TabsContent value="security">
-                <motion.div
-                  variants={contentVariants}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                >
-                  <SecurityWorkshop />
-                </motion.div>
-              </TabsContent>
-
-              <TabsContent value="assessment">
-                <motion.div
-                  variants={contentVariants}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                >
-                  <AssessmentCenter />
-                </motion.div>
-              </TabsContent>
-            </Tabs>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
-              <ExercisePreview
-                icon={Wallet}
-                title="Interactive Wallet Simulation"
-                description="Practice creating and managing a Bitcoin wallet in a safe environment. Learn about key management, transactions, and security best practices."
-              />
-              <ExercisePreview
-                icon={Shield}
-                title="Security Best Practices"
-                description="Test your knowledge of security protocols and learn to identify common threats and scams in the cryptocurrency space."
-              />
-              <ExercisePreview
-                icon={Brain}
-                title="Knowledge Assessment"
-                description="Evaluate your understanding of Bitcoin concepts through interactive quizzes and real-world scenarios."
-              />
-            </div>
-          </Card>
+            <ExerciseSection
+              title="Assessment Center"
+              description="Test your knowledge and understanding of Bitcoin concepts through practical scenarios."
+              icon={Brain}
+            >
+              <AssessmentCenter />
+            </ExerciseSection>
+          </div>
 
           <div className="mt-8 flex justify-between">
             <Link href="/modules/module2/bitcoin-investment">
@@ -178,15 +156,10 @@ export default function ModuleExercises() {
               </Button>
             </Link>
             <div className="space-x-4">
-              <Button
-                className="gap-2 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white"
-                onClick={() => setActiveTab("security")}
-              >
-                Continue to Security Workshop
-                <Shield className="h-4 w-4" />
-              </Button>
               <Link href="/modules/module2/quiz">
-                <Button variant="default" className="gap-2 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white">
+                <Button 
+                  className="gap-2 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white"
+                >
                   Take Module Quiz
                   <ArrowRight className="h-4 w-4" />
                 </Button>
