@@ -5,29 +5,25 @@ import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import {
   ArrowLeft,
   ArrowRight,
   Globe2,
   Users,
-  Wallet,
-  Timer,
-  Lock,
-  Clock,
+  FileText,
+  Heart,
   Building2,
   PiggyBank,
   Send,
   ShieldCheck,
   Banknote,
   Landmark,
-  FileText,
   LineChart,
   GraduationCap,
-  Heart,
-  Shield
+  Lock,
+  Shield,
+  X
 } from "lucide-react";
 
 // Enhanced Financial Inclusion Diagram Component with Animation
@@ -194,7 +190,7 @@ const PracticalApplicationsSection = () => {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
-          <Card>
+          <Card className="border-2 border-slate-200 dark:border-slate-800">
             <CardContent className="pt-6">
               <motion.div
                 className="space-y-4"
@@ -209,15 +205,6 @@ const PracticalApplicationsSection = () => {
                   <ArrowLeft className="h-4 w-4 mr-2" /> Back to Content
                 </Button>
 
-                <div className="mb-8">
-                  <h2 className="text-xl font-semibold text-blue-800 mb-2">
-                    Test Your Knowledge
-                  </h2>
-                  <p className="text-gray-600">
-                    Complete this quiz to test your understanding of blockchain applications.
-                  </p>
-                </div>
-
                 <PracticalApplicationsQuiz />
               </motion.div>
             </CardContent>
@@ -231,7 +218,6 @@ const PracticalApplicationsSection = () => {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto space-y-8">
-          {/* Header with updated styling */}
           <div className="space-y-4">
             <Link href="/modules/module1">
               <Button variant="ghost" className="gap-2">
@@ -240,19 +226,18 @@ const PracticalApplicationsSection = () => {
               </Button>
             </Link>
 
-            <div className="relative bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl p-8 overflow-hidden">
-              <div className="absolute inset-0 bg-[url('/grid.svg')] bg-repeat [mask-image:linear-gradient(0deg,rgba(255,255,255,0.1),rgba(255,255,255,0.5))]" />
-              <div className="relative">
-                <h1 className="text-3xl font-bold text-white mb-2">
+            <div className="relative bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-xl overflow-hidden">
+              <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-20" />
+              <div className="relative p-6 md:p-8">
+                <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
                   Practical Applications of Blockchain Technology
                 </h1>
-                <p className="text-blue-100 max-w-xl">
+                <p className="text-blue-100/90 text-sm md:text-base max-w-xl">
                   Understanding the real-world impact and implementation of blockchain technology
                 </p>
               </div>
             </div>
 
-            {/* Progress bar */}
             <div className="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
               <motion.div
                 className="h-full bg-blue-600"
@@ -263,7 +248,6 @@ const PracticalApplicationsSection = () => {
             </div>
           </div>
 
-          {/* Main Content */}
           <div className="space-y-8">
             <Card className="border-2 border-slate-200 dark:border-slate-800">
               <CardContent className="p-6">
@@ -293,7 +277,6 @@ const PracticalApplicationsSection = () => {
               </CardContent>
             </Card>
 
-            {/* Technical Applications Section - preserve existing content with updated styling */}
             <Card className="border-2 border-slate-200 dark:border-slate-800">
               <CardContent className="p-6">
                 <section>
@@ -302,7 +285,6 @@ const PracticalApplicationsSection = () => {
                     Blockchain's technical capabilities extend far beyond financial transactions,
                     enabling new solutions across various industries.
                   </p>
-                  {/* Keep existing technical applications grid with updated styling */}
                   <div className="grid gap-6">
                     {[
                       {
@@ -375,7 +357,6 @@ const PracticalApplicationsSection = () => {
               </CardContent>
             </Card>
 
-            {/* Social Impact Section - preserve existing content with updated styling */}
             <Card className="border-2 border-slate-200 dark:border-slate-800">
               <CardContent className="p-6">
                 <section>
@@ -384,7 +365,6 @@ const PracticalApplicationsSection = () => {
                     Blockchain technology is enabling positive social change through transparency,
                     accountability, and improved resource distribution.
                   </p>
-                  {/* Keep existing social impact grid with updated styling */}
                   <div className="grid gap-6">
                     {[
                       {
@@ -457,7 +437,6 @@ const PracticalApplicationsSection = () => {
               </CardContent>
             </Card>
 
-            {/* Updated Quiz Section */}
             {isFullyRead && (
               <motion.div
                 initial={{ opacity: 0 }}
@@ -473,7 +452,7 @@ const PracticalApplicationsSection = () => {
 
                 <div className="flex flex-col md:flex-row gap-4">
                   <Button
-                    onClick={() => setShowQuiz(!showQuiz)}
+                    onClick={() => setShowQuiz(true)}
                     className="w-full md:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white"
                     size="lg"
                   >
@@ -508,8 +487,8 @@ const PracticalApplicationsSection = () => {
 const PracticalApplicationsQuiz = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-  const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
+  const [showResult, setShowResult] = useState(false);
   const [showExplanation, setShowExplanation] = useState(false);
   const { updateProgress } = useProgress();
 
@@ -544,109 +523,129 @@ const PracticalApplicationsQuiz = () => {
     }, 2000);
   };
 
-  const restartQuiz = () => {
-    setCurrentQuestion(0);
-    setSelectedAnswer(null);
-    setShowResult(false);
-    setScore(0);
-    setShowExplanation(false);
-  };
-
   if (showResult) {
     return (
       <div className="space-y-6">
         <div className="text-center">
-          <h3 className="text-2xl font-bold mb-2">Quiz Completed!</h3>
-          <p className="text-lg mb-4">
-            You scored {score} out of {questions.length}
-          </p>
-          <div className="mb-6">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">Quiz Completed!</h2>
+          <p className="text-xl mb-6">You scored {score} out of {questions.length}</p>
+          <div className="mb-8">
             {score >= questions.length * 0.7 ? (
-              <div className="bg-green-100 text-green-800 p-4 rounded-lg">
-                <p>🎉 Great job! You've passed this section!</p>
-              </div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-green-100 text-green-800 p-6 rounded-lg"
+              >
+                <p className="font-semibold">🎉 Excellent work!</p>
+                <p>You've demonstrated a strong understanding of blockchain applications.</p>
+              </motion.div>
             ) : (
-              <div className="bg-yellow-100 text-yellow-800 p-4 rounded-lg">
-                <p>Keep studying and try again to improve your score.</p>
-              </div>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-yellow-100 text-yellow-800 p-6 rounded-lg"
+              >
+                <p className="font-semibold">Keep learning!</p>
+                <p>Review the material and try again to improve your score.</p>
+              </motion.div>
             )}
           </div>
-          <Button onClick={restartQuiz} variant="outline">
-            Retry Quiz
-          </Button>
+          <div className="flex justify-center gap-4">
+            <Button onClick={() => setShowQuiz(false)} variant="outline">
+              Return to Content
+            </Button>
+            <Button onClick={() => window.location.reload()} className="bg-blue-600 hover:bg-blue-700 text-white">
+              Restart Quiz
+            </Button>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center mb-4">
-        <div className="text-sm font-medium">
-          Question {currentQuestion + 1} of {questions.length}
+    <div className="space-y-8">
+      <div>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+            Test Your Knowledge
+          </h2>
+          <span className="text-sm font-medium text-slate-600 dark:text-slate-400">
+            Question {currentQuestion + 1} of {questions.length}
+          </span>
         </div>
-        <div className="text-sm font-medium">
-          Score: {score}/{questions.length}
-        </div>
+        <Progress value={(currentQuestion + 1) / questions.length * 100} className="h-2" />
       </div>
 
-      <div className="bg-slate-100 dark:bg-slate-800 p-6 rounded-lg">
-        <h3 className="text-lg font-semibold mb-4">
-          {questions[currentQuestion].question}
-        </h3>
+      <Card className="border-2 border-slate-200 dark:border-slate-800">
+        <CardContent className="pt-6">
+          <p className="text-lg font-medium text-slate-900 dark:text-slate-100 mb-6">
+            {questions[currentQuestion].question}
+          </p>
 
-        <div className="space-y-3">
-          {questions[currentQuestion].options.map((option, index) => {
-            const isSelected = selectedAnswer === index;
-            const isCorrect = index === questions[currentQuestion].correctAnswer;
-            let buttonClass = "w-full text-left p-4 rounded-lg border ";
+          <div className="space-y-4">
+            {questions[currentQuestion].options.map((option, index) => {
+              const isSelected = selectedAnswer === index;
+              const isCorrect = index === questions[currentQuestion].correctAnswer;
 
-            if (selectedAnswer !== null) {
-              if (isCorrect) {
-                buttonClass += "bg-green-100 border-green-500 text-green-700";
-              } else if (isSelected) {
-                buttonClass += "bg-red-100 border-red-500 text-red-700";
-              } else {
-                buttonClass += "bg-gray-100 border-gray-300 text-gray-700";
-              }
-            } else {
-              buttonClass += "bg-white hover:bg-blue-50 border-gray-300";
-            }
-
-            return (
-              <Button
-                key={index}
-                className={buttonClass}
-                onClick={() => handleAnswerSelect(index)}
-                disabled={selectedAnswer !== null}
-                variant="outline"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="flex-shrink-0 w-6">
-                    {String.fromCharCode(65 + index)}.
-                  </div>
-                  <div className="flex-1">{option}</div>
-                </div>
-              </Button>
-            );
-          })}
-        </div>
-
-        {showExplanation && (
-          <div className={`mt-6 p-4 rounded-lg ${
-            selectedAnswer === questions[currentQuestion].correctAnswer
-              ? "bg-green-100 text-green-800"
-              : "bg-red-100 text-red-800"
-          }`}>
-            <p className="font-semibold mb-2">
-              {selectedAnswer === questions[currentQuestion].correctAnswer
-                ? "✅ Correct!"
-                : "❌ Incorrect"}
-            </p>
-            <p>{questions[currentQuestion].explanation}</p>
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <Button
+                    className={`w-full justify-start p-4 text-left ${
+                      isSelected
+                        ? isCorrect
+                          ? "bg-green-100 border-green-500 text-green-700"
+                          : "bg-red-100 border-red-500 text-red-700"
+                        : "bg-white hover:bg-slate-50 dark:bg-slate-900 dark:hover:bg-slate-800"
+                    }`}
+                    variant="outline"
+                    onClick={() => handleAnswerSelect(index)}
+                    disabled={selectedAnswer !== null}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="flex-shrink-0 w-6">
+                        {String.fromCharCode(65 + index)}.
+                      </div>
+                      <div className="flex-1">{option}</div>
+                      {isSelected && (
+                        <div className="flex-shrink-0">
+                          {isCorrect ? (
+                            <ShieldCheck className="h-5 w-5 text-green-600" />
+                          ) : (
+                            <X className="h-5 w-5 text-red-600" />
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </Button>
+                </motion.div>
+              );
+            })}
           </div>
-        )}
-      </div>
+
+          {showExplanation && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`mt-6 p-6 rounded-lg ${
+                selectedAnswer === questions[currentQuestion].correctAnswer
+                  ? "bg-green-100 text-green-800"
+                  : "bg-red-100 text-red-800"
+              }`}
+            >
+              <p className="font-semibold mb-2">
+                {selectedAnswer === questions[currentQuestion].correctAnswer ? "✓ Correct!" : "✕ Incorrect"}
+              </p>
+              <p>{questions[currentQuestion].explanation}</p>
+            </motion.div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 };
