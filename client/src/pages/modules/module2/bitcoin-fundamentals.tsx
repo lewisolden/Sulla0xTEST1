@@ -384,12 +384,6 @@ export default function BitcoinFundamentalsSection() {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
               >
-                <Card className="bg-green-100 border-l-4 border-green-500 p-4">
-                  <p className="text-green-700">
-                    🎉 Congratulations! You've completed the Bitcoin Fundamentals section.
-                  </p>
-                </Card>
-
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -406,7 +400,7 @@ export default function BitcoinFundamentalsSection() {
                   </Link>
 
                   <Link href="/modules/module2/bitcoin-investment">
-                    <Button className="w-full md:w-auto bg-blue-600 hover:bg-blue-700">
+                    <Button className="w-full md:w-auto bg-orange-600 hover:bg-orange-700">
                       Next: Bitcoin as an Investment <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>

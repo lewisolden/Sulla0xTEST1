@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
@@ -112,11 +112,11 @@ export default function BitcoinFundamentalsQuiz() {
     const percentage = (score / questions.length) * 100;
     return (
       <div className="container mx-auto px-4 py-6 max-w-xl">
-        <Card className="p-6 text-center bg-gradient-to-br from-blue-50 to-indigo-50">
+        <Card className="p-6 text-center bg-gradient-to-br from-orange-50 to-red-50">
           <div className="flex items-center justify-center mb-4">
             <Award className={`h-12 w-12 ${percentage >= 60 ? 'text-green-500' : 'text-red-500'}`} />
           </div>
-          <h2 className="text-xl font-bold mb-3 text-blue-800">
+          <h2 className="text-xl font-bold mb-3 text-orange-800">
             Quiz Complete!
           </h2>
           <div className="text-lg mb-4">
@@ -132,7 +132,7 @@ export default function BitcoinFundamentalsQuiz() {
             <div className="bg-green-100 border-l-4 border-green-500 p-3 mb-4 text-sm">
               <p className="text-green-700 flex items-center gap-2 justify-center">
                 <CheckCircle className="h-4 w-4" />
-                Congratulations! You've passed!
+                You've passed!
               </p>
               <p className="text-sm text-green-600 mt-1">Moving to next section in 5 seconds...</p>
             </div>
@@ -147,14 +147,14 @@ export default function BitcoinFundamentalsQuiz() {
           <div className="flex flex-col space-y-3">
             <Button
               onClick={restartQuiz}
-              className="w-full bg-blue-500 hover:bg-blue-600 text-sm"
+              className="w-full bg-orange-500 hover:bg-orange-600 text-sm"
             >
               Retry Quiz
             </Button>
             {percentage >= 60 && (
               <Link href="/modules/module2/bitcoin-investment">
-                <Button
-                  className="w-full bg-green-600 hover:bg-green-700 text-sm"
+                <Button 
+                  className="w-full bg-orange-600 hover:bg-orange-700 text-sm"
                 >
                   Continue to Next Section <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
