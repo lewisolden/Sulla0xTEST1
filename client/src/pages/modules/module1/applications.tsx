@@ -190,6 +190,43 @@ const PracticalApplicationsSection = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [updateProgress]);
 
+  if (showQuiz) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto">
+          <Card>
+            <CardContent className="pt-6">
+              <motion.div
+                className="space-y-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              >
+                <Button
+                  variant="ghost"
+                  onClick={() => setShowQuiz(false)}
+                  className="mb-4"
+                >
+                  <ArrowLeft className="h-4 w-4 mr-2" /> Back to Content
+                </Button>
+
+                <div className="mb-8">
+                  <h2 className="text-xl font-semibold text-blue-800 mb-2">
+                    Test Your Knowledge
+                  </h2>
+                  <p className="text-gray-600">
+                    Complete this quiz to test your understanding of blockchain applications.
+                  </p>
+                </div>
+
+                <PracticalApplicationsQuiz />
+              </motion.div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
       <div className="container mx-auto px-4 py-8">
@@ -204,7 +241,7 @@ const PracticalApplicationsSection = () => {
             </Link>
 
             <div className="relative bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl p-8 overflow-hidden">
-              <div className="absolute inset-0 bg-grid-white/10" />
+              <div className="absolute inset-0 bg-[url('/grid.svg')] bg-repeat [mask-image:linear-gradient(0deg,rgba(255,255,255,0.1),rgba(255,255,255,0.5))]" />
               <div className="relative">
                 <h1 className="text-3xl font-bold text-white mb-2">
                   Practical Applications of Blockchain Technology
@@ -420,7 +457,7 @@ const PracticalApplicationsSection = () => {
               </CardContent>
             </Card>
 
-            {/* Quiz Section */}
+            {/* Updated Quiz Section */}
             {isFullyRead && (
               <motion.div
                 initial={{ opacity: 0 }}
@@ -428,19 +465,37 @@ const PracticalApplicationsSection = () => {
                 transition={{ delay: 0.3 }}
                 className="space-y-6"
               >
-                <Card className="border-2 border-slate-200 dark:border-slate-800">
-                  <CardContent className="p-6">
-                    <div className="space-y-4">
-                      <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100">
-                        Test Your Knowledge
-                      </h2>
-                      <p className="text-slate-600 dark:text-slate-400">
-                        Complete this quiz to test your understanding of blockchain applications.
-                      </p>
-                      <PracticalApplicationsQuiz />
-                    </div>
-                  </CardContent>
+                <Card className="bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500 p-4">
+                  <p className="text-green-700 dark:text-green-300">
+                    🎉 Congratulations! You've completed the Practical Applications section!
+                  </p>
                 </Card>
+
+                <div className="flex flex-col md:flex-row gap-4">
+                  <Button
+                    onClick={() => setShowQuiz(!showQuiz)}
+                    className="w-full md:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white"
+                    size="lg"
+                  >
+                    Take Topic Quiz
+                  </Button>
+
+                  <div className="flex flex-1 justify-end gap-4">
+                    <Link href="/modules/module1/security">
+                      <Button variant="outline" className="w-full md:w-auto">
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        Previous Topic
+                      </Button>
+                    </Link>
+
+                    <Link href="/modules/module1/getting-started">
+                      <Button className="w-full md:w-auto bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white">
+                        Next Topic
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
               </motion.div>
             )}
           </div>
