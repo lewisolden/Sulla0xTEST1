@@ -350,7 +350,7 @@ export default function DigitalCurrenciesSection() {
             <motion.div
               variants={cardVariants}
               whileHover="hover"
-              className="mt-8 p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg shadow-lg"
+              className="mt-8 p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg shadow-lg mb-8"
             >
               <h3 className="text-2xl font-semibold text-blue-800 mb-6">The Double-Spending Solution</h3>
               <div className="grid md:grid-cols-2 gap-8">
@@ -376,8 +376,63 @@ export default function DigitalCurrenciesSection() {
                     </ul>
                   </div>
                 </motion.div>
-                <div className="relative">
+                <div className="relative bg-white/50 rounded-lg p-4">
                   <DoubleSpendDiagram />
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              variants={cardVariants}
+              whileHover="hover"
+              className="mt-8 p-6 bg-gradient-to-br from-violet-100 to-indigo-50 rounded-lg shadow-lg"
+            >
+              <h3 className="text-2xl font-semibold text-blue-800 mb-4">Stablecoins: Bridging Traditional and Digital Finance</h3>
+              <div className="grid md:grid-cols-2 gap-6">
+                <motion.ul className="space-y-4">
+                  {[
+                    "Pegged to stable assets like USD",
+                    "Ideal for everyday transactions",
+                    "Reliable store of value",
+                    "Easy conversion between currencies",
+                    "Useful for international trade"
+                  ].map((item, index) => (
+                    <motion.li
+                      key={index}
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="flex items-center gap-3 bg-white p-3 rounded-lg shadow-sm"
+                    >
+                      <CheckCircle className="h-5 w-5 text-green-500" />
+                      <span>{item}</span>
+                    </motion.li>
+                  ))}
+                </motion.ul>
+                <div className="bg-white/80 p-6 rounded-lg shadow-md">
+                  <h4 className="font-semibold text-purple-900 mb-4">Types of Stablecoins</h4>
+                  <div className="space-y-3">
+                    {[
+                      ["Fiat-Backed", "1:1 backed by traditional currencies"],
+                      ["Crypto-Backed", "Collateralized by other cryptocurrencies"],
+                      ["Algorithmic", "Maintained by smart contracts"],
+                      ["Commodity-Backed", "Backed by physical assets"]
+                    ].map(([title, desc], index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, y: 10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className="p-3 border-b border-purple-100 last:border-0"
+                      >
+                        <h5 className="font-medium text-purple-900 flex items-center gap-2">
+                          <ArrowUpRight className="h-4 w-4 text-purple-500" />
+                          {title}
+                        </h5>
+                        <p className="text-sm text-purple-700 mt-1">{desc}</p>
+                      </motion.div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -444,45 +499,6 @@ export default function DigitalCurrenciesSection() {
                   ))}
                 </motion.ul>
               </KeyConceptBox>
-            </motion.div>
-
-            <motion.div
-              variants={cardVariants}
-              whileHover="hover"
-              className="mt-8 p-6 bg-gradient-to-br from-violet-100 to-indigo-50 rounded-lg shadow-lg"
-            >
-              <h3 className="text-2xl font-semibold text-blue-800 mb-4">Stablecoins: Bridging Traditional and Digital Finance</h3>
-              <div className="grid md:grid-cols-2 gap-6">
-                <motion.ul className="space-y-4">
-                  {[
-                    "Pegged to stable assets like USD",
-                    "Ideal for everyday transactions",
-                    "Reliable store of value",
-                    "Easy conversion between currencies",
-                    "Useful for international trade"
-                  ].map((item, index) => (
-                    <motion.li
-                      key={index}
-                      initial={{ opacity: 0, y: 10 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="flex items-center gap-3 bg-white p-3 rounded-lg shadow-sm"
-                    >
-                      <CheckCircle className="h-5 w-5 text-green-500" />
-                      <span>{item}</span>
-                    </motion.li>
-                  ))}
-                </motion.ul>
-                <div className="relative">
-                  <motion.div
-                    initial={{ scale: 0.9, opacity: 0 }}
-                    whileInView={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 0.5 }}
-                    className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-lg"
-                  />
-                  {/* Add your diagram or illustration here */}
-                </div>
-              </div>
             </motion.div>
           </CourseContentSection>
 
