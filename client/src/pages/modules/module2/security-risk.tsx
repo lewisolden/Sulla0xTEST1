@@ -5,8 +5,8 @@ import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { 
-  ArrowLeft, ArrowRight, Shield, Key, Wallet, AlertTriangle, 
+import {
+  ArrowLeft, ArrowRight, Shield, Key, Wallet, AlertTriangle,
   CheckCircle2, XCircle, Lock, Eye, ExternalLink, AlertOctagon,
   Fingerprint, HardDrive, SmartphoneCharging, Info, AlertCircle,
   Landmark, History
@@ -382,14 +382,20 @@ export default function SecurityRiskSection() {
           </Link>
         </motion.div>
 
-        <motion.h1
-          className="text-4xl font-bold text-blue-800 mb-8"
+        <motion.div
+          className="bg-gradient-to-r from-orange-500 to-red-600 rounded-xl p-8 mb-8 shadow-lg"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
         >
-          Bitcoin Security and Risk Management
-        </motion.h1>
+          <h1 className="text-4xl font-bold text-white mb-2 flex items-center gap-3">
+            <Shield className="h-8 w-8" />
+            Bitcoin Security and Risk Management
+          </h1>
+          <p className="text-orange-100 text-lg">
+            Master the essential practices to protect your Bitcoin investments and understand associated risks
+          </p>
+        </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {securityTips.map((tip, index) => (
@@ -405,42 +411,42 @@ export default function SecurityRiskSection() {
 
         <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-8">
           <TabsList className="grid w-full grid-cols-6 gap-4 bg-transparent">
-            <TabsTrigger 
+            <TabsTrigger
               value="basics"
               className="data-[state=active]:bg-blue-600 data-[state=active]:text-white"
             >
               <Shield className="h-4 w-4 mr-2" />
               Basics
             </TabsTrigger>
-            <TabsTrigger 
+            <TabsTrigger
               value="wallets"
               className="data-[state=active]:bg-purple-600 data-[state=active]:text-white"
             >
               <Wallet className="h-4 w-4 mr-2" />
               Wallets
             </TabsTrigger>
-            <TabsTrigger 
+            <TabsTrigger
               value="exchanges"
               className="data-[state=active]:bg-green-600 data-[state=active]:text-white"
             >
               <Landmark className="h-4 w-4 mr-2" />
               Exchanges
             </TabsTrigger>
-            <TabsTrigger 
+            <TabsTrigger
               value="disasters"
               className="data-[state=active]:bg-red-600 data-[state=active]:text-white"
             >
               <History className="h-4 w-4 mr-2" />
               History
             </TabsTrigger>
-            <TabsTrigger 
+            <TabsTrigger
               value="threats"
               className="data-[state=active]:bg-orange-600 data-[state=active]:text-white"
             >
               <AlertTriangle className="h-4 w-4 mr-2" />
               Threats
             </TabsTrigger>
-            <TabsTrigger 
+            <TabsTrigger
               value="protection"
               className="data-[state=active]:bg-indigo-600 data-[state=active]:text-white"
             >
@@ -450,8 +456,8 @@ export default function SecurityRiskSection() {
           </TabsList>
 
           <TabsContent value="basics">
-            <SecurityCard 
-              title="Security Fundamentals" 
+            <SecurityCard
+              title="Security Fundamentals"
               icon={Shield}
               className="bg-gradient-to-br from-blue-50 to-indigo-50"
             >
@@ -487,8 +493,8 @@ export default function SecurityRiskSection() {
           </TabsContent>
 
           <TabsContent value="wallets">
-            <SecurityCard 
-              title="Wallet Recommendations" 
+            <SecurityCard
+              title="Wallet Recommendations"
               icon={Wallet}
               className="bg-gradient-to-br from-purple-50 to-pink-50"
             >
@@ -525,8 +531,8 @@ export default function SecurityRiskSection() {
           </TabsContent>
 
           <TabsContent value="exchanges">
-            <SecurityCard 
-              title="Exchange Guide" 
+            <SecurityCard
+              title="Exchange Guide"
               icon={Landmark}
               className="bg-gradient-to-br from-green-50 to-teal-50"
             >
@@ -563,8 +569,8 @@ export default function SecurityRiskSection() {
           </TabsContent>
 
           <TabsContent value="disasters">
-            <SecurityCard 
-              title="Major Crypto Disasters" 
+            <SecurityCard
+              title="Major Crypto Disasters"
               icon={History}
               className="bg-gradient-to-br from-red-50 to-orange-50"
             >
@@ -590,8 +596,8 @@ export default function SecurityRiskSection() {
           </TabsContent>
 
           <TabsContent value="threats">
-            <SecurityCard 
-              title="Security Threats" 
+            <SecurityCard
+              title="Security Threats"
               icon={AlertTriangle}
               className="bg-gradient-to-br from-red-50 to-orange-50"
             >
@@ -627,8 +633,8 @@ export default function SecurityRiskSection() {
           </TabsContent>
 
           <TabsContent value="protection">
-            <SecurityCard 
-              title="Protection Strategies" 
+            <SecurityCard
+              title="Protection Strategies"
               icon={Lock}
               className="bg-gradient-to-br from-green-50 to-emerald-50"
             >
@@ -664,8 +670,8 @@ export default function SecurityRiskSection() {
           </TabsContent>
 
           <TabsContent value="practice">
-            <SecurityCard 
-              title="Security Best Practices" 
+            <SecurityCard
+              title="Security Best Practices"
               icon={Eye}
               className="bg-gradient-to-br from-purple-50 to-pink-50"
             >
