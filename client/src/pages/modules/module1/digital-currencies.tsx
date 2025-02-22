@@ -13,29 +13,32 @@ import {
   Cog,
   Cpu,
   Database,
-  Wallet
+  Wallet,
+  BookOpen,
+  Shield,
+  AlertTriangle
 } from "lucide-react";
+
 import { NavigationWrapper } from "@/components/layout/NavigationWrapper";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "@/hooks/useNavigate";
 
 import DoubleSpendDiagram from "@/components/diagrams/DoubleSpendDiagram";
 import DigitalCurrenciesQuiz from "@/components/quizzes/DigitalCurrenciesQuiz";
 import { BlockchainIcon, DecentralizationIcon, WalletIcon, SecurityIcon } from "@/components/icons/CryptoIcons";
 import TransactionFlowDiagram from "@/components/diagrams/TransactionFlowDiagram";
-import { useNavigate } from "@/hooks/useNavigate";
 import MoneyEvolutionTimeline from "@/components/diagrams/MoneyEvolutionTimeline";
 import DigitalCurrencyFeatures from "@/components/diagrams/DigitalCurrencyFeatures";
-import { BookOpen, Shield, Globe as GlobeIcon, Network as NetworkIcon, AlertTriangle } from "lucide-react";
 import { CourseSection, type Section, KeyConcept, FeatureList } from "@/components/course/CourseSection";
 
 const sections: Section[] = [
   {
     id: "introduction",
     title: "Introduction to Digital Currencies",
-    icon: GlobeIcon,
+    icon: Globe,
     content: (
       <div className="space-y-4">
         <p className="text-gray-700 text-lg">
@@ -218,7 +221,7 @@ const sections: Section[] = [
   {
     id: "features",
     title: "Core Features",
-    icon: NetworkIcon,
+    icon: Network,
     content: (
       <div className="space-y-6">
         <div className="grid md:grid-cols-2 gap-6">
@@ -295,7 +298,7 @@ const sections: Section[] = [
         </KeyConcept>
       </div>
     )
-  },
+  }
 ];
 
 export default function DigitalCurrenciesSection() {
