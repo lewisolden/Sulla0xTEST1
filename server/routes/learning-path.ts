@@ -46,13 +46,13 @@ router.get("/api/learning-path", async (req, res) => {
       // Determine the continue learning path based on course type
       switch (stat.courseId) {
         case 1: // Introduction to Cryptocurrency
+          continuePath = stat.lastQuizPath || '/modules/module1';
+          break;
         case 2: // Introduction to AI
-          // For Crypto and AI courses, prefer last completed quiz path
-          continuePath = stat.lastQuizPath || 
-            (stat.courseId === 1 ? '/modules/module1' : '/ai/module1');
+          continuePath = stat.lastQuizPath || '/ai/module1';
           break;
         case 3: // Mastering DeFi
-          // For DeFi course, prefer last completed topic
+          // For DeFi course, use last completed section or default to first module
           continuePath = stat.lastCompletedPath || '/defi/module1';
           break;
         default:

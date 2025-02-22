@@ -105,7 +105,9 @@ router.get("/api/user/metrics", async (req, res) => {
         title: stat.title,
         totalLearningTime: stat.totalLearningTime,
         completedQuizzes: stat.completedQuizzes,
-        continuePath: `/modules/module${stat.courseId}` // Default path based on courseId
+        continuePath: stat.courseId === 3 
+          ? `/defi/module${stat.courseId}` // DeFi course path
+          : `/modules/module${stat.courseId}` // Default path based on courseId
       }))
     };
 
