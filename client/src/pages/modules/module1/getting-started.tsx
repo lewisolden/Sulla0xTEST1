@@ -5,7 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { ArrowLeft, ArrowRight, Wallet } from "lucide-react";
+import { ArrowLeft, ArrowRight, Wallet, LucideIcon, Shield, Key, Lock, CheckCircle2, XCircle } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { GettingStartedQuiz } from "@/components/quizzes/GettingStartedQuiz";
@@ -13,7 +13,7 @@ import { SecurityIcon, WalletIcon } from "@/components/icons/CryptoIcons";
 import { GettingStartedDiagram } from "@/components/diagrams/GettingStartedDiagram";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { Eye, EyeOff, LucideIcon, Shield, Key, Lock, CheckCircle2, XCircle } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 
 // Add seed word list
@@ -423,12 +423,6 @@ const GettingStartedSection = () => {
     setIsCorrect(correct);
     setShowExplanation(true);
 
-    toast({
-      title: correct ? "Correct! 🎉" : "Incorrect",
-      description: questions[currentQuestionIndex].explanation,
-      variant: correct ? "default" : "destructive",
-    });
-
     setTimeout(() => {
       if (currentQuestionIndex < questions.length - 1) {
         setCurrentQuestionIndex(prev => prev + 1);
@@ -474,58 +468,91 @@ const GettingStartedSection = () => {
         </Card>
 
         {!isSeedPhraseVerified && (
-          <Card className="mb-6">
+          <Card className="mb-8">
             <CardContent className="p-6">
-              <div className="bg-blue-50 rounded-lg p-6 border-2 border-blue-100">
-                <div className="flex items-start gap-4">
-                  <Shield className="w-8 h-8 text-blue-600 flex-shrink-0" />
+              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-8 border-2 border-blue-100 shadow-lg">
+                <div className="flex items-start gap-6">
+                  <div className="bg-blue-500 rounded-full p-4 shadow-lg">
+                    <Shield className="w-8 h-8 text-white" />
+                  </div>
                   <div>
-                    <h2 className="text-xl font-bold text-blue-800 mb-4">
+                    <h2 className="text-2xl font-bold text-blue-800 mb-6 bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                       Your Crypto Wallet Security Setup - Important First Steps
                     </h2>
 
-                    <div className="space-y-4">
-                      <div className="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400">
-                        <h3 className="font-semibold text-yellow-800">⚠️ What is a Seed Phrase?</h3>
-                        <p className="text-yellow-700 mt-2">
+                    <div className="space-y-6">
+                      <div className="bg-yellow-50 p-6 rounded-xl border-l-4 border-yellow-400 shadow-md">
+                        <h3 className="font-semibold text-yellow-800 text-xl flex items-center gap-2">
+                          <Key className="w-5 h-5" />
+                          What is a Seed Phrase?
+                        </h3>
+                        <p className="text-yellow-700 mt-3">
                           Think of a seed phrase as the master key to your crypto wallet - it's like the password
                           that gives access to all your cryptocurrency. It's a sequence of 12 simple words that can
                           restore your wallet if you:
                         </p>
-                        <ul className="list-disc ml-6 mt-2 space-y-1">
-                          <li>Lose access to your device</li>
-                          <li>Forget your wallet password</li>
-                          <li>Need to move your wallet to a new device</li>
+                        <ul className="list-none mt-4 space-y-2">
+                          {[
+                            'Lose access to your device',
+                            'Forget your wallet password',
+                            'Need to move your wallet to a new device'
+                          ].map((item, index) => (
+                            <li key={index} className="flex items-center gap-2 text-yellow-700">
+                              <div className="w-1.5 h-1.5 rounded-full bg-yellow-500"></div>
+                              {item}
+                            </li>
+                          ))}
                         </ul>
                       </div>
 
                       {!isVerifying ? (
                         <>
-                          <div className="bg-green-50 p-4 rounded-lg border-l-4 border-green-400">
-                            <h3 className="font-semibold text-green-800">✅ How to Safely Store Your Seed Phrase</h3>
-                            <div className="space-y-2 mt-2 text-green-700">
+                          <div className="bg-green-50 p-6 rounded-xl border-l-4 border-green-400 shadow-md">
+                            <h3 className="font-semibold text-green-800 text-xl flex items-center gap-2">
+                              <CheckCircle2 className="w-5 h-5" />
+                              How to Safely Store Your Seed Phrase
+                            </h3>
+                            <div className="space-y-4 mt-3 text-green-700">
                               <p>Follow these steps carefully:</p>
-                              <ol className="list-decimal ml-6 space-y-2">
-                                <li>Get a piece of paper and a pen ready (don't take a screenshot or type it)</li>
-                                <li>Write down each word exactly as shown, including the number</li>
-                                <li>Double-check your spelling - even small mistakes matter</li>
-                                <li>Store this paper in a secure, private location</li>
-                                <li>Consider making a backup copy stored in a different secure location</li>
+                              <ol className="list-none space-y-3">
+                                {[
+                                  'Get a piece of paper and a pen ready (don\'t take a screenshot or type it)',
+                                  'Write down each word exactly as shown, including the number',
+                                  'Double-check your spelling - even small mistakes matter',
+                                  'Store this paper in a secure, private location',
+                                  'Consider making a backup copy stored in a different secure location'
+                                ].map((step, index) => (
+                                  <li key={index} className="flex items-start gap-3">
+                                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-semibold">
+                                      {index + 1}
+                                    </div>
+                                    <span>{step}</span>
+                                  </li>
+                                ))}
                               </ol>
                             </div>
                           </div>
 
-                          <div className="bg-red-50 p-4 rounded-lg border-l-4 border-red-400">
-                            <h3 className="font-semibold text-red-800">🚫 Never, Ever:</h3>
-                            <ul className="list-disc ml-6 mt-2 text-red-700 space-y-1">
-                              <li>Take a screenshot or photo of your seed phrase</li>
-                              <li>Store it on your computer or phone</li>
-                              <li>Share it with anyone, even if they claim to be support</li>
-                              <li>Enter it on any website (except when restoring your wallet)</li>
-                              <li>Send it through email or messaging apps</li>
+                          <div className="bg-gradient-to-br from-red-50 to-pink-50 p-6 rounded-xl border-l-4 border-red-400 shadow-md">
+                            <h3 className="font-semibold text-red-800 text-xl flex items-center gap-2">
+                              <XCircle className="w-5 h-5" />
+                              Never Do These Things
+                            </h3>
+                            <ul className="mt-3 space-y-2">
+                              {[
+                                'Take screenshots of your seed phrase',
+                                'Store it in cloud storage or digital notes',
+                                'Share it with anyone, even support staff',
+                                'Enter it on websites or forms',
+                                'Send it through email or messages'
+                              ].map((warning, index) => (
+                                <li key={index} className="flex items-center gap-2 text-red-700">
+                                  <div className="w-1.5 h-1.5 rounded-full bg-red-500"></div>
+                                  {warning}
+                                </li>
+                              ))}
                             </ul>
                           </div>
-
                           <p className="text-blue-700 mb-4">
                             Below is your unique 12-word seed phrase. Write these words down in order:
                           </p>
