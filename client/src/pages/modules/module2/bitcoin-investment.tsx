@@ -100,16 +100,23 @@ export default function BitcoinInvestmentSection() {
           </Link>
         </motion.div>
 
-        <div className="flex items-center mb-6">
-          <BitcoinLogo />
-          <motion.h1
-            className="text-4xl font-bold text-blue-800"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            2.2 Bitcoin as an Investment
-          </motion.h1>
+        <div className="bg-gradient-to-r from-orange-500 to-red-600 p-6 rounded-lg mb-8">
+          <div className="flex items-center">
+            <BitcoinLogo />
+            <div>
+              <motion.h1
+                className="text-4xl font-bold text-white"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                2.2 Bitcoin as an Investment
+              </motion.h1>
+              <p className="text-white/90 mt-2">
+                Understanding Bitcoin's investment potential and risk management strategies
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="prose lg:prose-xl text-gray-700 space-y-6">
@@ -408,12 +415,6 @@ export default function BitcoinInvestmentSection() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
             >
-              <Card className="bg-green-100 border-l-4 border-green-500 p-4">
-                <p className="text-green-700">
-                  🎉 Congratulations! You've completed the Bitcoin Investment section.
-                </p>
-              </Card>
-
               <div className="bg-gradient-to-r from-orange-500 to-red-600 p-4 rounded-lg mb-4 text-white">
                 <h2 className="text-xl font-bold">Test Your Knowledge</h2>
                 <p className="text-white/90 text-sm">Complete the quiz to test your understanding</p>
