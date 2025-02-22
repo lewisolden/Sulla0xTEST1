@@ -424,16 +424,23 @@ export default function Module1() {
                           initial={{ opacity: 0, scale: 0.95 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: index * 0.1 }}
+                          className="group"
                         >
-                          <Card className="h-full bg-gradient-to-br {exercise.gradient} text-white overflow-hidden">
+                          <Card className={`h-full bg-gradient-to-br ${exercise.gradient} text-white overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl`}>
                             <CardContent className="p-6">
-                              <div className="flex items-start gap-3">
-                                <div className="bg-white/20 backdrop-blur-sm p-2 rounded-xl">
-                                  <exercise.icon className="h-6 w-6" />
+                              <div className="flex flex-col">
+                                <div className="bg-white/20 backdrop-blur-sm p-3 rounded-xl w-12 h-12 flex items-center justify-center mb-4 group-hover:bg-white/30 transition-colors">
+                                  <exercise.icon className="h-6 w-6 text-white" />
                                 </div>
-                                <div>
-                                  <h3 className="font-semibold mb-2">{exercise.title}</h3>
-                                  <p className="text-sm text-white/90">{exercise.description}</p>
+                                <h3 className="text-xl font-semibold mb-3">{exercise.title}</h3>
+                                <p className="text-white/90 mb-4">{exercise.description}</p>
+                                <div className="mt-auto">
+                                  <Button 
+                                    variant="outline" 
+                                    className="bg-white/20 backdrop-blur-sm text-white border-white/30 hover:bg-white/30 transition-colors w-full group-hover:bg-white/25"
+                                  >
+                                    Start Exercise
+                                  </Button>
                                 </div>
                               </div>
                             </CardContent>
@@ -442,9 +449,59 @@ export default function Module1() {
                       ))}
                     </div>
 
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4 }}
+                      className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-8 mb-8 text-white"
+                    >
+                      <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                        <TrendingUp className="h-6 w-6" />
+                        Practice Makes Perfect
+                      </h3>
+                      <div className="grid md:grid-cols-3 gap-6">
+                        {[
+                          {
+                            icon: Database,
+                            title: "Hands-on Learning",
+                            description: "Interactive exercises for practical experience"
+                          },
+                          {
+                            icon: RefreshCw,
+                            title: "Real-time Feedback",
+                            description: "Immediate responses to your actions"
+                          },
+                          {
+                            icon: Shield,
+                            title: "Safe Environment",
+                            description: "Risk-free practice environment"
+                          }
+                        ].map((feature, index) => (
+                          <motion.div
+                            key={index}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.6 + index * 0.1 }}
+                            className="flex items-start gap-3"
+                          >
+                            <div className="bg-white/10 p-2 rounded-lg">
+                              <feature.icon className="h-5 w-5" />
+                            </div>
+                            <div>
+                              <h4 className="font-medium mb-1">{feature.title}</h4>
+                              <p className="text-sm text-gray-300">{feature.description}</p>
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </motion.div>
+
                     <div className="flex justify-center">
                       <Link href="/modules/module1/exercises">
-                        <Button size="lg" className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white gap-2">
+                        <Button 
+                          size="lg" 
+                          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white gap-2 transform hover:scale-105 transition-all duration-300"
+                        >
                           <Dumbbell className="h-5 w-5" />
                           Start Exercises
                         </Button>
