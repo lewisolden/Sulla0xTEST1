@@ -1,11 +1,11 @@
 import { NavigationWrapper } from "@/components/layout/NavigationWrapper";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"; // Assuming CardHeader and CardContent exist
 import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { CourseSection } from "@/components/course-templates/CourseSection";
+import { CourseContentSection, KeyConceptBox, QuizContainer } from "@/components/course-templates/CourseContentSection";
 import DoubleSpendDiagram from "@/components/diagrams/DoubleSpendDiagram";
 import DigitalCurrenciesQuiz from "@/components/quizzes/DigitalCurrenciesQuiz";
 import { BlockchainIcon, DecentralizationIcon, WalletIcon, SecurityIcon } from "@/components/icons/CryptoIcons";
@@ -79,12 +79,7 @@ export default function DigitalCurrenciesSection() {
       nextText="Next: Understanding Security"
     >
       <div className="container mx-auto px-4">
-        <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
-          <div
-            className="h-full bg-blue-600 transition-all duration-300"
-            style={{ width: `${scrollProgress}%` }}
-          />
-        </div>
+        <Progress value={scrollProgress} className="fixed top-0 left-0 w-full z-50" />
 
         <motion.div
           initial="initial"
@@ -93,24 +88,24 @@ export default function DigitalCurrenciesSection() {
           variants={pageVariants}
           className="space-y-8"
         >
-          {/* Introduction Section */}
-          <motion.div
-            variants={cardVariants}
-            className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg shadow-lg p-8"
+          <CourseContentSection
+            title="Introduction to Digital Currency"
+            icon={<DecentralizationIcon size={32} />}
+            gradientFrom="blue-50"
+            gradientTo="indigo-50"
           >
-            <h2 className="text-3xl font-bold text-blue-700 mb-4">Introduction to Digital Currency</h2>
-            <p className="text-gray-700 mb-6">
+            <p className="text-gray-700">
               In today's rapidly evolving financial landscape, cryptocurrency represents a revolutionary approach to money and value transfer. Before diving into specific cryptocurrencies or technical details, it's essential to understand what makes digital currencies unique and how they differ from traditional money systems.
             </p>
             <DigitalCurrencyFeatures />
-          </motion.div>
+          </CourseContentSection>
 
-          {/* Traditional Money vs. Cryptocurrency */}
-          <motion.div
-            variants={cardVariants}
-            className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-lg shadow-lg p-8"
+          <CourseContentSection
+            title="Understanding Traditional Money vs. Cryptocurrency"
+            icon={<BlockchainIcon size={32} />}
+            gradientFrom="purple-50"
+            gradientTo="pink-50"
           >
-            <h2 className="text-3xl font-bold text-blue-700 mb-4">Understanding Traditional Money vs. Cryptocurrency</h2>
             <div className="grid md:grid-cols-2 gap-6 mt-6">
               <motion.div
                 variants={cardVariants}
@@ -164,11 +159,14 @@ export default function DigitalCurrenciesSection() {
                 </motion.ul>
               </motion.div>
             </div>
-          </motion.div>
+          </CourseContentSection>
 
-          {/* Evolution of Money */}
-          <motion.div variants={cardVariants} className="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-lg shadow-lg p-8">
-            <h2 className="text-3xl font-bold text-blue-700 mb-4">The Evolution of Money</h2>
+          <CourseContentSection
+            title="The Evolution of Money"
+            icon={<Clock size={32} />}
+            gradientFrom="teal-50"
+            gradientTo="cyan-50"
+          >
             <motion.p variants={listItemVariants} className="mt-4">
               To understand cryptocurrency's significance, consider how money has evolved through history:
             </motion.p>
@@ -201,12 +199,14 @@ export default function DigitalCurrenciesSection() {
                 </motion.li>
               ))}
             </motion.ul>
-          </motion.div>
+          </CourseContentSection>
 
-          {/* Core Concepts and Features */}
-          <motion.div variants={cardVariants} className="bg-gradient-to-br from-yellow-50 to-amber-50 rounded-lg shadow-lg p-8">
-            <h2 className="text-3xl font-bold text-blue-700 mb-4">Core Concepts and Features</h2>
-
+          <CourseContentSection
+            title="Core Concepts and Features"
+            icon={<Network size={32} />}
+            gradientFrom="yellow-50"
+            gradientTo="amber-50"
+          >
             <motion.div
               variants={cardVariants}
               whileHover="hover"
@@ -238,12 +238,14 @@ export default function DigitalCurrenciesSection() {
 
               <TransactionFlowDiagram />
             </motion.div>
-          </motion.div>
+          </CourseContentSection>
 
-          {/*Understanding Cryptocurrency Security */}
-          <motion.div variants={cardVariants} className="bg-gradient-to-br from-sky-50 to-blue-50 rounded-lg shadow-lg p-8">
-            <h2 className="text-3xl font-bold text-blue-700 mb-4">Understanding Cryptocurrency Security</h2>
-
+          <CourseContentSection
+            title="Understanding Cryptocurrency Security"
+            icon={<SecurityIcon size={32} />}
+            gradientFrom="sky-50"
+            gradientTo="blue-50"
+          >
             <motion.div
               variants={cardVariants}
               whileHover="hover"
@@ -299,12 +301,14 @@ export default function DigitalCurrenciesSection() {
                 <DoubleSpendDiagram />
               </motion.div>
             </motion.div>
-          </motion.div>
+          </CourseContentSection>
 
-          {/* Practical Applications */}
-          <motion.div variants={cardVariants} className="bg-gradient-to-br from-rose-50 to-fuchsia-50 rounded-lg shadow-lg p-8">
-            <h2 className="text-3xl font-bold text-blue-700 mb-4">Practical Applications</h2>
-
+          <CourseContentSection
+            title="Practical Applications"
+            icon={<WalletIcon size={32} />}
+            gradientFrom="rose-50"
+            gradientTo="fuchsia-50"
+          >
             <motion.div
               variants={cardVariants}
               whileHover="hover"
@@ -375,12 +379,14 @@ export default function DigitalCurrenciesSection() {
                 ))}
               </motion.ul>
             </motion.div>
-          </motion.div>
+          </CourseContentSection>
 
-          {/* Getting Started Safely */}
-          <motion.div variants={cardVariants} className="bg-gradient-to-br from-lime-50 to-emerald-50 rounded-lg shadow-lg p-8">
-            <h2 className="text-3xl font-bold text-blue-700 mb-4">Getting Started Safely</h2>
-
+          <CourseContentSection
+            title="Getting Started Safely"
+            icon={<WalletIcon size={32} />}
+            gradientFrom="lime-50"
+            gradientTo="emerald-50"
+          >
             <motion.div
               variants={cardVariants}
               whileHover="hover"
@@ -466,11 +472,14 @@ export default function DigitalCurrenciesSection() {
                 ))}
               </motion.ol>
             </motion.div>
-          </motion.div>
+          </CourseContentSection>
 
-          {/* Conclusion */}
-          <motion.div variants={cardVariants} className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-lg shadow-lg p-8">
-            <h2 className="text-3xl font-bold text-blue-700 mb-4">Conclusion and Next Steps</h2>
+          <CourseContentSection
+            title="Conclusion and Next Steps"
+            icon={<ArrowRight size={32} />}
+            gradientFrom="orange-50"
+            gradientTo="yellow-50"
+          >
             <motion.p variants={listItemVariants} className="mt-4">
               Understanding cryptocurrency requires balancing its revolutionary potential with practical risks and limitations. As you continue learning, remember:
             </motion.p>
@@ -490,9 +499,8 @@ export default function DigitalCurrenciesSection() {
             <motion.p variants={listItemVariants} className="mt-4">
               The cryptocurrency space continues evolving, making ongoing education essential for safe and effective participation.
             </motion.p>
-          </motion.div>
+          </CourseContentSection>
 
-          {/* Quiz section */}
           {isFullyRead && (
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
@@ -500,17 +508,9 @@ export default function DigitalCurrenciesSection() {
               transition={{ delay: 0.5 }}
               className="mt-12"
             >
-              <Card className="overflow-hidden border-2 border-blue-200 hover:border-blue-300 transition-all">
-                <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
-                  <CardTitle className="text-2xl font-bold">Knowledge Check</CardTitle>
-                  <p className="text-blue-100 mt-2">
-                    Let's test your understanding of digital currencies with a quick quiz.
-                  </p>
-                </CardHeader>
-                <CardContent className="p-6">
-                  <DigitalCurrenciesQuiz onComplete={handleQuizComplete} />
-                </CardContent>
-              </Card>
+              <QuizContainer>
+                <DigitalCurrenciesQuiz onComplete={handleQuizComplete} />
+              </QuizContainer>
             </motion.div>
           )}
         </motion.div>
