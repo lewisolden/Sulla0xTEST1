@@ -1,7 +1,7 @@
 import { NavigationWrapper } from "@/components/layout/NavigationWrapper";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Card } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"; // Assuming CardHeader and CardContent exist
 import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
@@ -497,72 +497,20 @@ export default function DigitalCurrenciesSection() {
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="mt-8"
+              transition={{ delay: 0.5 }}
+              className="mt-12"
             >
-              <Card className="bg-gradient-to-br from-indigo-50 to-blue-50 p-8 rounded-lg shadow-lg">
-                <h2 className="text-2xl font-bold text-blue-800 mb-4">Knowledge Check</h2>
-                <p className="text-gray-700 mb-6">
-                  Let's test your understanding of digital currencies with a quick quiz. The quiz will automatically advance after each answer.
-                </p>
-                <DigitalCurrenciesQuiz onComplete={handleQuizComplete} />
-              </Card>
-            </motion.div>
-          )}
-
-          {isFullyRead && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="mt-8 space-y-6"
-            >
-              <motion.div
-                variants={cardVariants}
-                initial="hidden"
-                animate="visible"
-                whileHover="hover"
-              >
-                <Card className="bg-green-100 border-l-4 border-green-500 p-4">
-                  <p className="text-green-700">
-                    🎉 Congratulations! You've completed the Introduction to Digital Currencies section. You now understand the fundamental concepts of digital currencies and their revolutionary potential.
+              <Card className="overflow-hidden border-2 border-blue-200 hover:border-blue-300 transition-all">
+                <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
+                  <CardTitle className="text-2xl font-bold">Knowledge Check</CardTitle>
+                  <p className="text-blue-100 mt-2">
+                    Let's test your understanding of digital currencies with a quick quiz.
                   </p>
-                </Card>
-              </motion.div>
-
-              <div className="flex flex-col space-y-4">
-
-
-                <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
-                  <motion.div
-                    whileHover={{ scale: 1.02, x: -5 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <Button
-                      variant="outline"
-                      size="lg"
-                      className="w-full md:w-auto group"
-                      onClick={() => navigate("/modules/module1")}
-                    >
-                      <ArrowLeft className="mr-2 h-4 w-4 group-hover:transform group-hover:-translate-x-1 transition-transform" />
-                      Back to Overview
-                    </Button>
-                  </motion.div>
-
-                  <motion.div
-                    whileHover={{ scale: 1.02, x: 5 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <Button
-                      size="lg"
-                      className="w-full md:w-auto bg-blue-600 hover:bg-blue-700 group"
-                      onClick={() => navigate("/modules/module1/security")}
-                    >
-                      Next Topic: Understanding Security
-                      <ArrowRight className="ml-2 h-4 w-4 group-hover:transform group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </motion.div>
-                </div>
-              </div>
+                </CardHeader>
+                <CardContent className="p-6">
+                  <DigitalCurrenciesQuiz onComplete={handleQuizComplete} />
+                </CardContent>
+              </Card>
             </motion.div>
           )}
         </motion.div>

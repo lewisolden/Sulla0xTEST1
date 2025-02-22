@@ -98,10 +98,10 @@ const DigitalCurrenciesQuiz: React.FC<DigitalCurrenciesQuizProps> = ({ onComplet
           'digital-currencies', // sectionId
           finalScore >= 60, // completed
           1, // courseId
-          undefined, // timeSpent: optional
+          undefined, // timeSpent
           finalScore, // quizScore
           '/modules/module1/digital-currencies', // lastQuizPath
-          undefined, // lastCompletedPath: optional
+          undefined, // lastCompletedPath
           'Blockchain Fundamentals' // courseName
         );
 
@@ -189,7 +189,7 @@ const DigitalCurrenciesQuiz: React.FC<DigitalCurrenciesQuizProps> = ({ onComplet
 
           <div className="grid gap-4">
             {currentQuizQuestion.options.map((option, index) => (
-              <button
+              <motion.button
                 key={index}
                 onClick={() => handleAnswerSelect(index)}
                 className={`
@@ -201,12 +201,14 @@ const DigitalCurrenciesQuiz: React.FC<DigitalCurrenciesQuizProps> = ({ onComplet
                       : selectedAnswer === index 
                         ? 'bg-red-100 border-2 border-red-500' 
                         : 'bg-white border border-gray-200'}
-                  whitespace-normal break-words
+                  whitespace-normal break-words hover:shadow-md
                 `}
                 disabled={selectedAnswer !== null}
+                whileHover={{ scale: selectedAnswer === null ? 1.02 : 1 }}
+                whileTap={{ scale: selectedAnswer === null ? 0.98 : 1 }}
               >
                 <span className="text-lg">{option}</span>
-              </button>
+              </motion.button>
             ))}
           </div>
 
