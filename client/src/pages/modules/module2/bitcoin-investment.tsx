@@ -5,7 +5,12 @@ import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, ArrowRight, TrendingUp, ShieldCheck, PieChart } from "lucide-react";
+import { 
+  ArrowLeft, ArrowRight, TrendingUp, ShieldCheck, PieChart,
+  Shield, Key, Lock, Eye, ExternalLink, AlertOctagon,
+  AlertTriangle, CheckCircle2, XCircle, Info, History,
+  Landmark
+} from "lucide-react";
 import { SecurityDiagram } from "@/components/diagrams/SecurityDiagram";
 import BitcoinInvestmentExercise from "@/components/modules/exercises/BitcoinInvestmentExercise";
 import BitcoinFundamentalsQuiz from "@/components/modules/quizzes/BitcoinFundamentalsQuiz";
@@ -52,35 +57,42 @@ export default function BitcoinInvestmentSection() {
 
   const contentVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
   };
 
   const riskLevels = [
     {
       title: "Low Risk",
       description: "Bitcoin ETFs and regulated investment products",
-      color: "from-green-100 to-green-50",
+      color: "from-green-100 via-white to-green-50",
       borderColor: "border-green-400",
       textColor: "text-green-700"
     },
     {
       title: "Medium Risk",
       description: "Direct Bitcoin purchases through established exchanges",
-      color: "from-yellow-100 to-yellow-50",
+      color: "from-yellow-100 via-white to-yellow-50",
       borderColor: "border-yellow-400",
       textColor: "text-yellow-700"
     },
     {
       title: "High Risk",
       description: "Trading with leverage or new crypto assets",
-      color: "from-red-100 to-red-50",
+      color: "from-red-100 via-white to-red-50",
       borderColor: "border-red-400",
       textColor: "text-red-700"
     }
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <motion.div
         className="fixed top-0 left-0 w-full h-1 bg-gray-300 z-50"
         initial={{ scaleX: 0 }}
@@ -127,7 +139,7 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="bg-gradient-to-br from-white via-orange-50 to-white rounded-lg shadow-lg p-8 border border-orange-100"
+            className="bg-gradient-to-br from-white via-orange-50 to-white rounded-lg shadow-lg p-8 border border-orange-100 transition-all duration-300 hover:shadow-xl"
           >
             <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600 mb-6">Investment Security</h2>
             <SecurityDiagram />
@@ -137,14 +149,14 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="bg-gradient-to-br from-white via-red-50 to-white rounded-lg shadow-lg p-8 mt-12 border border-red-100"
+            className="bg-gradient-to-br from-white via-red-50 to-white rounded-lg shadow-lg p-8 mt-12 border border-red-100 transition-all duration-300 hover:shadow-xl"
           >
             <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600 mb-6">Risk Assessment</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
               {riskLevels.map((level) => (
                 <motion.div
                   key={level.title}
-                  className={`bg-gradient-to-br ${level.color} p-6 rounded-lg cursor-pointer border-2 ${level.borderColor} shadow-md backdrop-blur-sm`}
+                  className={`bg-gradient-to-br ${level.color} p-6 rounded-lg cursor-pointer border-2 ${level.borderColor} shadow-md backdrop-blur-sm transition-all duration-300 hover:shadow-xl`}
                   whileHover={{ scale: 1.02, shadow: "0 8px 30px rgba(0,0,0,0.12)" }}
                   onClick={() => setSelectedRisk(level.title)}
                   animate={{
@@ -165,7 +177,7 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="bg-gradient-to-br from-white via-blue-50 to-white rounded-lg shadow-lg p-8 border border-blue-100"
+            className="bg-gradient-to-br from-white via-blue-50 to-white rounded-lg shadow-lg p-8 border border-blue-100 transition-all duration-300 hover:shadow-xl"
           >
             <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 mb-6">Bitcoin's Value</h2>
             <h3 className="text-2xl font-semibold text-blue-600">Store of Value Properties</h3>
@@ -196,7 +208,7 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="bg-gradient-to-br from-white via-green-50 to-white rounded-lg shadow-lg p-8 mt-8 border border-green-100"
+            className="bg-gradient-to-br from-white via-green-50 to-white rounded-lg shadow-lg p-8 mt-8 border border-green-100 transition-all duration-300 hover:shadow-xl"
           >
             <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-teal-600 mb-6">Metcalfe's Law and Bitcoin</h2>
             <p className="text-gray-700 mb-4">
@@ -245,7 +257,7 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="bg-gradient-to-br from-white via-purple-50 to-white rounded-lg shadow-lg p-8 mt-8 border border-purple-100"
+            className="bg-gradient-to-br from-white via-purple-50 to-white rounded-lg shadow-lg p-8 mt-8 border border-purple-100 transition-all duration-300 hover:shadow-xl"
           >
             <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 mb-6">Value Comparisons</h2>
             <p className="text-gray-700 mb-6">
@@ -294,7 +306,7 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="bg-gradient-to-br from-white via-pink-50 to-white rounded-lg shadow-lg p-8 mt-8 border border-pink-100"
+            className="bg-gradient-to-br from-white via-pink-50 to-white rounded-lg shadow-lg p-8 mt-8 border border-pink-100 transition-all duration-300 hover:shadow-xl"
           >
             <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-purple-600 mb-6">Understanding Bitcoin Investment Risks</h2>
             <p className="text-gray-700 mb-6">
@@ -343,27 +355,63 @@ export default function BitcoinInvestmentSection() {
               </Card>
             </div>
 
-            <Card className="mt-6 p-6 bg-blue-50">
-              <h3 className="text-xl font-semibold text-blue-800 mb-3">Risk Mitigation Strategies</h3>
+            <Card className="mt-6 p-6 bg-gradient-to-br from-blue-50 via-white to-blue-50">
+              <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600 mb-3">Risk Mitigation Strategies</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h4 className="font-semibold text-blue-700 mb-2">Do's</h4>
+                  <h4 className="font-semibold text-orange-700 mb-2 flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-green-500" />
+                    Do's
+                  </h4>
                   <ul className="space-y-2 text-gray-700">
-                    <li>✓ Only invest what you can afford to lose</li>
-                    <li>✓ Use reputable exchanges and wallets</li>
-                    <li>✓ Implement strong security measures</li>
-                    <li>✓ Diversify your investment portfolio</li>
-                    <li>✓ Stay informed about regulations</li>
+                    <li className="flex items-center gap-2">
+                      <Shield className="h-4 w-4 text-green-500" />
+                      Only invest what you can afford to lose
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Lock className="h-4 w-4 text-green-500" />
+                      Use reputable exchanges and wallets
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Key className="h-4 w-4 text-green-500" />
+                      Implement strong security measures
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <PieChart className="h-4 w-4 text-green-500" />
+                      Diversify your investment portfolio
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Landmark className="h-4 w-4 text-green-500" />
+                      Stay informed about regulations
+                    </li>
                   </ul>
                 </div>
                 <div>
-                  <h4 className="font-semibold text-red-700 mb-2">Don'ts</h4>
+                  <h4 className="font-semibold text-red-700 mb-2 flex items-center gap-2">
+                    <XCircle className="h-5 w-5 text-red-500" />
+                    Don'ts
+                  </h4>
                   <ul className="space-y-2 text-gray-700">
-                    <li>✗ Don't invest with borrowed money</li>
-                    <li>✗ Don't store large amounts on exchanges</li>
-                    <li>✗ Don't share private keys or seed phrases</li>
-                    <li>✗ Don't make emotional investment decisions</li>
-                    <li>✗ Don't ignore tax obligations</li>
+                    <li className="flex items-center gap-2">
+                      <AlertTriangle className="h-4 w-4 text-red-500" />
+                      Don't invest with borrowed money
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <AlertOctagon className="h-4 w-4 text-red-500" />
+                      Don't store large amounts on exchanges
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Eye className="h-4 w-4 text-red-500" />
+                      Don't share private keys or seed phrases
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Info className="h-4 w-4 text-red-500" />
+                      Don't make emotional investment decisions
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <History className="h-4 w-4 text-red-500" />
+                      Don't ignore tax obligations
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -380,7 +428,7 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="bg-gradient-to-br from-white via-teal-50 to-white rounded-lg shadow-lg p-8 border border-teal-100"
+            className="bg-gradient-to-br from-white via-teal-50 to-white rounded-lg shadow-lg p-8 border border-teal-100 transition-all duration-300 hover:shadow-xl"
           >
             <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-cyan-600 mb-6">Bitcoin ETFs Explained</h2>
             <p>
@@ -398,7 +446,7 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="bg-gradient-to-br from-white via-indigo-50 to-white rounded-lg shadow-lg p-8 mt-8 border border-indigo-100"
+            className="bg-gradient-to-br from-white via-indigo-50 to-white rounded-lg shadow-lg p-8 mt-8 border border-indigo-100 transition-all duration-300 hover:shadow-xl"
           >
             <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-600 mb-6">Practice Investment Strategies</h2>
             <p className="text-gray-700 mb-6">
