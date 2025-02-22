@@ -158,7 +158,7 @@ export default function BitcoinFundamentalsQuiz() {
               Retry Quiz
             </Button>
             {percentage >= 60 && (
-              <Link href="/modules/module2/bitcoin-investment" className="flex-1">
+              <Link href="/modules/module2/security-risk" className="flex-1">
                 <Button 
                   className="w-full bg-orange-600 hover:bg-orange-700 text-sm"
                 >
