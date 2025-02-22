@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { CheckCircle2, XCircle } from "lucide-react";
+import { motion } from "framer-motion";
 import { useProgress } from "@/context/progress-context";
+import { Link } from "wouter";
+import { ArrowRight, CheckCircle, XCircle, Award } from "lucide-react";
 
 const questions = [
   {
-    id: 1,
     question: "What is the main innovation that Bitcoin introduced?",
     options: [
       "A digital payment system with central control",
@@ -19,7 +19,6 @@ const questions = [
     explanation: "Bitcoin's revolutionary innovation was creating the first decentralized digital currency that operates without any central authority or intermediaries. This solved the 'double-spending problem' without requiring a trusted third party."
   },
   {
-    id: 2,
     question: "What is the function of Bitcoin mining?",
     options: [
       "To create physical coins",
@@ -31,7 +30,6 @@ const questions = [
     explanation: "Bitcoin mining serves multiple purposes: it secures the network through proof-of-work, processes and validates transactions, and introduces new bitcoins into circulation according to a predetermined schedule."
   },
   {
-    id: 3,
     question: "When was the Bitcoin whitepaper published?",
     options: [
       "October 31, 2008",
@@ -43,7 +41,6 @@ const questions = [
     explanation: "Satoshi Nakamoto published the Bitcoin whitepaper titled 'Bitcoin: A Peer-to-Peer Electronic Cash System' on October 31, 2008. This date marks the theoretical foundation of Bitcoin, though the network wouldn't launch until January 2009."
   },
   {
-    id: 4,
     question: "What is the Bitcoin blockchain?",
     options: [
       "A private database owned by banks",
@@ -55,7 +52,6 @@ const questions = [
     explanation: "The blockchain is a public, distributed ledger that permanently records all Bitcoin transactions. It's called a 'chain' because each block of transactions links to the previous one, creating an immutable history."
   },
   {
-    id: 5,
     question: "What was significant about the 'Pizza Transaction' in Bitcoin's history?",
     options: [
       "It was the first Bitcoin transaction ever",
@@ -71,146 +67,171 @@ const questions = [
 export default function BitcoinFundamentalsQuiz() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-  const [isAnswered, setIsAnswered] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
   const { updateProgress } = useProgress();
 
   const handleAnswer = (answerIndex: number) => {
     setSelectedAnswer(answerIndex);
-    setIsAnswered(true);
 
-    if (answerIndex === questions[currentQuestion].correctAnswer) {
-      setScore(score + 1);
+    const isCorrect = answerIndex === questions[currentQuestion].correctAnswer;
+    if (isCorrect) {
+      setScore(prev => prev + 1);
     }
+
+    setTimeout(() => {
+      if (currentQuestion < questions.length - 1) {
+        setCurrentQuestion(prev => prev + 1);
+        setSelectedAnswer(null);
+      } else {
+        setShowResult(true);
+        const finalScore = ((score + (isCorrect ? 1 : 0)) / questions.length) * 100;
+        updateProgress(
+          2,
+          'bitcoin-fundamentals',
+          finalScore >= 60,
+          1,
+          undefined,
+          finalScore,
+          '/modules/module2/bitcoin-fundamentals',
+          undefined,
+          'Bitcoin Fundamentals'
+        );
+      }
+    }, 3000);
   };
 
-  const handleNext = () => {
-    if (currentQuestion < questions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
-      setSelectedAnswer(null);
-      setIsAnswered(false);
-    } else {
-      setShowResult(true);
-      if (score >= Math.floor(questions.length * 0.7)) {
-        updateProgress(2, 'bitcoin-fundamentals-quiz', true);
-      }
-    }
+  const restartQuiz = () => {
+    setCurrentQuestion(0);
+    setSelectedAnswer(null);
+    setShowResult(false);
+    setScore(0);
   };
 
   if (showResult) {
-    const passed = score >= Math.floor(questions.length * 0.7);
+    const percentage = (score / questions.length) * 100;
     return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="space-y-4"
-      >
-        <Card className={`p-6 ${passed ? 'bg-green-50' : 'bg-red-50'}`}>
-          <h3 className="text-xl font-semibold mb-4">
-            Quiz Complete! Your Score: {score}/{questions.length}
-          </h3>
-          <div className="flex items-center gap-2">
-            {passed ? (
-              <>
-                <CheckCircle2 className="h-5 w-5 text-green-500" />
-                <p className="text-green-700">
-                  Congratulations! You've passed the quiz and demonstrated a solid understanding of Bitcoin fundamentals.
-                </p>
-              </>
-            ) : (
-              <>
-                <XCircle className="h-5 w-5 text-red-500" />
-                <p className="text-red-700">
-                  Keep learning and try again. Review the sections you found challenging to improve your understanding.
-                </p>
-              </>
+      <div className="container mx-auto px-4 py-6 max-w-xl">
+        <Card className="p-6 text-center bg-gradient-to-br from-blue-50 to-indigo-50">
+          <div className="flex items-center justify-center mb-4">
+            <Award className={`h-12 w-12 ${percentage >= 60 ? 'text-green-500' : 'text-red-500'}`} />
+          </div>
+          <h2 className="text-xl font-bold mb-3 text-blue-800">
+            Quiz Complete!
+          </h2>
+          <div className="text-lg mb-4">
+            <p className="font-semibold">Your Score:</p>
+            <p className={`text-2xl font-bold ${percentage >= 60 ? 'text-green-600' : 'text-red-600'}`}>
+              {percentage}%
+            </p>
+            <p className="text-gray-600 mt-1 text-sm">
+              ({score} out of {questions.length} correct)
+            </p>
+          </div>
+          {percentage >= 60 ? (
+            <div className="bg-green-100 border-l-4 border-green-500 p-3 mb-4 text-sm">
+              <p className="text-green-700 flex items-center gap-2 justify-center">
+                <CheckCircle className="h-4 w-4" />
+                Congratulations! You've passed!
+              </p>
+              <p className="text-sm text-green-600 mt-1">Moving to next section in 5 seconds...</p>
+            </div>
+          ) : (
+            <div className="bg-red-100 border-l-4 border-red-500 p-3 mb-4 text-sm">
+              <p className="text-red-700 flex items-center gap-2 justify-center">
+                <XCircle className="h-4 w-4" />
+                Keep learning and try again
+              </p>
+            </div>
+          )}
+          <div className="flex flex-col space-y-3">
+            <Button 
+              onClick={restartQuiz}
+              className="w-full bg-blue-500 hover:bg-blue-600 text-sm"
+            >
+              Retry Quiz
+            </Button>
+            {percentage >= 60 && (
+              <Link href="/modules/module2/crypto-market">
+                <Button 
+                  className="w-full bg-green-600 hover:bg-green-700 text-sm"
+                >
+                  Continue to Next Section <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
             )}
           </div>
         </Card>
-      </motion.div>
+      </div>
     );
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="space-y-6"
-    >
-      <Card className="p-8">
-        <div className="mb-6">
-          <h3 className="text-xl font-semibold mb-2">
-            Question {currentQuestion + 1} of {questions.length}
-          </h3>
-          <p className="text-lg text-gray-700">{questions[currentQuestion].question}</p>
+    <div className="container mx-auto px-4 py-3 max-w-xl">
+      <div className="bg-gradient-to-r from-orange-500 to-red-600 p-6 rounded-lg mb-6 text-white">
+        <h2 className="text-2xl font-bold mb-2">Test Your Knowledge</h2>
+        <p className="text-white/80">Complete the quiz to test your understanding of Bitcoin</p>
+      </div>
+      <div className="mb-4">
+        <h3 className="text-lg font-semibold text-blue-800 mb-3 flex items-center justify-between">
+          Question {currentQuestion + 1} of {questions.length}
+          <span className="text-sm text-gray-600 bg-white px-2 py-1 rounded-full">
+            Score: {score}
+          </span>
+        </h3>
+
+        <div className="bg-white rounded-lg p-3 mb-3 shadow-sm">
+          <p className="text-base text-gray-700">
+            {questions[currentQuestion].question}
+          </p>
         </div>
 
-        <div className="space-y-4">
+        <div className="grid gap-2">
           {questions[currentQuestion].options.map((option, index) => (
-            <Button
+            <motion.button
               key={index}
-              variant={selectedAnswer === index ? "default" : "outline"}
-              className={`w-full p-6 justify-start text-left text-lg transition-colors
-                ${selectedAnswer !== null ? 
-                  index === questions[currentQuestion].correctAnswer ?
-                    "bg-green-100 hover:bg-green-100 text-green-800 border-green-500" :
-                    selectedAnswer === index ?
-                      "bg-red-100 hover:bg-red-100 text-red-800 border-red-500" :
-                      "opacity-50"
-                  : ""
-                }
+              onClick={() => handleAnswer(index)}
+              className={`
+                w-full p-3 rounded-lg text-left transition-all duration-300 text-sm
+                ${selectedAnswer === null 
+                  ? 'bg-white hover:bg-blue-50 border border-gray-200' 
+                  : index === questions[currentQuestion].correctAnswer 
+                    ? 'bg-green-100 border-2 border-green-500' 
+                    : selectedAnswer === index 
+                      ? 'bg-red-100 border-2 border-red-500' 
+                      : 'bg-white border border-gray-200'}
+                whitespace-normal break-words hover:shadow-md
               `}
-              onClick={() => !isAnswered && handleAnswer(index)}
-              disabled={isAnswered}
+              disabled={selectedAnswer !== null}
+              whileHover={{ scale: selectedAnswer === null ? 1.01 : 1 }}
+              whileTap={{ scale: selectedAnswer === null ? 0.99 : 1 }}
             >
-              {option}
-            </Button>
+              <span>{option}</span>
+            </motion.button>
           ))}
         </div>
 
-        {isAnswered && (
-          <motion.div 
+        {selectedAnswer !== null && (
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-6"
+            className={`
+              mt-4 p-3 rounded-lg text-sm
+              ${selectedAnswer === questions[currentQuestion].correctAnswer 
+                ? 'bg-green-100 border-l-4 border-green-500' 
+                : 'bg-red-100 border-l-4 border-red-500'}
+            `}
           >
-            <Card className={`p-4 ${
-              selectedAnswer === questions[currentQuestion].correctAnswer
-                ? "bg-green-50 border-green-200"
-                : "bg-red-50 border-red-200"
-            }`}>
-              <div className="flex items-center gap-2 mb-2">
-                {selectedAnswer === questions[currentQuestion].correctAnswer ? (
-                  <>
-                    <CheckCircle2 className="h-6 w-6 text-green-500" />
-                    <span className="font-semibold text-green-700">Correct!</span>
-                  </>
-                ) : (
-                  <>
-                    <XCircle className="h-6 w-6 text-red-500" />
-                    <span className="font-semibold text-red-700">Incorrect!</span>
-                  </>
-                )}
-              </div>
-              <p className={`text-lg ${
-                selectedAnswer === questions[currentQuestion].correctAnswer
-                  ? "text-green-800"
-                  : "text-red-800"
-              }`}>
-                {questions[currentQuestion].explanation}
-              </p>
-            </Card>
-
-            <Button
-              onClick={handleNext}
-              className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-lg p-6"
-            >
-              {currentQuestion === questions.length - 1 ? "Finish Quiz" : "Next Question"}
-            </Button>
+            <h3 className="font-bold mb-2 flex items-center gap-2">
+              {selectedAnswer === questions[currentQuestion].correctAnswer 
+                ? <><CheckCircle className="h-4 w-4 text-green-600" /> Correct!</>
+                : <><XCircle className="h-4 w-4 text-red-600" /> Incorrect</>}
+            </h3>
+            <p className="leading-relaxed">{questions[currentQuestion].explanation}</p>
+            <p className="text-xs mt-2 text-gray-600">Next question in 3 seconds...</p>
           </motion.div>
         )}
-      </Card>
-    </motion.div>
+      </div>
+    </div>
   );
 }
