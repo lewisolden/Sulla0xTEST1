@@ -24,7 +24,8 @@ import {
   GraduationCap,
   Heart,
   Shield,
-  Lock
+  Lock,
+  ChevronRight
 } from "lucide-react";
 
 // Enhanced Financial Inclusion Diagram Component with Animation
@@ -62,8 +63,8 @@ const FinancialInclusionDiagram = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: index * 0.1 }}
-          whileHover={{ scale: 1.05 }}
-          className={`bg-${item.color}-50 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300`}
+          whileHover={{ scale: 1.05, boxShadow: "0 10px 30px rgba(0,0,0,0.1)" }}
+          className={`bg-gradient-to-br from-${item.color}-50 to-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-${item.color}-100`}
         >
           <div className="mb-4 flex justify-center">
             <div className={`p-4 bg-${item.color}-100 rounded-full`}>
@@ -78,7 +79,7 @@ const FinancialInclusionDiagram = () => {
   );
 };
 
-// New Component: Real World Applications Showcase
+// New Component: Real World Applications Showcase with Enhanced Visual Design
 const ApplicationShowcase = () => {
   const applications = [
     {
@@ -133,8 +134,8 @@ const ApplicationShowcase = () => {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: index * 0.1 }}
-          whileHover={{ scale: 1.02 }}
-          className={`bg-${app.color}-50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300`}
+          whileHover={{ scale: 1.02, y: -5 }}
+          className={`bg-gradient-to-br from-${app.color}-50 to-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-${app.color}-100`}
         >
           <div className={`p-3 bg-${app.color}-100 rounded-full w-fit mb-4`}>
             <app.icon className={`w-6 h-6 text-${app.color}-600`} />
@@ -144,7 +145,7 @@ const ApplicationShowcase = () => {
           <div className="space-y-2">
             {app.examples.map((example, i) => (
               <div key={i} className="flex items-center gap-2">
-                <div className={`w-2 h-2 rounded-full bg-${app.color}-400`} />
+                <ChevronRight className={`w-4 h-4 text-${app.color}-400`} />
                 <span className="text-sm text-gray-600">{example}</span>
               </div>
             ))}
