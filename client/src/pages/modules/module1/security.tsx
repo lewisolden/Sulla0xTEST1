@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { CourseSection } from "@/components/course-templates/CourseSection";
-import { CourseContentSection } from "@/components/course-templates/CourseContentSection";
-import { KeyConceptBox } from "@/components/course-templates/CourseContentSection";
-import { QuizContainer } from "@/components/course-templates/CourseContentSection";
+import { CourseContentSection, KeyConceptBox, QuizContainer } from "@/components/course-templates/CourseContentSection";
 import { Button } from "@/components/ui/button";
 import { useProgress } from "@/context/progress-context";
 import { motion } from "framer-motion";
@@ -13,7 +11,7 @@ import {
 } from "lucide-react";
 import { SecurityDiagram } from "@/components/diagrams/SecurityDiagram";
 import { SecurityThreats } from "@/components/diagrams/SecurityThreats";
-import { SecurityQuiz } from "@/components/quizzes/SecurityQuiz";
+import SecurityQuiz from "@/components/modules/quizzes/SecurityQuiz";
 
 const cardVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -24,7 +22,6 @@ const cardVariants = {
 export default function SecurityPage() {
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [showQuiz, setShowQuiz] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const { updateProgress } = useProgress();
 
@@ -59,223 +56,229 @@ export default function SecurityPage() {
   return (
     <CourseSection 
       title="Security in Cryptocurrency"
+      subtitle="Essential Concepts and Best Practices"
       backLink="/modules/module1"
       backText="Back to Module Overview"
-      currentSection={7}
-      totalSections={9}
+      currentSection={2}
+      totalSections={4}
+      nextLink="/modules/module1/applications"
+      nextText="Next: Applications"
     >
-      <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
-        <div 
-          className="h-full bg-blue-600" 
-          style={{ width: `${scrollProgress}%` }}
-        />
-      </div>
-
-      <div className="max-w-4xl mx-auto">
-        <div className="mb-6">
-          <Link href="/modules/module1">
-            <Button variant="ghost" className="gap-2">
-              <ArrowLeft className="h-4 w-4" /> Back to Module Overview
-            </Button>
-          </Link>
+      <div className="container mx-auto px-4">
+        <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
+          <div 
+            className="h-full bg-blue-600" 
+            style={{ width: `${scrollProgress}%` }}
+          />
         </div>
 
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
+          initial="initial"
+          animate="enter"
+          exit="exit"
+          variants={cardVariants}
           className="space-y-8"
         >
           <CourseContentSection
-            title="Understanding Cryptocurrency Security"
-            subtitle="Essential concepts and best practices for protecting your digital assets"
-            icon={<Shield className="w-8 h-8" />}
+            title="Private Keys: The Foundation of Security"
+            icon={<Key size={32} />}
             gradientFrom="blue-50"
             gradientTo="indigo-50"
           >
-            <div className="prose lg:prose-xl text-gray-700 space-y-6">
-              <motion.div
-                variants={cardVariants}
-                initial="hidden"
-                animate="visible"
-                className="grid md:grid-cols-2 gap-8"
-              >
-                <KeyConceptBox
-                  title="Core Security Principles"
-                  className="bg-gradient-to-br from-blue-100 to-indigo-50"
-                >
-                  <ul className="space-y-3">
-                    {[
-                      "Private key protection",
-                      "Strong password practices",
-                      "Two-factor authentication",
-                      "Regular security audits",
-                      "Hardware wallet usage"
-                    ].map((principle, index) => (
-                      <motion.li
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="flex items-center gap-2"
-                      >
-                        <ShieldCheck className="h-5 w-5 text-green-500" />
-                        {principle}
-                      </motion.li>
-                    ))}
-                  </ul>
-                </KeyConceptBox>
+            <div className="prose lg:prose-xl text-gray-700">
+              <p>
+                A private key in cryptocurrency is like the master key to your digital vault. It's a unique,
+                complex string of numbers and letters that proves your ownership and allows you to access and
+                manage your cryptocurrency.
+              </p>
 
-                <KeyConceptBox
-                  title="Common Security Threats"
-                  className="bg-gradient-to-br from-red-50 to-orange-50"
-                >
-                  <ul className="space-y-3">
-                    {[
-                      "Phishing attacks",
-                      "Social engineering",
-                      "Malware infections",
-                      "Exchange hacks",
-                      "Key compromise"
-                    ].map((threat, index) => (
-                      <motion.li
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="flex items-center gap-2"
-                      >
-                        <AlertTriangle className="h-5 w-5 text-red-500" />
-                        {threat}
-                      </motion.li>
-                    ))}
-                  </ul>
-                </KeyConceptBox>
+              <motion.div 
+                className="bg-blue-50 p-6 rounded-lg shadow-md mt-4"
+                variants={cardVariants}
+                whileHover="hover"
+              >
+                <h3 className="text-xl font-semibold text-blue-800 mb-4">Real-World Example:</h3>
+                <p>
+                  Think of your email account: your password is like a private key. If someone gets your
+                  password, they can send emails as you and access all your information. Similarly, if someone
+                  obtains your private key, they can access and transfer your cryptocurrency.
+                </p>
+                <div className="mt-4 bg-white/80 p-4 rounded-lg">
+                  <p className="text-sm font-medium text-gray-700">Example Private Key (Never share your actual private key):</p>
+                  <code className="block bg-gray-100 p-3 rounded mt-2 text-sm">
+                    5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3
+                  </code>
+                </div>
               </motion.div>
             </div>
           </CourseContentSection>
 
           <CourseContentSection
-            title="Private Keys & Wallets"
-            icon={<KeyRound className="w-8 h-8" />}
+            title="Two-Factor Authentication (2FA)"
+            icon={<Lock size={32} />}
             gradientFrom="purple-50"
             gradientTo="pink-50"
           >
-            <motion.div 
-              variants={cardVariants}
-              whileHover="hover"
-              className="bg-white/80 rounded-lg p-6 shadow-lg"
-            >
-              <div className="grid md:grid-cols-2 gap-8">
-                <div className="space-y-4">
-                  <h3 className="text-xl font-semibold text-purple-800">Private Key Essentials</h3>
-                  <p className="text-gray-700">
-                    Your private key is the master key to your cryptocurrency. It must be:
-                  </p>
-                  <ul className="space-y-2">
-                    {[
-                      "Kept absolutely secret",
-                      "Backed up securely",
-                      "Never shared online",
-                      "Stored in multiple secure locations"
-                    ].map((item, index) => (
-                      <motion.li
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="flex items-center gap-2 text-purple-700"
-                      >
-                        <Key className="h-4 w-4 text-purple-500" />
-                        {item}
-                      </motion.li>
-                    ))}
-                  </ul>
+            <motion.div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <p className="text-gray-700">
+                  2FA adds an extra layer of security beyond your password. It requires two different types
+                  of verification before granting access to your account.
+                </p>
+
+                <div className="bg-purple-50 p-6 rounded-lg">
+                  <h3 className="font-semibold text-purple-900 mb-4">Authentication Methods:</h3>
+                  {[
+                    ["Google Authenticator", "Generates time-based codes that change every 30 seconds"],
+                    ["SMS Verification", "Receiving a code via text message when logging in"],
+                    ["Hardware Keys", "Physical devices like YubiKey that must be plugged in"],
+                    ["Biometric", "Fingerprint or face recognition for additional security"]
+                  ].map(([title, desc], index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="bg-white/80 p-3 rounded-lg mb-3"
+                    >
+                      <h4 className="font-medium text-purple-900">{title}</h4>
+                      <p className="text-sm text-purple-700">{desc}</p>
+                    </motion.div>
+                  ))}
                 </div>
-                <div className="bg-gradient-to-br from-purple-100 to-pink-50 p-6 rounded-lg">
-                  <h3 className="text-xl font-semibold text-purple-800 mb-4">Wallet Types</h3>
-                  <div className="space-y-3">
-                    {[
-                      {
-                        type: "Hardware Wallets",
-                        desc: "Physical devices that store keys offline"
-                      },
-                      {
-                        type: "Software Wallets",
-                        desc: "Desktop or mobile applications"
-                      },
-                      {
-                        type: "Paper Wallets",
-                        desc: "Physical copies of keys"
-                      },
-                      {
-                        type: "Web Wallets",
-                        desc: "Online services (least secure)"
-                      }
-                    ].map((wallet, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="bg-white/60 p-3 rounded-lg"
-                      >
-                        <h4 className="font-medium text-purple-900">{wallet.type}</h4>
-                        <p className="text-sm text-purple-700">{wallet.desc}</p>
-                      </motion.div>
-                    ))}
-                  </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-purple-100 to-pink-50 p-6 rounded-lg">
+                <h3 className="text-xl font-semibold text-purple-900 mb-4">Best Practices</h3>
+                <div className="space-y-3">
+                  {[
+                    "Use authenticator apps over SMS when possible",
+                    "Keep backup codes in a secure location",
+                    "Enable 2FA on all supported platforms",
+                    "Consider hardware security keys for highest security"
+                  ].map((practice, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="flex items-center gap-2 bg-white/60 p-3 rounded-lg"
+                    >
+                      <ShieldCheck className="h-5 w-5 text-purple-500" />
+                      <span className="text-purple-800">{practice}</span>
+                    </motion.div>
+                  ))}
                 </div>
               </div>
             </motion.div>
           </CourseContentSection>
 
           <CourseContentSection
-            title="Security Best Practices"
-            icon={<BrainCircuit className="w-8 h-8" />}
+            title="Wallet Security"
+            icon={<Wallet size={32} />}
             gradientFrom="emerald-50"
             gradientTo="teal-50"
           >
-            <motion.div className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <KeyConceptBox
-                  title="Essential Security Steps"
-                  className="bg-gradient-to-br from-emerald-100 to-teal-50"
-                >
+            <div className="grid md:grid-cols-2 gap-6">
+              <KeyConceptBox
+                title="Types of Wallets"
+                className="bg-gradient-to-br from-emerald-100 to-teal-50"
+              >
+                {[
+                  ["Hardware Wallets", "Physical devices that store your private keys offline (e.g., Ledger, Trezor)"],
+                  ["Software Wallets", "Desktop or mobile applications for managing crypto"],
+                  ["Paper Wallets", "Physical copies of public and private keys"],
+                  ["Web Wallets", "Online services for storing cryptocurrency"]
+                ].map(([title, desc], index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="bg-white/80 p-4 rounded-lg mb-3"
+                  >
+                    <h4 className="font-medium text-emerald-900">{title}</h4>
+                    <p className="text-sm text-emerald-700">{desc}</p>
+                  </motion.div>
+                ))}
+              </KeyConceptBox>
+
+              <div className="space-y-6">
+                <div className="bg-white/80 p-6 rounded-lg shadow-lg">
+                  <h3 className="text-xl font-semibold text-emerald-800 mb-4">Security Measures</h3>
                   <ul className="space-y-3">
                     {[
-                      "Use hardware wallets for large amounts",
-                      "Enable 2FA on all accounts",
-                      "Create strong, unique passwords",
-                      "Keep software updated",
-                      "Verify all transactions carefully"
-                    ].map((step, index) => (
+                      "Regular backups of wallet data",
+                      "Strong, unique passwords for each wallet",
+                      "Multi-signature protection for large amounts",
+                      "Regular security audits of wallet software"
+                    ].map((measure, index) => (
                       <motion.li
                         key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.1 }}
                         className="flex items-center gap-2"
                       >
                         <ShieldCheck className="h-5 w-5 text-emerald-500" />
-                        {step}
+                        <span>{measure}</span>
                       </motion.li>
                     ))}
                   </ul>
-                </KeyConceptBox>
+                </div>
 
-                <div className="flex flex-col gap-6">
-                  <div className="bg-white/80 p-4 rounded-lg shadow-lg h-[200px] overflow-hidden">
-                    <h3 className="text-lg font-semibold text-emerald-800 mb-2">Security Overview</h3>
-                    <SecurityDiagram />
-                  </div>
-                  <div className="bg-white/80 p-4 rounded-lg shadow-lg h-[200px] overflow-hidden">
-                    <h3 className="text-lg font-semibold text-emerald-800 mb-2">Common Threats</h3>
-                    <SecurityThreats />
-                  </div>
+                <div className="bg-yellow-50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-yellow-800 flex items-center gap-2">
+                    <AlertTriangle className="h-5 w-5" />
+                    Pro Tip
+                  </h4>
+                  <p className="text-yellow-700 mt-2">
+                    Never store your recovery phrase digitally or share it with anyone.
+                    Write it down on paper and store it in multiple secure locations.
+                  </p>
                 </div>
               </div>
-            </motion.div>
+            </div>
+          </CourseContentSection>
+
+          <CourseContentSection
+            title="Threat Protection"
+            icon={<Shield size={32} />}
+            gradientFrom="rose-50"
+            gradientTo="red-50"
+          >
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <p className="text-gray-700">
+                  The cryptocurrency space faces various security threats. Understanding and protecting
+                  against these threats is essential for safeguarding your assets.
+                </p>
+
+                <div className="bg-white/80 p-6 rounded-lg shadow-lg h-[300px] overflow-hidden">
+                  <h3 className="text-lg font-semibold text-rose-800 mb-4">Security Overview</h3>
+                  <SecurityDiagram />
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="bg-white/80 p-6 rounded-lg shadow-lg h-[300px] overflow-hidden">
+                  <h3 className="text-lg font-semibold text-rose-800 mb-4">Common Threats</h3>
+                  <SecurityThreats />
+                </div>
+
+                <div className="bg-red-50 p-4 rounded-lg">
+                  <h4 className="font-semibold text-red-800 flex items-center gap-2">
+                    <AlertTriangle className="h-5 w-5" />
+                    Real-World Example
+                  </h4>
+                  <p className="text-red-700 mt-2">
+                    In 2020, a major Twitter hack compromised high-profile accounts to promote a 
+                    cryptocurrency scam. Users who verified transactions and websites carefully 
+                    avoided losing funds, while those who rushed to participate lost their investments.
+                  </p>
+                </div>
+              </div>
+            </div>
           </CourseContentSection>
 
           {isFullyRead && (
