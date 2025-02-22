@@ -1,512 +1,183 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
+import { CourseTemplate } from "@/components/templates/CourseTemplate";
+import { CourseSection } from "@/components/templates/CourseTemplate";
+import { ConceptCard } from "@/components/templates/CourseTemplate";
+import { CourseContentSection } from "@/components/course-templates/CourseContentSection";
+import { KeyConceptBox } from "@/components/course-templates/CourseContentSection";
+import { QuizContainer } from "@/components/course-templates/CourseContentSection";
 import { Card, CardContent } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
-import { Link } from "wouter";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
+import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import {
-  ArrowLeft,
-  ArrowRight,
-  Globe2,
-  Users,
-  Wallet,
-  Timer,
-  Lock,
-  Clock,
   Building2,
-  PiggyBank,
-  Send,
-  ShieldCheck,
-  Banknote,
-  Landmark,
+  Globe2,
+  Shield,
+  Heart,
   FileText,
+  PiggyBank,
+  Landmark,
   LineChart,
   GraduationCap,
-  Heart,
-  Shield
+  Users,
+  Lock,
+  ShieldCheck
 } from "lucide-react";
 
-// Enhanced Financial Inclusion Diagram Component with Animation
-const FinancialInclusionDiagram = () => {
-  return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 my-8">
-      {[
-        {
-          icon: Globe2,
-          title: "Global Access",
-          description: "Connect to the financial system from anywhere",
-          color: "blue"
-        },
-        {
-          icon: PiggyBank,
-          title: "Cost Reduction",
-          description: "Lower fees for sending money internationally",
-          color: "green"
-        },
-        {
-          icon: Users,
-          title: "Peer-to-Peer",
-          description: "Direct financial transactions without intermediaries",
-          color: "purple"
-        },
-        {
-          icon: Building2,
-          title: "Banking Alternative",
-          description: "Financial services without traditional bank accounts",
-          color: "orange"
-        }
-      ].map((item, index) => (
-        <motion.div
-          key={index}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: index * 0.1 }}
-          whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
-          className={`bg-${item.color}-50 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300`}
-        >
-          <div className="mb-4 flex justify-center">
-            <div className={`p-4 bg-${item.color}-100 rounded-full`}>
-              <item.icon className={`w-8 h-8 text-${item.color}-600`} />
-            </div>
-          </div>
-          <h4 className={`font-semibold text-${item.color}-800 text-lg mb-2 text-center`}>{item.title}</h4>
-          <p className="text-gray-600 text-center">{item.description}</p>
-        </motion.div>
-      ))}
-    </div>
-  );
-};
-
-// New Component: Real World Applications Showcase
-const ApplicationShowcase = () => {
-  const applications = [
-    {
-      icon: Banknote,
-      title: "Digital Payments",
-      description: "Fast, secure, and borderless transactions for everyday purchases",
-      examples: ["Cross-border remittances", "Online shopping", "Bill payments"],
-      color: "emerald"
-    },
-    {
-      icon: Landmark,
-      title: "Decentralized Finance",
-      description: "Access to financial services without traditional banking infrastructure",
-      examples: ["Lending platforms", "Yield farming", "Decentralized exchanges"],
-      color: "violet"
-    },
-    {
-      icon: FileText,
-      title: "Smart Contracts",
-      description: "Automated agreements and transactions without intermediaries",
-      examples: ["Insurance policies", "Real estate deals", "Supply chain tracking"],
-      color: "blue"
-    },
-    {
-      icon: LineChart,
-      title: "Investment Opportunities",
-      description: "New ways to grow and manage wealth",
-      examples: ["Token investments", "Crypto index funds", "NFT marketplaces"],
-      color: "indigo"
-    },
-    {
-      icon: GraduationCap,
-      title: "Education",
-      description: "Learning and certification on the blockchain",
-      examples: ["Digital credentials", "Online courses", "Skill verification"],
-      color: "cyan"
-    },
-    {
-      icon: Heart,
-      title: "Social Impact",
-      description: "Using blockchain for positive change",
-      examples: ["Charity transparency", "Sustainable projects", "Community initiatives"],
-      color: "rose"
-    }
-  ];
-
-  return (
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-      {applications.map((app, index) => (
-        <motion.div
-          key={index}
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: index * 0.1 }}
-          whileHover={{ scale: 1.02 }}
-          className={`bg-${app.color}-50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300`}
-        >
-          <div className={`p-3 bg-${app.color}-100 rounded-full w-fit mb-4`}>
-            <app.icon className={`w-6 h-6 text-${app.color}-600`} />
-          </div>
-          <h3 className={`text-xl font-bold text-${app.color}-800 mb-2`}>{app.title}</h3>
-          <p className="text-gray-600 mb-4">{app.description}</p>
-          <div className="space-y-2">
-            {app.examples.map((example, i) => (
-              <div key={i} className="flex items-center gap-2">
-                <div className={`w-2 h-2 rounded-full bg-${app.color}-400`} />
-                <span className="text-sm text-gray-600">{example}</span>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-      ))}
-    </div>
-  );
-};
-
-const PracticalApplicationsSection = () => {
+const ApplicationsPage = () => {
   useScrollTop();
-  const [isFullyRead, setIsFullyRead] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [showQuiz, setShowQuiz] = useState(false);
   const { updateProgress } = useProgress();
-  const [activeSection, setActiveSection] = useState('overview');
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      const scrollPercent = (scrollTop / scrollHeight) * 100;
-      setScrollProgress(scrollPercent);
+  const handleQuizStart = () => {
+    setShowQuiz(true);
+  };
 
-      if (scrollPercent > 95) {
-        setIsFullyRead(true);
-        updateProgress({
-          moduleId: 1,
-          sectionId: 'practical-applications',
-          completed: true,
-          score: 100
-        });
-      }
-    };
+  const handleQuizComplete = (score: number) => {
+    updateProgress({
+      moduleId: 'module1',
+      sectionId: 'applications',
+      completed: true,
+      score,
+      completedAt: new Date().toISOString(),
+      route: '/modules/module1/applications',
+      moduleType: 'blockchain'
+    });
+  };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [updateProgress]);
+  if (showQuiz) {
+    return (
+      <QuizContainer>
+        <PracticalApplicationsQuiz onComplete={handleQuizComplete} />
+      </QuizContainer>
+    );
+  }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <motion.div
-        className="fixed top-0 left-0 w-full h-1 bg-gray-300 z-50"
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: scrollProgress / 100 }}
-        style={{ transformOrigin: "left" }}
+    <CourseTemplate
+      title="Practical Applications of Blockchain"
+      subtitle="Explore real-world implementations and their impact across industries"
+      icon={<Globe2 className="h-12 w-12 text-blue-600" />}
+      backLink="/modules/module1/security"
+      backLabel="Back to Security"
+      nextLink="/modules/module1/getting-started"
+      nextLabel="Next: Getting Started"
+      showQuiz
+      onStartQuiz={handleQuizStart}
+    >
+      <CourseSection
+        icon={<Building2 className="h-6 w-6" />}
+        title="Industry Applications"
+        description="Discover how blockchain is transforming various sectors"
+        delay={0.2}
       >
-        <div className="h-full bg-blue-600" />
-      </motion.div>
-
-      <div className="max-w-4xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mb-6"
-        >
-          <Link href="/modules/module1">
-            <Button variant="ghost" className="gap-2">
-              <ArrowLeft className="h-4 w-4" />
-              Back to Module Overview
-            </Button>
-          </Link>
-        </motion.div>
-
-        <motion.h1
-          className="text-4xl font-bold text-blue-800 mb-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-        >
-          Practical Applications of Blockchain Technology
-        </motion.h1>
-
-        <div className="space-y-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Card className="mb-6">
-              <CardContent className="prose max-w-none p-6">
-                <section>
-                  <h2 className="text-2xl font-bold text-blue-700">Overview</h2>
-                  <p className="text-gray-700 leading-relaxed">
-                    Blockchain technology is revolutionizing various sectors beyond just cryptocurrencies.
-                    From financial services to supply chain management, its applications are creating new
-                    possibilities for business and society. Let's explore how this technology is being
-                    implemented in real-world scenarios.
-                  </p>
-                  <ApplicationShowcase />
-                </section>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <Card className="mb-6">
-              <CardContent className="prose max-w-none p-6">
-                <section>
-                  <h2 className="text-2xl font-bold text-blue-700">Financial Applications</h2>
-                  <p className="text-gray-700 mb-6">
-                    Financial inclusion is one of the most significant impacts of blockchain technology,
-                    providing access to financial services for the unbanked and underbanked populations worldwide.
-                  </p>
-                  <FinancialInclusionDiagram />
-                </section>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            <Card className="mb-6">
-              <CardContent className="prose max-w-none p-6">
-                <section>
-                  <h2 className="text-2xl font-bold text-blue-700">Technical Applications</h2>
-                  <p className="text-gray-700 mb-6">
-                    Blockchain's technical capabilities extend far beyond financial transactions,
-                    enabling new solutions across various industries.
-                  </p>
-
-                  <div className="grid gap-6">
-                    {[
-                      {
-                        icon: FileText,
-                        title: "Supply Chain Management",
-                        description: "Track products from origin to consumer with immutable records",
-                        features: [
-                          "Real-time tracking and verification",
-                          "Counterfeit prevention",
-                          "Automated compliance",
-                          "Inventory optimization"
-                        ],
-                        color: "blue"
-                      },
-                      {
-                        icon: Shield,
-                        title: "Healthcare Records",
-                        description: "Secure and interoperable medical data management",
-                        features: [
-                          "Patient data privacy",
-                          "Cross-institution sharing",
-                          "Clinical trial tracking",
-                          "Drug supply verification"
-                        ],
-                        color: "green"
-                      },
-                      {
-                        icon: Lock,
-                        title: "Digital Identity",
-                        description: "Decentralized identity verification and management",
-                        features: [
-                          "Self-sovereign identity",
-                          "Credential verification",
-                          "Access control",
-                          "Privacy preservation"
-                        ],
-                        color: "purple"
-                      }
-                    ].map((item, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className={`bg-${item.color}-50 p-6 rounded-lg shadow-lg`}
-                      >
-                        <div className="flex items-start gap-4">
-                          <div className={`p-3 bg-${item.color}-100 rounded-full`}>
-                            <item.icon className={`w-6 h-6 text-${item.color}-600`} />
-                          </div>
-                          <div>
-                            <h3 className={`text-xl font-bold text-${item.color}-800 mb-2`}>
-                              {item.title}
-                            </h3>
-                            <p className="text-gray-600 mb-4">{item.description}</p>
-                            <ul className="space-y-2">
-                              {item.features.map((feature, i) => (
-                                <li key={i} className="flex items-center gap-2">
-                                  <div className={`w-2 h-2 rounded-full bg-${item.color}-400`} />
-                                  <span className="text-sm text-gray-600">{feature}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </section>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-          >
-            <Card className="mb-6">
-              <CardContent className="prose max-w-none p-6">
-                <section>
-                  <h2 className="text-2xl font-bold text-blue-700">Social Impact</h2>
-                  <p className="text-gray-700 mb-6">
-                    Blockchain technology is enabling positive social change through transparency,
-                    accountability, and improved resource distribution.
-                  </p>
-
-                  <div className="grid gap-6">
-                    {[
-                      {
-                        icon: Heart,
-                        title: "Humanitarian Aid",
-                        description: "Transparent and efficient distribution of aid",
-                        impact: [
-                          "Direct beneficiary payments",
-                          "Aid fund tracking",
-                          "Reduced fraud",
-                          "Faster emergency response"
-                        ],
-                        color: "rose"
-                      },
-                      {
-                        icon: Globe2,
-                        title: "Environmental Protection",
-                        description: "Supporting sustainability and conservation efforts",
-                        impact: [
-                          "Carbon credit tracking",
-                          "Environmental compliance",
-                          "Conservation funding",
-                          "Waste management"
-                        ],
-                        color: "emerald"
-                      },
-                      {
-                        icon: Users,
-                        title: "Community Empowerment",
-                        description: "Enabling local governance and cooperation",
-                        impact: [
-                          "Decentralized governance",
-                          "Community voting",
-                          "Resource sharing",
-                          "Local economies"
-                        ],
-                        color: "indigo"
-                      }
-                    ].map((item, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className={`bg-${item.color}-50 p-6 rounded-lg shadow-lg`}
-                      >
-                        <div className="flex items-start gap-4">
-                          <div className={`p-3 bg-${item.color}-100 rounded-full`}>
-                            <item.icon className={`w-6 h-6 text-${item.color}-600`} />
-                          </div>
-                          <div>
-                            <h3 className={`text-xl font-bold text-${item.color}-800 mb-2`}>
-                              {item.title}
-                            </h3>
-                            <p className="text-gray-600 mb-4">{item.description}</p>
-                            <ul className="space-y-2">
-                              {item.impact.map((point, i) => (
-                                <li key={i} className="flex items-center gap-2">
-                                  <div className={`w-2 h-2 rounded-full bg-${item.color}-400`} />
-                                  <span className="text-sm text-gray-600">{point}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </section>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          {isFullyRead && (
-            <motion.div
-              className="mt-8 space-y-6"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-            >
-              <Card className="bg-green-100 border-l-4 border-green-500 p-4">
-                <p className="text-green-700">
-                  🎉 Congratulations! You've completed the Practical Applications section!
-                </p>
-              </Card>
-
-              <div className="flex flex-col md:flex-row gap-4">
-                <Button
-                  onClick={() => setShowQuiz(!showQuiz)}
-                  className="w-full md:w-auto bg-purple-600 hover:bg-purple-700"
-                  size="lg"
-                >
-                  {showQuiz ? "Hide Quiz" : "Take Topic Quiz"}
-                </Button>
-
-                <div className="flex flex-1 justify-end gap-4">
-                  <Link href="/modules/module1/security">
-                    <Button variant="outline" className="w-full md:w-auto">
-                      <ArrowLeft className="mr-2 h-4 w-4" />
-                      Previous Topic
-                    </Button>
-                  </Link>
-
-                  <Link href="/modules/module1/getting-started">
-                    <Button className="w-full md:w-auto bg-blue-600 hover:bg-blue-700">
-                      Next Topic
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-
-              {showQuiz && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <Card>
-                    <CardContent className="p-6">
-                      <h2 className="text-2xl font-bold text-blue-800 mb-4">Topic Quiz</h2>
-                      <PracticalApplicationsQuiz />
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              )}
-            </motion.div>
-          )}
+        <div className="grid md:grid-cols-2 gap-6">
+          <ConceptCard
+            title="Financial Services"
+            description="Revolutionizing banking, payments, and investments"
+            icon={<Landmark className="w-8 h-8" />}
+            delay={0.3}
+          />
+          <ConceptCard
+            title="Supply Chain"
+            description="Tracking and verifying products from origin to consumer"
+            icon={<FileText className="w-8 h-8" />}
+            delay={0.4}
+          />
         </div>
+      </CourseSection>
 
-        {/*{isFullyRead && <Progress value={scrollProgress} />}*/}
-      </div>
-    </div>
+      <CourseContentSection
+        title="Financial Inclusion"
+        subtitle="Empowering the unbanked population worldwide"
+        icon={<PiggyBank className="h-6 w-6" />}
+        gradientFrom="blue-50"
+        gradientTo="purple-50"
+      >
+        <div className="grid md:grid-cols-2 gap-6">
+          <KeyConceptBox title="Global Access">
+            <ul className="list-disc pl-6 space-y-2">
+              <li>Borderless transactions</li>
+              <li>Mobile-first solutions</li>
+              <li>Reduced barriers to entry</li>
+            </ul>
+          </KeyConceptBox>
+
+          <KeyConceptBox title="Cost Reduction">
+            <ul className="list-disc pl-6 space-y-2">
+              <li>Lower transaction fees</li>
+              <li>Efficient cross-border payments</li>
+              <li>Automated compliance</li>
+            </ul>
+          </KeyConceptBox>
+        </div>
+      </CourseContentSection>
+
+      <CourseContentSection
+        title="Technical Implementations"
+        subtitle="Core blockchain applications in enterprise"
+        icon={<Shield className="h-6 w-6" />}
+        gradientFrom="emerald-50"
+        gradientTo="blue-50"
+      >
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            {
+              title: "Digital Identity",
+              description: "Secure identity management and verification",
+              icon: Lock,
+              features: ["Self-sovereign identity", "KYC automation", "Privacy control"]
+            },
+            {
+              title: "Smart Contracts",
+              description: "Automated agreement execution",
+              icon: FileText,
+              features: ["Auto-enforcement", "Transparent terms", "Reduced costs"]
+            },
+            {
+              title: "Asset Tokenization",
+              description: "Digital representation of real assets",
+              icon: LineChart,
+              features: ["Fractional ownership", "Increased liquidity", "Automated trading"]
+            }
+          ].map((item, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.2 }}
+              className="bg-white p-6 rounded-xl shadow-lg border border-blue-100"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-blue-100 rounded-lg">
+                  <item.icon className="w-6 h-6 text-blue-600" />
+                </div>
+                <h3 className="font-semibold text-lg text-blue-800">{item.title}</h3>
+              </div>
+              <p className="text-gray-600 mb-4">{item.description}</p>
+              <ul className="space-y-2">
+                {item.features.map((feature, i) => (
+                  <li key={i} className="flex items-center gap-2 text-sm text-gray-600">
+                    <div className="w-2 h-2 rounded-full bg-blue-400" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          ))}
+        </div>
+      </CourseContentSection>
+    </CourseTemplate>
   );
 };
 
-const PracticalApplicationsQuiz = () => {
+const PracticalApplicationsQuiz = ({onComplete}: {onComplete: (score: number) => void}) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
-  const { updateProgress } = useProgress();
 
   const handleAnswerSelect = (optionIndex: number) => {
     setSelectedAnswer(optionIndex);
@@ -526,8 +197,7 @@ const PracticalApplicationsQuiz = () => {
       setShowExplanation(false);
     } else {
       setShowResult(true);
-      const passThreshold = questions.length * 0.6;
-      updateProgress(1, 'practical-applications-quiz', score >= passThreshold);
+      onComplete(score);
     }
   };
 
@@ -549,19 +219,7 @@ const PracticalApplicationsQuiz = () => {
           <p className="text-xl mb-4">
             You scored {score} out of {questions.length}
           </p>
-          {score >= questions.length * 0.6 ? (
-            <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-4">
-              <p className="text-green-700">
-                🎉 Congratulations! You've passed the Practical Applications quiz!
-              </p>
-            </div>
-          ) : (
-            <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4">
-              <p className="text-red-700">
-                You didn't pass this time. Review the content and try again.
-              </p>
-            </div>
-          )}
+
           <Button
             onClick={restartQuiz}
             variant="outline"
@@ -648,7 +306,6 @@ const PracticalApplicationsQuiz = () => {
   );
 };
 
-
 const questions = [
   {
     id: "q1",
@@ -712,4 +369,4 @@ const questions = [
   }
 ];
 
-export default PracticalApplicationsSection;
+export default ApplicationsPage;
