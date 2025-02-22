@@ -127,9 +127,9 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="bg-white rounded-lg shadow-lg p-8"
+            className="bg-gradient-to-br from-white via-orange-50 to-white rounded-lg shadow-lg p-8 border border-orange-100"
           >
-            <h2 className="text-3xl font-bold text-blue-700 mb-6">Investment Security</h2>
+            <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600 mb-6">Investment Security</h2>
             <SecurityDiagram />
           </motion.section>
 
@@ -137,14 +137,14 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="bg-white rounded-lg shadow-lg p-8 mt-12"
+            className="bg-gradient-to-br from-white via-red-50 to-white rounded-lg shadow-lg p-8 mt-12 border border-red-100"
           >
-            <h2 className="text-3xl font-bold text-blue-700 mb-6">Risk Assessment</h2>
+            <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600 mb-6">Risk Assessment</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
               {riskLevels.map((level) => (
                 <motion.div
                   key={level.title}
-                  className={`bg-gradient-to-br ${level.color} p-6 rounded-lg cursor-pointer border-2 ${level.borderColor} shadow-md`}
+                  className={`bg-gradient-to-br ${level.color} p-6 rounded-lg cursor-pointer border-2 ${level.borderColor} shadow-md backdrop-blur-sm`}
                   whileHover={{ scale: 1.02, shadow: "0 8px 30px rgba(0,0,0,0.12)" }}
                   onClick={() => setSelectedRisk(level.title)}
                   animate={{
@@ -165,9 +165,9 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="bg-white rounded-lg shadow-lg p-8"
+            className="bg-gradient-to-br from-white via-blue-50 to-white rounded-lg shadow-lg p-8 border border-blue-100"
           >
-            <h2 className="text-3xl font-bold text-blue-700 mb-6">Bitcoin's Value</h2>
+            <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 mb-6">Bitcoin's Value</h2>
             <h3 className="text-2xl font-semibold text-blue-600">Store of Value Properties</h3>
             <p>
               Bitcoin is often called "digital gold" because it shares key characteristics:
@@ -196,9 +196,9 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="bg-white rounded-lg shadow-lg p-8 mt-8"
+            className="bg-gradient-to-br from-white via-green-50 to-white rounded-lg shadow-lg p-8 mt-8 border border-green-100"
           >
-            <h2 className="text-3xl font-bold text-blue-700 mb-6">Metcalfe's Law and Bitcoin</h2>
+            <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-teal-600 mb-6">Metcalfe's Law and Bitcoin</h2>
             <p className="text-gray-700 mb-4">
               Metcalfe's law states that the value of a network is proportional to the square of the number of connected users. This principle has profound implications for Bitcoin's adoption and value proposition.
             </p>
@@ -245,9 +245,9 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="bg-white rounded-lg shadow-lg p-8 mt-8"
+            className="bg-gradient-to-br from-white via-purple-50 to-white rounded-lg shadow-lg p-8 mt-8 border border-purple-100"
           >
-            <h2 className="text-3xl font-bold text-blue-700 mb-6">Value Comparisons</h2>
+            <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 mb-6">Value Comparisons</h2>
             <p className="text-gray-700 mb-6">
               To understand Bitcoin's value in context, let's compare what $100,000 gets you across different investment vehicles:
             </p>
@@ -294,9 +294,9 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="bg-white rounded-lg shadow-lg p-8 mt-8"
+            className="bg-gradient-to-br from-white via-pink-50 to-white rounded-lg shadow-lg p-8 mt-8 border border-pink-100"
           >
-            <h2 className="text-3xl font-bold text-blue-700 mb-6">Understanding Bitcoin Investment Risks</h2>
+            <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-purple-600 mb-6">Understanding Bitcoin Investment Risks</h2>
             <p className="text-gray-700 mb-6">
               Before investing in Bitcoin, it's crucial to understand the various risks involved. Here are the key risk factors to consider:
             </p>
@@ -380,9 +380,9 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="bg-white rounded-lg shadow-lg p-8"
+            className="bg-gradient-to-br from-white via-teal-50 to-white rounded-lg shadow-lg p-8 border border-teal-100"
           >
-            <h2 className="text-3xl font-bold text-blue-700 mb-6">Bitcoin ETFs Explained</h2>
+            <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-cyan-600 mb-6">Bitcoin ETFs Explained</h2>
             <p>
               For beginners, a Bitcoin ETF is like buying Bitcoin through your regular brokerage account:
             </p>
@@ -398,9 +398,9 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="bg-white rounded-lg shadow-lg p-8 mt-8"
+            className="bg-gradient-to-br from-white via-indigo-50 to-white rounded-lg shadow-lg p-8 mt-8 border border-indigo-100"
           >
-            <h2 className="text-3xl font-bold text-blue-700 mb-6">Practice Investment Strategies</h2>
+            <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-violet-600 mb-6">Practice Investment Strategies</h2>
             <p className="text-gray-700 mb-6">
               Now that you understand the different investment options, try out our interactive
               investment simulator to practice making investment decisions in a risk-free environment.
@@ -425,7 +425,7 @@ export default function BitcoinInvestmentSection() {
                 </Link>
 
                 <Link href="/modules/module2/security-risk">
-                  <Button className="w-full md:w-auto bg-blue-600 hover:bg-blue-700">
+                  <Button className="w-full md:w-auto bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700">
                     Next: Security and Risk Management <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
@@ -434,6 +434,23 @@ export default function BitcoinInvestmentSection() {
           )}
         </div>
       </div>
+
+      <style jsx>{`
+        .section-card {
+          background: linear-gradient(135deg, #fff 0%, #fff8f6 100%);
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+          border-radius: 0.5rem;
+          transition: all 0.3s ease;
+        }
+        .section-card:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .value-card {
+          background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
+          border-left: 4px solid #f56565;
+        }
+      `}</style>
     </div>
   );
 }
