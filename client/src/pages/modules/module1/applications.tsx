@@ -127,14 +127,50 @@ const ApplicationShowcase = () => {
   return (
     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
       {[
-        {title: "Digital Payments", description: "Fast, secure, and borderless transactions for everyday purchases", icon: Banknote, examples: ["Cross-border remittances", "Online shopping", "Bill payments"], color: "emerald", delay: 0, gradient: "bg-emerald-50"},
-        {title: "Decentralized Finance", description: "Access to financial services without traditional banking infrastructure", icon: Landmark, examples: ["Lending platforms", "Yield farming", "Decentralized exchanges"], color: "violet", delay: 0.1, gradient: "bg-violet-50"},
-        {title: "Smart Contracts", description: "Automated agreements and transactions without intermediaries", icon: FileText, examples: ["Insurance policies", "Real estate deals", "Supply chain tracking"], color: "blue", delay: 0.2, gradient: "bg-blue-50"},
-        {title: "Investment Opportunities", description: "New ways to grow and manage wealth", icon: LineChart, examples: ["Token investments", "Crypto index funds", "NFT marketplaces"], color: "indigo", delay: 0.3, gradient: "bg-indigo-50"},
-        {title: "Education", description: "Learning and certification on the blockchain", icon: GraduationCap, examples: ["Digital credentials", "Online courses", "Skill verification"], color: "cyan", delay: 0.4, gradient: "bg-cyan-50"},
-        {title: "Social Impact", description: "Using blockchain for positive change", icon: Heart, examples: ["Charity transparency", "Sustainable projects", "Community initiatives"], color: "rose", delay: 0.5, gradient: "bg-rose-50"}
+        {
+          title: "Digital Payments",
+          description: "Fast, secure, and borderless transactions for everyday purchases",
+          icon: Banknote,
+          examples: ["Cross-border remittances", "Online shopping", "Bill payments"],
+          gradient: "bg-gradient-to-br from-emerald-500 to-emerald-700"
+        },
+        {
+          title: "Decentralized Finance",
+          description: "Access to financial services without traditional banking infrastructure",
+          icon: Landmark,
+          examples: ["Lending platforms", "Yield farming", "Decentralized exchanges"],
+          gradient: "bg-gradient-to-br from-violet-500 to-violet-700"
+        },
+        {
+          title: "Smart Contracts",
+          description: "Automated agreements and transactions without intermediaries",
+          icon: FileText,
+          examples: ["Insurance policies", "Real estate deals", "Supply chain tracking"],
+          gradient: "bg-gradient-to-br from-blue-500 to-blue-700"
+        },
+        {
+          title: "Investment Opportunities",
+          description: "New ways to grow and manage wealth",
+          icon: LineChart,
+          examples: ["Token investments", "Crypto index funds", "NFT marketplaces"],
+          gradient: "bg-gradient-to-br from-indigo-500 to-indigo-700"
+        },
+        {
+          title: "Education",
+          description: "Learning and certification on the blockchain",
+          icon: GraduationCap,
+          examples: ["Digital credentials", "Online courses", "Skill verification"],
+          gradient: "bg-gradient-to-br from-cyan-500 to-cyan-700"
+        },
+        {
+          title: "Social Impact",
+          description: "Using blockchain for positive change",
+          icon: Heart,
+          examples: ["Charity transparency", "Sustainable projects", "Community initiatives"],
+          gradient: "bg-gradient-to-br from-rose-500 to-rose-700"
+        }
       ].map((app, index) => (
-        <ApplicationCard key={index} {...app} delay={index * 0.1}/>
+        <ApplicationCard key={index} {...app} delay={index * 0.1} />
       ))}
     </div>
   )
@@ -238,7 +274,54 @@ const PracticalApplicationsSection = () => {
                     possibilities for business and society. Let's explore how this technology is being
                     implemented in real-world scenarios.
                   </motion.p>
-                  <ApplicationShowcase />
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+                    {[
+                      {
+                        title: "Digital Payments",
+                        description: "Fast, secure, and borderless transactions for everyday purchases",
+                        icon: Banknote,
+                        examples: ["Cross-border remittances", "Online shopping", "Bill payments"],
+                        gradient: "bg-gradient-to-br from-emerald-500 to-emerald-700"
+                      },
+                      {
+                        title: "Decentralized Finance",
+                        description: "Access to financial services without traditional banking infrastructure",
+                        icon: Landmark,
+                        examples: ["Lending platforms", "Yield farming", "Decentralized exchanges"],
+                        gradient: "bg-gradient-to-br from-violet-500 to-violet-700"
+                      },
+                      {
+                        title: "Smart Contracts",
+                        description: "Automated agreements and transactions without intermediaries",
+                        icon: FileText,
+                        examples: ["Insurance policies", "Real estate deals", "Supply chain tracking"],
+                        gradient: "bg-gradient-to-br from-blue-500 to-blue-700"
+                      },
+                      {
+                        title: "Investment Opportunities",
+                        description: "New ways to grow and manage wealth",
+                        icon: LineChart,
+                        examples: ["Token investments", "Crypto index funds", "NFT marketplaces"],
+                        gradient: "bg-gradient-to-br from-indigo-500 to-indigo-700"
+                      },
+                      {
+                        title: "Education",
+                        description: "Learning and certification on the blockchain",
+                        icon: GraduationCap,
+                        examples: ["Digital credentials", "Online courses", "Skill verification"],
+                        gradient: "bg-gradient-to-br from-cyan-500 to-cyan-700"
+                      },
+                      {
+                        title: "Social Impact",
+                        description: "Using blockchain for positive change",
+                        icon: Heart,
+                        examples: ["Charity transparency", "Sustainable projects", "Community initiatives"],
+                        gradient: "bg-gradient-to-br from-rose-500 to-rose-700"
+                      }
+                    ].map((app, index) => (
+                      <ApplicationCard key={index} {...app} delay={index * 0.1} />
+                    ))}
+                  </div>
                 </section>
               </CardContent>
             </Card>
