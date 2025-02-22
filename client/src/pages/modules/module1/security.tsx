@@ -1,13 +1,25 @@
 import { useState, useEffect } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { CourseSection } from "@/components/course-templates/CourseSection";
+import { CourseContentSection } from "@/components/course-templates/CourseContentSection";
+import { KeyConceptBox } from "@/components/course-templates/CourseContentSection";
+import { QuizContainer } from "@/components/course-templates/CourseContentSection";
 import { Button } from "@/components/ui/button";
 import { useProgress } from "@/context/progress-context";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowLeft, ArrowRight, Shield, Key, Wallet, Lock } from "lucide-react";
+import { 
+  ArrowLeft, ArrowRight, Shield, Key, Wallet, Lock,
+  AlertTriangle, ShieldCheck, KeyRound, BrainCircuit
+} from "lucide-react";
 import { SecurityDiagram } from "@/components/diagrams/SecurityDiagram";
 import { SecurityThreats } from "@/components/diagrams/SecurityThreats";
 import { SecurityQuiz } from "@/components/quizzes/SecurityQuiz";
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+  hover: { scale: 1.02, transition: { duration: 0.2 } }
+};
 
 export default function SecurityPage() {
   const [isFullyRead, setIsFullyRead] = useState(false);
@@ -16,17 +28,7 @@ export default function SecurityPage() {
   const { updateProgress } = useProgress();
 
   useEffect(() => {
-    const forceScrollTop = () => {
-      window.scrollTo(0, 0);
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
-    };
-    forceScrollTop();
-    setTimeout(forceScrollTop, 0);
-    requestAnimationFrame(() => {
-      forceScrollTop();
-      requestAnimationFrame(forceScrollTop);
-    });
+    window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
@@ -38,7 +40,6 @@ export default function SecurityPage() {
 
       if (scrollPercent > 95) {
         setIsFullyRead(true);
-        // Add the missing arguments: moduleId, sectionId, completed, progress value
         updateProgress(1, 'security', true, scrollPercent);
       }
     };
@@ -48,8 +49,8 @@ export default function SecurityPage() {
   }, [updateProgress]);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="fixed top-0 left-0 w-full h-1 bg-gray-300 z-50">
+    <CourseSection>
+      <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
         <div 
           className="h-full bg-blue-600" 
           style={{ width: `${scrollProgress}%` }}
@@ -69,235 +70,226 @@ export default function SecurityPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="space-y-6"
+          className="space-y-8"
         >
-          <h1 className="text-4xl font-bold text-blue-800 mb-6">
-            Understanding Cryptocurrency Security
-          </h1>
-
-          <div className="prose lg:prose-xl text-gray-700 space-y-6">
-            {/* Private Keys Section */}
-            <Card className="p-6">
-              <div className="flex items-center gap-4 mb-4">
-                <Key className="w-8 h-8 text-blue-600" />
-                <h2 className="text-2xl font-bold text-blue-700">Private Keys</h2>
-              </div>
-              <div className="space-y-4">
-                <p>
-                  A private key in cryptocurrency is like the master key to your digital vault. It's a unique,
-                  complex string of numbers and letters that proves your ownership and allows you to access and
-                  manage your cryptocurrency.
-                </p>
-                <div className="bg-blue-50 p-4 rounded-lg">
-                  <h3 className="font-semibold mb-2">Real-World Example:</h3>
-                  <p>
-                    Think of your email account: your password is like a private key. If someone gets your
-                    password, they can send emails as you and access all your information. Similarly, if someone
-                    obtains your private key, they can access and transfer your cryptocurrency.
-                  </p>
-                  <div className="mt-2 text-sm">
-                    Example Private Key (Never share your actual private key):
-                    <code className="block bg-gray-100 p-2 rounded mt-1">
-                      5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3
-                    </code>
-                  </div>
-                </div>
-              </div>
-            </Card>
-
-            {/* 2FA Section */}
-            <Card className="p-6">
-              <div className="flex items-center gap-4 mb-4">
-                <Lock className="w-8 h-8 text-blue-600" />
-                <h2 className="text-2xl font-bold text-blue-700">Two-Factor Authentication (2FA)</h2>
-              </div>
-              <div className="space-y-4">
-                <p>
-                  2FA adds an extra layer of security beyond your password. It requires two different types
-                  of verification before granting access to your account.
-                </p>
-                <div className="bg-blue-50 p-4 rounded-lg">
-                  <h3 className="font-semibold mb-2">Real-World Examples:</h3>
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>
-                      <strong>Google Authenticator:</strong> Generates time-based codes that change every 30 seconds
-                    </li>
-                    <li>
-                      <strong>SMS Verification:</strong> Receiving a code via text message when logging in
-                    </li>
-                    <li>
-                      <strong>Hardware Keys:</strong> Physical devices like YubiKey that must be plugged in
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </Card>
-
-            {/* Wallet Security Section */}
-            <Card className="p-6">
-              <div className="flex items-center gap-4 mb-4">
-                <Wallet className="w-8 h-8 text-blue-600" />
-                <h2 className="text-2xl font-bold text-blue-700">Wallet Security</h2>
-              </div>
-              <div className="space-y-4">
-                <p>
-                  Your cryptocurrency wallet is your gateway to accessing and managing your digital assets.
-                  Proper wallet security is crucial for protecting your investments.
-                </p>
-                <div className="bg-blue-50 p-4 rounded-lg">
-                  <h3 className="font-semibold mb-2">Security Measures:</h3>
-                  <ul className="list-disc pl-5 space-y-2">
-                    <li>
-                      <strong>Hardware Wallets:</strong> Physical devices that store your private keys offline
-                      (e.g., Ledger, Trezor)
-                    </li>
-                    <li>
-                      <strong>Backup Phrases:</strong> 12-24 word recovery phrases that can restore your wallet
-                      if lost or damaged
-                    </li>
-                    <li>
-                      <strong>Multi-Signature:</strong> Requiring multiple approvals for transactions
-                    </li>
-                  </ul>
-                  <div className="mt-4 bg-yellow-50 p-3 rounded">
-                    <strong>Pro Tip:</strong> Never store your recovery phrase digitally or share it with anyone.
-                    Write it down on paper and store it in a secure location.
-                  </div>
-                </div>
-              </div>
-            </Card>
-
-            {/* Threat Protection Section */}
-            <Card className="p-6">
-              <div className="flex items-center gap-4 mb-4">
-                <Shield className="w-8 h-8 text-blue-600" />
-                <h2 className="text-2xl font-bold text-blue-700">Threat Protection</h2>
-              </div>
-              <div className="space-y-4">
-                <p>
-                  The cryptocurrency space faces various security threats. Understanding and protecting
-                  against these threats is essential for safeguarding your assets.
-                </p>
-                <div className="bg-blue-50 p-4 rounded-lg">
-                  <h3 className="font-semibold mb-2">Common Threats and Protection:</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <h4 className="font-semibold text-red-600">Threats:</h4>
-                      <ul className="list-disc pl-5 space-y-1">
-                        <li>Phishing attacks</li>
-                        <li>Malware</li>
-                        <li>Social engineering</li>
-                        <li>Fake websites</li>
-                        <li>SIM swapping</li>
-                      </ul>
-                    </div>
-                    <div className="space-y-2">
-                      <h4 className="font-semibold text-green-600">Protection Measures:</h4>
-                      <ul className="list-disc pl-5 space-y-1">
-                        <li>Use hardware wallets</li>
-                        <li>Enable 2FA</li>
-                        <li>Verify URLs carefully</li>
-                        <li>Use strong, unique passwords</li>
-                        <li>Regular security audits</li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div className="mt-4 bg-red-50 p-3 rounded">
-                    <strong>Real-World Example:</strong> In 2020, a major Twitter hack compromised high-profile
-                    accounts to promote a cryptocurrency scam. Users who verified transactions and websites
-                    carefully avoided losing funds, while those who rushed to participate lost their investments.
-                  </div>
-                </div>
-              </div>
-            </Card>
-
-            {/* Security Overview Card */}
-            <Card className="p-6">
-              <div className="flex items-center gap-4 mb-4">
-                <Shield className="w-8 h-8 text-blue-600" />
-                <h2 className="text-2xl font-bold text-blue-700">Key Security Concepts</h2>
-              </div>
-              <SecurityDiagram />
-            </Card>
-
-            {/* Security Threats Card */}
-            <Card className="p-6">
-              <div className="flex items-center gap-4 mb-4">
-                <Key className="w-8 h-8 text-blue-600" />
-                <h2 className="text-2xl font-bold text-blue-700">Security Threats & Vulnerabilities</h2>
-              </div>
-              <SecurityThreats />
-            </Card>
-
-            {/* Best Practices Card */}
-            <Card className="p-6">
-              <div className="flex items-center gap-4 mb-4">
-                <Wallet className="w-8 h-8 text-blue-600" />
-                <h2 className="text-2xl font-bold text-blue-700">Best Practices</h2>
-              </div>
-              <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                <li>Creating and managing strong passwords</li>
-                <li>Hardware wallet usage and storage</li>
-                <li>Regular security audits and updates</li>
-                <li>Safe transaction verification procedures</li>
-                <li>Offline storage strategies for large holdings</li>
-              </ul>
-            </Card>
-
-            {isFullyRead && (
+          <CourseContentSection
+            title="Understanding Cryptocurrency Security"
+            subtitle="Essential concepts and best practices for protecting your digital assets"
+            icon={<Shield className="w-8 h-8" />}
+            gradientFrom="blue-50"
+            gradientTo="indigo-50"
+          >
+            <div className="prose lg:prose-xl text-gray-700 space-y-6">
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mt-8 space-y-6"
+                variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                className="grid md:grid-cols-2 gap-8"
               >
-                <Card className="bg-green-100 border-l-4 border-green-500 p-4">
-                  <p className="text-green-700">
-                    🎉 Congratulations! You've completed the Security section!
-                  </p>
-                </Card>
-
-                <Button
-                  onClick={() => setShowQuiz(!showQuiz)}
-                  className="w-full bg-purple-600 hover:bg-purple-700"
-                  size="lg"
+                <KeyConceptBox
+                  title="Core Security Principles"
+                  className="bg-gradient-to-br from-blue-100 to-indigo-50"
                 >
-                  {showQuiz ? "Hide Quiz" : "Take Topic Quiz"}
-                </Button>
+                  <ul className="space-y-3">
+                    {[
+                      "Private key protection",
+                      "Strong password practices",
+                      "Two-factor authentication",
+                      "Regular security audits",
+                      "Hardware wallet usage"
+                    ].map((principle, index) => (
+                      <motion.li
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className="flex items-center gap-2"
+                      >
+                        <ShieldCheck className="h-5 w-5 text-green-500" />
+                        {principle}
+                      </motion.li>
+                    ))}
+                  </ul>
+                </KeyConceptBox>
 
-                {showQuiz && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <Card className="mt-4">
-                      <CardContent className="p-6">
-                        <h2 className="text-2xl font-bold text-blue-800 mb-4">Topic Quiz</h2>
-                        <SecurityQuiz />
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                )}
-
-                <div className="flex justify-between mt-4">
-                  <Link href="/modules/module1/digital-currencies">
-                    <Button variant="outline" className="gap-2">
-                      <ArrowLeft className="h-4 w-4" />
-                      Previous Topic
-                    </Button>
-                  </Link>
-                  <Link href="/modules/module1/applications">
-                    <Button className="bg-blue-600 hover:bg-blue-700 gap-2">
-                      Next Topic
-                      <ArrowRight className="h-4 w-4" />
-                    </Button>
-                  </Link>
-                </div>
+                <KeyConceptBox
+                  title="Common Security Threats"
+                  className="bg-gradient-to-br from-red-50 to-orange-50"
+                >
+                  <ul className="space-y-3">
+                    {[
+                      "Phishing attacks",
+                      "Social engineering",
+                      "Malware infections",
+                      "Exchange hacks",
+                      "Key compromise"
+                    ].map((threat, index) => (
+                      <motion.li
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className="flex items-center gap-2"
+                      >
+                        <AlertTriangle className="h-5 w-5 text-red-500" />
+                        {threat}
+                      </motion.li>
+                    ))}
+                  </ul>
+                </KeyConceptBox>
               </motion.div>
-            )}
-          </div>
+            </div>
+          </CourseContentSection>
+
+          <CourseContentSection
+            title="Private Keys & Wallets"
+            icon={<KeyRound className="w-8 h-8" />}
+            gradientFrom="purple-50"
+            gradientTo="pink-50"
+          >
+            <motion.div 
+              variants={cardVariants}
+              whileHover="hover"
+              className="bg-white/80 rounded-lg p-6 shadow-lg"
+            >
+              <div className="grid md:grid-cols-2 gap-8">
+                <div className="space-y-4">
+                  <h3 className="text-xl font-semibold text-purple-800">Private Key Essentials</h3>
+                  <p className="text-gray-700">
+                    Your private key is the master key to your cryptocurrency. It must be:
+                  </p>
+                  <ul className="space-y-2">
+                    {[
+                      "Kept absolutely secret",
+                      "Backed up securely",
+                      "Never shared online",
+                      "Stored in multiple secure locations"
+                    ].map((item, index) => (
+                      <motion.li
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className="flex items-center gap-2 text-purple-700"
+                      >
+                        <Key className="h-4 w-4 text-purple-500" />
+                        {item}
+                      </motion.li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="bg-gradient-to-br from-purple-100 to-pink-50 p-6 rounded-lg">
+                  <h3 className="text-xl font-semibold text-purple-800 mb-4">Wallet Types</h3>
+                  <div className="space-y-3">
+                    {[
+                      {
+                        type: "Hardware Wallets",
+                        desc: "Physical devices that store keys offline"
+                      },
+                      {
+                        type: "Software Wallets",
+                        desc: "Desktop or mobile applications"
+                      },
+                      {
+                        type: "Paper Wallets",
+                        desc: "Physical copies of keys"
+                      },
+                      {
+                        type: "Web Wallets",
+                        desc: "Online services (least secure)"
+                      }
+                    ].map((wallet, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className="bg-white/60 p-3 rounded-lg"
+                      >
+                        <h4 className="font-medium text-purple-900">{wallet.type}</h4>
+                        <p className="text-sm text-purple-700">{wallet.desc}</p>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </CourseContentSection>
+
+          <CourseContentSection
+            title="Security Best Practices"
+            icon={<BrainCircuit className="w-8 h-8" />}
+            gradientFrom="emerald-50"
+            gradientTo="teal-50"
+          >
+            <motion.div className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-6">
+                <KeyConceptBox
+                  title="Essential Security Steps"
+                  className="bg-gradient-to-br from-emerald-100 to-teal-50"
+                >
+                  <ul className="space-y-3">
+                    {[
+                      "Use hardware wallets for large amounts",
+                      "Enable 2FA on all accounts",
+                      "Create strong, unique passwords",
+                      "Keep software updated",
+                      "Verify all transactions carefully"
+                    ].map((step, index) => (
+                      <motion.li
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className="flex items-center gap-2"
+                      >
+                        <ShieldCheck className="h-5 w-5 text-emerald-500" />
+                        {step}
+                      </motion.li>
+                    ))}
+                  </ul>
+                </KeyConceptBox>
+
+                <div className="bg-white/80 p-6 rounded-lg shadow-lg">
+                  <h3 className="text-xl font-semibold text-emerald-800 mb-4">Security Diagrams</h3>
+                  <div className="space-y-4">
+                    <SecurityDiagram />
+                    <SecurityThreats />
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </CourseContentSection>
+
+          {isFullyRead && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.5 }}
+              className="mt-12"
+            >
+              <QuizContainer>
+                <SecurityQuiz />
+              </QuizContainer>
+
+              <div className="flex justify-between mt-8">
+                <Link href="/modules/module1/digital-currencies">
+                  <Button variant="outline" className="gap-2">
+                    <ArrowLeft className="h-4 w-4" />
+                    Previous Topic
+                  </Button>
+                </Link>
+                <Link href="/modules/module1/applications">
+                  <Button className="bg-blue-600 hover:bg-blue-700 gap-2">
+                    Next Topic
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </Link>
+              </div>
+            </motion.div>
+          )}
         </motion.div>
       </div>
-    </div>
+    </CourseSection>
   );
 }
