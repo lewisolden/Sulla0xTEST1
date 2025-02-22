@@ -334,8 +334,7 @@ const GettingStartedSection = () => {
         <div className="flex-1">
           <h3 className="font-semibold text-lg mb-2">{title}</h3>
           <p className="text-gray-600 mb-3">{description}</p>
-          <div className="flex flex-wrap gap-2">
-            {tags.map((tag, index) => (
+          <div className="flex flex-wrap gap-2">{tags.map((tag, index) => (
               <span
                 key={index}
                 className={`px-2 py-1 rounded-full text-sm ${color.replace('border-', 'bg-').replace('-500', '-100')} ${color.replace('border-', 'text-')}`}
@@ -368,9 +367,16 @@ const GettingStartedSection = () => {
           </Link>
         </div>
 
-        <h1 className="text-4xl font-bold text-blue-800 mb-6">
-          Getting Started Safely with Cryptocurrency
-        </h1>
+        <Card className="mb-8">
+          <CardContent className="p-6 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 text-white rounded-t-lg">
+            <h1 className="text-4xl font-bold mb-2">
+              Getting Started Safely with Cryptocurrency
+            </h1>
+            <p className="text-blue-100">
+              Learn essential security practices and fundamental concepts for your crypto journey
+            </p>
+          </CardContent>
+        </Card>
 
         {!isSeedPhraseVerified && (
           <Card className="mb-6">
