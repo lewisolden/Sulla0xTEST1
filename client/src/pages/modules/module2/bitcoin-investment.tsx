@@ -59,19 +59,22 @@ export default function BitcoinInvestmentSection() {
     {
       title: "Low Risk",
       description: "Bitcoin ETFs and regulated investment products",
-      color: "bg-green-100 hover:bg-green-200",
+      color: "from-green-100 to-green-50",
+      borderColor: "border-green-400",
       textColor: "text-green-700"
     },
     {
       title: "Medium Risk",
       description: "Direct Bitcoin purchases through established exchanges",
-      color: "bg-yellow-100 hover:bg-yellow-200",
+      color: "from-yellow-100 to-yellow-50",
+      borderColor: "border-yellow-400",
       textColor: "text-yellow-700"
     },
     {
       title: "High Risk",
       description: "Trading with leverage or new crypto assets",
-      color: "bg-red-100 hover:bg-red-200",
+      color: "from-red-100 to-red-50",
+      borderColor: "border-red-400",
       textColor: "text-red-700"
     }
   ];
@@ -84,7 +87,7 @@ export default function BitcoinInvestmentSection() {
         animate={{ scaleX: scrollProgress / 100 }}
         style={{ transformOrigin: "left" }}
       >
-        <div className="h-full bg-blue-600" />
+        <div className="h-full bg-gradient-to-r from-orange-500 to-red-600" />
       </motion.div>
 
       <div className="max-w-4xl mx-auto">
@@ -100,7 +103,7 @@ export default function BitcoinInvestmentSection() {
           </Link>
         </motion.div>
 
-        <div className="bg-gradient-to-r from-orange-500 to-red-600 p-6 rounded-lg mb-8">
+        <div className="bg-gradient-to-r from-orange-500 to-red-600 p-6 rounded-lg mb-8 shadow-lg">
           <div className="flex items-center">
             <BitcoinLogo />
             <div>
@@ -119,13 +122,14 @@ export default function BitcoinInvestmentSection() {
           </div>
         </div>
 
-        <div className="prose lg:prose-xl text-gray-700 space-y-6">
+        <div className="prose lg:prose-xl text-gray-700 space-y-8">
           <motion.section
             variants={contentVariants}
             initial="hidden"
             animate="visible"
+            className="bg-white rounded-lg shadow-lg p-8"
           >
-            <h2 className="text-3xl font-bold text-blue-700">Investment Security</h2>
+            <h2 className="text-3xl font-bold text-blue-700 mb-6">Investment Security</h2>
             <SecurityDiagram />
           </motion.section>
 
@@ -133,20 +137,19 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="mt-12"
+            className="bg-white rounded-lg shadow-lg p-8 mt-12"
           >
-            <h2 className="text-3xl font-bold text-blue-700">Risk Assessment</h2>
+            <h2 className="text-3xl font-bold text-blue-700 mb-6">Risk Assessment</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
               {riskLevels.map((level) => (
                 <motion.div
                   key={level.title}
-                  className={`${level.color} p-6 rounded-lg cursor-pointer`}
-                  whileHover={{ scale: 1.02 }}
+                  className={`bg-gradient-to-br ${level.color} p-6 rounded-lg cursor-pointer border-2 ${level.borderColor} shadow-md`}
+                  whileHover={{ scale: 1.02, shadow: "0 8px 30px rgba(0,0,0,0.12)" }}
                   onClick={() => setSelectedRisk(level.title)}
                   animate={{
                     scale: selectedRisk === level.title ? 1.02 : 1,
-                    borderWidth: selectedRisk === level.title ? 2 : 0,
-                    borderColor: selectedRisk === level.title ? '#4F46E5' : 'transparent'
+                    borderWidth: selectedRisk === level.title ? 3 : 2
                   }}
                 >
                   <h3 className={`text-xl font-semibold ${level.textColor} mb-2`}>
@@ -158,13 +161,13 @@ export default function BitcoinInvestmentSection() {
             </div>
           </motion.section>
 
-
           <motion.section
             variants={contentVariants}
             initial="hidden"
             animate="visible"
+            className="bg-white rounded-lg shadow-lg p-8"
           >
-            <h2 className="text-3xl font-bold text-blue-700">Bitcoin's Value</h2>
+            <h2 className="text-3xl font-bold text-blue-700 mb-6">Bitcoin's Value</h2>
             <h3 className="text-2xl font-semibold text-blue-600">Store of Value Properties</h3>
             <p>
               Bitcoin is often called "digital gold" because it shares key characteristics:
@@ -193,9 +196,9 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="mt-8"
+            className="bg-white rounded-lg shadow-lg p-8 mt-8"
           >
-            <h2 className="text-3xl font-bold text-blue-700">Metcalfe's Law and Bitcoin</h2>
+            <h2 className="text-3xl font-bold text-blue-700 mb-6">Metcalfe's Law and Bitcoin</h2>
             <p className="text-gray-700 mb-4">
               Metcalfe's law states that the value of a network is proportional to the square of the number of connected users. This principle has profound implications for Bitcoin's adoption and value proposition.
             </p>
@@ -242,62 +245,58 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="mt-8"
+            className="bg-white rounded-lg shadow-lg p-8 mt-8"
           >
-            <h2 className="text-3xl font-bold text-blue-700">Value Comparisons</h2>
-            <p className="text-gray-700 mb-4">
+            <h2 className="text-3xl font-bold text-blue-700 mb-6">Value Comparisons</h2>
+            <p className="text-gray-700 mb-6">
               To understand Bitcoin's value in context, let's compare what $100,000 gets you across different investment vehicles:
             </p>
 
             <div className="space-y-4">
-              <Card className="p-4">
-                <h4 className="font-semibold text-blue-800 mb-2">Gold</h4>
-                <div className="flex justify-between items-center">
-                  <span>$100,000 ≈ 1.6 kilograms of gold</span>
-                  <span className="text-sm text-gray-600">(Based on ~$2,000/oz)</span>
-                </div>
-              </Card>
-
-              <Card className="p-4">
-                <h4 className="font-semibold text-blue-800 mb-2">S&P 500 Index Fund</h4>
-                <div className="flex justify-between items-center">
-                  <span>$100,000 ≈ 200 shares</span>
-                  <span className="text-sm text-gray-600">(Based on ~$500/share)</span>
-                </div>
-              </Card>
-
-              <Card className="p-4">
-                <h4 className="font-semibold text-blue-800 mb-2">Real Estate</h4>
-                <div className="flex justify-between items-center">
-                  <span>$100,000 ≈ 20% down payment on $500,000 property</span>
-                  <span className="text-sm text-gray-600">(Typical down payment)</span>
-                </div>
-              </Card>
-
-              <Card className="p-4">
-                <h4 className="font-semibold text-blue-800 mb-2">Bitcoin</h4>
-                <div className="flex justify-between items-center">
-                  <span>$100,000 ≈ 1 BTC</span>
-                  <span className="text-sm text-gray-600">(Based on ~$100,000/BTC)</span>
-                </div>
-              </Card>
-
-              <div className="bg-yellow-50 p-4 rounded-lg mt-4">
-                <p className="text-sm text-yellow-800">
-                  Note: These values are approximate and subject to market fluctuations. Always verify current market prices before making investment decisions.
-                </p>
-              </div>
+              {[
+                {
+                  title: "Gold",
+                  amount: "1.6 kilograms of gold",
+                  note: "(Based on ~$2,000/oz)",
+                  gradient: "from-yellow-100 to-yellow-50"
+                },
+                {
+                  title: "S&P 500 Index Fund",
+                  amount: "200 shares",
+                  note: "(Based on ~$500/share)",
+                  gradient: "from-blue-100 to-blue-50"
+                },
+                {
+                  title: "Real Estate",
+                  amount: "20% down payment on $500,000 property",
+                  note: "(Typical down payment)",
+                  gradient: "from-green-100 to-green-50"
+                },
+                {
+                  title: "Bitcoin",
+                  amount: "1 BTC",
+                  note: "(Based on ~$100,000/BTC)",
+                  gradient: "from-orange-100 to-orange-50"
+                }
+              ].map((item) => (
+                <Card key={item.title} className={`p-6 bg-gradient-to-br ${item.gradient} shadow-md hover:shadow-lg transition-shadow`}>
+                  <h4 className="font-semibold text-blue-800 mb-2">{item.title}</h4>
+                  <div className="flex justify-between items-center">
+                    <span>$100,000 ≈ {item.amount}</span>
+                    <span className="text-sm text-gray-600">{item.note}</span>
+                  </div>
+                </Card>
+              ))}
             </div>
-
           </motion.section>
 
           <motion.section
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="mt-8"
+            className="bg-white rounded-lg shadow-lg p-8 mt-8"
           >
-            <h2 className="text-3xl font-bold text-blue-700">Understanding Bitcoin Investment Risks</h2>
+            <h2 className="text-3xl font-bold text-blue-700 mb-6">Understanding Bitcoin Investment Risks</h2>
             <p className="text-gray-700 mb-6">
               Before investing in Bitcoin, it's crucial to understand the various risks involved. Here are the key risk factors to consider:
             </p>
@@ -381,8 +380,9 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
+            className="bg-white rounded-lg shadow-lg p-8"
           >
-            <h2 className="text-3xl font-bold text-blue-700">Bitcoin ETFs Explained</h2>
+            <h2 className="text-3xl font-bold text-blue-700 mb-6">Bitcoin ETFs Explained</h2>
             <p>
               For beginners, a Bitcoin ETF is like buying Bitcoin through your regular brokerage account:
             </p>
@@ -398,9 +398,9 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="mt-8"
+            className="bg-white rounded-lg shadow-lg p-8 mt-8"
           >
-            <h2 className="text-3xl font-bold text-blue-700">Practice Investment Strategies</h2>
+            <h2 className="text-3xl font-bold text-blue-700 mb-6">Practice Investment Strategies</h2>
             <p className="text-gray-700 mb-6">
               Now that you understand the different investment options, try out our interactive
               investment simulator to practice making investment decisions in a risk-free environment.
@@ -415,11 +415,6 @@ export default function BitcoinInvestmentSection() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
             >
-              <div className="bg-gradient-to-r from-orange-500 to-red-600 p-4 rounded-lg mb-4 text-white">
-                <h2 className="text-xl font-bold">Test Your Knowledge</h2>
-                <p className="text-white/90 text-sm">Complete the quiz to test your understanding</p>
-              </div>
-
               <BitcoinFundamentalsQuiz />
 
               <div className="flex flex-col md:flex-row items-center gap-4 justify-between mt-8">
