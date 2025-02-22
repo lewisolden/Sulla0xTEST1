@@ -456,7 +456,7 @@ export default function Module1() {
                       className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-8 mb-8 text-white"
                     >
                       <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                        <TrendingUp className="h-6 w-6" />
+                        <TrendingUp className="h-6 w-6 text-blue-400" />
                         Practice Makes Perfect
                       </h3>
                       <div className="grid md:grid-cols-3 gap-6">
@@ -484,12 +484,12 @@ export default function Module1() {
                             transition={{ delay: 0.6 + index * 0.1 }}
                             className="flex items-start gap-3"
                           >
-                            <div className="bg-white/10 p-2 rounded-lg">
-                              <feature.icon className="h-5 w-5" />
+                            <div className="bg-white/20 p-2 rounded-lg">
+                              <feature.icon className="h-5 w-5 text-blue-400" />
                             </div>
                             <div>
-                              <h4 className="font-medium mb-1">{feature.title}</h4>
-                              <p className="text-sm text-gray-300">{feature.description}</p>
+                              <h4 className="font-medium mb-1 text-blue-100">{feature.title}</h4>
+                              <p className="text-sm text-blue-200">{feature.description}</p>
                             </div>
                           </motion.div>
                         ))}
