@@ -362,22 +362,22 @@ export default function DigitalCurrenciesSection() {
                     <h4 className="font-semibold text-blue-900 mb-2">How It Works:</h4>
                     <ul className="space-y-2 text-sm text-blue-700">
                       <li className="flex items-center gap-2">
-                        <CheckCircle className="h-4 w-4 text-green-500" />
+                        <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                         Transactions are verified by multiple nodes
                       </li>
                       <li className="flex items-center gap-2">
-                        <CheckCircle className="h-4 w-4 text-green-500" />
+                        <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                         Each transaction is recorded on the blockchain
                       </li>
                       <li className="flex items-center gap-2">
-                        <CheckCircle className="h-4 w-4 text-green-500" />
+                        <CheckCircle className="h-4 w-4 text-green-500 flex-shrink-0" />
                         Network consensus prevents double-spending
                       </li>
                     </ul>
                   </div>
                 </motion.div>
-                <div className="bg-white/50 rounded-lg p-6 flex items-center justify-center">
-                  <div className="max-w-full">
+                <div className="flex items-center justify-center bg-white/50 rounded-lg p-4">
+                  <div className="w-[90%] h-full flex items-center justify-center">
                     <DoubleSpendDiagram />
                   </div>
                 </div>
