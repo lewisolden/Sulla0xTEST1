@@ -111,7 +111,7 @@ export default function BitcoinFundamentalsQuiz() {
   if (showResult) {
     const percentage = (score / questions.length) * 100;
     return (
-      <div className="container mx-auto px-4 py-6 max-w-xl">
+      <div className="container mx-auto px-4 py-6 max-w-3xl">
         <Card className="p-6 text-center bg-gradient-to-br from-orange-50 to-red-50">
           <div className="flex items-center justify-center mb-4">
             <Award className={`h-12 w-12 ${percentage >= 60 ? 'text-green-500' : 'text-red-500'}`} />
@@ -167,17 +167,17 @@ export default function BitcoinFundamentalsQuiz() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-3 max-w-xl">
-      <div className="bg-gradient-to-r from-orange-500 to-red-600 p-8 rounded-lg mb-6 text-white">
-        <div className="flex items-center gap-4 mb-3">
-          <PencilLine className="h-8 w-8" />
-          <h2 className="text-3xl font-bold">Test Your Knowledge</h2>
+    <div className="container mx-auto px-4 py-3 max-w-3xl">
+      <div className="bg-gradient-to-r from-orange-500 to-red-600 p-6 rounded-lg mb-4 text-white flex items-center gap-4">
+        <PencilLine className="h-6 w-6" />
+        <div>
+          <h2 className="text-2xl font-bold">Test Your Knowledge</h2>
+          <p className="text-white/90 text-sm mt-1">Complete the quiz to test your understanding of Bitcoin</p>
         </div>
-        <p className="text-white/90 text-lg pl-12">Complete the quiz to test your understanding of Bitcoin</p>
       </div>
 
-      <div className="bg-white rounded-lg p-6 shadow-sm mb-6">
-        <div className="flex items-center justify-between mb-6">
+      <div className="bg-white rounded-lg p-6 shadow-sm">
+        <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <span className="text-lg font-semibold text-orange-600">Question {currentQuestion + 1}</span>
             <span className="text-gray-400">/</span>
@@ -188,17 +188,17 @@ export default function BitcoinFundamentalsQuiz() {
           </span>
         </div>
 
-        <p className="text-gray-700 text-lg mb-6">
+        <p className="text-gray-700 text-lg mb-4">
           {questions[currentQuestion].question}
         </p>
 
-        <div className="grid gap-3">
+        <div className="grid gap-2">
           {questions[currentQuestion].options.map((option, index) => (
             <motion.button
               key={index}
               onClick={() => !selectedAnswer && handleAnswer(index)}
               className={`
-                w-full p-4 rounded-lg text-left transition-all duration-300
+                w-full p-3 rounded-lg text-left transition-all duration-300
                 ${selectedAnswer === null
                   ? 'bg-white hover:bg-orange-50 border border-gray-200'
                   : index === questions[currentQuestion].correctAnswer
@@ -222,7 +222,7 @@ export default function BitcoinFundamentalsQuiz() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             className={`
-              mt-6 p-4 rounded-lg
+              mt-4 p-4 rounded-lg
               ${selectedAnswer === questions[currentQuestion].correctAnswer
                 ? 'bg-green-100 border-l-4 border-green-500'
                 : 'bg-red-100 border-l-4 border-red-500'}
@@ -234,7 +234,7 @@ export default function BitcoinFundamentalsQuiz() {
                 : <><XCircle className="h-5 w-5 text-red-600" /> Incorrect</>}
             </h3>
             <p className="leading-relaxed text-gray-700">{questions[currentQuestion].explanation}</p>
-            <p className="text-sm mt-3 text-gray-500">Next question in 3 seconds...</p>
+            <p className="text-sm mt-2 text-gray-500">Next question in 3 seconds...</p>
           </motion.div>
         )}
       </div>
