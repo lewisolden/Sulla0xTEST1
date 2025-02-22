@@ -13,7 +13,7 @@ import { SecurityIcon, WalletIcon } from "@/components/icons/CryptoIcons";
 import { GettingStartedDiagram } from "@/components/diagrams/GettingStartedDiagram";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { Eye, EyeOff, LucideIcon, Shield, Key, Lock } from "lucide-react";
+import { Eye, EyeOff, LucideIcon, Shield, Key, Lock, CheckCircle2, XCircle } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 
 // Add seed word list
@@ -334,7 +334,7 @@ const GettingStartedSection = () => {
   const ResourceCard = ({ icon: Icon, title, description, tags, color }: ResourceCardProps) => (
     <motion.div
       whileHover={{ scale: 1.02 }}
-      className={`bg-white rounded-xl shadow-lg p-6 border-l-4 ${color}`}
+      className={`bg-white roundedxl shadow-lg p-6 border-l-4 ${color}`}
     >
       <div className="flex items-start space-x-4">
         <div className={`p-3 rounded-lg ${color.replace('border-', 'bg-').replace('-500', '-100')}`}>
@@ -870,25 +870,70 @@ const GettingStartedSection = () => {
 
               {!quizCompleted ? (
                 <div className="space-y-8">
-                  <div className="space-y-4">
-                    <h3 className="font-semibold text-lg text-gray-800">
+                  <div className="space-y-6">
+                    <h3 className="font-semibold text-xl text-gray-800 mb-4">
                       {questions[currentQuestionIndex].question}
                     </h3>
-                    <RadioGroup
-                      value={selectedAnswer || ''}
-                      className="space-y-2"
-                      onValueChange={(value) => handleAnswerSelect(parseInt(value))}
-                    >
-                      {questions[currentQuestionIndex].options.map((option, index) => (
-                        <div key={index} className="flex items-center space-x-2">
-                          <RadioGroupItem value={index.toString()} id={`q${currentQuestionIndex}-${index}`} />
-                          <Label htmlFor={`q${currentQuestionIndex}-${index}`}>{option}</Label>
+                    <div className="grid gap-4">
+                      {questions[currentQuestionIndex].options.map((option, index) => {
+                        const isSelected = selectedAnswer === index.toString();
+                        const isCorrectAnswer = index === questions[currentQuestionIndex].correctAnswer;
+                        let bgColor = "bg-white";
+                        let borderColor = "border-gray-200";
+
+                        if (showExplanation) {
+                          if (isCorrectAnswer) {
+                            bgColor = "bg-green-50";
+                            borderColor = "border-green-500";
+                          } else if (isSelected && !isCorrectAnswer) {
+                            bgColor = "bg-red-50";
+                            borderColor = "border-red-500";
+                          }
+                        }
+
+                        return (
+                          <button
+                            key={index}
+                            onClick={() => !showExplanation && handleAnswerSelect(index)}
+                            className={`p-4 border-2 rounded-lg text-left transition-all duration-200 
+                              ${bgColor} ${borderColor} 
+                              ${!showExplanation && 'hover:border-blue-500 hover:bg-blue-50'}
+                              ${isSelected ? 'shadow-md' : ''}`}
+                            disabled={showExplanation}
+                          >
+                            {option}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {showExplanation && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mt-6 p-4 rounded-lg bg-gray-50 border border-gray-200"
+                      >
+                        <div className="flex items-center gap-2 mb-2">
+                          {isCorrect ? (
+                            <div className="text-green-600 font-semibold flex items-center gap-2">
+                              <CheckCircle2 className="h-5 w-5" />
+                              Correct!
+                            </div>
+                          ) : (
+                            <div className="text-red-600 font-semibold flex items-center gap-2">
+                              <XCircle className="h-5 w-5" />
+                              Incorrect
+                            </div>
+                          )}
                         </div>
-                      ))}
-                    </RadioGroup>
+                        <p className="text-gray-700">
+                          {questions[currentQuestionIndex].explanation}
+                        </p>
+                      </motion.div>
+                    )}
                   </div>
 
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between mt-6">
                     <p className="text-sm text-gray-500">
                       Question {currentQuestionIndex + 1} of {questions.length}
                     </p>
