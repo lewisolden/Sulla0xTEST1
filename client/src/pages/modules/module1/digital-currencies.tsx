@@ -25,7 +25,8 @@ import {
   Users,
   Globe,
   Network,
-  Cog
+  Cog,
+  CheckCircle
 } from "lucide-react";
 
 export default function DigitalCurrenciesSection() {
@@ -33,10 +34,13 @@ export default function DigitalCurrenciesSection() {
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const { updateProgress } = useProgress();
+  const [hasScrolledToTop, setHasScrolledToTop] = useState(false);
 
   useEffect(() => {
-    // Only scroll to top on initial component mount
-    window.scrollTo(0, 0);
+    if (!hasScrolledToTop) {
+      window.scrollTo(0, 0);
+      setHasScrolledToTop(true);
+    }
 
     const handleScroll = () => {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -47,25 +51,27 @@ export default function DigitalCurrenciesSection() {
       if (scrollPercent > 95 && !isFullyRead) {
         setIsFullyRead(true);
         updateProgress(
-          1, // moduleId
-          'digital-currencies', // sectionId
-          true, // completed
-          1, // courseId
-          undefined, // timeSpent
-          undefined, // quizScore
-          '/modules/module1/digital-currencies', // lastQuizPath
-          undefined, // lastCompletedPath
-          'Blockchain Fundamentals' // courseName
+          1,
+          'digital-currencies',
+          true,
+          1,
+          undefined,
+          undefined,
+          '/modules/module1/digital-currencies',
+          undefined,
+          'Blockchain Fundamentals'
         );
       }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [updateProgress, isFullyRead]);
+  }, [updateProgress, isFullyRead, hasScrolledToTop]);
 
   const handleQuizComplete = () => {
-    navigate('/modules/module1/security');
+    setTimeout(() => {
+      navigate('/modules/module1/security');
+    }, 5000); // Show score for 5 seconds before navigating
   };
 
   return (
@@ -313,72 +319,97 @@ export default function DigitalCurrenciesSection() {
             <motion.div
               variants={cardVariants}
               whileHover="hover"
-              className="mt-6 p-6 bg-white rounded-lg shadow-md"
+              className="mt-6 grid md:grid-cols-2 gap-6"
             >
-              <h3 className="text-2xl font-semibold text-blue-600">Financial Inclusion</h3>
-              <motion.p variants={listItemVariants} className="mt-4">
-                Cryptocurrency provides financial services access to previously underserved populations:
-              </motion.p>
-              <motion.ul variants={sectionVariants} className="list-disc pl-5 mt-2">
-                {[
-                  "People without bank accounts",
-                  "Residents of countries with unstable currencies",
-                  "Individuals with limited access to traditional banking",
-                  "International workers needing to send remittances"
-                ].map((item, index) => (
-                  <motion.li key={index} variants={listItemVariants} custom={index}>
-                    {item}
-                  </motion.li>
-                ))}
-              </motion.ul>
+              <KeyConceptBox
+                title="Financial Inclusion"
+                className="bg-gradient-to-br from-rose-100 to-pink-50"
+              >
+                <motion.ul className="space-y-3">
+                  {[
+                    "People without bank accounts",
+                    "Residents of countries with unstable currencies",
+                    "Individuals with limited access to traditional banking",
+                    "International workers needing to send remittances"
+                  ].map((item, index) => (
+                    <motion.li
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="flex items-center gap-2"
+                    >
+                      <CheckCircle className="h-5 w-5 text-green-500" />
+                      {item}
+                    </motion.li>
+                  ))}
+                </motion.ul>
+              </KeyConceptBox>
+
+              <KeyConceptBox
+                title="Payment Efficiency"
+                className="bg-gradient-to-br from-fuchsia-100 to-purple-50"
+              >
+                <motion.ul className="space-y-3">
+                  {[
+                    "Near-instant transfers globally",
+                    "Lower transaction fees",
+                    "24/7 operation",
+                    "No intermediary requirements",
+                    "Programmable payment options"
+                  ].map((item, index) => (
+                    <motion.li
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="flex items-center gap-2"
+                    >
+                      <ArrowRight className="h-5 w-5 text-purple-500" />
+                      {item}
+                    </motion.li>
+                  ))}
+                </motion.ul>
+              </KeyConceptBox>
             </motion.div>
 
             <motion.div
               variants={cardVariants}
               whileHover="hover"
-              className="mt-8 p-6 bg-white rounded-lg shadow-md"
+              className="mt-8 p-6 bg-gradient-to-br from-violet-100 to-indigo-50 rounded-lg shadow-lg"
             >
-              <h3 className="text-2xl font-semibold text-blue-600">Payment Efficiency</h3>
-              <motion.p variants={listItemVariants} className="mt-4">
-                Cryptocurrency offers several advantages for payments:
-              </motion.p>
-              <motion.ul variants={sectionVariants} className="list-disc pl-5 mt-2">
-                {[
-                  "Near-instant transfers globally",
-                  "Lower transaction fees",
-                  "24/7 operation",
-                  "No intermediary requirements",
-                  "Programmable payment options"
-                ].map((item, index) => (
-                  <motion.li key={index} variants={listItemVariants} custom={index}>
-                    {item}
-                  </motion.li>
-                ))}
-              </motion.ul>
-            </motion.div>
-
-            <motion.div
-              variants={cardVariants}
-              whileHover="hover"
-              className="mt-8 p-6 bg-white rounded-lg shadow-md"
-            >
-              <h3 className="text-2xl font-semibold text-blue-600">Stablecoins: Bridging Traditional and Digital Finance</h3>
-              <motion.p variants={listItemVariants} className="mt-4">
-                Stablecoins represent a crucial innovation in the cryptocurrency space, designed to minimize volatility by maintaining a stable value:
-              </motion.p>
-              <motion.ul variants={sectionVariants} className="list-disc pl-5 mt-2">
-                {[
-                  "Pegged to stable assets like USD, reducing price volatility",
-                  "Ideal for everyday transactions and commerce",
-                  "Provides a reliable store of value in volatile markets",
-                  "Enables easier conversion between traditional and digital currencies",
-                  "Useful for international trade and remittances"
-                ].map((item, index) => (
-                  <motion.li key={index} variants={listItemVariants} custom={index}>
-                    {item}
-                  </motion.li>
-                ))}
-              </motion.ul>
+              <h3 className="text-2xl font-semibold text-blue-800 mb-4">Stablecoins: Bridging Traditional and Digital Finance</h3>
+              <div className="grid md:grid-cols-2 gap-6">
+                <motion.ul className="space-y-4">
+                  {[
+                    "Pegged to stable assets like USD",
+                    "Ideal for everyday transactions",
+                    "Reliable store of value",
+                    "Easy conversion between currencies",
+                    "Useful for international trade"
+                  ].map((item, index) => (
+                    <motion.li
+                      key={index}
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="flex items-center gap-3 bg-white p-3 rounded-lg shadow-sm"
+                    >
+                      <CheckCircle className="h-5 w-5 text-green-500" />
+                      <span>{item}</span>
+                    </motion.li>
+                  ))}
+                </motion.ul>
+                <div className="relative">
+                  <motion.div
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    whileInView={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-lg"
+                  />
+                  {/* Add your diagram or illustration here */}
+                </div>
+              </div>
             </motion.div>
           </CourseContentSection>
 
