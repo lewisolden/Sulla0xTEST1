@@ -62,18 +62,74 @@ app.use((req, res, next) => {
 });
 
 let server: any = null;
-const tryPorts = [5000, 5001, 5002, 5003];
 
+// Try to start server on a specific port
+async function startServer(port: number): Promise<boolean> {
+  return new Promise((resolve) => {
+    try {
+      // Create server instance
+      const newServer = app.listen(port, "0.0.0.0", () => {
+        server = newServer;
+        log(`Server successfully started on port ${port}`);
+        resolve(true);
+      });
+
+      // Handle server errors
+      newServer.once('error', (error: any) => {
+        if (error.code === 'EADDRINUSE') {
+          log(`Port ${port} is in use`);
+          newServer.close();
+          resolve(false);
+        } else {
+          log(`Unexpected error on port ${port}: ${error}`);
+          newServer.close();
+          resolve(false);
+        }
+      });
+
+      // Add cleanup handler
+      newServer.once('close', () => {
+        if (server === newServer) {
+          server = null;
+        }
+      });
+
+    } catch (error) {
+      log(`Error starting server on port ${port}: ${error}`);
+      resolve(false);
+    }
+  });
+}
+
+// Main startup function
 (async () => {
   try {
     log("Starting server initialization...");
 
-    // Register routes after auth setup
-    server = registerRoutes(app);
+    // Register routes first - this is lightweight
+    registerRoutes(app);
 
     const isProduction = process.env.NODE_ENV === 'production';
 
-    // Set up Vite or static file serving AFTER API routes
+    // Try ports sequentially
+    const tryPorts = [5000, 5001, 5002, 5003];
+    let started = false;
+    let boundPort = null;
+
+    for (const port of tryPorts) {
+      log(`Attempting to start server on port ${port}...`);
+      started = await startServer(port);
+      if (started) {
+        boundPort = port;
+        break;
+      }
+    }
+
+    if (!started || !server) {
+      throw new Error('Failed to start server on any available port');
+    }
+
+    // Now that we have a bound port, set up the rest of the application
     if (!isProduction) {
       log("Setting up Vite middleware...");
       await setupVite(app, server);
@@ -84,53 +140,24 @@ const tryPorts = [5000, 5001, 5002, 5003];
       log("Static file serving setup complete");
     }
 
-    // Try ports sequentially until one works
-    let port: number | null = null;
-    for (const testPort of tryPorts) {
-      try {
-        await new Promise<void>((resolve, reject) => {
-          const testServer = server.listen(testPort, "0.0.0.0", () => {
-            port = testPort;
-            log(`Server successfully started on port ${port}`);
-            resolve();
-          });
-
-          testServer.once('error', (error: Error) => {
-            if ((error as any).code === 'EADDRINUSE') {
-              log(`Port ${testPort} is in use, trying next port...`);
-              testServer.close();
-              resolve();
-            } else {
-              reject(error);
-            }
-          });
-        });
-
-        if (port !== null) break;
-      } catch (error) {
-        log(`Error trying port ${testPort}: ${error}`);
-        if (testPort === tryPorts[tryPorts.length - 1]) {
-          throw new Error('Failed to find an available port');
-        }
-      }
-    }
-
-    if (port === null) {
-      throw new Error('Failed to bind to any port');
-    }
-
-    // Initialize services in the background
-    verifyEmailService().catch(error => {
-      log(`Email service initialization warning: ${error.message}`);
+    // Initialize background services
+    Promise.all([
+      // Verify email service
+      verifyEmailService().catch(error => {
+        log(`Email service initialization warning: ${error.message}`);
+      }),
+      // Check database connection
+      db.select().from(users).limit(1).then(() => {
+        log("Database connection verified");
+      }).catch(error => {
+        log("Database connection warning:", error instanceof Error ? error.message : String(error));
+      })
+    ]).catch(error => {
+      // Log but don't crash the server
+      log(`Background service initialization warning: ${error.message}`);
     });
 
-    // Verify database connection
-    try {
-      await db.select().from(users).limit(1);
-      log("Database connection verified");
-    } catch (error) {
-      log("Database connection warning:", error instanceof Error ? error.message : String(error));
-    }
+    log(`Server initialization complete on port ${boundPort}`);
 
   } catch (error) {
     log(`Failed to start server: ${error instanceof Error ? error.message : String(error)}`);
@@ -159,7 +186,7 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   if (_req.path.startsWith('/api/')) {
     res.status(status).json({ error: message });
   } else {
-    res.status(status).send(message); // send for non-api routes
+    res.status(status).send(message);
   }
   console.error(err);
 });

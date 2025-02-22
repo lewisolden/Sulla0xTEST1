@@ -115,6 +115,7 @@ import DefiModule4Quiz from "@/pages/defi/module4/quiz"; // Added import for Mod
 import DeFiFinalAssessment from "@/pages/defi/final-assessment"; // Add this import
 
 
+
 function ProtectedRoute({ component: Component, adminOnly = false, publicAccess = false, ...rest }: any) {
   const { user, isLoading } = useAuth();
 
@@ -144,122 +145,312 @@ function Router() {
   return (
     <Switch>
       {/* Public routes */}
-      <Route path="/" component={() => <ProtectedRoute component={Home} publicAccess={true} />} />
-      <Route path="/about" component={() => <ProtectedRoute component={About} publicAccess={true} />} />
-      <Route path="/curriculum" component={() => <ProtectedRoute component={Curriculum} publicAccess={true} />} />
-      <Route path="/library" component={() => <ProtectedRoute component={LibraryPage} publicAccess={true} />} />
-      <Route path="/library/:slug" component={() => <ProtectedRoute component={BlogPost} publicAccess={true} />} />
-      <Route path="/faqs" component={() => <ProtectedRoute component={FAQs} publicAccess={true} />} />
-      <Route path="/games" component={() => <ProtectedRoute component={Games} publicAccess={true} />} />
-      <Route path="/ai" component={() => <ProtectedRoute component={AIOverview} publicAccess={true} />} />
-      <Route path="/ai/module1" component={() => <ProtectedRoute component={AIModule1} publicAccess={true} />} />
-      <Route path="/ai/module1/introduction" component={() => <ProtectedRoute component={AIIntroduction} publicAccess={true} />} />
-      <Route path="/ai/module1/how-ai-works" component={() => <ProtectedRoute component={AIHowItWorks} publicAccess={true} />} />
-      <Route path="/ai/module1/ai-applications" component={() => <ProtectedRoute component={AIApplications} publicAccess={true} />} />
-      <Route path="/ai/module1/machine-learning-basics" component={() => <ProtectedRoute component={AIMLBasics} publicAccess={true} />} />
-      <Route path="/ai/module1/neural-networks" component={() => <ProtectedRoute component={AINeuralNetworks} publicAccess={true} />} />
-      <Route path="/ai/module1/quiz" component={() => <ProtectedRoute component={AIModule1Quiz} publicAccess={true} />} />
-      <Route path="/ai/module2" component={() => <ProtectedRoute component={AIModule2} publicAccess={true} />} />
-      <Route path="/ai/module2/natural-language-processing" component={() => <ProtectedRoute component={NaturalLanguageProcessing} publicAccess={true} />} />
-      <Route path="/ai/module2/computer-vision" component={() => <ProtectedRoute component={ComputerVision} publicAccess={true} />} />
-      <Route path="/ai/module2/robotics-automation" component={() => <ProtectedRoute component={RoboticsAutomation} publicAccess={true} />} />
-      <Route path="/ai/module2/ai-ethics" component={() => <ProtectedRoute component={AIEthics} publicAccess={true} />} />
-      <Route path="/ai/module2/quiz" component={() => <ProtectedRoute component={AIModule2Quiz} publicAccess={true} />} />
-      <Route path="/ai/module3" component={() => <ProtectedRoute component={AIModule3} publicAccess={true} />} />
-      <Route path="/ai/module3/deep-learning" component={() => <ProtectedRoute component={DeepLearning} publicAccess={true} />} />
-      <Route path="/ai/module3/reinforcement-learning" component={() => <ProtectedRoute component={ReinforcementLearning} publicAccess={true} />} />
-      <Route path="/ai/module3/generative-ai" component={() => <ProtectedRoute component={GenerativeAI} publicAccess={true} />} />
-      <Route path="/ai/module3/future-ai" component={() => <ProtectedRoute component={FutureAI} publicAccess={true} />} />
-      <Route path="/ai/module3/quiz" component={() => <ProtectedRoute component={AIModule3Quiz} publicAccess={true} />} />
+      <Route path="/">
+        <ProtectedRoute component={Home} publicAccess={true} />
+      </Route>
+      <Route path="/about">
+        <ProtectedRoute component={About} publicAccess={true} />
+      </Route>
+      <Route path="/curriculum">
+        <ProtectedRoute component={Curriculum} publicAccess={true} />
+      </Route>
+      <Route path="/library">
+        <ProtectedRoute component={LibraryPage} publicAccess={true} />
+      </Route>
+      <Route path="/library/:slug">
+        <ProtectedRoute component={BlogPost} publicAccess={true} />
+      </Route>
+      <Route path="/faqs">
+        <ProtectedRoute component={FAQs} publicAccess={true} />
+      </Route>
+      <Route path="/games">
+        <ProtectedRoute component={Games} publicAccess={true} />
+      </Route>
+      <Route path="/ai">
+        <ProtectedRoute component={AIOverview} publicAccess={true} />
+      </Route>
+      <Route path="/deck">
+        <ProtectedRoute component={Deck} publicAccess={true} />
+      </Route>
+      <Route path="/techdeck">
+        <ProtectedRoute component={TechDeckPage} publicAccess={true} />
+      </Route>
+      <Route path="/investment-deck">
+        <ProtectedRoute component={InvestmentDeck} publicAccess={true} />
+      </Route>
+      <Route path="/sensei">
+        <ProtectedRoute component={SenseiPage} publicAccess={true} />
+      </Route>
 
 
-      {/* Authentication routes */}
+      {/* Auth routes */}
       <Route path="/login" component={AuthPage} />
       <Route path="/register" component={AuthPage} />
 
       {/* Admin routes */}
       <Route path="/admin/login" component={AdminLogin} />
-      <Route path="/admin/dashboard" component={() => <ProtectedRoute component={AdminDashboard} adminOnly />} />
-      <Route path="/admin" component={() => <ProtectedRoute component={AdminDashboard} adminOnly />} />
-      <Route path="/admin/users" component={() => <ProtectedRoute component={AdminUsers} adminOnly />} />
-      <Route path="/admin/analytics" component={() => <ProtectedRoute component={AdminAnalytics} adminOnly />} />
-      <Route path="/admin/feedback" component={() => <ProtectedRoute component={AdminFeedback} adminOnly />} />
+      <Route path="/admin/dashboard">
+        <ProtectedRoute component={AdminDashboard} adminOnly={true} />
+      </Route>
+      <Route path="/admin">
+        <ProtectedRoute component={AdminDashboard} adminOnly={true} />
+      </Route>
+      <Route path="/admin/users">
+        <ProtectedRoute component={AdminUsers} adminOnly={true} />
+      </Route>
+      <Route path="/admin/analytics">
+        <ProtectedRoute component={AdminAnalytics} adminOnly={true} />
+      </Route>
+      <Route path="/admin/feedback">
+        <ProtectedRoute component={AdminFeedback} adminOnly={true} />
+      </Route>
 
       {/* Protected routes */}
-      <Route path="/account" component={() => <ProtectedRoute component={AccountPage} />} />
-      <Route path="/achievements" component={() => <ProtectedRoute component={Achievements} />} />
-      <Route path="/deck" component={() => <ProtectedRoute component={Deck} publicAccess={true} />} />
-      <Route path="/wallet-simulator" component={() => <ProtectedRoute component={WalletSimulator} />} />
-      <Route path="/trading-simulator" component={() => <ProtectedRoute component={TradingSimulator} />} />
-      <Route path="/glossary" component={() => <ProtectedRoute component={GlossaryPage} />} />
-      <Route path="/techdeck" component={() => <ProtectedRoute component={TechDeckPage} publicAccess={true} />} />
-      <Route path="/investment-deck" component={() => <ProtectedRoute component={InvestmentDeck} publicAccess={true} />} />
+      <Route path="/account">
+        <ProtectedRoute component={AccountPage} />
+      </Route>
+      <Route path="/achievements">
+        <ProtectedRoute component={Achievements} />
+      </Route>
+      <Route path="/wallet-simulator">
+        <ProtectedRoute component={WalletSimulator} />
+      </Route>
+      <Route path="/trading-simulator">
+        <ProtectedRoute component={TradingSimulator} />
+      </Route>
+      <Route path="/glossary">
+        <ProtectedRoute component={GlossaryPage} />
+      </Route>
 
-      {/* Module 1 Routes */}
-      <ProtectedRoute path="/modules/module1" component={Module1Landing} />
-      <ProtectedRoute path="/modules/module1/quiz" component={Module1Quiz} />
-      <ProtectedRoute path="/modules/module1/exercises" component={ModuleExercises} />
-      <ProtectedRoute path="/modules/module1/digital-currencies" component={DigitalCurrenciesSection} />
-      <ProtectedRoute path="/modules/module1/history-of-money" component={HistoryOfMoneySection} />
-      <ProtectedRoute path="/modules/module1/bitcoin" component={BitcoinSection} />
-      <ProtectedRoute path="/modules/module1/altcoins-tokens" component={AltcoinsTokensSection} />
-      <ProtectedRoute path="/modules/module1/crypto-market" component={CryptoMarketSection} />
-      <ProtectedRoute path="/modules/module1/cryptography" component={CryptographySection} />
-      <ProtectedRoute path="/modules/module1/security" component={SecuritySection} />
-      <ProtectedRoute path="/modules/module1/applications" component={PracticalApplicationsSection} />
-      <ProtectedRoute path="/modules/module1/getting-started" component={GettingStartedSection} />
+
+      {/* Protected Module Routes */}
+      <Route path="/modules/module1">
+        <ProtectedRoute component={Module1Landing} />
+      </Route>
+      <Route path="/modules/module1/quiz">
+        <ProtectedRoute component={Module1Quiz} />
+      </Route>
+      <Route path="/modules/module1/exercises">
+        <ProtectedRoute component={ModuleExercises} />
+      </Route>
+      <Route path="/modules/module1/digital-currencies">
+        <ProtectedRoute component={DigitalCurrenciesSection} />
+      </Route>
+      <Route path="/modules/module1/history-of-money">
+        <ProtectedRoute component={HistoryOfMoneySection} />
+      </Route>
+      <Route path="/modules/module1/bitcoin">
+        <ProtectedRoute component={BitcoinSection} />
+      </Route>
+      <Route path="/modules/module1/altcoins-tokens">
+        <ProtectedRoute component={AltcoinsTokensSection} />
+      </Route>
+      <Route path="/modules/module1/crypto-market">
+        <ProtectedRoute component={CryptoMarketSection} />
+      </Route>
+      <Route path="/modules/module1/cryptography">
+        <ProtectedRoute component={CryptographySection} />
+      </Route>
+      <Route path="/modules/module1/security">
+        <ProtectedRoute component={SecuritySection} />
+      </Route>
+      <Route path="/modules/module1/applications">
+        <ProtectedRoute component={PracticalApplicationsSection} />
+      </Route>
+      <Route path="/modules/module1/getting-started">
+        <ProtectedRoute component={GettingStartedSection} />
+      </Route>
       {/* Module 2 Routes */}
-      <ProtectedRoute path="/modules/module2" component={Module2Landing} />
-      <ProtectedRoute path="/modules/module2/bitcoin-fundamentals" component={BitcoinFundamentalsSection} />
-      <ProtectedRoute path="/modules/module2/bitcoin-investment" component={BitcoinInvestmentSection} />
-      <ProtectedRoute path="/modules/module2/security-risk" component={SecurityRiskSection} />
-      <ProtectedRoute path="/modules/module2/exercises" component={Module2Exercises} />
-      <ProtectedRoute path="/modules/module2/quiz" component={Module2Quiz} />
+      <Route path="/modules/module2">
+        <ProtectedRoute component={Module2Landing} />
+      </Route>
+      <Route path="/modules/module2/bitcoin-fundamentals">
+        <ProtectedRoute component={BitcoinFundamentalsSection} />
+      </Route>
+      <Route path="/modules/module2/bitcoin-investment">
+        <ProtectedRoute component={BitcoinInvestmentSection} />
+      </Route>
+      <Route path="/modules/module2/security-risk">
+        <ProtectedRoute component={SecurityRiskSection} />
+      </Route>
+      <Route path="/modules/module2/exercises">
+        <ProtectedRoute component={Module2Exercises} />
+      </Route>
+      <Route path="/modules/module2/quiz">
+        <ProtectedRoute component={Module2Quiz} />
+      </Route>
       {/* Module 3 Routes */}
-      <ProtectedRoute path="/modules/module3" component={Module3} />
-      <ProtectedRoute path="/modules/module3/ethereum-fundamentals" component={EthereumFundamentalsSection} />
-      <ProtectedRoute path="/modules/module3/smart-contracts" component={SmartContractsSection} />
-      <ProtectedRoute path="/modules/module3/investment-value" component={InvestmentValueSection} />
-      <ProtectedRoute path="/modules/module3/security-risks" component={SecurityRisksSection} />
-      <ProtectedRoute path="/modules/module3/exercises" component={Module3Exercises} />
-      <ProtectedRoute path="/modules/module3/quiz" component={Module3Quiz} />
+      <Route path="/modules/module3">
+        <ProtectedRoute component={Module3} />
+      </Route>
+      <Route path="/modules/module3/ethereum-fundamentals">
+        <ProtectedRoute component={EthereumFundamentalsSection} />
+      </Route>
+      <Route path="/modules/module3/smart-contracts">
+        <ProtectedRoute component={SmartContractsSection} />
+      </Route>
+      <Route path="/modules/module3/investment-value">
+        <ProtectedRoute component={InvestmentValueSection} />
+      </Route>
+      <Route path="/modules/module3/security-risks">
+        <ProtectedRoute component={SecurityRisksSection} />
+      </Route>
+      <Route path="/modules/module3/exercises">
+        <ProtectedRoute component={Module3Exercises} />
+      </Route>
+      <Route path="/modules/module3/quiz">
+        <ProtectedRoute component={Module3Quiz} />
+      </Route>
       {/* Module 4 Routes */}
-      <ProtectedRoute path="/modules/module4" component={Module4Landing} />
-      <ProtectedRoute path="/modules/module4/digital-vs-traditional" component={DigitalVsTraditionalSection} />
-      <Route path="/sensei" component={() => <ProtectedRoute component={SenseiPage} publicAccess={true} />} />
+      <Route path="/modules/module4">
+        <ProtectedRoute component={Module4Landing} />
+      </Route>
+      <Route path="/modules/module4/digital-vs-traditional">
+        <ProtectedRoute component={DigitalVsTraditionalSection} />
+      </Route>
+
+      {/* AI Module Routes */}
+      <Route path="/ai/module1">
+        <ProtectedRoute component={AIModule1} publicAccess={true} />
+      </Route>
+      <Route path="/ai/module1/introduction">
+        <ProtectedRoute component={AIIntroduction} publicAccess={true} />
+      </Route>
+      <Route path="/ai/module1/how-ai-works">
+        <ProtectedRoute component={AIHowItWorks} publicAccess={true} />
+      </Route>
+      <Route path="/ai/module1/ai-applications">
+        <ProtectedRoute component={AIApplications} publicAccess={true} />
+      </Route>
+      <Route path="/ai/module1/machine-learning-basics">
+        <ProtectedRoute component={AIMLBasics} publicAccess={true} />
+      </Route>
+      <Route path="/ai/module1/neural-networks">
+        <ProtectedRoute component={AINeuralNetworks} publicAccess={true} />
+      </Route>
+      <Route path="/ai/module1/quiz">
+        <ProtectedRoute component={AIModule1Quiz} publicAccess={true} />
+      </Route>
+      <Route path="/ai/module2">
+        <ProtectedRoute component={AIModule2} publicAccess={true} />
+      </Route>
+      <Route path="/ai/module2/natural-language-processing">
+        <ProtectedRoute component={NaturalLanguageProcessing} publicAccess={true} />
+      </Route>
+      <Route path="/ai/module2/computer-vision">
+        <ProtectedRoute component={ComputerVision} publicAccess={true} />
+      </Route>
+      <Route path="/ai/module2/robotics-automation">
+        <ProtectedRoute component={RoboticsAutomation} publicAccess={true} />
+      </Route>
+      <Route path="/ai/module2/ai-ethics">
+        <ProtectedRoute component={AIEthics} publicAccess={true} />
+      </Route>
+      <Route path="/ai/module2/quiz">
+        <ProtectedRoute component={AIModule2Quiz} publicAccess={true} />
+      </Route>
+      <Route path="/ai/module3">
+        <ProtectedRoute component={AIModule3} publicAccess={true} />
+      </Route>
+      <Route path="/ai/module3/deep-learning">
+        <ProtectedRoute component={DeepLearning} publicAccess={true} />
+      </Route>
+      <Route path="/ai/module3/reinforcement-learning">
+        <ProtectedRoute component={ReinforcementLearning} publicAccess={true} />
+      </Route>
+      <Route path="/ai/module3/generative-ai">
+        <ProtectedRoute component={GenerativeAI} publicAccess={true} />
+      </Route>
+      <Route path="/ai/module3/future-ai">
+        <ProtectedRoute component={FutureAI} publicAccess={true} />
+      </Route>
+      <Route path="/ai/module3/quiz">
+        <ProtectedRoute component={AIModule3Quiz} publicAccess={true} />
+      </Route>
 
       {/* DeFi Module Routes */}
-      <Route path="/defi/module1" component={() => <ProtectedRoute component={DefiModule1} />} />
-      <Route path="/defi/module1/defi-intro" component={() => <ProtectedRoute component={DefiIntro} />} />
-      <Route path="/defi/module1/blockchain-contracts" component={() => <ProtectedRoute component={BlockchainContracts} />} />
-      <Route path="/defi/module1/dex-amm" component={() => <ProtectedRoute component={DexAmm} />} />
-      <Route path="/defi/module1/liquidity-yield" component={() => <ProtectedRoute component={LiquidityYield} />} />
-      <Route path="/defi/module1/quiz" component={() => <ProtectedRoute component={ModuleQuiz} />} />
+      <Route path="/defi/module1">
+        <ProtectedRoute component={DefiModule1} />
+      </Route>
+      <Route path="/defi/module1/defi-intro">
+        <ProtectedRoute component={DefiIntro} />
+      </Route>
+      <Route path="/defi/module1/blockchain-contracts">
+        <ProtectedRoute component={BlockchainContracts} />
+      </Route>
+      <Route path="/defi/module1/dex-amm">
+        <ProtectedRoute component={DexAmm} />
+      </Route>
+      <Route path="/defi/module1/liquidity-yield">
+        <ProtectedRoute component={LiquidityYield} />
+      </Route>
+      <Route path="/defi/module1/quiz">
+        <ProtectedRoute component={ModuleQuiz} />
+      </Route>
 
       {/* DeFi Module 2 Routes */}
-      <Route path="/defi/module2" component={() => <ProtectedRoute component={DefiModule2} />} />
-      <Route path="/defi/module2/lending-borrowing" component={() => <ProtectedRoute component={LendingBorrowing} />} />
-      <Route path="/defi/module2/stablecoins" component={() => <ProtectedRoute component={StablecoinsSection} />} />
-      <Route path="/defi/module2/derivatives" component={() => <ProtectedRoute component={DerivativesSection} />} />
-      <Route path="/defi/module2/governance-dao" component={() => <ProtectedRoute component={GovernanceDAO} />} />
-      <Route path="/defi/module2/quiz" component={() => <ProtectedRoute component={DefiModule2Quiz} />} />
+      <Route path="/defi/module2">
+        <ProtectedRoute component={DefiModule2} />
+      </Route>
+      <Route path="/defi/module2/lending-borrowing">
+        <ProtectedRoute component={LendingBorrowing} />
+      </Route>
+      <Route path="/defi/module2/stablecoins">
+        <ProtectedRoute component={StablecoinsSection} />
+      </Route>
+      <Route path="/defi/module2/derivatives">
+        <ProtectedRoute component={DerivativesSection} />
+      </Route>
+      <Route path="/defi/module2/governance-dao">
+        <ProtectedRoute component={GovernanceDAO} />
+      </Route>
+      <Route path="/defi/module2/quiz">
+        <ProtectedRoute component={DefiModule2Quiz} />
+      </Route>
 
       {/* DeFi Module 3 Routes */}
-      <Route path="/defi/module3" component={() => <ProtectedRoute component={DefiModule3} />} />
-      <Route path="/defi/module3/advanced-defi" component={() => <ProtectedRoute component={AdvancedDefi} publicAccess={true} />} />
-      <Route path="/defi/module3/defi-security" component={() => <ProtectedRoute component={DefiSecurity} publicAccess={true} />} />
-      <Route path="/defi/module3/defi-analytics" component={() => <ProtectedRoute component={DefiAnalytics} publicAccess={true} />} />
-      <Route path="/defi/module3/defi-innovation" component={() => <ProtectedRoute component={DefiInnovation} publicAccess={true} />} />
-      <Route path="/defi/module3/quiz" component={() => <ProtectedRoute component={DefiModule3Quiz} />} />
-      <Route path="/defi/module4" component={() => <ProtectedRoute component={DefiModule4} />} />
-      <Route path="/defi/module4/institutional-defi" component={() => <ProtectedRoute component={InstitutionalDefi} />} />
-      <Route path="/defi/module4/defi-governance" component={() => <ProtectedRoute component={DefiGovernance} publicAccess={true} />} />
-      <Route path="/defi/module4/defi-integrations" component={() => <ProtectedRoute component={DefiIntegrations} publicAccess={true} />} />
-      <Route path="/defi/module4/defi-infrastructure" component={() => <ProtectedRoute component={DefiInfrastructure} publicAccess={true} />} />
-      <Route path="/defi/module4/quiz" component={() => <ProtectedRoute component={DefiModule4Quiz} />} />
+      <Route path="/defi/module3">
+        <ProtectedRoute component={DefiModule3} />
+      </Route>
+      <Route path="/defi/module3/advanced-defi">
+        <ProtectedRoute component={AdvancedDefi} publicAccess={true} />
+      </Route>
+      <Route path="/defi/module3/defi-security">
+        <ProtectedRoute component={DefiSecurity} publicAccess={true} />
+      </Route>
+      <Route path="/defi/module3/defi-analytics">
+        <ProtectedRoute component={DefiAnalytics} publicAccess={true} />
+      </Route>
+      <Route path="/defi/module3/defi-innovation">
+        <ProtectedRoute component={DefiInnovation} publicAccess={true} />
+      </Route>
+      <Route path="/defi/module3/quiz">
+        <ProtectedRoute component={DefiModule3Quiz} />
+      </Route>
+      <Route path="/defi/module4">
+        <ProtectedRoute component={DefiModule4} />
+      </Route>
+      <Route path="/defi/module4/institutional-defi">
+        <ProtectedRoute component={InstitutionalDefi} />
+      </Route>
+      <Route path="/defi/module4/defi-governance">
+        <ProtectedRoute component={DefiGovernance} publicAccess={true} />
+      </Route>
+      <Route path="/defi/module4/defi-integrations">
+        <ProtectedRoute component={DefiIntegrations} publicAccess={true} />
+      </Route>
+      <Route path="/defi/module4/defi-infrastructure">
+        <ProtectedRoute component={DefiInfrastructure} publicAccess={true} />
+      </Route>
+      <Route path="/defi/module4/quiz">
+        <ProtectedRoute component={DefiModule4Quiz} />
+      </Route>
 
-      <Route path="/defi/final-assessment" component={() => <ProtectedRoute component={DeFiFinalAssessment} />} />
+      <Route path="/defi/final-assessment">
+        <ProtectedRoute component={DeFiFinalAssessment} />
+      </Route>
 
+      {/* Catch-all route for 404 */}
       <Route component={NotFound} />
     </Switch>
   );
