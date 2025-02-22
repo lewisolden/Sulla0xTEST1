@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { ArrowLeft, ArrowRight, CheckCircle, XCircle } from "lucide-react";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
+import { useToast } from "@/hooks/use-toast";
 
 interface Question {
   id: number;
@@ -80,199 +81,246 @@ const questions: Question[] = [
 
 const QuizPage = () => {
   useScrollTop();
+  const { toast } = useToast();
+  const [currentQuestion, setCurrentQuestion] = useState(0);
   const [userAnswers, setUserAnswers] = useState<Record<number, number>>({});
   const [showResults, setShowResults] = useState(false);
+  const [score, setScore] = useState(0);
+  const [showExplanation, setShowExplanation] = useState(false);
   const { updateProgress } = useProgress();
 
+  // Auto-advance to next question after showing explanation
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (showExplanation && currentQuestion < questions.length - 1) {
+      timer = setTimeout(() => {
+        moveToNextQuestion();
+      }, 3000); // Auto advance after 3 seconds
+    }
+    return () => clearTimeout(timer);
+  }, [showExplanation, currentQuestion]);
+
   const handleAnswer = (questionId: number, selectedOption: number) => {
-    if (!showResults) {
-      setUserAnswers({
-        ...userAnswers,
-        [questionId]: selectedOption
-      });
-    }
-  };
+    if (userAnswers[questionId] !== undefined) return;
 
-  const calculateScore = () => {
-    let correct = 0;
-    questions.forEach(q => {
-      if (userAnswers[q.id] === q.correct) correct++;
+    const isCorrect = selectedOption === questions[questionId].correct;
+    setUserAnswers({
+      ...userAnswers,
+      [questionId]: selectedOption
     });
-    return correct;
-  };
+    setShowExplanation(true);
 
-  const handleSubmit = () => {
-    setShowResults(true);
-    const score = calculateScore();
-    const passThreshold = questions.length * 0.7; // 70% to pass
-    if (score >= passThreshold) {
-      updateProgress(1, 'module1-quiz', true);
+    if (isCorrect) {
+      setScore(score + 1);
     }
+
+    // Show immediate feedback toast
+    toast({
+      title: isCorrect ? "Correct! 🎉" : "Incorrect ❌",
+      description: questions[questionId].explanation,
+      variant: isCorrect ? "default" : "destructive",
+    });
   };
 
-  const pageVariants = {
-    initial: { opacity: 0, y: 20 },
-    animate: { 
-      opacity: 1, 
-      y: 0,
-      transition: {
-        duration: 0.5
+  const moveToNextQuestion = () => {
+    setShowExplanation(false);
+    if (currentQuestion < questions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+    } else {
+      setShowResults(true);
+      const passThreshold = questions.length * 0.7; // 70% to pass
+      if (score >= passThreshold) {
+        updateProgress(1, 'module1-quiz', true);
       }
-    },
-    exit: {
-      opacity: 0,
-      y: -20
     }
   };
 
-  const renderQuestion = (question: Question) => {
-    const isAnswered = userAnswers[question.id] !== undefined;
-    const isCorrect = userAnswers[question.id] === question.correct;
+  const restartQuiz = () => {
+    setCurrentQuestion(0);
+    setUserAnswers({});
+    setShowResults(false);
+    setScore(0);
+    setShowExplanation(false);
+  };
 
+  if (showResults) {
     return (
       <motion.div
-        key={question.id}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="mb-8"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="container mx-auto px-4 py-8 max-w-2xl"
       >
-        <Card>
-          <CardContent className="p-6">
-            <h3 className="text-lg font-semibold mb-4">{question.question}</h3>
-            <div className="space-y-3">
-              {question.options.map((option, index) => (
-                <div 
-                  key={index}
-                  onClick={() => handleAnswer(question.id, index)}
-                  className={`p-4 rounded-lg cursor-pointer transition-colors border
-                    ${!showResults ? 'hover:bg-gray-100' : ''}
-                    ${showResults && index === question.correct ? 'bg-green-100 border-green-500' : ''}
-                    ${showResults && userAnswers[question.id] === index && index !== question.correct ? 'bg-red-100 border-red-500' : ''}
-                    ${!showResults && userAnswers[question.id] === index ? 'bg-blue-100 border-blue-500' : ''}
-                  `}
+        <Card className="overflow-hidden">
+          <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-8">
+            <h2 className="text-3xl font-bold text-white text-center">
+              Quiz Completed!
+            </h2>
+          </div>
+          <CardContent className="p-8">
+            <motion.div
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              className="text-center"
+            >
+              <p className="text-2xl mb-4">
+                You scored {score} out of {questions.length}
+              </p>
+              {score >= questions.length * 0.7 ? (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-green-100 border-l-4 border-green-500 p-4 mb-6"
                 >
-                  <div className="flex items-center justify-between">
-                    <span>{option}</span>
-                    {showResults && index === question.correct && (
-                      <CheckCircle className="text-green-500 h-5 w-5" />
-                    )}
-                    {showResults && userAnswers[question.id] === index && index !== question.correct && (
-                      <XCircle className="text-red-500 h-5 w-5" />
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-            {showResults && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mt-4 p-4 bg-blue-50 rounded-lg"
-              >
-                <p className="text-blue-800">
-                  <strong>Explanation:</strong> {question.explanation}
-                </p>
-              </motion.div>
-            )}
+                  <p className="text-green-700">
+                    🎉 Congratulations! You've passed the module quiz!
+                  </p>
+                </motion.div>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-amber-100 border-l-4 border-amber-500 p-4 mb-6"
+                >
+                  <p className="text-amber-700">
+                    Keep learning! Review the content and try again.
+                  </p>
+                </motion.div>
+              )}
+              <div className="flex flex-col md:flex-row justify-center gap-4">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={restartQuiz}
+                  className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Restart Quiz
+                </motion.button>
+                {score >= questions.length * 0.7 && (
+                  <Link href="/modules/module2">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:opacity-90 transition-opacity"
+                    >
+                      Next Module <ArrowRight className="inline ml-2" />
+                    </motion.button>
+                  </Link>
+                )}
+              </div>
+            </motion.div>
           </CardContent>
         </Card>
       </motion.div>
     );
-  };
+  }
+
+  const currentQuizQuestion = questions[currentQuestion];
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <motion.div
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          variants={pageVariants}
-        >
-          <div className="mb-6 flex justify-between items-center">
-            <Link href="/modules/module1">
-              <Button variant="ghost" className="gap-2">
-                <ArrowLeft className="h-4 w-4" /> Back to Module Overview
-              </Button>
-            </Link>
+    <div className="container mx-auto px-4 py-8 max-w-2xl">
+      <div className="mb-6">
+        <Link href="/modules/module1">
+          <Button variant="ghost" className="gap-2">
+            <ArrowLeft className="h-4 w-4" /> Back to Module Overview
+          </Button>
+        </Link>
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-white shadow-xl rounded-lg overflow-hidden"
+      >
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6">
+          <h2 className="text-2xl font-bold text-white mb-2">
+            Module 1 Quiz
+          </h2>
+          <p className="text-blue-100">
+            Question {currentQuestion + 1} of {questions.length}
+          </p>
+        </div>
+
+        <CardContent className="p-6">
+          <div className="bg-blue-50 rounded-lg p-4 mb-6">
+            <p className="text-lg text-gray-700">
+              {currentQuizQuestion.question}
+            </p>
           </div>
 
-          <Card className="max-w-4xl mx-auto">
-            <CardHeader>
-              <CardTitle>Module 1: Final Knowledge Check</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                {questions.map(q => renderQuestion(q))}
+          <AnimatePresence mode="wait">
+            <div className="grid gap-4">
+              {currentQuizQuestion.options.map((option, index) => {
+                const isSelected = userAnswers[currentQuestion] === index;
+                const isCorrect = index === currentQuizQuestion.correct;
+                const showResult = userAnswers[currentQuestion] !== undefined;
 
-                {!showResults && Object.keys(userAnswers).length === questions.length && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
+                return (
+                  <motion.button
+                    key={index}
+                    whileHover={{ scale: showResult ? 1 : 1.02 }}
+                    whileTap={{ scale: showResult ? 1 : 0.98 }}
+                    onClick={() => !showResult && handleAnswer(currentQuestion, index)}
+                    className={`
+                      w-full p-4 rounded-lg text-left transition-all duration-300
+                      ${showResult
+                        ? isCorrect
+                          ? 'bg-green-100 border-2 border-green-500 text-green-700'
+                          : isSelected
+                            ? 'bg-red-100 border-2 border-red-500 text-red-700'
+                            : 'bg-gray-100'
+                        : 'bg-gray-100 hover:bg-blue-100 hover:shadow-md'}
+                    `}
+                    disabled={showResult}
                   >
-                    <Button
-                      onClick={handleSubmit}
-                      className="w-full bg-blue-600 hover:bg-blue-700"
-                      size="lg"
-                    >
-                      Submit Answers
-                    </Button>
-                  </motion.div>
-                )}
-
-                {showResults && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="p-6 bg-gray-100 rounded-lg"
-                  >
-                    <h3 className="text-2xl font-bold text-center">
-                      Your Score: {calculateScore()} out of {questions.length}
-                    </h3>
-                    {calculateScore() >= questions.length * 0.7 ? (
-                      <div className="mt-4 p-4 bg-green-100 border-l-4 border-green-500">
-                        <p className="text-green-700">
-                          🎉 Congratulations! You've passed the Module 1 quiz and demonstrated a strong understanding of cryptocurrency fundamentals!
-                        </p>
-                      </div>
-                    ) : (
-                      <div className="mt-4 p-4 bg-blue-100 border-l-4 border-blue-500">
-                        <p className="text-blue-700">
-                          Review the explanations above for any questions you missed. You can retake the quiz after reviewing the module content.
-                        </p>
-                      </div>
-                    )}
-                    <div className="mt-6 flex flex-col md:flex-row justify-center gap-4">
-                      <Link href="/modules/module1">
-                        <Button 
-                          size="lg"
-                          variant="outline"
-                          className="w-full md:w-auto"
-                        >
-                          <ArrowLeft className="mr-2 h-4 w-4" />
-                          Return to Module Overview
-                        </Button>
-                      </Link>
-                      {calculateScore() >= questions.length * 0.7 && (
-                        <Link href="/modules/module2">
-                          <Button 
-                            size="lg"
-                            className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
-                          >
-                            Module 2
-                            <ArrowRight className="ml-2 h-4 w-4" />
-                          </Button>
-                        </Link>
+                    <div className="flex justify-between items-center">
+                      <span>{option}</span>
+                      {showResult && isCorrect && (
+                        <CheckCircle className="text-green-500 h-5 w-5" />
+                      )}
+                      {showResult && isSelected && !isCorrect && (
+                        <XCircle className="text-red-500 h-5 w-5" />
                       )}
                     </div>
-                  </motion.div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-      </div>
+                  </motion.button>
+                );
+              })}
+            </div>
+          </AnimatePresence>
+
+          {showExplanation && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`
+                mt-6 p-4 rounded-lg
+                ${userAnswers[currentQuestion] === currentQuizQuestion.correct
+                  ? 'bg-green-100 border-l-4 border-green-500'
+                  : 'bg-red-100 border-l-4 border-red-500'}
+              `}
+            >
+              <h3 className="font-bold mb-2">
+                {userAnswers[currentQuestion] === currentQuizQuestion.correct
+                  ? '✅ Correct!'
+                  : '❌ Incorrect'}
+              </h3>
+              <p>{currentQuizQuestion.explanation}</p>
+            </motion.div>
+          )}
+
+          {showExplanation && currentQuestion === questions.length - 1 && (
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={moveToNextQuestion}
+              className="mt-6 w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg hover:shadow-lg transition-all duration-300"
+            >
+              Finish Quiz
+            </motion.button>
+          )}
+        </CardContent>
+      </motion.div>
     </div>
   );
 };
