@@ -18,9 +18,9 @@ const SecurityIcon = ({ icon: Icon, title, description, className = "" }) => (
   <motion.div
     whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
-    className={`flex items-start gap-3 p-4 rounded-lg bg-white shadow-sm ${className}`}
+    className={`flex items-start gap-3 p-6 rounded-lg bg-white shadow-md border-2 border-transparent hover:border-orange-200 hover:shadow-lg transition-all duration-300 ${className}`}
   >
-    <Icon className="h-6 w-6 text-blue-600 mt-1" />
+    <Icon className="h-6 w-6 text-orange-600 mt-1" />
     <div>
       <h3 className="font-semibold text-gray-900">{title}</h3>
       <p className="text-sm text-gray-600">{description}</p>
@@ -33,11 +33,11 @@ const SecurityCard = ({ title, icon: Icon, children, className = "" }) => (
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.5 }}
-    className={`bg-white rounded-lg shadow-md overflow-hidden ${className}`}
+    className={`bg-white rounded-lg shadow-xl overflow-hidden border border-orange-100 ${className}`}
   >
     <div className="p-6">
       <div className="flex items-center gap-3 mb-4">
-        <Icon className="h-6 w-6 text-blue-600" />
+        <Icon className="h-6 w-6 text-orange-600" />
         <h2 className="text-xl font-semibold text-gray-900">{title}</h2>
       </div>
       {children}
@@ -153,7 +153,7 @@ const DisasterCard = ({ title, date, description, impact, lessons }) => (
   </motion.div>
 );
 
-export default function SecurityRiskSection() {
+const SecurityRiskSection = () => {
   useScrollTop();
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -397,343 +397,316 @@ export default function SecurityRiskSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          {securityTips.map((tip, index) => (
-            <SecurityIcon
-              key={index}
-              icon={tip.icon}
-              title={tip.title}
-              description={tip.description}
-              className="transform transition-all duration-200"
-            />
-          ))}
-        </div>
+        <div className="space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            {securityTips.map((tip, index) => (
+              <SecurityIcon
+                key={index}
+                icon={tip.icon}
+                title={tip.title}
+                description={tip.description}
+                className="transform transition-all duration-200 hover:shadow-lg hover:border-orange-200 border-2 border-transparent"
+              />
+            ))}
+          </div>
 
-        <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-8">
-          <TabsList className="grid w-full grid-cols-6 gap-4 bg-transparent">
-            <TabsTrigger
-              value="basics"
-              className="data-[state=active]:bg-blue-600 data-[state=active]:text-white"
-            >
-              <Shield className="h-4 w-4 mr-2" />
-              Basics
-            </TabsTrigger>
-            <TabsTrigger
-              value="wallets"
-              className="data-[state=active]:bg-purple-600 data-[state=active]:text-white"
-            >
-              <Wallet className="h-4 w-4 mr-2" />
-              Wallets
-            </TabsTrigger>
-            <TabsTrigger
-              value="exchanges"
-              className="data-[state=active]:bg-green-600 data-[state=active]:text-white"
-            >
-              <Landmark className="h-4 w-4 mr-2" />
-              Exchanges
-            </TabsTrigger>
-            <TabsTrigger
-              value="disasters"
-              className="data-[state=active]:bg-red-600 data-[state=active]:text-white"
-            >
-              <History className="h-4 w-4 mr-2" />
-              History
-            </TabsTrigger>
-            <TabsTrigger
-              value="threats"
-              className="data-[state=active]:bg-orange-600 data-[state=active]:text-white"
-            >
-              <AlertTriangle className="h-4 w-4 mr-2" />
-              Threats
-            </TabsTrigger>
-            <TabsTrigger
-              value="protection"
-              className="data-[state=active]:bg-indigo-600 data-[state=active]:text-white"
-            >
-              <Lock className="h-4 w-4 mr-2" />
-              Protection
-            </TabsTrigger>
-          </TabsList>
+          <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-8">
+            <TabsList className="grid w-full grid-cols-6 gap-4 bg-transparent">
+              <TabsTrigger
+                value="basics"
+                className="data-[state=active]:bg-blue-600 data-[state=active]:text-white"
+              >
+                <Shield className="h-4 w-4 mr-2" />
+                Basics
+              </TabsTrigger>
+              <TabsTrigger
+                value="wallets"
+                className="data-[state=active]:bg-purple-600 data-[state=active]:text-white"
+              >
+                <Wallet className="h-4 w-4 mr-2" />
+                Wallets
+              </TabsTrigger>
+              <TabsTrigger
+                value="exchanges"
+                className="data-[state=active]:bg-green-600 data-[state=active]:text-white"
+              >
+                <Landmark className="h-4 w-4 mr-2" />
+                Exchanges
+              </TabsTrigger>
+              <TabsTrigger
+                value="disasters"
+                className="data-[state=active]:bg-red-600 data-[state=active]:text-white"
+              >
+                <History className="h-4 w-4 mr-2" />
+                History
+              </TabsTrigger>
+              <TabsTrigger
+                value="threats"
+                className="data-[state=active]:bg-orange-600 data-[state=active]:text-white"
+              >
+                <AlertTriangle className="h-4 w-4 mr-2" />
+                Threats
+              </TabsTrigger>
+              <TabsTrigger
+                value="protection"
+                className="data-[state=active]:bg-indigo-600 data-[state=active]:text-white"
+              >
+                <Lock className="h-4 w-4 mr-2" />
+                Protection
+              </TabsTrigger>
+            </TabsList>
 
-          <TabsContent value="basics">
-            <SecurityCard
-              title="Security Fundamentals"
-              icon={Shield}
-              className="bg-gradient-to-br from-blue-50 to-indigo-50"
+            <TabsContent value="basics">
+              <SecurityCard
+                title="Security Fundamentals"
+                icon={Shield}
+                className="bg-gradient-to-br from-orange-50 via-white to-red-50 shadow-lg border-orange-100"
+              >
+                <div className="space-y-4">
+                  <p className="text-gray-700">
+                    Understanding the basics of Bitcoin security is crucial for protecting your investments.
+                    Here are the fundamental concepts you need to know:
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      className="p-4 rounded-lg bg-white shadow-sm"
+                    >
+                      <h3 className="font-semibold text-blue-700 mb-2">Private Keys</h3>
+                      <p className="text-sm text-gray-600">
+                        Your private keys are like the master key to your Bitcoin vault.
+                        Never share them and keep them secure.
+                      </p>
+                    </motion.div>
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      className="p-4 rounded-lg bg-white shadow-sm"
+                    >
+                      <h3 className="font-semibold text-blue-700 mb-2">Wallet Security</h3>
+                      <p className="text-sm text-gray-600">
+                        Choose between hot wallets (online) and cold storage (offline)
+                        based on your needs and risk tolerance.
+                      </p>
+                    </motion.div>
+                  </div>
+                </div>
+              </SecurityCard>
+            </TabsContent>
+
+            <TabsContent value="wallets">
+              <SecurityCard
+                title="Wallet Recommendations"
+                icon={Wallet}
+                className="bg-gradient-to-br from-orange-50 via-white to-red-50 shadow-lg border-orange-100"
+              >
+                <div className="space-y-6">
+                  <div>
+                    <h3 className="text-xl font-semibold text-purple-800 mb-4">Hardware Wallets</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {walletRecommendations.hardware.map((wallet, index) => (
+                        <WalletCard key={index} {...wallet} />
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xl font-semibold text-purple-800 mb-4">Software Wallets</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {walletRecommendations.software.map((wallet, index) => (
+                        <WalletCard key={index} {...wallet} />
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="bg-white p-4 rounded-lg border border-purple-100">
+                    <h4 className="font-semibold text-purple-800 mb-2">Important Safety Tips:</h4>
+                    <ul className="list-disc pl-5 space-y-2 text-gray-600">
+                      <li>Always download wallets from official websites only</li>
+                      <li>Start with small amounts while learning</li>
+                      <li>Consider using both hardware and software wallets for different purposes</li>
+                      <li>Never store your recovery phrase digitally or share it with anyone</li>
+                    </ul>
+                  </div>
+                </div>
+              </SecurityCard>
+            </TabsContent>
+
+            <TabsContent value="exchanges">
+              <SecurityCard
+                title="Exchange Guide"
+                icon={Landmark}
+                className="bg-gradient-to-br from-orange-50 via-white to-red-50 shadow-lg border-orange-100"
+              >
+                <div className="space-y-6">
+                  <div className="bg-white p-4 rounded-lg border border-green-100 mb-6">
+                    <h4 className="font-semibold text-green-800 mb-2">Before You Start:</h4>
+                    <ul className="list-disc pl-5 space-y-2 text-gray-600">
+                      <li>Have your ID ready for verification (passport or driver's license)</li>
+                      <li>Use a secure email address</li>
+                      <li>Install an authenticator app for 2FA</li>
+                      <li>Prepare a secure method for recording credentials</li>
+                    </ul>
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-6">
+                    {exchangeGuide.map((exchange, index) => (
+                      <ExchangeCard key={index} {...exchange} />
+                    ))}
+                  </div>
+
+                  <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-100">
+                    <h4 className="font-semibold text-yellow-800 mb-2">Exchange Safety Tips:</h4>
+                    <ul className="list-disc pl-5 space-y-2 text-gray-600">
+                      <li>Always enable two-factor authentication (2FA)</li>
+                      <li>Use a strong, unique password</li>
+                      <li>Verify the exchange URL before logging in</li>
+                      <li>Start with small amounts to test the process</li>
+                      <li>Don't keep large amounts on exchanges long-term</li>
+                      <li>Regularly check your account activity</li>
+                    </ul>
+                  </div>
+                </div>
+              </SecurityCard>
+            </TabsContent>
+
+            <TabsContent value="disasters">
+              <SecurityCard
+                title="Major Crypto Disasters"
+                icon={History}
+                className="bg-gradient-to-br from-orange-50 via-white to-red-50 shadow-lg border-orange-100"
+              >
+                <div className="space-y-6">
+                  <div className="grid grid-cols-1 gap-6">
+                    {cryptoDisasters.map((disaster, index) => (
+                      <DisasterCard key={index} {...disaster} />
+                    ))}
+                  </div>
+
+                  <div className="bg-white p-4 rounded-lg border border-red-100">
+                    <h4 className="font-semibold text-red-800 mb-2">Common Themes & Takeaways:</h4>
+                    <ul className="list-disc pl-5 space-y-2 text-gray-600">
+                      <li>Centralized entities pose significant risks</li>
+                      <li>Security should always be the top priority</li>
+                      <li>If returns seem too good to be true, they probably are</li>
+                      <li>Self-custody is the safest option for long-term storage</li>
+                      <li>The importance of doing thorough research</li>
+                    </ul>
+                  </div>
+                </div>
+              </SecurityCard>
+            </TabsContent>
+
+            <TabsContent value="threats">
+              <SecurityCard
+                title="Security Threats"
+                icon={AlertTriangle}
+                className="bg-gradient-to-br from-orange-50 via-white to-red-50 shadow-lg border-orange-100"
+              >
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {[
+                      {
+                        icon: AlertOctagon,
+                        title: "Phishing Attacks",
+                        description: "Fake websites and emails that try to steal your credentials"
+                      },
+                      {
+                        icon: Key,
+                        title: "Private Key Theft",
+                        description: "Malware designed to steal your private keys"
+                      }
+                    ].map((threat, index) => (
+                      <motion.div
+                        key={index}
+                        whileHover={{ scale: 1.02 }}
+                        className="p-4 rounded-lg bg-white shadow-sm"
+                      >
+                        <div className="flex items-center gap-2 mb-2">
+                          <threat.icon className="h-5 w-5 text-red-500" />
+                          <h3 className="font-semibold text-gray-900">{threat.title}</h3>
+                        </div>
+                        <p className="text-sm text-gray-600">{threat.description}</p>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              </SecurityCard>
+            </TabsContent>
+
+            <TabsContent value="protection">
+              <SecurityCard
+                title="Protection Strategies"
+                icon={Lock}
+                className="bg-gradient-to-br from-orange-50 via-white to-red-50 shadow-lg border-orange-100"
+              >
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {[
+                      {
+                        title: "Hardware Wallets",
+                        description: "Use hardware wallets for large amounts",
+                        icon: HardDrive
+                      },
+                      {
+                        title: "2FA Security",
+                        description: "Enable two-factor authentication everywhere",
+                        icon: Fingerprint
+                      }
+                    ].map((strategy, index) => (
+                      <motion.div
+                        key={index}
+                        whileHover={{ scale: 1.02 }}
+                        className="p-4 rounded-lg bg-white shadow-sm"
+                      >
+                        <div className="flex items-center gap-2 mb-2">
+                          <strategy.icon className="h-5 w-5 text-green-500" />
+                          <h3 className="font-semibold text-gray-900">{strategy.title}</h3>
+                        </div>
+                        <p className="text-sm text-gray-600">{strategy.description}</p>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              </SecurityCard>
+            </TabsContent>
+          </Tabs>
+          {isFullyRead && (
+            <motion.div
+              className="mt-8 space-y-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
             >
-              <div className="space-y-4">
-                <p className="text-gray-700">
-                  Understanding the basics of Bitcoin security is crucial for protecting your investments.
-                  Here are the fundamental concepts you need to know:
+              <Card className="bg-gradient-to-r from-orange-100 to-red-100 border-l-4 border-orange-500 p-6">
+                <p className="text-orange-800 text-lg font-medium">
+                  🎉 Congratulations! You've completed the Security and Risk Management section.
                 </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    className="p-4 rounded-lg bg-white shadow-sm"
-                  >
-                    <h3 className="font-semibold text-blue-700 mb-2">Private Keys</h3>
-                    <p className="text-sm text-gray-600">
-                      Your private keys are like the master key to your Bitcoin vault.
-                      Never share them and keep them secure.
-                    </p>
-                  </motion.div>
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    className="p-4 rounded-lg bg-white shadow-sm"
-                  >
-                    <h3 className="font-semibold text-blue-700 mb-2">Wallet Security</h3>
-                    <p className="text-sm text-gray-600">
-                      Choose between hot wallets (online) and cold storage (offline)
-                      based on your needs and risk tolerance.
-                    </p>
-                  </motion.div>
-                </div>
+                <p className="text-orange-700 mt-2">
+                  You now understand the key concepts of Bitcoin security and risk management.
+                </p>
+              </Card>
+
+              <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
+                <Link href="/modules/module2/bitcoin-investment">
+                  <Button variant="outline" className="w-full md:w-auto gap-2">
+                    <ArrowLeft className="h-4 w-4" />
+                    Back to Bitcoin Investment
+                  </Button>
+                </Link>
+
+                <Link href="/modules/module2/exercises">
+                  <Button className="w-full md:w-auto bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white gap-2">
+                    Next: Practical Exercises
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </Link>
               </div>
-            </SecurityCard>
-          </TabsContent>
-
-          <TabsContent value="wallets">
-            <SecurityCard
-              title="Wallet Recommendations"
-              icon={Wallet}
-              className="bg-gradient-to-br from-purple-50 to-pink-50"
-            >
-              <div className="space-y-6">
-                <div>
-                  <h3 className="text-xl font-semibold text-purple-800 mb-4">Hardware Wallets</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {walletRecommendations.hardware.map((wallet, index) => (
-                      <WalletCard key={index} {...wallet} />
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <h3 className="text-xl font-semibold text-purple-800 mb-4">Software Wallets</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {walletRecommendations.software.map((wallet, index) => (
-                      <WalletCard key={index} {...wallet} />
-                    ))}
-                  </div>
-                </div>
-
-                <div className="bg-white p-4 rounded-lg border border-purple-100">
-                  <h4 className="font-semibold text-purple-800 mb-2">Important Safety Tips:</h4>
-                  <ul className="list-disc pl-5 space-y-2 text-gray-600">
-                    <li>Always download wallets from official websites only</li>
-                    <li>Start with small amounts while learning</li>
-                    <li>Consider using both hardware and software wallets for different purposes</li>
-                    <li>Never store your recovery phrase digitally or share it with anyone</li>
-                  </ul>
-                </div>
-              </div>
-            </SecurityCard>
-          </TabsContent>
-
-          <TabsContent value="exchanges">
-            <SecurityCard
-              title="Exchange Guide"
-              icon={Landmark}
-              className="bg-gradient-to-br from-green-50 to-teal-50"
-            >
-              <div className="space-y-6">
-                <div className="bg-white p-4 rounded-lg border border-green-100 mb-6">
-                  <h4 className="font-semibold text-green-800 mb-2">Before You Start:</h4>
-                  <ul className="list-disc pl-5 space-y-2 text-gray-600">
-                    <li>Have your ID ready for verification (passport or driver's license)</li>
-                    <li>Use a secure email address</li>
-                    <li>Install an authenticator app for 2FA</li>
-                    <li>Prepare a secure method for recording credentials</li>
-                  </ul>
-                </div>
-
-                <div className="grid grid-cols-1 gap-6">
-                  {exchangeGuide.map((exchange, index) => (
-                    <ExchangeCard key={index} {...exchange} />
-                  ))}
-                </div>
-
-                <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-100">
-                  <h4 className="font-semibold text-yellow-800 mb-2">Exchange Safety Tips:</h4>
-                  <ul className="list-disc pl-5 space-y-2 text-gray-600">
-                    <li>Always enable two-factor authentication (2FA)</li>
-                    <li>Use a strong, unique password</li>
-                    <li>Verify the exchange URL before logging in</li>
-                    <li>Start with small amounts to test the process</li>
-                    <li>Don't keep large amounts on exchanges long-term</li>
-                    <li>Regularly check your account activity</li>
-                  </ul>
-                </div>
-              </div>
-            </SecurityCard>
-          </TabsContent>
-
-          <TabsContent value="disasters">
-            <SecurityCard
-              title="Major Crypto Disasters"
-              icon={History}
-              className="bg-gradient-to-br from-red-50 to-orange-50"
-            >
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 gap-6">
-                  {cryptoDisasters.map((disaster, index) => (
-                    <DisasterCard key={index} {...disaster} />
-                  ))}
-                </div>
-
-                <div className="bg-white p-4 rounded-lg border border-red-100">
-                  <h4 className="font-semibold text-red-800 mb-2">Common Themes & Takeaways:</h4>
-                  <ul className="list-disc pl-5 space-y-2 text-gray-600">
-                    <li>Centralized entities pose significant risks</li>
-                    <li>Security should always be the top priority</li>
-                    <li>If returns seem too good to be true, they probably are</li>
-                    <li>Self-custody is the safest option for long-term storage</li>
-                    <li>The importance of doing thorough research</li>
-                  </ul>
-                </div>
-              </div>
-            </SecurityCard>
-          </TabsContent>
-
-          <TabsContent value="threats">
-            <SecurityCard
-              title="Security Threats"
-              icon={AlertTriangle}
-              className="bg-gradient-to-br from-red-50 to-orange-50"
-            >
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {[
-                    {
-                      icon: AlertOctagon,
-                      title: "Phishing Attacks",
-                      description: "Fake websites and emails that try to steal your credentials"
-                    },
-                    {
-                      icon: Key,
-                      title: "Private Key Theft",
-                      description: "Malware designed to steal your private keys"
-                    }
-                  ].map((threat, index) => (
-                    <motion.div
-                      key={index}
-                      whileHover={{ scale: 1.02 }}
-                      className="p-4 rounded-lg bg-white shadow-sm"
-                    >
-                      <div className="flex items-center gap-2 mb-2">
-                        <threat.icon className="h-5 w-5 text-red-500" />
-                        <h3 className="font-semibold text-gray-900">{threat.title}</h3>
-                      </div>
-                      <p className="text-sm text-gray-600">{threat.description}</p>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            </SecurityCard>
-          </TabsContent>
-
-          <TabsContent value="protection">
-            <SecurityCard
-              title="Protection Strategies"
-              icon={Lock}
-              className="bg-gradient-to-br from-green-50 to-emerald-50"
-            >
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {[
-                    {
-                      title: "Hardware Wallets",
-                      description: "Use hardware wallets for large amounts",
-                      icon: HardDrive
-                    },
-                    {
-                      title: "2FA Security",
-                      description: "Enable two-factor authentication everywhere",
-                      icon: Fingerprint
-                    }
-                  ].map((strategy, index) => (
-                    <motion.div
-                      key={index}
-                      whileHover={{ scale: 1.02 }}
-                      className="p-4 rounded-lg bg-white shadow-sm"
-                    >
-                      <div className="flex items-center gap-2 mb-2">
-                        <strategy.icon className="h-5 w-5 text-green-500" />
-                        <h3 className="font-semibold text-gray-900">{strategy.title}</h3>
-                      </div>
-                      <p className="text-sm text-gray-600">{strategy.description}</p>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            </SecurityCard>
-          </TabsContent>
-
-          <TabsContent value="practice">
-            <SecurityCard
-              title="Security Best Practices"
-              icon={Eye}
-              className="bg-gradient-to-br from-purple-50 to-pink-50"
-            >
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 gap-4">
-                  {[
-                    "Use strong, unique passwords for each platform",
-                    "Enable 2FA on all accounts",
-                    "Keep recovery phrases in multiple secure locations",
-                    "Never share private keys or seed phrases",
-                    "Verify all transaction details before signing",
-                    "Use test transactions for large transfers"
-                  ].map((practice, index) => (
-                    <motion.div
-                      key={index}
-                      whileHover={{ scale: 1.02 }}
-                      className="flex items-center gap-3 p-4 rounded-lg bg-white shadow-sm"
-                    >
-                      <CheckCircle2 className="h-5 w-5 text-green-500 flex-shrink-0" />
-                      <p className="text-gray-700">{practice}</p>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            </SecurityCard>
-          </TabsContent>
-        </Tabs>
-
-        {isFullyRead && (
-          <motion.div
-            className="mt-8 space-y-6"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            <Card className="bg-gradient-to-r from-green-100 to-emerald-100 border-l-4 border-green-500 p-6">
-              <p className="text-green-700 text-lg font-medium">
-                🎉 Congratulations! You've completed the Security and Risk Management section.
-              </p>
-              <p className="text-green-600 mt-2">
-                You now understand the key concepts of Bitcoin security and risk management.
-              </p>
-            </Card>
-
-            <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
-              <Link href="/modules/module2/bitcoin-investment">
-                <Button variant="outline" className="w-full md:w-auto gap-2">
-                  <ArrowLeft className="h-4 w-4" />
-                  Back to Bitcoin Investment
-                </Button>
-              </Link>
-
-              <Link href="/modules/module2/exercises">
-                <Button className="w-full md:w-auto bg-blue-600 hover:bg-blue-700 gap-2">
-                  Next: Practical Exercises
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
-          </motion.div>
-        )}
+            </motion.div>
+          )}
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default SecurityRiskSection;
