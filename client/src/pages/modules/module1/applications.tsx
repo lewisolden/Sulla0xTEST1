@@ -13,10 +13,6 @@ import {
   ArrowRight,
   Globe2,
   Users,
-  Wallet,
-  Timer,
-  Lock,
-  Clock,
   Building2,
   PiggyBank,
   Send,
@@ -27,7 +23,8 @@ import {
   LineChart,
   GraduationCap,
   Heart,
-  Shield
+  Shield,
+  Lock
 } from "lucide-react";
 
 // Enhanced Financial Inclusion Diagram Component with Animation
@@ -65,7 +62,7 @@ const FinancialInclusionDiagram = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: index * 0.1 }}
-          whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
+          whileHover={{ scale: 1.05 }}
           className={`bg-${item.color}-50 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300`}
         >
           <div className="mb-4 flex justify-center">
@@ -74,7 +71,7 @@ const FinancialInclusionDiagram = () => {
             </div>
           </div>
           <h4 className={`font-semibold text-${item.color}-800 text-lg mb-2 text-center`}>{item.title}</h4>
-          <p className="text-gray-600 text-center">{item.description}</p>
+          <p className="text-gray-600 text-center text-sm">{item.description}</p>
         </motion.div>
       ))}
     </div>
@@ -178,8 +175,14 @@ const PracticalApplicationsSection = () => {
         updateProgress({
           moduleId: 1,
           sectionId: 'practical-applications',
-          completed: true,
-          score: 100
+          status: 'completed',
+          score: 100,
+          timestamp: new Date().toISOString(),
+          userId: 'current',
+          metadata: {
+            timeSpent: 0,
+            attemptsCount: 1
+          }
         });
       }
     };
@@ -527,7 +530,18 @@ const PracticalApplicationsQuiz = () => {
     } else {
       setShowResult(true);
       const passThreshold = questions.length * 0.6;
-      updateProgress(1, 'practical-applications-quiz', score >= passThreshold);
+      updateProgress({
+        moduleId: 1,
+        sectionId: 'practical-applications-quiz',
+        status: score >= passThreshold ? 'completed' : 'failed',
+        score: (score / questions.length) * 100,
+        timestamp: new Date().toISOString(),
+        userId: 'current',
+        metadata: {
+          timeSpent: 0,
+          attemptsCount: 1
+        }
+      });
     }
   };
 
