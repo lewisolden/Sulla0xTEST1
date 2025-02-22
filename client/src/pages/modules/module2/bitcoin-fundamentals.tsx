@@ -5,11 +5,33 @@ import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, ArrowRight, BookOpen, Network } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, Network, Database, Code, Lightbulb, ArrowUpRight, History, LucideIcon } from "lucide-react";
 import BitcoinBasicsDiagram from "@/components/diagrams/BitcoinBasicsDiagram";
 import BitcoinFundamentalsQuiz from "@/components/modules/quizzes/BitcoinFundamentalsQuiz";
 import ProofOfWorkDiagram from "@/components/diagrams/ProofOfWorkDiagram";
 import { UTXOExercise } from "@/components/exercises/UTXOExercise";
+
+interface FeatureCardProps {
+  title: string;
+  description: string;
+  icon: LucideIcon;
+  gradient: string;
+}
+
+const FeatureCard = ({ title, description, icon: Icon, gradient }: FeatureCardProps) => (
+  <motion.div
+    whileHover={{ scale: 1.02 }}
+    className={`p-6 rounded-xl shadow-lg ${gradient} text-white`}
+  >
+    <div className="flex items-center gap-4 mb-4">
+      <div className="p-3 bg-white/10 rounded-lg backdrop-blur-sm">
+        <Icon className="h-6 w-6 text-white" />
+      </div>
+      <h3 className="text-xl font-bold">{title}</h3>
+    </div>
+    <p className="text-white/90 pl-2 border-l-2 border-white/20">{description}</p>
+  </motion.div>
+);
 
 const BitcoinLogo = () => (
   <svg
@@ -51,296 +73,223 @@ export default function BitcoinFundamentalsSection() {
   }, [updateProgress]);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-b from-orange-50 via-white to-orange-50">
       <motion.div
         className="fixed top-0 left-0 w-full h-1 bg-gray-300 z-50"
         initial={{ scaleX: 0 }}
         animate={{ scaleX: scrollProgress / 100 }}
         style={{ transformOrigin: "left" }}
       >
-        <div className="h-full bg-blue-600" />
+        <div className="h-full bg-gradient-to-r from-orange-500 to-red-600" />
       </motion.div>
 
-      <div className="max-w-4xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-6"
-        >
-          <Link href="/modules/module2">
-            <Button variant="ghost" className="gap-2">
-              <ArrowLeft className="h-4 w-4" /> Back to Module Overview
-            </Button>
-          </Link>
-        </motion.div>
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6"
+          >
+            <Link href="/modules/module2">
+              <Button variant="ghost" className="gap-2">
+                <ArrowLeft className="h-4 w-4" /> Back to Module Overview
+              </Button>
+            </Link>
+          </motion.div>
 
-        <div className="bg-gradient-to-r from-orange-500 via-orange-600 to-red-600 rounded-xl p-6 mb-8">
-          <div className="flex items-center">
-            <BitcoinLogo />
-            <div>
-              <motion.h1
-                className="text-4xl font-bold text-white"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5 }}
-              >
-                2.1 Bitcoin Fundamentals
-              </motion.h1>
-              <p className="text-xl text-orange-100 mt-2">
-                Understanding the World's First Cryptocurrency
-              </p>
+          <div className="bg-gradient-to-r from-orange-500 via-orange-600 to-red-600 rounded-xl p-8 mb-12 shadow-lg">
+            <div className="flex items-center">
+              <BitcoinLogo />
+              <div>
+                <motion.h1
+                  className="text-4xl font-bold text-white mb-2"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  2.1 Bitcoin Fundamentals
+                </motion.h1>
+                <p className="text-xl text-orange-100">
+                  Understanding the World's First Cryptocurrency
+                </p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="prose lg:prose-xl text-gray-700 space-y-6">
-          <motion.section
-            variants={contentVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <BitcoinBasicsDiagram />
-          </motion.section>
+          <div className="prose lg:prose-xl text-gray-700 space-y-12">
+            <motion.section
+              variants={contentVariants}
+              initial="hidden"
+              animate="visible"
+              className="relative"
+            >
+              <BitcoinBasicsDiagram />
 
-          <motion.section
-            variants={contentVariants}
-            initial="hidden"
-            animate="visible"
-            className="mt-12"
-          >
-            <h2 className="text-3xl font-bold text-blue-700">Core Concepts</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-              <motion.div
-                className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-lg"
-                whileHover={{ scale: 1.02 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <BookOpen className="h-6 w-6 text-blue-600" />
-                  <h3 className="text-xl font-semibold text-blue-800">What is Bitcoin?</h3>
-                </div>
-                <p className="text-gray-700">
-                  Bitcoin is a decentralized digital currency that enables instant payments to anyone, anywhere in the world.
-                </p>
-              </motion.div>
-
-              <motion.div
-                className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-lg"
-                whileHover={{ scale: 1.02 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <Network className="h-6 w-6 text-blue-600" />
-                  <h3 className="text-xl font-semibold text-blue-800">How it Works</h3>
-                </div>
-                <p className="text-gray-700">
-                  Bitcoin transactions are verified by network nodes through cryptography and recorded on a public ledger called a blockchain.
-                </p>
-              </motion.div>
-            </div>
-          </motion.section>
-
-          <motion.section
-            variants={contentVariants}
-            initial="hidden"
-            animate="visible"
-            className="mt-12"
-          >
-            <h2 className="text-3xl font-bold text-blue-700">Technical Concepts Explained</h2>
-            <div className="grid grid-cols-1 gap-6 mt-4">
-              <motion.div
-                className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-lg"
-                whileHover={{ scale: 1.02 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <h3 className="text-xl font-semibold text-blue-800 mb-3">Blockchain Technology</h3>
-                <div className="space-y-2">
-                  <p className="text-gray-700">Think of a blockchain as a digital ledger that:</p>
-                  <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                    <li>Records all Bitcoin transactions in blocks, like pages in a book</li>
-                    <li>Each block links to the previous one, forming an unbreakable chain</li>
-                    <li>Once information is recorded, it cannot be changed without changing all subsequent blocks</li>
-                    <li>Every participant has a copy of the entire history</li>
-                  </ul>
-                </div>
-              </motion.div>
-
-              <motion.div
-                className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-lg"
-                whileHover={{ scale: 1.02 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <h3 className="text-xl font-semibold text-blue-800 mb-3">The Bitcoin Network</h3>
-                <div className="space-y-2">
-                  <p className="text-gray-700">The Bitcoin network is a peer-to-peer system where:</p>
-                  <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                    <li>Thousands of computers (nodes) work together without central control</li>
-                    <li>Each node validates and relays transactions to others</li>
-                    <li>Anyone can join or leave the network at any time</li>
-                    <li>The network reaches consensus on the state of all Bitcoin transactions</li>
-                  </ul>
-                </div>
-              </motion.div>
-
-              <motion.div
-                className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-lg"
-                whileHover={{ scale: 1.02 }}
-                transition={{ type: "spring", stiffness: 300 }}
-              >
-                <h3 className="text-xl font-semibold text-blue-800 mb-3">Bitcoin Mining</h3>
-                <div className="space-y-2">
-                  <p className="text-gray-700">Mining is the process that:</p>
-                  <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                    <li>Secures the network through complex mathematical computations</li>
-                    <li>Creates new bitcoins as a reward for miners</li>
-                    <li>Processes and verifies transactions</li>
-                    <li>Requires significant computing power and electricity</li>
-                  </ul>
-                </div>
-              </motion.div>
-            </div>
-          </motion.section>
-
-          <motion.section
-            variants={contentVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <h2 className="text-3xl font-bold text-blue-700">The Birth of Bitcoin</h2>
-            <h3 className="text-2xl font-semibold text-blue-600">Historical Context and Significance</h3>
-            <p>
-              The 2008 financial crisis revealed fundamental problems in our financial system. During this turbulent time:
-            </p>
-            <ul className="list-disc pl-5 space-y-2">
-              <li>Banks were failing</li>
-              <li>Governments were implementing massive bailouts</li>
-              <li>Public trust in financial institutions was eroding</li>
-              <li>The need for financial innovation became clear</li>
-            </ul>
-            <p>This environment gave birth to Bitcoin, introduced through a whitepaper by the mysterious Satoshi Nakamoto.</p>
-          </motion.section>
-
-          <motion.section
-            variants={contentVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            <h2 className="text-3xl font-bold text-blue-700">How Bitcoin Works</h2>
-            <div className="bg-blue-50 rounded-lg p-6 mb-6">
-              <h3 className="text-2xl font-semibold text-blue-600 mb-4">Simple Explanation</h3>
-              <p>Think of Bitcoin as a digital ledger that:</p>
-              <ul className="list-disc pl-5 space-y-2">
-                <li>Records all transactions</li>
-                <li>Is maintained by thousands of computers</li>
-                <li>Cannot be changed once written</li>
-                <li>Is visible to everyone</li>
-              </ul>
-            </div>
-          </motion.section>
-
-          <motion.section
-            variants={contentVariants}
-            initial="hidden"
-            animate="visible"
-            className="mt-12"
-          >
-            <h2 className="text-3xl font-bold text-blue-700">Understanding Proof of Work</h2>
-            <div className="space-y-6">
-              <div className="bg-blue-50 rounded-lg p-6">
-                <h3 className="text-2xl font-semibold text-blue-600 mb-4">What is Proof of Work?</h3>
-                <p className="text-gray-700 mb-4">
-                  Think of Proof of Work like a complex puzzle competition where:
-                </p>
-                <ul className="list-disc pl-5 space-y-2 text-gray-700 mb-6">
-                  <li>Many computers (miners) compete to solve a mathematical puzzle</li>
-                  <li>The first one to solve it gets to add a new block to the blockchain</li>
-                  <li>The winner receives newly created bitcoins as a reward</li>
-                  <li>The puzzle is hard to solve but easy to verify - like a Sudoku puzzle</li>
-                </ul>
-
-                <h4 className="text-xl font-semibold text-blue-600 mb-3">Why is it Important?</h4>
-                <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                  <li>Makes it expensive and difficult to cheat the system</li>
-                  <li>Ensures all computers on the network agree on the transaction history</li>
-                  <li>Provides a fair way to distribute new bitcoins</li>
-                  <li>Secures the network through computational work</li>
-                </ul>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+                <FeatureCard
+                  title="Decentralized Network"
+                  description="A global network of computers maintaining the Bitcoin blockchain without central authority."
+                  icon={Network}
+                  gradient="bg-gradient-to-br from-blue-500 to-purple-600"
+                />
+                <FeatureCard
+                  title="Digital Scarcity"
+                  description="Limited supply of 21 million coins, creating true digital scarcity for the first time."
+                  icon={Database}
+                  gradient="bg-gradient-to-br from-purple-500 to-pink-600"
+                />
+                <FeatureCard
+                  title="Secure Transactions"
+                  description="Cryptographic security ensuring safe and immutable transactions."
+                  icon={Code}
+                  gradient="bg-gradient-to-br from-pink-500 to-red-600"
+                />
+                <FeatureCard
+                  title="Financial Innovation"
+                  description="Revolutionary technology changing how we think about money and value transfer."
+                  icon={Lightbulb}
+                  gradient="bg-gradient-to-br from-red-500 to-orange-600"
+                />
               </div>
+            </motion.section>
 
-              <ProofOfWorkDiagram />
-
-              <div className="bg-purple-50 rounded-lg p-6">
-                <h3 className="text-2xl font-semibold text-purple-600 mb-4">How it Works in Simple Terms</h3>
-                <div className="space-y-4">
-                  <div className="bg-white p-4 rounded-lg shadow-sm">
-                    <h4 className="font-semibold text-purple-800 mb-2">1. The Race Begins</h4>
-                    <p className="text-gray-700">
-                      Miners gather new transactions and compete to be the first to find a special number
-                      that makes their block of transactions valid.
-                    </p>
-                  </div>
-
-                  <div className="bg-white p-4 rounded-lg shadow-sm">
-                    <h4 className="font-semibold text-purple-800 mb-2">2. The Mining Process</h4>
-                    <p className="text-gray-700">
-                      Miners' computers try millions of random numbers per second until one finds the
-                      correct solution - like trying combinations on a lock.
-                    </p>
-                  </div>
-
-                  <div className="bg-white p-4 rounded-lg shadow-sm">
-                    <h4 className="font-semibold text-purple-800 mb-2">3. Winner Takes All</h4>
-                    <p className="text-gray-700">
-                      The first miner to find the solution gets to add their block to the blockchain
-                      and receives newly created bitcoins as a reward.
-                    </p>
-                  </div>
+            <motion.section
+              variants={contentVariants}
+              initial="hidden"
+              animate="visible"
+              className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl shadow-lg"
+            >
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-blue-100 rounded-xl">
+                  <History className="h-8 w-8 text-blue-600" />
+                </div>
+                <div>
+                  <h2 className="text-3xl font-bold text-blue-800">The Birth of Bitcoin</h2>
+                  <h3 className="text-xl text-blue-600">Historical Context and Significance</h3>
                 </div>
               </div>
 
-              <div className="bg-green-50 rounded-lg p-6">
-                <h3 className="text-2xl font-semibold text-green-600 mb-4">Common Questions</h3>
-                <div className="space-y-4">
-                  <div>
-                    <h4 className="font-semibold text-green-800 mb-2">Why does it use so much energy?</h4>
+              <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md">
+                <p className="mb-4">
+                  The 2008 financial crisis revealed fundamental problems in our financial system. During this turbulent time:
+                </p>
+                <ul className="list-disc pl-5 space-y-2 mb-4">
+                  <li>Banks were failing</li>
+                  <li>Governments were implementing massive bailouts</li>
+                  <li>Public trust in financial institutions was eroding</li>
+                  <li>The need for financial innovation became clear</li>
+                </ul>
+                <p>This environment gave birth to Bitcoin, introduced through a whitepaper by the mysterious Satoshi Nakamoto.</p>
+              </div>
+            </motion.section>
+
+            <motion.section
+              variants={contentVariants}
+              initial="hidden"
+              animate="visible"
+              className="bg-gradient-to-br from-purple-50 to-pink-50 p-8 rounded-2xl shadow-lg"
+            >
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-purple-100 rounded-xl">
+                  <BookOpen className="h-8 w-8 text-purple-600" />
+                </div>
+                <div>
+                  <h2 className="text-3xl font-bold text-purple-800">How Bitcoin Works</h2>
+                  <p className="text-lg text-purple-600">Understanding the Fundamentals</p>
+                </div>
+              </div>
+
+              <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md">
+                <h3 className="text-2xl font-semibold text-purple-700 mb-4">Simple Explanation</h3>
+                <p className="mb-4">Think of Bitcoin as a digital ledger that:</p>
+                <ul className="list-disc pl-5 space-y-2">
+                  <li>Records all transactions</li>
+                  <li>Is maintained by thousands of computers</li>
+                  <li>Cannot be changed once written</li>
+                  <li>Is visible to everyone</li>
+                </ul>
+              </div>
+            </motion.section>
+
+            <motion.section
+              variants={contentVariants}
+              initial="hidden"
+              animate="visible"
+              className="bg-gradient-to-br from-orange-50 to-red-50 p-8 rounded-2xl shadow-lg"
+            >
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-orange-100 rounded-xl">
+                  <ArrowUpRight className="h-8 w-8 text-orange-600" />
+                </div>
+                <div>
+                  <h2 className="text-3xl font-bold text-orange-800">Understanding Proof of Work</h2>
+                  <p className="text-lg text-orange-600">The Engine Behind Bitcoin</p>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md">
+                  <h3 className="text-2xl font-semibold text-orange-700 mb-4">What is Proof of Work?</h3>
+                  <p className="text-gray-700 mb-4">
+                    Think of Proof of Work like a complex puzzle competition where:
+                  </p>
+                  <ul className="list-disc pl-5 space-y-2 text-gray-700 mb-6">
+                    <li>Many computers (miners) compete to solve a mathematical puzzle</li>
+                    <li>The first one to solve it gets to add a new block to the blockchain</li>
+                    <li>The winner receives newly created bitcoins as a reward</li>
+                    <li>The puzzle is hard to solve but easy to verify - like a Sudoku puzzle</li>
+                  </ul>
+                </div>
+
+                <ProofOfWorkDiagram />
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md"
+                  >
+                    <h4 className="font-semibold text-orange-800 mb-2">Why So Much Energy?</h4>
                     <p className="text-gray-700">
                       The high energy use is actually a feature, not a bug. It makes it extremely expensive
                       to attack the network, ensuring its security through real-world costs.
                     </p>
-                  </div>
+                  </motion.div>
 
-                  <div>
-                    <h4 className="font-semibold text-green-800 mb-2">Can anyone be a miner?</h4>
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md"
+                  >
+                    <h4 className="font-semibold text-orange-800 mb-2">Mining Today</h4>
                     <p className="text-gray-700">
-                      Yes, but today most mining is done by specialized computers in large facilities.
+                      Today most mining is done by specialized computers in large facilities.
                       Individual miners often join mining pools to share resources and rewards.
                     </p>
-                  </div>
-
-                  <div>
-                    <h4 className="font-semibold text-green-800 mb-2">What happens if two miners solve it at once?</h4>
-                    <p className="text-gray-700">
-                      The network will temporarily split but quickly resolves to the longest chain of blocks.
-                      This is why exchanges often wait for multiple confirmations.
-                    </p>
-                  </div>
+                  </motion.div>
                 </div>
               </div>
-            </div>
-          </motion.section>
+            </motion.section>
 
-          <motion.section
-            variants={contentVariants}
-            initial="hidden"
-            animate="visible"
-            className="mt-12"
-          >
-            <h2 className="text-3xl font-bold text-blue-700">Understanding Bitcoin Transactions</h2>
-            <div className="space-y-6">
-              <div className="bg-blue-50 rounded-lg p-6">
-                <h3 className="text-2xl font-semibold text-blue-600 mb-4">How Bitcoin Transactions Work</h3>
+            <motion.section
+              variants={contentVariants}
+              initial="hidden"
+              animate="visible"
+              className="bg-gradient-to-br from-blue-50 to-cyan-50 p-8 rounded-2xl shadow-lg"
+            >
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-blue-100 rounded-xl">
+                  <Database className="h-8 w-8 text-blue-600" />
+                </div>
+                <div>
+                  <h2 className="text-3xl font-bold text-blue-800">Understanding Bitcoin Transactions</h2>
+                  <p className="text-lg text-blue-600">How Money Moves in the Bitcoin Network</p>
+                </div>
+              </div>
 
-                <div className="bg-white p-4 rounded-lg shadow-sm mb-4">
+              <div className="space-y-6">
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md"
+                >
                   <h4 className="font-semibold text-blue-800 mb-2">The Basics: Think of it Like Cash</h4>
                   <p className="text-gray-700">
                     Imagine you have a $20 bill and want to buy something that costs $8. What happens?
@@ -352,133 +301,119 @@ export default function BitcoinFundamentalsSection() {
                     <li>You now have a new $12 bill instead</li>
                   </ul>
                   <p className="mt-4 text-gray-700">
-                    Bitcoin works very similarly! This is what we call the "UTXO model" - but don't worry about the fancy name yet.
+                    Bitcoin works very similarly! This is what we call the "UTXO model".
                   </p>
-                </div>
+                </motion.div>
 
-                <div className="bg-white p-4 rounded-lg shadow-sm">
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md"
+                >
                   <h4 className="font-semibold text-blue-800 mb-2">Bitcoin's Digital Wallet: UTXOs Explained</h4>
                   <p className="text-gray-700">
                     Your Bitcoin wallet doesn't actually store a single "balance" number. Instead, it's like having different bills in your physical wallet:
                   </p>
-                  <div className="my-4 p-4 bg-gray-50 rounded-lg">
+                  <div className="mt-4 p-4 bg-blue-50 rounded-lg">
                     <p className="font-medium text-gray-800">Example of Your Digital Wallet:</p>
                     <ul className="list-none pl-5 mt-2 space-y-2">
                       <li className="flex items-center">
-                        <span className="inline-block w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                        <span className="inline-block w-4 h-4 bg-blue-500 rounded-full mr-2"></span>
                         One "digital bill" worth 0.5 BTC
                       </li>
                       <li className="flex items-center">
-                        <span className="inline-block w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                        <span className="inline-block w-4 h-4 bg-blue-500 rounded-full mr-2"></span>
                         Another worth 0.3 BTC
                       </li>
                       <li className="flex items-center">
-                        <span className="inline-block w-4 h-4 bg-green-500 rounded-full mr-2"></span>
+                        <span className="inline-block w-4 h-4 bg-blue-500 rounded-full mr-2"></span>
                         And one worth 0.1 BTC
                       </li>
                       <li className="font-medium mt-2">Total Balance: 0.9 BTC</li>
                     </ul>
                   </div>
-                  <p className="text-gray-700">
-                    Each of these "digital bills" is called an Unspent Transaction Output (UTXO).
-                  </p>
-                </div>
+                </motion.div>
 
-                <div className="bg-white p-4 rounded-lg shadow-sm mt-4">
-                  <h4 className="font-semibold text-blue-800 mb-2">Let's Make a Purchase!</h4>
-                  <div className="border-l-4 border-blue-200 pl-4">
-                    <p className="text-gray-700 mb-2">
-                      You want to send 0.6 BTC to your friend. Here's what happens:
-                    </p>
-                    <ol className="list-decimal pl-5 space-y-2 text-gray-700">
-                      <li>You need to use your 0.5 BTC and 0.3 BTC UTXOs (total 0.8 BTC)</li>
-                      <li>Your friend gets their 0.6 BTC</li>
-                      <li>You get 0.19 BTC back as change (after a 0.01 BTC transaction fee)</li>
-                      <li>Your old 0.5 and 0.3 BTC UTXOs are now "spent" - like used up bills</li>
-                      <li>You now have a new 0.19 BTC UTXO (plus your unused 0.1 BTC UTXO)</li>
-                    </ol>
-                  </div>
-                </div>
-
-                <div className="bg-purple-50 p-4 rounded-lg mt-4">
-                  <h4 className="font-semibold text-purple-800 mb-2">Remember These Simple Rules:</h4>
-                  <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                    <li>You must use entire "digital bills" (UTXOs) - no tearing them in half!</li>
-                    <li>If you spend more than needed, you get change back as a new UTXO</li>
-                    <li>Once you spend a UTXO, it's gone (like spending a dollar bill)</li>
-                    <li>Your wallet's balance is just the sum of all your unspent UTXOs</li>
-                  </ul>
-                </div>
-
-                <div className="mt-6 bg-gray-50 p-4 rounded-lg border border-gray-200">
-                  <h4 className="font-semibold text-gray-700 mb-2">Want to Learn More? (Optional)</h4>
-                  <div className="space-y-2">
-                    <p className="text-gray-600 text-sm">
-                      Behind the scenes, each UTXO contains:
-                    </p>
-                    <ul className="list-disc pl-5 text-sm text-gray-600">
-                      <li>A unique identifier (like a serial number on a bill)</li>
-                      <li>The amount it's worth</li>
-                      <li>A digital lock that only you can unlock with your wallet</li>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md"
+                  >
+                    <h4 className="font-semibold text-blue-800 mb-2">Remember These Rules:</h4>
+                    <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                      <li>You must use entire "digital bills" (UTXOs)</li>
+                      <li>If you spend more than needed, you get change back</li>
+                      <li>Once you spend a UTXO, it's gone forever</li>
+                      <li>Your wallet's balance is the sum of all UTXOs</li>
                     </ul>
-                  </div>
+                  </motion.div>
+
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md"
+                  >
+                    <h4 className="font-semibold text-blue-800 mb-2">Advanced Details:</h4>
+                    <p className="text-gray-700">Behind the scenes, each UTXO contains:</p>
+                    <ul className="list-disc pl-5 text-gray-700">
+                      <li>A unique identifier (like a serial number)</li>
+                      <li>The amount it's worth</li>
+                      <li>A digital lock that only you can unlock</li>
+                    </ul>
+                  </motion.div>
                 </div>
               </div>
-            </div>
-          </motion.section>
+            </motion.section>
 
-          <motion.section
-            variants={contentVariants}
-            initial="hidden"
-            animate="visible"
-            className="mt-8 mb-12"
-          >
-            <div className="bg-gradient-to-br from-blue-50 to-purple-50 p-6 rounded-lg">
-              <h3 className="text-2xl font-semibold text-blue-800 mb-4">Interactive UTXO Exercise</h3>
+            <motion.section
+              variants={contentVariants}
+              initial="hidden"
+              animate="visible"
+              className="bg-gradient-to-br from-purple-50 to-indigo-50 p-8 rounded-2xl shadow-lg"
+            >
+              <h3 className="text-2xl font-bold text-purple-800 mb-4">Interactive UTXO Exercise</h3>
               <p className="text-gray-700 mb-6">
                 Now that you understand how UTXOs work, let's practice with an interactive exercise. 
                 Try to complete transactions by selecting the right combination of UTXOs!
               </p>
               <UTXOExercise />
-            </div>
-          </motion.section>
+            </motion.section>
 
-          {isFullyRead && (
-            <motion.div
-              className="mt-8 space-y-6"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-            >
-              <Card className="bg-green-100 border-l-4 border-green-500 p-4">
-                <p className="text-green-700">
-                  🎉 Congratulations! You've completed the Bitcoin Fundamentals section.
-                </p>
-              </Card>
-
+            {isFullyRead && (
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mt-8 mb-8"
+                className="space-y-6"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 }}
               >
-                <BitcoinFundamentalsQuiz />
+                <Card className="bg-green-100 border-l-4 border-green-500 p-4">
+                  <p className="text-green-700">
+                    🎉 Congratulations! You've completed the Bitcoin Fundamentals section.
+                  </p>
+                </Card>
+
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mb-8"
+                >
+                  <BitcoinFundamentalsQuiz />
+                </motion.div>
+
+                <div className="flex flex-col md:flex-row items-center gap-4 justify-between mt-8">
+                  <Link href="/modules/module2">
+                    <Button variant="outline" className="w-full md:w-auto">
+                      <ArrowLeft className="mr-2 h-4 w-4" /> Back to Module Overview
+                    </Button>
+                  </Link>
+
+                  <Link href="/modules/module2/bitcoin-investment">
+                    <Button className="w-full md:w-auto bg-blue-600 hover:bg-blue-700">
+                      Next: Bitcoin as an Investment <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                </div>
               </motion.div>
-
-              <div className="flex flex-col md:flex-row items-center gap-4 justify-between mt-8">
-                <Link href="/modules/module2">
-                  <Button variant="outline" className="w-full md:w-auto">
-                    <ArrowLeft className="mr-2 h-4 w-4" /> Back to Module Overview
-                  </Button>
-                </Link>
-
-                <Link href="/modules/module2/bitcoin-investment">
-                  <Button className="w-full md:w-auto bg-blue-600 hover:bg-blue-700">
-                    Next: Bitcoin as an Investment <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-              </div>
-            </motion.div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </div>
