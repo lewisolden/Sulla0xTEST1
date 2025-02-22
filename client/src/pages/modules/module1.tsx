@@ -455,7 +455,7 @@ export default function Module1() {
                       transition={{ delay: 0.4 }}
                       className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-8 mb-8 text-white"
                     >
-                      <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+                      <h3 className="text-xl font-semibold mb-4 flex items-center gap-2 text-white">
                         <TrendingUp className="h-6 w-6 text-blue-400" />
                         Practice Makes Perfect
                       </h3>
