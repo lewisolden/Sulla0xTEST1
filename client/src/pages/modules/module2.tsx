@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useProgress } from "@/context/progress-context";
 import { Link } from "wouter";
@@ -9,6 +9,7 @@ import { CheckCircle2, XCircle } from "lucide-react";
 import ModuleProgress from "@/components/modules/module-progress";
 import BadgeShowcase from "@/components/modules/badge-showcase";
 import { useScrollTop } from "@/hooks/useScrollTop";
+import { motion } from "framer-motion";
 
 const BitcoinLogo = () => (
   <svg
@@ -34,22 +35,24 @@ const moduleTopics = [
     icon: Database,
     subsections: [
       "The Birth of Bitcoin",
-      "Historical Context and Significance",
+      "Historical Context and Significance", 
       "How Bitcoin Works",
       "Key Milestones"
-    ]
+    ],
+    gradient: "from-orange-400 to-red-500"
   },
   {
     id: "bitcoin-investment",
     title: "2.2 Bitcoin as an Investment",
-    path: "/modules/module2/bitcoin-investment",
+    path: "/modules/module2/bitcoin-investment", 
     icon: Network,
     subsections: [
       "Understanding Bitcoin's Value",
       "Store of Value Properties",
       "Bitcoin ETFs",
       "Investment Strategies"
-    ]
+    ],
+    gradient: "from-red-400 to-pink-500"
   },
   {
     id: "security-risk",
@@ -61,7 +64,8 @@ const moduleTopics = [
       "Risk Management Strategies",
       "Common Mistakes to Avoid",
       "Best Practices"
-    ]
+    ],
+    gradient: "from-pink-400 to-purple-500"
   },
   {
     id: "practical-exercises",
@@ -73,7 +77,8 @@ const moduleTopics = [
       "Advanced Exercises",
       "Real-world Scenarios",
       "Practice Quiz"
-    ]
+    ],
+    gradient: "from-purple-400 to-indigo-500"
   }
 ];
 
@@ -99,174 +104,228 @@ export default function Module2() {
   }));
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-b from-orange-50 via-white to-orange-50">
       <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center mb-6">
-          <BitcoinLogo />
-          <h1 className="text-4xl font-bold text-blue-900">
-            Module 2: Bitcoin Deep Dive
-          </h1>
-        </div>
-
-        <ModuleProgress moduleId={2} totalSections={moduleTopics.length} />
-        <BadgeShowcase moduleId={2} />
-
-        <Tabs defaultValue="overview" className="space-y-4">
-          <TabsList>
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="content">Topics</TabsTrigger>
-            <TabsTrigger value="quiz">Quiz</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="overview">
-            <Card>
-              <div className="p-6">
-                <div className="prose max-w-none">
-                  <h2 className="text-2xl font-semibold mb-4">Welcome to Module 2</h2>
-                  <p className="text-gray-700 mb-6">
-                    Welcome to Module 2 of our cryptocurrency education journey. This module focuses on 
-                    Bitcoin - the first and most influential cryptocurrency. We'll explore its history,
-                    how it works, and its role as a revolutionary form of digital money.
-                  </p>
-                  <p className="text-gray-700 mb-6">
-                    Before diving into Bitcoin's technical aspects, let's address some common concerns:
-                  </p>
-                  <ul className="list-disc pl-6 space-y-2 text-gray-700">
-                    <li><strong>Do I need to buy a whole Bitcoin?</strong> No! Bitcoin is divisible into 100 million units called "satoshis" or "sats." You can start with as little as $10.</li>
-                    <li><strong>Is it too technical for me?</strong> While Bitcoin uses complex technology, using it is similar to mobile banking. Start with the basics, and your understanding will grow naturally.</li>
-                    <li><strong>What if I make a mistake?</strong> Start with small amounts while learning. Use test transactions and practice with minimal stakes to build confidence.</li>
-                  </ul>
-
-                  <h3 className="text-xl font-semibold mt-8 mb-4">Learning Objectives</h3>
-                  <ul className="list-disc pl-6 space-y-2 text-gray-700">
-                    <li>Understand the historical context and significance of Bitcoin</li>
-                    <li>Learn how Bitcoin works as a digital currency</li>
-                    <li>Explore investment considerations and Bitcoin ETFs</li>
-                    <li>Master security practices and risk management</li>
-                  </ul>
-
-                  <div className="mt-8 flex justify-center">
-                    <Link href="/modules/module2/bitcoin-fundamentals">
-                      <Button 
-                        size="lg"
-                        className="bg-blue-600 hover:bg-blue-700"
-                      >
-                        Start First Topic
-                      </Button>
-                    </Link>
+        <div className="max-w-5xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-6"
+          >
+            <Card className="border-none overflow-hidden">
+              <div className="bg-gradient-to-r from-orange-500 to-red-600 p-8">
+                <div className="flex items-center gap-6">
+                  <BitcoinLogo />
+                  <div>
+                    <h1 className="text-4xl font-bold text-white mb-2">
+                      Module 2: Bitcoin Deep Dive
+                    </h1>
+                    <p className="text-orange-100 text-lg">
+                      Master the fundamentals of Bitcoin and blockchain technology
+                    </p>
                   </div>
                 </div>
               </div>
-            </Card>
-          </TabsContent>
 
-          <TabsContent value="content">
-            <div className="grid gap-6">
-              {topicsWithProgress.map((topic) => (
-                <Card key={topic.id} className="transition-all hover:shadow-lg">
-                  <div className="p-6">
-                    <div className="flex items-start gap-4">
-                      <div className="p-3 rounded-full bg-blue-100 mt-1">
-                        <topic.icon className="w-6 h-6 text-blue-600" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <h3 className="text-xl font-semibold text-blue-800">
-                            {topic.title}
-                          </h3>
-                          {topic.completed && (
-                            <span className="text-green-600 text-sm">(Completed)</span>
-                          )}
-                        </div>
-                        <ul className="list-disc pl-5 text-gray-600 mb-4">
-                          {topic.subsections.map((subsection, index) => (
-                            <li key={index} className="text-sm mb-2">{subsection}</li>
-                          ))}
-                        </ul>
-                        <Link href={topic.path}>
-                          <Button>
-                            {topic.completed ? "Review Topic" : "Start Topic"}
-                          </Button>
-                        </Link>
-                      </div>
+              <CardContent className="p-6">
+                <div className="prose max-w-none mb-8">
+                  <div className="bg-gradient-to-br from-orange-50 to-red-50 p-6 rounded-xl border border-orange-100">
+                    <h3 className="text-xl font-semibold text-orange-800 mb-4">Course Overview</h3>
+                    <p className="text-gray-700">
+                      Welcome to Module 2! Here you'll gain a comprehensive understanding of Bitcoin 
+                      and its underlying technology. Through interactive lessons and practical 
+                      exercises, you'll learn about:
+                    </p>
+                    <div className="grid md:grid-cols-2 gap-4 mt-4">
+                      {[
+                        "Blockchain Architecture",
+                        "Investment Strategies",
+                        "Security Best Practices",
+                        "Real-world Applications"
+                      ].map((item, index) => (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: 0.2 + index * 0.1 }}
+                          className="flex items-center gap-2 text-gray-700"
+                        >
+                          <div className="h-2 w-2 bg-orange-400 rounded-full" />
+                          <span>{item}</span>
+                        </motion.div>
+                      ))}
                     </div>
                   </div>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
+                </div>
 
-          <TabsContent value="quiz">
-            <Card>
-              <div className="p-6">
-                <h2 className="text-2xl font-semibold mb-4">Module Quiz</h2>
-                <p className="text-gray-700 mb-6">
-                  Complete all topics to unlock the module quiz and test your knowledge 
-                  of Bitcoin concepts.
-                </p>
-                <div className="bg-white p-6 rounded-lg shadow-sm">
-                  <h3 className="text-lg font-medium text-gray-700 mb-4">Required Topics:</h3>
-                  <ul className="space-y-3">
-                    {topicsWithProgress.map((topic) => (
-                      <li 
-                        key={topic.id} 
-                        className={`flex items-center justify-between p-3 rounded-lg ${
-                          topic.completed ? 'bg-green-50' : 'bg-gray-50'
-                        }`}
-                      >
-                        <span className="flex items-center gap-2">
-                          {topic.completed ? (
-                            <CheckCircle2 className="h-5 w-5 text-green-500" />
-                          ) : (
-                            <XCircle className="h-5 w-5 text-gray-400" />
-                          )}
-                          <span className={`${topic.completed ? 'text-green-700' : 'text-gray-600'}`}>
-                            {topic.title}
-                          </span>
-                        </span>
-                        {!topic.completed && (
+                <ModuleProgress moduleId={2} totalSections={moduleTopics.length} />
+                <BadgeShowcase moduleId={2} />
+
+                <Tabs defaultValue="overview" className="mt-8">
+                  <TabsList className="bg-orange-100 p-1">
+                    <TabsTrigger value="overview" className="data-[state=active]:bg-white">Overview</TabsTrigger>
+                    <TabsTrigger value="content" className="data-[state=active]:bg-white">Topics</TabsTrigger>
+                    <TabsTrigger value="quiz" className="data-[state=active]:bg-white">Quiz</TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="overview" className="mt-6">
+                    <div className="grid gap-6">
+                      <div className="prose max-w-none">
+                        <h2 className="text-2xl font-semibold text-orange-800 mb-4">Learning Path</h2>
+                        <p className="text-gray-700">
+                          This module is structured to provide you with a thorough understanding 
+                          of Bitcoin and blockchain technology. Start with the fundamentals and 
+                          progress through increasingly advanced concepts.
+                        </p>
+                      </div>
+
+                      <div className="grid md:grid-cols-2 gap-6 mt-4">
+                        {topicsWithProgress.map((topic, index) => (
+                          <motion.div
+                            key={topic.id}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.3 + index * 0.1 }}
+                          >
+                            <Link href={topic.path}>
+                              <Card className={`bg-gradient-to-br ${topic.gradient} text-white hover:shadow-lg transition-all duration-300 cursor-pointer`}>
+                                <CardContent className="p-6">
+                                  <div className="flex items-center gap-3 mb-2">
+                                    <div className="p-2 bg-white/20 rounded-lg">
+                                      <topic.icon className="h-5 w-5" />
+                                    </div>
+                                    <h3 className="font-semibold">{topic.title}</h3>
+                                  </div>
+                                  <div className="pl-11">
+                                    <ul className="list-disc text-sm text-white/90">
+                                      {topic.subsections.slice(0, 2).map((sub, idx) => (
+                                        <li key={idx}>{sub}</li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                </CardContent>
+                              </Card>
+                            </Link>
+                          </motion.div>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="content" className="mt-6">
+                    <div className="grid gap-6">
+                      {topicsWithProgress.map((topic, index) => (
+                        <motion.div
+                          key={topic.id}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.2 + index * 0.1 }}
+                        >
                           <Link href={topic.path}>
-                            <Button variant="outline" size="sm">
-                              Complete Topic
-                            </Button>
+                            <Card className={`bg-gradient-to-br ${topic.gradient} text-white hover:shadow-lg transition-all duration-300`}>
+                              <CardContent className="p-6">
+                                <div className="flex justify-between items-start">
+                                  <div className="flex-1">
+                                    <div className="flex items-center gap-3 mb-2">
+                                      <div className="p-2 bg-white/20 rounded-lg">
+                                        <topic.icon className="h-5 w-5" />
+                                      </div>
+                                      <h3 className="text-xl font-semibold">{topic.title}</h3>
+                                    </div>
+                                    <ul className="list-disc pl-12 text-white/90">
+                                      {topic.subsections.map((sub, idx) => (
+                                        <li key={idx}>{sub}</li>
+                                      ))}
+                                    </ul>
+                                  </div>
+                                  {topic.completed && (
+                                    <CheckCircle2 className="h-6 w-6 text-white/90" />
+                                  )}
+                                </div>
+                              </CardContent>
+                            </Card>
                           </Link>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="mt-6 flex flex-col gap-4">
-                  <Link href="/modules/module2/quiz">
-                    <Button 
-                      disabled={progressPercentage < 100}
-                      className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
-                    >
-                      {progressPercentage < 100 
-                        ? "Complete all topics to unlock quiz" 
-                        : "Start Quiz"
-                      }
-                    </Button>
-                  </Link>
-
-                  {isModuleComplete && (
-                    <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                      <p className="text-green-800 font-medium mb-4">
-                        🎉 Congratulations! You've completed Module 2: Bitcoin Deep Dive
-                      </p>
-                      <Link href="/modules/module3">
-                        <Button className="bg-green-600 hover:bg-green-700 w-full md:w-auto">
-                          Continue to Module 3: Advanced Concepts
-                          <ArrowRight className="ml-2 h-4 w-4" />
-                        </Button>
-                      </Link>
+                        </motion.div>
+                      ))}
                     </div>
-                  )}
-                </div>
-              </div>
+                  </TabsContent>
+
+                  <TabsContent value="quiz" className="mt-6">
+                    <Card>
+                      <CardContent className="p-6">
+                        <h2 className="text-2xl font-semibold text-orange-800 mb-4">Module Quiz</h2>
+                        <p className="text-gray-700 mb-6">
+                          Complete all topics to unlock the module quiz and test your knowledge 
+                          of Bitcoin concepts.
+                        </p>
+                        <div className="bg-gradient-to-br from-orange-50 to-red-50 p-6 rounded-lg border border-orange-100">
+                          <h3 className="text-lg font-medium text-gray-700 mb-4">Required Topics:</h3>
+                          <ul className="space-y-3">
+                            {topicsWithProgress.map((topic) => (
+                              <li 
+                                key={topic.id} 
+                                className={`flex items-center justify-between p-3 rounded-lg ${
+                                  topic.completed ? 'bg-green-50' : 'bg-white/80'
+                                }`}
+                              >
+                                <span className="flex items-center gap-2">
+                                  {topic.completed ? (
+                                    <CheckCircle2 className="h-5 w-5 text-green-500" />
+                                  ) : (
+                                    <XCircle className="h-5 w-5 text-gray-400" />
+                                  )}
+                                  <span className={topic.completed ? 'text-green-700' : 'text-gray-600'}>
+                                    {topic.title}
+                                  </span>
+                                </span>
+                                {!topic.completed && (
+                                  <Link href={topic.path}>
+                                    <Button variant="outline" size="sm">
+                                      Start Topic
+                                    </Button>
+                                  </Link>
+                                )}
+                              </li>
+                            ))}
+                          </ul>
+
+                          <div className="mt-6">
+                            <Link href="/modules/module2/quiz">
+                              <Button 
+                                disabled={!allTopicsCompleted}
+                                className="w-full md:w-auto bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white"
+                              >
+                                {allTopicsCompleted ? "Start Quiz" : "Complete all topics to unlock quiz"}
+                              </Button>
+                            </Link>
+                          </div>
+                        </div>
+
+                        {isModuleComplete && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="mt-6 p-4 bg-green-50 rounded-lg border border-green-200"
+                          >
+                            <p className="text-green-800 font-medium mb-4">
+                              🎉 Congratulations! You've completed Module 2: Bitcoin Deep Dive
+                            </p>
+                            <Link href="/modules/module3">
+                              <Button className="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white">
+                                Continue to Module 3
+                                <ArrowRight className="ml-2 h-4 w-4" />
+                              </Button>
+                            </Link>
+                          </motion.div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </TabsContent>
+                </Tabs>
+              </CardContent>
             </Card>
-          </TabsContent>
-        </Tabs>
+          </motion.div>
+        </div>
       </div>
     </div>
   );
