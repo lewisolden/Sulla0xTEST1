@@ -193,16 +193,21 @@ const PracticalApplicationsSection = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <motion.div
-        className="fixed top-0 left-0 w-full h-1 bg-gray-300 z-50"
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: scrollProgress / 100 }}
-        style={{ transformOrigin: "left" }}
-      >
-        <div className="h-full bg-blue-600" />
-      </motion.div>
+      {/* Fixed progress bar at the top */}
+      <div className="fixed top-0 left-0 w-full h-2 bg-gray-200 z-50">
+        <div 
+          className="h-full bg-blue-600 transition-all duration-300"
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
 
       <div className="max-w-4xl mx-auto">
+        {/* Progress bar for the current section */}
+        <div className="mb-6">
+          <Progress value={scrollProgress} className="w-full" />
+          <p className="text-sm text-gray-600 mt-2">Progress: {Math.round(scrollProgress)}%</p>
+        </div>
+
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -496,8 +501,6 @@ const PracticalApplicationsSection = () => {
             </motion.div>
           )}
         </div>
-
-        {/*{isFullyRead && <Progress value={scrollProgress} />}*/}
       </div>
     </div>
   );
