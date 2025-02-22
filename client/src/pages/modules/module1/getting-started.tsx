@@ -225,11 +225,14 @@ const SEED_WORD_LIST = [
   'youth', 'zebra', 'zero', 'zone', 'zoo'
 ];
 
+interface GettingStartedQuizProps {
+  onComplete: () => void;
+}
+
 const GettingStartedSection = () => {
   useScrollTop();
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [showQuiz, setShowQuiz] = useState(false);
   const { updateProgress } = useProgress();
   const { toast } = useToast();
 
@@ -347,6 +350,20 @@ const GettingStartedSection = () => {
       </div>
     </motion.div>
   );
+
+  const handleQuizComplete = () => {
+    updateProgress(
+      1, // moduleId
+      'getting-started', // sectionId
+      true, // completed
+      1, // score
+      'Getting Started with Cryptocurrency', // sectionTitle
+      100, // progressPercentage
+      '/modules/module1/getting-started', // route
+      undefined, // subsectionId
+      'Cryptocurrency Fundamentals' // courseName
+    );
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -532,6 +549,20 @@ const GettingStartedSection = () => {
           </Card>
         )}
 
+        {isSeedPhraseVerified && (
+          <Card className="mb-8">
+            <CardContent className="p-6 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 text-white rounded-t-lg">
+              <h2 className="text-2xl font-bold mb-2">Knowledge Check</h2>
+              <p className="text-blue-100">
+                Test your understanding with this quick quiz
+              </p>
+            </CardContent>
+            <CardContent className="p-6">
+              <GettingStartedQuiz onComplete={handleQuizComplete} />
+            </CardContent>
+          </Card>
+        )}
+
         <Card className="mb-6">
           <CardContent className="prose max-w-none p-6">
             <section>
@@ -637,46 +668,6 @@ const GettingStartedSection = () => {
             </section>
 
             <section className="mt-8">
-              <h2 className="text-2xl font-bold text-blue-700">Practical Storage Tips</h2>
-              <div className="bg-yellow-50 p-6 rounded-lg mb-6">
-                <h3 className="text-xl font-semibold text-yellow-800 mb-4">Essential Security Guidelines</h3>
-                <div className="space-y-4">
-                  <div className="bg-white p-4 rounded-lg">
-                    <h4 className="font-semibold text-yellow-800 mb-2">Never Share Private Information</h4>
-                    <p className="text-gray-700">
-                      Your private keys and recovery phrases are like the master key to your house - never share
-                      them with anyone, not even if they claim to be support staff.
-                    </p>
-                  </div>
-
-                  <div className="bg-white p-4 rounded-lg">
-                    <h4 className="font-semibold text-yellow-800 mb-2">Use Multiple Wallets</h4>
-                    <p className="text-gray-700">
-                      Consider having separate wallets for different purposes - like having a checking account
-                      for daily use and a savings account for long-term storage.
-                    </p>
-                  </div>
-
-                  <div className="bg-white p-4 rounded-lg">
-                    <h4 className="font-semibold text-yellow-800 mb-2">Backup Everything</h4>
-                    <p className="text-gray-700">
-                      Store your wallet information in multiple secure locations, like keeping copies of important
-                      documents in both a home safe and a bank vault.
-                    </p>
-                  </div>
-
-                  <div className="bg-white p-4 rounded-lg">
-                    <h4 className="font-semibold text-yellow-800 mb-2">Test Before Large Transfers</h4>
-                    <p className="text-gray-700">
-                      Always send a small test amount first when using a new wallet or address - think of it
-                      like trying a new route before making a long journey.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            <section className="mt-8">
               <h2 className="text-2xl font-bold text-blue-700 mb-6 flex items-center gap-2">
                 <Wallet className="w-6 h-6" />
                 Recommended Wallets
@@ -771,28 +762,6 @@ const GettingStartedSection = () => {
               </p>
             </Card>
 
-            <Button
-              onClick={() => setShowQuiz(!showQuiz)}
-              className="w-full bg-purple-600 hover:bg-purple-700"
-              size="lg"
-            >
-              {showQuiz ? "Hide Quiz" : "Take Topic Quiz"}
-            </Button>
-
-            {showQuiz && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <Card className="mt-4">
-                  <CardContent className="p-6">
-                    <h2 className="text-2xl font-bold text-blue-800 mb-4">Topic Quiz</h2>
-                    <GettingStartedQuiz />
-                  </CardContent>
-                </Card>
-              </motion.div>
-            )}
 
             <div className="flex justify-between mt-4">
               <Link href="/modules/module1/applications">

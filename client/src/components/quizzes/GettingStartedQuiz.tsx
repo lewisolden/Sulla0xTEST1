@@ -63,7 +63,11 @@ const questions = [
   }
 ];
 
-export const GettingStartedQuiz = () => {
+interface Props {
+  onComplete: () => void;
+}
+
+export const GettingStartedQuiz = ({ onComplete }: Props) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
@@ -92,7 +96,7 @@ export const GettingStartedQuiz = () => {
       setShowResult(true);
       const passThreshold = questions.length * 0.7; // 70% to pass
       if (score >= passThreshold) {
-        updateProgress(1, 'getting-started-quiz', true);
+        onComplete();
       }
     }
   };
