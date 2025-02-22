@@ -403,6 +403,10 @@ const PracticalApplicationsSection = () => {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
+              <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-6 rounded-lg mb-6 text-white">
+                <h2 className="text-2xl font-bold mb-2">Knowledge Check</h2>
+                <p className="text-blue-100">Test your understanding with this quick quiz.</p>
+              </div>
               <Card className="border-2 border-slate-200 dark:border-slate-800">
                 <CardContent className="pt-6">
                   <PracticalApplicationsQuiz />
