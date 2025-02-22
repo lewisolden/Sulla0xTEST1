@@ -229,6 +229,41 @@ interface GettingStartedQuizProps {
   onComplete: () => void;
 }
 
+interface ResourceCardProps {
+  icon: LucideIcon;
+  title: string;
+  description: string;
+  tags: string[];
+  color: string;
+}
+
+const ResourceCard = ({ icon: Icon, title, description, tags, color }: ResourceCardProps) => (
+  <motion.div
+    whileHover={{ scale: 1.02 }}
+    className={`bg-white rounded-xl shadow-lg p-6 border-l-4 ${color}`}
+  >
+    <div className="flex items-start space-x-4">
+      <div className={`p-3 rounded-lg ${color.replace('border-', 'bg-').replace('-500', '-100')}`}>
+        <Icon className={`w-6 h-6 ${color.replace('border-', 'text-')}`} />
+      </div>
+      <div className="flex-1">
+        <h3 className="font-semibold text-lg mb-2">{title}</h3>
+        <p className="text-gray-600 mb-3">{description}</p>
+        <div className="flex flex-wrap gap-2">
+          {tags.map((tag, index) => (
+            <span
+              key={index}
+              className={`px-2 py-1 rounded-full text-sm ${color.replace('border-', 'bg-').replace('-500', '-100')} ${color.replace('border-', 'text-')}`}
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </motion.div>
+);
+
 const GettingStartedSection = () => {
   useScrollTop();
   const [isFullyRead, setIsFullyRead] = useState(false);
@@ -316,40 +351,6 @@ const GettingStartedSection = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [updateProgress]);
-
-  interface ResourceCardProps {
-    icon: LucideIcon;
-    title: string;
-    description: string;
-    tags: string[];
-    color: string;
-  }
-
-  const ResourceCard = ({ icon: Icon, title, description, tags, color }: ResourceCardProps) => (
-    <motion.div
-      whileHover={{ scale: 1.02 }}
-      className={`bg-white rounded-xl shadow-lg p-6 border-l-4 ${color}`}
-    >
-      <div className="flex items-start space-x-4">
-        <div className={`p-3 rounded-lg ${color.replace('border-', 'bg-').replace('-500', '-100')}`}>
-          <Icon className={`w-6 h-6 ${color.replace('border-', 'text-')}`} />
-        </div>
-        <div className="flex-1">
-          <h3 className="font-semibold text-lg mb-2">{title}</h3>
-          <p className="text-gray-600 mb-3">{description}</p>
-          <div className="flex flex-wrap gap-2">{tags.map((tag, index) => (
-                            <span
-                key={index}
-                className={`px-2 py-1 rounded-full text-sm ${color.replace('border-', 'bg-').replace('-500', '-100')} ${color.replace('border-', 'text-')}`}
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
 
   const handleQuizComplete = () => {
     updateProgress(
@@ -561,6 +562,21 @@ const GettingStartedSection = () => {
           </CardContent>
         </Card>
 
+        <div className="flex justify-between items-center mt-8">
+          <Link href="/modules/module1/applications">
+            <Button variant="outline" className="gap-2">
+              <ArrowLeft className="h-4 w-4" />
+              Previous: Applications
+            </Button>
+          </Link>
+          <Link href="/modules/module1/quiz">
+            <Button className="bg-blue-600 hover:bg-blue-700 gap-2">
+              Take Module Quiz
+              <ArrowRight className="h-4 w-4" />
+            </Button>
+          </Link>
+        </div>
+
         <Card className="mb-6">
           <CardContent className="prose max-w-none p-6">
             <section>
@@ -607,61 +623,6 @@ const GettingStartedSection = () => {
                   💡 Pro Tip: Don't feel pressured to invest right away. It's okay to spend time learning
                   and observing. Many successful crypto users spent months learning before making their first transaction.
                 </p>
-              </div>
-            </section>
-
-            <section className="mt-8">
-              <h2 className="text-2xl font-bold text-blue-700">Security Best Practices</h2>
-              <div className="flex items-center gap-4 mb-4">
-                <WalletIcon size={32} className="text-blue-600" />
-                <p className="text-gray-700">
-                  Think of cryptocurrency security like protecting your home - you need multiple layers of protection.
-                  Here's how to keep your digital assets safe:
-                </p>
-              </div>
-
-              <div className="bg-white p-6 rounded-lg border border-gray-200 mb-6">
-                <ul className="list-disc pl-5 space-y-4 text-gray-700">
-                  <li>
-                    <strong>Strong Passwords:</strong> Use unique, complex passwords for each account.
-                    Think: "MyFirst#Crypto2024!" instead of "password123"
-                  </li>
-                  <li>
-                    <strong>Two-Factor Authentication (2FA):</strong> It's like having both a key and an alarm
-                    code for your house - even if someone gets your password, they can't get in without the second factor
-                  </li>
-                  <li>
-                    <strong>Secure Storage:</strong> Keep your private keys and recovery phrases as safe as you'd
-                    keep your passport or birth certificate
-                  </li>
-                  <li>
-                    <strong>Hardware Wallets:</strong> For larger amounts, use a hardware wallet - it's like
-                    having a personal safe for your digital money
-                  </li>
-                  <li>
-                    <strong>Phishing Awareness:</strong> Be cautious of unexpected emails or messages asking
-                    about your crypto - legitimate services will never ask for your private keys
-                  </li>
-                  <li>
-                    <strong>Regular Updates:</strong> Keep your software up-to-date, just like you'd maintain
-                    your car to keep it running safely
-                  </li>
-                  <li>
-                    <strong>Double-Check Everything:</strong> Verify all transaction details carefully - crypto
-                    transactions can't be reversed like bank transfers
-                  </li>
-                </ul>
-              </div>
-
-              <div className="bg-red-50 p-4 rounded-lg mb-6">
-                <h4 className="text-red-800 font-semibold mb-2">⚠️ Warning Signs to Watch For:</h4>
-                <ul className="list-disc pl-5 space-y-2 text-gray-700">
-                  <li>Anyone pressuring you to invest quickly</li>
-                  <li>Promises of guaranteed returns</li>
-                  <li>Requests to share your private keys or recovery phrases</li>
-                  <li>Unsolicited investment advice from strangers</li>
-                  <li>Websites with URLs that look slightly different from official ones</li>
-                </ul>
               </div>
             </section>
 
