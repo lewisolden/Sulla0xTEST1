@@ -75,16 +75,23 @@ export default function BitcoinFundamentalsSection() {
           </Link>
         </motion.div>
 
-        <div className="flex items-center mb-6">
-          <BitcoinLogo />
-          <motion.h1
-            className="text-4xl font-bold text-blue-800"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            2.1 Bitcoin Fundamentals
-          </motion.h1>
+        <div className="bg-gradient-to-r from-orange-500 via-orange-600 to-red-600 rounded-xl p-6 mb-8">
+          <div className="flex items-center">
+            <BitcoinLogo />
+            <div>
+              <motion.h1
+                className="text-4xl font-bold text-white"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                2.1 Bitcoin Fundamentals
+              </motion.h1>
+              <p className="text-xl text-orange-100 mt-2">
+                Understanding the World's First Cryptocurrency
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="prose lg:prose-xl text-gray-700 space-y-6">
