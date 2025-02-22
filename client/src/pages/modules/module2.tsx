@@ -133,6 +133,19 @@ export default function Module2() {
               </div>
 
               <CardContent className="p-8">
+                {/* Start Learning Button */}
+                <div className="flex justify-center mb-12">
+                  <Link href="/modules/module2/bitcoin-fundamentals">
+                    <Button 
+                      size="lg"
+                      className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                    >
+                      Start Learning
+                      <ChevronRight className="ml-2 h-5 w-5" />
+                    </Button>
+                  </Link>
+                </div>
+
                 <Tabs defaultValue="overview" className="mt-8">
                   <TabsList className="bg-orange-100 p-1">
                     <TabsTrigger value="overview" className="data-[state=active]:bg-white">Overview</TabsTrigger>
@@ -163,7 +176,7 @@ export default function Module2() {
                             <BookOpen className="h-6 w-6 text-orange-500" />
                             Learning Objectives
                           </h3>
-                          <div className="grid md:grid-cols-2 gap-6">
+                          <div className="grid md:grid-cols-2 gap-6 mb-8">
                             {[
                               {
                                 title: "Blockchain Fundamentals",
@@ -203,6 +216,19 @@ export default function Module2() {
                                 </ul>
                               </div>
                             ))}
+                          </div>
+
+                          {/* Start Learning Button at bottom of overview */}
+                          <div className="flex justify-center">
+                            <Link href="/modules/module2/bitcoin-fundamentals">
+                              <Button 
+                                size="lg"
+                                className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                              >
+                                Start Learning
+                                <ChevronRight className="ml-2 h-5 w-5" />
+                              </Button>
+                            </Link>
                           </div>
                         </div>
                       </CardContent>
