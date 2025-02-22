@@ -5,7 +5,7 @@ import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, ArrowRight, BookOpen, Network, Database, Code, Lightbulb, ArrowUpRight, History, LucideIcon } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen, Network, Database, Code, Lightbulb, ArrowUpRight, History, LucideIcon, Coins, ArrowRightCircle, ChevronsRight } from "lucide-react";
 import BitcoinBasicsDiagram from "@/components/diagrams/BitcoinBasicsDiagram";
 import BitcoinFundamentalsQuiz from "@/components/modules/quizzes/BitcoinFundamentalsQuiz";
 import ProofOfWorkDiagram from "@/components/diagrams/ProofOfWorkDiagram";
@@ -290,46 +290,99 @@ export default function BitcoinFundamentalsSection() {
                   whileHover={{ scale: 1.02 }}
                   className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md"
                 >
-                  <h4 className="font-semibold text-blue-800 mb-2">The Basics: Think of it Like Cash</h4>
-                  <p className="text-gray-700">
-                    Imagine you have a $20 bill and want to buy something that costs $8. What happens?
-                  </p>
-                  <ul className="list-disc pl-5 mt-2 space-y-2 text-gray-700">
-                    <li>You give the $20 bill (you can't tear it in half!)</li>
-                    <li>You get $12 back as change</li>
-                    <li>The original $20 bill can't be used again by you</li>
-                    <li>You now have a new $12 bill instead</li>
-                  </ul>
-                  <p className="mt-4 text-gray-700">
-                    Bitcoin works very similarly! This is what we call the "UTXO model".
-                  </p>
+                  <div className="flex items-start gap-4">
+                    <div className="p-3 bg-orange-100 rounded-lg">
+                      <Coins className="h-6 w-6 text-orange-600" />
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-semibold text-blue-800 mb-3">The Basics: Think of it Like Cash</h4>
+                      <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg mb-4">
+                        <p className="text-gray-700 text-lg mb-3">
+                          Imagine you have a $20 bill and want to buy something that costs $8:
+                        </p>
+                        <div className="flex items-center justify-center gap-8 my-6">
+                          <motion.div
+                            whileHover={{ scale: 1.05 }}
+                            className="flex flex-col items-center"
+                          >
+                            <div className="w-20 h-12 bg-green-500 rounded-lg flex items-center justify-center text-white font-bold mb-2">
+                              $20
+                            </div>
+                            <p className="text-sm text-gray-600">Original Bill</p>
+                          </motion.div>
+                          <motion.div
+                            animate={{ x: [0, 10, 0] }}
+                            transition={{ repeat: Infinity, duration: 2 }}
+                          >
+                            <ChevronsRight className="h-8 w-8 text-blue-400" />
+                          </motion.div>
+                          <div className="flex flex-col gap-2">
+                            <motion.div
+                              whileHover={{ scale: 1.05 }}
+                              className="w-20 h-12 bg-red-500 rounded-lg flex items-center justify-center text-white font-bold"
+                            >
+                              $8
+                            </motion.div>
+                            <motion.div
+                              whileHover={{ scale: 1.05 }}
+                              className="w-20 h-12 bg-green-500 rounded-lg flex items-center justify-center text-white font-bold"
+                            >
+                              $12
+                            </motion.div>
+                          </div>
+                        </div>
+                        <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                          <li>You give the $20 bill (you can't tear it in half!)</li>
+                          <li>You get $12 back as change</li>
+                          <li>The original $20 bill can't be used again by you</li>
+                          <li>You now have a new $12 bill instead</li>
+                        </ul>
+                      </div>
+                      <p className="text-blue-600 font-medium flex items-center gap-2">
+                        <ArrowRightCircle className="h-5 w-5" />
+                        Bitcoin works exactly the same way with UTXOs!
+                      </p>
+                    </div>
+                  </div>
                 </motion.div>
 
                 <motion.div
                   whileHover={{ scale: 1.02 }}
                   className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md"
                 >
-                  <h4 className="font-semibold text-blue-800 mb-2">Bitcoin's Digital Wallet: UTXOs Explained</h4>
-                  <p className="text-gray-700">
-                    Your Bitcoin wallet doesn't actually store a single "balance" number. Instead, it's like having different bills in your physical wallet:
-                  </p>
-                  <div className="mt-4 p-4 bg-blue-50 rounded-lg">
-                    <p className="font-medium text-gray-800">Example of Your Digital Wallet:</p>
-                    <ul className="list-none pl-5 mt-2 space-y-2">
-                      <li className="flex items-center">
-                        <span className="inline-block w-4 h-4 bg-blue-500 rounded-full mr-2"></span>
-                        One "digital bill" worth 0.5 BTC
-                      </li>
-                      <li className="flex items-center">
-                        <span className="inline-block w-4 h-4 bg-blue-500 rounded-full mr-2"></span>
-                        Another worth 0.3 BTC
-                      </li>
-                      <li className="flex items-center">
-                        <span className="inline-block w-4 h-4 bg-blue-500 rounded-full mr-2"></span>
-                        And one worth 0.1 BTC
-                      </li>
-                      <li className="font-medium mt-2">Total Balance: 0.9 BTC</li>
-                    </ul>
+                  <div className="flex items-start gap-4">
+                    <div className="p-3 bg-purple-100 rounded-lg">
+                      <Database className="h-6 w-6 text-purple-600" />
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-semibold text-blue-800 mb-3">Bitcoin's Digital Wallet: UTXOs Explained</h4>
+                      <p className="text-gray-700 mb-4">
+                        Your Bitcoin wallet doesn't actually store a single "balance" number. Instead, it's like having different bills in your physical wallet:
+                      </p>
+                      <div className="bg-gradient-to-br from-purple-50 to-blue-50 p-6 rounded-xl mb-4">
+                        <h5 className="font-medium text-purple-800 mb-4">Example of Your Digital Wallet:</h5>
+                        <div className="flex flex-wrap gap-4 justify-center">
+                          {[0.5, 0.3, 0.1].map((amount, idx) => (
+                            <motion.div
+                              key={idx}
+                              whileHover={{ scale: 1.05, rotate: 5 }}
+                              className="bg-white p-4 rounded-xl shadow-md border border-purple-100"
+                            >
+                              <div className="flex items-center gap-2 mb-2">
+                                <Coins className="h-5 w-5 text-yellow-500" />
+                                <span className="font-bold text-purple-700">{amount} BTC</span>
+                              </div>
+                              <div className="text-xs text-gray-500">UTXO #{idx + 1}</div>
+                            </motion.div>
+                          ))}
+                        </div>
+                        <div className="mt-4 text-center">
+                          <p className="text-lg font-semibold text-purple-800">
+                            Total Balance: 0.9 BTC
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </motion.div>
 
@@ -338,7 +391,10 @@ export default function BitcoinFundamentalsSection() {
                     whileHover={{ scale: 1.02 }}
                     className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md"
                   >
-                    <h4 className="font-semibold text-blue-800 mb-2">Remember These Rules:</h4>
+                    <h4 className="text-xl font-semibold text-blue-800 mb-3 flex items-center gap-2">
+                      <Code className="h-5 w-5 text-blue-600" />
+                      Remember These Rules:
+                    </h4>
                     <ul className="list-disc pl-5 space-y-2 text-gray-700">
                       <li>You must use entire "digital bills" (UTXOs)</li>
                       <li>If you spend more than needed, you get change back</li>
@@ -351,8 +407,11 @@ export default function BitcoinFundamentalsSection() {
                     whileHover={{ scale: 1.02 }}
                     className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md"
                   >
-                    <h4 className="font-semibold text-blue-800 mb-2">Advanced Details:</h4>
-                    <p className="text-gray-700">Behind the scenes, each UTXO contains:</p>
+                    <h4 className="text-xl font-semibold text-blue-800 mb-3 flex items-center gap-2">
+                      <Lightbulb className="h-5 w-5 text-blue-600" />
+                      Advanced Details:
+                    </h4>
+                    <p className="text-gray-700 mb-2">Behind the scenes, each UTXO contains:</p>
                     <ul className="list-disc pl-5 text-gray-700">
                       <li>A unique identifier (like a serial number)</li>
                       <li>The amount it's worth</li>
