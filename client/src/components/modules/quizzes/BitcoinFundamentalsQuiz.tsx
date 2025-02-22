@@ -111,7 +111,7 @@ export default function BitcoinFundamentalsQuiz() {
   if (showResult) {
     const percentage = (score / questions.length) * 100;
     return (
-      <div className="container mx-auto px-6 py-4 max-w-5xl">
+      <div className="container mx-auto px-6 py-4 max-w-6xl">
         <Card className="p-6 text-center bg-gradient-to-br from-orange-50 to-red-50">
           <div className="flex items-center justify-center gap-4">
             <Award className={`h-10 w-10 ${percentage >= 60 ? 'text-green-500' : 'text-red-500'}`} />
@@ -173,7 +173,7 @@ export default function BitcoinFundamentalsQuiz() {
   }
 
   return (
-    <div className="container mx-auto px-6 py-4 max-w-5xl">
+    <div className="container mx-auto px-6 py-4 max-w-6xl">
       <div className="bg-gradient-to-r from-orange-500 to-red-600 p-4 rounded-lg mb-4 text-white flex items-center gap-4">
         <PencilLine className="h-6 w-6" />
         <div>
@@ -194,38 +194,36 @@ export default function BitcoinFundamentalsQuiz() {
           </span>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-6 items-start">
-          <div className="flex-1">
-            <p className="text-gray-700 text-lg mb-3">
+        <div className="space-y-4">
+          <div>
+            <p className="text-gray-700 text-lg mb-4">
               {questions[currentQuestion].question}
             </p>
           </div>
 
-          <div className="flex-1">
-            <div className="grid gap-2">
-              {questions[currentQuestion].options.map((option, index) => (
-                <motion.button
-                  key={index}
-                  onClick={() => !selectedAnswer && handleAnswer(index)}
-                  className={`
-                    w-full p-2.5 rounded-lg text-left transition-all duration-300
-                    ${selectedAnswer === null
-                      ? 'bg-white hover:bg-orange-50 border border-gray-200'
-                      : index === questions[currentQuestion].correctAnswer
-                        ? 'bg-green-100 border-2 border-green-500'
-                        : selectedAnswer === index
-                          ? 'bg-red-100 border-2 border-red-500'
-                          : 'bg-white border border-gray-200'}
-                    whitespace-normal break-words hover:shadow-md
-                  `}
-                  disabled={selectedAnswer !== null}
-                  whileHover={{ scale: selectedAnswer === null ? 1.01 : 1 }}
-                  whileTap={{ scale: selectedAnswer === null ? 0.99 : 1 }}
-                >
-                  <span className="text-base">{option}</span>
-                </motion.button>
-              ))}
-            </div>
+          <div className="grid gap-2">
+            {questions[currentQuestion].options.map((option, index) => (
+              <motion.button
+                key={index}
+                onClick={() => !selectedAnswer && handleAnswer(index)}
+                className={`
+                  w-full p-2.5 rounded-lg text-left transition-all duration-300
+                  ${selectedAnswer === null
+                    ? 'bg-white hover:bg-orange-50 border border-gray-200'
+                    : index === questions[currentQuestion].correctAnswer
+                      ? 'bg-green-100 border-2 border-green-500'
+                      : selectedAnswer === index
+                        ? 'bg-red-100 border-2 border-red-500'
+                        : 'bg-white border border-gray-200'}
+                  whitespace-normal break-words hover:shadow-md
+                `}
+                disabled={selectedAnswer !== null}
+                whileHover={{ scale: selectedAnswer === null ? 1.01 : 1 }}
+                whileTap={{ scale: selectedAnswer === null ? 0.99 : 1 }}
+              >
+                <span className="text-base">{option}</span>
+              </motion.button>
+            ))}
           </div>
         </div>
 
