@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Module1Quiz = () => {
   const { toast } = useToast();
@@ -7,11 +8,11 @@ const Module1Quiz = () => {
     try {
       const quizData = {
         moduleId: 1,
-        courseId: 1, 
+        courseId: 1,
         sectionId: 'module-1-quiz',
         completed: true,
         quizScore: Math.round((score / totalQuestions) * 100),
-        timeSpent: 0 
+        timeSpent: 0
       };
 
       console.log('Submitting quiz completion:', quizData);
@@ -38,7 +39,6 @@ const Module1Quiz = () => {
       const result = await response.json();
       console.log('Quiz progress updated:', result);
 
-      // Refresh user metrics after quiz completion
       const metricsResponse = await fetch('/api/user/metrics', {
         credentials: 'include',
       });
@@ -66,6 +66,17 @@ const Module1Quiz = () => {
   const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
+
+  // Add auto-advance functionality
+  useEffect(() => {
+    let timer;
+    if (showExplanation && currentQuestion < quizQuestions.length - 1) {
+      timer = setTimeout(() => {
+        moveToNextQuestion();
+      }, 3000); // 3 seconds delay before advancing
+    }
+    return () => clearTimeout(timer);
+  }, [showExplanation, currentQuestion]);
 
   const quizQuestions = [
     {
@@ -128,6 +139,14 @@ const Module1Quiz = () => {
   const handleAnswerSelect = (optionIndex) => {
     setSelectedAnswer(optionIndex);
     setShowExplanation(true);
+
+    // Show immediate feedback toast
+    const isCorrect = optionIndex === quizQuestions[currentQuestion].correctAnswer;
+    toast({
+      title: isCorrect ? "Correct! 🎉" : "Incorrect",
+      description: quizQuestions[currentQuestion].explanation,
+      variant: isCorrect ? "default" : "destructive",
+    });
   };
 
   const moveToNextQuestion = () => {
@@ -144,14 +163,7 @@ const Module1Quiz = () => {
     } else {
       setShowResult(true);
       const finalScore = score + (isCorrect ? 1 : 0);
-      handleQuizCompletion(finalScore, quizQuestions.length).catch(error => {
-        console.error('Failed to complete quiz:', error);
-        toast({
-          title: "Error",
-          description: "Failed to save quiz progress. Please try again.",
-          variant: "destructive",
-        });
-      });
+      handleQuizCompletion(finalScore, quizQuestions.length);
     }
   };
 
@@ -165,35 +177,49 @@ const Module1Quiz = () => {
 
   if (showResult) {
     return (
-      <div className="container mx-auto px-4 py-8 max-w-2xl">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="container mx-auto px-4 py-8 max-w-2xl"
+      >
         <div className="bg-white shadow-lg rounded-lg p-8 text-center">
-          <h2 className="text-3xl font-bold mb-4 text-blue-800">
+          <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
             Quiz Completed!
           </h2>
           <p className="text-xl mb-4">
             You scored {score} out of {quizQuestions.length}
           </p>
           {score >= 3 ? (
-            <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-4">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="bg-green-100 border-l-4 border-green-500 p-4 mb-4"
+            >
               <p className="text-green-700">
                 🎉 Congratulations! You've passed the module quiz!
               </p>
-            </div>
+            </motion.div>
           ) : (
-            <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4">
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="bg-red-100 border-l-4 border-red-500 p-4 mb-4"
+            >
               <p className="text-red-700">
                 You didn't pass this time. Review the content and try again.
               </p>
-            </div>
+            </motion.div>
           )}
-          <button
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
             onClick={restartQuiz}
-            className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
+            className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-2 rounded-lg hover:shadow-lg transition-all duration-300"
           >
             Restart Quiz
-          </button>
+          </motion.button>
         </div>
-      </div>
+      </motion.div>
     );
   }
 
@@ -201,71 +227,91 @@ const Module1Quiz = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
-      <div className="bg-white shadow-lg rounded-lg p-8">
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-blue-800 mb-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-white shadow-lg rounded-lg overflow-hidden"
+      >
+        <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-6">
+          <h2 className="text-2xl font-bold text-white mb-2">
             Module 1 Quiz
-            <span className="text-sm ml-4 text-gray-600">
-              Question {currentQuestion + 1} of {quizQuestions.length}
-            </span>
           </h2>
+          <p className="text-blue-100">
+            Question {currentQuestion + 1} of {quizQuestions.length}
+          </p>
+        </div>
 
+        <div className="p-6">
           <div className="bg-blue-50 rounded-lg p-4 mb-6">
             <p className="text-lg text-gray-700">
               {currentQuizQuestion.question}
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-4">
-            {currentQuizQuestion.options.map((option, index) => (
-              <button
-                key={index}
-                onClick={() => handleAnswerSelect(index)}
-                className={`
-                  w-full p-4 rounded-lg text-left transition-all duration-300
-                  ${selectedAnswer === null
-                    ? 'bg-gray-100 hover:bg-blue-100'
-                    : index === currentQuizQuestion.correctAnswer
-                      ? 'bg-green-200'
-                      : selectedAnswer === index
-                        ? 'bg-red-200'
-                        : 'bg-gray-100'}
-                `}
-                disabled={selectedAnswer !== null}
-              >
-                {option}
-              </button>
-            ))}
+          <div className="grid gap-4">
+            {currentQuizQuestion.options.map((option, index) => {
+              const isSelected = selectedAnswer === index;
+              const isCorrect = index === currentQuizQuestion.correctAnswer;
+              const showResult = selectedAnswer !== null;
+
+              return (
+                <motion.button
+                  key={index}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => !selectedAnswer && handleAnswerSelect(index)}
+                  className={`
+                    w-full p-4 rounded-lg text-left transition-all duration-300
+                    ${showResult
+                      ? isCorrect
+                        ? 'bg-green-100 border-green-500 text-green-700'
+                        : isSelected
+                          ? 'bg-red-100 border-red-500 text-red-700'
+                          : 'bg-gray-100'
+                      : 'bg-gray-100 hover:bg-blue-100'}
+                  `}
+                  disabled={selectedAnswer !== null}
+                >
+                  {option}
+                </motion.button>
+              );
+            })}
           </div>
 
           {showExplanation && (
-            <div className={`
-              mt-6 p-4 rounded-lg
-              ${selectedAnswer === currentQuizQuestion.correctAnswer
-                ? 'bg-green-100 border-l-4 border-green-500'
-                : 'bg-red-100 border-l-4 border-red-500'}
-            `}>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`
+                mt-6 p-4 rounded-lg
+                ${selectedAnswer === currentQuizQuestion.correctAnswer
+                  ? 'bg-green-100 border-l-4 border-green-500'
+                  : 'bg-red-100 border-l-4 border-red-500'}
+              `}
+            >
               <h3 className="font-bold mb-2">
                 {selectedAnswer === currentQuizQuestion.correctAnswer
                   ? '✅ Correct!'
                   : '❌ Incorrect'}
               </h3>
               <p>{currentQuizQuestion.explanation}</p>
-            </div>
+            </motion.div>
           )}
 
-          {selectedAnswer !== null && (
-            <button
+          {selectedAnswer !== null && currentQuestion === quizQuestions.length - 1 && (
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
               onClick={moveToNextQuestion}
-              className="mt-6 w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600"
+              className="mt-6 w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-lg hover:shadow-lg transition-all duration-300"
             >
-              {currentQuestion < quizQuestions.length - 1
-                ? 'Next Question'
-                : 'Finish Quiz'}
-            </button>
+              Finish Quiz
+            </motion.button>
           )}
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
