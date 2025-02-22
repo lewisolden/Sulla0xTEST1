@@ -5,7 +5,7 @@ import { useProgress } from "@/context/progress-context";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Dumbbell, BookOpen, Shield, Brain, Wallet, CheckCircle, Loader2, ArrowRight, Lock } from "lucide-react";
+import { Database, TrendingUp, Code2, Network, RefreshCw, Settings, Dumbbell, BookOpen, Shield, Brain, Wallet, CheckCircle, Loader2, ArrowRight, Lock } from "lucide-react";
 import { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
@@ -58,6 +58,39 @@ const moduleTopics = [
       "Security Best Practices",
       "Hands-On Learning Activities"
     ]
+  }
+];
+
+const learningObjectives = [
+  {
+    icon: Database,
+    title: "Cryptocurrency Basics",
+    description: "Master fundamental concepts and principles"
+  },
+  {
+    icon: Network,
+    title: "System Comparison",
+    description: "Compare traditional and digital currencies"
+  },
+  {
+    icon: Code2,
+    title: "Security Principles",
+    description: "Understand cryptographic foundations"
+  },
+  {
+    icon: RefreshCw,
+    title: "Practical Usage",
+    description: "Learn real-world applications"
+  },
+  {
+    icon: Shield,
+    title: "Risk Management",
+    description: "Identify and mitigate risks"
+  },
+  {
+    icon: Settings,
+    title: "Best Practices",
+    description: "Follow security guidelines"
   }
 ];
 
@@ -241,35 +274,40 @@ export default function Module1() {
                       and how they differ from traditional money systems.
                     </p>
 
-                    <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl p-8 my-8">
-                      <h3 className="text-xl font-semibold mb-4 text-white">Learning Objectives</h3>
-                      <ul className="grid md:grid-cols-2 gap-4">
-                        {[
-                          "Understand the fundamental differences between traditional and digital currencies",
-                          "Grasp the core concepts of cryptocurrency, including decentralization and digital scarcity",
-                          "Learn essential security principles and best practices",
-                          "Explore practical applications and use cases of cryptocurrency",
-                          "Develop skills for safe participation in the cryptocurrency ecosystem"
-                        ].map((objective, index) => (
-                          <motion.li
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: 0.4 }}
+                      className="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-6 rounded-lg shadow-lg mb-8"
+                    >
+                      <h3 className="text-xl font-semibold text-blue-800 mb-4 flex items-center gap-2">
+                        <Database className="h-6 w-6" />
+                        Learning Objectives
+                      </h3>
+                      <div className="grid md:grid-cols-3 gap-4">
+                        {learningObjectives.map((objective, index) => (
+                          <motion.div
                             key={index}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.1 * index }}
-                            className="flex items-center gap-3 text-gray-200"
+                            initial={{ scale: 0.9, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ duration: 0.3, delay: 0.5 + index * 0.1 }}
+                            className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300"
                           >
-                            <div className="h-2 w-2 bg-blue-400 rounded-full flex-shrink-0"></div>
-                            <span>{objective}</span>
-                          </motion.li>
+                            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mb-2">
+                              <objective.icon className="h-4 w-4 text-blue-600" />
+                            </div>
+                            <h4 className="font-medium text-blue-700 mb-1">{objective.title}</h4>
+                            <p className="text-sm text-gray-600">{objective.description}</p>
+                          </motion.div>
                         ))}
-                      </ul>
-                    </div>
+                      </div>
+                    </motion.div>
 
                     <div className="mt-8 flex justify-center">
                       <Link href="/modules/module1/digital-currencies">
                         <Button
                           size="lg"
-                          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white gap-2"
+                          className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white gap-2 transform hover:scale-105 transition-all duration-300"
                         >
                           Start Learning <ArrowRight className="h-4 w-4" />
                         </Button>
@@ -282,54 +320,68 @@ export default function Module1() {
           </TabsContent>
 
           <TabsContent value="content">
-            <div className="grid gap-6">
-              {topicsWithProgress.map((topic, index) => (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="grid gap-4"
+            >
+              {moduleTopics.map((topic, index) => (
                 <motion.div
                   key={topic.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
-                  <Card className="transition-all hover:shadow-lg border-2 hover:border-blue-200">
-                    <CardContent className="p-6">
-                      <div className="flex flex-col">
-                        <div className="flex items-center gap-4 mb-4">
-                          <div className={`bg-gradient-to-br ${topic.gradient} p-3 rounded-xl text-white`}>
-                            <topic.icon className="h-6 w-6" />
+                  <Link href={topic.path}>
+                    <Card className="transition-all duration-300 hover:shadow-lg hover:scale-[1.02] cursor-pointer">
+                      <CardContent className="p-6">
+                        <div className="flex justify-between items-start">
+                          <div className="flex-1">
+                            <motion.div
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
+                              className="flex items-center gap-3 mb-2"
+                            >
+                              <div className={`bg-gradient-to-br ${topic.gradient} p-3 rounded-xl text-white`}>
+                                <topic.icon className="h-6 w-6" />
+                              </div>
+                              <h3 className="text-xl font-semibold text-blue-800">
+                                {topic.title}
+                              </h3>
+                            </motion.div>
+                            <ul className="grid grid-cols-2 gap-2">
+                              {topic.subsections.map((subsection, idx) => (
+                                <motion.li
+                                  key={idx}
+                                  initial={{ opacity: 0, x: -20 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  transition={{ duration: 0.5, delay: 0.3 + idx * 0.1 }}
+                                  className="text-sm text-gray-500 flex items-center gap-2"
+                                >
+                                  <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                                  {subsection}
+                                </motion.li>
+                              ))}
+                            </ul>
                           </div>
-                          <div>
-                            <h3 className="text-xl font-semibold text-blue-800">
-                              {topic.title}
-                            </h3>
-                            {topic.completed && (
-                              <span className="text-green-600 text-sm flex items-center gap-1">
-                                <CheckCircle className="h-4 w-4" /> Completed
-                              </span>
-                            )}
-                          </div>
+                          {topic.completed && (
+                            <motion.div
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                            >
+                              <CheckCircle className="h-6 w-6 text-green-500 ml-4" />
+                            </motion.div>
+                          )}
                         </div>
-                        <ul className="list-none pl-5 text-gray-600 mb-4 space-y-2">
-                          {topic.subsections.map((subsection, idx) => (
-                            <li key={idx} className="flex items-center gap-2">
-                              <div className="h-1.5 w-1.5 bg-blue-400 rounded-full"></div>
-                              <span>{subsection}</span>
-                            </li>
-                          ))}
-                        </ul>
-                        <div className="mt-4">
-                          <Link href={topic.path}>
-                            <Button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white gap-2">
-                              {topic.completed ? "Review Topic" : "Start Topic"}
-                              <ArrowRight className="h-4 w-4" />
-                            </Button>
-                          </Link>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                      </CardContent>
+                    </Card>
+                  </Link>
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
           </TabsContent>
 
           <TabsContent value="exercises">
