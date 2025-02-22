@@ -256,7 +256,7 @@ const PracticalApplicationsSection = () => {
               <CardContent className="p-8">
                 <section>
                   <motion.h2 
-                    className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-6"
+                    className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-6"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 }}
@@ -264,7 +264,7 @@ const PracticalApplicationsSection = () => {
                     Overview
                   </motion.h2>
                   <motion.p 
-                    className="text-slate-600 dark:text-slate-300 leading-relaxed mb-8 text-lg"
+                    className="text-slate-700 dark:text-slate-300 leading-relaxed mb-8 text-lg"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.6 }}
