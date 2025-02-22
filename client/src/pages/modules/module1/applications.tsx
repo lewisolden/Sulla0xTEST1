@@ -164,7 +164,6 @@ const PracticalApplicationsSection = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [showQuiz, setShowQuiz] = useState(false);
   const { updateProgress } = useProgress();
-  const [activeSection, setActiveSection] = useState('overview');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -179,7 +178,10 @@ const PracticalApplicationsSection = () => {
           moduleId: 1,
           sectionId: 'practical-applications',
           completed: true,
-          score: 100
+          score: 100,
+          totalSections: 8,
+          currentSection: 6,
+          nextSection: 'security'
         });
       }
     };
@@ -189,263 +191,241 @@ const PracticalApplicationsSection = () => {
   }, [updateProgress]);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <motion.div
-        className="fixed top-0 left-0 w-full h-1 bg-gray-300 z-50"
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: scrollProgress / 100 }}
-        style={{ transformOrigin: "left" }}
-      >
-        <div className="h-full bg-blue-600" />
-      </motion.div>
-
-      <div className="max-w-4xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mb-6"
-        >
+    <div className="container mx-auto px-4 py-8 min-h-screen">
+      <div className="max-w-4xl mx-auto space-y-8">
+        {/* Header Section */}
+        <div className="flex flex-col space-y-4">
           <Link href="/modules/module1">
-            <Button variant="ghost" className="gap-2">
+            <Button variant="ghost" className="w-fit gap-2">
               <ArrowLeft className="h-4 w-4" />
               Back to Module Overview
             </Button>
           </Link>
-        </motion.div>
 
-        <motion.h1
-          className="text-4xl font-bold text-blue-800 mb-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-        >
-          Practical Applications of Blockchain Technology
-        </motion.h1>
+          <div className="space-y-2">
+            <h1 className="text-4xl font-bold text-slate-900 dark:text-slate-100">
+              Practical Applications of Blockchain Technology
+            </h1>
+            <p className="text-slate-500 dark:text-slate-400">
+              Understanding the real-world impact and implementation of blockchain technology
+            </p>
+          </div>
 
-        <div className="space-y-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Card className="mb-6">
-              <CardContent className="prose max-w-none p-6">
-                <section>
-                  <h2 className="text-2xl font-bold text-blue-700">Overview</h2>
-                  <p className="text-gray-700 leading-relaxed">
-                    Blockchain technology is revolutionizing various sectors beyond just cryptocurrencies.
-                    From financial services to supply chain management, its applications are creating new
-                    possibilities for business and society. Let's explore how this technology is being
-                    implemented in real-world scenarios.
-                  </p>
-                  <ApplicationShowcase />
-                </section>
-              </CardContent>
-            </Card>
-          </motion.div>
+          {/* Progress Bar */}
+          <div className="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+            <motion.div
+              className="h-full bg-blue-600"
+              initial={{ width: "0%" }}
+              animate={{ width: `${scrollProgress}%` }}
+              transition={{ duration: 0.3 }}
+            />
+          </div>
+        </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <Card className="mb-6">
-              <CardContent className="prose max-w-none p-6">
-                <section>
-                  <h2 className="text-2xl font-bold text-blue-700">Financial Applications</h2>
-                  <p className="text-gray-700 mb-6">
-                    Financial inclusion is one of the most significant impacts of blockchain technology,
-                    providing access to financial services for the unbanked and underbanked populations worldwide.
-                  </p>
-                  <FinancialInclusionDiagram />
-                </section>
-              </CardContent>
-            </Card>
-          </motion.div>
+        {/* Main Content */}
+        <div className="space-y-8">
+          <Card className="border-2 border-slate-200 dark:border-slate-800">
+            <CardContent className="p-6">
+              <section>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">Overview</h2>
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                  Blockchain technology is revolutionizing various sectors beyond just cryptocurrencies.
+                  From financial services to supply chain management, its applications are creating new
+                  possibilities for business and society. Let's explore how this technology is being
+                  implemented in real-world scenarios.
+                </p>
+                <ApplicationShowcase />
+              </section>
+            </CardContent>
+          </Card>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            <Card className="mb-6">
-              <CardContent className="prose max-w-none p-6">
-                <section>
-                  <h2 className="text-2xl font-bold text-blue-700">Technical Applications</h2>
-                  <p className="text-gray-700 mb-6">
-                    Blockchain's technical capabilities extend far beyond financial transactions,
-                    enabling new solutions across various industries.
-                  </p>
+          <Card className="border-2 border-slate-200 dark:border-slate-800">
+            <CardContent className="p-6">
+              <section>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">Financial Applications</h2>
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                  Financial inclusion is one of the most significant impacts of blockchain technology,
+                  providing access to financial services for the unbanked and underbanked populations worldwide.
+                </p>
+                <FinancialInclusionDiagram />
+              </section>
+            </CardContent>
+          </Card>
 
-                  <div className="grid gap-6">
-                    {[
-                      {
-                        icon: FileText,
-                        title: "Supply Chain Management",
-                        description: "Track products from origin to consumer with immutable records",
-                        features: [
-                          "Real-time tracking and verification",
-                          "Counterfeit prevention",
-                          "Automated compliance",
-                          "Inventory optimization"
-                        ],
-                        color: "blue"
-                      },
-                      {
-                        icon: Shield,
-                        title: "Healthcare Records",
-                        description: "Secure and interoperable medical data management",
-                        features: [
-                          "Patient data privacy",
-                          "Cross-institution sharing",
-                          "Clinical trial tracking",
-                          "Drug supply verification"
-                        ],
-                        color: "green"
-                      },
-                      {
-                        icon: Lock,
-                        title: "Digital Identity",
-                        description: "Decentralized identity verification and management",
-                        features: [
-                          "Self-sovereign identity",
-                          "Credential verification",
-                          "Access control",
-                          "Privacy preservation"
-                        ],
-                        color: "purple"
-                      }
-                    ].map((item, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className={`bg-${item.color}-50 p-6 rounded-lg shadow-lg`}
-                      >
-                        <div className="flex items-start gap-4">
-                          <div className={`p-3 bg-${item.color}-100 rounded-full`}>
-                            <item.icon className={`w-6 h-6 text-${item.color}-600`} />
-                          </div>
-                          <div>
-                            <h3 className={`text-xl font-bold text-${item.color}-800 mb-2`}>
-                              {item.title}
-                            </h3>
-                            <p className="text-gray-600 mb-4">{item.description}</p>
-                            <ul className="space-y-2">
-                              {item.features.map((feature, i) => (
-                                <li key={i} className="flex items-center gap-2">
-                                  <div className={`w-2 h-2 rounded-full bg-${item.color}-400`} />
-                                  <span className="text-sm text-gray-600">{feature}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
+          {/* Technical Applications Section - preserve existing content with updated styling */}
+          <Card className="border-2 border-slate-200 dark:border-slate-800">
+            <CardContent className="p-6">
+              <section>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">Technical Applications</h2>
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                  Blockchain's technical capabilities extend far beyond financial transactions,
+                  enabling new solutions across various industries.
+                </p>
+                {/* Keep existing technical applications grid with updated styling */}
+                <div className="grid gap-6">
+                  {[
+                    {
+                      icon: FileText,
+                      title: "Supply Chain Management",
+                      description: "Track products from origin to consumer with immutable records",
+                      features: [
+                        "Real-time tracking and verification",
+                        "Counterfeit prevention",
+                        "Automated compliance",
+                        "Inventory optimization"
+                      ],
+                      color: "blue"
+                    },
+                    {
+                      icon: Shield,
+                      title: "Healthcare Records",
+                      description: "Secure and interoperable medical data management",
+                      features: [
+                        "Patient data privacy",
+                        "Cross-institution sharing",
+                        "Clinical trial tracking",
+                        "Drug supply verification"
+                      ],
+                      color: "green"
+                    },
+                    {
+                      icon: Lock,
+                      title: "Digital Identity",
+                      description: "Decentralized identity verification and management",
+                      features: [
+                        "Self-sovereign identity",
+                        "Credential verification",
+                        "Access control",
+                        "Privacy preservation"
+                      ],
+                      color: "purple"
+                    }
+                  ].map((item, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className={`bg-${item.color}-50 p-6 rounded-lg shadow-lg`}
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className={`p-3 bg-${item.color}-100 rounded-full`}>
+                          <item.icon className={`w-6 h-6 text-${item.color}-600`} />
                         </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </section>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-          >
-            <Card className="mb-6">
-              <CardContent className="prose max-w-none p-6">
-                <section>
-                  <h2 className="text-2xl font-bold text-blue-700">Social Impact</h2>
-                  <p className="text-gray-700 mb-6">
-                    Blockchain technology is enabling positive social change through transparency,
-                    accountability, and improved resource distribution.
-                  </p>
-
-                  <div className="grid gap-6">
-                    {[
-                      {
-                        icon: Heart,
-                        title: "Humanitarian Aid",
-                        description: "Transparent and efficient distribution of aid",
-                        impact: [
-                          "Direct beneficiary payments",
-                          "Aid fund tracking",
-                          "Reduced fraud",
-                          "Faster emergency response"
-                        ],
-                        color: "rose"
-                      },
-                      {
-                        icon: Globe2,
-                        title: "Environmental Protection",
-                        description: "Supporting sustainability and conservation efforts",
-                        impact: [
-                          "Carbon credit tracking",
-                          "Environmental compliance",
-                          "Conservation funding",
-                          "Waste management"
-                        ],
-                        color: "emerald"
-                      },
-                      {
-                        icon: Users,
-                        title: "Community Empowerment",
-                        description: "Enabling local governance and cooperation",
-                        impact: [
-                          "Decentralized governance",
-                          "Community voting",
-                          "Resource sharing",
-                          "Local economies"
-                        ],
-                        color: "indigo"
-                      }
-                    ].map((item, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className={`bg-${item.color}-50 p-6 rounded-lg shadow-lg`}
-                      >
-                        <div className="flex items-start gap-4">
-                          <div className={`p-3 bg-${item.color}-100 rounded-full`}>
-                            <item.icon className={`w-6 h-6 text-${item.color}-600`} />
-                          </div>
-                          <div>
-                            <h3 className={`text-xl font-bold text-${item.color}-800 mb-2`}>
-                              {item.title}
-                            </h3>
-                            <p className="text-gray-600 mb-4">{item.description}</p>
-                            <ul className="space-y-2">
-                              {item.impact.map((point, i) => (
-                                <li key={i} className="flex items-center gap-2">
-                                  <div className={`w-2 h-2 rounded-full bg-${item.color}-400`} />
-                                  <span className="text-sm text-gray-600">{point}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
+                        <div>
+                          <h3 className={`text-xl font-bold text-${item.color}-800 mb-2`}>
+                            {item.title}
+                          </h3>
+                          <p className="text-gray-600 mb-4">{item.description}</p>
+                          <ul className="space-y-2">
+                            {item.features.map((feature, i) => (
+                              <li key={i} className="flex items-center gap-2">
+                                <div className={`w-2 h-2 rounded-full bg-${item.color}-400`} />
+                                <span className="text-sm text-gray-600">{feature}</span>
+                              </li>
+                            ))}
+                          </ul>
                         </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </section>
-              </CardContent>
-            </Card>
-          </motion.div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </section>
+            </CardContent>
+          </Card>
 
+          {/* Social Impact Section - preserve existing content with updated styling */}
+          <Card className="border-2 border-slate-200 dark:border-slate-800">
+            <CardContent className="p-6">
+              <section>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">Social Impact</h2>
+                <p className="text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                  Blockchain technology is enabling positive social change through transparency,
+                  accountability, and improved resource distribution.
+                </p>
+                {/* Keep existing social impact grid with updated styling */}
+                <div className="grid gap-6">
+                  {[
+                    {
+                      icon: Heart,
+                      title: "Humanitarian Aid",
+                      description: "Transparent and efficient distribution of aid",
+                      impact: [
+                        "Direct beneficiary payments",
+                        "Aid fund tracking",
+                        "Reduced fraud",
+                        "Faster emergency response"
+                      ],
+                      color: "rose"
+                    },
+                    {
+                      icon: Globe2,
+                      title: "Environmental Protection",
+                      description: "Supporting sustainability and conservation efforts",
+                      impact: [
+                        "Carbon credit tracking",
+                        "Environmental compliance",
+                        "Conservation funding",
+                        "Waste management"
+                      ],
+                      color: "emerald"
+                    },
+                    {
+                      icon: Users,
+                      title: "Community Empowerment",
+                      description: "Enabling local governance and cooperation",
+                      impact: [
+                        "Decentralized governance",
+                        "Community voting",
+                        "Resource sharing",
+                        "Local economies"
+                      ],
+                      color: "indigo"
+                    }
+                  ].map((item, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className={`bg-${item.color}-50 p-6 rounded-lg shadow-lg`}
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className={`p-3 bg-${item.color}-100 rounded-full`}>
+                          <item.icon className={`w-6 h-6 text-${item.color}-600`} />
+                        </div>
+                        <div>
+                          <h3 className={`text-xl font-bold text-${item.color}-800 mb-2`}>
+                            {item.title}
+                          </h3>
+                          <p className="text-gray-600 mb-4">{item.description}</p>
+                          <ul className="space-y-2">
+                            {item.impact.map((point, i) => (
+                              <li key={i} className="flex items-center gap-2">
+                                <div className={`w-2 h-2 rounded-full bg-${item.color}-400`} />
+                                <span className="text-sm text-gray-600">{point}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </section>
+            </CardContent>
+          </Card>
+
+          {/* Quiz Section */}
           {isFullyRead && (
             <motion.div
-              className="mt-8 space-y-6"
+              className="space-y-6"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
             >
-              <Card className="bg-green-100 border-l-4 border-green-500 p-4">
-                <p className="text-green-700">
+              <Card className="bg-green-50 dark:bg-green-900/20 border-l-4 border-green-500 p-4">
+                <p className="text-green-700 dark:text-green-300">
                   🎉 Congratulations! You've completed the Practical Applications section!
                 </p>
               </Card>
@@ -453,7 +433,7 @@ const PracticalApplicationsSection = () => {
               <div className="flex flex-col md:flex-row gap-4">
                 <Button
                   onClick={() => setShowQuiz(!showQuiz)}
-                  className="w-full md:w-auto bg-purple-600 hover:bg-purple-700"
+                  className="w-full md:w-auto bg-purple-600 hover:bg-purple-700 text-white"
                   size="lg"
                 >
                   {showQuiz ? "Hide Quiz" : "Take Topic Quiz"}
@@ -468,7 +448,7 @@ const PracticalApplicationsSection = () => {
                   </Link>
 
                   <Link href="/modules/module1/getting-started">
-                    <Button className="w-full md:w-auto bg-blue-600 hover:bg-blue-700">
+                    <Button className="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white">
                       Next Topic
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
@@ -476,15 +456,16 @@ const PracticalApplicationsSection = () => {
                 </div>
               </div>
 
+              {/* Quiz Component */}
               {showQuiz && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5 }}
                 >
-                  <Card>
+                  <Card className="border-2 border-slate-200 dark:border-slate-800">
                     <CardContent className="p-6">
-                      <h2 className="text-2xl font-bold text-blue-800 mb-4">Topic Quiz</h2>
+                      <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">Topic Quiz</h2>
                       <PracticalApplicationsQuiz />
                     </CardContent>
                   </Card>
@@ -493,8 +474,6 @@ const PracticalApplicationsSection = () => {
             </motion.div>
           )}
         </div>
-
-        {/*{isFullyRead && <Progress value={scrollProgress} />}*/}
       </div>
     </div>
   );
