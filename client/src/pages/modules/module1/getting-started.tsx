@@ -6,7 +6,7 @@ import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ArrowLeft, ArrowRight, Wallet } from "lucide-react";
-import { DigitalCurrenciesQuiz } from "@/components/quizzes/DigitalCurrenciesQuiz";
+import DigitalCurrenciesQuiz from "@/components/quizzes/DigitalCurrenciesQuiz";
 import { SecurityIcon, WalletIcon } from "@/components/icons/CryptoIcons";
 import { GettingStartedDiagram } from "@/components/diagrams/GettingStartedDiagram";
 import { Input } from "@/components/ui/input";
