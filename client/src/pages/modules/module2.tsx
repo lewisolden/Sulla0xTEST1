@@ -6,7 +6,6 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Database, Network, Code, FileText, ArrowLeft, ArrowRight, CheckCircle2, XCircle, BookOpen, ChevronRight, TrendingUp, LockKeyhole } from "lucide-react";
 import ModuleProgress from "@/components/modules/module-progress";
-import BadgeShowcase from "@/components/modules/badge-showcase";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { motion } from "framer-motion";
 
@@ -38,8 +37,7 @@ const moduleTopics = [
       "Historical Context and Significance", 
       "How Bitcoin Works",
       "Key Milestones"
-    ],
-    gradient: "from-orange-400 to-red-500"
+    ]
   },
   {
     id: "bitcoin-investment",
@@ -52,8 +50,7 @@ const moduleTopics = [
       "Store of Value Properties",
       "Bitcoin ETFs",
       "Investment Strategies"
-    ],
-    gradient: "from-red-400 to-pink-500"
+    ]
   },
   {
     id: "security-risk",
@@ -66,8 +63,7 @@ const moduleTopics = [
       "Risk Management Strategies",
       "Common Mistakes to Avoid",
       "Best Practices"
-    ],
-    gradient: "from-pink-400 to-purple-500"
+    ]
   },
   {
     id: "practical-exercises",
@@ -80,8 +76,7 @@ const moduleTopics = [
       "Advanced Exercises",
       "Real-world Scenarios",
       "Practice Quiz"
-    ],
-    gradient: "from-purple-400 to-indigo-500"
+    ]
   }
 ];
 
@@ -128,6 +123,9 @@ export default function Module2() {
                     </p>
                   </div>
                 </div>
+                <div className="mt-8">
+                  <ModuleProgress moduleId={2} totalSections={moduleTopics.length} />
+                </div>
               </div>
 
               <CardContent className="p-8">
@@ -144,71 +142,6 @@ export default function Module2() {
                   </Link>
                 </div>
 
-                {/* Learning Objectives Section */}
-                <div className="mb-12">
-                  <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-                    <BookOpen className="h-6 w-6 text-orange-500" />
-                    Learning Objectives
-                  </h2>
-                  <div className="grid md:grid-cols-2 gap-6">
-                    {[
-                      {
-                        title: "Blockchain Fundamentals",
-                        items: ["Bitcoin's architecture", "Transaction mechanisms", "Mining process"],
-                        icon: Database,
-                        gradient: "from-orange-400 to-red-500"
-                      },
-                      {
-                        title: "Investment Knowledge",
-                        items: ["Market analysis", "Risk management", "Portfolio strategy"],
-                        icon: TrendingUp,
-                        gradient: "from-red-400 to-pink-500"
-                      },
-                      {
-                        title: "Security Essentials",
-                        items: ["Wallet security", "Best practices", "Threat prevention"],
-                        icon: LockKeyhole,
-                        gradient: "from-pink-400 to-purple-500"
-                      },
-                      {
-                        title: "Practical Application",
-                        items: ["Real-world usage", "Network participation", "Future developments"],
-                        icon: Code,
-                        gradient: "from-purple-400 to-indigo-500"
-                      }
-                    ].map((objective, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 + index * 0.1 }}
-                      >
-                        <Card className={`bg-gradient-to-br ${objective.gradient} text-white`}>
-                          <CardContent className="p-6">
-                            <div className="flex items-center gap-3 mb-4">
-                              <div className="p-2 bg-white/20 rounded-lg">
-                                <objective.icon className="h-5 w-5" />
-                              </div>
-                              <h3 className="text-lg font-semibold">{objective.title}</h3>
-                            </div>
-                            <ul className="space-y-2 pl-4">
-                              {objective.items.map((item, idx) => (
-                                <li key={idx} className="text-white/90 flex items-center gap-2">
-                                  <div className="h-1.5 w-1.5 bg-white/60 rounded-full" />
-                                  {item}
-                                </li>
-                              ))}
-                            </ul>
-                          </CardContent>
-                        </Card>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-
-                <ModuleProgress moduleId={2} totalSections={moduleTopics.length} />
-                <BadgeShowcase moduleId={2} />
-
                 <Tabs defaultValue="overview" className="mt-8">
                   <TabsList className="bg-orange-100 p-1">
                     <TabsTrigger value="overview" className="data-[state=active]:bg-white">Overview</TabsTrigger>
@@ -217,49 +150,61 @@ export default function Module2() {
                   </TabsList>
 
                   <TabsContent value="overview" className="mt-6">
-                    <div className="grid gap-6">
-                      <div className="prose max-w-none">
-                        <h2 className="text-2xl font-semibold text-orange-800 mb-4">Learning Path</h2>
-                        <p className="text-gray-700">
-                          This module is structured to provide you with a thorough understanding 
-                          of Bitcoin and blockchain technology. Start with the fundamentals and 
-                          progress through increasingly advanced concepts.
-                        </p>
-                      </div>
+                    <Card>
+                      <CardContent className="p-6">
+                        <div className="prose max-w-none">
+                          <h2 className="text-2xl font-semibold text-orange-800 mb-4">Welcome to Module 2</h2>
+                          <p className="text-gray-700 mb-6">
+                            Welcome to Module 2 of our cryptocurrency education journey. This module focuses on 
+                            Bitcoin - the first and most influential cryptocurrency. We'll explore its history, 
+                            how it works, and its role as a revolutionary form of digital money.
+                          </p>
+                          <p className="text-gray-700 mb-4">
+                            Before diving into Bitcoin's technical aspects, let's address some common concerns:
+                          </p>
+                          <ul className="list-disc pl-6 space-y-3 text-gray-700 mb-8">
+                            <li><strong>Do I need to buy a whole Bitcoin?</strong> No! Bitcoin is divisible into 100 million units called "satoshis" or "sats." You can start with as little as $10.</li>
+                            <li><strong>Is it too technical for me?</strong> While Bitcoin uses complex technology, using it is similar to mobile banking. Start with the basics, and your understanding will grow naturally.</li>
+                            <li><strong>What if I make a mistake?</strong> Start with small amounts while learning. Use test transactions and practice with minimal stakes to build confidence.</li>
+                          </ul>
 
-                      <div className="grid md:grid-cols-2 gap-6 mt-4">
-                        {topicsWithProgress.map((topic, index) => (
-                          <motion.div
-                            key={topic.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.3 + index * 0.1 }}
-                          >
-                            <Link href={topic.path}>
-                              <Card className={`bg-gradient-to-br ${topic.gradient} text-white hover:shadow-lg transition-all duration-300 cursor-pointer`}>
-                                <CardContent className="p-6">
-                                  <div className="flex items-center gap-3 mb-2">
-                                    <div className="p-2 bg-white/20 rounded-lg">
-                                      <topic.icon className="h-5 w-5" />
-                                    </div>
-                                    <h3 className="font-semibold">{topic.title}</h3>
-                                  </div>
-                                  <div className="pl-11">
-                                    <ul className="list-disc text-sm text-white/90">
-                                      {topic.subsections.slice(0, 2).map((sub, idx) => (
-                                        <li key={idx}>{sub}</li>
-                                      ))}
-                                    </ul>
-                                  </div>
-                                </CardContent>
-                              </Card>
-                            </Link>
-                          </motion.div>
-                        ))}
-                      </div>
-                    </div>
+                          <h3 className="text-xl font-semibold text-orange-800 mb-4">Learning Objectives</h3>
+                          <div className="grid md:grid-cols-2 gap-4 bg-orange-50/50 p-6 rounded-lg">
+                            {[
+                              {
+                                title: "Blockchain Fundamentals",
+                                items: ["Bitcoin's architecture", "Transaction mechanisms", "Mining process"]
+                              },
+                              {
+                                title: "Investment Knowledge",
+                                items: ["Market analysis", "Risk management", "Portfolio strategy"]
+                              },
+                              {
+                                title: "Security Essentials",
+                                items: ["Wallet security", "Best practices", "Threat prevention"]
+                              },
+                              {
+                                title: "Practical Application",
+                                items: ["Real-world usage", "Network participation", "Future developments"]
+                              }
+                            ].map((objective, index) => (
+                              <div key={index} className="space-y-2">
+                                <h4 className="font-semibold text-orange-800">{objective.title}</h4>
+                                <ul className="space-y-1">
+                                  {objective.items.map((item, idx) => (
+                                    <li key={idx} className="flex items-center gap-2 text-gray-700">
+                                      <div className="h-1.5 w-1.5 bg-orange-400 rounded-full" />
+                                      {item}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
                   </TabsContent>
-
                   <TabsContent value="content" className="mt-6">
                     <div className="grid gap-6">
                       {topicsWithProgress.map((topic, index) => (
@@ -297,7 +242,6 @@ export default function Module2() {
                       ))}
                     </div>
                   </TabsContent>
-
                   <TabsContent value="quiz" className="mt-6">
                     <Card>
                       <CardContent className="p-6">
@@ -336,7 +280,6 @@ export default function Module2() {
                               </li>
                             ))}
                           </ul>
-
                           <div className="mt-6">
                             <Link href="/modules/module2/quiz">
                               <Button 
@@ -348,7 +291,6 @@ export default function Module2() {
                             </Link>
                           </div>
                         </div>
-
                         {isModuleComplete && (
                           <motion.div
                             initial={{ opacity: 0, y: 20 }}
