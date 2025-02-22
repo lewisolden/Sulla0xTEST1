@@ -6,6 +6,8 @@ import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ArrowLeft, ArrowRight, Wallet } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 import { GettingStartedQuiz } from "@/components/quizzes/GettingStartedQuiz";
 import { SecurityIcon, WalletIcon } from "@/components/icons/CryptoIcons";
 import { GettingStartedDiagram } from "@/components/diagrams/GettingStartedDiagram";
@@ -759,6 +761,89 @@ const GettingStartedSection = () => {
           </CardContent>
         </Card>
 
+        {/* Knowledge Check Quiz Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mt-12"
+        >
+          <Card>
+            <CardContent className="p-6">
+              <div className="bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 text-white rounded-lg p-6 mb-6">
+                <h2 className="text-2xl font-bold mb-2">Knowledge Check</h2>
+                <p className="text-blue-100">Test your understanding with this quick quiz</p>
+              </div>
+
+              <div className="space-y-8">
+                <div className="space-y-4">
+                  <h3 className="font-semibold text-lg text-gray-800">
+                    What is the primary purpose of a seed phrase?
+                  </h3>
+                  <RadioGroup defaultValue="none" className="space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="1" id="q1-1" />
+                      <Label htmlFor="q1-1">To make transactions faster</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="2" id="q1-2" />
+                      <Label htmlFor="q1-2">To backup and restore your wallet</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="3" id="q1-3" />
+                      <Label htmlFor="q1-3">To increase your crypto holdings</Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+
+                <div className="space-y-4">
+                  <h3 className="font-semibold text-lg text-gray-800">
+                    Where should you store your seed phrase?
+                  </h3>
+                  <RadioGroup defaultValue="none" className="space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="1" id="q2-1" />
+                      <Label htmlFor="q2-1">On your computer in a text file</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="2" id="q2-2" />
+                      <Label htmlFor="q2-2">In your email as a draft</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="3" id="q2-3" />
+                      <Label htmlFor="q2-3">Written on paper stored in a secure location</Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+
+                <div className="space-y-4">
+                  <h3 className="font-semibold text-lg text-gray-800">
+                    What happens if you lose your seed phrase?
+                  </h3>
+                  <RadioGroup defaultValue="none" className="space-y-2">
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="1" id="q3-1" />
+                      <Label htmlFor="q3-1">Nothing, you can always create a new one</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="2" id="q3-2" />
+                      <Label htmlFor="q3-2">You can lose access to your funds permanently</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="3" id="q3-3" />
+                      <Label htmlFor="q3-3">Customer support can recover it for you</Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+
+                <Button className="w-full mt-6">
+                  Check Answers
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
         {isFullyRead && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -771,28 +856,6 @@ const GettingStartedSection = () => {
               </p>
             </Card>
 
-            <Button
-              onClick={() => setShowQuiz(!showQuiz)}
-              className="w-full bg-purple-600 hover:bg-purple-700"
-              size="lg"
-            >
-              {showQuiz ? "Hide Quiz" : "Take Topic Quiz"}
-            </Button>
-
-            {showQuiz && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <Card className="mt-4">
-                  <CardContent className="p-6">
-                    <h2 className="text-2xl font-bold text-blue-800 mb-4">Topic Quiz</h2>
-                    <GettingStartedQuiz />
-                  </CardContent>
-                </Card>
-              </motion.div>
-            )}
 
             <div className="flex justify-between mt-4">
               <Link href="/modules/module1/applications">
