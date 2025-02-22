@@ -242,6 +242,13 @@ const GettingStartedSection = () => {
   const [isVerifying, setIsVerifying] = useState(false);
   const [isSeedPhraseVerified, setIsSeedPhraseVerified] = useState(false);
 
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [showExplanation, setShowExplanation] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
+  const [quizCompleted, setQuizCompleted] = useState(false);
+  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+
+
   useEffect(() => {
     const generateSeedPhrase = () => {
       const phrase = [];
@@ -349,6 +356,92 @@ const GettingStartedSection = () => {
       </div>
     </motion.div>
   );
+
+  const questions = [
+    {
+      question: "What is a seed phrase primarily used for in cryptocurrency?",
+      options: [
+        "To speed up transactions on the blockchain",
+        "To recover and access your wallet on any device",
+        "To mine new cryptocurrencies",
+        "To encrypt your email communications"
+      ],
+      correctAnswer: 1,
+      explanation: "A seed phrase is a crucial backup mechanism that allows you to recover and access your cryptocurrency wallet on any device. It's essentially your master key to your digital assets."
+    },
+    {
+      question: "Which of the following is the most secure way to store your seed phrase?",
+      options: [
+        "Take a screenshot and store it in cloud storage",
+        "Write it down on paper and store it in a secure location",
+        "Save it as a note on your smartphone",
+        "Share it with a trusted friend as backup"
+      ],
+      correctAnswer: 1,
+      explanation: "Writing down your seed phrase on paper and storing it in a secure location is the safest method. Digital storage methods are vulnerable to hacking, and sharing your seed phrase with others puts your assets at risk."
+    },
+    {
+      question: "What should you do if someone asks for your seed phrase online?",
+      options: [
+        "Share it if they work for the wallet company",
+        "Provide it if they can verify their identity",
+        "Never share it with anyone under any circumstances",
+        "Share it only in encrypted format"
+      ],
+      correctAnswer: 2,
+      explanation: "You should never share your seed phrase with anyone, regardless of who they claim to be. Legitimate companies and support staff will never ask for your seed phrase."
+    },
+    {
+      question: "How many words typically make up a seed phrase?",
+      options: [
+        "8 words",
+        "12 or 24 words",
+        "16 words",
+        "32 words"
+      ],
+      correctAnswer: 1,
+      explanation: "Seed phrases typically consist of either 12 or 24 words, with 12 being the most common. This provides sufficient security while remaining manageable for users to record and store safely."
+    },
+    {
+      question: "What happens if you lose both your seed phrase and access to your wallet?",
+      options: [
+        "Contact support to reset your wallet",
+        "Your funds are permanently lost",
+        "Use your email to recover access",
+        "Wait 30 days for automatic recovery"
+      ],
+      correctAnswer: 1,
+      explanation: "If you lose both your seed phrase and access to your wallet, your funds are permanently lost. There is no way to recover access without the seed phrase - this is why keeping it secure is crucial."
+    }
+  ];
+
+  const handleAnswerSelect = (answerIndex: number) => {
+    if (showExplanation || selectedAnswer !== null) return;
+
+    setSelectedAnswer(answerIndex.toString());
+    const correct = answerIndex === questions[currentQuestionIndex].correctAnswer;
+    setIsCorrect(correct);
+    setShowExplanation(true);
+
+    toast({
+      title: correct ? "Correct! 🎉" : "Incorrect",
+      description: questions[currentQuestionIndex].explanation,
+      variant: correct ? "default" : "destructive",
+    });
+
+    setTimeout(() => {
+      if (currentQuestionIndex < questions.length - 1) {
+        setCurrentQuestionIndex(prev => prev + 1);
+        setShowExplanation(false);
+        setSelectedAnswer(null);
+      } else {
+        setQuizCompleted(true);
+        setTimeout(() => {
+          window.location.href = '/modules/module1/quiz';
+        }, 5000);
+      }
+    }, 3000);
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -775,71 +868,48 @@ const GettingStartedSection = () => {
                 <p className="text-blue-100">Test your understanding with this quick quiz</p>
               </div>
 
-              <div className="space-y-8">
-                <div className="space-y-4">
-                  <h3 className="font-semibold text-lg text-gray-800">
-                    What is the primary purpose of a seed phrase?
-                  </h3>
-                  <RadioGroup defaultValue="none" className="space-y-2">
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="1" id="q1-1" />
-                      <Label htmlFor="q1-1">To make transactions faster</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="2" id="q1-2" />
-                      <Label htmlFor="q1-2">To backup and restore your wallet</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="3" id="q1-3" />
-                      <Label htmlFor="q1-3">To increase your crypto holdings</Label>
-                    </div>
-                  </RadioGroup>
-                </div>
+              {!quizCompleted ? (
+                <div className="space-y-8">
+                  <div className="space-y-4">
+                    <h3 className="font-semibold text-lg text-gray-800">
+                      {questions[currentQuestionIndex].question}
+                    </h3>
+                    <RadioGroup
+                      value={selectedAnswer || ''}
+                      className="space-y-2"
+                      onValueChange={(value) => handleAnswerSelect(parseInt(value))}
+                    >
+                      {questions[currentQuestionIndex].options.map((option, index) => (
+                        <div key={index} className="flex items-center space-x-2">
+                          <RadioGroupItem value={index.toString()} id={`q${currentQuestionIndex}-${index}`} />
+                          <Label htmlFor={`q${currentQuestionIndex}-${index}`}>{option}</Label>
+                        </div>
+                      ))}
+                    </RadioGroup>
+                  </div>
 
-                <div className="space-y-4">
-                  <h3 className="font-semibold text-lg text-gray-800">
-                    Where should you store your seed phrase?
-                  </h3>
-                  <RadioGroup defaultValue="none" className="space-y-2">
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="1" id="q2-1" />
-                      <Label htmlFor="q2-1">On your computer in a text file</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="2" id="q2-2" />
-                      <Label htmlFor="q2-2">In your email as a draft</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="3" id="q2-3" />
-                      <Label htmlFor="q2-3">Written on paper stored in a secure location</Label>
-                    </div>
-                  </RadioGroup>
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm text-gray-500">
+                      Question {currentQuestionIndex + 1} of {questions.length}
+                    </p>
+                    <Progress value={(currentQuestionIndex / questions.length) * 100} className="w-1/3" />
+                  </div>
                 </div>
-
-                <div className="space-y-4">
-                  <h3 className="font-semibold text-lg text-gray-800">
-                    What happens if you lose your seed phrase?
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="text-center py-8"
+                >
+                  <h3 className="text-2xl font-bold text-green-600 mb-4">
+                    Congratulations! 🎉
                   </h3>
-                  <RadioGroup defaultValue="none" className="space-y-2">
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="1" id="q3-1" />
-                      <Label htmlFor="q3-1">Nothing, you can always create a new one</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="2" id="q3-2" />
-                      <Label htmlFor="q3-2">You can lose access to your funds permanently</Label>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <RadioGroupItem value="3" id="q3-3" />
-                      <Label htmlFor="q3-3">Customer support can recover it for you</Label>
-                    </div>
-                  </RadioGroup>
-                </div>
-
-                <Button className="w-full mt-6">
-                  Check Answers
-                </Button>
-              </div>
+                  <p className="text-gray-600 mb-4">
+                    You've completed the knowledge check. Redirecting to the module quiz in 5 seconds...
+                  </p>
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
+                </motion.div>
+              )}
             </CardContent>
           </Card>
         </motion.div>
