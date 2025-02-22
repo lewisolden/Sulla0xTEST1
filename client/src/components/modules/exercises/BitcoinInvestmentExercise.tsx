@@ -82,7 +82,6 @@ export const BitcoinInvestmentExercise = () => {
   };
 
   const simulateInvestment = () => {
-    // Simplified simulation
     const results: { [key in Strategy]: SimulationResult } = {
       dca: {
         roi: 15,
@@ -208,7 +207,7 @@ export const BitcoinInvestmentExercise = () => {
 
         <Button
           onClick={simulateInvestment}
-          className="w-full bg-blue-600 hover:bg-blue-700"
+          className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
           size="lg"
         >
           Run Simulation
@@ -233,10 +232,10 @@ export const BitcoinInvestmentExercise = () => {
               <div className="flex justify-between">
                 <span>Risk Level:</span>
                 <span className={`font-semibold ${
-                  result.riskLevel === "High" 
-                    ? "text-red-600" 
-                    : result.riskLevel === "Medium" 
-                    ? "text-yellow-600" 
+                  result.riskLevel === "High"
+                    ? "text-red-600"
+                    : result.riskLevel === "Medium"
+                    ? "text-yellow-600"
                     : "text-green-600"
                 }`}>
                   {result.riskLevel}
