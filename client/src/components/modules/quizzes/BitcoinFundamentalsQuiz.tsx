@@ -232,19 +232,19 @@ export default function BitcoinFundamentalsQuiz() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             className={`
-              mt-4 p-3 rounded-lg
+              mt-3 p-2 rounded-lg text-sm
               ${selectedAnswer === questions[currentQuestion].correctAnswer
                 ? 'bg-green-100 border-l-4 border-green-500'
                 : 'bg-red-100 border-l-4 border-red-500'}
             `}
           >
-            <h3 className="font-bold mb-2 flex items-center gap-2">
+            <h3 className="text-sm font-bold mb-1 flex items-center gap-2">
               {selectedAnswer === questions[currentQuestion].correctAnswer
-                ? <><CheckCircle className="h-5 w-5 text-green-600" /> Correct!</>
-                : <><XCircle className="h-5 w-5 text-red-600" /> Incorrect</>}
+                ? <><CheckCircle className="h-4 w-4 text-green-600" /> Correct!</>
+                : <><XCircle className="h-4 w-4 text-red-600" /> Incorrect</>}
             </h3>
-            <p className="leading-relaxed text-gray-700">{questions[currentQuestion].explanation}</p>
-            <p className="text-sm mt-2 text-gray-500">Next question in 3 seconds...</p>
+            <p className="text-sm leading-snug text-gray-700">{questions[currentQuestion].explanation}</p>
+            <p className="text-xs mt-1 text-gray-500">Next question in 3 seconds...</p>
           </motion.div>
         )}
       </div>
