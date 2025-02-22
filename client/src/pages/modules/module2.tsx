@@ -133,19 +133,6 @@ export default function Module2() {
               </div>
 
               <CardContent className="p-8">
-                {/* Start Learning Button */}
-                <div className="flex justify-center mb-12">
-                  <Link href="/modules/module2/bitcoin-fundamentals">
-                    <Button 
-                      size="lg"
-                      className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all duration-300"
-                    >
-                      Start Learning
-                      <ChevronRight className="ml-2 h-5 w-5" />
-                    </Button>
-                  </Link>
-                </div>
-
                 <Tabs defaultValue="overview" className="mt-8">
                   <TabsList className="bg-orange-100 p-1">
                     <TabsTrigger value="overview" className="data-[state=active]:bg-white">Overview</TabsTrigger>
@@ -231,25 +218,28 @@ export default function Module2() {
                           transition={{ delay: 0.2 + index * 0.1 }}
                         >
                           <Link href={topic.path}>
-                            <Card className={`bg-gradient-to-br ${topic.gradient} text-white hover:shadow-lg transition-all duration-300`}>
+                            <Card className="hover:shadow-lg transition-all duration-300">
                               <CardContent className="p-6">
                                 <div className="flex justify-between items-start">
                                   <div className="flex-1">
                                     <div className="flex items-center gap-3 mb-4">
-                                      <div className="p-2 bg-white/20 rounded-lg">
-                                        <topic.icon className="h-5 w-5" />
+                                      <div className="p-2 bg-orange-100 rounded-lg">
+                                        <topic.icon className="h-5 w-5 text-orange-600" />
                                       </div>
-                                      <h3 className="text-xl font-semibold">{topic.title}</h3>
+                                      <h3 className="text-xl font-semibold text-orange-800">{topic.title}</h3>
+                                      {topic.completed && (
+                                        <span className="text-green-600 text-sm ml-2">(Completed)</span>
+                                      )}
                                     </div>
-                                    <p className="text-white/90 mb-4">{topic.description}</p>
-                                    <ul className="list-disc pl-12 text-white/90">
+                                    <p className="text-gray-600 mb-4">{topic.description}</p>
+                                    <ul className="list-disc pl-6 text-gray-600 space-y-1">
                                       {topic.subsections.map((sub, idx) => (
                                         <li key={idx}>{sub}</li>
                                       ))}
                                     </ul>
                                   </div>
                                   {topic.completed && (
-                                    <CheckCircle2 className="h-6 w-6 text-white/90" />
+                                    <CheckCircle2 className="h-6 w-6 text-green-500 ml-4" />
                                   )}
                                 </div>
                               </CardContent>
@@ -257,6 +247,18 @@ export default function Module2() {
                           </Link>
                         </motion.div>
                       ))}
+                    </div>
+
+                    <div className="mt-8 flex justify-center">
+                      <Link href="/modules/module2/bitcoin-fundamentals">
+                        <Button 
+                          size="lg"
+                          className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                        >
+                          Start Learning
+                          <ChevronRight className="ml-2 h-5 w-5" />
+                        </Button>
+                      </Link>
                     </div>
                   </TabsContent>
                   <TabsContent value="quiz" className="mt-6">
