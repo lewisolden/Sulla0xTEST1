@@ -26,9 +26,9 @@ const ExercisePreview = ({
     whileTap={{ scale: 0.98 }}
     className={`relative overflow-hidden ${className}`}
   >
-    <Card className="p-4 h-full bg-gradient-to-br from-white to-gray-50 hover:shadow-lg transition-shadow">
+    <Card className="p-4 h-full bg-gradient-to-br from-white to-gray-50 hover:shadow-lg transition-shadow border-2 border-transparent hover:border-orange-200">
       <div className="flex items-start gap-3">
-        <Icon className="h-6 w-6 text-blue-600 mt-1" />
+        <Icon className="h-6 w-6 text-orange-600 mt-1" />
         <div>
           <h3 className="font-semibold mb-2">{title}</h3>
           <p className="text-sm text-gray-600">{description}</p>
@@ -79,9 +79,20 @@ export default function ModuleExercises() {
             </Link>
           </motion.div>
 
-          <motion.h1 className="text-4xl font-bold text-blue-800 mb-6">
-            Module 2: Practical Exercises - Bitcoin Deep Dive
-          </motion.h1>
+          <motion.div
+            className="bg-gradient-to-r from-orange-500 to-red-600 rounded-xl p-8 mb-8 shadow-lg"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <h1 className="text-4xl font-bold text-white mb-2 flex items-center gap-3">
+              <Brain className="h-8 w-8" />
+              Practical Exercises & Simulations
+            </h1>
+            <p className="text-orange-100 text-lg">
+              Apply your Bitcoin knowledge through hands-on wallet management, security training, and real-world scenarios
+            </p>
+          </motion.div>
 
           <Card className="p-6">
             <div className="prose max-w-none mb-6">
@@ -168,14 +179,14 @@ export default function ModuleExercises() {
             </Link>
             <div className="space-x-4">
               <Button
-                className="gap-2"
+                className="gap-2 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white"
                 onClick={() => setActiveTab("security")}
               >
                 Continue to Security Workshop
                 <Shield className="h-4 w-4" />
               </Button>
               <Link href="/modules/module2/quiz">
-                <Button variant="default" className="gap-2">
+                <Button variant="default" className="gap-2 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white">
                   Take Module Quiz
                   <ArrowRight className="h-4 w-4" />
                 </Button>
