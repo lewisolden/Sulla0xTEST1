@@ -26,7 +26,20 @@ import {
   Globe,
   Network,
   Cog,
-  CheckCircle
+  CheckCircle,
+  Shield,
+  ShieldCheck,
+  ShieldAlert,
+  LockKeyhole,
+  Fingerprint,
+  Key,
+  ServerCrash,
+  AlertTriangle,
+  CheckCircle2,
+  ArrowUpRight,
+  BookOpen,
+  GraduationCap,
+  BrainCircuit
 } from "lucide-react";
 
 export default function DigitalCurrenciesSection() {
@@ -217,96 +230,156 @@ export default function DigitalCurrenciesSection() {
             <motion.div
               variants={cardVariants}
               whileHover="hover"
-              className="mt-6 p-6 bg-white rounded-lg shadow-md"
+              className="mt-6 p-6 bg-white rounded-lg shadow-md relative overflow-hidden"
             >
-              <h3 className="text-2xl font-semibold text-blue-600 mb-4">Understanding Transaction Flow</h3>
-              <motion.p variants={listItemVariants} className="mt-4">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-yellow-100 to-amber-100 rounded-full -translate-y-16 translate-x-16 opacity-50" />
+
+              <h3 className="text-2xl font-semibold text-blue-600 mb-4 relative z-10">Understanding Transaction Flow</h3>
+              <motion.p variants={listItemVariants} className="mt-4 relative z-10">
                 When you make a cryptocurrency transaction, it goes through several important steps to ensure security and validity:
               </motion.p>
 
-              <motion.ul variants={sectionVariants} className="list-disc pl-5 mt-4 mb-6">
-                {[
-                  "Transaction Broadcast: When you initiate a transfer, your transaction is announced to the network",
-                  "Verification: Network nodes check the transaction's validity and your available balance",
-                  "Consensus: Multiple nodes work together to confirm the transaction",
-                  "Validation: The transaction is validated and added to the blockchain",
-                  "Completion: The recipient receives the funds after network confirmation"
-                ].map((item, index) => (
-                  <motion.li
-                    key={index}
-                    variants={listItemVariants}
-                    custom={index}
-                    className="mb-2"
-                  >
-                    {item}
-                  </motion.li>
-                ))}
-              </motion.ul>
+              <div className="grid md:grid-cols-2 gap-6 mt-6">
+                <motion.div className="space-y-4">
+                  {[
+                    ["Broadcast", "Transaction is announced to the network", <ArrowUpRight />],
+                    ["Verify", "Network nodes check transaction validity", <ShieldCheck />],
+                    ["Consensus", "Multiple nodes work together to confirm", <Users />],
+                    ["Validate", "Transaction is added to the blockchain", <CheckCircle2 />],
+                    ["Complete", "Recipient receives confirmed funds", <CheckCircle />]
+                  ].map(([title, desc, icon], index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="flex items-start gap-4 bg-gradient-to-r from-amber-50 to-yellow-50 p-4 rounded-lg shadow-sm"
+                    >
+                      <div className="text-amber-600 mt-1">{icon}</div>
+                      <div>
+                        <h4 className="font-semibold text-amber-900">{title}</h4>
+                        <p className="text-sm text-amber-700">{desc}</p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </motion.div>
 
-              <TransactionFlowDiagram />
+                <div className="relative">
+                  <TransactionFlowDiagram />
+                </div>
+              </div>
             </motion.div>
           </CourseContentSection>
 
           <CourseContentSection
             title="Understanding Cryptocurrency Security"
-            icon={<SecurityIcon size={32} />}
+            icon={<Shield size={32} />}
             gradientFrom="sky-50"
             gradientTo="blue-50"
           >
             <motion.div
               variants={cardVariants}
               whileHover="hover"
-              className="mt-6 p-6 bg-white rounded-lg shadow-md"
+              className="mt-6 grid md:grid-cols-2 gap-6"
             >
-              <div className="flex items-center gap-4 mb-4">
-                <SecurityIcon size={32} className="text-blue-600" />
-                <h3 className="text-2xl font-semibold text-blue-600">Cryptographic Foundations</h3>
-              </div>
-              <motion.p variants={listItemVariants} className="mt-4">
-                Cryptocurrency security relies on advanced cryptography, specifically public-key cryptography. This system uses pairs of keys:
-              </motion.p>
-              <motion.ul
-                variants={sectionVariants}
-                className="list-disc pl-5 mt-2"
+              <motion.div
+                className="bg-gradient-to-br from-blue-100 to-sky-50 p-6 rounded-lg shadow-lg"
               >
-                {[
-                  "A private key (like your secret password)",
-                  "A public key (like your public email address)"
-                ].map((item, index) => (
-                  <motion.li
-                    key={index}
-                    variants={listItemVariants}
-                    custom={index}
-                  >
-                    {item}
-                  </motion.li>
-                ))}
-              </motion.ul>
+                <div className="flex items-center gap-4 mb-6">
+                  <LockKeyhole className="h-8 w-8 text-blue-600" />
+                  <h3 className="text-xl font-semibold text-blue-800">Cryptographic Foundations</h3>
+                </div>
+
+                <div className="space-y-4">
+                  {[
+                    ["Private Key", "Your secret digital signature", <Key className="h-5 w-5" />],
+                    ["Public Key", "Your public address for receiving", <Fingerprint className="h-5 w-5" />],
+                    ["Encryption", "Secure transaction encoding", <ShieldCheck className="h-5 w-5" />],
+                    ["Verification", "Transaction authenticity checks", <Shield className="h-5 w-5" />]
+                  ].map(([title, desc, icon], index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="flex items-center gap-3 bg-white/80 p-3 rounded-lg shadow-sm"
+                    >
+                      <div className="text-blue-600">{icon}</div>
+                      <div>
+                        <h4 className="font-medium text-blue-900">{title}</h4>
+                        <p className="text-sm text-blue-700">{desc}</p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+
+              <motion.div
+                className="bg-gradient-to-br from-indigo-100 to-blue-50 p-6 rounded-lg shadow-lg"
+              >
+                <div className="flex items-center gap-4 mb-6">
+                  <ShieldAlert className="h-8 w-8 text-indigo-600" />
+                  <h3 className="text-xl font-semibold text-indigo-800">Security Challenges</h3>
+                </div>
+
+                <div className="space-y-4">
+                  {[
+                    ["Double-Spending", "Prevention of duplicate transactions", <ServerCrash className="h-5 w-5" />],
+                    ["Network Attacks", "Protection against malicious actors", <AlertTriangle className="h-5 w-5" />],
+                    ["Key Management", "Secure storage of private keys", <Key className="h-5 w-5" />],
+                    ["Transaction Privacy", "Balance of transparency and privacy", <Shield className="h-5 w-5" />]
+                  ].map(([title, desc, icon], index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="flex items-center gap-3 bg-white/80 p-3 rounded-lg shadow-sm"
+                    >
+                      <div className="text-indigo-600">{icon}</div>
+                      <div>
+                        <h4 className="font-medium text-indigo-900">{title}</h4>
+                        <p className="text-sm text-indigo-700">{desc}</p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
             </motion.div>
 
             <motion.div
               variants={cardVariants}
               whileHover="hover"
-              className="mt-8 p-6 bg-white rounded-lg shadow-md"
+              className="mt-8 p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg shadow-lg"
             >
-              <h3 className="text-2xl font-semibold text-blue-600">The Double-Spending Solution</h3>
-              <motion.p variants={listItemVariants} className="mt-4">
-                One of cryptocurrency's most significant achievements is solving the "double-spending" problem for digital money. In traditional digital systems, preventing someone from copying and reusing digital money required central authorities to track all transactions. Cryptocurrency solves this through its blockchain and network consensus mechanism.
-              </motion.p>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{
-                  opacity: 1,
-                  scale: 1,
-                  transition: {
-                    duration: 0.5,
-                    ease: "easeOut"
-                  }
-                }}
-                viewport={{ once: true }}
-              >
-                <DoubleSpendDiagram />
-              </motion.div>
+              <h3 className="text-2xl font-semibold text-blue-800 mb-6">The Double-Spending Solution</h3>
+              <div className="grid md:grid-cols-2 gap-8">
+                <motion.div className="space-y-4">
+                  <p className="text-blue-700 leading-relaxed">
+                    One of cryptocurrency's most significant achievements is solving the "double-spending" problem for digital money. Traditional systems required central authorities, but blockchain technology provides a decentralized solution.
+                  </p>
+                  <div className="bg-white/80 p-4 rounded-lg shadow-sm">
+                    <h4 className="font-semibold text-blue-900 mb-2">How It Works:</h4>
+                    <ul className="space-y-2 text-sm text-blue-700">
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="h-4 w-4 text-green-500" />
+                        Transactions are verified by multiple nodes
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="h-4 w-4 text-green-500" />
+                        Each transaction is recorded on the blockchain
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <CheckCircle className="h-4 w-4 text-green-500" />
+                        Network consensus prevents double-spending
+                      </li>
+                    </ul>
+                  </div>
+                </motion.div>
+                <div className="relative">
+                  <DoubleSpendDiagram />
+                </div>
+              </div>
             </motion.div>
           </CourseContentSection>
 
@@ -415,23 +488,24 @@ export default function DigitalCurrenciesSection() {
 
           <CourseContentSection
             title="Getting Started Safely"
-            icon={<WalletIcon size={32} />}
-            gradientFrom="lime-50"
-            gradientTo="emerald-50"
+            icon={<GraduationCap size={32} />}
+            gradientFrom="emerald-50"
+            gradientTo="teal-50"
           >
-            <motion.div
-              variants={cardVariants}
-              whileHover="hover"
-              className="mt-6 p-6 bg-white rounded-lg shadow-md"
-            >
-              <div className="flex items-center gap-4 mb-4">
-                <WalletIcon size={32} className="text-blue-600" />
-                <h3 className="text-2xl font-semibold text-blue-600">First Steps</h3>
-              </div>
-              <motion.ol variants={sectionVariants} className="list-decimal pl-5 mt-2">
+            <div className="grid md:grid-cols-2 gap-6">
+              <motion.div
+                variants={cardVariants}
+                whileHover="hover"
+                className="bg-gradient-to-br from-emerald-100 to-green-50 p-6 rounded-lg shadow-lg"
+              >
+                <div className="flex items-center gap-4 mb-6">
+                  <BookOpen className="h-8 w-8 text-emerald-600" />
+                  <h3 className="text-xl font-semibold text-emerald-800">First Steps</h3>
+                </div>
+
                 {[
                   {
-                    title: "Education First:",
+                    title: "Education First",
                     items: [
                       "Understand basic concepts",
                       "Learn security principles",
@@ -440,7 +514,7 @@ export default function DigitalCurrenciesSection() {
                     ]
                   },
                   {
-                    title: "Start Small:",
+                    title: "Start Small",
                     items: [
                       "Use small amounts initially",
                       "Practice with test networks",
@@ -448,31 +522,46 @@ export default function DigitalCurrenciesSection() {
                       "Understand transaction processes"
                     ]
                   }
-                ].map((item, index) => (
-                  <motion.li key={index} variants={listItemVariants} className="mt-4">
-                    <strong className="font-bold">{item.title}</strong>
-                    <motion.ul variants={sectionVariants} className="list-disc pl-5 mt-1">
-                      {item.items.map((subItem, subIndex) => (
-                        <motion.li key={subIndex} variants={listItemVariants} custom={subIndex}>
-                          {subItem}
+                ].map((section, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.2 }}
+                    className="mb-6 last:mb-0"
+                  >
+                    <h4 className="font-semibold text-emerald-900 mb-3">{section.title}</h4>
+                    <ul className="space-y-2">
+                      {section.items.map((item, index) => (
+                        <motion.li
+                          key={index}
+                          initial={{ opacity: 0, x: -20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          transition={{ delay: (idx * 0.2) + (index * 0.1) }}
+                          className="flex items-center gap-2 bg-white/80 p-2 rounded-lg"
+                        >
+                          <CheckCircle className="h-4 w-4 text-emerald-500" />
+                          <span className="text-sm text-emerald-700">{item}</span>
                         </motion.li>
                       ))}
-                    </motion.ul>
-                  </motion.li>
+                    </ul>
+                  </motion.div>
                 ))}
-              </motion.ol>
-            </motion.div>
+              </motion.div>
 
-            <motion.div
-              variants={cardVariants}
-              whileHover="hover"
-              className="mt-8 p-6 bg-white rounded-lg shadow-md"
-            >
-              <h3 className="text-2xl font-semibold text-blue-600">Security Best Practices</h3>
-              <motion.ol variants={sectionVariants} className="list-decimal pl-5 mt-2">
+              <motion.div
+                variants={cardVariants}
+                whileHover="hover"
+                className="bg-gradient-to-br from-teal-100 to-emerald-50 p-6 rounded-lg shadow-lg"
+              >
+                <div className="flex items-center gap-4 mb-6">
+                  <Shield className="h-8 w-8 text-teal-600" />
+                  <h3 className="text-xl font-semibold text-teal-800">Security Best Practices</h3>
+                </div>
+
                 {[
                   {
-                    title: "Essential Security Measures:",
+                    title: "Essential Security",
                     items: [
                       "Use strong passwords",
                       "Enable two-factor authentication",
@@ -482,7 +571,7 @@ export default function DigitalCurrenciesSection() {
                     ]
                   },
                   {
-                    title: "Advanced Protection:",
+                    title: "Advanced Protection",
                     items: [
                       "Hardware wallet usage",
                       "Multi-signature setups",
@@ -490,47 +579,112 @@ export default function DigitalCurrenciesSection() {
                       "Regular security audits"
                     ]
                   }
-                ].map((item, index) => (
-                  <motion.li key={index} variants={listItemVariants} className="mt-4">
-                    <strong className="font-bold">{item.title}</strong>
-                    <motion.ul variants={sectionVariants} className="list-disc pl-5 mt-1">
-                      {item.items.map((subItem, subIndex) => (
-                        <motion.li key={subIndex} variants={listItemVariants} custom={subIndex}>
-                          {subItem}
+                ].map((section, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.2 }}
+                    className="mb-6 last:mb-0"
+                  >
+                    <h4 className="font-semibold text-teal-900 mb-3">{section.title}</h4>
+                    <ul className="space-y-2">
+                      {section.items.map((item, index) => (
+                        <motion.li
+                          key={index}
+                          initial={{ opacity: 0, x: -20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          transition={{ delay: (idx * 0.2) + (index * 0.1) }}
+                          className="flex items-center gap-2 bg-white/80 p-2 rounded-lg"
+                        >
+                          <ShieldCheck className="h-4 w-4 text-teal-500" />
+                          <span className="text-sm text-teal-700">{item}</span>
                         </motion.li>
                       ))}
-                    </motion.ul>
-                  </motion.li>
+                    </ul>
+                  </motion.div>
                 ))}
-              </motion.ol>
-            </motion.div>
+              </motion.div>
+            </div>
           </CourseContentSection>
 
           <CourseContentSection
             title="Conclusion and Next Steps"
-            icon={<ArrowRight size={32} />}
-            gradientFrom="orange-50"
-            gradientTo="yellow-50"
+            icon={<BrainCircuit size={32} />}
+            gradientFrom="violet-50"
+            gradientTo="purple-50"
           >
-            <motion.p variants={listItemVariants} className="mt-4">
-              Understanding cryptocurrency requires balancing its revolutionary potential with practical risks and limitations. As you continue learning, remember:
-            </motion.p>
-            <motion.ul variants={sectionVariants} className="list-disc pl-5 mt-2">
-              {[
-                "Start with fundamentals before advancing",
-                "Prioritize security in all activities",
-                "Stay informed about developments",
-                "Practice with small amounts first",
-                "Maintain proper risk management by considering factors such as liquidity (ability to buy/sell quickly), volatility (price fluctuations), portfolio concentration (avoiding overexposure to single assets), and diversification (spreading risk across different types of assets)"
-              ].map((item, index) => (
-                <motion.li key={index} variants={listItemVariants} custom={index}>
-                  {item}
-                </motion.li>
-              ))}
-            </motion.ul>
-            <motion.p variants={listItemVariants} className="mt-4">
-              The cryptocurrency space continues evolving, making ongoing education essential for safe and effective participation.
-            </motion.p>
+            <motion.div
+              variants={cardVariants}
+              whileHover="hover"
+              className="mt-6 p-8 bg-gradient-to-br from-violet-100 to-purple-50 rounded-lg shadow-lg relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-violet-200 to-purple-200 rounded-full -translate-y-32 translate-x-32 opacity-50" />
+
+              <div className="relative z-10">
+                <h3 className="text-2xl font-semibold text-violet-900 mb-6">Key Takeaways</h3>
+
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="space-y-4">
+                    {[
+                      ["Start with fundamentals", "Master the basics before advancing"],
+                      ["Security first", "Always prioritize security in all activities"],
+                      ["Stay informed", "Keep up with latest developments"],
+                      ["Practice safely", "Start small and learn from experience"]
+                    ].map(([title, desc], index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className="bg-white/80 p-4 rounded-lg shadow-sm"
+                      >
+                        <h4 className="font-semibold text-violet-900 flex items-center gap-2">
+                          <CheckCircle2 className="h-5 w-5 text-violet-600" />
+                          {title}
+                        </h4>
+                        <p className="text-sm text-violet-700 mt-1">{desc}</p>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  <div className="bg-white/90 p-6 rounded-lg shadow-md">
+                    <h4 className="font-semibold text-purple-900 mb-4">Risk Management Essentials</h4>
+                    <ul className="space-y-3">
+                      {[
+                        ["Liquidity", "Ability to buy/sell quickly"],
+                        ["Volatility", "Understanding price fluctuations"],
+                        ["Portfolio Balance", "Avoiding overexposure"],
+                        ["Diversification", "Spreading risk across assets"]
+                      ].map(([title, desc], index) => (
+                        <motion.li
+                          key={index}
+                          initial={{ opacity: 0, y: 10 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                          className="flex items-start gap-3 p-2 border-b border-purple-100 last:border-0"
+                        >
+                          <ArrowUpRight className="h-5 w-5 text-purple-500 mt-1" />
+                          <div>
+                            <span className="font-medium text-purple-900">{title}</span>
+                            <p className="text-sm text-purple-700">{desc}</p>
+                          </div>
+                        </motion.li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ delay: 0.5 }}
+                  className="mt-6 text-violet-800 text-center font-medium"
+                >
+                  The cryptocurrency space continues evolving, making ongoing education essential for safe and effective participation.
+                </motion.p>
+              </div>
+            </motion.div>
           </CourseContentSection>
 
           {isFullyRead && (
