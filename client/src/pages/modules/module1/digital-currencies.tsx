@@ -376,8 +376,8 @@ export default function DigitalCurrenciesSection() {
                     </ul>
                   </div>
                 </motion.div>
-                <div className="bg-white/50 rounded-lg p-4 flex items-center justify-center">
-                  <div className="w-[250px] h-auto transform scale-60 -mx-8">
+                <div className="bg-white/50 rounded-lg p-6 flex items-center justify-center">
+                  <div className="max-w-full">
                     <DoubleSpendDiagram />
                   </div>
                 </div>
@@ -438,285 +438,286 @@ export default function DigitalCurrenciesSection() {
                 </div>
               </div>
             </motion.div>
+          </CourseContentSection>
 
-            <CourseContentSection
-              title="Practical Applications"
-              icon={<WalletIcon size={32} />}
-              gradientFrom="rose-50"
-              gradientTo="fuchsia-50"
+          <CourseContentSection
+            title="Practical Applications"
+            icon={<WalletIcon size={32} />}
+            gradientFrom="rose-50"
+            gradientTo="fuchsia-50"
+          >
+            <motion.div
+              variants={cardVariants}
+              whileHover="hover"
+              className="mt-6 grid md:grid-cols-2 gap-6"
             >
+              <KeyConceptBox
+                title="Financial Inclusion"
+                className="bg-gradient-to-br from-rose-100 to-pink-50"
+              >
+                <motion.ul className="space-y-3">
+                  {[
+                    "People without bank accounts",
+                    "Residents of countries with unstable currencies",
+                    "Individuals with limited access to traditional banking",
+                    "International workers needing to send remittances"
+                  ].map((item, index) => (
+                    <motion.li
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="flex items-center gap-2"
+                    >
+                      <CheckCircle className="h-5 w-5 text-green-500" />
+                      {item}
+                    </motion.li>
+                  ))}
+                </motion.ul>
+              </KeyConceptBox>
+
+              <KeyConceptBox
+                title="Payment Efficiency"
+                className="bg-gradient-to-br from-fuchsia-100 to-purple-50"
+              >
+                <motion.ul className="space-y-3">
+                  {[
+                    "Near-instant transfers globally",
+                    "Lower transaction fees",
+                    "24/7 operation",
+                    "No intermediary requirements",
+                    "Programmable payment options"
+                  ].map((item, index) => (
+                    <motion.li
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="flex items-center gap-2"
+                    >
+                      <ArrowRight className="h-5 w-5 text-purple-500" />
+                      {item}
+                    </motion.li>
+                  ))}
+                </motion.ul>
+              </KeyConceptBox>
+            </motion.div>
+          </CourseContentSection>
+
+          <CourseContentSection
+            title="Getting Started Safely"
+            icon={<GraduationCap size={32} />}
+            gradientFrom="emerald-50"
+            gradientTo="teal-50"
+          >
+            <div className="grid md:grid-cols-2 gap-6">
               <motion.div
                 variants={cardVariants}
                 whileHover="hover"
-                className="mt-6 grid md:grid-cols-2 gap-6"
+                className="bg-gradient-to-br from-emerald-100 to-green-50 p-6 rounded-lg shadow-lg"
               >
-                <KeyConceptBox
-                  title="Financial Inclusion"
-                  className="bg-gradient-to-br from-rose-100 to-pink-50"
-                >
-                  <motion.ul className="space-y-3">
-                    {[
-                      "People without bank accounts",
-                      "Residents of countries with unstable currencies",
-                      "Individuals with limited access to traditional banking",
-                      "International workers needing to send remittances"
-                    ].map((item, index) => (
-                      <motion.li
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="flex items-center gap-2"
-                      >
-                        <CheckCircle className="h-5 w-5 text-green-500" />
-                        {item}
-                      </motion.li>
-                    ))}
-                  </motion.ul>
-                </KeyConceptBox>
+                <div className="flex items-center gap-4 mb-6">
+                  <BookOpen className="h-8 w-8 text-emerald-600" />
+                  <h3 className="text-xl font-semibold text-emerald-800">First Steps</h3>
+                </div>
 
-                <KeyConceptBox
-                  title="Payment Efficiency"
-                  className="bg-gradient-to-br from-fuchsia-100 to-purple-50"
-                >
-                  <motion.ul className="space-y-3">
-                    {[
-                      "Near-instant transfers globally",
-                      "Lower transaction fees",
-                      "24/7 operation",
-                      "No intermediary requirements",
-                      "Programmable payment options"
-                    ].map((item, index) => (
-                      <motion.li
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="flex items-center gap-2"
-                      >
-                        <ArrowRight className="h-5 w-5 text-purple-500" />
-                        {item}
-                      </motion.li>
-                    ))}
-                  </motion.ul>
-                </KeyConceptBox>
-              </motion.div>
-            </CourseContentSection>
-
-            <CourseContentSection
-              title="Getting Started Safely"
-              icon={<GraduationCap size={32} />}
-              gradientFrom="emerald-50"
-              gradientTo="teal-50"
-            >
-              <div className="grid md:grid-cols-2 gap-6">
-                <motion.div
-                  variants={cardVariants}
-                  whileHover="hover"
-                  className="bg-gradient-to-br from-emerald-100 to-green-50 p-6 rounded-lg shadow-lg"
-                >
-                  <div className="flex items-center gap-4 mb-6">
-                    <BookOpen className="h-8 w-8 text-emerald-600" />
-                    <h3 className="text-xl font-semibold text-emerald-800">First Steps</h3>
-                  </div>
-
-                  {[
-                    {
-                      title: "Education First",
-                      items: [
-                        "Understand basic concepts",
-                        "Learn security principles",
-                        "Study market dynamics",
-                        "Review risk factors"
-                      ]
-                    },
-                    {
-                      title: "Start Small",
-                      items: [
-                        "Use small amounts initially",
-                        "Practice with test networks",
-                        "Learn wallet management",
-                        "Understand transaction processes"
-                      ]
-                    }
-                  ].map((section, idx) => (
-                    <motion.div
-                      key={idx}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ delay: idx * 0.2 }}
-                      className="mb-6 last:mb-0"
-                    >
-                      <h4 className="font-semibold text-emerald-900 mb-3">{section.title}</h4>
-                      <ul className="space-y-2">
-                        {section.items.map((item, index) => (
-                          <motion.li
-                            key={index}
-                            initial={{ opacity: 0, x: -20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ delay: (idx * 0.2) + (index * 0.1) }}
-                            className="flex items-center gap-2 bg-white/80 p-2 rounded-lg"
-                          >
-                            <CheckCircle className="h-4 w-4 text-emerald-500" />
-                            <span className="text-sm text-emerald-700">{item}</span>
-                          </motion.li>
-                        ))}
-                      </ul>
-                    </motion.div>
-                  ))}
-                </motion.div>
-
-                <motion.div
-                  variants={cardVariants}
-                  whileHover="hover"
-                  className="bg-gradient-to-br from-teal-100 to-emerald-50 p-6 rounded-lg shadow-lg"
-                >
-                  <div className="flex items-center gap-4 mb-6">
-                    <Shield className="h-8 w-8 text-teal-600" />
-                    <h3 className="text-xl font-semibold text-teal-800">Security Best Practices</h3>
-                  </div>
-
-                  {[
-                    {
-                      title: "Essential Security",
-                      items: [
-                        "Use strong passwords",
-                        "Enable two-factor authentication",
-                        "Maintain secure backups",
-                        "Keep software updated",
-                        "Verify all transactions"
-                      ]
-                    },
-                    {
-                      title: "Advanced Protection",
-                      items: [
-                        "Hardware wallet usage",
-                        "Multi-signature setups",
-                        "Cold storage implementation",
-                        "Regular security audits"
-                      ]
-                    }
-                  ].map((section, idx) => (
-                    <motion.div
-                      key={idx}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ delay: idx * 0.2 }}
-                      className="mb-6 last:mb-0"
-                    >
-                      <h4 className="font-semibold text-teal-900 mb-3">{section.title}</h4>
-                      <ul className="space-y-2">
-                        {section.items.map((item, index) => (
-                          <motion.li
-                            key={index}
-                            initial={{ opacity: 0, x: -20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ delay: (idx * 0.2) + (index * 0.1) }}
-                            className="flex items-center gap-2 bg-white/80 p-2 rounded-lg"
-                          >
-                            <ShieldCheck className="h-4 w-4 text-teal-500" />
-                            <span className="text-sm text-teal-700">{item}</span>
-                          </motion.li>
-                        ))}
-                      </ul>
-                    </motion.div>
-                  ))}
-                </motion.div>
-              </div>
-            </CourseContentSection>
-
-            <CourseContentSection
-              title="Conclusion and Next Steps"
-              icon={<BrainCircuit size={32} />}
-              gradientFrom="violet-50"
-              gradientTo="purple-50"
-            >
-              <motion.div
-                variants={cardVariants}
-                whileHover="hover"
-                className="mt-6 p-8 bg-gradient-to-br from-violet-100 to-purple-50 rounded-lg shadow-lg relative overflow-hidden"
-              >
-                <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-violet-200 to-purple-200 rounded-full -translate-y-32 translate-x-32 opacity-50" />
-
-                <div className="relative z-10">
-                  <h3 className="text-2xl font-semibold text-violet-900 mb-6">Key Takeaways</h3>
-
-                  <div className="grid md:grid-cols-2 gap-8">
-                    <div className="space-y-4">
-                      {[
-                        ["Start with fundamentals", "Master the basics before advancing"],
-                        ["Security first", "Always prioritize security in all activities"],
-                        ["Stay informed", "Keep up with latest developments"],
-                        ["Practice safely", "Start small and learn from experience"]
-                      ].map(([title, desc], index) => (
-                        <motion.div
+                {[
+                  {
+                    title: "Education First",
+                    items: [
+                      "Understand basic concepts",
+                      "Learn security principles",
+                      "Study market dynamics",
+                      "Review risk factors"
+                    ]
+                  },
+                  {
+                    title: "Start Small",
+                    items: [
+                      "Use small amounts initially",
+                      "Practice with test networks",
+                      "Learn wallet management",
+                      "Understand transaction processes"
+                    ]
+                  }
+                ].map((section, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.2 }}
+                    className="mb-6 last:mb-0"
+                  >
+                    <h4 className="font-semibold text-emerald-900 mb-3">{section.title}</h4>
+                    <ul className="space-y-2">
+                      {section.items.map((item, index) => (
+                        <motion.li
                           key={index}
                           initial={{ opacity: 0, x: -20 }}
                           whileInView={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.1 }}
-                          className="bg-white/80 p-4 rounded-lg shadow-sm"
+                          transition={{ delay: (idx * 0.2) + (index * 0.1) }}
+                          className="flex items-center gap-2 bg-white/80 p-2 rounded-lg"
                         >
-                          <h4 className="font-semibold text-violet-900 flex items-center gap-2">
-                            <CheckCircle2 className="h-5 w-5 text-violet-600" />
-                            {title}
-                          </h4>
-                          <p className="text-sm text-violet-700 mt-1">{desc}</p>
-                        </motion.div>
+                          <CheckCircle className="h-4 w-4 text-emerald-500" />
+                          <span className="text-sm text-emerald-700">{item}</span>
+                        </motion.li>
                       ))}
-                    </div>
+                    </ul>
+                  </motion.div>
+                ))}
+              </motion.div>
 
-                    <div className="bg-white/90 p-6 rounded-lg shadow-md">
-                      <h4 className="font-semibold text-purple-900 mb-4">Risk Management Essentials</h4>
-                      <ul className="space-y-3">
-                        {[
-                          ["Liquidity", "Ability to buy/sell quickly"],
-                          ["Volatility", "Understanding price fluctuations"],
-                          ["Portfolio Balance", "Avoiding overexposure"],
-                          ["Diversification", "Spreading risk across assets"]
-                        ].map(([title, desc], index) => (
-                          <motion.li
-                            key={index}
-                            initial={{ opacity: 0, y: 10 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.1 }}
-                            className="flex items-start gap-3 p-2 border-b border-purple-100 last:border-0"
-                          >
-                            <ArrowUpRight className="h-5 w-5 text-purple-500 mt-1" />
-                            <div>
-                              <span className="font-medium text-purple-900">{title}</span>
-                              <p className="text-sm text-purple-700">{desc}</p>
-                            </div>
-                          </motion.li>
-                        ))}
-                      </ul>
-                    </div>
+              <motion.div
+                variants={cardVariants}
+                whileHover="hover"
+                className="bg-gradient-to-br from-teal-100 to-emerald-50 p-6 rounded-lg shadow-lg"
+              >
+                <div className="flex items-center gap-4 mb-6">
+                  <Shield className="h-8 w-8 text-teal-600" />
+                  <h3 className="text-xl font-semibold text-teal-800">Security Best Practices</h3>
+                </div>
+
+                {[
+                  {
+                    title: "Essential Security",
+                    items: [
+                      "Use strong passwords",
+                      "Enable two-factor authentication",
+                      "Maintain secure backups",
+                      "Keep software updated",
+                      "Verify all transactions"
+                    ]
+                  },
+                  {
+                    title: "Advanced Protection",
+                    items: [
+                      "Hardware wallet usage",
+                      "Multi-signature setups",
+                      "Cold storage implementation",
+                      "Regular security audits"
+                    ]
+                  }
+                ].map((section, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.2 }}
+                    className="mb-6 last:mb-0"
+                  >
+                    <h4 className="font-semibold text-teal-900 mb-3">{section.title}</h4>
+                    <ul className="space-y-2">
+                      {section.items.map((item, index) => (
+                        <motion.li
+                          key={index}
+                          initial={{ opacity: 0, x: -20 }}
+                          whileInView={{ opacity: 1, x: 0 }}
+                          transition={{ delay: (idx * 0.2) + (index * 0.1) }}
+                          className="flex items-center gap-2 bg-white/80 p-2 rounded-lg"
+                        >
+                          <ShieldCheck className="h-4 w-4 text-teal-500" />
+                          <span className="text-sm text-teal-700">{item}</span>
+                        </motion.li>
+                      ))}
+                    </ul>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
+          </CourseContentSection>
+
+          <CourseContentSection
+            title="Conclusion and Next Steps"
+            icon={<BrainCircuit size={32} />}
+            gradientFrom="violet-50"
+            gradientTo="purple-50"
+          >
+            <motion.div
+              variants={cardVariants}
+              whileHover="hover"
+              className="mt-6 p-8 bg-gradient-to-br from-violet-100 to-purple-50 rounded-lg shadow-lg relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-violet-200 to-purple-200 rounded-full -translate-y-32 translate-x-32 opacity-50" />
+
+              <div className="relative z-10">
+                <h3 className="text-2xl font-semibold text-violet-900 mb-6">Key Takeaways</h3>
+
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="space-y-4">
+                    {[
+                      ["Start with fundamentals", "Master the basics before advancing"],
+                      ["Security first", "Always prioritize security in all activities"],
+                      ["Stay informed", "Keep up with latest developments"],
+                      ["Practice safely", "Start small and learn from experience"]
+                    ].map(([title, desc], index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className="bg-white/80 p-4 rounded-lg shadow-sm"
+                      >
+                        <h4 className="font-semibold text-violet-900 flex items-center gap-2">
+                          <CheckCircle2 className="h-5 w-5 text-violet-600" />
+                          {title}
+                        </h4>
+                        <p className="text-sm text-violet-700 mt-1">{desc}</p>
+                      </motion.div>
+                    ))}
                   </div>
 
-                  <motion.p
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ delay: 0.5 }}
-                    className="mt-6 text-violet-800 text-center font-medium"
-                  >
-                    The cryptocurrency space continues evolving, making ongoing education essential for safe and effective participation.
-                  </motion.p>
+                  <div className="bg-white/90 p-6 rounded-lg shadow-md">
+                    <h4 className="font-semibold text-purple-900 mb-4">Risk Management Essentials</h4>
+                    <ul className="space-y-3">
+                      {[
+                        ["Liquidity", "Ability to buy/sell quickly"],
+                        ["Volatility", "Understanding price fluctuations"],
+                        ["Portfolio Balance", "Avoiding overexposure"],
+                        ["Diversification", "Spreading risk across assets"]
+                      ].map(([title, desc], index) => (
+                        <motion.li
+                          key={index}
+                          initial={{ opacity: 0, y: 10 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                          className="flex items-start gap-3 p-2 border-b border-purple-100 last:border-0"
+                        >
+                          <ArrowUpRight className="h-5 w-5 text-purple-500 mt-1" />
+                          <div>
+                            <span className="font-medium text-purple-900">{title}</span>
+                            <p className="text-sm text-purple-700">{desc}</p>
+                          </div>
+                        </motion.li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-              </motion.div>
-            </CourseContentSection>
 
-            {isFullyRead && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.5 }}
-                className="mt-12"
-              >
-                <QuizContainer>
-                  <DigitalCurrenciesQuiz onComplete={handleQuizComplete} />
-                </QuizContainer>
-              </motion.div>
-            )}
-          </motion.div>
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ delay: 0.5 }}
+                  className="mt-6 text-violet-800 text-center font-medium"
+                >
+                  The cryptocurrency space continues evolving, making ongoing education essential for safe and effective participation.
+                </motion.p>
+              </div>
+            </motion.div>
+          </CourseContentSection>
+
+          {isFullyRead && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.5 }}
+              className="mt-12"
+            >
+              <QuizContainer>
+                <DigitalCurrenciesQuiz onComplete={handleQuizComplete} />
+              </QuizContainer>
+            </motion.div>
+          )}
+        </motion.div>
       </div>
     </CourseSection>
   );
