@@ -244,28 +244,30 @@ export default function Module2() {
                           transition={{ delay: 0.2 + index * 0.1 }}
                         >
                           <Link href={topic.path}>
-                            <Card className="hover:shadow-lg transition-all duration-300">
+                            <Card className="hover:shadow-xl transition-all duration-300 hover:bg-orange-50/50 group border-orange-100/50">
                               <CardContent className="p-6">
                                 <div className="flex justify-between items-start">
                                   <div className="flex-1">
-                                    <div className="flex items-center gap-3 mb-4">
-                                      <div className="p-2 bg-orange-100 rounded-lg">
-                                        <topic.icon className="h-5 w-5 text-orange-600" />
+                                    <div className="flex items-center gap-4 mb-4">
+                                      <div className="p-3 bg-gradient-to-br from-orange-100 to-red-50 rounded-xl shadow-sm group-hover:shadow-md transition-all duration-300 group-hover:scale-110">
+                                        <topic.icon className="h-6 w-6 text-orange-600 group-hover:text-orange-700" />
                                       </div>
-                                      <h3 className="text-xl font-semibold text-orange-800">{topic.title}</h3>
-                                      {topic.completed && (
-                                        <span className="text-green-600 text-sm ml-2">(Completed)</span>
-                                      )}
+                                      <div>
+                                        <h3 className="text-xl font-semibold text-orange-800 group-hover:text-orange-900">{topic.title}</h3>
+                                        {topic.completed && (
+                                          <span className="text-green-600 text-sm">(Completed)</span>
+                                        )}
+                                      </div>
                                     </div>
-                                    <p className="text-gray-600 mb-4">{topic.description}</p>
-                                    <ul className="list-disc pl-6 text-gray-600 space-y-1">
+                                    <p className="text-gray-600 mb-4 group-hover:text-gray-700">{topic.description}</p>
+                                    <ul className="list-disc pl-6 text-gray-600 space-y-2 group-hover:text-gray-700">
                                       {topic.subsections.map((sub, idx) => (
-                                        <li key={idx}>{sub}</li>
+                                        <li key={idx} className="group-hover:translate-x-1 transition-transform duration-300">{sub}</li>
                                       ))}
                                     </ul>
                                   </div>
                                   {topic.completed && (
-                                    <CheckCircle2 className="h-6 w-6 text-green-500 ml-4" />
+                                    <CheckCircle2 className="h-6 w-6 text-green-500 ml-4 group-hover:scale-110 transition-transform duration-300" />
                                   )}
                                 </div>
                               </CardContent>
