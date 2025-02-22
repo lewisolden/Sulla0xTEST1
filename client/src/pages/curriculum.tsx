@@ -498,48 +498,32 @@ export default function Curriculum() {
               ))}
             </div>
 
-            {loadingEnrollments ? (
-              <div className="text-center py-4">
-                <div className="animate-pulse flex justify-center">
-                  <div className="h-8 w-32 bg-blue-200 rounded"></div>
-                </div>
-              </div>
-            ) : isEnrolled ? (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="bg-green-100 text-green-800 px-6 py-4 rounded-xl text-center mb-6 flex items-center justify-center gap-2"
+            {/* Enrollment section - simplified */}
+            <div className="text-center mt-6">
+              <Button 
+                onClick={user ? handleEnroll : () => setLocation("/login")}
+                className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-lg px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                disabled={enrollMutation.isPending || isEnrolled}
               >
-                <CheckCircle2 className="h-5 w-5" />
-                <span className="font-medium">You are enrolled in this course</span>
-              </motion.div>
-            ) : (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-center"
-              >
-                <Button 
-                  onClick={user ? handleEnroll : () => setLocation("/login")}
-                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-lg px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
-                  disabled={enrollMutation.isPending}
-                >
-                  {enrollMutation.isPending ? (
-                    <div className="flex items-center gap-2">
-                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-                      <span>Enrolling...</span>
-                    </div>
-                  ) : user ? (
-                    "Enroll Now"
-                  ) : (
-                    "Log in to Enroll"
-                  )}
-                </Button>
+                {enrollMutation.isPending ? (
+                  <div className="flex items-center gap-2">
+                    <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                    <span>Enrolling...</span>
+                  </div>
+                ) : isEnrolled ? (
+                  "Enrolled"
+                ) : user ? (
+                  "Enroll Now"
+                ) : (
+                  "Log in to Enroll"
+                )}
+              </Button>
+              {!isEnrolled && (
                 <p className="text-gray-600 mt-3">
-                  {user ? "Enroll to access full course content and track your progress" : "Create an account to start learning"}
+                  {user ? "Enroll to access full course content" : "Create an account to start learning"}
                 </p>
-              </motion.div>
-            )}
+              )}
+            </div>
           </motion.div>
         </AnimatePresence>
 
