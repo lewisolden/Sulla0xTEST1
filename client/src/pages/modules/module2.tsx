@@ -37,7 +37,8 @@ const moduleTopics = [
       "Historical Context and Significance", 
       "How Bitcoin Works",
       "Key Milestones"
-    ]
+    ],
+    gradient: "from-orange-400 to-red-500"
   },
   {
     id: "bitcoin-investment",
@@ -50,7 +51,8 @@ const moduleTopics = [
       "Store of Value Properties",
       "Bitcoin ETFs",
       "Investment Strategies"
-    ]
+    ],
+    gradient: "from-red-400 to-pink-500"
   },
   {
     id: "security-risk",
@@ -63,7 +65,8 @@ const moduleTopics = [
       "Risk Management Strategies",
       "Common Mistakes to Avoid",
       "Best Practices"
-    ]
+    ],
+    gradient: "from-pink-400 to-purple-500"
   },
   {
     id: "practical-exercises",
@@ -76,7 +79,8 @@ const moduleTopics = [
       "Advanced Exercises",
       "Real-world Scenarios",
       "Practice Quiz"
-    ]
+    ],
+    gradient: "from-purple-400 to-indigo-500"
   }
 ];
 
@@ -168,29 +172,41 @@ export default function Module2() {
                             <li><strong>What if I make a mistake?</strong> Start with small amounts while learning. Use test transactions and practice with minimal stakes to build confidence.</li>
                           </ul>
 
-                          <h3 className="text-xl font-semibold text-orange-800 mb-4">Learning Objectives</h3>
-                          <div className="grid md:grid-cols-2 gap-4 bg-orange-50/50 p-6 rounded-lg">
+                          <h3 className="text-xl font-semibold text-orange-800 mb-6 flex items-center gap-2">
+                            <BookOpen className="h-6 w-6 text-orange-500" />
+                            Learning Objectives
+                          </h3>
+                          <div className="grid md:grid-cols-2 gap-6">
                             {[
                               {
                                 title: "Blockchain Fundamentals",
-                                items: ["Bitcoin's architecture", "Transaction mechanisms", "Mining process"]
+                                items: ["Bitcoin's architecture", "Transaction mechanisms", "Mining process"],
+                                icon: Database
                               },
                               {
                                 title: "Investment Knowledge",
-                                items: ["Market analysis", "Risk management", "Portfolio strategy"]
+                                items: ["Market analysis", "Risk management", "Portfolio strategy"],
+                                icon: TrendingUp
                               },
                               {
                                 title: "Security Essentials",
-                                items: ["Wallet security", "Best practices", "Threat prevention"]
+                                items: ["Wallet security", "Best practices", "Threat prevention"],
+                                icon: LockKeyhole
                               },
                               {
                                 title: "Practical Application",
-                                items: ["Real-world usage", "Network participation", "Future developments"]
+                                items: ["Real-world usage", "Network participation", "Future developments"],
+                                icon: Code
                               }
                             ].map((objective, index) => (
-                              <div key={index} className="space-y-2">
-                                <h4 className="font-semibold text-orange-800">{objective.title}</h4>
-                                <ul className="space-y-1">
+                              <div key={index} className="bg-orange-50/50 p-6 rounded-lg border border-orange-100/50">
+                                <div className="flex items-center gap-3 mb-4">
+                                  <div className="p-2 bg-orange-100 rounded-lg">
+                                    <objective.icon className="h-5 w-5 text-orange-600" />
+                                  </div>
+                                  <h4 className="font-semibold text-orange-800">{objective.title}</h4>
+                                </div>
+                                <ul className="space-y-2 pl-4">
                                   {objective.items.map((item, idx) => (
                                     <li key={idx} className="flex items-center gap-2 text-gray-700">
                                       <div className="h-1.5 w-1.5 bg-orange-400 rounded-full" />
@@ -219,12 +235,13 @@ export default function Module2() {
                               <CardContent className="p-6">
                                 <div className="flex justify-between items-start">
                                   <div className="flex-1">
-                                    <div className="flex items-center gap-3 mb-2">
+                                    <div className="flex items-center gap-3 mb-4">
                                       <div className="p-2 bg-white/20 rounded-lg">
                                         <topic.icon className="h-5 w-5" />
                                       </div>
                                       <h3 className="text-xl font-semibold">{topic.title}</h3>
                                     </div>
+                                    <p className="text-white/90 mb-4">{topic.description}</p>
                                     <ul className="list-disc pl-12 text-white/90">
                                       {topic.subsections.map((sub, idx) => (
                                         <li key={idx}>{sub}</li>
