@@ -10,13 +10,14 @@ import {
   Users,
   Globe,
   Network,
-  Cog
+  Cog,
+  Cpu,
+  Database,
+  Wallet
 } from "lucide-react";
 import { NavigationWrapper } from "@/components/layout/NavigationWrapper";
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 import { Card } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 
@@ -27,9 +28,8 @@ import TransactionFlowDiagram from "@/components/diagrams/TransactionFlowDiagram
 import { useNavigate } from "@/hooks/useNavigate";
 import MoneyEvolutionTimeline from "@/components/diagrams/MoneyEvolutionTimeline";
 import DigitalCurrencyFeatures from "@/components/diagrams/DigitalCurrencyFeatures";
-import { BookOpen, Wallet, Shield, Globe as GlobeIcon, Network as NetworkIcon, AlertTriangle } from "lucide-react";
+import { BookOpen, Shield, Globe as GlobeIcon, Network as NetworkIcon, AlertTriangle } from "lucide-react";
 import { CourseSection, type Section, KeyConcept, FeatureList } from "@/components/course/CourseSection";
-import { useState as useState2 } from "react";
 
 const sections: Section[] = [
   {
@@ -85,6 +85,133 @@ const sections: Section[] = [
             ]} />
           </div>
         </div>
+      </div>
+    )
+  },
+  {
+    id: "mining",
+    title: "Mining and Network Security",
+    icon: Cpu,
+    content: (
+      <div className="space-y-6">
+        <p className="text-gray-700">
+          Mining is a crucial process that secures cryptocurrency networks and creates new coins.
+          It's the backbone of many cryptocurrency systems, particularly those using Proof of Work.
+        </p>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          <div>
+            <h4 className="font-medium text-gray-700 mb-2">Mining Process</h4>
+            <FeatureList items={[
+              "Solving complex mathematical puzzles",
+              "Validating transactions",
+              "Creating new blocks",
+              "Securing the network"
+            ]} />
+          </div>
+          <div>
+            <h4 className="font-medium text-gray-700 mb-2">Network Security</h4>
+            <FeatureList items={[
+              "Decentralized consensus",
+              "Cryptographic verification",
+              "Immutable record-keeping",
+              "Double-spend prevention"
+            ]} />
+          </div>
+        </div>
+
+        <KeyConcept title="The Role of Miners">
+          Miners serve as the network's security force, validating transactions and maintaining
+          the blockchain's integrity. They're rewarded with newly created coins and transaction fees
+          for their work.
+        </KeyConcept>
+      </div>
+    )
+  },
+  {
+    id: "utxos",
+    title: "Understanding UTXOs",
+    icon: Database,
+    content: (
+      <div className="space-y-6">
+        <p className="text-gray-700">
+          Unspent Transaction Outputs (UTXOs) are a fundamental concept in many cryptocurrencies,
+          representing how transactions and balances are tracked.
+        </p>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          <div>
+            <h4 className="font-medium text-gray-700 mb-2">UTXO Model</h4>
+            <FeatureList items={[
+              "Transaction-based accounting",
+              "Improved privacy",
+              "Parallel processing capability",
+              "Enhanced security"
+            ]} />
+          </div>
+          <div>
+            <h4 className="font-medium text-gray-700 mb-2">Key Characteristics</h4>
+            <FeatureList items={[
+              "Indivisible transaction outputs",
+              "No account balances",
+              "Change address generation",
+              "Transaction verification"
+            ]} />
+          </div>
+        </div>
+
+        <KeyConcept title="UTXO vs Account Model">
+          Unlike traditional banking where accounts have balances, UTXOs represent unspent coins
+          from previous transactions. Each transaction consumes UTXOs and creates new ones.
+        </KeyConcept>
+      </div>
+    )
+  },
+  {
+    id: "practical-applications",
+    title: "Practical Applications",
+    icon: Wallet,
+    content: (
+      <div className="space-y-6">
+        <p className="text-gray-700">
+          Digital currencies have numerous real-world applications beyond simple value transfer.
+        </p>
+
+        <div className="grid md:grid-cols-3 gap-6">
+          <div>
+            <h4 className="font-medium text-gray-700 mb-2">Financial Services</h4>
+            <FeatureList items={[
+              "Cross-border payments",
+              "Remittance services",
+              "Lending platforms",
+              "Investment vehicles"
+            ]} />
+          </div>
+          <div>
+            <h4 className="font-medium text-gray-700 mb-2">Business Solutions</h4>
+            <FeatureList items={[
+              "Supply chain tracking",
+              "Smart contracts",
+              "Automated payments",
+              "Digital identity"
+            ]} />
+          </div>
+          <div>
+            <h4 className="font-medium text-gray-700 mb-2">Social Impact</h4>
+            <FeatureList items={[
+              "Financial inclusion",
+              "Charitable giving",
+              "Transparent governance",
+              "Community building"
+            ]} />
+          </div>
+        </div>
+
+        <KeyConcept title="Beyond Currency">
+          Digital currencies enable new business models and services that weren't possible
+          with traditional financial systems, creating opportunities for innovation across
+          various sectors.
+        </KeyConcept>
       </div>
     )
   },
@@ -168,15 +295,15 @@ const sections: Section[] = [
         </KeyConcept>
       </div>
     )
-  }
+  },
 ];
 
 export default function DigitalCurrenciesSection() {
-  const [showQuiz, setShowQuiz] = useState2(false);
+  const [showQuiz, setShowQuiz] = useState(false);
   const navigate = useNavigate();
   const { updateProgress } = useProgress();
-  const [isFullyRead, setIsFullyRead] = useState2(false);
-  const [scrollProgress, setScrollProgress] = useState2(0);
+  const [isFullyRead, setIsFullyRead] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -187,7 +314,19 @@ export default function DigitalCurrenciesSection() {
 
       if (scrollPercent > 95) {
         setIsFullyRead(true);
-        updateProgress(1, 'digital-currencies', true);
+        updateProgress({
+          moduleId: 1,
+          sectionId: 'digital-currencies',
+          subsectionId: 'main',
+          progress: 100,
+          status: 'completed',
+          timestamp: new Date().toISOString(),
+          type: 'section',
+          courseId: 1,
+          data: {
+            isFullyRead: true
+          }
+        });
       }
     };
 
