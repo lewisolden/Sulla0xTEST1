@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { useProgress } from "@/context/progress-context";
 import { Link } from "wouter";
-import { ArrowRight, CheckCircle, XCircle, Award } from "lucide-react";
+import { ArrowRight, CheckCircle, XCircle, Award, Pencil } from "lucide-react";
 
 const questions = [
   {
@@ -152,7 +152,7 @@ export default function BitcoinFundamentalsQuiz() {
               Retry Quiz
             </Button>
             {percentage >= 60 && (
-              <Link href="/modules/module2/crypto-market">
+              <Link href="/modules/module2/bitcoin-investment">
                 <Button 
                   className="w-full bg-green-600 hover:bg-green-700 text-sm"
                 >
@@ -169,32 +169,38 @@ export default function BitcoinFundamentalsQuiz() {
   return (
     <div className="container mx-auto px-4 py-3 max-w-xl">
       <div className="bg-gradient-to-r from-orange-500 to-red-600 p-6 rounded-lg mb-6 text-white">
-        <h2 className="text-2xl font-bold mb-2">Test Your Knowledge</h2>
+        <div className="flex items-center gap-2 mb-2">
+          <Pencil className="h-6 w-6" />
+          <h2 className="text-2xl font-bold">Test Your Knowledge</h2>
+        </div>
         <p className="text-white/80">Complete the quiz to test your understanding of Bitcoin</p>
       </div>
-      <div className="mb-4">
-        <h3 className="text-lg font-semibold text-blue-800 mb-3 flex items-center justify-between">
-          Question {currentQuestion + 1} of {questions.length}
-          <span className="text-sm text-gray-600 bg-white px-2 py-1 rounded-full">
+
+      <div className="bg-white rounded-lg p-6 shadow-sm mb-6">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-2">
+            <span className="text-lg font-semibold text-orange-600">Question {currentQuestion + 1}</span>
+            <span className="text-gray-400">/</span>
+            <span className="text-gray-600">{questions.length}</span>
+          </div>
+          <span className="text-sm bg-orange-50 text-orange-600 px-3 py-1 rounded-full font-medium">
             Score: {score}
           </span>
-        </h3>
-
-        <div className="bg-white rounded-lg p-3 mb-3 shadow-sm">
-          <p className="text-base text-gray-700">
-            {questions[currentQuestion].question}
-          </p>
         </div>
 
-        <div className="grid gap-2">
+        <p className="text-gray-700 text-lg mb-6">
+          {questions[currentQuestion].question}
+        </p>
+
+        <div className="grid gap-3">
           {questions[currentQuestion].options.map((option, index) => (
             <motion.button
               key={index}
-              onClick={() => handleAnswer(index)}
+              onClick={() => !selectedAnswer && handleAnswer(index)}
               className={`
-                w-full p-3 rounded-lg text-left transition-all duration-300 text-sm
+                w-full p-4 rounded-lg text-left transition-all duration-300
                 ${selectedAnswer === null 
-                  ? 'bg-white hover:bg-blue-50 border border-gray-200' 
+                  ? 'bg-white hover:bg-orange-50 border border-gray-200' 
                   : index === questions[currentQuestion].correctAnswer 
                     ? 'bg-green-100 border-2 border-green-500' 
                     : selectedAnswer === index 
@@ -206,7 +212,7 @@ export default function BitcoinFundamentalsQuiz() {
               whileHover={{ scale: selectedAnswer === null ? 1.01 : 1 }}
               whileTap={{ scale: selectedAnswer === null ? 0.99 : 1 }}
             >
-              <span>{option}</span>
+              <span className="text-base">{option}</span>
             </motion.button>
           ))}
         </div>
@@ -216,7 +222,7 @@ export default function BitcoinFundamentalsQuiz() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             className={`
-              mt-4 p-3 rounded-lg text-sm
+              mt-6 p-4 rounded-lg
               ${selectedAnswer === questions[currentQuestion].correctAnswer 
                 ? 'bg-green-100 border-l-4 border-green-500' 
                 : 'bg-red-100 border-l-4 border-red-500'}
@@ -224,11 +230,11 @@ export default function BitcoinFundamentalsQuiz() {
           >
             <h3 className="font-bold mb-2 flex items-center gap-2">
               {selectedAnswer === questions[currentQuestion].correctAnswer 
-                ? <><CheckCircle className="h-4 w-4 text-green-600" /> Correct!</>
-                : <><XCircle className="h-4 w-4 text-red-600" /> Incorrect</>}
+                ? <><CheckCircle className="h-5 w-5 text-green-600" /> Correct!</>
+                : <><XCircle className="h-5 w-5 text-red-600" /> Incorrect</>}
             </h3>
-            <p className="leading-relaxed">{questions[currentQuestion].explanation}</p>
-            <p className="text-xs mt-2 text-gray-600">Next question in 3 seconds...</p>
+            <p className="leading-relaxed text-gray-700">{questions[currentQuestion].explanation}</p>
+            <p className="text-sm mt-3 text-gray-500">Next question in 3 seconds...</p>
           </motion.div>
         )}
       </div>

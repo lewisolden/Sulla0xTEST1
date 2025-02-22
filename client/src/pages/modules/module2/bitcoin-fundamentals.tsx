@@ -537,7 +537,15 @@ export default function BitcoinFundamentalsSection() {
                 </p>
               </Card>
 
-              <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-8 mb-8"
+              >
+                <BitcoinFundamentalsQuiz />
+              </motion.div>
+
+              <div className="flex flex-col md:flex-row items-center gap-4 justify-between mt-8">
                 <Link href="/modules/module2">
                   <Button variant="outline" className="w-full md:w-auto">
                     <ArrowLeft className="mr-2 h-4 w-4" /> Back to Module Overview
@@ -550,14 +558,6 @@ export default function BitcoinFundamentalsSection() {
                   </Button>
                 </Link>
               </div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mt-8"
-              >
-                <BitcoinFundamentalsQuiz />
-              </motion.div>
             </motion.div>
           )}
         </div>
