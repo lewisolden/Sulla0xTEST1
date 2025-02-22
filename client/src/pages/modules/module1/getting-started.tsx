@@ -6,7 +6,7 @@ import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ArrowLeft, ArrowRight, Wallet } from "lucide-react";
-import { GettingStartedQuiz } from "@/components/quizzes/GettingStartedQuiz";
+import { DigitalCurrenciesQuiz } from "@/components/quizzes/DigitalCurrenciesQuiz";
 import { SecurityIcon, WalletIcon } from "@/components/icons/CryptoIcons";
 import { GettingStartedDiagram } from "@/components/diagrams/GettingStartedDiagram";
 import { Input } from "@/components/ui/input";
@@ -338,7 +338,7 @@ const GettingStartedSection = () => {
           <h3 className="font-semibold text-lg mb-2">{title}</h3>
           <p className="text-gray-600 mb-3">{description}</p>
           <div className="flex flex-wrap gap-2">{tags.map((tag, index) => (
-              <span
+                            <span
                 key={index}
                 className={`px-2 py-1 rounded-full text-sm ${color.replace('border-', 'bg-').replace('-500', '-100')} ${color.replace('border-', 'text-')}`}
               >
@@ -549,19 +549,17 @@ const GettingStartedSection = () => {
           </Card>
         )}
 
-        {isSeedPhraseVerified && (
-          <Card className="mb-8">
-            <CardContent className="p-6 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 text-white rounded-t-lg">
-              <h2 className="text-2xl font-bold mb-2">Knowledge Check</h2>
-              <p className="text-blue-100">
-                Test your understanding with this quick quiz
-              </p>
-            </CardContent>
-            <CardContent className="p-6">
-              <GettingStartedQuiz onComplete={handleQuizComplete} />
-            </CardContent>
-          </Card>
-        )}
+        <Card className="mb-8">
+          <CardContent className="p-6 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 text-white rounded-t-lg">
+            <h2 className="text-2xl font-bold mb-2">Knowledge Check</h2>
+            <p className="text-blue-100">
+              Test your understanding with this quick quiz
+            </p>
+          </CardContent>
+          <CardContent className="p-6">
+            <DigitalCurrenciesQuiz onComplete={handleQuizComplete} />
+          </CardContent>
+        </Card>
 
         <Card className="mb-6">
           <CardContent className="prose max-w-none p-6">
@@ -754,7 +752,8 @@ const GettingStartedSection = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-8 space-y-6"
+            transition={{ duration: 0.5 }}
+            className="mt-8"
           >
             <Card className="bg-green-100 border-l-4 border-green-500 p-4">
               <p className="text-green-700">
@@ -767,14 +766,12 @@ const GettingStartedSection = () => {
               <Link href="/modules/module1/applications">
                 <Button variant="outline" className="gap-2">
                   <ArrowLeft className="h-4 w-4" />
-                  Previous Topic
+                  Previous: Applications
                 </Button>
               </Link>
-              <Link href="/modules/module1/quiz">
-                <Button
-                  className="bg-blue-600 hover:bg-blue-700 gap-2"
-                >
-                  Take Module Quiz
+              <Link href="/modules/module1/digital-currencies">
+                <Button className="gap-2">
+                  Next: Digital Currencies
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
