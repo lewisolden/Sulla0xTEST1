@@ -20,19 +20,7 @@ export default function FutureBlockchainSection() {
 
       if (scrollPercent > 95) {
         setIsFullyRead(true);
-        updateProgress({
-          moduleId: 2,
-          sectionId: 'future-blockchain',
-          subsectionId: 'main',
-          progress: 100,
-          status: 'completed',
-          timestamp: new Date().toISOString(),
-          type: 'section',
-          courseId: 1,
-          data: {
-            isFullyRead: true
-          }
-        });
+        updateProgress(2, 'future-blockchain', true);
       }
     };
 
