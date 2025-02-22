@@ -48,7 +48,6 @@ export default function SecurityPage() {
 
   const handleQuizComplete = (score: number) => {
     setQuizCompleted(true);
-    // Show score for 5 seconds, then navigate
     setTimeout(() => {
       window.location.href = '/modules/module1/applications';
     }, 5000);
@@ -249,83 +248,100 @@ export default function SecurityPage() {
             gradientTo="red-50"
           >
             <div className="space-y-6">
-              <p className="text-gray-700">
-                The cryptocurrency space faces various security threats. Understanding and protecting
-                against these threats is essential for safeguarding your assets.
-              </p>
+              <div className="bg-red-50 p-6 rounded-lg">
+                <h3 className="text-2xl font-bold text-red-800 mb-4 flex items-center gap-2">
+                  <AlertTriangle className="h-6 w-6" />
+                  Understanding Cryptocurrency Security Threats
+                </h3>
+                <p className="text-gray-700 mb-6">
+                  The cryptocurrency space faces various security threats. Understanding and protecting
+                  against these threats is essential for safeguarding your assets.
+                </p>
+              </div>
 
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid md:grid-cols-2 gap-8">
+                {/* Security Best Practices */}
                 <motion.div
                   variants={cardVariants}
                   whileHover="hover"
-                  className="bg-white rounded-lg shadow-lg overflow-hidden"
+                  className="bg-white rounded-xl shadow-lg overflow-hidden"
                 >
-                  <div className="bg-gradient-to-br from-rose-100 to-red-50 p-4">
-                    <h3 className="text-lg font-semibold text-rose-800 flex items-center gap-2">
+                  <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-4">
+                    <h3 className="text-xl font-semibold text-white flex items-center gap-2">
                       <ShieldCheck className="h-5 w-5" />
-                      Security Overview
+                      Security Best Practices
                     </h3>
                   </div>
                   <div className="p-6">
-                    <div className="h-[250px] flex items-center justify-center">
-                      <SecurityDiagram />
-                    </div>
-                    <div className="mt-4 space-y-2">
+                    <ul className="space-y-4">
                       {[
-                        "Multi-layer security approach",
+                        "Use hardware wallets for large amounts",
+                        "Enable 2FA on all accounts",
                         "Regular security audits",
-                        "Continuous monitoring",
-                        "Proactive threat detection"
-                      ].map((item, index) => (
-                        <motion.div
+                        "Keep software updated",
+                        "Use strong, unique passwords"
+                      ].map((practice, index) => (
+                        <motion.li
                           key={index}
                           initial={{ opacity: 0, x: -20 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: index * 0.1 }}
-                          className="flex items-center gap-2 text-rose-700"
+                          className="flex items-center gap-3 text-gray-700"
                         >
-                          <CheckCircle className="h-4 w-4 text-green-500" />
-                          {item}
-                        </motion.div>
+                          <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+                          <span>{practice}</span>
+                        </motion.li>
                       ))}
-                    </div>
+                    </ul>
                   </div>
                 </motion.div>
 
+                {/* Common Threats */}
                 <motion.div
                   variants={cardVariants}
                   whileHover="hover"
-                  className="bg-white rounded-lg shadow-lg overflow-hidden"
+                  className="bg-white rounded-xl shadow-lg overflow-hidden"
                 >
-                  <div className="bg-gradient-to-br from-red-100 to-rose-50 p-4">
-                    <h3 className="text-lg font-semibold text-red-800 flex items-center gap-2">
+                  <div className="bg-gradient-to-r from-red-500 to-red-600 p-4">
+                    <h3 className="text-xl font-semibold text-white flex items-center gap-2">
                       <AlertTriangle className="h-5 w-5" />
                       Common Threats
                     </h3>
                   </div>
                   <div className="p-6">
-                    <div className="h-[250px] flex items-center justify-center">
-                      <SecurityThreats />
-                    </div>
-                    <div className="mt-4 space-y-3">
+                    <div className="space-y-4">
                       {[
-                        ["Phishing Attacks", "Fake websites and deceptive emails"],
-                        ["Malware", "Harmful software targeting crypto wallets"],
-                        ["Social Engineering", "Manipulation tactics to gain access"],
-                        ["Exchange Hacks", "Vulnerabilities in trading platforms"]
-                      ].map(([title, desc], index) => (
+                        {
+                          title: "Phishing Attacks",
+                          desc: "Fake websites and emails that mimic legitimate services"
+                        },
+                        {
+                          title: "Malware",
+                          desc: "Malicious software that can steal private keys"
+                        },
+                        {
+                          title: "Social Engineering",
+                          desc: "Manipulation tactics to gain unauthorized access"
+                        },
+                        {
+                          title: "Exchange Hacks",
+                          desc: "Security breaches in cryptocurrency exchanges"
+                        }
+                      ].map((threat, index) => (
                         <motion.div
                           key={index}
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: index * 0.1 }}
-                          className="bg-red-50/50 p-3 rounded-lg"
+                          className="bg-red-50 p-4 rounded-lg"
                         >
-                          <h4 className="font-medium text-red-800 flex items-center gap-2">
+                          <h4 className="font-medium text-red-800 flex items-center gap-2 mb-1">
                             <AlertTriangle className="h-4 w-4" />
-                            {title}
+                            {threat.title}
                           </h4>
-                          <p className="text-sm text-red-700 ml-6">{desc}</p>
+                          <p className="text-sm text-red-700 ml-6">
+                            {threat.desc}
+                          </p>
                         </motion.div>
                       ))}
                     </div>
@@ -333,41 +349,44 @@ export default function SecurityPage() {
                 </motion.div>
               </div>
 
+              {/* Real-World Example */}
               <motion.div
                 variants={cardVariants}
                 whileHover="hover"
-                className="bg-gradient-to-br from-orange-100 to-red-50 p-6 rounded-lg shadow-lg"
+                className="bg-gradient-to-br from-purple-100 to-blue-50 p-6 rounded-xl shadow-lg mt-8"
               >
-                <h4 className="font-semibold text-red-800 flex items-center gap-2 mb-3">
-                  <AlertTriangle className="h-5 w-5" />
-                  Real-World Example
-                </h4>
-                <p className="text-red-700">
-                  In 2020, a major Twitter hack compromised high-profile accounts to promote a
-                  cryptocurrency scam. Users who verified transactions and websites carefully
-                  avoided losing funds, while those who rushed to participate lost their investments.
-                </p>
-                <div className="mt-4 bg-white/80 p-4 rounded-lg">
-                  <h5 className="font-medium text-red-800 mb-2">Key Lessons:</h5>
-                  <ul className="space-y-2">
-                    {[
-                      "Always verify transaction details",
-                      "Be skeptical of urgent or time-sensitive offers",
-                      "Check official channels for verification",
-                      "Never share private keys or seed phrases"
-                    ].map((lesson, index) => (
-                      <motion.li
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className="flex items-center gap-2 text-red-700"
-                      >
-                        <CheckCircle className="h-4 w-4 text-green-500" />
-                        {lesson}
-                      </motion.li>
-                    ))}
-                  </ul>
+                <h3 className="text-xl font-semibold text-purple-800 flex items-center gap-2 mb-4">
+                  <BrainCircuit className="h-5 w-5" />
+                  Case Study: The 2020 Twitter Hack
+                </h3>
+                <div className="bg-white/80 p-6 rounded-lg">
+                  <p className="text-gray-700 mb-4">
+                    In July 2020, hackers compromised high-profile Twitter accounts to promote a cryptocurrency scam. 
+                    The incident highlighted the importance of verifying transactions and being skeptical of 
+                    "too good to be true" offers, even when they appear to come from trusted sources.
+                  </p>
+                  <div className="mt-4">
+                    <h4 className="font-medium text-purple-800 mb-2">Key Lessons:</h4>
+                    <ul className="space-y-2">
+                      {[
+                        "Never trust urgent cryptocurrency transfer requests",
+                        "Verify information through multiple official channels",
+                        "Be skeptical of promotional offers involving cryptocurrency",
+                        "Remember: legitimate entities never ask for private keys"
+                      ].map((lesson, index) => (
+                        <motion.li
+                          key={index}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                          className="flex items-center gap-2 text-gray-700"
+                        >
+                          <CheckCircle className="h-4 w-4 text-green-500" />
+                          {lesson}
+                        </motion.li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </motion.div>
             </div>
