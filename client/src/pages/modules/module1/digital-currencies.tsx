@@ -353,7 +353,7 @@ export default function DigitalCurrenciesSection() {
               className="mt-8 p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg shadow-lg mb-8"
             >
               <h3 className="text-2xl font-semibold text-blue-800 mb-6">The Double-Spending Solution</h3>
-              <div className="grid md:grid-cols-2 gap-8">
+              <div className="grid md:grid-cols-2 gap-6">
                 <motion.div className="space-y-4">
                   <p className="text-blue-700 leading-relaxed">
                     One of cryptocurrency's most significant achievements is solving the "double-spending" problem for digital money. Traditional systems required central authorities, but blockchain technology provides a decentralized solution.
@@ -376,7 +376,7 @@ export default function DigitalCurrenciesSection() {
                     </ul>
                   </div>
                 </motion.div>
-                <div className="relative bg-white/50 rounded-lg p-4">
+                <div className="relative bg-white/50 rounded-lg p-4 mx-auto w-[95%]">
                   <DoubleSpendDiagram />
                 </div>
               </div>
