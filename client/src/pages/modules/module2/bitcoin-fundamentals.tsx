@@ -206,81 +206,6 @@ export default function BitcoinFundamentalsSection() {
             initial="hidden"
             animate="visible"
           >
-            <h2 className="text-3xl font-bold text-blue-700 mt-8">Key Historical Milestones</h2>
-            <div className="relative mt-8">
-              {/* Timeline line */}
-              <div className="absolute left-0 md:left-1/2 h-full w-1 bg-blue-200 transform -translate-x-1/2"></div>
-
-              {/* Timeline events */}
-              <div className="space-y-12">
-                <motion.div
-                  className="relative flex items-center justify-start md:justify-between"
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <div className="flex md:w-1/2 md:pr-8 items-center">
-                    <div className="w-full">
-                      <div className="bg-white p-4 rounded-lg shadow-md border border-blue-100">
-                        <h3 className="text-lg font-semibold text-blue-800">October 31, 2008</h3>
-                        <p className="text-gray-700">Bitcoin whitepaper published by Satoshi Nakamoto</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="absolute left-0 md:left-1/2 w-4 h-4 bg-blue-500 rounded-full transform -translate-x-1/2"></div>
-                </motion.div>
-
-                <motion.div
-                  className="relative flex items-center justify-end md:justify-between"
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <div className="flex md:w-1/2 md:ml-auto md:pl-8 items-center">
-                    <div className="w-full">
-                      <div className="bg-white p-4 rounded-lg shadow-md border border-blue-100">
-                        <h3 className="text-lg font-semibold text-blue-800">January 3, 2009</h3>
-                        <p className="text-gray-700">Genesis Block mined with a message about bank bailouts</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="absolute left-0 md:left-1/2 w-4 h-4 bg-blue-500 rounded-full transform -translate-x-1/2"></div>
-                </motion.div>
-
-                <motion.div
-                  className="relative flex items-center justify-start md:justify-between"
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <div className="flex md:w-1/2 md:pr-8 items-center">
-                    <div className="w-full">
-                      <div className="bg-white p-4 rounded-lg shadow-md border border-blue-100">
-                        <h3 className="text-lg font-semibold text-blue-800">January 12, 2009</h3>
-                        <p className="text-gray-700">First Bitcoin transaction between Satoshi and Hal Finney</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="absolute left-0 md:left-1/2 w-4 h-4 bg-blue-500 rounded-full transform -translate-x-1/2"></div>
-                </motion.div>
-
-                <motion.div
-                  className="relative flex items-center justify-end md:justify-between"
-                  whileHover={{ scale: 1.02 }}
-                >
-                  <div className="flex md:w-1/2 md:ml-auto md:pl-8 items-center">
-                    <div className="w-full">
-                      <div className="bg-white p-4 rounded-lg shadow-md border border-blue-100">
-                        <h3 className="text-lg font-semibold text-blue-800">May 22, 2010</h3>
-                        <p className="text-gray-700">First real-world transaction: 10,000 BTC for two pizzas</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="absolute left-0 md:left-1/2 w-4 h-4 bg-blue-500 rounded-full transform -translate-x-1/2"></div>
-                </motion.div>
-              </div>
-            </div>
-          </motion.section>
-
-          <motion.section
-            variants={contentVariants}
-            initial="hidden"
-            animate="visible"
-          >
             <h2 className="text-3xl font-bold text-blue-700">The Birth of Bitcoin</h2>
             <h3 className="text-2xl font-semibold text-blue-600">Historical Context and Significance</h3>
             <p>
@@ -415,7 +340,6 @@ export default function BitcoinFundamentalsSection() {
               <div className="bg-blue-50 rounded-lg p-6">
                 <h3 className="text-2xl font-semibold text-blue-600 mb-4">How Bitcoin Transactions Work</h3>
 
-                {/* Simple Introduction */}
                 <div className="bg-white p-4 rounded-lg shadow-sm mb-4">
                   <h4 className="font-semibold text-blue-800 mb-2">The Basics: Think of it Like Cash</h4>
                   <p className="text-gray-700">
@@ -432,7 +356,6 @@ export default function BitcoinFundamentalsSection() {
                   </p>
                 </div>
 
-                {/* UTXO Explanation */}
                 <div className="bg-white p-4 rounded-lg shadow-sm">
                   <h4 className="font-semibold text-blue-800 mb-2">Bitcoin's Digital Wallet: UTXOs Explained</h4>
                   <p className="text-gray-700">
@@ -461,7 +384,6 @@ export default function BitcoinFundamentalsSection() {
                   </p>
                 </div>
 
-                {/* Real World Example */}
                 <div className="bg-white p-4 rounded-lg shadow-sm mt-4">
                   <h4 className="font-semibold text-blue-800 mb-2">Let's Make a Purchase!</h4>
                   <div className="border-l-4 border-blue-200 pl-4">
@@ -478,7 +400,6 @@ export default function BitcoinFundamentalsSection() {
                   </div>
                 </div>
 
-                {/* Key Points */}
                 <div className="bg-purple-50 p-4 rounded-lg mt-4">
                   <h4 className="font-semibold text-purple-800 mb-2">Remember These Simple Rules:</h4>
                   <ul className="list-disc pl-5 space-y-2 text-gray-700">
@@ -489,7 +410,6 @@ export default function BitcoinFundamentalsSection() {
                   </ul>
                 </div>
 
-                {/* Advanced Details (Optional) */}
                 <div className="mt-6 bg-gray-50 p-4 rounded-lg border border-gray-200">
                   <h4 className="font-semibold text-gray-700 mb-2">Want to Learn More? (Optional)</h4>
                   <div className="space-y-2">
@@ -507,7 +427,6 @@ export default function BitcoinFundamentalsSection() {
             </div>
           </motion.section>
 
-          {/* Interactive UTXO Exercise */}
           <motion.section
             variants={contentVariants}
             initial="hidden"

@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { useProgress } from "@/context/progress-context";
 import { Link } from "wouter";
-import { ArrowRight, CheckCircle, XCircle, Award, Pencil } from "lucide-react";
+import { ArrowRight, CheckCircle, XCircle, Award, PencilLine } from "lucide-react";
 
 const questions = [
   {
@@ -145,7 +145,7 @@ export default function BitcoinFundamentalsQuiz() {
             </div>
           )}
           <div className="flex flex-col space-y-3">
-            <Button 
+            <Button
               onClick={restartQuiz}
               className="w-full bg-blue-500 hover:bg-blue-600 text-sm"
             >
@@ -153,7 +153,7 @@ export default function BitcoinFundamentalsQuiz() {
             </Button>
             {percentage >= 60 && (
               <Link href="/modules/module2/bitcoin-investment">
-                <Button 
+                <Button
                   className="w-full bg-green-600 hover:bg-green-700 text-sm"
                 >
                   Continue to Next Section <ArrowRight className="ml-2 h-4 w-4" />
@@ -168,12 +168,12 @@ export default function BitcoinFundamentalsQuiz() {
 
   return (
     <div className="container mx-auto px-4 py-3 max-w-xl">
-      <div className="bg-gradient-to-r from-orange-500 to-red-600 p-6 rounded-lg mb-6 text-white">
-        <div className="flex items-center gap-2 mb-2">
-          <Pencil className="h-6 w-6" />
-          <h2 className="text-2xl font-bold">Test Your Knowledge</h2>
+      <div className="bg-gradient-to-r from-orange-500 to-red-600 p-8 rounded-lg mb-6 text-white">
+        <div className="flex items-center gap-4 mb-3">
+          <PencilLine className="h-8 w-8" />
+          <h2 className="text-3xl font-bold">Test Your Knowledge</h2>
         </div>
-        <p className="text-white/80">Complete the quiz to test your understanding of Bitcoin</p>
+        <p className="text-white/90 text-lg pl-12">Complete the quiz to test your understanding of Bitcoin</p>
       </div>
 
       <div className="bg-white rounded-lg p-6 shadow-sm mb-6">
@@ -199,12 +199,12 @@ export default function BitcoinFundamentalsQuiz() {
               onClick={() => !selectedAnswer && handleAnswer(index)}
               className={`
                 w-full p-4 rounded-lg text-left transition-all duration-300
-                ${selectedAnswer === null 
-                  ? 'bg-white hover:bg-orange-50 border border-gray-200' 
-                  : index === questions[currentQuestion].correctAnswer 
-                    ? 'bg-green-100 border-2 border-green-500' 
-                    : selectedAnswer === index 
-                      ? 'bg-red-100 border-2 border-red-500' 
+                ${selectedAnswer === null
+                  ? 'bg-white hover:bg-orange-50 border border-gray-200'
+                  : index === questions[currentQuestion].correctAnswer
+                    ? 'bg-green-100 border-2 border-green-500'
+                    : selectedAnswer === index
+                      ? 'bg-red-100 border-2 border-red-500'
                       : 'bg-white border border-gray-200'}
                 whitespace-normal break-words hover:shadow-md
               `}
@@ -223,13 +223,13 @@ export default function BitcoinFundamentalsQuiz() {
             animate={{ opacity: 1, y: 0 }}
             className={`
               mt-6 p-4 rounded-lg
-              ${selectedAnswer === questions[currentQuestion].correctAnswer 
-                ? 'bg-green-100 border-l-4 border-green-500' 
+              ${selectedAnswer === questions[currentQuestion].correctAnswer
+                ? 'bg-green-100 border-l-4 border-green-500'
                 : 'bg-red-100 border-l-4 border-red-500'}
             `}
           >
             <h3 className="font-bold mb-2 flex items-center gap-2">
-              {selectedAnswer === questions[currentQuestion].correctAnswer 
+              {selectedAnswer === questions[currentQuestion].correctAnswer
                 ? <><CheckCircle className="h-5 w-5 text-green-600" /> Correct!</>
                 : <><XCircle className="h-5 w-5 text-red-600" /> Incorrect</>}
             </h3>
