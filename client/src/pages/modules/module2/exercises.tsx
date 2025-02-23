@@ -173,16 +173,11 @@ export default function ModuleExercises() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
             <ExercisePreview
               icon={Wallet}
               title="Interactive Wallet Simulation"
               description="Practice creating and managing a Bitcoin wallet in a safe environment. Learn about key management, transactions, and security best practices."
-            />
-            <ExercisePreview
-              icon={Shield}
-              title="Security Best Practices"
-              description="Test your knowledge of security protocols and learn to identify common threats and scams in the cryptocurrency space."
             />
             <ExercisePreview
               icon={Brain}
@@ -198,14 +193,6 @@ export default function ModuleExercises() {
               icon={Wallet}
             >
               <WalletSimulator />
-            </ExerciseSection>
-
-            <ExerciseSection
-              title="Security Workshop"
-              description="Learn and practice essential security measures to protect your cryptocurrency assets."
-              icon={Shield}
-            >
-              <SecurityWorkshop />
             </ExerciseSection>
 
             <ExerciseSection
