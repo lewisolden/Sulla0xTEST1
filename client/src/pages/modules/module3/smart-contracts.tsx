@@ -556,12 +556,12 @@ const SmartContractsSection = () => {
         <NFTMintingExercise />
       </motion.section>
 
-      {/* Quiz Section - Updated to be more compact */}
+      {/* Quiz Section - Updated to match section width */}
       <motion.section
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="mt-12 max-w-3xl mx-auto"
+        className="mt-12"
       >
         <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700">
           <div className="bg-gradient-to-r from-gray-700 to-gray-800 p-4 rounded-t-lg border-b border-gray-600">
