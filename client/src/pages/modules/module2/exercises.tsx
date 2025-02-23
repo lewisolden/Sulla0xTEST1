@@ -3,11 +3,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { ArrowLeft, Wallet, Shield, Brain, ArrowRight } from "lucide-react";
+import { ArrowLeft, Wallet, Shield, Brain, ArrowRight, Trophy, Star } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import WalletSimulator from "@/components/exercises/WalletSimulator";
 import SecurityWorkshop from "@/components/exercises/SecurityWorkshop";
-import AssessmentCenter from "@/components/exercises/AssessmentCenter";
 
 const ExerciseSection = ({
   title,
@@ -70,6 +69,76 @@ const ExercisePreview = ({
 
 export default function ModuleExercises() {
   useScrollTop();
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [score, setScore] = useState(0);
+  const [showResults, setShowResults] = useState(false);
+  const [answerState, setAnswerState] = useState({
+    selectedAnswer: null as number | null,
+    isCorrect: false,
+    showExplanation: false
+  });
+
+  const questions = [
+    {
+      question: "Which of the following is a key aspect of Bitcoin wallet security?",
+      options: [
+        "Sharing your private keys with trusted friends",
+        "Storing your seed phrase digitally for easy access",
+        "Using a hardware wallet for large amounts",
+        "Keeping all funds on exchanges"
+      ],
+      correct: 2,
+      explanation: "Hardware wallets provide the highest level of security for storing large amounts of Bitcoin by keeping private keys offline."
+    },
+    {
+      question: "What is the primary purpose of cold storage?",
+      options: [
+        "To make frequent trades",
+        "To keep funds offline and secure",
+        "To earn interest on Bitcoin",
+        "To speed up transactions"
+      ],
+      correct: 1,
+      explanation: "Cold storage keeps cryptocurrency offline, significantly reducing the risk of hacks or theft."
+    },
+    {
+      question: "Which practice improves Bitcoin transaction security?",
+      options: [
+        "Using public WiFi for transactions",
+        "Verifying addresses multiple times",
+        "Sending large amounts without testing",
+        "Using simple passwords"
+      ],
+      correct: 1,
+      explanation: "Always verify recipient addresses multiple times before sending Bitcoin to prevent irreversible transaction errors."
+    }
+  ];
+
+  const handleAnswer = (selectedIndex: number) => {
+    const isCorrect = selectedIndex === questions[currentQuestion].correct;
+    setAnswerState({
+      selectedAnswer: selectedIndex,
+      isCorrect,
+      showExplanation: true,
+    });
+
+    if (isCorrect) {
+      setScore(prev => prev + 1);
+    }
+
+    setTimeout(() => {
+      if (currentQuestion < questions.length - 1) {
+        setCurrentQuestion(prev => prev + 1);
+        setAnswerState({
+          selectedAnswer: null,
+          isCorrect: false,
+          showExplanation: false,
+        });
+      } else {
+        setShowResults(true);
+      }
+    }, 2000);
+  };
 
   return (
     <AnimatePresence mode="wait">
@@ -140,11 +209,116 @@ export default function ModuleExercises() {
             </ExerciseSection>
 
             <ExerciseSection
-              title="Assessment Center"
-              description="Test your knowledge and understanding of Bitcoin concepts through practical scenarios."
+              title="Knowledge Check"
+              description="Test your understanding of key Bitcoin concepts"
               icon={Brain}
             >
-              <AssessmentCenter />
+              {!showResults ? (
+                <motion.div
+                  className="space-y-4"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                >
+                  <div className="mb-8">
+                    <h2 className="text-xl font-semibold text-orange-800 mb-2">
+                      Question {currentQuestion + 1} of {questions.length}
+                    </h2>
+                    <div className="w-full bg-gray-200 h-2 rounded-full">
+                      <div
+                        className="bg-orange-600 h-2 rounded-full transition-all duration-300"
+                        style={{
+                          width: `${((currentQuestion + 1) / questions.length) * 100}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <p className="text-lg mb-6">{questions[currentQuestion].question}</p>
+                  <div className="grid gap-3">
+                    {questions[currentQuestion].options.map((option, index) => {
+                      const isSelected = answerState.selectedAnswer === index;
+                      const isCorrect = index === questions[currentQuestion].correct;
+
+                      return (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.5, delay: index * 0.1 }}
+                        >
+                          <Button
+                            variant="outline"
+                            className={`w-full justify-start text-left p-4 relative ${
+                              isSelected
+                                ? isCorrect
+                                  ? "bg-green-100 border-green-500 hover:bg-green-100"
+                                  : "bg-red-100 border-red-500 hover:bg-red-100"
+                                : "hover:bg-orange-50"
+                            }`}
+                            onClick={() => !answerState.showExplanation && handleAnswer(index)}
+                            disabled={answerState.showExplanation}
+                          >
+                            <div className="flex items-center gap-4">
+                              <span>{String.fromCharCode(65 + index)}.</span>
+                              <span>{option}</span>
+                            </div>
+                          </Button>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+
+                  {answerState.showExplanation && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className={`mt-4 p-4 rounded-lg ${
+                        answerState.isCorrect ? "bg-green-100" : "bg-red-100"
+                      }`}
+                    >
+                      <p className={`font-semibold ${
+                        answerState.isCorrect ? "text-green-800" : "text-red-800"
+                      }`}>
+                        {answerState.isCorrect ? "Correct!" : "Incorrect."}
+                      </p>
+                      <p className="mt-2 text-gray-700">
+                        {questions[currentQuestion].explanation}
+                      </p>
+                    </motion.div>
+                  )}
+                </motion.div>
+              ) : (
+                <motion.div
+                  className="text-center py-8"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                >
+                  <Trophy className="h-16 w-16 text-yellow-500 mx-auto mb-4" />
+                  <h2 className="text-2xl font-semibold text-orange-800 mb-4">
+                    Knowledge Check Complete!
+                  </h2>
+                  <p className="text-lg mb-4">
+                    You scored {score} out of {questions.length}
+                  </p>
+                  <div className="flex justify-center mb-6">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star
+                        key={i}
+                        className={`h-8 w-8 ${
+                          i < Math.ceil((score / questions.length) * 5)
+                            ? "text-yellow-500 fill-yellow-500"
+                            : "text-gray-300"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                  <p className="text-gray-600 mb-6">
+                    {score === questions.length
+                      ? "Perfect score! You've mastered these Bitcoin concepts!"
+                      : "Great effort! Review the content and try again to improve your score."}
+                  </p>
+                </motion.div>
+              )}
             </ExerciseSection>
           </div>
 
