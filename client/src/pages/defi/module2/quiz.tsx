@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Link } from "wouter";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Link, useLocation } from "wouter";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, ChevronRight, Award, CheckCircle2, XCircle } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
+import { useQuery } from "@tanstack/react-query";
 
 const questions = [
   {
@@ -112,12 +112,37 @@ export default function DefiModule2Quiz() {
   useScrollTop();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-  const [showResult, setShowResult] = useState(false);
   const [showExplanation, setShowExplanation] = useState(false);
   const [score, setScore] = useState(0);
-  const [answers, setAnswers] = useState<number[]>([]);
-  const { toast } = useToast();
   const { updateProgress } = useProgress();
+  const [, navigate] = useLocation();
+
+  // Check enrollment status
+  const { data: enrollmentStatus, isLoading } = useQuery({
+    queryKey: ['enrollments'],
+    queryFn: async () => {
+      const response = await fetch('/api/enrollments');
+      if (!response.ok) {
+        if (response.status === 401) {
+          navigate('/login');
+          return null;
+        }
+        throw new Error('Failed to fetch enrollments');
+      }
+      return response.json();
+    }
+  });
+
+  if (isLoading) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading quiz...</p>
+        </div>
+      </div>
+    );
+  }
 
   const handleAnswer = (selectedIndex: number) => {
     if (selectedAnswer !== null) return;
@@ -125,23 +150,9 @@ export default function DefiModule2Quiz() {
     setSelectedAnswer(selectedIndex);
     setShowExplanation(true);
     const isCorrect = selectedIndex === questions[currentQuestion].correctAnswer;
-    const newAnswers = [...answers];
-    newAnswers[currentQuestion] = selectedIndex;
-    setAnswers(newAnswers);
 
     if (isCorrect) {
       setScore(score + 1);
-      toast({
-        title: "Correct!",
-        description: "Well done! Let's look at why this answer is correct.",
-        variant: "default",
-      });
-    } else {
-      toast({
-        title: "Incorrect",
-        description: "Let's understand the correct answer.",
-        variant: "destructive",
-      });
     }
 
     // Auto-advance after explanation delay
@@ -151,16 +162,19 @@ export default function DefiModule2Quiz() {
         setSelectedAnswer(null);
         setShowExplanation(false);
       } else {
-        setShowResult(true);
-        // Update progress when quiz is completed
-        updateProgress(3, "module2-quiz", true, score);
+        updateProgress({
+          moduleId: 'defi-module2',
+          sectionId: 'quiz',
+          completed: true,
+          score: Math.round((score / questions.length) * 100)
+        });
       }
     }, 3000);
   };
 
   const progressPercentage = ((currentQuestion + 1) / questions.length) * 100;
 
-  if (showResult) {
+  if (showExplanation && currentQuestion === questions.length - 1) {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
@@ -182,35 +196,7 @@ export default function DefiModule2Quiz() {
               </div>
             </div>
 
-            <div className="space-y-6 mb-8">
-              {questions.map((q, index) => (
-                <div key={q.id} className="border rounded-lg p-4">
-                  <div className="flex items-start gap-3">
-                    {answers[index] === q.correctAnswer ? (
-                      <CheckCircle2 className="w-6 h-6 text-green-500 mt-1" />
-                    ) : (
-                      <XCircle className="w-6 h-6 text-red-500 mt-1" />
-                    )}
-                    <div>
-                      <p className="font-medium text-gray-900 mb-2">{q.question}</p>
-                      <p className="text-sm text-gray-600">
-                        Your answer: {q.options[answers[index]]}
-                      </p>
-                      {answers[index] !== q.correctAnswer && (
-                        <p className="text-sm text-green-600 mt-1">
-                          Correct answer: {q.options[q.correctAnswer]}
-                        </p>
-                      )}
-                      <p className="text-sm text-blue-600 mt-2">
-                        {q.explanation}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex justify-center space-x-4">
+            <div className="flex justify-center gap-4">
               <Link href="/defi/module2">
                 <Button variant="outline" className="gap-2">
                   <ArrowLeft className="w-4 h-4" /> Back to Module
@@ -251,7 +237,7 @@ export default function DefiModule2Quiz() {
                   Question {currentQuestion + 1} of {questions.length}
                 </h2>
                 <span className="text-sm text-gray-500">
-                  Progress: {Math.round(progressPercentage)}%
+                  Score: {score} / {questions.length}
                 </span>
               </div>
               <Progress value={progressPercentage} className="h-2" />
@@ -269,14 +255,14 @@ export default function DefiModule2Quiz() {
                     disabled={selectedAnswer !== null}
                     className={`p-4 rounded-lg text-left transition-all ${
                       selectedAnswer === null
-                        ? "hover:bg-purple-50 border border-gray-200"
+                        ? 'hover:bg-purple-50 border border-gray-200'
                         : selectedAnswer === index
                         ? index === questions[currentQuestion].correctAnswer
-                          ? "bg-green-100 border-green-500 border"
-                          : "bg-red-100 border-red-500 border"
-                        : index === questions[currentQuestion].correctAnswer
-                        ? "bg-green-100 border-green-500 border"
-                        : "bg-gray-50 border-gray-200 border opacity-60"
+                          ? 'bg-green-100 border-green-500 border'
+                          : 'bg-red-100 border-red-500 border'
+                        : index === questions[currentQuestion].correctAnswer && selectedAnswer !== null
+                        ? 'bg-green-100 border-green-500 border'
+                        : 'bg-gray-50 border-gray-200 border opacity-60'
                     }`}
                     whileHover={selectedAnswer === null ? { scale: 1.02 } : {}}
                   >
@@ -285,18 +271,37 @@ export default function DefiModule2Quiz() {
                 ))}
               </div>
 
-              {showExplanation && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-6 p-4 bg-blue-50 rounded-lg"
-                >
-                  <h4 className="font-semibold text-blue-900 mb-2">Explanation:</h4>
-                  <p className="text-blue-800">
-                    {questions[currentQuestion].explanation}
-                  </p>
-                </motion.div>
-              )}
+              <AnimatePresence>
+                {selectedAnswer !== null && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    className={`mt-4 p-4 rounded-lg ${
+                      selectedAnswer === questions[currentQuestion].correctAnswer
+                        ? "bg-green-100 text-green-800"
+                        : "bg-red-100 text-red-800"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      {selectedAnswer === questions[currentQuestion].correctAnswer ? (
+                        <>
+                          <CheckCircle2 className="h-5 w-5 text-green-600" />
+                          <span className="font-bold">Correct!</span>
+                        </>
+                      ) : (
+                        <>
+                          <XCircle className="h-5 w-5 text-red-600" />
+                          <span className="font-bold">Incorrect</span>
+                        </>
+                      )}
+                    </div>
+                    <p className="text-sm">
+                      {questions[currentQuestion].explanation}
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </Card>
         </motion.div>
