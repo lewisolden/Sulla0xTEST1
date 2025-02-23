@@ -113,7 +113,7 @@ export default function DexAmm() {
       } else {
         setQuizCompleted(true);
       }
-    }, 5000); // Changed from 3000 to 5000
+    }, 8000); // Changed from 5000 to 8000
   };
 
   // Calculate swap output based on exchange rate
@@ -733,7 +733,7 @@ export default function DexAmm() {
                                     {quizQuestions[currentQuestion].explanation}
                                   </p>
                                   <p className="text-sm text-blue-600 italic mt-2">
-                                    Next question in 5 seconds...
+                                    Next question in 8 seconds...
                                   </p>
                                 </div>
                               </div>
@@ -744,7 +744,7 @@ export default function DexAmm() {
                     ) : (
                       <motion.div
                         initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
+                        animate={{ opacity:1 }}
                         className="text-center"
                       >
                         <div className="mb-6">

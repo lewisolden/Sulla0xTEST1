@@ -119,7 +119,7 @@ export default function DefiIntro() {
       } else {
         setQuizCompleted(true);
       }
-    }, 5000); // Changed from 4000 to 5000
+    }, 8000); 
   };
 
   return (
@@ -412,7 +412,7 @@ export default function DefiIntro() {
                                   {quizQuestions[currentQuestion].explanation}
                                 </p>
                                 <p className="text-sm text-blue-600 italic mt-2">
-                                  Next question in 5 seconds...
+                                  Next question in 8 seconds... 
                                 </p>
                               </div>
                             </motion.div>

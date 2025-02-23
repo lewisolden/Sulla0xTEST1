@@ -367,7 +367,7 @@ export default function LiquidityYield() {
     if (showExplanation && currentQuestion < quizQuestions.length - 1) {
       timer = setTimeout(() => {
         handleNextQuestion();
-      }, 5000); // Changed from 4000 to 5000
+      }, 8000); // Changed from 5000 to 8000
     }
     return () => clearTimeout(timer);
   }, [showExplanation, currentQuestion]);
@@ -710,7 +710,7 @@ export default function LiquidityYield() {
                                   {quizQuestions[currentQuestion].explanation}
                                 </p>
                                 <p className="text-sm text-blue-600 italic mt-2">
-                                  Next question in 5 seconds...
+                                  Next question in 8 seconds...
                                 </p>
                               </div>
                             </motion.div>
