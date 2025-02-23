@@ -79,20 +79,22 @@ export default function ConsensusMechanismsQuiz() {
 
   const moveToNextQuestion = () => {
     const isCorrect = selectedAnswer === quizQuestions[currentQuestion].correctAnswer;
-    
+
     if (isCorrect) {
       setScore(prev => prev + 1);
     }
 
-    if (currentQuestion < quizQuestions.length - 1) {
-      setCurrentQuestion(prev => prev + 1);
-      setSelectedAnswer(null);
-      setShowExplanation(false);
-    } else {
-      setShowResult(true);
-      const passThreshold = 0.6; // 60% to pass
-      updateProgress(2, 'consensus-mechanisms-quiz', (score + (isCorrect ? 1 : 0)) / quizQuestions.length >= passThreshold);
-    }
+    setTimeout(() => {
+      if (currentQuestion < quizQuestions.length - 1) {
+        setCurrentQuestion(prev => prev + 1);
+        setSelectedAnswer(null);
+        setShowExplanation(false);
+      } else {
+        setShowResult(true);
+        const passThreshold = 0.6; // 60% to pass
+        updateProgress(2, 'consensus-mechanisms-quiz', (score + (isCorrect ? 1 : 0)) / quizQuestions.length >= passThreshold);
+      }
+    }, 8000); // Changed to 8000ms
   };
 
   const restartQuiz = () => {
@@ -124,7 +126,7 @@ export default function ConsensusMechanismsQuiz() {
               <p className="text-lg mb-4">
                 You scored {finalScore} out of {quizQuestions.length}
               </p>
-              
+
               {passed ? (
                 <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-6">
                   <p className="text-green-700">
@@ -141,7 +143,7 @@ export default function ConsensusMechanismsQuiz() {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/modules/module2/consensus-mechanisms">
-                  <Button 
+                  <Button
                     variant="outline"
                     size="lg"
                     className="w-full sm:w-auto"
@@ -210,16 +212,15 @@ export default function ConsensusMechanismsQuiz() {
                   <button
                     key={index}
                     onClick={() => handleAnswerSelect(index)}
-                    className={`
-                      w-full p-4 rounded-lg text-left transition-all duration-300
-                      ${selectedAnswer === null 
-                        ? 'bg-gray-100 hover:bg-blue-100' 
-                        : index === quizQuestions[currentQuestion].correctAnswer 
-                          ? 'bg-green-200' 
-                          : selectedAnswer === index 
-                            ? 'bg-red-200' 
-                            : 'bg-gray-100'}
-                    `}
+                    className={`w-full p-4 rounded-lg text-left transition-all duration-300 ${
+                      selectedAnswer === null
+                        ? 'bg-gray-100 hover:bg-blue-100'
+                        : index === quizQuestions[currentQuestion].correctAnswer
+                          ? 'bg-green-200'
+                          : selectedAnswer === index
+                            ? 'bg-red-200'
+                            : 'bg-gray-100'
+                    }`}
                     disabled={selectedAnswer !== null}
                   >
                     {option}
@@ -228,19 +229,21 @@ export default function ConsensusMechanismsQuiz() {
               </div>
 
               {showExplanation && (
-                <div className={`
-                  mt-8 p-6 rounded-lg
-                  ${selectedAnswer === quizQuestions[currentQuestion].correctAnswer 
-                    ? 'bg-green-100 border-l-4 border-green-500' 
-                    : 'bg-red-100 border-l-4 border-red-500'}
-                `}>
+                <div className={`mt-8 p-6 rounded-lg ${
+                  selectedAnswer === quizQuestions[currentQuestion].correctAnswer
+                    ? 'bg-green-100 border-l-4 border-green-500'
+                    : 'bg-red-100 border-l-4 border-red-500'
+                }`}>
                   <h3 className="font-bold mb-2">
-                    {selectedAnswer === quizQuestions[currentQuestion].correctAnswer 
-                      ? '✅ Correct!' 
+                    {selectedAnswer === quizQuestions[currentQuestion].correctAnswer
+                      ? '✅ Correct!'
                       : '❌ Incorrect'}
                   </h3>
                   <p className="text-gray-700">
                     {quizQuestions[currentQuestion].explanation}
+                  </p>
+                  <p className="text-sm text-blue-600 italic mt-2">
+                    Next question in 8 seconds...
                   </p>
                 </div>
               )}
@@ -251,8 +254,8 @@ export default function ConsensusMechanismsQuiz() {
                   className="mt-8 w-full bg-blue-600 hover:bg-blue-700"
                   size="lg"
                 >
-                  {currentQuestion < quizQuestions.length - 1 
-                    ? 'Next Question' 
+                  {currentQuestion < quizQuestions.length - 1
+                    ? 'Next Question'
                     : 'Finish Quiz'}
                 </Button>
               )}

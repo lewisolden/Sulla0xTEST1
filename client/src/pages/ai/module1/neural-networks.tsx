@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
@@ -127,33 +127,39 @@ export default function NeuralNetworks() {
       isCorrect,
       showExplanation: true
     });
-
-    setTimeout(() => {
-      if (isCorrect) {
-        setScore(score + 1);
-      }
-
-      if (currentQuestion < questions.length - 1) {
-        setCurrentQuestion(currentQuestion + 1);
-        setAnswerState({
-          selectedAnswer: null,
-          isCorrect: false,
-          showExplanation: false
-        });
-      } else {
-        setShowResults(true);
-        updateProgress({
-          moduleId: 'ai-module1',
-          sectionId: 'neural-networks',
-          completed: true,
-          score: Math.round((score / questions.length) * 100),
-          totalSections: 5,
-          currentSection: 5,
-          nextModule: 'module1-quiz'
-        });
-      }
-    }, 2000);
   };
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (answerState.showExplanation && currentQuestion < questions.length - 1) {
+      timer = setTimeout(() => {
+        if (answerState.isCorrect) {
+          setScore(score + 1);
+        }
+
+        if (currentQuestion < questions.length - 1) {
+          setCurrentQuestion(currentQuestion + 1);
+          setAnswerState({
+            selectedAnswer: null,
+            isCorrect: false,
+            showExplanation: false
+          });
+        } else {
+          setShowResults(true);
+          updateProgress({
+            moduleId: 'ai-module1',
+            sectionId: 'neural-networks',
+            completed: true,
+            score: Math.round((score / questions.length) * 100),
+            totalSections: 5,
+            currentSection: 5,
+            nextModule: 'module1-quiz'
+          });
+        }
+      }, 8000); // Changed from original value to 8000
+    }
+    return () => clearTimeout(timer);
+  }, [answerState.showExplanation, currentQuestion]);
 
   if (showQuiz) {
     return (
@@ -249,6 +255,9 @@ export default function NeuralNetworks() {
                       <p className="mt-2 text-gray-700">
                         {questions[currentQuestion].explanation}
                       </p>
+                      <p className="text-sm text-blue-600 italic mt-2">
+                        Next question in 8 seconds...
+                      </p>
                     </motion.div>
                   )}
                 </motion.div>
@@ -343,7 +352,7 @@ export default function NeuralNetworks() {
                     <p className="text-white/90 leading-relaxed">
                       Neural networks are computing systems inspired by biological neural networks in human brains. They consist of interconnected nodes (neurons) organized in layers that can learn patterns from data.
                     </p>
-                    <motion.div 
+                    <motion.div
                       className="mt-6 grid grid-cols-3 gap-4"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
