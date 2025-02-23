@@ -18,7 +18,8 @@ const questions = [
       "They have a 24-hour repayment period",
       "They can only be used for staking"
     ],
-    correctAnswer: 1
+    correctAnswer: 1,
+    explanation: "Flash loans are a unique DeFi innovation that must be borrowed and repaid within the same transaction block. This atomic execution ensures that if the repayment fails, the entire transaction is reversed, making them a powerful tool for arbitrage and advanced trading strategies."
   },
   {
     id: 2,
@@ -29,7 +30,8 @@ const questions = [
       "Fixed fee percentages",
       "Unlimited pool size"
     ],
-    correctAnswer: 1
+    correctAnswer: 1,
+    explanation: "Concentrated liquidity allows liquidity providers to focus their capital within specific price ranges, making it more efficient than traditional AMMs where liquidity is spread across the entire price curve. This innovation, pioneered by Uniswap v3, enables better capital efficiency and higher yields for LPs."
   },
   {
     id: 3,
@@ -40,7 +42,8 @@ const questions = [
       "Minimum Entry Value",
       "Multiple Exchange Verification"
     ],
-    correctAnswer: 1
+    correctAnswer: 1,
+    explanation: "MEV (Miner Extractable Value) refers to the value that miners/validators can extract by manipulating transaction order in a block. This includes practices like frontrunning, backrunning, and sandwich attacks. Understanding MEV is crucial for DeFi users to protect themselves from potential value extraction."
   },
   {
     id: 4,
@@ -51,7 +54,8 @@ const questions = [
       "Delta-neutral positions",
       "Avoiding liquidity pools entirely"
     ],
-    correctAnswer: 2
+    correctAnswer: 2,
+    explanation: "Delta-neutral positions help mitigate impermanent loss by balancing long and short exposure, effectively hedging against price movements. This strategy involves maintaining offsetting positions that neutralize the overall price risk while still earning yields from liquidity provision."
   },
   {
     id: 5,
@@ -62,7 +66,8 @@ const questions = [
       "Liquidity is controlled by external market makers",
       "Liquidity is always locked for a fixed period"
     ],
-    correctAnswer: 1
+    correctAnswer: 1,
+    explanation: "Protocol-owned liquidity (POL) means the protocol itself owns and controls its liquidity rather than relying solely on external providers. This model, popularized by Olympus DAO, gives protocols more control over their markets and reduces dependence on mercenary capital."
   }
 ];
 
@@ -84,13 +89,13 @@ export default function DefiModule3Quiz() {
       setScore(score + 1);
       toast({
         title: "Correct! 🎉",
-        description: "Great job! Moving to next question...",
+        description: "Great job! Let's understand why this is correct.",
         variant: "default",
       });
     } else {
       toast({
         title: "Incorrect",
-        description: "Let's understand why before moving on.",
+        description: "Let's understand the right answer.",
         variant: "destructive",
       });
     }
@@ -116,7 +121,7 @@ export default function DefiModule3Quiz() {
           'DeFi'
         );
       }
-    }, 7000); // Changed to 7000ms (7 seconds)
+    }, 7000);
   };
 
   return (
@@ -146,7 +151,9 @@ export default function DefiModule3Quiz() {
                   {questions[currentQuestion].options.map((option, index) => (
                     <Button
                       key={index}
-                      variant={selectedAnswer === index ? "default" : "outline"}
+                      variant={selectedAnswer === index ? 
+                        (index === questions[currentQuestion].correctAnswer ? "default" : "destructive") 
+                        : "outline"}
                       className="w-full justify-start text-left"
                       onClick={() => !showExplanation && handleAnswerSelection(index)}
                       disabled={showExplanation}
@@ -164,9 +171,7 @@ export default function DefiModule3Quiz() {
                 >
                   <h4 className="font-medium text-blue-800 mb-2">Explanation</h4>
                   <p className="text-blue-700">
-                    {selectedAnswer === questions[currentQuestion].correctAnswer
-                      ? "Correct! This answer demonstrates understanding of the concept."
-                      : "The correct answer helps us understand the concept better."}
+                    {questions[currentQuestion].explanation}
                   </p>
                   <p className="text-sm text-gray-600 mt-2">Next question in 7 seconds...</p>
                 </motion.div>
