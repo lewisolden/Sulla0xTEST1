@@ -85,9 +85,9 @@ const EthereumFundamentalsSection = () => {
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="mb-8 rounded-xl overflow-hidden bg-gray-50 shadow-sm"
+          className="mb-8 rounded-xl overflow-hidden shadow-sm"
         >
-          <div className="bg-gradient-to-r from-gray-50 to-gray-800 p-8">
+          <div className="bg-gradient-to-r from-gray-700 to-gray-800 p-8">
             <div className="flex items-center mb-2">
               <EthereumLogo />
               <div>
