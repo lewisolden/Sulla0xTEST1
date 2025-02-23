@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
 import { Shield, AlertTriangle, TrendingUp, Lock, Info, FileKey, DollarSign, AlertCircle, ArrowLeft } from "lucide-react";
-import { SecurityQuiz } from "@/components/modules/quizzes/SecurityQuiz";
+import SecurityQuiz from "@/components/modules/quizzes/SecurityQuiz";
 import { Link } from "wouter";
 import { useScrollTop } from "@/hooks/useScrollTop";
 
@@ -34,20 +34,17 @@ const SecurityRisksSection = () => {
   }, [updateProgress]);
 
   return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="container mx-auto px-4 py-8"
-    >
-      <div className="fixed top-0 left-0 w-full h-1 bg-gray-300 z-50">
-        <div 
-          className="h-full bg-gradient-to-r from-blue-600 to-purple-600" 
-          style={{ width: `${scrollProgress}%` }}
-        />
-      </div>
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      <motion.div
+        className="fixed top-0 left-0 w-full h-1 bg-gray-300 z-50"
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: scrollProgress / 100 }}
+        style={{ transformOrigin: "left" }}
+      >
+        <div className="h-full bg-gradient-to-r from-blue-600 to-purple-600" />
+      </motion.div>
 
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -326,7 +323,7 @@ const SecurityRisksSection = () => {
           }}
         />
       </div>
-    </motion.div>
+    </div>
   );
 };
 
