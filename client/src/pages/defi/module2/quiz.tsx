@@ -162,14 +162,20 @@ export default function DefiModule2Quiz() {
         setSelectedAnswer(null);
         setShowExplanation(false);
       } else {
-        updateProgress({
-          moduleId: 'defi-module2',
-          sectionId: 'quiz',
-          completed: true,
-          score: Math.round((score / questions.length) * 100)
-        });
+        // Fixed updateProgress call with correct parameters
+        updateProgress(
+          2, // moduleId
+          'defi-module2-quiz', // sectionId
+          (score / questions.length) * 100 >= 70, // completed
+          2, // courseId
+          undefined, // timeSpent
+          (score / questions.length) * 100, // score
+          '/defi/module3', // nextPath
+          undefined, // previousPath
+          'DeFi' // courseName
+        );
       }
-    }, 5000);
+    }, 5000); // Changed from 1000 to 5000
   };
 
   const progressPercentage = ((currentQuestion + 1) / questions.length) * 100;
@@ -272,7 +278,7 @@ export default function DefiModule2Quiz() {
               </div>
 
               <AnimatePresence>
-                {selectedAnswer !== null && (
+                {showExplanation && (
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -298,6 +304,9 @@ export default function DefiModule2Quiz() {
                     </div>
                     <p className="text-sm">
                       {questions[currentQuestion].explanation}
+                    </p>
+                    <p className="text-sm text-gray-600 mt-2">
+                      Next question in 5 seconds...
                     </p>
                   </motion.div>
                 )}
