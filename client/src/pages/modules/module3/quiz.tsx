@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useProgress } from "@/context/progress-context";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowLeft, CheckCircle2, XCircle } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { useScrollTop } from "@/hooks/useScrollTop";
 
@@ -78,23 +78,7 @@ const Module3Quiz = () => {
   const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
-  const { progress, updateProgress } = useProgress();
-
-  const requiredSections = [
-    'security-risks',
-    'smart-contracts',
-    'ethereum-fundamentals',
-    'exercises'
-  ];
-
-  const getCompletedSections = () => {
-    return requiredSections.filter(section =>
-      progress.some(p => p.moduleId === 3 && p.sectionId === section && p.completed)
-    );
-  };
-
-  const completedSections = getCompletedSections();
-  const isAllTopicsCompleted = completedSections.length === requiredSections.length;
+  const { updateProgress } = useProgress();
 
   const handleAnswerSelect = (optionIndex: number) => {
     if (selectedAnswer !== null) return;
@@ -116,12 +100,7 @@ const Module3Quiz = () => {
       setShowResult(true);
       const passThreshold = Math.ceil(quizQuestions.length * 0.7);
       if (score >= passThreshold) {
-        updateProgress(3, 'module-quiz', true, {
-          timeSpent: 0,
-          score: (score / quizQuestions.length) * 100,
-          courseId: null,
-          aiRecommendations: null
-        });
+        updateProgress(3, 'module-quiz', true);
       }
     }
   };
@@ -134,89 +113,15 @@ const Module3Quiz = () => {
     setShowExplanation(false);
   };
 
-  const renderPreQuizState = () => (
-    <Card>
-      <CardContent className="pt-6">
-        <div className="text-center py-8">
-          <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
-            <h2 className="text-xl font-semibold text-yellow-800 mb-2">
-              ⚠️ Complete Required Sections
-            </h2>
-            <p className="text-yellow-700">
-              You need to complete all module sections before taking the quiz.
-              {completedSections.length > 0 && (
-                <span className="block mt-2">
-                  You've completed {completedSections.length} out of {requiredSections.length} sections.
-                </span>
-              )}
-            </p>
-          </div>
-
-          <div className="bg-white p-6 rounded-lg shadow-sm">
-            <h3 className="text-lg font-medium text-gray-700 mb-4">Module Sections:</h3>
-            <ul className="space-y-3">
-              {requiredSections.map(section => {
-                const isComplete = progress.some(
-                  p => p.moduleId === 3 && p.sectionId === section && p.completed
-                );
-
-                const sectionName = section
-                  .split('-')
-                  .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                  .join(' ');
-
-                return (
-                  <li
-                    key={section}
-                    className={`flex items-center justify-between p-3 rounded-lg ${
-                      isComplete ? 'bg-green-50' : 'bg-gray-50'
-                    }`}
-                  >
-                    <span className="flex items-center gap-2">
-                      {isComplete ? (
-                        <CheckCircle2 className="h-5 w-5 text-green-500" />
-                      ) : (
-                        <XCircle className="h-5 w-5 text-gray-400" />
-                      )}
-                      <span className={isComplete ? 'text-green-700' : 'text-gray-600'}>
-                        {sectionName}
-                      </span>
-                    </span>
-                    {!isComplete && (
-                      <Link href={`/modules/module3/${section}`}>
-                        <Button variant="outline" size="sm">
-                          Start Section
-                        </Button>
-                      </Link>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-
-          <div className="mt-8">
-            <Link href="/modules/module3">
-              <Button variant="outline" className="gap-2">
-                <ArrowLeft className="h-4 w-4" />
-                Return to Module Overview
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-
   const renderQuizInProgress = () => (
-    <Card>
-      <CardContent className="pt-6">
+    <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-t border-blue-500/30 shadow-xl">
+      <CardContent className="p-8">
         <div className="mb-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-blue-800">
-              Module 3 Final Quiz
+            <h2 className="text-2xl font-bold text-white">
+              Module 3: Ethereum & Smart Contracts Quiz
             </h2>
-            <span className="text-sm text-gray-600">
+            <span className="text-gray-300">
               Question {currentQuestion + 1} of {quizQuestions.length}
             </span>
           </div>
@@ -226,8 +131,8 @@ const Module3Quiz = () => {
             className="mb-6"
           />
 
-          <div className="bg-blue-50 rounded-lg p-6 mb-6">
-            <p className="text-lg text-gray-700">
+          <div className="bg-gray-800/50 rounded-lg p-6 mb-6 border border-blue-500/20">
+            <p className="text-xl text-gray-100">
               {quizQuestions[currentQuestion].question}
             </p>
           </div>
@@ -238,35 +143,35 @@ const Module3Quiz = () => {
                 key={index}
                 onClick={() => handleAnswerSelect(index)}
                 className={`
-                  w-full p-4 rounded-lg text-left transition-all duration-300
+                  w-full p-6 rounded-lg text-left transition-all duration-300 text-lg
                   ${selectedAnswer === null
-                    ? 'bg-gray-100 hover:bg-blue-100'
+                    ? 'bg-gray-800/50 hover:bg-blue-900/30 border border-gray-700 hover:border-blue-500/30'
                     : index === quizQuestions[currentQuestion].correctAnswer
-                      ? 'bg-green-200'
+                      ? 'bg-green-900/30 border border-green-500/30'
                       : selectedAnswer === index
-                        ? 'bg-red-200'
-                        : 'bg-gray-100'}
+                        ? 'bg-red-900/30 border border-red-500/30'
+                        : 'bg-gray-800/50 border border-gray-700'}
                 `}
                 disabled={selectedAnswer !== null}
               >
-                <span className="text-lg">{option}</span>
+                <span className="text-gray-100">{option}</span>
               </button>
             ))}
           </div>
 
           {showExplanation && (
             <div className={`
-              mt-8 p-6 rounded-lg
+              mt-8 p-6 rounded-lg border
               ${selectedAnswer === quizQuestions[currentQuestion].correctAnswer
-                ? 'bg-green-100 border-l-4 border-green-500'
-                : 'bg-red-100 border-l-4 border-red-500'}
+                ? 'bg-green-900/30 border-green-500/30'
+                : 'bg-red-900/30 border-red-500/30'}
             `}>
-              <h3 className="font-bold mb-2">
+              <h3 className="text-xl font-bold mb-3 text-white">
                 {selectedAnswer === quizQuestions[currentQuestion].correctAnswer
                   ? '✅ Correct!'
                   : '❌ Incorrect'}
               </h3>
-              <p className="text-gray-700">
+              <p className="text-gray-200 text-lg leading-relaxed">
                 {quizQuestions[currentQuestion].explanation}
               </p>
             </div>
@@ -275,7 +180,7 @@ const Module3Quiz = () => {
           {selectedAnswer !== null && (
             <Button
               onClick={moveToNextQuestion}
-              className="mt-8 w-full bg-blue-600 hover:bg-blue-700"
+              className="mt-8 w-full bg-blue-600 hover:bg-blue-700 text-lg py-6"
               size="lg"
             >
               {currentQuestion < quizQuestions.length - 1
@@ -293,10 +198,10 @@ const Module3Quiz = () => {
     const passed = score >= passThreshold;
 
     return (
-      <Card>
-        <CardContent className="pt-6">
+      <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-t border-blue-500/30 shadow-xl">
+        <CardContent className="p-8">
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-blue-800 mb-6">
+            <h2 className="text-3xl font-bold text-white mb-6">
               Quiz Results
             </h2>
 
@@ -305,25 +210,25 @@ const Module3Quiz = () => {
               className="mb-6"
             />
 
-            <p className="text-xl mb-4">
+            <p className="text-xl text-gray-200 mb-4">
               You scored {score} out of {quizQuestions.length}
             </p>
 
             {passed ? (
-              <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-6">
-                <p className="text-green-700">
+              <div className="bg-green-900/30 border border-green-500/30 p-6 rounded-lg mb-6">
+                <p className="text-green-300 text-xl">
                   🎉 Congratulations! You've passed Module 3!
                 </p>
-                <p className="text-green-600 text-sm mt-2">
+                <p className="text-green-200 mt-2 text-lg">
                   You've demonstrated a strong understanding of Ethereum and Smart Contracts.
                 </p>
               </div>
             ) : (
-              <div className="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-6">
-                <p className="text-yellow-700">
+              <div className="bg-yellow-900/30 border border-yellow-500/30 p-6 rounded-lg mb-6">
+                <p className="text-yellow-300 text-xl">
                   You need a few more correct answers to pass.
                 </p>
-                <p className="text-yellow-600 text-sm mt-2">
+                <p className="text-yellow-200 mt-2 text-lg">
                   Review the material and try again! You need {passThreshold} correct answers to pass.
                 </p>
               </div>
@@ -331,8 +236,11 @@ const Module3Quiz = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
               <Link href="/modules/module3">
-                <Button variant="outline" className="w-full sm:w-auto">
-                  <ArrowLeft className="mr-2 h-4 w-4" />
+                <Button 
+                  variant="outline" 
+                  className="w-full sm:w-auto border-gray-600 text-gray-200 hover:bg-gray-800"
+                >
+                  <ArrowLeft className="mr-2 h-5 w-5" />
                   Return to Module
                 </Button>
               </Link>
@@ -350,11 +258,34 @@ const Module3Quiz = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto">
-        {!isAllTopicsCompleted && renderPreQuizState()}
-        {isAllTopicsCompleted && !showResult && renderQuizInProgress()}
-        {isAllTopicsCompleted && showResult && renderQuizResults()}
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-4xl mx-auto">
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="mb-6"
+          >
+            <Link href="/modules/module3">
+              <Button 
+                variant="ghost" 
+                className="gap-2 text-gray-300 hover:text-white hover:bg-gray-800"
+              >
+                <ArrowLeft className="h-4 w-4" /> Back to Module 3
+              </Button>
+            </Link>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            {!showResult && renderQuizInProgress()}
+            {showResult && renderQuizResults()}
+          </motion.div>
+        </div>
       </div>
     </div>
   );
