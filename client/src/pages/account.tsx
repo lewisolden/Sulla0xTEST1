@@ -107,6 +107,10 @@ export default function AccountPage() {
       );
 
       if (courseStats?.continuePath) {
+        // Override the continuePath for Course 2 to ensure it goes to AI module
+        if (enrollment.courseId === 2) {
+          return '/ai/module1';
+        }
         return courseStats.continuePath;
       }
 
@@ -114,7 +118,7 @@ export default function AccountPage() {
         case 1:
           return '/modules/module1';
         case 2:
-          return '/ai/module1';  // Fixed: Now correctly routes to AI course
+          return '/ai/module1';
         case 3:
           return '/defi/module1';
         default:
