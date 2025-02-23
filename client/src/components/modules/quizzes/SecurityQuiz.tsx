@@ -107,8 +107,8 @@ const SecurityQuiz: React.FC<SecurityQuizProps> = ({ onComplete }) => {
   if (showResult) {
     const percentage = (score / questions.length) * 100;
     return (
-      <div className="max-w-2xl mx-auto">
-        <Card className="p-6 bg-white">
+      <div className="max-w-xl mx-auto">
+        <Card className="p-4">
           <div className="flex items-center justify-center mb-4">
             <Award className={`h-12 w-12 ${percentage >= 60 ? 'text-green-500' : 'text-red-500'}`} />
           </div>
@@ -148,30 +148,30 @@ const SecurityQuiz: React.FC<SecurityQuizProps> = ({ onComplete }) => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="mb-6">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold text-gray-900">
+    <div className="max-w-xl mx-auto">
+      <div className="mb-4">
+        <div className="flex justify-between items-center mb-3">
+          <h2 className="text-lg font-bold text-gray-900">
             Question {currentQuestion + 1} of {questions.length}
           </h2>
-          <span className="text-sm font-medium text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
+          <span className="text-sm font-medium text-gray-600 bg-gray-100 px-2 py-1 rounded-full">
             Score: {score}
           </span>
         </div>
 
-        <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200 mb-6">
-          <p className="text-gray-800 text-lg">
+        <div className="bg-white rounded-lg p-3 shadow-sm border border-gray-200 mb-4">
+          <p className="text-gray-800">
             {questions[currentQuestion].question}
           </p>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-2">
           {questions[currentQuestion].options.map((option, index) => (
             <motion.button
               key={index}
               onClick={() => selectedAnswer === null && handleAnswerSelect(index)}
               className={`
-                w-full p-4 rounded-lg text-left transition-all duration-200
+                w-full p-3 rounded-lg text-left transition-all duration-200 text-sm
                 ${selectedAnswer === null 
                   ? 'bg-white hover:bg-gray-50 border border-gray-200 text-gray-700' 
                   : index === questions[currentQuestion].correctAnswer 
@@ -195,7 +195,7 @@ const SecurityQuiz: React.FC<SecurityQuizProps> = ({ onComplete }) => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             className={`
-              mt-6 p-4 rounded-lg bg-white border-l-4
+              mt-4 p-3 rounded-lg bg-white border-l-4 text-sm
               ${selectedAnswer === questions[currentQuestion].correctAnswer 
                 ? 'border-green-500 text-gray-800' 
                 : 'border-red-500 text-gray-800'
@@ -211,7 +211,7 @@ const SecurityQuiz: React.FC<SecurityQuizProps> = ({ onComplete }) => {
             <p className="text-gray-700">
               {questions[currentQuestion].explanation}
             </p>
-            <p className="text-sm text-gray-500 mt-2">
+            <p className="text-xs text-gray-500 mt-2">
               Next question in 3 seconds...
             </p>
           </motion.div>
