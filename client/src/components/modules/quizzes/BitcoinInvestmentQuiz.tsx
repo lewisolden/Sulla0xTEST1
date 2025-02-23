@@ -85,15 +85,15 @@ export default function BitcoinInvestmentQuiz() {
         setShowResult(true);
         const finalScore = ((score + (isCorrect ? 1 : 0)) / questions.length) * 100;
         updateProgress(
-          2,
-          'bitcoin-investment',
-          finalScore >= 60,
-          2,
-          undefined,
-          finalScore,
-          '/modules/module2/bitcoin-investment',
-          '/modules/module2/security-risk',
-          'Bitcoin Investment'
+          2, // moduleId
+          'bitcoin-investment', // sectionId
+          finalScore >= 60, // completed
+          2, // order
+          undefined, // timeSpent
+          finalScore, // quizScore
+          '/modules/module2/bitcoin-investment', // pageUrl
+          '/modules/module2/security-risk', // nextUrl
+          'Bitcoin Investment' // sectionName
         );
 
         if (finalScore >= 60) {
@@ -119,7 +119,7 @@ export default function BitcoinInvestmentQuiz() {
       <Card>
         <CardContent className="p-8 text-center">
           <h2 className="text-3xl font-bold mb-4 text-blue-800">
-            Quiz Complete!
+            Quiz Completed!
           </h2>
           <p className="text-xl mb-4">
             You scored {score} out of {questions.length}
@@ -146,7 +146,7 @@ export default function BitcoinInvestmentQuiz() {
                 variant="outline"
                 className="mt-4"
               >
-                Retry Quiz
+                Restart Quiz
               </Button>
             </div>
           )}
