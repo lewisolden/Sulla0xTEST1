@@ -81,22 +81,6 @@ const Module3Quiz = () => {
   const [showExplanation, setShowExplanation] = useState(false);
   const { updateProgress } = useProgress();
 
-  const handleAnswerSelect = (optionIndex: number) => {
-    if (selectedAnswer !== null) return;
-    setSelectedAnswer(optionIndex);
-    setShowExplanation(true);
-
-    const isCorrect = optionIndex === quizQuestions[currentQuestion].correctAnswer;
-    if (isCorrect) {
-      setScore(prev => prev + 1);
-    }
-
-    // Auto advance after 2 seconds
-    setTimeout(() => {
-      moveToNextQuestion();
-    }, 2000);
-  };
-
   const moveToNextQuestion = () => {
     if (currentQuestion < quizQuestions.length - 1) {
       setCurrentQuestion(prev => prev + 1);
@@ -109,6 +93,23 @@ const Module3Quiz = () => {
         updateProgress(3, 'module-quiz', true);
       }
     }
+  };
+
+  const handleAnswerSelect = (optionIndex: number) => {
+    if (selectedAnswer !== null) return; // Prevent multiple selections
+
+    setSelectedAnswer(optionIndex);
+    setShowExplanation(true);
+
+    const isCorrect = optionIndex === quizQuestions[currentQuestion].correctAnswer;
+    if (isCorrect) {
+      setScore(prev => prev + 1);
+    }
+
+    // Auto advance after 3 seconds
+    setTimeout(() => {
+      moveToNextQuestion();
+    }, 3000);
   };
 
   const restartQuiz = () => {
@@ -166,12 +167,16 @@ const Module3Quiz = () => {
           </div>
 
           {showExplanation && (
-            <div className={`
-              mt-4 p-4 rounded-lg border text-sm
-              ${selectedAnswer === quizQuestions[currentQuestion].correctAnswer
-                ? 'bg-green-900/30 border-green-500/30'
-                : 'bg-red-900/30 border-red-500/30'}
-            `}>
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`
+                mt-4 p-4 rounded-lg border text-sm
+                ${selectedAnswer === quizQuestions[currentQuestion].correctAnswer
+                  ? 'bg-green-900/30 border-green-500/30'
+                  : 'bg-red-900/30 border-red-500/30'}
+              `}
+            >
               <h3 className="text-lg font-bold mb-2 text-white">
                 {selectedAnswer === quizQuestions[currentQuestion].correctAnswer
                   ? '✅ Correct!'
@@ -180,19 +185,10 @@ const Module3Quiz = () => {
               <p className="text-gray-200">
                 {quizQuestions[currentQuestion].explanation}
               </p>
-            </div>
-          )}
-
-          {selectedAnswer !== null && (
-            <Button
-              onClick={moveToNextQuestion}
-              className="mt-8 w-full bg-blue-600 hover:bg-blue-700 text-lg py-6"
-              size="lg"
-            >
-              {currentQuestion < quizQuestions.length - 1
-                ? 'Next Question'
-                : 'Finish Quiz'}
-            </Button>
+              <p className="text-gray-400 mt-2 text-sm">
+                Next question in 3 seconds...
+              </p>
+            </motion.div>
           )}
         </div>
       </CardContent>
