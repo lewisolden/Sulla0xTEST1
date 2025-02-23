@@ -377,7 +377,7 @@ const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplana
               <span className="font-semibold">Explanation: </span>
               {question.explanation}
             </p>
-            <p className="text-sm text-gray-600 mt-2">Next question in 5 seconds...</p>
+            <p className="text-sm text-gray-600 mt-2">Next question in 8 seconds...</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -427,7 +427,6 @@ const InteractiveQuiz: React.FC<QuizProps> = ({ onComplete }) => {
       } else {
         setShowResults(true);
         const finalScore = ((score + (isCorrect ? 1 : 0)) / quizQuestions.length) * 100;
-        // UpdateProgress call needs to be fixed based on the provided context.  This is a placeholder.
         updateProgress({
           courseId: 3,
           moduleId: 4,
@@ -441,7 +440,7 @@ const InteractiveQuiz: React.FC<QuizProps> = ({ onComplete }) => {
           metadata: { score: finalScore }
         });
       }
-    }, 5000); // Changed from 3000 to 5000
+    }, 8000); // Changed from 5000 to 8000
   };
 
   useEffect(() => {

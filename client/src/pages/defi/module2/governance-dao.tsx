@@ -230,11 +230,11 @@ const GovernanceQuiz = () => {
         updateProgress(
           3,
           'governance-dao',
-          finalScore >= 70,
+          true,
           finalScore
         );
       }
-    }, 5000); // Changed from 3000 to 5000
+    }, 8000); // Changed from 5000 to 8000
   };
 
   if (!quizStarted) {
@@ -335,7 +335,7 @@ const GovernanceQuiz = () => {
                 <span className="font-semibold">Explanation: </span>
                 {questions[currentQuestion].explanation}
               </p>
-              <p className="text-sm text-gray-600 mt-2">Next question in 5 seconds...</p>
+              <p className="text-sm text-gray-600 mt-2">Next question in 8 seconds...</p>
               {currentQuestion === questions.length - 1 && (
                 <div className="mt-4 space-y-4">
                   <h3 className="text-xl font-bold">Quiz Complete!</h3>
