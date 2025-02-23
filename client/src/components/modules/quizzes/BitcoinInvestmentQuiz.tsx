@@ -91,9 +91,15 @@ export default function BitcoinInvestmentQuiz() {
           undefined, // timeSpent
           finalScore, // quizScore
           '/modules/module2/bitcoin-investment', // pageUrl
-          '/modules/module2/security-risk', // nextUrl
+          '/modules/module2/security-risk', // nextUrl - Updated
           'Bitcoin Investment' // sectionName
         );
+
+        if (finalScore >= 60) {
+          setTimeout(() => {
+            window.location.href = '/modules/module2/security-risk';
+          }, 8000);
+        }
       }
     }, 8000);
   };
@@ -107,6 +113,7 @@ export default function BitcoinInvestmentQuiz() {
   };
 
   if (showResult) {
+    const percentage = (score / questions.length) * 100;
     return (
       <Card>
         <CardContent className="p-8 text-center">
@@ -116,12 +123,12 @@ export default function BitcoinInvestmentQuiz() {
           <p className="text-xl mb-4">
             You scored {score} out of {questions.length}
           </p>
-          {score >= questions.length * 0.6 ? (
+          {percentage >= 60 ? (
             <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-4">
               <p className="text-green-700">
                 🎉 Congratulations! You've passed the Bitcoin Investment quiz!
               </p>
-              <p className="text-sm text-green-600 mt-1">Moving to next section in 8 seconds...</p>
+              <p className="text-sm text-green-600 mt-1">Moving to Security & Risk Management in 8 seconds...</p>
               <Link href="/modules/module2/security-risk">
                 <Button className="mt-4 bg-green-500 hover:bg-green-600 text-white">
                   Continue to Security & Risk Management

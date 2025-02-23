@@ -12,59 +12,59 @@ interface BitcoinQuizProps {
 
 const quizQuestions = [
   {
-    question: "What significant event marked the beginning of Bitcoin?",
+    question: "What is Bitcoin?",
     options: [
-      "The launch of the first cryptocurrency exchange",
-      "The mining of the genesis block",
-      "The first Bitcoin whitepaper publication",
-      "The first Bitcoin transaction"
+      "A physical form of digital currency",
+      "A decentralized digital currency",
+      "A government-issued cryptocurrency",
+      "A traditional banking system"
     ],
     correctAnswer: 1,
-    explanation: "The mining of the genesis block on January 3, 2009, marked the official beginning of the Bitcoin blockchain, creating the first 50 bitcoins."
+    explanation: "Bitcoin is a decentralized digital currency that operates without the need for intermediaries like banks or governments."
   },
   {
-    question: "What is the primary purpose of Bitcoin's block size limit?",
+    question: "What technology powers Bitcoin?",
     options: [
-      "To make transactions faster",
-      "To reduce network congestion and maintain decentralization",
-      "To increase mining rewards",
-      "To make Bitcoin more valuable"
-    ],
-    correctAnswer: 1,
-    explanation: "The block size limit helps maintain decentralization by ensuring nodes can process blocks without requiring excessive computational resources."
-  },
-  {
-    question: "What is the significance of Bitcoin's halving event?",
-    options: [
-      "It doubles transaction speed",
-      "It reduces the block size",
-      "It cuts the mining reward in half",
-      "It increases network security"
+      "Cloud computing",
+      "Artificial intelligence",
+      "Blockchain technology",
+      "Traditional databases"
     ],
     correctAnswer: 2,
-    explanation: "The halving event reduces the mining reward by 50% approximately every four years, controlling Bitcoin's supply and maintaining its deflationary nature."
+    explanation: "Bitcoin is powered by blockchain technology, which is a distributed ledger that records all transactions across a network of computers."
   },
   {
-    question: "What role do nodes play in the Bitcoin network?",
+    question: "What is the purpose of Bitcoin mining?",
     options: [
-      "They only mine new blocks",
-      "They verify transactions and maintain the blockchain",
-      "They only process payments",
-      "They create new Bitcoin addresses"
+      "To create physical bitcoins",
+      "To validate transactions and secure the network",
+      "To hack other users' wallets",
+      "To store bitcoin offline"
     ],
     correctAnswer: 1,
-    explanation: "Nodes maintain and verify the entire blockchain, ensuring the network's integrity by validating all transactions and blocks."
+    explanation: "Bitcoin mining serves to validate transactions, create new bitcoins, and secure the network through computational work."
   },
   {
-    question: "What makes Bitcoin transactions irreversible?",
+    question: "What is a Bitcoin wallet?",
     options: [
+      "A physical wallet for storing bitcoins",
+      "A software for managing private keys and transactions",
+      "A bank account for cryptocurrencies",
+      "A website for buying bitcoin"
+    ],
+    correctAnswer: 1,
+    explanation: "A Bitcoin wallet is software that stores private keys and allows users to send and receive bitcoin transactions."
+  },
+  {
+    question: "What makes Bitcoin transactions secure?",
+    options: [
+      "Bank oversight",
       "Government regulations",
-      "Exchange policies",
-      "The blockchain's immutable nature",
-      "User agreements"
+      "Cryptographic algorithms",
+      "User passwords"
     ],
     correctAnswer: 2,
-    explanation: "Once confirmed, Bitcoin transactions cannot be reversed due to the blockchain's immutable nature and cryptographic security."
+    explanation: "Bitcoin transactions are secured through advanced cryptographic algorithms that ensure only the rightful owner can spend their bitcoins."
   }
 ];
 
@@ -107,7 +107,7 @@ const BitcoinQuiz: React.FC<BitcoinQuizProps> = ({ onComplete }) => {
 
         if (finalScore >= 60) {
           setTimeout(() => {
-            onComplete();
+            window.location.href = '/modules/module2/bitcoin-investment';
           }, 8000);
         }
       }
@@ -148,7 +148,12 @@ const BitcoinQuiz: React.FC<BitcoinQuizProps> = ({ onComplete }) => {
                 <CheckCircle className="h-4 w-4" />
                 Congratulations! You've passed!
               </p>
-              <p className="text-sm text-green-600 mt-1">Moving to next section in 8 seconds...</p>
+              <p className="text-sm text-green-600 mt-1">Moving to Bitcoin Investment in 8 seconds...</p>
+              <Link href="/modules/module2/bitcoin-investment">
+                <Button className="mt-4 bg-green-600 hover:bg-green-700 text-sm">
+                  Continue to Bitcoin Investment <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
             </div>
           ) : (
             <div className="bg-red-100 border-l-4 border-red-500 p-3 mb-4 text-sm">
@@ -156,25 +161,14 @@ const BitcoinQuiz: React.FC<BitcoinQuizProps> = ({ onComplete }) => {
                 <XCircle className="h-4 w-4" />
                 Keep learning and try again
               </p>
+              <Button
+                onClick={restartQuiz}
+                className="mt-4 bg-blue-500 hover:bg-blue-600 text-sm"
+              >
+                Retry Quiz
+              </Button>
             </div>
           )}
-          <div className="flex flex-col space-y-3">
-            <Button
-              onClick={restartQuiz}
-              className="w-full bg-blue-500 hover:bg-blue-600 text-sm"
-            >
-              Retry Quiz
-            </Button>
-            {percentage >= 60 && (
-              <Link href="/modules/module2/crypto-market">
-                <Button
-                  className="w-full bg-green-600 hover:bg-green-700 text-sm"
-                >
-                  Continue to Next Section <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-            )}
-          </div>
         </Card>
       </div>
     );
@@ -184,7 +178,7 @@ const BitcoinQuiz: React.FC<BitcoinQuizProps> = ({ onComplete }) => {
     <div className="container mx-auto px-4 py-3 max-w-xl">
       <div className="bg-gradient-to-r from-orange-500 to-red-600 p-6 rounded-lg mb-6 text-white">
         <h2 className="text-2xl font-bold mb-2">Test Your Knowledge</h2>
-        <p className="text-white/80">Complete the quiz to test your understanding of stablecoins</p>
+        <p className="text-white/80">Complete the quiz to test your understanding of Bitcoin fundamentals</p>
       </div>
       <div className="mb-4">
         <h3 className="text-lg font-semibold text-blue-800 mb-3 flex items-center justify-between">
