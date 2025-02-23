@@ -5,7 +5,7 @@ import { useProgress } from "@/context/progress-context";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Link, Route, useRoute } from "wouter";
-import { Scale, Network, Code, Shield, Brain, Database, TrendingUp, BookOpen } from "lucide-react";
+import { Scale, Network, Code, Shield, Brain, Database, TrendingUp, BookOpen, Binary, Blocks, Cpu, Lock, Layers, GitBranch } from "lucide-react";
 import ExercisesPage from "./module3/exercises";
 import { useScrollTop } from "@/hooks/useScrollTop";
 
@@ -31,6 +31,7 @@ const moduleTopics = [
     path: "/modules/module3/ethereum-fundamentals",
     icon: Scale,
     gradient: "bg-gradient-to-br from-gray-200 to-gray-400",
+    description: "Understand the core concepts of Ethereum and its innovative features",
     subsections: [
       "Smart Contracts",
       "The Ethereum Virtual Machine (EVM)",
@@ -44,6 +45,7 @@ const moduleTopics = [
     path: "/modules/module3/smart-contracts",
     icon: Code,
     gradient: "bg-gradient-to-br from-blue-200 to-blue-400",
+    description: "Learn to write, deploy and interact with smart contracts",
     subsections: [
       "Smart Contract Basics",
       "Development Environment",
@@ -57,6 +59,7 @@ const moduleTopics = [
     path: "/modules/module3/investment-value",
     icon: Network,
     gradient: "bg-gradient-to-br from-gray-300 to-blue-300",
+    description: "Explore the economic aspects and value propositions of Ethereum",
     subsections: [
       "Network Effects",
       "Developer Ecosystem",
@@ -70,12 +73,40 @@ const moduleTopics = [
     path: "/modules/module3/security-risks",
     icon: Shield,
     gradient: "bg-gradient-to-br from-slate-200 to-slate-400",
+    description: "Master security practices and risk management in smart contracts",
     subsections: [
       "Smart Contract Security",
       "Technical Vulnerabilities",
       "Economic Attack Vectors",
       "Risk Management Practices"
     ]
+  }
+];
+
+const learningObjectives = [
+  {
+    icon: Binary,
+    text: "Understand Ethereum's role as a programmable blockchain platform"
+  },
+  {
+    icon: Blocks,
+    text: "Master the fundamentals of smart contracts and their applications"
+  },
+  {
+    icon: Cpu,
+    text: "Explore the Ethereum Virtual Machine and its capabilities"
+  },
+  {
+    icon: Layers,
+    text: "Learn about decentralized applications (dApps) and their ecosystem"
+  },
+  {
+    icon: TrendingUp,
+    text: "Analyze Ethereum's value proposition and investment considerations"
+  },
+  {
+    icon: Lock,
+    text: "Understand security best practices and risk management"
   }
 ];
 
@@ -174,30 +205,25 @@ export default function Module3() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.8 }}
-                        className="mt-12 bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg p-8 text-white"
+                        className="mt-12 bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg p-8"
                       >
-                        <h2 className="text-2xl font-bold mb-4">Module Learning Objectives</h2>
-                        <ul className="grid md:grid-cols-2 gap-4">
-                          {[
-                            "Understand Ethereum's role as a programmable blockchain platform",
-                            "Master the fundamentals of smart contracts and their applications",
-                            "Explore the Ethereum Virtual Machine and its capabilities",
-                            "Learn about decentralized applications (dApps) and their ecosystem",
-                            "Analyze Ethereum's value proposition and investment considerations",
-                            "Understand security best practices and risk management"
-                          ].map((objective, index) => (
-                            <motion.li
+                        <h2 className="text-2xl font-bold mb-6 text-white">Module Learning Objectives</h2>
+                        <div className="grid md:grid-cols-2 gap-6">
+                          {learningObjectives.map((objective, index) => (
+                            <motion.div
                               key={index}
                               initial={{ opacity: 0, x: -20 }}
                               animate={{ opacity: 1, x: 0 }}
                               transition={{ delay: 1 + index * 0.1 }}
-                              className="flex items-center gap-3"
+                              className="flex items-start gap-4 bg-slate-700/50 rounded-lg p-4"
                             >
-                              <div className="h-2 w-2 bg-blue-400 rounded-full"></div>
-                              <span className="text-gray-200">{objective}</span>
-                            </motion.li>
+                              <div className="bg-blue-500/20 p-2 rounded-lg">
+                                <objective.icon className="h-6 w-6 text-blue-400" />
+                              </div>
+                              <p className="text-gray-200">{objective.text}</p>
+                            </motion.div>
                           ))}
-                        </ul>
+                        </div>
                       </motion.div>
 
                       <div className="mt-8 flex justify-center">
@@ -223,10 +249,10 @@ export default function Module3() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: index * 0.1 }}
                       >
-                        <Card className={`${topic.gradient} transition-all hover:shadow-xl`}>
+                        <Card className="h-full hover:shadow-lg transition-shadow duration-200">
                           <CardContent className="p-6">
                             <div className="flex items-center gap-4 mb-4">
-                              <div className="bg-white/20 backdrop-blur-sm p-2 rounded-lg">
+                              <div className={`${topic.gradient} p-3 rounded-xl`}>
                                 <topic.icon className="h-6 w-6 text-gray-700" />
                               </div>
                               <div>
@@ -234,20 +260,23 @@ export default function Module3() {
                                   {topic.title}
                                 </h3>
                                 {topic.completed && (
-                                  <span className="text-sm text-gray-600">(Completed)</span>
+                                  <span className="text-sm text-green-600">Completed</span>
                                 )}
                               </div>
                             </div>
-                            <ul className="space-y-2 mb-4">
+                            <p className="text-gray-600 mb-4">{topic.description}</p>
+                            <div className="space-y-2 mb-6">
                               {topic.subsections.map((subsection, idx) => (
-                                <li key={idx} className="text-sm text-gray-700 flex items-center gap-2">
-                                  <div className="h-1.5 w-1.5 bg-gray-600 rounded-full"></div>
+                                <div key={idx} className="flex items-center gap-2 text-sm text-gray-700">
+                                  <div className="h-1.5 w-1.5 bg-gray-400 rounded-full"></div>
                                   {subsection}
-                                </li>
+                                </div>
                               ))}
-                            </ul>
-                            <Link href={topic.path}>
-                              <Button className="w-full bg-gray-600/20 backdrop-blur-sm text-gray-800 hover:bg-gray-600/30">
+                            </div>
+                            <Link href={topic.path} className="block mt-auto">
+                              <Button 
+                                className="w-full bg-gradient-to-r from-gray-400 to-blue-400 hover:from-gray-500 hover:to-blue-500 text-white"
+                              >
                                 {topic.completed ? "Review Topic" : "Start Topic"}
                               </Button>
                             </Link>
