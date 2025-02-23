@@ -13,7 +13,6 @@ import { useScrollTop } from "@/hooks/useScrollTop";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 
-
 const cryptoPunkImage = "/Screenshot 2025-02-16 at 23.23.28.png";
 
 const SimpleSmartContractExercise = () => {
@@ -311,25 +310,25 @@ const SmartContractsSection = () => {
           </div>
         </motion.div>
 
-        <Card className="mb-6">
-          <div className="p-6 prose max-w-none">
+        <Card className="mb-6 bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700">
+          <div className="p-6 prose max-w-none text-gray-200">
             <motion.section
               variants={containerVariants}
               initial="hidden"
               animate="visible"
             >
-              <h2 className="text-2xl font-bold text-blue-700 mb-4">Understanding Smart Contracts</h2>
+              <h2 className="text-2xl font-bold text-blue-400 mb-4">Understanding Smart Contracts</h2>
 
-              <div className="bg-blue-50 p-6 rounded-lg mb-6">
-                <h3 className="text-xl font-semibold text-blue-700 mb-3">What are Smart Contracts?</h3>
-                <p className="text-gray-700 mb-4">
+              <div className="bg-gray-700 p-6 rounded-lg mb-6">
+                <h3 className="text-xl font-semibold text-gray-100 mb-3">What are Smart Contracts?</h3>
+                <p className="text-gray-300 mb-4">
                   Think of a smart contract as a digital vending machine: when you insert money and select an item, 
                   the machine automatically gives you what you selected. No human needs to verify or approve the transaction. 
                   Similarly, smart contracts are programs that automatically execute actions when specific conditions are met.
                 </p>
-                <div className="bg-white p-4 rounded-lg">
-                  <h4 className="font-semibold text-blue-600 mb-2">Real-World Example:</h4>
-                  <p className="text-gray-600">
+                <div className="bg-gray-600 p-4 rounded-lg">
+                  <h4 className="font-semibold text-gray-100 mb-2">Real-World Example:</h4>
+                  <p className="text-gray-300">
                     Imagine buying a house. Traditionally, you need lawyers, banks, and other intermediaries to verify and 
                     process the transaction. With a smart contract, once you send the payment, the deed is automatically 
                     transferred to you - instantly and without intermediaries.
@@ -337,29 +336,29 @@ const SmartContractsSection = () => {
                 </div>
               </div>
 
-              <div className="my-8 p-4 bg-gray-50 rounded-lg shadow-inner">
-                <h3 className="text-xl font-semibold text-blue-700 mb-4">How Smart Contracts Work</h3>
+              <div className="my-8 p-4 bg-gray-600 rounded-lg shadow-inner">
+                <h3 className="text-xl font-semibold text-gray-100 mb-4">How Smart Contracts Work</h3>
                 <SmartContractWorkflow />
                 <div className="mt-4 space-y-3">
-                  <div className="bg-white p-3 rounded">
-                    <span className="font-semibold text-blue-700">1. Write Contract:</span>
-                    <span className="ml-2 text-gray-600">Create the rules and conditions in code (like Solidity)</span>
+                  <div className="bg-gray-700 p-3 rounded">
+                    <span className="font-semibold text-gray-100">1. Write Contract:</span>
+                    <span className="ml-2 text-gray-300">Create the rules and conditions in code (like Solidity)</span>
                   </div>
-                  <div className="bg-white p-3 rounded">
-                    <span className="font-semibold text-blue-700">2. Deploy:</span>
-                    <span className="ml-2 text-gray-600">Upload to the blockchain where it becomes permanent</span>
+                  <div className="bg-gray-700 p-3 rounded">
+                    <span className="font-semibold text-gray-100">2. Deploy:</span>
+                    <span className="ml-2 text-gray-300">Upload to the blockchain where it becomes permanent</span>
                   </div>
-                  <div className="bg-white p-3 rounded">
-                    <span className="font-semibold text-blue-700">3. Execute:</span>
-                    <span className="ml-2 text-gray-600">Contract runs automatically when conditions are met</span>
+                  <div className="bg-gray-700 p-3 rounded">
+                    <span className="font-semibold text-gray-100">3. Execute:</span>
+                    <span className="ml-2 text-gray-300">Contract runs automatically when conditions are met</span>
                   </div>
-                  <div className="bg-white p-3 rounded">
-                    <span className="font-semibold text-blue-700">4. Verify:</span>
-                    <span className="ml-2 text-gray-600">Network nodes verify the execution</span>
+                  <div className="bg-gray-700 p-3 rounded">
+                    <span className="font-semibold text-gray-100">4. Verify:</span>
+                    <span className="ml-2 text-gray-300">Network nodes verify the execution</span>
                   </div>
-                  <div className="bg-white p-3 rounded">
-                    <span className="font-semibold text-blue-700">5. Update:</span>
-                    <span className="ml-2 text-gray-600">Blockchain state is updated with the results</span>
+                  <div className="bg-gray-700 p-3 rounded">
+                    <span className="font-semibold text-gray-100">5. Update:</span>
+                    <span className="ml-2 text-gray-300">Blockchain state is updated with the results</span>
                   </div>
                 </div>
               </div>
@@ -367,13 +366,13 @@ const SmartContractsSection = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <motion.div
                   variants={itemVariants}
-                  className="bg-blue-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                  className="bg-gray-700 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                 >
                   <div className="flex items-center gap-2 mb-4">
-                    <Code className="w-6 h-6 text-blue-600" />
-                    <h3 className="text-xl font-semibold text-blue-700">Key Features</h3>
+                    <Code className="w-6 h-6 text-blue-400" />
+                    <h3 className="text-xl font-semibold text-gray-100">Key Features</h3>
                   </div>
-                  <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                  <ul className="list-disc pl-5 space-y-2 text-gray-300">
                     <li>
                       <span className="font-semibold">Automatic Execution:</span>
                       <p className="text-sm mt-1">No manual intervention needed once conditions are met</p>
@@ -395,13 +394,13 @@ const SmartContractsSection = () => {
 
                 <motion.div
                   variants={itemVariants}
-                  className="bg-blue-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                  className="bg-gray-700 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                 >
                   <div className="flex items-center gap-2 mb-4">
-                    <Shield className="w-6 h-6 text-blue-600" />
-                    <h3 className="text-xl font-semibold text-blue-700">Important Considerations</h3>
+                    <Shield className="w-6 h-6 text-blue-400" />
+                    <h3 className="text-xl font-semibold text-gray-100">Important Considerations</h3>
                   </div>
-                  <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                  <ul className="list-disc pl-5 space-y-2 text-gray-300">
                     <li>
                       <span className="font-semibold">Gas Fees:</span>
                       <p className="text-sm mt-1">Each operation costs a small amount of cryptocurrency</p>
@@ -422,8 +421,8 @@ const SmartContractsSection = () => {
                 </motion.div>
               </div>
 
-              <div className="my-8 p-4 bg-gray-50 rounded-lg shadow-inner">
-                <h3 className="text-xl font-semibold text-blue-700 mb-4">Smart Contract Structure</h3>
+              <div className="my-8 p-4 bg-gray-600 rounded-lg shadow-inner">
+                <h3 className="text-xl font-semibold text-gray-100 mb-4">Smart Contract Structure</h3>
                 <SmartContractStructure />
               </div>
             </motion.section>
@@ -434,33 +433,33 @@ const SmartContractsSection = () => {
               animate="visible"
               className="mt-12"
             >
-              <h2 className="text-2xl font-bold text-blue-700 mb-4">Practical Applications</h2>
+              <h2 className="text-2xl font-bold text-blue-400 mb-4">Practical Applications</h2>
 
               <div className="space-y-6">
                 <motion.div
                   variants={itemVariants}
-                  className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                  className="bg-gray-700 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                 >
-                  <h3 className="text-xl font-semibold text-blue-700 mb-4">Financial Services (DeFi)</h3>
+                  <h3 className="text-xl font-semibold text-gray-100 mb-4">Financial Services (DeFi)</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-3">
-                      <div className="bg-blue-50 p-3 rounded">
-                        <span className="font-semibold">Automated Lending:</span>
-                        <p className="text-sm mt-1">Get loans instantly without bank approval</p>
+                      <div className="bg-gray-600 p-3 rounded">
+                        <span className="font-semibold text-gray-200">Automated Lending:</span>
+                        <p className="text-sm mt-1 text-gray-300">Get loans instantly without bank approval</p>
                       </div>
-                      <div className="bg-blue-50 p-3 rounded">
-                        <span className="font-semibold">Decentralized Trading:</span>
-                        <p className="text-sm mt-1">Exchange tokens without intermediaries</p>
+                      <div className="bg-gray-600 p-3 rounded">
+                        <span className="font-semibold text-gray-200">Decentralized Trading:</span>
+                        <p className="text-sm mt-1 text-gray-300">Exchange tokens without intermediaries</p>
                       </div>
                     </div>
                     <div className="space-y-3">
-                      <div className="bg-blue-50 p-3 rounded">
-                        <span className="font-semibold">Insurance:</span>
-                        <p className="text-sm mt-1">Automatic claim processing and payouts</p>
+                      <div className="bg-gray-600 p-3 rounded">
+                        <span className="font-semibold text-gray-200">Insurance:</span>
+                        <p className="text-sm mt-1 text-gray-300">Automatic claim processing and payouts</p>
                       </div>
-                      <div className="bg-blue-50 p-3 rounded">
-                        <span className="font-semibold">Payments:</span>
-                        <p className="text-sm mt-1">Programmable money transfers</p>
+                      <div className="bg-gray-600 p-3 rounded">
+                        <span className="font-semibold text-gray-200">Payments:</span>
+                        <p className="text-sm mt-1 text-gray-300">Programmable money transfers</p>
                       </div>
                     </div>
                   </div>
@@ -468,28 +467,28 @@ const SmartContractsSection = () => {
 
                 <motion.div
                   variants={itemVariants}
-                  className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                  className="bg-gray-700 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                 >
-                  <h3 className="text-xl font-semibold text-blue-700 mb-4">Digital Rights Management</h3>
+                  <h3 className="text-xl font-semibold text-gray-100 mb-4">Digital Rights Management</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-3">
-                      <div className="bg-blue-50 p-3 rounded">
-                        <span className="font-semibold">Content Licensing:</span>
-                        <p className="text-sm mt-1">Automatic royalty payments to creators</p>
+                      <div className="bg-gray-600 p-3 rounded">
+                        <span className="font-semibold text-gray-200">Content Licensing:</span>
+                        <p className="text-sm mt-1 text-gray-300">Automatic royalty payments to creators</p>
                       </div>
-                      <div className="bg-blue-50 p-3 rounded">
-                        <span className="font-semibold">Access Control:</span>
-                        <p className="text-sm mt-1">Manage digital content permissions</p>
+                      <div className="bg-gray-600 p-3 rounded">
+                        <span className="font-semibold text-gray-200">Access Control:</span>
+                        <p className="text-sm mt-1 text-gray-300">Manage digital content permissions</p>
                       </div>
                     </div>
                     <div className="space-y-3">
-                      <div className="bg-blue-50 p-3 rounded">
-                        <span className="font-semibold">NFT Creation:</span>
-                        <p className="text-sm mt-1">Create and trade unique digital assets</p>
+                      <div className="bg-gray-600 p-3 rounded">
+                        <span className="font-semibold text-gray-200">NFT Creation:</span>
+                        <p className="text-sm mt-1 text-gray-300">Create and trade unique digital assets</p>
                       </div>
-                      <div className="bg-blue-50 p-3 rounded">
-                        <span className="font-semibold">Usage Tracking:</span>
-                        <p className="text-sm mt-1">Monitor and verify content usage</p>
+                      <div className="bg-gray-600 p-3 rounded">
+                        <span className="font-semibold text-gray-200">Usage Tracking:</span>
+                        <p className="text-sm mt-1 text-gray-300">Monitor and verify content usage</p>
                       </div>
                     </div>
                   </div>
@@ -497,28 +496,28 @@ const SmartContractsSection = () => {
 
                 <motion.div
                   variants={itemVariants}
-                  className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                  className="bg-gray-700 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                 >
-                  <h3 className="text-xl font-semibold text-blue-700 mb-4">Supply Chain Management</h3>
+                  <h3 className="text-xl font-semibold text-gray-100 mb-4">Supply Chain Management</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-3">
-                      <div className="bg-blue-50 p-3 rounded">
-                        <span className="font-semibold">Product Tracking:</span>
-                        <p className="text-sm mt-1">Monitor items from factory to consumer</p>
+                      <div className="bg-gray-600 p-3 rounded">
+                        <span className="font-semibold text-gray-200">Product Tracking:</span>
+                        <p className="text-sm mt-1 text-gray-300">Monitor items from factory to consumer</p>
                       </div>
-                      <div className="bg-blue-50 p-3 rounded">
-                        <span className="font-semibold">Authenticity:</span>
-                        <p className="text-sm mt-1">Verify genuine products and documents</p>
+                      <div className="bg-gray-600 p-3 rounded">
+                        <span className="font-semibold text-gray-200">Authenticity:</span>
+                        <p className="text-sm mt-1 text-gray-300">Verify genuine products and documents</p>
                       </div>
                     </div>
                     <div className="space-y-3">
-                      <div className="bg-blue-50 p-3 rounded">
-                        <span className="font-semibold">Payments:</span>
-                        <p className="text-sm mt-1">Automatic payment on delivery confirmation</p>
+                      <div className="bg-gray-600 p-3 rounded">
+                        <span className="font-semibold text-gray-200">Payments:</span>
+                        <p className="text-sm mt-1 text-gray-300">Automatic payment on delivery confirmation</p>
                       </div>
-                      <div className="bg-blue-50 p-3 rounded">
-                        <span className="font-semibold">Documentation:</span>
-                        <p className="text-sm mt-1">Secure storage of shipping records</p>
+                      <div className="bg-gray-600 p-3 rounded">
+                        <span className="font-semibold text-gray-200">Documentation:</span>
+                        <p className="text-sm mt-1 text-gray-300">Secure storage of shipping records</p>
                       </div>
                     </div>
                   </div>
@@ -534,47 +533,48 @@ const SmartContractsSection = () => {
             animate={{ opacity: 1, y: 0 }}
             className="mt-8"
           >
-            <Card className="bg-green-100 border-l-4 border-green-500 p-4">
+            <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700 p-4">
               <div className="flex flex-col items-center">
-                <p className="text-green-700 mb-4">
+                <p className="text-gray-300 mb-4">
                   🎉 Congratulations! You've completed the Smart Contract Development section!
                 </p>
-                {/*Quiz button removed */}
               </div>
             </Card>
           </motion.div>
         )}
       </div>
 
-      {/* Add Interactive Exercises Section */}
+      {/* Interactive Exercises Section */}
       <motion.section
         variants={containerVariants}
         initial="hidden"
         animate="visible"
         className="mt-12"
       >
-        <h2 className="text-3xl font-bold text-blue-700 mb-6">Interactive Exercises</h2>
+        <h2 className="text-3xl font-bold text-blue-400 mb-6">Interactive Exercises</h2>
         <SimpleSmartContractExercise />
         <NFTMintingExercise />
       </motion.section>
 
-      {/* Add Quiz Section */}
+      {/* Quiz Section - Updated to be more compact */}
       <motion.section
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="mt-12"
+        className="mt-12 max-w-3xl mx-auto"
       >
-        <Card className="bg-gradient-to-br from-gray-800 to-gray-900 p-6 border border-gray-700">
-          <div className="bg-gradient-to-r from-gray-700 to-gray-800 p-6 rounded-lg mb-6 border border-gray-600">
-            <h2 className="text-2xl font-bold text-white mb-4">
+        <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700">
+          <div className="bg-gradient-to-r from-gray-700 to-gray-800 p-4 rounded-t-lg border-b border-gray-600">
+            <h2 className="text-xl font-bold text-gray-100">
               Test Your Knowledge
             </h2>
-            <p className="text-gray-300 mb-6">
-              Let's verify your understanding of Smart Contract Development with a quick quiz.
+            <p className="text-sm text-gray-400 mt-1">
+              Let's verify your understanding of Smart Contract Development
             </p>
           </div>
-          <SmartContractsQuiz onComplete={handleQuizComplete} />
+          <div className="p-4">
+            <SmartContractsQuiz onComplete={handleQuizComplete} />
+          </div>
         </Card>
       </motion.section>
 
