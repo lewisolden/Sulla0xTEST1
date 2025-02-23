@@ -391,7 +391,7 @@ export default function Curriculum() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 mb-6">
+          <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 mb-6 leading-tight tracking-normal py-1">
             Begin Your Learning Journey
           </h1>
           <p className="text-xl text-blue-700 max-w-3xl mx-auto mb-8">
