@@ -238,15 +238,23 @@ const Module3Quiz = () => {
               <Link href="/modules/module3">
                 <Button 
                   variant="outline" 
-                  className="w-full sm:w-auto border-gray-600 text-gray-200 hover:bg-gray-800"
+                  className="w-full sm:w-auto bg-gray-800 border-blue-500/30 text-white hover:bg-gray-700 hover:text-white text-lg px-6 py-3"
                 >
                   <ArrowLeft className="mr-2 h-5 w-5" />
                   Return to Module
                 </Button>
               </Link>
+              <Link href="/curriculum">
+                <Button 
+                  variant="outline" 
+                  className="w-full sm:w-auto bg-gray-800 border-blue-500/30 text-white hover:bg-gray-700 hover:text-white text-lg px-6 py-3"
+                >
+                  Return to Curriculum
+                </Button>
+              </Link>
               <Button
                 onClick={restartQuiz}
-                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700"
+                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-lg px-6 py-3"
               >
                 Try Again
               </Button>
@@ -265,14 +273,22 @@ const Module3Quiz = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="mb-6"
+            className="mb-6 flex gap-4"
           >
             <Link href="/modules/module3">
               <Button 
-                variant="ghost" 
-                className="gap-2 text-gray-300 hover:text-white hover:bg-gray-800"
+                variant="outline" 
+                className="gap-2 bg-gray-800 border-blue-500/30 text-white hover:bg-gray-700 hover:text-white"
               >
                 <ArrowLeft className="h-4 w-4" /> Back to Module 3
+              </Button>
+            </Link>
+            <Link href="/curriculum">
+              <Button 
+                variant="outline" 
+                className="gap-2 bg-gray-800 border-blue-500/30 text-white hover:bg-gray-700 hover:text-white"
+              >
+                Return to Curriculum
               </Button>
             </Link>
           </motion.div>
