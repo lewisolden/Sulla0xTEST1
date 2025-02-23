@@ -127,9 +127,10 @@ export default function Module2() {
                     </p>
                   </div>
                 </div>
-                <div className="mt-8">
-                  <ModuleProgress moduleId={2} totalSections={moduleTopics.length} />
-                </div>
+              </div>
+
+              <div className="mt-6 px-8">
+                <ModuleProgress moduleId={2} totalSections={moduleTopics.length} />
               </div>
 
               <CardContent className="p-8">
