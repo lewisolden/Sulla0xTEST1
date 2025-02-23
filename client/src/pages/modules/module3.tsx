@@ -164,12 +164,11 @@ export default function Module3() {
                 <Progress value={progressPercentage} className="bg-gray-100" />
               </div>
 
-              {/* Added Start Topic button here */}
               <div className="flex justify-center mb-8">
                 <Link href="/modules/module3/ethereum-fundamentals">
                   <Button
                     size="lg"
-                    className="bg-gradient-to-r from-gray-400 to-blue-400 hover:from-gray-500 hover:to-blue-500 text-white px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="bg-gradient-to-r from-gray-600 to-blue-600 hover:from-gray-700 hover:to-blue-700 text-white px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                   >
                     Start First Topic
                   </Button>
@@ -242,7 +241,7 @@ export default function Module3() {
                         <Link href="/modules/module3/ethereum-fundamentals">
                           <Button
                             size="lg"
-                            className="bg-gradient-to-r from-gray-400 to-blue-400 hover:from-gray-500 hover:to-blue-500 text-white"
+                            className="bg-gradient-to-r from-gray-600 to-blue-600 hover:from-gray-700 hover:to-blue-700 text-white"
                           >
                             Start First Topic
                           </Button>
@@ -287,7 +286,7 @@ export default function Module3() {
                             </div>
                             <Link href={topic.path} className="block mt-auto">
                               <Button 
-                                className="w-full bg-gradient-to-r from-gray-400 to-blue-400 hover:from-gray-500 hover:to-blue-500 text-white"
+                                className="w-full bg-gradient-to-r from-gray-600 to-blue-600 hover:from-gray-700 hover:to-blue-700 text-white"
                               >
                                 {topic.completed ? "Review Topic" : "Start Topic"}
                               </Button>
