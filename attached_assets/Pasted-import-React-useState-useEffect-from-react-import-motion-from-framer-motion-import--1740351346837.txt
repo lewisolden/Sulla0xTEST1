@@ -1,0 +1,141 @@
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { Link } from '@tanstack/react-location';
+import { Button } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { useProgress } from '@/hooks/useProgress';
+import { useLocation } from '@tanstack/react-location';
+import { useScrollTop } from '@/hooks/useScrollTop';
+
+export default function LiquidityYield() {
+  useScrollTop();
+  const { updateProgress } = useProgress();
+  const [isCompleted, setIsCompleted] = useState(false);
+  const [, setLocation] = useLocation();
+
+  // Farm simulation state
+  const [pooledTokens, setPooledTokens] = useState({ USDC: 1000, ETH: 1 });
+  const [earnedRewards, setEarnedRewards] = useState(0);
+  const [apr, setApr] = useState(20);
+  const [isSimulationRunning, setIsSimulationRunning] = useState(false);
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const [showSimulatorGuide, setShowSimulatorGuide] = useState(true);
+
+  const handleComplete = async () => {
+    await updateProgress(1, "liquidity-yield", true, 100);
+    setIsCompleted(true);
+  };
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isSimulationRunning) {
+      interval = setInterval(() => {
+        setElapsedTime(prev => prev + 1);
+        setEarnedRewards(prev => prev + (pooledTokens.USDC * apr / 100 / 365 / 24));
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [isSimulationRunning, pooledTokens, apr]);
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto">
+        <div className="mb-6">
+          <Link to="/defi/module1/dex-amm">
+            <Button variant="ghost" className="gap-2">
+              <ArrowLeft className="h-4 w-4" /> Back to DEXs & AMMs
+            </Button>
+          </Link>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <Card>
+            <CardHeader className="relative overflow-hidden bg-gradient-to-r from-purple-500 to-indigo-500 pb-8">
+              <div className="absolute inset-0 bg-grid-white/20" />
+              <CardTitle className="text-3xl font-bold text-white z-10">
+                Yield Farming & Liquidity Provision
+              </CardTitle>
+              <p className="text-purple-100 mt-2 z-10">
+                Master the art of earning passive income in DeFi through liquidity provision and yield optimization
+              </p>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <div className="prose max-w-none">
+                <section className="mb-12">
+                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-8 mb-8">
+                    <h2 className="text-2xl font-semibold text-blue-800 mb-4">
+                      What is Yield Farming?
+                    </h2>
+                    <p className="text-gray-700 mb-6">
+                      Yield farming is like earning interest on your cryptocurrency assets, but with potentially higher returns than traditional banking. Instead of letting your crypto sit idle in a wallet, you put it to work in various DeFi protocols.
+                    </p>
+                  </div>
+
+                  <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
+                    <h3 className="text-xl font-semibold text-gray-800 mb-4">
+                      Interactive Yield Farm Simulator
+                    </h3>
+                    <div className="bg-gray-50 p-6 rounded-lg">
+                      <div className="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                          <p className="font-medium">Pooled USDC:</p>
+                          <p className="text-2xl font-bold">{pooledTokens.USDC.toFixed(2)}</p>
+                        </div>
+                        <div>
+                          <p className="font-medium">Pooled ETH:</p>
+                          <p className="text-2xl font-bold">{pooledTokens.ETH.toFixed(3)}</p>
+                        </div>
+                      </div>
+                      <div className="mb-4">
+                        <p className="font-medium">Earned Rewards:</p>
+                        <p className="text-2xl font-bold text-green-600">
+                          {earnedRewards.toFixed(4)} FARM
+                        </p>
+                      </div>
+                      <Button
+                        onClick={() => setIsSimulationRunning(!isSimulationRunning)}
+                        className={isSimulationRunning ? "bg-red-500" : "bg-green-500"}
+                      >
+                        {isSimulationRunning ? "Stop Farming" : "Start Farming"}
+                      </Button>
+                    </div>
+                  </div>
+                </section>
+
+                <section className="mb-12">
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+                    Understanding Impermanent Loss
+                  </h2>
+                  <p className="text-gray-700 mb-6">
+                    Impermanent loss occurs when the price ratio of your pooled assets changes compared to when you deposited them. This is a key risk to understand when providing liquidity to AMMs.
+                  </p>
+                </section>
+
+                <div className="flex gap-4">
+                  <Button
+                    onClick={handleComplete}
+                    className="bg-green-600 hover:bg-green-700"
+                    disabled={isCompleted}
+                  >
+                    {isCompleted ? "Completed" : "Mark as Complete"}
+                  </Button>
+
+                  <Link to="/defi/module1/quiz">
+                    <Button className="gap-2">
+                      Next Section <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </div>
+    </div>
+  );
+}
