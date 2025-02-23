@@ -68,7 +68,7 @@ const questions = [
   }
 ];
 
-const SecurityQuiz: React.FC<SecurityQuizProps> = ({ onComplete }) => {
+export const SecurityQuiz: React.FC<SecurityQuizProps> = ({ onComplete }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
@@ -98,10 +98,10 @@ const SecurityQuiz: React.FC<SecurityQuizProps> = ({ onComplete }) => {
         if (finalScore >= 60) {
           setTimeout(() => {
             onComplete();
-          }, 3000);
+          }, 5000);
         }
       }
-    }, 3000);
+    }, 5000);
   };
 
   if (showResult) {
@@ -131,7 +131,7 @@ const SecurityQuiz: React.FC<SecurityQuizProps> = ({ onComplete }) => {
                 Congratulations! You've passed!
               </p>
               <p className="text-sm text-green-600 mt-1 text-center">
-                Moving to next section in 3 seconds...
+                Moving to next section in 5 seconds...
               </p>
             </div>
           ) : (
@@ -212,7 +212,7 @@ const SecurityQuiz: React.FC<SecurityQuizProps> = ({ onComplete }) => {
               {questions[currentQuestion].explanation}
             </p>
             <p className="text-xs text-gray-500 mt-2">
-              Next question in 3 seconds...
+              Next question in 5 seconds...
             </p>
           </motion.div>
         )}

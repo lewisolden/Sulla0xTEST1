@@ -559,7 +559,7 @@ const PracticalApplicationsQuiz = () => {
           nextSection: 'getting-started'
         });
       }
-    }, 2000);
+    }, 5000);
   };
 
   if (showResult) {
@@ -675,6 +675,7 @@ const PracticalApplicationsQuiz = () => {
                 {selectedAnswer === questions[currentQuestion].correctAnswer ? "✓ Correct!" : "✕ Incorrect"}
               </p>
               <p>{questions[currentQuestion].explanation}</p>
+              <p className="text-sm mt-2">Next question in 5 seconds...</p>
             </motion.div>
           )}
         </CardContent>

@@ -111,7 +111,7 @@ const BitcoinQuiz: React.FC<BitcoinQuizProps> = ({ onComplete }) => {
           }, 5000);
         }
       }
-    }, 3000);
+    }, 5000);
   };
 
   const restartQuiz = () => {
@@ -242,7 +242,7 @@ const BitcoinQuiz: React.FC<BitcoinQuizProps> = ({ onComplete }) => {
                 : <><XCircle className="h-4 w-4 text-red-600" /> Incorrect</>}
             </h3>
             <p className="leading-relaxed">{quizQuestions[currentQuestion].explanation}</p>
-            <p className="text-xs mt-2 text-gray-600">Next question in 3 seconds...</p>
+            <p className="text-xs mt-2 text-gray-600">Next question in 5 seconds...</p>
           </motion.div>
         )}
       </div>

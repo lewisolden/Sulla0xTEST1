@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useProgress } from "@/context/progress-context";
@@ -83,7 +83,7 @@ export default function DigitalCurrenciesQuiz() {
 
   const moveToNextQuestion = () => {
     const isCorrect = selectedAnswer === quizQuestions[currentQuestion].correctAnswer;
-    
+
     if (isCorrect) {
       setScore(prev => prev + 1);
     }
@@ -99,13 +99,15 @@ export default function DigitalCurrenciesQuiz() {
     }
   };
 
-  const restartQuiz = () => {
-    setCurrentQuestion(0);
-    setSelectedAnswer(null);
-    setShowResult(false);
-    setScore(0);
-    setShowExplanation(false);
-  };
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (showExplanation) {
+      timer = setTimeout(() => {
+        moveToNextQuestion();
+      }, 5000); 
+    }
+    return () => clearTimeout(timer);
+  }, [showExplanation]);
 
   if (showResult) {
     return (
@@ -143,6 +145,14 @@ export default function DigitalCurrenciesQuiz() {
   }
 
   const currentQuizQuestion = quizQuestions[currentQuestion];
+
+  const restartQuiz = () => {
+    setCurrentQuestion(0);
+    setSelectedAnswer(null);
+    setShowResult(false);
+    setScore(0);
+    setShowExplanation(false);
+  };
 
   return (
     <Card>
@@ -197,6 +207,7 @@ export default function DigitalCurrenciesQuiz() {
                   : '❌ Incorrect'}
               </h3>
               <p>{currentQuizQuestion.explanation}</p>
+              <p className="text-sm text-gray-600 mt-2">Next question in 5 seconds...</p>
             </div>
           )}
 
