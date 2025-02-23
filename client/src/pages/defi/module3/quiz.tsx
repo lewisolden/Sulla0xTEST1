@@ -71,44 +71,52 @@ export default function DefiModule3Quiz() {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [score, setScore] = useState(0);
   const [showResults, setShowResults] = useState(false);
+  const [showExplanation, setShowExplanation] = useState(false);
   const { toast } = useToast();
   const { updateProgress } = useProgress();
 
   const handleAnswerSelection = (answerIndex: number) => {
     setSelectedAnswer(answerIndex);
-  };
+    setShowExplanation(true);
 
-  const handleNextQuestion = () => {
-    if (selectedAnswer === null) {
+    const isCorrect = answerIndex === questions[currentQuestion].correctAnswer;
+    if (isCorrect) {
+      setScore(score + 1);
       toast({
-        title: "Please select an answer",
+        title: "Correct! 🎉",
+        description: "Great job! Moving to next question...",
+        variant: "default",
+      });
+    } else {
+      toast({
+        title: "Incorrect",
+        description: "Let's understand why before moving on.",
         variant: "destructive",
       });
-      return;
     }
 
-    if (selectedAnswer === questions[currentQuestion].correctAnswer) {
-      setScore(score + 1);
-    }
-
-    if (currentQuestion < questions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
-      setSelectedAnswer(null);
-    } else {
-      setShowResults(true);
-      const finalScore = (score / questions.length) * 100;
-      updateProgress(
-        3, 
-        'defi-module3-quiz', 
-        finalScore >= 70, 
-        1, 
-        undefined, 
-        finalScore, 
-        '/defi/module3/quiz', 
-        undefined, 
-        'DeFi' 
-      );
-    }
+    // Auto-advance to next question after 7 seconds
+    setTimeout(() => {
+      if (currentQuestion < questions.length - 1) {
+        setCurrentQuestion(currentQuestion + 1);
+        setSelectedAnswer(null);
+        setShowExplanation(false);
+      } else {
+        setShowResults(true);
+        const finalScore = (score / questions.length) * 100;
+        updateProgress(
+          3,
+          'defi-module3-quiz',
+          finalScore >= 70,
+          1,
+          undefined,
+          finalScore,
+          '/defi/module3/quiz',
+          undefined,
+          'DeFi'
+        );
+      }
+    }, 7000); // Changed to 7000ms (7 seconds)
   };
 
   return (
@@ -125,8 +133,8 @@ export default function DefiModule3Quiz() {
 
           {!showResults ? (
             <>
-              <Progress 
-                value={(currentQuestion / questions.length) * 100} 
+              <Progress
+                value={(currentQuestion / questions.length) * 100}
                 className="mb-6"
               />
               <div className="mb-6">
@@ -140,19 +148,29 @@ export default function DefiModule3Quiz() {
                       key={index}
                       variant={selectedAnswer === index ? "default" : "outline"}
                       className="w-full justify-start text-left"
-                      onClick={() => handleAnswerSelection(index)}
+                      onClick={() => !showExplanation && handleAnswerSelection(index)}
+                      disabled={showExplanation}
                     >
                       {option}
                     </Button>
                   ))}
                 </div>
               </div>
-              <Button 
-                className="w-full"
-                onClick={handleNextQuestion}
-              >
-                {currentQuestion === questions.length - 1 ? "Finish Quiz" : "Next Question"}
-              </Button>
+              {showExplanation && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-blue-50 p-4 rounded-lg mt-4"
+                >
+                  <h4 className="font-medium text-blue-800 mb-2">Explanation</h4>
+                  <p className="text-blue-700">
+                    {selectedAnswer === questions[currentQuestion].correctAnswer
+                      ? "Correct! This answer demonstrates understanding of the concept."
+                      : "The correct answer helps us understand the concept better."}
+                  </p>
+                  <p className="text-sm text-gray-600 mt-2">Next question in 7 seconds...</p>
+                </motion.div>
+              )}
             </>
           ) : (
             <div className="text-center">
@@ -160,8 +178,8 @@ export default function DefiModule3Quiz() {
               <p className="text-xl mb-4">
                 Your score: {score} out of {questions.length}
               </p>
-              <Progress 
-                value={(score / questions.length) * 100} 
+              <Progress
+                value={(score / questions.length) * 100}
                 className="mb-6"
               />
               {score === questions.length ? (
