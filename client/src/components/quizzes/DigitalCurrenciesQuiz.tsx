@@ -108,10 +108,10 @@ const DigitalCurrenciesQuiz: React.FC<DigitalCurrenciesQuizProps> = ({ onComplet
         if (finalScore >= 60) {
           setTimeout(() => {
             onComplete();
-          }, 5000); // Show score for 5 seconds
+          }, 5000);
         }
       }
-    }, 3000);
+    }, 5000);
   };
 
   const restartQuiz = () => {
@@ -159,7 +159,7 @@ const DigitalCurrenciesQuiz: React.FC<DigitalCurrenciesQuizProps> = ({ onComplet
             </div>
           )}
           <div className="flex flex-col space-y-3">
-            <Button 
+            <Button
               onClick={restartQuiz}
               className="w-full bg-blue-500 hover:bg-blue-600 text-sm"
             >
@@ -167,7 +167,7 @@ const DigitalCurrenciesQuiz: React.FC<DigitalCurrenciesQuizProps> = ({ onComplet
             </Button>
             {percentage >= 60 && (
               <Link href="/modules/module1/security">
-                <Button 
+                <Button
                   className="w-full bg-green-600 hover:bg-green-700 text-sm"
                 >
                   Continue to Security <ArrowRight className="ml-2 h-4 w-4" />
@@ -205,12 +205,12 @@ const DigitalCurrenciesQuiz: React.FC<DigitalCurrenciesQuizProps> = ({ onComplet
               onClick={() => handleAnswerSelect(index)}
               className={`
                 w-full p-3 rounded-lg text-left transition-all duration-300 text-sm
-                ${selectedAnswer === null 
-                  ? 'bg-white hover:bg-blue-50 border border-gray-200' 
-                  : index === currentQuizQuestion.correctAnswer 
-                    ? 'bg-green-100 border-2 border-green-500' 
-                    : selectedAnswer === index 
-                      ? 'bg-red-100 border-2 border-red-500' 
+                ${selectedAnswer === null
+                  ? 'bg-white hover:bg-blue-50 border border-gray-200'
+                  : index === currentQuizQuestion.correctAnswer
+                    ? 'bg-green-100 border-2 border-green-500'
+                    : selectedAnswer === index
+                      ? 'bg-red-100 border-2 border-red-500'
                       : 'bg-white border border-gray-200'}
                 whitespace-normal break-words hover:shadow-md
               `}
@@ -229,18 +229,18 @@ const DigitalCurrenciesQuiz: React.FC<DigitalCurrenciesQuizProps> = ({ onComplet
             animate={{ opacity: 1, y: 0 }}
             className={`
               mt-4 p-3 rounded-lg text-sm
-              ${selectedAnswer === currentQuizQuestion.correctAnswer 
-                ? 'bg-green-100 border-l-4 border-green-500' 
+              ${selectedAnswer === currentQuizQuestion.correctAnswer
+                ? 'bg-green-100 border-l-4 border-green-500'
                 : 'bg-red-100 border-l-4 border-red-500'}
             `}
           >
             <h3 className="font-bold mb-2 flex items-center gap-2">
-              {selectedAnswer === currentQuizQuestion.correctAnswer 
+              {selectedAnswer === currentQuizQuestion.correctAnswer
                 ? <><CheckCircle className="h-4 w-4 text-green-600" /> Correct!</>
                 : <><XCircle className="h-4 w-4 text-red-600" /> Incorrect</>}
             </h3>
             <p className="leading-relaxed">{currentQuizQuestion.explanation}</p>
-            <p className="text-xs mt-2 text-gray-600">Next question in 3 seconds...</p>
+            <p className="text-xs mt-2 text-gray-600">Next question in 5 seconds...</p>
           </motion.div>
         )}
       </div>
