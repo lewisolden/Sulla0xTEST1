@@ -5,7 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { ArrowLeft, ArrowRight, Wallet, LucideIcon, Shield, Key, Lock, CheckCircle2, XCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, Wallet, LucideIcon, Shield, Key, Lock, CheckCircle2, XCircle, TrendingUp, CreditCard, Building2, AlertTriangle } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { GettingStartedQuiz } from "@/components/quizzes/GettingStartedQuiz";
@@ -334,16 +334,17 @@ const GettingStartedSection = () => {
   const ResourceCard = ({ icon: Icon, title, description, tags, color }: ResourceCardProps) => (
     <motion.div
       whileHover={{ scale: 1.02 }}
-      className={`bg-white roundedxl shadow-lg p-6 border-l-4 ${color}`}
+      className={`bg-white rounded-xl shadow-lg p-6 border-l-4 ${color}`}
     >
       <div className="flex items-start space-x-4">
-        <div className={`p-3 rounded-lg ${color.replace('border-', 'bg-').replace('-500', '-100')}`}>
+        <div className={`p3 rounded-lg ${color.replace('border-', 'bg-').replace('-500', '-100')}`}>
           <Icon className={`w-6 h-6 ${color.replace('border-', 'text-')}`} />
         </div>
         <div className="flex-1">
           <h3 className="font-semibold text-lg mb-2">{title}</h3>
           <p className="text-gray-600 mb-3">{description}</p>
-          <div className="flex flex-wrap gap-2">{tags.map((tag, index) => (
+          <div className="flex flex-wrap gap-2">
+            {tags.map((tag, index) => (
               <span
                 key={index}
                 className={`px-2 py-1 rounded-full text-sm ${color.replace('border-', 'bg-').replace('-500', '-100')} ${color.replace('border-', 'text-')}`}
@@ -799,6 +800,75 @@ const GettingStartedSection = () => {
             </section>
 
             <section className="mt-8">
+              <div className="bg-blue-50 p-6 rounded-xl border-l-4 border-blue-400 shadow-md mt-6">
+                <h3 className="font-semibold text-blue-800 text-xl flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5" />
+                  Getting Your First Cryptocurrency
+                </h3>
+                <div className="space-y-4 mt-3 text-blue-700">
+                  <p>
+                    Before you can start using a cryptocurrency wallet, you'll need to acquire some cryptocurrency first. The easiest and most secure way for beginners is through regulated cryptocurrency exchanges:
+                  </p>
+
+                  <div className="bg-white rounded-lg p-4">
+                    <h4 className="font-medium text-blue-800 mb-2">Recommended Exchanges</h4>
+                    <ul className="space-y-3">
+                      <li className="flex items-start gap-2">
+                        <div className="min-w-[24px] mt-1">
+                          <CheckCircle2 className="w-6 h-6 text-green-500" />
+                        </div>
+                        <div>
+                          <span className="font-medium">Coinbase</span>
+                          <p className="text-sm text-gray-600">Perfect for beginners with a user-friendly interface, strong security measures, and excellent customer support. Available in most countries.</p>
+                        </div>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <div className="min-w-[24px] mt-1">
+                          <CheckCircle2 className="w-6 h-6 text-green-500" />
+                        </div>
+                        <div>
+                          <span className="font-medium">Kraken</span>
+                          <p className="text-sm text-gray-600">Known for robust security, competitive fees, and extensive cryptocurrency options. Excellent choice for both beginners and advanced users.</p>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div className="bg-white rounded-lg p-4 mt-4">
+                    <h4 className="font-medium text-blue-800 mb-2">Payment Methods</h4>
+                    <div className="space-y-3">
+                      <div className="flex items-start gap-2">
+                        <div className="min-w-[24px] mt-1">
+                          <CreditCard className="w-6 h-6 text-blue-500" />
+                        </div>
+                        <div>
+                          <span className="font-medium">Debit Card</span>
+                          <p className="text-sm text-gray-600">Fastest way to buy crypto. Purchase instantly using your debit card, though fees might be slightly higher.</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <div className="min-w-[24px] mt-1">
+                          <Building2 className="w-6 h-6 text-blue-500" />
+                        </div>
+                        <div>
+                          <span className="font-medium">Bank Transfer</span>
+                          <p className="text-sm text-gray-600">Lower fees but takes 1-3 business days. Transfer money directly from your bank account to the exchange.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-yellow-50 p-4 rounded-lg mt-4">
+                    <div className="flex items-start gap-2">
+                      <AlertTriangle className="w-6 h-6 text-yellow-600 mt-1" />
+                      <p className="text-sm text-yellow-800">
+                        Important: Only use regulated exchanges and never send money to individuals offering to sell cryptocurrency directly. Start with a small amount while you're learning the basics.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <h2 className="text-2xl font-bold text-blue-700 mb-6 flex items-center gap-2">
                 <Wallet className="w-6 h-6" />
                 Recommended Wallets
