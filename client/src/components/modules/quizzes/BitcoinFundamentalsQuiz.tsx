@@ -73,34 +73,40 @@ export default function BitcoinFundamentalsQuiz() {
 
   const handleAnswer = (answerIndex: number) => {
     setSelectedAnswer(answerIndex);
-
     const isCorrect = answerIndex === questions[currentQuestion].correctAnswer;
+
+    // Update score immediately if correct
     if (isCorrect) {
       setScore(prev => prev + 1);
     }
 
+    // Wait to show explanation
     setTimeout(() => {
       if (currentQuestion < questions.length - 1) {
         setCurrentQuestion(prev => prev + 1);
         setSelectedAnswer(null);
       } else {
-        setShowResult(true);
+        // Calculate final score including the last question
         const finalScore = ((score + (isCorrect ? 1 : 0)) / questions.length) * 100;
+
+        // Update progress and show results
+        setShowResult(true);
         updateProgress(
           2,
-          'bitcoin-investment',
+          'quiz',
           finalScore >= 60,
           2,
           undefined,
           finalScore,
-          '/modules/module3',  
+          '/modules/module3',
           undefined,
-          'Bitcoin Investment'
+          'Module 2 Quiz'
         );
 
+        // Navigate to Module 3 if passed
         if (finalScore >= 60) {
           setTimeout(() => {
-            window.location.href = '/modules/module3';  
+            window.location.href = '/modules/module3';
           }, 5000);
         }
       }
@@ -186,7 +192,7 @@ export default function BitcoinFundamentalsQuiz() {
         <PencilLine className="h-6 w-6" />
         <div>
           <h2 className="text-xl font-bold">Test Your Knowledge</h2>
-          <p className="text-white/90 text-sm">Complete the quiz to test your understanding of Bitcoin Investment</p>
+          <p className="text-white/90 text-sm">Complete the quiz to test your understanding of Module 2</p>
         </div>
       </div>
 
@@ -213,7 +219,7 @@ export default function BitcoinFundamentalsQuiz() {
             {questions[currentQuestion].options.map((option, index) => (
               <motion.button
                 key={index}
-                onClick={() => !selectedAnswer && handleAnswer(index)}
+                onClick={() => selectedAnswer === null && handleAnswer(index)}
                 className={`
                   w-full p-2.5 rounded-lg text-left transition-all duration-300
                   ${selectedAnswer === null
@@ -252,7 +258,9 @@ export default function BitcoinFundamentalsQuiz() {
                 : <><XCircle className="h-4 w-4 text-red-600" /> Incorrect</>}
             </h3>
             <p className="text-sm leading-snug text-gray-700">{questions[currentQuestion].explanation}</p>
-            <p className="text-xs mt-1 text-gray-500">Next question in 3 seconds...</p>
+            <p className="text-xs mt-1 text-gray-500">
+              {currentQuestion < questions.length - 1 ? "Next question in 3 seconds..." : "Calculating final results..."}
+            </p>
           </motion.div>
         )}
       </div>
