@@ -15,55 +15,55 @@ const quizQuestions = [
     question: "What is a key characteristic of smart contracts?",
     options: [
       "They require legal approval",
+      "They need constant maintenance",
       "They are self-executing when conditions are met",
-      "They can be modified after deployment",
-      "They need constant maintenance"
+      "They can be modified after deployment"
     ],
-    correctAnswer: 1,
+    correctAnswer: 2,
     explanation: "Smart contracts are self-executing programs that automatically execute when predetermined conditions are met, without requiring manual intervention."
   },
   {
     question: "Which is NOT a common use case for smart contracts?",
     options: [
-      "Decentralized Finance (DeFi)",
-      "Physical property maintenance",
       "Token distribution",
-      "Supply chain tracking"
+      "Supply chain tracking",
+      "Physical property maintenance",
+      "Decentralized Finance (DeFi)"
     ],
-    correctAnswer: 1,
+    correctAnswer: 2,
     explanation: "While smart contracts can handle digital transactions and data, they cannot directly maintain physical property. They need external data sources (oracles) to interact with the physical world."
   },
   {
     question: "What is a key security consideration when deploying smart contracts?",
     options: [
-      "Network speed",
-      "Code immutability",
       "Storage costs",
-      "Visual design"
+      "Visual design",
+      "Network speed",
+      "Code immutability"
     ],
-    correctAnswer: 1,
+    correctAnswer: 3,
     explanation: "Once deployed, smart contracts cannot be modified due to their immutable nature. This makes thorough testing and auditing crucial before deployment."
   },
   {
     question: "What role does gas play in smart contract execution?",
     options: [
-      "Powers the mining hardware",
-      "Measures computational cost",
+      "Encrypts transactions",
       "Stores contract data",
-      "Encrypts transactions"
+      "Powers the mining hardware",
+      "Measures computational cost"
     ],
-    correctAnswer: 1,
+    correctAnswer: 3,
     explanation: "Gas measures and prices the computational resources required to execute smart contract operations, helping prevent infinite loops and resource abuse."
   },
   {
     question: "Which component is essential for smart contracts to interact with external data?",
     options: [
-      "Web server",
-      "Oracle",
+      "GUI interface",
       "Database",
-      "GUI interface"
+      "Web server",
+      "Oracle"
     ],
-    correctAnswer: 1,
+    correctAnswer: 3,
     explanation: "Oracles provide smart contracts with external data they cannot access directly, enabling them to interact with real-world information."
   }
 ];

@@ -14,32 +14,32 @@ const quizQuestions = [
   {
     question: "What is the main innovation that Ethereum introduced to blockchain technology?",
     options: [
-      "Faster transaction speeds",
-      "Smart contract functionality",
+      "Proof of stake consensus",
       "Lower transaction fees",
-      "Proof of stake consensus"
+      "Smart contract functionality",
+      "Faster transaction speeds"
     ],
-    correctAnswer: 1,
+    correctAnswer: 2,
     explanation: "Ethereum's main innovation was introducing programmable smart contracts, enabling developers to build decentralized applications (dApps) on the blockchain."
   },
   {
     question: "What is the Ethereum Virtual Machine (EVM)?",
     options: [
-      "A physical computer that runs Ethereum",
-      "A runtime environment for smart contracts",
       "A cryptocurrency wallet",
-      "A mining software"
+      "A mining software",
+      "A physical computer that runs Ethereum",
+      "A runtime environment for smart contracts"
     ],
-    correctAnswer: 1,
+    correctAnswer: 3,
     explanation: "The EVM is a runtime environment that executes smart contracts and ensures consistent execution across the network."
   },
   {
     question: "What role does gas play in Ethereum transactions?",
     options: [
-      "It powers mining hardware",
-      "It measures computational effort and costs",
       "It stores transaction data",
-      "It secures private keys"
+      "It measures computational effort and costs",
+      "It secures private keys",
+      "It powers mining hardware"
     ],
     correctAnswer: 1,
     explanation: "Gas is a measure of computational effort required for transactions and smart contract execution, helping prevent spam and allocate network resources."
@@ -47,23 +47,23 @@ const quizQuestions = [
   {
     question: "Which of these is NOT a key feature of Ethereum?",
     options: [
+      "Decentralized applications",
       "Programmable smart contracts",
       "Fixed maximum supply",
-      "Decentralized applications",
       "Turing complete programming"
     ],
-    correctAnswer: 1,
+    correctAnswer: 2,
     explanation: "Unlike Bitcoin, Ethereum does not have a fixed maximum supply. Its supply model is different and has been subject to changes through protocol upgrades."
   },
   {
     question: "What is a key difference between Bitcoin and Ethereum transactions?",
     options: [
+      "Bitcoin transactions are faster",
       "Only Ethereum uses blockchain technology",
       "Ethereum transactions can execute code",
-      "Bitcoin transactions are faster",
       "Ethereum transactions are free"
     ],
-    correctAnswer: 1,
+    correctAnswer: 2,
     explanation: "While both use blockchain technology, Ethereum transactions can execute code through smart contracts, enabling complex programmable functionality beyond simple value transfer."
   }
 ];
