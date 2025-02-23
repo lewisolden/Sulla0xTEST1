@@ -433,10 +433,31 @@ const GettingStartedSection = () => {
         setQuizCompleted(true);
         setTimeout(() => {
           window.location.href = '/modules/module1/quiz';
-        }, 5000); // Changed from 3000 to 5000
+        }, 8000); // Changed from 5000 to 8000
       }
-    }, 5000); // Changed from 3000 to 5000
+    }, 8000); // Changed from 5000 to 8000
   };
+
+  const explanationComponent = () => {
+    if (showExplanation) {
+      return (
+        <motion.div
+          className={`mt-6 p-4 rounded-lg ${
+            isCorrect ? 'bg-green-100' : 'bg-red-100'
+          }`}
+        >
+          <h3 className="font-bold mb-2">
+            {isCorrect ? '✅ Correct!' : '❌ Incorrect'}
+          </h3>
+          <p>{questions[currentQuestionIndex].explanation}</p>
+          <p className="text-sm text-gray-600 mt-2">
+            Next question in 8 seconds... {/* Updated from 5 to 8 seconds */}
+          </p>
+        </motion.div>
+      );
+    }
+    return null;
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -456,17 +477,6 @@ const GettingStartedSection = () => {
             </Button>
           </Link>
         </div>
-
-        <Card className="mb-8">
-          <CardContent className="p-6 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 text-white rounded-t-lg">
-            <h1 className="text-4xl font-bold mb-2">
-              Getting Started with Cryptocurrency
-            </h1>
-            <p className="text-blue-100">
-              Master the essential concepts and best practices for safely entering the world of digital assets
-            </p>
-          </CardContent>
-        </Card>
 
         {!isSeedPhraseVerified && (
           <Card className="mb-8">
@@ -1004,31 +1014,8 @@ const GettingStartedSection = () => {
                       })}
                     </div>
 
-                    {showExplanation && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="mt-6 p-4 rounded-lg bg-gray-50 border border-gray-200"
-                      >
-                        <div className="flex items-center gap-2 mb-2">
-                          {isCorrect ? (
-                            <div className="text-green-600 font-semibold flex items-center gap-2">
-                              <CheckCircle2 className="h-5 w-5" />
-                              Correct!
-                            </div>
-                          ) : (
-                            <div className="text-red-600 font-semibold flex items-center gap-2">
-                              <XCircle className="h-5 w-5" />
-                              Incorrect
-                            </div>
-                          )}
-                        </div>
-                        <p className="text-gray-700">
-                          {questions[currentQuestionIndex].explanation}
-                        </p>
-                        <p className="text-xs mt-2 text-gray-600">Next question in 5 seconds...</p>
-                      </motion.div>
-                    )}
+                    {explanationComponent()}
+
                   </div>
 
                   <div className="flex items-center justify-between mt-6">

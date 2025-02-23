@@ -209,7 +209,7 @@ const PracticalApplicationsSection = () => {
               </Button>
             </Link>
 
-            <motion.div 
+            <motion.div
               className="relative bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-xl overflow-hidden"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -217,7 +217,7 @@ const PracticalApplicationsSection = () => {
             >
               <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-20" />
               <div className="relative p-8 md:p-12">
-                <motion.h1 
+                <motion.h1
                   className="text-3xl md:text-4xl font-bold text-white mb-4"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -225,7 +225,7 @@ const PracticalApplicationsSection = () => {
                 >
                   Practical Applications of Blockchain Technology
                 </motion.h1>
-                <motion.p 
+                <motion.p
                   className="text-blue-100 text-lg md:text-xl max-w-2xl"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -255,7 +255,7 @@ const PracticalApplicationsSection = () => {
             <Card className="border-2 border-slate-200 dark:border-slate-800 overflow-hidden transform transition-all duration-300 hover:shadow-xl">
               <CardContent className="p-8">
                 <section>
-                  <motion.h2 
+                  <motion.h2
                     className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-6"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -263,7 +263,7 @@ const PracticalApplicationsSection = () => {
                   >
                     Overview
                   </motion.h2>
-                  <motion.p 
+                  <motion.p
                     className="text-slate-700 dark:text-slate-300 leading-relaxed mb-8 text-lg"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -559,7 +559,7 @@ const PracticalApplicationsQuiz = () => {
           nextSection: 'getting-started'
         });
       }
-    }, 5000);
+    }, 8000); // Changed from 5000 to 8000
   };
 
   if (showResult) {
@@ -675,7 +675,7 @@ const PracticalApplicationsQuiz = () => {
                 {selectedAnswer === questions[currentQuestion].correctAnswer ? "✓ Correct!" : "✕ Incorrect"}
               </p>
               <p>{questions[currentQuestion].explanation}</p>
-              <p className="text-sm mt-2">Next question in 5 seconds...</p>
+              <p className="text-sm mt-2">Next question in 8 seconds...</p> {/* Updated from 5 to 8 seconds */}
             </motion.div>
           )}
         </CardContent>

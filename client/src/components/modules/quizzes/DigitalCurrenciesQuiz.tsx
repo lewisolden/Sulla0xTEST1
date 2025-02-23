@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { useProgress } from "@/context/progress-context";
 import { Link } from "wouter";
-import { ArrowRight, CheckCircle, XCircle, Award } from "lucide-react";
+import { ArrowRight, CheckCircle, XCircle } from "lucide-react";
 
 interface DigitalCurrenciesQuizProps {
   onComplete: () => void;
@@ -108,10 +108,10 @@ const DigitalCurrenciesQuiz: React.FC<DigitalCurrenciesQuizProps> = ({ onComplet
         if (finalScore >= 60) {
           setTimeout(() => {
             onComplete();
-          }, 8000); 
+          }, 8000);
         }
       }
-    }, 8000); 
+    }, 8000);
   };
 
   const moveToNextQuestion = () => {
