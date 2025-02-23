@@ -84,7 +84,7 @@ export default function DigitalCurrenciesSection() {
   const handleQuizComplete = () => {
     setTimeout(() => {
       navigate('/modules/module1/security');
-    }, 5000); // Changed from 3000 to 5000 to match quiz timing
+    }, 7000); // Changed from 5000 to 7000 to match new quiz timing
   };
 
   return (
@@ -714,6 +714,7 @@ export default function DigitalCurrenciesSection() {
             >
               <QuizContainer>
                 <DigitalCurrenciesQuiz onComplete={handleQuizComplete} />
+                <p className="text-xs mt-2 text-gray-600">Next question in 7 seconds</p>
               </QuizContainer>
             </motion.div>
           )}

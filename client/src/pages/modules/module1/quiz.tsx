@@ -95,7 +95,7 @@ const QuizPage = () => {
     if (showExplanation && currentQuestion < questions.length - 1) {
       timer = setTimeout(() => {
         moveToNextQuestion();
-      }, 5000); // Changed from 3000 to 5000
+      }, 7000); // Changed from 5000 to 7000
     }
     return () => clearTimeout(timer);
   }, [showExplanation, currentQuestion]);
@@ -145,7 +145,7 @@ const QuizPage = () => {
         // Navigate to next module after delay
         setTimeout(() => {
           window.location.href = '/modules/module2';
-        }, 5000); // Changed from 3000 to 5000
+        }, 7000); // Changed from 5000 to 7000
       }
     }
   };
@@ -319,7 +319,7 @@ const QuizPage = () => {
                   : <><XCircle className="h-4 w-4 text-red-600" /> Incorrect</>}
               </h3>
               <p>{currentQuizQuestion.explanation}</p>
-              <p className="text-xs mt-2 text-gray-600">Next question in 5 seconds...</p>
+              <p className="text-xs mt-2 text-gray-600">Next question in 7 seconds...</p> {/* Changed from 5 to 7 */}
             </motion.div>
           )}
 
