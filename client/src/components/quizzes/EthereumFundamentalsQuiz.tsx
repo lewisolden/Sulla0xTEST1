@@ -168,7 +168,7 @@ const EthereumFundamentalsQuiz: React.FC<EthereumFundamentalsQuizProps> = ({ onC
             {percentage >= 60 && (
               <Link href="/modules/module3/smart-contracts">
                 <Button 
-                  className="w-full bg-green-600 hover:bg-green-700 text-sm"
+                  className="w-full bg-black hover:bg-gray-900 text-sm"
                 >
                   Continue to Smart Contracts <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -185,12 +185,14 @@ const EthereumFundamentalsQuiz: React.FC<EthereumFundamentalsQuizProps> = ({ onC
   return (
     <div className="container mx-auto px-4 py-3 max-w-xl">
       <div className="mb-4">
-        <h3 className="text-lg font-semibold text-blue-800 mb-3 flex items-center justify-between">
-          Question {currentQuestion + 1} of {quizQuestions.length}
-          <span className="text-sm text-gray-600 bg-white px-2 py-1 rounded-full">
-            Score: {score}
-          </span>
-        </h3>
+        <div className="bg-gradient-to-r from-gray-800 to-black p-4 rounded-lg mb-4">
+          <h3 className="text-lg font-semibold text-white flex items-center justify-between">
+            Question {currentQuestion + 1} of {quizQuestions.length}
+            <span className="text-sm bg-white/10 px-2 py-1 rounded-full text-white">
+              Score: {score}
+            </span>
+          </h3>
+        </div>
 
         <div className="bg-white rounded-lg p-3 mb-3 shadow-sm">
           <p className="text-base text-gray-700">
