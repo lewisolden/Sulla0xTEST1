@@ -146,7 +146,7 @@ const Module2Quiz = () => {
         <h3 className="text-lg font-semibold mb-4">{question.id + 1}. {question.question}</h3>
         <div className="space-y-2">
           {question.options.map((option, index) => (
-            <div 
+            <div
               key={index}
               onClick={() => !isAnswered && handleAnswer(question.id, index)}
               className={`p-3 rounded cursor-pointer transition-colors
@@ -167,7 +167,7 @@ const Module2Quiz = () => {
           ))}
         </div>
         {isAnswered && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             className="mt-4 text-sm text-gray-600 bg-gray-50 p-3 rounded"
@@ -205,7 +205,7 @@ const Module2Quiz = () => {
                   This quiz will test your understanding of key concepts covered in Module 2.
                   You need to score at least 70% to pass.
                 </p>
-                <Button 
+                <Button
                   onClick={() => setQuizStarted(true)}
                   className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white"
                 >
@@ -218,12 +218,11 @@ const Module2Quiz = () => {
                 <AnimatePresence>
                   {showPopup && (
                     <motion.div
-                      initial={{ opacity: 0, scale: 0.3 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.3 }}
-                      className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-                        ${isCorrect ? 'bg-green-500' : 'bg-red-500'} 
-                        text-white px-8 py-4 rounded-lg shadow-lg z-50 flex items-center gap-2`}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      className={`mt-4 mb-2 ${isCorrect ? 'bg-green-500' : 'bg-red-500'} 
+                        text-white px-8 py-4 rounded-lg shadow-lg flex items-center justify-center gap-2`}
                     >
                       {isCorrect ? (
                         <>
@@ -267,7 +266,7 @@ const Module2Quiz = () => {
                       <p className="text-blue-600 mb-4">Review the explanations above for any questions you missed.</p>
                     )}
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                      <Button 
+                      <Button
                         onClick={resetQuiz}
                         variant="outline"
                         className="gap-2"
