@@ -221,7 +221,7 @@ const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplana
               {question.explanation}
             </p>
             <p className="text-sm text-gray-600 mt-2">
-              Next question in 5 seconds...
+              Next question in 8 seconds...
             </p>
           </motion.div>
         )}
@@ -270,7 +270,7 @@ const InteractiveQuiz = () => {
 
         setShowResults(true);
       }
-    }, 5000);
+    }, 8000); // Changed to 8 seconds
   };
 
   const correctAnswers = Object.values(answers).filter(a => a.correct).length;
