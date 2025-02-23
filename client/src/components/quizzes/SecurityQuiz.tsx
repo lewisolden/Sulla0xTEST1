@@ -3,18 +3,14 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { useProgress } from "@/context/progress-context";
-import { useToast } from "@/hooks/use-toast";
-import { ArrowRight, CheckCircle, XCircle } from "lucide-react";
 import { Link } from "wouter";
+import { ArrowRight, CheckCircle, XCircle, Award } from "lucide-react";
 
-interface Question {
-  question: string;
-  options: string[];
-  correctAnswer: number;
-  explanation: string;
+interface SecurityQuizProps {
+  onComplete: () => void;
 }
 
-const questions: Question[] = [
+const questions = [
   {
     question: "Which of the following is NOT a recommended security practice for cryptocurrency?",
     options: [
@@ -72,31 +68,19 @@ const questions: Question[] = [
   }
 ];
 
-const Award = ({ className }: { className: string }) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-    viewBox="0 0 20 20"
-    fill="currentColor"
-  >
-    <path d="M2 11a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-1 1H3a1 1 0 01-1-1v-2zM6 10a1 1 0 00-1 1v2a1 1 0 001 1h8a1 1 0 001-1v-2a1 1 0 00-1-1H7z" />
-  </svg>
-);
-
-export const SecurityQuiz = () => {
+const SecurityQuiz: React.FC<SecurityQuizProps> = ({ onComplete }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
   const { updateProgress } = useProgress();
-  const { toast } = useToast();
 
-  const handleAnswerSelect = (answerIndex: number) => {
-    setSelectedAnswer(answerIndex);
+  const handleAnswerSelect = (optionIndex: number) => {
+    setSelectedAnswer(optionIndex);
     setShowExplanation(true);
 
-    const isCorrect = answerIndex === questions[currentQuestion].correctAnswer;
+    const isCorrect = optionIndex === questions[currentQuestion].correctAnswer;
     if (isCorrect) {
       setScore(prev => prev + 1);
     }
@@ -115,11 +99,14 @@ export const SecurityQuiz = () => {
           finalScore >= 60,
           1,
           undefined,
-          finalScore,
-          '/modules/module1/security',
-          undefined,
-          'Blockchain Security'
+          finalScore
         );
+
+        if (finalScore >= 60) {
+          setTimeout(() => {
+            onComplete();
+          }, 5000);
+        }
       }
     }, 3000);
   };
@@ -255,3 +242,5 @@ export const SecurityQuiz = () => {
     </div>
   );
 };
+
+export default SecurityQuiz;
