@@ -85,34 +85,28 @@ const moduleTopics = [
 
 const learningObjectives = [
   {
-    icon: BookOpen,
-    title: "Ethereum Understanding",
-    text: "Master Ethereum's role as a programmable blockchain platform"
+    icon: Binary,
+    text: "Understand Ethereum's role as a programmable blockchain platform"
   },
   {
-    icon: Code,
-    title: "Smart Contracts",
-    text: "Learn to write and deploy smart contracts with industry best practices"
+    icon: Blocks,
+    text: "Master the fundamentals of smart contracts and their applications"
   },
   {
     icon: Cpu,
-    title: "EVM & Architecture",
     text: "Explore the Ethereum Virtual Machine and its capabilities"
   },
   {
     icon: Layers,
-    title: "DApps & Ecosystem",
-    text: "Build and understand decentralized applications (dApps)"
+    text: "Learn about decentralized applications (dApps) and their ecosystem"
   },
   {
     icon: TrendingUp,
-    title: "Investment Analysis",
-    text: "Analyze Ethereum's value proposition and market dynamics"
+    text: "Analyze Ethereum's value proposition and investment considerations"
   },
   {
-    icon: Shield,
-    title: "Security & Risk",
-    text: "Master security best practices and risk management"
+    icon: Lock,
+    text: "Understand security best practices and risk management"
   }
 ];
 
@@ -174,9 +168,9 @@ export default function Module3() {
                 <Link href="/modules/module3/ethereum-fundamentals">
                   <Button
                     size="lg"
-                    className="bg-black hover:bg-gray-800 text-white px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="bg-black hover:bg-gray-900 text-white px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
                   >
-                    Start Your Journey
+                    Start First Topic
                   </Button>
                 </Link>
               </div>
@@ -196,17 +190,6 @@ export default function Module3() {
                     transition={{ duration: 0.5 }}
                   >
                     <div className="prose max-w-none">
-                      <div className="flex justify-center mb-8">
-                        <Link href="/modules/module3/ethereum-fundamentals">
-                          <Button
-                            size="lg"
-                            className="bg-black hover:bg-gray-800 text-white"
-                          >
-                            Start First Topic
-                          </Button>
-                        </Link>
-                      </div>
-
                       <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
                         Course Overview
                       </h2>
@@ -219,9 +202,11 @@ export default function Module3() {
                         <p>
                           In this module, you'll learn about Ethereum's key innovation: programmability. While Bitcoin excels at being digital money, Ethereum acts as a complete computational platform supporting decentralized applications (dApps), smart contracts, and various digital assets.
                         </p>
+
                         <p>
                           We'll dive deep into smart contracts, the building blocks of Ethereum applications, and explore how they enable automated, trustless interactions. You'll understand the Ethereum Virtual Machine (EVM), the engine that powers all Ethereum operations, and learn about the growing ecosystem of decentralized applications.
                         </p>
+
                         <p>
                           The module also covers investment considerations, exploring Ethereum's value proposition, network effects, and economic model. Finally, we'll address critical security considerations and risk management practices essential for anyone working with Ethereum and smart contracts.
                         </p>
@@ -243,17 +228,25 @@ export default function Module3() {
                               transition={{ delay: 1 + index * 0.1 }}
                               className="flex items-start gap-4 bg-slate-700/50 rounded-lg p-4"
                             >
-                              <div className="bg-blue-500/20 p-3 rounded-lg">
+                              <div className="bg-blue-500/20 p-2 rounded-lg">
                                 <objective.icon className="h-6 w-6 text-blue-400" />
                               </div>
-                              <div>
-                                <h3 className="text-lg font-semibold text-white mb-1">{objective.title}</h3>
-                                <p className="text-gray-300 text-sm">{objective.text}</p>
-                              </div>
+                              <p className="text-gray-200">{objective.text}</p>
                             </motion.div>
                           ))}
                         </div>
                       </motion.div>
+
+                      <div className="mt-8 flex justify-center">
+                        <Link href="/modules/module3/ethereum-fundamentals">
+                          <Button
+                            size="lg"
+                            className="bg-black hover:bg-gray-900 text-white"
+                          >
+                            Start First Topic
+                          </Button>
+                        </Link>
+                      </div>
                     </div>
                   </motion.div>
                 </TabsContent>
@@ -267,18 +260,21 @@ export default function Module3() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: index * 0.1 }}
                       >
-                        <Card className="h-full overflow-hidden hover:shadow-lg transition-shadow duration-200">
-                          <div className={`${topic.gradient} p-6`}>
-                            <div className="flex items-center gap-4">
-                              <div className="bg-white/20 backdrop-blur-sm p-3 rounded-xl">
-                                <topic.icon className="h-6 w-6 text-white" />
-                              </div>
-                              <h3 className="text-xl font-semibold text-white">
-                                {topic.title}
-                              </h3>
-                            </div>
-                          </div>
+                        <Card className="h-full hover:shadow-lg transition-shadow duration-200">
                           <CardContent className="p-6">
+                            <div className="flex items-center gap-4 mb-4">
+                              <div className={`${topic.gradient} p-3 rounded-xl`}>
+                                <topic.icon className="h-6 w-6 text-gray-700" />
+                              </div>
+                              <div>
+                                <h3 className="text-xl font-semibold text-gray-800">
+                                  {topic.title}
+                                </h3>
+                                {topic.completed && (
+                                  <span className="text-sm text-green-600">Completed</span>
+                                )}
+                              </div>
+                            </div>
                             <p className="text-gray-600 mb-4">{topic.description}</p>
                             <div className="space-y-2 mb-6">
                               {topic.subsections.map((subsection, idx) => (
@@ -288,9 +284,9 @@ export default function Module3() {
                                 </div>
                               ))}
                             </div>
-                            <Link href={topic.path}>
+                            <Link href={topic.path} className="block mt-auto">
                               <Button 
-                                className="w-full bg-black hover:bg-gray-800 text-white"
+                                className="w-full bg-black hover:bg-gray-900 text-white"
                               >
                                 {topic.completed ? "Review Topic" : "Start Topic"}
                               </Button>
