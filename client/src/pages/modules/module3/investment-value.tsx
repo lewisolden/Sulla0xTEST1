@@ -5,10 +5,11 @@ import { useProgress } from "@/context/progress-context";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
-import { TrendingUp, Users, Code, Coins, Activity, Lock, Shield, Zap } from "lucide-react";
+import { TrendingUp, Users, Code, Coins, Activity, Lock, Shield, Zap, ArrowLeft } from "lucide-react";
 import InvestmentValueQuiz from "@/components/quizzes/InvestmentValueQuiz";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { EthereumStakingExercise } from "@/components/modules/exercises/EthereumStakingExercise";
+import { Link } from "wouter";
 
 const InvestmentValueSection = () => {
   useScrollTop();
@@ -48,19 +49,31 @@ const InvestmentValueSection = () => {
       </div>
 
       <div className="max-w-4xl mx-auto">
-        <motion.h1 
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="text-4xl font-bold text-gray-800 mb-6"
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-6"
         >
-          <div className="bg-gradient-to-r from-orange-500 via-orange-600 to-red-600 rounded-xl p-8 mb-12 shadow-lg">
+          <Link href="/modules/module3">
+            <Button variant="ghost" className="gap-2">
+              <ArrowLeft className="h-4 w-4" /> Back to Module Overview
+            </Button>
+          </Link>
+        </motion.div>
+
+        <motion.h1
+          className="text-4xl font-bold text-blue-800 mb-6"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="bg-gradient-to-r from-gray-800 to-black rounded-xl p-8 mb-12 shadow-lg">
             <div className="flex items-center">
               <div>
                 <h1 className="text-4xl font-bold text-white mb-2">
                   3.3 Investment and Value Proposition
                 </h1>
-                <p className="text-xl text-orange-100">
+                <p className="text-xl text-gray-300">
                   Understanding Ethereum's Economic Value & Potential
                 </p>
               </div>
