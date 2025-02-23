@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
@@ -71,27 +71,39 @@ export default function BitcoinFundamentalsQuiz() {
   const [score, setScore] = useState(0);
   const { updateProgress } = useProgress();
   const [, setLocation] = useLocation();
+  const [isCompleted, setIsCompleted] = useState(false);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (isCompleted) {
+      const finalScore = (score / questions.length) * 100;
+      if (finalScore >= 60) {
+        timer = setTimeout(() => {
+          setLocation('/modules/module3');
+        }, 5000);
+      }
+    }
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
+  }, [isCompleted, score, setLocation]);
 
   const handleAnswer = (answerIndex: number) => {
-    // Prevent multiple selections
     if (selectedAnswer !== null) return;
 
     setSelectedAnswer(answerIndex);
-
-    // Check if answer is correct and update score
     const isCorrect = answerIndex === questions[currentQuestion].correctAnswer;
+
     if (isCorrect) {
       setScore(prev => prev + 1);
     }
 
-    // Wait 3 seconds to show explanation, then proceed
     setTimeout(() => {
       if (currentQuestion === questions.length - 1) {
-        // Last question - show results
-        const finalScore = ((score + (isCorrect ? 1 : 0)) / questions.length) * 100;
+        const finalScore = ((isCorrect ? score + 1 : score) / questions.length) * 100;
         setShowResult(true);
+        setIsCompleted(true);
 
-        // Update progress
         updateProgress(
           2,
           'quiz',
@@ -103,14 +115,8 @@ export default function BitcoinFundamentalsQuiz() {
           undefined,
           'Module 2 Quiz'
         );
-
-        // Redirect after 5 seconds if passed
-        if (finalScore >= 60) {
-          setTimeout(() => setLocation('/modules/module3'), 5000);
-        }
       } else {
-        // Move to next question
-        setCurrentQuestion(currentQuestion + 1);
+        setCurrentQuestion(prev => prev + 1);
         setSelectedAnswer(null);
       }
     }, 3000);
@@ -121,6 +127,7 @@ export default function BitcoinFundamentalsQuiz() {
     setSelectedAnswer(null);
     setShowResult(false);
     setScore(0);
+    setIsCompleted(false);
   };
 
   if (showResult) {
@@ -174,9 +181,7 @@ export default function BitcoinFundamentalsQuiz() {
             </Button>
             {percentage >= 60 && (
               <Link href="/modules/module3" className="flex-1">
-                <Button 
-                  className="w-full bg-orange-600 hover:bg-orange-700 text-sm"
-                >
+                <Button className="w-full bg-orange-600 hover:bg-orange-700 text-sm">
                   Continue to Module 3 <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
@@ -230,7 +235,7 @@ export default function BitcoinFundamentalsQuiz() {
                       : selectedAnswer === index
                         ? 'bg-red-100 border-2 border-red-500'
                         : 'bg-white border border-gray-200'}
-                  whitespace-normal break-words hover-shadow-md
+                  whitespace-normal break-words hover:shadow-md
                 `}
                 disabled={selectedAnswer !== null}
                 whileHover={{ scale: selectedAnswer === null ? 1.01 : 1 }}
