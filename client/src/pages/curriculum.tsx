@@ -31,45 +31,51 @@ const courses = [
       {
         id: 1,
         icon: BookOpen,
-        title: "Module 1: Understanding Digital Currencies",
-        description: "Explore the evolution of money and the emergence of digital currencies.",
+        title: "Module 1: Understanding Cryptocurrency",
+        description: "Master the fundamentals of cryptocurrency through interactive learning and practical exercises.",
         sections: [
           "Digital Currencies Overview",
           "History and Evolution of Money",
+          "Introduction to Cryptocurrency",
           "Blockchain Technology Basics",
-          "Cryptocurrency Fundamentals",
-          "Interactive Exercises",
-          "Module Quiz"
+          "Crypto Market Dynamics",
+          "Cryptography Fundamentals",
+          "Module Assessment"
         ],
         path: "/modules/module1"
       },
       {
         id: 2,
-        icon: Shield,
-        title: "Module 2: Cryptography & Security",
-        description: "Learn about cryptographic principles and blockchain security.",
+        icon: Wallet,
+        title: "Module 2: Bitcoin Deep Dive",
+        description: "Comprehensive exploration of Bitcoin's technology, protocol architecture, and real-world impact.",
         sections: [
-          "Cryptography Basics",
-          "Public Key Infrastructure",
-          "Blockchain Security",
-          "Wallet Security",
-          "Hands-on Security Lab",
-          "Module Quiz"
+          "Bitcoin Protocol Architecture",
+          "Mining and Consensus",
+          "Bitcoin Scripting",
+          "Network and Transactions",
+          "Lightning Network",
+          "SegWit and Taproot",
+          "Bitcoin Economics",
+          "Security Model",
+          "Module Assessment"
         ],
         path: "/modules/module2"
       },
       {
         id: 3,
-        icon: Terminal,
-        title: "Module 3: Blockchain Architecture",
-        description: "Deep dive into blockchain technology and consensus mechanisms.",
+        icon: Code,
+        title: "Module 3: Ethereum and Smart Contracts",
+        description: "Learn about Ethereum, smart contracts, and decentralized applications (dApps).",
         sections: [
-          "Blockchain Structure",
-          "Consensus Mechanisms",
-          "Network Types",
-          "Smart Contracts Intro",
-          "Technical Workshop",
-          "Module Quiz"
+          "Ethereum Fundamentals",
+          "Smart Contract Development",
+          "The Ethereum Virtual Machine (EVM)",
+          "Decentralized Applications (dApps)",
+          "DeFi Protocols",
+          "Gas and Network Economics",
+          "Platform Architecture",
+          "Module Assessment"
         ],
         path: "/modules/module3"
       }
