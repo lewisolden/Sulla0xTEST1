@@ -452,19 +452,3 @@ const SecurityPage = () => {
 };
 
 export default SecurityPage;
-import React, { useState, useEffect } from 'react';
-import { useToast } from "@/hooks/use-toast";
-import { QuizComponent } from '@/components/course-templates/QuizComponent';
-
-const Security = () => {
-  return (
-    <QuizComponent
-      questions={questions}
-      onComplete={handleComplete}
-      autoAdvanceDelay={7000}
-      explanationText="Next question in 7 seconds..."
-    />
-  );
-};
-
-export default Security;

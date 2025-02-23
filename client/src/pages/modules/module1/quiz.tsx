@@ -342,20 +342,3 @@ const QuizPage = () => {
 };
 
 export default QuizPage;
-import React, { useState, useEffect } from 'react';
-import { useToast } from "@/hooks/use-toast";
-import { QuizComponent } from '@/components/course-templates/QuizComponent';
-
-const Module1Quiz = () => {
-  // Quiz implementation using QuizComponent
-  return (
-    <QuizComponent
-      questions={questions}
-      onComplete={handleComplete}
-      autoAdvanceDelay={7000}
-      explanationText="Next question in 7 seconds..."
-    />
-  );
-};
-
-export default Module1Quiz;
