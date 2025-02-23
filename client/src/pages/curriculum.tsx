@@ -34,10 +34,10 @@ const courses = [
         title: "Module 1: Understanding Cryptocurrency",
         description: "Master the fundamentals of cryptocurrency through interactive learning and practical exercises.",
         sections: [
-          "Topic 1 - Introduction to Digital Currency",
-          "Topic 2 - Understanding Cryptocurrency Security",
-          "Topic 3 - Practical Applications",
-          "Topic 4 - Getting Started Safely",
+          "1.1 Introduction to Digital Currency",
+          "1.2 Understanding Cryptocurrency Security",
+          "1.3 Practical Applications",
+          "1.4 Getting Started Safely",
           "Interactive Exercises",
           "Module Assessment"
         ],
@@ -49,12 +49,12 @@ const courses = [
         title: "Module 2: Bitcoin Deep Dive",
         description: "Comprehensive exploration of Bitcoin's technology, protocol architecture, and real-world impact.",
         sections: [
-          "Bitcoin Fundamentals",
-          "Blockchain Fundamentals",
-          "Security & Risk Management",
-          "Decentralization",
-          "Future Applications",
-          "Bitcoin Investment Strategies",
+          "2.1 Bitcoin Fundamentals",
+          "2.2 Blockchain Fundamentals",
+          "2.3 Security & Risk Management",
+          "2.4 Decentralization",
+          "2.5 Future Applications",
+          "2.6 Bitcoin Investment Strategies",
           "Practical Exercises",
           "Module Assessment"
         ],
@@ -66,13 +66,12 @@ const courses = [
         title: "Module 3: Ethereum and Smart Contracts",
         description: "Learn about Ethereum, smart contracts, and decentralized applications (dApps).",
         sections: [
-          "Ethereum Fundamentals",
-          "Smart Contract Development",
-          "The Ethereum Virtual Machine (EVM)",
-          "Decentralized Applications (dApps)",
-          "DeFi Protocols",
-          "Gas and Network Economics",
-          "Platform Architecture",
+          "3.1 Ethereum Fundamentals",
+          "3.2 Smart Contract Development",
+          "3.3 DeFi Protocols",
+          "3.4 Gas and Network Economics",
+          "3.5 Platform Architecture",
+          "Practical Exercises",
           "Module Assessment"
         ],
         path: "/modules/module3"
