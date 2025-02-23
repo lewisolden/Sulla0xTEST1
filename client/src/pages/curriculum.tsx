@@ -38,7 +38,7 @@ const courses = [
           "1.2 Understanding Cryptocurrency Security",
           "1.3 Practical Applications",
           "1.4 Getting Started Safely",
-          "Interactive Exercises",
+          "Practical Exercises",
           "Module Assessment"
         ],
         path: "/modules/module1"
@@ -50,12 +50,9 @@ const courses = [
         description: "Comprehensive exploration of Bitcoin's technology, protocol architecture, and real-world impact.",
         sections: [
           "2.1 Bitcoin Fundamentals",
-          "2.2 Blockchain Fundamentals",
-          "2.3 Security & Risk Management",
-          "2.4 Decentralization",
-          "2.5 Future Applications",
-          "2.6 Bitcoin Investment Strategies",
-          "Practical Exercises",
+          "2.2 Bitcoin as an Investment",
+          "2.3 Security and Risk Management",
+          "2.4 Practical Exercises",
           "Module Assessment"
         ],
         path: "/modules/module2"
@@ -68,9 +65,8 @@ const courses = [
         sections: [
           "3.1 Ethereum Fundamentals",
           "3.2 Smart Contract Development",
-          "3.3 DeFi Protocols",
-          "3.4 Gas and Network Economics",
-          "3.5 Platform Architecture",
+          "3.3 Investment and Value",
+          "3.4 Security and Risk Management",
           "Practical Exercises",
           "Module Assessment"
         ],
