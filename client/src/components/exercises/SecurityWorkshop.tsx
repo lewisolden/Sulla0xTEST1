@@ -151,16 +151,6 @@ export default function SecurityWorkshop() {
 
   return (
     <div className="space-y-6">
-      <div className="prose max-w-none">
-        <h2 className="text-2xl font-bold text-blue-800 flex items-center gap-2">
-          <Shield className="h-6 w-6 text-blue-600" />
-          Security Workshop
-        </h2>
-        <p className="text-gray-600">
-          Learn to identify and respond to common security threats in the cryptocurrency space.
-        </p>
-      </div>
-
       <div className="bg-blue-50 rounded-lg p-4 mb-4">
         <div className="mb-2 flex items-center justify-between">
           <span className="text-sm font-medium text-blue-700">Workshop Progress</span>
