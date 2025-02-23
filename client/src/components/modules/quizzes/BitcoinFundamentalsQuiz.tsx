@@ -74,25 +74,34 @@ export default function BitcoinFundamentalsQuiz() {
   const [, setLocation] = useLocation();
 
   const handleAnswer = (answerIndex: number) => {
-    if (selectedAnswer !== null || showExplanation) return;
+    // Prevent multiple selections
+    if (selectedAnswer !== null) return;
 
+    // Record answer and show explanation
     setSelectedAnswer(answerIndex);
     setShowExplanation(true);
 
+    // Update score if correct
     const isCorrect = answerIndex === questions[currentQuestion].correctAnswer;
     if (isCorrect) {
       setScore(prev => prev + 1);
     }
 
-    setTimeout(() => {
+    // Set timer for next question or completion
+    const timer = setTimeout(() => {
       if (currentQuestion < questions.length - 1) {
+        // Move to next question
         setCurrentQuestion(prev => prev + 1);
         setSelectedAnswer(null);
         setShowExplanation(false);
       } else {
-        const finalScore = (score + (isCorrect ? 1 : 0)) / questions.length * 100;
+        // Quiz complete - calculate final score
+        const finalScore = ((score + (isCorrect ? 1 : 0)) / questions.length) * 100;
+
+        // Show results
         setShowResult(true);
 
+        // Update progress
         updateProgress(
           2,
           'quiz',
@@ -104,8 +113,18 @@ export default function BitcoinFundamentalsQuiz() {
           undefined,
           'Module 2 Quiz'
         );
+
+        // Navigate to next module if passed
+        if (finalScore >= 60) {
+          const navigationTimer = setTimeout(() => {
+            setLocation('/modules/module3');
+          }, 5000);
+          return () => clearTimeout(navigationTimer);
+        }
       }
     }, 3000);
+
+    return () => clearTimeout(timer);
   };
 
   const restartQuiz = () => {
@@ -171,7 +190,6 @@ export default function BitcoinFundamentalsQuiz() {
               <Link href="/modules/module3" className="flex-1">
                 <Button 
                   className="w-full bg-orange-600 hover:bg-orange-700 text-sm"
-                  onClick={() => setTimeout(() => setLocation('/modules/module3'), 5000)}
                 >
                   Continue to Module 3 <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
