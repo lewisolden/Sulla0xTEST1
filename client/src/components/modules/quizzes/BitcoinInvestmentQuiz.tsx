@@ -91,7 +91,7 @@ export default function BitcoinInvestmentQuiz() {
           undefined, // timeSpent
           finalScore, // quizScore
           '/modules/module2/bitcoin-investment', // pageUrl
-          undefined, // nextUrl
+          '/modules/module2/security-risk', // nextUrl - Updated this to point to security-risk
           'Bitcoin Investment' // sectionName
         );
       }
