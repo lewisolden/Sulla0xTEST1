@@ -11,7 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { Progress } from "@/components/ui/progress";
 import { useAuth } from "@/hooks/use-auth";
-import { useProgress } from "@/context/progress-context"; // Updated import path
+import { useProgress } from "@/context/progress-context";
 
 const subjects = [
   { id: "crypto", name: "Cryptocurrency & DeFi" },
@@ -227,13 +227,11 @@ const handleContinueLearning = (course: any) => {
     return;
   }
 
-  // Get progress data for the course
   const { progress } = useProgress();
   const courseProgress = progress.filter(p => p.courseId === course.id);
   const lastProgress = courseProgress.length > 0 ? courseProgress[courseProgress.length - 1] : null;
 
-  // Handle different course types and set the correct path
-  let path = course.defaultPath; // Default path from the course object
+  let path = course.defaultPath;
 
   if (lastProgress) {
     path = lastProgress.lastQuizPath || lastProgress.lastCompletedPath || course.defaultPath;
@@ -324,7 +322,6 @@ export default function Curriculum() {
         description: "You can now access all course materials.",
       });
 
-      // Instead of reloading, navigate directly to the appropriate module based on course
       const courseIdNumber = Number(currentCourse.id);
       if (courseIdNumber === 3) {
         setLocation('/defi/module1');
@@ -368,7 +365,6 @@ export default function Curriculum() {
     console.log('Enrolling in course:', courseIdNumber);
     enrollMutation.mutate(courseIdNumber);
   };
-
 
   return (
     <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-100 via-blue-50 to-white py-16">
@@ -507,7 +503,6 @@ export default function Curriculum() {
               ))}
             </div>
 
-            {/* Enrollment section - simplified */}
             <div className="text-center mt-6">
               <Button 
                 onClick={user ? handleEnroll : () => setLocation("/login")}
