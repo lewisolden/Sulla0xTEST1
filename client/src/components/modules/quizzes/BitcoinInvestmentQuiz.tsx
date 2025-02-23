@@ -3,6 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useProgress } from "@/context/progress-context";
 import { motion } from "framer-motion";
+import { CheckCircle, XCircle } from "lucide-react";
 
 const questions = [
   {
@@ -81,28 +82,20 @@ export default function BitcoinInvestmentQuiz() {
         setShowExplanation(false);
       } else {
         setShowResult(true);
-        const passThreshold = questions.length * 0.6;
-        updateProgress(2, 'bitcoin-investment-quiz', score >= passThreshold);
+        const finalScore = ((score + (isCorrect ? 1 : 0)) / questions.length) * 100;
+        updateProgress(
+          2, // moduleId
+          'bitcoin-investment', // sectionId
+          finalScore >= 60, // completed
+          2, // order
+          undefined, // timeSpent
+          finalScore, // quizScore
+          '/modules/module2/bitcoin-investment', // pageUrl
+          undefined, // nextUrl
+          'Bitcoin Investment' // sectionName
+        );
       }
-    }, 5000);
-  };
-
-  const moveToNextQuestion = () => {
-    const isCorrect = selectedAnswer === questions[currentQuestion].correct;
-    
-    if (isCorrect) {
-      setScore(prev => prev + 1);
-    }
-
-    if (currentQuestion < questions.length - 1) {
-      setCurrentQuestion(prev => prev + 1);
-      setSelectedAnswer(null);
-      setShowExplanation(false);
-    } else {
-      setShowResult(true);
-      const passThreshold = questions.length * 0.6;
-      updateProgress(2, 'bitcoin-investment-quiz', score >= passThreshold);
-    }
+    }, 5000); // Changed from 3000 to 5000
   };
 
   const restartQuiz = () => {
@@ -168,7 +161,7 @@ export default function BitcoinInvestmentQuiz() {
           </div>
 
           <div className="grid gap-4">
-            {Object.entries(currentQuizQuestion.options).map(([key, value], index) => (
+            {Object.entries(currentQuizQuestion.options).map(([key, value]) => (
               <Button
                 key={key}
                 onClick={() => handleAnswerSelect(parseInt(key))}
@@ -176,9 +169,9 @@ export default function BitcoinInvestmentQuiz() {
                   w-full p-4 h-auto whitespace-normal text-left justify-start
                   ${selectedAnswer === null 
                     ? 'bg-gray-100 hover:bg-blue-100 text-gray-700' 
-                    : index === currentQuizQuestion.correct 
+                    : parseInt(key) === currentQuizQuestion.correct 
                       ? 'bg-green-200 text-gray-700' 
-                      : selectedAnswer === index 
+                      : selectedAnswer === parseInt(key) 
                         ? 'bg-red-200 text-gray-700' 
                         : 'bg-gray-100 text-gray-700'}
                 `}
@@ -191,31 +184,24 @@ export default function BitcoinInvestmentQuiz() {
           </div>
 
           {showExplanation && (
-            <div className={`
-              mt-6 p-4 rounded-lg
-              ${selectedAnswer === currentQuizQuestion.correct 
-                ? 'bg-green-100 border-l-4 border-green-500' 
-                : 'bg-red-100 border-l-4 border-red-500'}
-            `}>
-              <h3 className="font-bold mb-2">
-                {selectedAnswer === currentQuizQuestion.correct 
-                  ? '✅ Correct!' 
-                  : '❌ Incorrect'}
-              </h3>
-              <p>{currentQuizQuestion.explanation}</p>
-              <p className="text-sm text-gray-600 mt-2">Next question in 5 seconds...</p>
-            </div>
-          )}
-
-          {selectedAnswer !== null && (
-            <Button
-              onClick={moveToNextQuestion}
-              className="mt-6 w-full"
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`
+                mt-4 p-3 rounded-lg text-sm
+                ${selectedAnswer === currentQuizQuestion.correct
+                  ? 'bg-green-100 border-l-4 border-green-500'
+                  : 'bg-red-100 border-l-4 border-red-500'}
+              `}
             >
-              {currentQuestion < questions.length - 1 
-                ? 'Next Question' 
-                : 'Finish Quiz'}
-            </Button>
+              <h3 className="font-bold mb-2 flex items-center gap-2">
+                {selectedAnswer === currentQuizQuestion.correct
+                  ? <><CheckCircle className="h-4 w-4 text-green-600" /> Correct!</>
+                  : <><XCircle className="h-4 w-4 text-red-600" /> Incorrect</>}
+              </h3>
+              <p className="leading-relaxed">{currentQuizQuestion.explanation}</p>
+              <p className="text-xs mt-2 text-gray-600">Next question in 5 seconds...</p>
+            </motion.div>
           )}
         </div>
       </CardContent>

@@ -80,12 +80,14 @@ export const SecurityQuiz: React.FC<SecurityQuizProps> = ({ onComplete }) => {
     setSelectedAnswer(optionIndex);
     setShowExplanation(true);
 
-    const isCorrect = optionIndex === questions[currentQuestion].correctAnswer;
-    if (isCorrect) {
-      setScore(prev => prev + 1);
-    }
-
+    // Wait 5 seconds before moving to next question
     setTimeout(() => {
+      const isCorrect = optionIndex === questions[currentQuestion].correctAnswer;
+
+      if (isCorrect) {
+        setScore(prev => prev + 1);
+      }
+
       if (currentQuestion < questions.length - 1) {
         setCurrentQuestion(prev => prev + 1);
         setSelectedAnswer(null);
@@ -95,13 +97,13 @@ export const SecurityQuiz: React.FC<SecurityQuizProps> = ({ onComplete }) => {
         const finalScore = ((score + (isCorrect ? 1 : 0)) / questions.length) * 100;
         updateProgress(1, 'security', finalScore >= 60);
 
-        if (finalScore >= 60) {
+        if (finalScore >= 60 && onComplete) {
           setTimeout(() => {
             onComplete();
           }, 5000);
         }
       }
-    }, 5000);
+    }, 5000); // Changed from 3000 to 5000
   };
 
   if (showResult) {

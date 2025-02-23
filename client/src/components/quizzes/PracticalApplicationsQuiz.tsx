@@ -13,7 +13,8 @@ const questions = [
       "Social Media Networks",
       "Gaming Platforms"
     ],
-    correct: 0
+    correct: 0,
+    explanation: "Supply Chain Management is a key real-world application of blockchain, allowing transparent tracking of products throughout their journey from manufacturer to consumer."
   },
   {
     question: "How can blockchain be utilized in real estate?",
@@ -23,7 +24,8 @@ const questions = [
       "Just for property listings",
       "Exclusively for commercial properties"
     ],
-    correct: 1
+    correct: 1,
+    explanation: "Blockchain enables property tokenization and comprehensive management, including ownership records, transfers, and automated payments through smart contracts."
   },
   {
     question: "What is a key benefit of blockchain-based voting systems?",
@@ -33,7 +35,8 @@ const questions = [
       "Secure and tamper-proof records",
       "Paper backup requirement"
     ],
-    correct: 2
+    correct: 2,
+    explanation: "Blockchain-based voting systems provide secure, immutable records that cannot be tampered with, ensuring the integrity of the voting process."
   },
   {
     question: "How can blockchain improve healthcare systems?",
@@ -43,7 +46,8 @@ const questions = [
       "Just for appointment scheduling",
       "Employee management only"
     ],
-    correct: 0
+    correct: 0,
+    explanation: "Blockchain can significantly improve healthcare by providing secure, accessible medical records and enabling reliable drug tracking throughout the supply chain."
   },
   {
     question: "Which travel industry application of blockchain is correct?",
@@ -53,7 +57,8 @@ const questions = [
       "Exclusively car rentals",
       "Loyalty programs and booking verification"
     ],
-    correct: 3
+    correct: 3,
+    explanation: "Blockchain enhances travel industry operations through secure loyalty programs and verified booking systems across multiple services."
   }
 ];
 
@@ -66,7 +71,7 @@ export const PracticalApplicationsQuiz = () => {
 
   const handleAnswer = (optionIndex: number) => {
     setSelectedOption(optionIndex);
-    
+
     if (optionIndex === questions[currentQuestion].correct) {
       setScore(score + 1);
     }
@@ -77,9 +82,20 @@ export const PracticalApplicationsQuiz = () => {
         setSelectedOption(null);
       } else {
         setShowResults(true);
-        updateProgress(1, 'practical-applications-quiz', true);
+        const finalScore = (score / questions.length) * 100;
+        updateProgress(
+          1, 
+          'practical-applications', 
+          finalScore >= 70,
+          1,
+          undefined,
+          finalScore,
+          '/modules/module1/applications',
+          undefined,
+          'Practical Applications'
+        );
       }
-    }, 1000);
+    }, 5000); // Changed from 1000 to 5000
   };
 
   const cardVariants = {
@@ -148,6 +164,24 @@ export const PracticalApplicationsQuiz = () => {
             </Button>
           ))}
         </div>
+
+        {selectedOption !== null && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`mt-4 p-4 rounded-lg ${
+              selectedOption === questions[currentQuestion].correct
+                ? "bg-green-100 border-l-4 border-green-500"
+                : "bg-red-100 border-l-4 border-red-500"
+            }`}
+          >
+            <h4 className="font-semibold mb-2">
+              {selectedOption === questions[currentQuestion].correct ? "Correct!" : "Incorrect"}
+            </h4>
+            <p className="text-gray-700">{questions[currentQuestion].explanation}</p>
+            <p className="text-sm text-gray-600 mt-2">Next question in 5 seconds...</p>
+          </motion.div>
+        )}
       </Card>
     </motion.div>
   );

@@ -75,6 +75,26 @@ export const GettingStartedQuiz = () => {
     if (!showExplanation) {
       setSelectedAnswer(optionIndex);
       setShowExplanation(true);
+
+      // Auto advance after 5 seconds
+      setTimeout(() => {
+        const isCorrect = optionIndex === questions[currentQuestion].correctAnswer;
+        if (isCorrect) {
+          setScore(prev => prev + 1);
+        }
+
+        if (currentQuestion < questions.length - 1) {
+          setCurrentQuestion(prev => prev + 1);
+          setSelectedAnswer(null);
+          setShowExplanation(false);
+        } else {
+          setShowResult(true);
+          const passThreshold = questions.length * 0.7;
+          if (score >= passThreshold) {
+            updateProgress(1, 'getting-started-quiz', true);
+          }
+        }
+      }, 5000);
     }
   };
 
@@ -213,19 +233,10 @@ export const GettingStartedQuiz = () => {
               <p className="text-gray-700">
                 {questions[currentQuestion].explanation}
               </p>
+              <p className="text-sm text-gray-600 mt-2">
+                Next question in 5 seconds...
+              </p>
             </motion.div>
-          )}
-
-          {selectedAnswer !== null && (
-            <Button
-              onClick={moveToNextQuestion}
-              className="mt-6 w-full bg-blue-600 hover:bg-blue-700"
-            >
-              {currentQuestion < questions.length - 1 
-                ? 'Next Question' 
-                : 'Finish Quiz'}
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
           )}
         </div>
       </Card>

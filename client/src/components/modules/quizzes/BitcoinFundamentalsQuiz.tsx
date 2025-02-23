@@ -79,49 +79,36 @@ export default function BitcoinFundamentalsQuiz() {
     // Record the answer
     setSelectedAnswer(answerIndex);
 
-    // Check if correct and update score
-    const isCorrect = answerIndex === questions[currentQuestion].correctAnswer;
-    if (isCorrect) {
-      setScore(prev => prev + 1);
-    }
+    // Auto advance after 5 seconds
+    setTimeout(() => {
+      // Check if correct and update score
+      const isCorrect = answerIndex === questions[currentQuestion].correctAnswer;
+      if (isCorrect) {
+        setScore(prev => prev + 1);
+      }
 
-    // Wait for explanation to be shown, then proceed
-    const timer = setTimeout(() => {
-      // Check if this was the last question
-      if (currentQuestion === questions.length - 1) {
-        // Calculate final score including the last answer
+      // Move to next question or show results
+      if (currentQuestion < questions.length - 1) {
+        setCurrentQuestion(prev => prev + 1);
+        setSelectedAnswer(null);
+      } else {
+        setShowResult(true);
         const finalScore = ((score + (isCorrect ? 1 : 0)) / questions.length) * 100;
 
-        // Update progress and show results
+        // Update progress
         updateProgress(
           2,
-          'quiz',
+          'bitcoin-fundamentals',
           finalScore >= 60,
           2,
           undefined,
           finalScore,
-          '/modules/module3',
+          '/modules/module2/bitcoin-fundamentals',
           undefined,
-          'Module 2 Quiz'
+          'Bitcoin Fundamentals'
         );
-
-        // Show results screen
-        setShowResult(true);
-
-        // If passed, navigate after delay
-        if (finalScore >= 60) {
-          setTimeout(() => {
-            setLocation('/modules/module3');
-          }, 5000);
-        }
-      } else {
-        // Move to next question
-        setCurrentQuestion(prev => prev + 1);
-        setSelectedAnswer(null);
       }
-    }, 3000);
-
-    return () => clearTimeout(timer);
+    }, 5000); // Changed from 3000 to 5000
   };
 
   const restartQuiz = () => {
@@ -265,7 +252,7 @@ export default function BitcoinFundamentalsQuiz() {
               </h3>
               <p className="text-sm leading-snug text-gray-700">{questions[currentQuestion].explanation}</p>
               <p className="text-xs mt-1 text-gray-500">
-                {currentQuestion < questions.length - 1 ? "Next question in 3 seconds..." : "Calculating final results..."}
+                Next question in 5 seconds...
               </p>
             </motion.div>
           )}
