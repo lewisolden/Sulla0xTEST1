@@ -93,10 +93,16 @@ export default function BitcoinFundamentalsQuiz() {
           2,
           undefined,
           finalScore,
-          '/modules/module2/bitcoin-investment',
+          '/modules/module3',  
           undefined,
           'Bitcoin Investment'
         );
+
+        if (finalScore >= 60) {
+          setTimeout(() => {
+            window.location.href = '/modules/module3';  
+          }, 5000);
+        }
       }
     }, 3000);
   };
@@ -136,9 +142,11 @@ export default function BitcoinFundamentalsQuiz() {
               <div className="bg-green-100 border-l-4 border-green-500 p-3 text-sm">
                 <p className="text-green-700 flex items-center gap-2 justify-center">
                   <CheckCircle className="h-4 w-4" />
-                  You've passed!
+                  Congratulations! You've passed!
                 </p>
-                <p className="text-sm text-green-600 mt-1">Moving to next section in 5 seconds...</p>
+                <p className="text-sm text-green-600 mt-1">
+                  Moving to Module 3 in 5 seconds...
+                </p>
               </div>
             ) : (
               <div className="bg-red-100 border-l-4 border-red-500 p-3 text-sm">
@@ -158,11 +166,11 @@ export default function BitcoinFundamentalsQuiz() {
               Retry Quiz
             </Button>
             {percentage >= 60 && (
-              <Link href="/modules/module2/security-risk" className="flex-1">
+              <Link href="/modules/module3" className="flex-1">
                 <Button 
                   className="w-full bg-orange-600 hover:bg-orange-700 text-sm"
                 >
-                  Continue to Next Section <ArrowRight className="ml-2 h-4 w-4" />
+                  Continue to Module 3 <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
             )}
