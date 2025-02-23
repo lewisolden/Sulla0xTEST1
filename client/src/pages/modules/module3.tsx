@@ -95,11 +95,18 @@ export default function Module3() {
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center mb-6">
-          <EthereumLogo />
-          <h1 className="text-4xl font-bold text-blue-900">
-            Module 3: Ethereum and Smart Contracts
-          </h1>
+        <div className="bg-gradient-to-r from-gray-100 to-blue-50 rounded-lg p-6 mb-8">
+          <div className="flex items-center gap-4">
+            <EthereumLogo />
+            <div>
+              <h1 className="text-4xl font-bold text-blue-900">
+                Module 3: Ethereum and Smart Contracts
+              </h1>
+              <p className="text-lg text-blue-600 mt-2">
+                Explore the world of programmable blockchain and decentralized applications
+              </p>
+            </div>
+          </div>
         </div>
 
         <div className="mb-8">
