@@ -146,12 +146,10 @@ const courses = [
         title: "Module 1: DeFi Fundamentals",
         description: "Understanding the basics of decentralized finance and its ecosystem.",
         sections: [
-          "Introduction to DeFi",
-          "DeFi Protocols Overview",
-          "Lending & Borrowing",
-          "Yield Farming Basics",
-          "Risk Management",
-          "Module Quiz"
+          "1.1 What is DeFi?",
+          "1.2 Blockchain & Smart Contracts",
+          "1.3 DEXs & AMMs",
+          "1.4 Liquidity & Yield Farming"
         ],
         path: "/defi/module1"
       },
@@ -161,44 +159,88 @@ const courses = [
         title: "Module 2: Advanced Trading",
         description: "Learn advanced DeFi trading strategies and mechanisms.",
         sections: [
-          "DEX Trading Strategies",
-          "Automated Market Makers",
-          "Perpetual Futures",
-          "Options Trading",
-          "Trading Workshop",
-          "Module Quiz"
+          "2.1 Lending & Borrowing",
+          "2.2 Stablecoins & Oracles",
+          "2.3 DeFi Derivatives",
+          "2.4 Governance & DAOs"
         ],
         path: "/defi/module2"
       },
       {
         id: 3,
         icon: Shield,
-        title: "Module 3: DeFi Security",
-        description: "Master DeFi security practices and risk management.",
+        title: "Module 3: DeFi Security & Analytics",
+        description: "Master DeFi security practices and analytics.",
         sections: [
-          "Security Best Practices",
-          "Smart Contract Auditing",
-          "Risk Assessment",
-          "Security Tools",
-          "Case Studies",
-          "Module Quiz"
+          "3.1 Advanced DeFi Concepts",
+          "3.2 DeFi Security & Risk Management",
+          "3.3 DeFi Analytics & Metrics",
+          "3.4 DeFi Innovation & Future Trends"
         ],
         path: "/defi/module3"
       },
       {
         id: 4,
         icon: Rocket,
-        title: "Module 4: Future of DeFi",
-        description: "Explore emerging trends and the future of decentralized finance.",
+        title: "Module 4: Enterprise & Infrastructure",
+        description: "Explore institutional DeFi and infrastructure development.",
         sections: [
-          "DeFi Innovation Trends",
-          "Cross-chain DeFi",
-          "Institutional DeFi",
-          "Regulatory Landscape",
-          "Future Projects",
-          "Final Assessment"
+          "4.1 Institutional DeFi",
+          "4.2 Advanced DeFi Governance",
+          "4.3 Real-World DeFi Integrations",
+          "4.4 DeFi Infrastructure"
         ],
         path: "/defi/module4"
+      }
+    ]
+  },
+  {
+    id: 4,
+    title: "Course 4: Advanced Blockchain Development",
+    description: "Become a proficient blockchain developer by mastering Solidity and building decentralized applications.",
+    subject: "crypto",
+    level: "advanced",
+    defaultPath: "/blockchain/module1",
+    duration: "12 weeks",
+    modules: [
+      {
+        id: 1,
+        icon: Code,
+        title: "Module 1: Introduction to Blockchain Development",
+        description: "Learn the fundamentals of blockchain development and the various platforms used to build them.",
+        sections: [
+          "1.1 Introduction to Blockchain Technology",
+          "1.2 Choosing the Right Blockchain Platform",
+          "1.3 Setting up a Development Environment",
+          "1.4 Smart Contract Security Best Practices"
+        ],
+        path: "/blockchain/module1"
+      },
+      {
+        id: 2,
+        icon: Code,
+        title: "Module 2: Solidity Programming",
+        description: "Master Solidity, the primary programming language for Ethereum blockchain development.",
+        sections: [
+          "2.1 Solidity Fundamentals",
+          "2.2 Data Structures and Types",
+          "2.3 Control Flow and Functions",
+          "2.4 Advanced Solidity Concepts"
+        ],
+        path: "/blockchain/module2"
+      },
+      {
+        id: 3,
+        icon: Code,
+        title: "Module 3: Building Decentralized Applications (dApps)",
+        description: "Learn the process of building and deploying dApps on the Ethereum blockchain.",
+        sections: [
+          "3.1 Introduction to dApps",
+          "3.2 Building a Simple dApp",
+          "3.3 Testing and Deploying a dApp",
+          "3.4 Advanced dApp Development"
+        ],
+        path: "/blockchain/module3"
       }
     ]
   }
