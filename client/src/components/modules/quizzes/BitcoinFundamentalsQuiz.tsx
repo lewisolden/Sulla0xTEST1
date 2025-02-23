@@ -109,7 +109,6 @@ export default function BitcoinFundamentalsQuiz() {
         );
       }
     }, 8000); 
-
   };
 
   const restartQuiz = () => {
@@ -148,7 +147,7 @@ export default function BitcoinFundamentalsQuiz() {
                   Congratulations! You've passed!
                 </p>
                 <p className="text-sm text-green-600 mt-1">
-                  Moving to Module 3 in 8 seconds...
+                  Moving to Bitcoin Investment in 8 seconds...
                 </p>
               </div>
             ) : (
@@ -169,9 +168,9 @@ export default function BitcoinFundamentalsQuiz() {
               Retry Quiz
             </Button>
             {percentage >= 60 && (
-              <Link href="/modules/module3" className="flex-1">
+              <Link href="/modules/module2/bitcoin-investment" className="flex-1">
                 <Button className="w-full bg-orange-600 hover:bg-orange-700 text-sm">
-                  Continue to Module 3 <ArrowRight className="ml-2 h-4 w-4" />
+                  Continue to Bitcoin Investment <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
             )}

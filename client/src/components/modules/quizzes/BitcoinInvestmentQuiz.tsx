@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useProgress } from "@/context/progress-context";
 import { motion } from "framer-motion";
 import { CheckCircle, XCircle } from "lucide-react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 
 const questions = [
   {
@@ -64,6 +64,7 @@ export default function BitcoinInvestmentQuiz() {
   const [score, setScore] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
   const { updateProgress } = useProgress();
+  const [, setLocation] = useLocation();
 
   const handleAnswerSelect = (optionIndex: number) => {
     setSelectedAnswer(optionIndex);
@@ -91,13 +92,13 @@ export default function BitcoinInvestmentQuiz() {
           undefined, // timeSpent
           finalScore, // quizScore
           '/modules/module2/bitcoin-investment', // pageUrl
-          '/modules/module2/security-risk', // nextUrl - Updated
+          '/modules/module2/security-risk', // nextUrl
           'Bitcoin Investment' // sectionName
         );
 
         if (finalScore >= 60) {
           setTimeout(() => {
-            window.location.href = '/modules/module2/security-risk';
+            setLocation('/modules/module2/security-risk');
           }, 8000);
         }
       }
@@ -140,7 +141,7 @@ export default function BitcoinInvestmentQuiz() {
               <p className="text-red-700">
                 You didn't pass this time. Review the content and try again.
               </p>
-              <Button 
+              <Button
                 onClick={restartQuiz}
                 variant="outline"
                 className="mt-4"
@@ -180,12 +181,12 @@ export default function BitcoinInvestmentQuiz() {
                 onClick={() => handleAnswerSelect(parseInt(key))}
                 className={`
                   w-full p-4 h-auto whitespace-normal text-left justify-start
-                  ${selectedAnswer === null 
-                    ? 'bg-gray-100 hover:bg-blue-100 text-gray-700' 
-                    : parseInt(key) === currentQuizQuestion.correct 
-                      ? 'bg-green-200 text-gray-700' 
-                      : selectedAnswer === parseInt(key) 
-                        ? 'bg-red-200 text-gray-700' 
+                  ${selectedAnswer === null
+                    ? 'bg-gray-100 hover:bg-blue-100 text-gray-700'
+                    : parseInt(key) === currentQuizQuestion.correct
+                      ? 'bg-green-200 text-gray-700'
+                      : selectedAnswer === parseInt(key)
+                        ? 'bg-red-200 text-gray-700'
                         : 'bg-gray-100 text-gray-700'}
                 `}
                 disabled={selectedAnswer !== null}
