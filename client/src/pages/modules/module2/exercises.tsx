@@ -202,7 +202,7 @@ export default function ModuleExercises() {
 
             <ExerciseSection
               title="Security Workshop"
-              description="Learn and practice essential security measures to protect your cryptocurrency assets."
+              description="Essential security measures to protect your cryptocurrency assets."
               icon={Shield}
             >
               <SecurityWorkshop />
