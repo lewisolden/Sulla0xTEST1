@@ -115,7 +115,6 @@ import DefiModule4Quiz from "@/pages/defi/module4/quiz"; // Added import for Mod
 import DeFiFinalAssessment from "@/pages/defi/final-assessment"; // Add this import
 
 
-
 function ProtectedRoute({ component: Component, adminOnly = false, publicAccess = false, ...rest }: any) {
   const { user, isLoading } = useAuth();
 
@@ -262,22 +261,22 @@ function Router() {
       </Route>
       {/* Module 2 Routes */}
       <Route path="/modules/module2">
-        <ProtectedRoute component={Module2Landing} />
+        <ProtectedRoute component={Module2Landing} publicAccess={true} />
       </Route>
       <Route path="/modules/module2/bitcoin-fundamentals">
-        <ProtectedRoute component={BitcoinFundamentalsSection} />
+        <ProtectedRoute component={BitcoinFundamentalsSection} publicAccess={true} />
       </Route>
       <Route path="/modules/module2/bitcoin-investment">
-        <ProtectedRoute component={BitcoinInvestmentSection} />
+        <ProtectedRoute component={BitcoinInvestmentSection} publicAccess={true} />
       </Route>
       <Route path="/modules/module2/security-risk">
-        <ProtectedRoute component={SecurityRiskSection} />
+        <ProtectedRoute component={SecurityRiskSection} publicAccess={true} />
       </Route>
       <Route path="/modules/module2/exercises">
-        <ProtectedRoute component={Module2Exercises} />
+        <ProtectedRoute component={Module2Exercises} publicAccess={true} />
       </Route>
       <Route path="/modules/module2/quiz">
-        <ProtectedRoute component={Module2Quiz} />
+        <ProtectedRoute component={Module2Quiz} publicAccess={true} />
       </Route>
       {/* Module 3 Routes */}
       <Route path="/modules/module3">

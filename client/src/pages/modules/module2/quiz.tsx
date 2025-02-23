@@ -4,9 +4,10 @@ import { Button } from "@/components/ui/button";
 import { useProgress } from "@/context/progress-context";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowLeft, CheckCircle2, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, X } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { Progress } from "@/components/ui/progress";
+import { useAuth } from "@/hooks/use-auth";
 
 interface QuestionProps {
   question: {
@@ -80,6 +81,58 @@ const quiz = {
   ]
 };
 
+const QuizResults = ({ score, totalQuestions }) => {
+  const { user } = useAuth();
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className="space-y-6"
+    >
+      <h2 className="text-2xl font-bold text-center text-purple-800">
+        Quiz Complete!
+      </h2>
+      <div className="p-6 bg-white rounded-lg shadow-lg text-center">
+        <div className="mb-6">
+          <div className="text-4xl font-bold text-purple-600 mb-2">
+            {Math.round((score / totalQuestions) * 100)}%
+          </div>
+          <p className="text-gray-600">
+            You got {score} out of {totalQuestions} questions correct
+          </p>
+        </div>
+        {score >= Math.ceil(0.7 * totalQuestions) ? (
+          <div className="mb-6 p-4 bg-green-50 rounded-lg">
+            <CheckCircle2 className="h-12 w-12 text-green-500 mx-auto mb-2" />
+            <p className="text-green-800">
+              Congratulations! You've passed the quiz and completed Module 2!
+              {!user && (
+                <span className="block mt-2 text-sm">
+                  Sign in to track your progress and earn certificates!
+                </span>
+              )}
+            </p>
+          </div>
+        ) : (
+          <div className="mb-6 p-4 bg-orange-50 rounded-lg">
+            <p className="text-orange-800">
+              Keep studying and try again. You need 70% to pass.
+            </p>
+          </div>
+        )}
+        <Link href="/modules/module3">
+          <Button className="w-full bg-purple-600 hover:bg-purple-700">
+            Continue to Module 3
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+        </Link>
+      </div>
+    </motion.div>
+  );
+};
+
 const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplanation }) => {
   const [showNotification, setShowNotification] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
@@ -90,7 +143,6 @@ const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplana
     setShowNotification(true);
     onAnswer(idx);
 
-    // Hide notification after 2 seconds
     setTimeout(() => {
       setShowNotification(false);
     }, 2000);
@@ -131,7 +183,6 @@ const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplana
         ))}
       </div>
 
-      {/* Answer Notification */}
       <AnimatePresence>
         {showNotification && (
           <motion.div
@@ -163,9 +214,7 @@ const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplana
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className={`mt-4 p-4 rounded-lg ${
-              isCorrect ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
-            }`}
+            className="mt-4 p-4 rounded-lg bg-blue-50 text-blue-800"
           >
             <p>
               <span className="font-semibold">Explanation: </span>
@@ -182,7 +231,9 @@ const InteractiveQuiz = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
   const [answers, setAnswers] = useState({});
+  const [showResults, setShowResults] = useState(false);
   const { updateProgress } = useProgress();
+  const { user } = useAuth();
 
   const handleAnswer = (selectedIndex: number) => {
     const currentQuestion = quiz.questions[currentQuestionIndex];
@@ -190,7 +241,10 @@ const InteractiveQuiz = () => {
 
     setAnswers(prev => ({
       ...prev,
-      [currentQuestion.id]: selectedIndex
+      [currentQuestion.id]: {
+        selected: selectedIndex,
+        correct: isCorrect
+      }
     }));
 
     setShowExplanation(true);
@@ -200,43 +254,54 @@ const InteractiveQuiz = () => {
         setCurrentQuestionIndex(prev => prev + 1);
         setShowExplanation(false);
       } else {
-        // Calculate final score
-        const correctAnswers = Object.entries(answers).filter(
-          ([questionId, answer]) => {
-            const question = quiz.questions.find(q => q.id === parseInt(questionId));
-            return question && answer === question.correctAnswer;
-          }
-        ).length;
-        const finalScore = (correctAnswers / quiz.questions.length) * 100;
+        const correctAnswers = Object.values(answers).filter(a => a.correct).length + (isCorrect ? 1 : 0);
+        const finalScore = Math.round((correctAnswers / quiz.questions.length) * 100);
 
-        if (finalScore >= 70) {
-          updateProgress("module2", "quiz", true, "completed", new Date().toISOString(), finalScore, quiz.questions.length);
+        if (user) {
+          try {
+            updateProgress(2, "quiz", true, 2, new Date().toISOString(), finalScore, quiz.questions.length);
+          } catch (error) {
+            console.error("Failed to update progress:", error);
+          }
         }
+
+        setShowResults(true);
       }
     }, 3000);
   };
 
+  const correctAnswers = Object.values(answers).filter(a => a.correct).length;
+
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold text-purple-800">
-          Module 2 Quiz: Blockchain Fundamentals
-        </h2>
-        <span className="text-sm text-gray-600">
-          Question {currentQuestionIndex + 1} of {quiz.questions.length}
-        </span>
-      </div>
+      {!showResults ? (
+        <>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-2xl font-bold text-purple-800">
+              Module 2 Quiz: Blockchain Fundamentals
+            </h2>
+            <span className="text-sm text-gray-600">
+              Question {currentQuestionIndex + 1} of {quiz.questions.length}
+            </span>
+          </div>
 
-      <Progress value={(currentQuestionIndex / quiz.questions.length) * 100} className="mb-6" />
+          <Progress value={(currentQuestionIndex / quiz.questions.length) * 100} className="mb-6" />
 
-      <AnimatePresence mode="wait">
-        <QuizQuestion
-          key={currentQuestionIndex}
-          question={quiz.questions[currentQuestionIndex]}
-          onAnswer={handleAnswer}
-          showExplanation={showExplanation}
+          <AnimatePresence mode="wait">
+            <QuizQuestion
+              key={currentQuestionIndex}
+              question={quiz.questions[currentQuestionIndex]}
+              onAnswer={handleAnswer}
+              showExplanation={showExplanation}
+            />
+          </AnimatePresence>
+        </>
+      ) : (
+        <QuizResults
+          score={correctAnswers}
+          totalQuestions={quiz.questions.length}
         />
-      </AnimatePresence>
+      )}
     </div>
   );
 };
