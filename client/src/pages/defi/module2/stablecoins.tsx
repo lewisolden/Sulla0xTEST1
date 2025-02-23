@@ -462,7 +462,7 @@ const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplana
               <span className="font-semibold">Explanation: </span>
               {question.explanation}
             </p>
-            <p className="text-sm text-gray-600 mt-2">Next question in 5 seconds...</p>
+            <p className="text-sm text-gray-600 mt-2">Next question in 8 seconds...</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -510,7 +510,7 @@ const InteractiveQuiz: React.FC<QuizProps> = ({ onComplete }) => {
         setScore(finalScore);
         onComplete(finalScore);
       }
-    }, 5000); 
+    }, 8000); 
   };
 
   return (

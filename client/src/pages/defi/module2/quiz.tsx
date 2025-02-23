@@ -175,7 +175,8 @@ export default function DefiModule2Quiz() {
           'DeFi' // courseName
         );
       }
-    }, 5000); // Changed from 1000 to 5000
+    }, 8000); // Changed from 5000 to 8000
+
   };
 
   const progressPercentage = ((currentQuestion + 1) / questions.length) * 100;
@@ -306,7 +307,7 @@ export default function DefiModule2Quiz() {
                       {questions[currentQuestion].explanation}
                     </p>
                     <p className="text-sm text-gray-600 mt-2">
-                      Next question in 5 seconds...
+                      Next question in 8 seconds...
                     </p>
                   </motion.div>
                 )}

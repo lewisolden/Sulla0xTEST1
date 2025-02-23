@@ -413,7 +413,7 @@ const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplana
               <span className="font-semibold">Explanation: </span>
               {question.explanation}
             </p>
-            <p className="text-sm text-gray-600 mt-2">Next question in 5 seconds...</p>
+            <p className="text-sm text-gray-600 mt-2">Next question in 8 seconds...</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -428,7 +428,7 @@ const DerivativesQuiz: React.FC = () => {
     const [score, setScore] = useState(0);
     const [quizStarted, setQuizStarted] = useState(false);
     const [showResults, setShowResults] = useState(false);
-    //const { toast } = useToast();
+    const { toast } = useToast();
 
     const questions = [
         {
@@ -468,7 +468,6 @@ const DerivativesQuiz: React.FC = () => {
         } else {
           setShowResults(true);
           const finalScore = Math.round((score / questions.length) * 100);
-          const { toast } = useToast();
           if (finalScore >= 70) {
             toast({
               title: "Quiz Complete! 🎉",
@@ -481,7 +480,7 @@ const DerivativesQuiz: React.FC = () => {
             });
           }
         }
-      }, 5000); // Changed from 2000 to 5000
+      }, 8000); // Changed from 5000 to 8000
     };
 
     if (showResults) {
@@ -784,7 +783,7 @@ const DerivativesSection:React.FC = () => {
       id: "hyperliquid-case",
       title: "Hyperliquid Case Study",
       icon: TrendingUp,
-      content: (
+      content:(
         <Card className="border-green-200">
           <CardHeader className="bg-gradient-to-r from-green-50 to-green-100">
             <CardTitle className="text-2xl">Hyperliquid: Next-Gen Derivatives Exchange</CardTitle>
