@@ -68,7 +68,7 @@ export default function BitcoinInvestmentQuiz() {
     setSelectedAnswer(optionIndex);
     setShowExplanation(true);
 
-    // Wait 5 seconds before moving to next question
+    // Wait 8 seconds before moving to next question
     setTimeout(() => {
       const isCorrect = optionIndex === questions[currentQuestion].correct;
 
@@ -95,7 +95,7 @@ export default function BitcoinInvestmentQuiz() {
           'Bitcoin Investment' // sectionName
         );
       }
-    }, 5000); // Changed from 3000 to 5000
+    }, 8000); // Changed from 5000 to 8000
   };
 
   const restartQuiz = () => {
@@ -200,7 +200,7 @@ export default function BitcoinInvestmentQuiz() {
                   : <><XCircle className="h-4 w-4 text-red-600" /> Incorrect</>}
               </h3>
               <p className="leading-relaxed">{currentQuizQuestion.explanation}</p>
-              <p className="text-xs mt-2 text-gray-600">Next question in 5 seconds...</p>
+              <p className="text-xs mt-2 text-gray-600">Next question in 8 seconds...</p>
             </motion.div>
           )}
         </div>

@@ -108,7 +108,8 @@ export default function BitcoinFundamentalsQuiz() {
           'Bitcoin Fundamentals'
         );
       }
-    }, 5000); // Changed from 3000 to 5000
+    }, 8000); 
+
   };
 
   const restartQuiz = () => {
@@ -147,7 +148,7 @@ export default function BitcoinFundamentalsQuiz() {
                   Congratulations! You've passed!
                 </p>
                 <p className="text-sm text-green-600 mt-1">
-                  Moving to Module 3 in 5 seconds...
+                  Moving to Module 3 in 8 seconds...
                 </p>
               </div>
             ) : (
@@ -252,7 +253,7 @@ export default function BitcoinFundamentalsQuiz() {
               </h3>
               <p className="text-sm leading-snug text-gray-700">{questions[currentQuestion].explanation}</p>
               <p className="text-xs mt-1 text-gray-500">
-                Next question in 5 seconds...
+                Next question in 8 seconds...
               </p>
             </motion.div>
           )}
