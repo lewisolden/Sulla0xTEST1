@@ -54,7 +54,18 @@ const InvestmentValueSection = () => {
           transition={{ delay: 0.2 }}
           className="text-4xl font-bold text-gray-800 mb-6"
         >
-          3.3 Investment and Value Proposition
+          <div className="bg-gradient-to-r from-orange-500 via-orange-600 to-red-600 rounded-xl p-8 mb-12 shadow-lg">
+            <div className="flex items-center">
+              <div>
+                <h1 className="text-4xl font-bold text-white mb-2">
+                  3.3 Investment and Value Proposition
+                </h1>
+                <p className="text-xl text-orange-100">
+                  Understanding Ethereum's Economic Value & Potential
+                </p>
+              </div>
+            </div>
+          </div>
         </motion.h1>
 
         <Card className="mb-6 bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700">
@@ -217,7 +228,6 @@ const InvestmentValueSection = () => {
                   </div>
                 </div>
 
-                {/* ETH Staking Exercise */}
                 <motion.div
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
@@ -277,7 +287,19 @@ const InvestmentValueSection = () => {
             animate={{ opacity: 1, y: 0 }}
             className="mt-8"
           >
-            <InvestmentValueQuiz onComplete={() => {}} />
+            <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700">
+              <div className="bg-gradient-to-r from-gray-700 to-gray-800 p-4 rounded-t-lg border-b border-gray-600">
+                <h2 className="text-xl font-bold text-gray-100">
+                  Test Your Knowledge
+                </h2>
+                <p className="text-sm text-gray-400 mt-1">
+                  Let's verify your understanding of Investment Value and Proposition
+                </p>
+              </div>
+              <div className="p-4">
+                <InvestmentValueQuiz onComplete={() => {}} />
+              </div>
+            </Card>
           </motion.div>
         )}
 
