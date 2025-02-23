@@ -26,7 +26,7 @@ const courses = [
     subject: "crypto",
     level: "beginner",
     defaultPath: "/modules/module1",
-    duration: "4 weeks",
+    duration: "1 hour",
     modules: [
       {
         id: 1,
@@ -82,7 +82,7 @@ const courses = [
     subject: "ai",
     level: "beginner",
     defaultPath: "/ai/module1",
-    duration: "6 weeks",
+    duration: "1 hour",
     modules: [
       {
         id: 1,
@@ -138,7 +138,7 @@ const courses = [
     subject: "crypto",
     level: "intermediate",
     defaultPath: "/defi/module1",
-    duration: "8 weeks",
+    duration: "1 hour",
     modules: [
       {
         id: 1,
@@ -201,7 +201,7 @@ const courses = [
     subject: "crypto",
     level: "advanced",
     defaultPath: "/blockchain/module1",
-    duration: "12 weeks",
+    duration: "1 hour",
     modules: [
       {
         id: 1,
