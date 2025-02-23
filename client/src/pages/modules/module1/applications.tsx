@@ -531,7 +531,7 @@ const PracticalApplicationsQuiz = () => {
   const [showExplanation, setShowExplanation] = useState(false);
   const { updateProgress } = useProgress();
 
-  const handleAnswer = (index: number) => {
+  const handleAnswerSelect = (index: number) => {
     if (selectedAnswer !== null) return;
 
     setSelectedAnswer(index);
@@ -559,7 +559,7 @@ const PracticalApplicationsQuiz = () => {
           nextSection: 'getting-started'
         });
       }
-    }, 7000);  // Changed from 5000 to 7000
+    }, 5000);
   };
 
   if (showResult) {
@@ -639,7 +639,7 @@ const PracticalApplicationsQuiz = () => {
                           : "bg-red-100 border-red-500 hover:bg-red-100"
                         : "hover:bg-blue-50"
                     }`}
-                    onClick={() => !showExplanation && handleAnswer(index)}
+                    onClick={() => !showExplanation && handleAnswerSelect(index)}
                     disabled={showExplanation}
                   >
                     <div className="flex items-center gap-4">
@@ -675,7 +675,7 @@ const PracticalApplicationsQuiz = () => {
                 {selectedAnswer === questions[currentQuestion].correctAnswer ? "✓ Correct!" : "✕ Incorrect"}
               </p>
               <p>{questions[currentQuestion].explanation}</p>
-              <p className="text-sm mt-2">Next question in 7 seconds...</p> {/* Changed from 5 to 7 */}
+              <p className="text-sm mt-2">Next question in 5 seconds...</p>
             </motion.div>
           )}
         </CardContent>

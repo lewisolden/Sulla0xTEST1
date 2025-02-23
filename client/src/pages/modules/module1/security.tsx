@@ -61,7 +61,7 @@ const SecurityPage = () => {
 
   const handleQuizComplete = (score: number) => {
     setQuizCompleted(true);
-    setCountdown(7);  // Changed from 5 to 7 seconds
+    setCountdown(5);
   };
 
   return (
@@ -420,7 +420,7 @@ const SecurityPage = () => {
                         animate={{ opacity: 1 }}
                         className="text-center my-4 text-gray-700"
                       >
-                        Next question in {countdown} seconds...
+                        Quiz completed! Next section in {countdown} seconds...
                       </motion.div>
                     )}
                   </div>
