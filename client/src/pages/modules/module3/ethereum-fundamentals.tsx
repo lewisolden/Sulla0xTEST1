@@ -30,8 +30,8 @@ const EthereumFundamentalsSection = () => {
   useScrollTop();
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [showQuiz, setShowQuiz] = useState(false);
   const { updateProgress } = useProgress();
+  const [showQuizSection, setShowQuizSection] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,52 +40,31 @@ const EthereumFundamentalsSection = () => {
       const scrollPercent = (scrollTop / scrollHeight) * 100;
       setScrollProgress(scrollPercent);
 
-      if (scrollPercent > 95) {
+      if (scrollPercent > 95 && !isFullyRead) {
         setIsFullyRead(true);
-        updateProgress(3, 'ethereum-fundamentals', true);
+        setShowQuizSection(true);
+        updateProgress(
+          3,
+          'ethereum-fundamentals',
+          false,
+          3,
+          undefined,
+          0,
+          '/modules/module3/ethereum-fundamentals',
+          undefined,
+          'Ethereum Fundamentals'
+        );
       }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [updateProgress]);
+  }, [updateProgress, isFullyRead]);
 
-  const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        staggerChildren: 0.1
-      }
-    }
+  const handleQuizComplete = () => {
+    // Quiz completion is now handled by the quiz component itself
+    // Here we just ensure proper navigation flow continues
   };
-
-  const itemVariants = {
-    hidden: { opacity: 0, x: -20 },
-    visible: { opacity: 1, x: 0 }
-  };
-
-  const startQuiz = () => {
-    setShowQuiz(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  if (showQuiz) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <Button 
-          onClick={() => setShowQuiz(false)}
-          className="mb-6"
-          variant="outline"
-        >
-          ← Back to Content
-        </Button>
-        <EthereumFundamentalsQuiz />
-      </div>
-    );
-  }
 
   return (
     <motion.div 
@@ -98,7 +77,7 @@ const EthereumFundamentalsSection = () => {
         <div 
           className="h-full bg-blue-600" 
           style={{ width: `${scrollProgress}%` }}
-        ></div>
+        />
       </div>
 
       <div className="max-w-4xl mx-auto">
@@ -326,24 +305,21 @@ const EthereumFundamentalsSection = () => {
           </div>
         </Card>
 
-        {isFullyRead && (
-          <motion.div 
+        {showQuizSection && (
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
             className="mt-8"
           >
-            <Card className="bg-green-100 border-l-4 border-green-500 p-4">
-              <div className="flex flex-col items-center">
-                <p className="text-green-700 mb-4">
-                  🎉 Congratulations! You've completed the Ethereum Fundamentals section!
-                </p>
-                <Button
-                  onClick={startQuiz}
-                  className="bg-green-600 hover:bg-green-700 text-white"
-                >
-                  Take Section Quiz
-                </Button>
-              </div>
+            <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6">
+              <h2 className="text-2xl font-bold text-blue-800 mb-4">
+                Test Your Knowledge
+              </h2>
+              <p className="text-gray-600 mb-6">
+                Let's verify your understanding of Ethereum fundamentals with a quick quiz.
+              </p>
+              <EthereumFundamentalsQuiz onComplete={handleQuizComplete} />
             </Card>
           </motion.div>
         )}
@@ -364,3 +340,20 @@ const EthereumFundamentalsSection = () => {
 };
 
 export default EthereumFundamentalsSection;
+
+const containerVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, x: -20 },
+  visible: { opacity: 1, x: 0 }
+};
