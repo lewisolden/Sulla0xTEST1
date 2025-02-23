@@ -313,12 +313,14 @@ const EthereumFundamentalsSection = () => {
             className="mt-8"
           >
             <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6">
-              <h2 className="text-2xl font-bold text-blue-800 mb-4">
-                Test Your Knowledge
-              </h2>
-              <p className="text-gray-600 mb-6">
-                Let's verify your understanding of Ethereum fundamentals with a quick quiz.
-              </p>
+              <div className="bg-gradient-to-r from-gray-700 to-gray-900 p-6 rounded-lg mb-6">
+                <h2 className="text-2xl font-bold text-white mb-4">
+                  Test Your Knowledge
+                </h2>
+                <p className="text-gray-300 mb-6">
+                  Let's verify your understanding of Ethereum fundamentals with a quick quiz.
+                </p>
+              </div>
               <EthereumFundamentalsQuiz onComplete={handleQuizComplete} />
             </Card>
           </motion.div>
