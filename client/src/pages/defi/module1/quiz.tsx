@@ -132,11 +132,11 @@ export default function ModuleQuiz() {
         setSelectedAnswer(null);
         setShowExplanation(false);
         setFeedbackMessage(null);
-      }, 4000);
+      }, 5000); // Changed from 4000 to 5000
     } else if (showExplanation && currentQuestion === quizQuestions.length - 1) {
       timer = setTimeout(() => {
         setQuizCompleted(true);
-      }, 4000);
+      }, 5000); // Changed from 4000 to 5000
     }
     return () => clearTimeout(timer);
   }, [showExplanation, currentQuestion]);
@@ -260,8 +260,11 @@ export default function ModuleQuiz() {
                       animate={{ opacity: 1, y: 0 }}
                       className="bg-blue-50 p-4 rounded-lg"
                     >
-                      <p className="text-blue-800">
+                      <p className="text-blue-800 mb-2">
                         {quizQuestions[currentQuestion].explanation}
+                      </p>
+                      <p className="text-sm text-blue-600 italic mt-2">
+                        Next question in 5 seconds...
                       </p>
                     </motion.div>
                   )}

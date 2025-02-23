@@ -113,7 +113,7 @@ export default function DexAmm() {
       } else {
         setQuizCompleted(true);
       }
-    }, 3000);
+    }, 5000); // Changed from 3000 to 5000
   };
 
   // Calculate swap output based on exchange rate
@@ -731,6 +731,9 @@ export default function DexAmm() {
                                   </h4>
                                   <p className="text-gray-700">
                                     {quizQuestions[currentQuestion].explanation}
+                                  </p>
+                                  <p className="text-sm text-blue-600 italic mt-2">
+                                    Next question in 5 seconds...
                                   </p>
                                 </div>
                               </div>

@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { ArrowLeft, ArrowRight, Wallet, RefreshCw, Settings, Info, Check, X, CheckCircle2, Coins, TrendingUp, Lock, Percent, Timer, BarChart3 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import { FaExchangeAlt, FaWater, FaChartLine, FaLayerGroup, FaSearch, FaShieldAlt, FaPercent, FaChartBar, FaCoins } from "react-icons/fa";
 import { BiDollarCircle } from "react-icons/bi";
 import { Trophy } from "lucide-react"; // Import the Trophy icon
@@ -368,7 +367,7 @@ export default function LiquidityYield() {
     if (showExplanation && currentQuestion < quizQuestions.length - 1) {
       timer = setTimeout(() => {
         handleNextQuestion();
-      }, 4000); // 4 seconds delay before advancing
+      }, 5000); // Changed from 4000 to 5000
     }
     return () => clearTimeout(timer);
   }, [showExplanation, currentQuestion]);
@@ -709,6 +708,9 @@ export default function LiquidityYield() {
                                     : "text-red-800"
                                 }`}>
                                   {quizQuestions[currentQuestion].explanation}
+                                </p>
+                                <p className="text-sm text-blue-600 italic mt-2">
+                                  Next question in 5 seconds...
                                 </p>
                               </div>
                             </motion.div>
