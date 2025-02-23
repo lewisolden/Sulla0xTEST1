@@ -9,7 +9,8 @@ import { Wrench, Code, Award, Terminal, Check, AlertTriangle } from "lucide-reac
 import { useScrollTop } from "@/hooks/useScrollTop";
 
 export default function ExercisesPage() {
-  // Previous state and hooks remain unchanged
+  useScrollTop(); // Ensure this is called at the start of the component
+
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState(1);

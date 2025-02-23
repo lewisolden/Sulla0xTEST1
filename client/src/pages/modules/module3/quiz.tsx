@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useProgress } from "@/context/progress-context";
@@ -72,7 +72,8 @@ const quizQuestions = [
 ];
 
 const Module3Quiz = () => {
-  useScrollTop();
+  useScrollTop(); // Ensure it scrolls to top on load
+
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
@@ -89,6 +90,11 @@ const Module3Quiz = () => {
     if (isCorrect) {
       setScore(prev => prev + 1);
     }
+
+    // Auto advance after 2 seconds
+    setTimeout(() => {
+      moveToNextQuestion();
+    }, 2000);
   };
 
   const moveToNextQuestion = () => {
@@ -115,10 +121,10 @@ const Module3Quiz = () => {
 
   const renderQuizInProgress = () => (
     <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-t border-blue-500/30 shadow-xl">
-      <CardContent className="p-8">
-        <div className="mb-6">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-white">
+      <CardContent className="p-6">
+        <div className="mb-4">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-bold text-white">
               Module 3: Ethereum & Smart Contracts Quiz
             </h2>
             <span className="text-gray-300">
@@ -128,22 +134,22 @@ const Module3Quiz = () => {
 
           <Progress
             value={((currentQuestion + 1) / quizQuestions.length) * 100}
-            className="mb-6"
+            className="mb-4"
           />
 
-          <div className="bg-gray-800/50 rounded-lg p-6 mb-6 border border-blue-500/20">
-            <p className="text-xl text-gray-100">
+          <div className="bg-gray-800/50 rounded-lg p-4 mb-4 border border-blue-500/20">
+            <p className="text-lg text-gray-100">
               {quizQuestions[currentQuestion].question}
             </p>
           </div>
 
-          <div className="grid gap-4">
+          <div className="grid gap-3">
             {quizQuestions[currentQuestion].options.map((option, index) => (
               <button
                 key={index}
                 onClick={() => handleAnswerSelect(index)}
                 className={`
-                  w-full p-6 rounded-lg text-left transition-all duration-300 text-lg
+                  w-full p-4 rounded-lg text-left transition-all duration-300 text-base
                   ${selectedAnswer === null
                     ? 'bg-gray-800/50 hover:bg-blue-900/30 border border-gray-700 hover:border-blue-500/30'
                     : index === quizQuestions[currentQuestion].correctAnswer
@@ -161,17 +167,17 @@ const Module3Quiz = () => {
 
           {showExplanation && (
             <div className={`
-              mt-8 p-6 rounded-lg border
+              mt-4 p-4 rounded-lg border text-sm
               ${selectedAnswer === quizQuestions[currentQuestion].correctAnswer
                 ? 'bg-green-900/30 border-green-500/30'
                 : 'bg-red-900/30 border-red-500/30'}
             `}>
-              <h3 className="text-xl font-bold mb-3 text-white">
+              <h3 className="text-lg font-bold mb-2 text-white">
                 {selectedAnswer === quizQuestions[currentQuestion].correctAnswer
                   ? '✅ Correct!'
                   : '❌ Incorrect'}
               </h3>
-              <p className="text-gray-200 text-lg leading-relaxed">
+              <p className="text-gray-200">
                 {quizQuestions[currentQuestion].explanation}
               </p>
             </div>
@@ -236,8 +242,8 @@ const Module3Quiz = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
               <Link href="/modules/module3">
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="w-full sm:w-auto bg-gray-800 border-blue-500/30 text-white hover:bg-gray-700 hover:text-white text-lg px-6 py-3"
                 >
                   <ArrowLeft className="mr-2 h-5 w-5" />
@@ -245,8 +251,8 @@ const Module3Quiz = () => {
                 </Button>
               </Link>
               <Link href="/curriculum">
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   className="w-full sm:w-auto bg-gray-800 border-blue-500/30 text-white hover:bg-gray-700 hover:text-white text-lg px-6 py-3"
                 >
                   Return to Curriculum
@@ -269,23 +275,23 @@ const Module3Quiz = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             className="mb-6 flex gap-4"
           >
             <Link href="/modules/module3">
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 className="gap-2 bg-gray-800 border-blue-500/30 text-white hover:bg-gray-700 hover:text-white"
               >
                 <ArrowLeft className="h-4 w-4" /> Back to Module 3
               </Button>
             </Link>
             <Link href="/curriculum">
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 className="gap-2 bg-gray-800 border-blue-500/30 text-white hover:bg-gray-700 hover:text-white"
               >
                 Return to Curriculum
