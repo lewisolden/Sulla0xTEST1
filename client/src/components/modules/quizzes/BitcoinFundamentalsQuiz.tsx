@@ -61,61 +61,6 @@ const questions = [
     ],
     correctAnswer: 1,
     explanation: "Bitcoin mining serves to secure the network and validate transactions through computational work, while also being the mechanism through which new bitcoins are created and distributed."
-  },
-    {
-    question: "Which risk level is associated with Bitcoin ETFs and regulated investment products?",
-    options: [
-      "High Risk",
-      "Medium Risk", 
-      "Low Risk",
-      "No Risk"
-    ],
-    correctAnswer: 2,
-    explanation: "Bitcoin ETFs and regulated investment products are considered Low Risk investment options because they offer exposure to Bitcoin through traditional, regulated financial instruments with institutional oversight."
-  },
-  {
-    question: "Which of the following is a key store of value property of Bitcoin?",
-    options: [
-      "Unlimited supply",
-      "Central bank control",
-      "Fixed supply of 21 million coins",
-      "Variable issuance schedule"
-    ],
-    correctAnswer: 2,
-    explanation: "Bitcoin's fixed supply of 21 million coins is a crucial store of value property, making it scarce and resistant to inflation, similar to precious metals like gold."
-  },
-  {
-    question: "How does Metcalfe's Law apply to Bitcoin's network value?",
-    options: [
-      "The value decreases with more users",
-      "The value is proportional to the square of connected users",
-      "The value remains constant regardless of users",
-      "The value is determined by mining difficulty"
-    ],
-    correctAnswer: 1,
-    explanation: "According to Metcalfe's Law, the value of a network is proportional to the square of the number of connected users. This principle explains Bitcoin's increasing utility and value as more users join the network."
-  },
-  {
-    question: "Which of the following is NOT a recommended risk mitigation strategy for Bitcoin investment?",
-    options: [
-      "Using reputable exchanges and wallets",
-      "Keeping large amounts on exchanges",
-      "Only investing what you can afford to lose",
-      "Implementing robust security measures"
-    ],
-    correctAnswer: 1,
-    explanation: "Keeping large amounts of Bitcoin on exchanges is NOT recommended as it increases security risks. Instead, users should use secure personal wallets for significant holdings and only keep necessary amounts on exchanges for trading."
-  },
-  {
-    question: "What distinguishes Bitcoin from traditional investment vehicles like real estate?",
-    options: [
-      "Bitcoin requires no down payment",
-      "Bitcoin is completely risk-free",
-      "Bitcoin is purely digital and globally transferable",
-      "Bitcoin is backed by physical assets"
-    ],
-    correctAnswer: 2,
-    explanation: "Bitcoin's unique characteristic is its digital nature and global transferability, unlike traditional investments like real estate which are physical, location-dependent, and require significant down payments and paperwork."
   }
 ];
 
