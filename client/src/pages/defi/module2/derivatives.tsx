@@ -336,7 +336,6 @@ const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplana
     setShowNotification(true);
     onAnswer(idx);
 
-    // Hide notification after 2 seconds
     setTimeout(() => {
       setShowNotification(false);
     }, 2000);
@@ -377,7 +376,6 @@ const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplana
         ))}
       </div>
 
-      {/* Answer Notification - Below questions */}
       <AnimatePresence>
         {showNotification && (
           <motion.div
@@ -409,14 +407,13 @@ const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplana
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className={`mt-4 p-4 rounded-lg ${
-              isCorrect ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
-            }`}
+            className={`mt-4 p-4 rounded-lg bg-blue-50 text-blue-800`}
           >
             <p>
               <span className="font-semibold">Explanation: </span>
               {question.explanation}
             </p>
+            <p className="text-sm text-gray-600 mt-2">Next question in 5 seconds...</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -484,7 +481,7 @@ const DerivativesQuiz: React.FC = () => {
             });
           }
         }
-      }, 2000);
+      }, 5000); // Changed from 2000 to 5000
     };
 
     if (showResults) {

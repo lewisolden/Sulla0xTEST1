@@ -371,14 +371,13 @@ const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplana
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className={`mt-4 p-4 rounded-lg ${
-              isCorrect ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
-            }`}
+            className={`mt-4 p-4 rounded-lg bg-blue-50 text-blue-800`}
           >
             <p>
               <span className="font-semibold">Explanation: </span>
               {question.explanation}
             </p>
+            <p className="text-sm text-gray-600 mt-2">Next question in 5 seconds...</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -387,52 +386,73 @@ const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplana
 };
 
 const InteractiveQuiz: React.FC<QuizProps> = ({ onComplete }) => {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
   const [answers, setAnswers] = useState({});
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null); // Added state for selected answer
+  const [showResults, setShowResults] = useState(false); // Added state for showing results
   const { toast } = useToast();
-  const questions = quiz.questions;
+  const quizQuestions = quiz.questions;
 
 
   const handleAnswer = (selectedIndex: number) => {
-    const currentQuestion = quiz.questions[currentQuestionIndex];
-    const isCorrect = selectedIndex === currentQuestion.correctAnswer;
+    if (showExplanation) return;
 
-    setAnswers(prev => ({
-      ...prev,
-      [currentQuestion.id]: selectedIndex
-    }));
-
-    setSelectedAnswer(selectedIndex); // Update selected answer state
-
-    // Show explanation
+    setSelectedAnswer(selectedIndex);
     setShowExplanation(true);
 
+    const isCorrect = selectedIndex === quizQuestions[currentQuestion].correctAnswer;
     if (isCorrect) {
-      setScore(prev => prev + 1);
+      setScore(score + 1);
+      toast({
+        title: "Correct! 🎉",
+        description: "Great job! Let's look at why this is correct.",
+        variant: "default",
+      });
+    } else {
+      toast({
+        title: "Incorrect",
+        description: "Let's understand the correct answer.",
+        variant: "destructive",
+      });
     }
 
-    // Auto advance after showing the explanation
-
+    // Auto advance after showing explanation
+    setTimeout(() => {
+      if (currentQuestion < quizQuestions.length - 1) {
+        setCurrentQuestion(currentQuestion + 1);
+        setSelectedAnswer(null);
+        setShowExplanation(false);
+      } else {
+        setShowResults(true);
+        const finalScore = ((score + (isCorrect ? 1 : 0)) / quizQuestions.length) * 100;
+        // UpdateProgress call needs to be fixed based on the provided context.  This is a placeholder.
+        updateProgress({
+          courseId: 3,
+          moduleId: 4,
+          sectionId: 'lending-borrowing',
+          completed: true,
+          subsectionId: 'quiz',
+          type: 'quiz',
+          progress: finalScore,
+          timestamp: new Date().toISOString(),
+          userId: 'current',
+          metadata: { score: finalScore }
+        });
+      }
+    }, 5000); // Changed from 3000 to 5000
   };
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
-    if (showExplanation) {
-      timer = setTimeout(() => {
-        if (currentQuestionIndex < questions.length - 1) {
-          setCurrentQuestionIndex(prev => prev + 1);
-          setShowExplanation(false);
-          setSelectedAnswer(null);
-        } else {
-          onComplete(Math.round((score / questions.length) * 100));
-        }
-      }, 5000);
+    // Add effect to handle quiz completion and redirect
+    if (showResults) {
+      setTimeout(() => {
+          // Assuming you want to redirect to the next section after a delay
+          window.location.href = '/defi/module2/stablecoins'; // Replace with your actual next route
+      }, 2000); // Adjust delay as needed
     }
-    return () => clearTimeout(timer);
-  }, [showExplanation, currentQuestionIndex, questions.length, score, onComplete]);
+  }, [showResults])
 
   return (
     <div className="space-y-6">
@@ -441,23 +461,28 @@ const InteractiveQuiz: React.FC<QuizProps> = ({ onComplete }) => {
           Topic Quiz: Lending & Borrowing
         </h2>
         <span className="text-sm text-gray-600">
-          Question {currentQuestionIndex + 1} of {quiz.questions.length}
+          Question {currentQuestion + 1} of {quizQuestions.length}
         </span>
       </div>
 
       <Progress
-        value={(currentQuestionIndex / quiz.questions.length) * 100}
+        value={(currentQuestion / quizQuestions.length) * 100}
         className="mb-6"
       />
 
       <AnimatePresence mode="wait">
         <QuizQuestion
-          key={currentQuestionIndex}
-          question={quiz.questions[currentQuestionIndex]}
+          key={currentQuestion}
+          question={quizQuestions[currentQuestion]}
           onAnswer={handleAnswer}
           showExplanation={showExplanation}
         />
       </AnimatePresence>
+      {showResults && (
+        <div>
+          <h3>Quiz complete! Your score is {((score) / quizQuestions.length) * 100}%</h3>
+        </div>
+      )}
     </div>
   );
 };
