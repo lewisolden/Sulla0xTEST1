@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useProgress } from "@/context/progress-context";
@@ -16,6 +16,7 @@ export default function CryptoMarketQuiz() {
   const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
+  const [countdown, setCountdown] = useState<number | null>(null);
   const { updateProgress } = useProgress();
 
   const quizQuestions: QuizQuestion[] = [
@@ -79,11 +80,24 @@ export default function CryptoMarketQuiz() {
   const handleAnswerSelect = (optionIndex: number) => {
     setSelectedAnswer(optionIndex);
     setShowExplanation(true);
+    setCountdown(5); // Start 5 second countdown
   };
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (countdown !== null && countdown > 0) {
+      timer = setTimeout(() => {
+        setCountdown(countdown - 1);
+      }, 1000);
+    } else if (countdown === 0) {
+      moveToNextQuestion();
+    }
+    return () => clearTimeout(timer);
+  }, [countdown]);
 
   const moveToNextQuestion = () => {
     const isCorrect = selectedAnswer === quizQuestions[currentQuestion].correctAnswer;
-    
+
     if (isCorrect) {
       setScore(prev => prev + 1);
     }
@@ -92,6 +106,7 @@ export default function CryptoMarketQuiz() {
       setCurrentQuestion(prev => prev + 1);
       setSelectedAnswer(null);
       setShowExplanation(false);
+      setCountdown(null);
     } else {
       setShowResult(true);
       const passThreshold = quizQuestions.length * 0.6;
@@ -154,7 +169,7 @@ export default function CryptoMarketQuiz() {
               Question {currentQuestion + 1} of {quizQuestions.length}
             </span>
           </h2>
-          
+
           <div className="bg-blue-50 rounded-lg p-4 mb-6">
             <p className="text-lg text-gray-700">
               {currentQuizQuestion.question}
@@ -197,10 +212,15 @@ export default function CryptoMarketQuiz() {
                   : '❌ Incorrect'}
               </h3>
               <p>{currentQuizQuestion.explanation}</p>
+              {countdown !== null && (
+                <p className="mt-2 text-gray-600">
+                  Next question in {countdown} seconds...
+                </p>
+              )}
             </div>
           )}
 
-          {selectedAnswer !== null && (
+          {selectedAnswer !== null && countdown === null && (
             <Button
               onClick={moveToNextQuestion}
               className="mt-6 w-full"
