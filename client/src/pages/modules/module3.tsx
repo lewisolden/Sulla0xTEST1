@@ -173,10 +173,10 @@ export default function Module3() {
                       <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.3 }}
-                        className="mt-12 bg-gradient-to-br from-gray-500 to-blue-500 rounded-lg p-8 text-white"
+                        transition={{ delay: 0.8 }}
+                        className="mt-12 bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg p-8 text-white"
                       >
-                        <h3 className="text-2xl font-bold mb-4">Learning Objectives</h3>
+                        <h2 className="text-2xl font-bold mb-4">Module Learning Objectives</h2>
                         <ul className="grid md:grid-cols-2 gap-4">
                           {[
                             "Understand Ethereum's role as a programmable blockchain platform",
@@ -190,7 +190,7 @@ export default function Module3() {
                               key={index}
                               initial={{ opacity: 0, x: -20 }}
                               animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: 0.5 + index * 0.1 }}
+                              transition={{ delay: 1 + index * 0.1 }}
                               className="flex items-center gap-3"
                             >
                               <div className="h-2 w-2 bg-blue-400 rounded-full"></div>
