@@ -4,179 +4,255 @@ import { Button } from "@/components/ui/button";
 import { useProgress } from "@/context/progress-context";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowLeft, ArrowRight, CheckCircle, XCircle, RefreshCw, CheckCircle2, X } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, X } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 
-const quizQuestions = [
-  {
-    id: 0,
-    question: "What is the maximum number of Bitcoins that will ever exist?",
-    options: [
-      "18 million",
-      "21 million",
-      "25 million",
-      "There is no maximum"
-    ],
-    correct: 1,
-    explanation: "Bitcoin's code limits the total supply to 21 million coins. This scarcity is a fundamental feature of Bitcoin's economic model."
-  },
-  {
-    id: 1,
-    question: "Which of these best describes a Bitcoin wallet?",
-    options: [
-      "A physical device that stores Bitcoin",
-      "A software that stores your private keys and manages transactions",
-      "An online account where you keep Bitcoin",
-      "A bank account for cryptocurrency"
-    ],
-    correct: 1,
-    explanation: "A Bitcoin wallet is software that manages your private keys and helps you interact with the Bitcoin network. It doesn't actually 'store' Bitcoins, as they exist on the blockchain."
-  },
-  {
-    id: 2,
-    question: "What happens if you lose your Bitcoin wallet's recovery phrase?",
-    options: [
-      "Contact Bitcoin support to recover it",
-      "Use your email to reset it",
-      "Your Bitcoin is permanently lost",
-      "Wait 30 days for automatic reset"
-    ],
-    correct: 2,
-    explanation: "If you lose your recovery phrase, there is no way to recover your Bitcoin. There is no central authority or support team that can help - this highlights the importance of securing your recovery phrase."
-  },
-  {
-    id: 3,
-    question: "What is the main advantage of a Bitcoin ETF over direct Bitcoin ownership?",
-    options: [
-      "Higher returns guaranteed",
-      "No transaction fees",
-      "Investment through traditional brokerage accounts",
-      "Faster transactions"
-    ],
-    correct: 2,
-    explanation: "Bitcoin ETFs allow investors to gain Bitcoin exposure through traditional brokerage accounts without needing to manage private keys or deal with cryptocurrency exchanges."
-  },
-  {
-    id: 4,
-    question: "Which statement about Bitcoin transactions is correct?",
-    options: [
-      "They can be reversed by contacting support",
-      "They are anonymous and untraceable",
-      "They are confirmed by network consensus",
-      "They are free of charge"
-    ],
-    correct: 2,
-    explanation: "Bitcoin transactions are confirmed through network consensus (mining). Once confirmed, they cannot be reversed, and while they're public on the blockchain, they're not free (they require mining fees)."
-  }
-];
+interface QuestionProps {
+  question: {
+    id: number;
+    question: string;
+    options: string[];
+    correctAnswer: number;
+    explanation: string;
+  };
+  onAnswer: (selectedIndex: number) => void;
+  showExplanation: boolean;
+}
+
+interface QuizProps {
+  onComplete: (score: number) => void;
+}
+
+const quiz = {
+  questions: [
+    {
+      id: 0,
+      question: "What is the maximum number of Bitcoins that will ever exist?",
+      options: ["18 million", "21 million", "25 million", "There is no maximum"],
+      correctAnswer: 1,
+      explanation: "Bitcoin's code limits the total supply to 21 million coins. This scarcity is a fundamental feature of Bitcoin's economic model."
+    },
+    {
+      id: 1,
+      question: "Which of these best describes a Bitcoin wallet?",
+      options: [
+        "A physical device that stores Bitcoin",
+        "A software that stores your private keys and manages transactions",
+        "An online account where you keep Bitcoin",
+        "A bank account for cryptocurrency"
+      ],
+      correctAnswer: 1,
+      explanation: "A Bitcoin wallet is software that manages your private keys and helps you interact with the Bitcoin network. It doesn't actually 'store' Bitcoins, as they exist on the blockchain."
+    },
+    {
+      id: 2,
+      question: "What happens if you lose your Bitcoin wallet's recovery phrase?",
+      options: [
+        "Contact Bitcoin support to recover it",
+        "Use your email to reset it",
+        "Your Bitcoin is permanently lost",
+        "Wait 30 days for automatic reset"
+      ],
+      correctAnswer: 2,
+      explanation: "If you lose your recovery phrase, there is no way to recover your Bitcoin. There is no central authority or support team that can help - this highlights the importance of securing your recovery phrase."
+    },
+    {
+      id: 3,
+      question: "What is the main advantage of a Bitcoin ETF over direct Bitcoin ownership?",
+      options: [
+        "Higher returns guaranteed",
+        "No transaction fees",
+        "Investment through traditional brokerage accounts",
+        "Faster transactions"
+      ],
+      correctAnswer: 2,
+      explanation: "Bitcoin ETFs allow investors to gain Bitcoin exposure through traditional brokerage accounts without needing to manage private keys or deal with cryptocurrency exchanges."
+    },
+    {
+      id: 4,
+      question: "Which statement about Bitcoin transactions is correct?",
+      options: [
+        "They can be reversed by contacting support",
+        "They are anonymous and untraceable",
+        "They are confirmed by network consensus",
+        "They are free of charge"
+      ],
+      correctAnswer: 2,
+      explanation: "Bitcoin transactions are confirmed through network consensus (mining). Once confirmed, they cannot be reversed, and while they're public on the blockchain, they're not free (they require mining fees)."
+    }
+  ]
+};
+
+const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplanation }) => {
+  const [showNotification, setShowNotification] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
+
+  const handleOptionClick = (idx: number) => {
+    const correct = idx === question.correctAnswer;
+    setIsCorrect(correct);
+    setShowNotification(true);
+    onAnswer(idx);
+
+    // Hide notification after 2 seconds
+    setTimeout(() => {
+      setShowNotification(false);
+    }, 2000);
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className="space-y-4"
+    >
+      <h3 className="text-xl font-medium text-gray-800 mb-4">
+        {question.question}
+      </h3>
+
+      <div className="space-y-3">
+        {question.options.map((option, idx) => (
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: idx * 0.1 }}
+          >
+            <Button
+              variant="outline"
+              className={`w-full justify-start text-left p-4 ${
+                showExplanation && idx === question.correctAnswer
+                  ? 'bg-green-50 border-green-500 text-green-700'
+                  : ''
+              }`}
+              onClick={() => !showExplanation && handleOptionClick(idx)}
+              disabled={showExplanation}
+            >
+              {option}
+            </Button>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Answer Notification */}
+      <AnimatePresence>
+        {showNotification && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className={`${
+              isCorrect ? 'bg-green-500' : 'bg-red-500'
+            } text-white px-6 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 mt-4`}
+          >
+            {isCorrect ? (
+              <>
+                <CheckCircle2 className="h-5 w-5" />
+                <span className="font-medium">Correct!</span>
+              </>
+            ) : (
+              <>
+                <X className="h-5 w-5" />
+                <span className="font-medium">Incorrect</span>
+              </>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showExplanation && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className={`mt-4 p-4 rounded-lg ${
+              isCorrect ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
+            }`}
+          >
+            <p>
+              <span className="font-semibold">Explanation: </span>
+              {question.explanation}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+};
+
+const InteractiveQuiz: React.FC<QuizProps> = ({ onComplete }) => {
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [showExplanation, setShowExplanation] = useState(false);
+  const [answers, setAnswers] = useState({});
+  const [score, setScore] = useState(0);
+
+  const handleAnswer = (selectedIndex: number) => {
+    const currentQuestion = quiz.questions[currentQuestionIndex];
+    const isCorrect = selectedIndex === currentQuestion.correctAnswer;
+
+    setAnswers(prev => ({
+      ...prev,
+      [currentQuestion.id]: selectedIndex
+    }));
+
+    setShowExplanation(true);
+
+    setTimeout(() => {
+      if (currentQuestionIndex < quiz.questions.length - 1) {
+        setCurrentQuestionIndex(prev => prev + 1);
+        setShowExplanation(false);
+      } else {
+        // Calculate final score
+        const correctAnswers = Object.entries(answers).filter(
+          ([questionId, answer]) => {
+            const question = quiz.questions.find(q => q.id === parseInt(questionId));
+            return question && answer === question.correctAnswer;
+          }
+        ).length;
+        const finalScore = (correctAnswers / quiz.questions.length) * 100;
+        setScore(finalScore);
+        onComplete(finalScore);
+      }
+    }, 3000);
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-2xl font-bold text-purple-800">
+          Topic Quiz: Stablecoins
+        </h2>
+        <span className="text-sm text-gray-600">
+          Question {currentQuestionIndex + 1} of {quiz.questions.length}
+        </span>
+      </div>
+
+      <Progress value={(currentQuestionIndex / quiz.questions.length) * 100} className="mb-6" />
+
+      <AnimatePresence mode="wait">
+        <QuizQuestion
+          key={currentQuestionIndex}
+          question={quiz.questions[currentQuestionIndex]}
+          onAnswer={handleAnswer}
+          showExplanation={showExplanation}
+        />
+      </AnimatePresence>
+    </div>
+  );
+};
+
 
 const Module2Quiz = () => {
   useScrollTop();
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [userAnswers, setUserAnswers] = useState({});
-  const [showResults, setShowResults] = useState(false);
   const [quizStarted, setQuizStarted] = useState(false);
-  const [showNotification, setShowNotification] = useState(false);
-  const [isCorrect, setIsCorrect] = useState(false);
   const { updateProgress } = useProgress();
 
-  const handleAnswer = (questionId: number, selectedOption: number) => {
-    if (!showResults) {
-      const correct = selectedOption === quizQuestions[questionId].correct;
-      setIsCorrect(correct);
-      setShowNotification(true);
-
-      setUserAnswers(prev => ({
-        ...prev,
-        [questionId]: selectedOption
-      }));
-
-      // Hide notification after 1.5 seconds
-      setTimeout(() => {
-        setShowNotification(false);
-      }, 1500);
-
-      // Auto advance after a brief delay to show the explanation
-      setTimeout(() => {
-        if (questionId < quizQuestions.length - 1) {
-          setCurrentQuestion(questionId + 1);
-        } else {
-          handleQuizSubmit();
-        }
-      }, 2000);
-    }
-  };
-
-  const calculateScore = () => {
-    let correct = 0;
-    quizQuestions.forEach(q => {
-      if (userAnswers[q.id] === q.correct) correct++;
-    });
-    return correct;
-  };
-
-  const resetQuiz = () => {
-    setUserAnswers({});
-    setShowResults(false);
-    setQuizStarted(false);
-    setCurrentQuestion(0);
-  };
-
-  const handleQuizSubmit = () => {
-    setShowResults(true);
-    const score = calculateScore();
-    const passThreshold = Math.ceil(quizQuestions.length * 0.7);
+  const handleQuizComplete = (score: number) => {
+    const passThreshold = Math.ceil(quiz.questions.length * 0.7);
     if (score >= passThreshold) {
-      updateProgress("module2", "quiz", true, "completed", new Date().toISOString(), score, quizQuestions.length);
+      updateProgress("module2", "quiz", true, "completed", new Date().toISOString(), score, quiz.questions.length);
     }
-  };
-
-  const renderQuestion = (question) => {
-    const isAnswered = userAnswers[question.id] !== undefined;
-    const isCorrect = userAnswers[question.id] === question.correct;
-
-    return (
-      <motion.div
-        key={question.id}
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: -20 }}
-        className="mb-8 p-4 border rounded-lg bg-white shadow-sm"
-      >
-        <h3 className="text-lg font-semibold mb-4">{question.id + 1}. {question.question}</h3>
-        <div className="space-y-2">
-          {question.options.map((option, index) => (
-            <div
-              key={index}
-              onClick={() => !isAnswered && handleAnswer(question.id, index)}
-              className={`p-3 rounded cursor-pointer transition-colors
-                ${!isAnswered ? 'hover:bg-gray-100' : ''}
-                ${isAnswered && index === question.correct ? 'bg-green-100' : ''}
-                ${isAnswered && userAnswers[question.id] === index && index !== question.correct ? 'bg-red-100' : ''}
-                ${!isAnswered && userAnswers[question.id] === index ? 'bg-blue-100' : ''}
-                border`}
-            >
-              {option}
-              {isAnswered && index === question.correct && (
-                <CheckCircle className="inline ml-2 text-green-500" size={20} />
-              )}
-              {isAnswered && userAnswers[question.id] === index && index !== question.correct && (
-                <XCircle className="inline ml-2 text-red-500" size={20} />
-              )}
-            </div>
-          ))}
-        </div>
-        {isAnswered && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mt-4 text-sm text-gray-600 bg-gray-50 p-3 rounded"
-          >
-            <strong>Explanation:</strong> {question.explanation}
-          </motion.div>
-        )}
-      </motion.div>
-    );
   };
 
   return (
@@ -213,80 +289,7 @@ const Module2Quiz = () => {
                 </Button>
               </div>
             ) : (
-              <div className="space-y-4 relative">
-                {/* Answer Notification */}
-                <AnimatePresence>
-                  {showNotification && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      className={`mt-4 mb-2 ${isCorrect ? 'bg-green-500' : 'bg-red-500'} 
-                        text-white px-8 py-4 rounded-lg shadow-lg flex items-center justify-center gap-2`}
-                    >
-                      {isCorrect ? (
-                        <>
-                          <CheckCircle2 className="h-6 w-6" />
-                          <span className="text-xl font-bold">Correct!</span>
-                        </>
-                      ) : (
-                        <>
-                          <X className="h-6 w-6" />
-                          <span className="text-xl font-bold">Incorrect</span>
-                        </>
-                      )}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                {!showResults ? (
-                  <div>
-                    <div className="mb-4 flex justify-between items-center">
-                      <span className="text-sm text-gray-600">
-                        Question {currentQuestion + 1} of {quizQuestions.length}
-                      </span>
-                      <span className="text-sm text-gray-600">
-                        Progress: {Object.keys(userAnswers).length} / {quizQuestions.length}
-                      </span>
-                    </div>
-                    {renderQuestion(quizQuestions[currentQuestion])}
-                  </div>
-                ) : (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="text-center p-6 bg-gray-50 rounded-lg"
-                  >
-                    <h3 className="text-xl font-bold mb-2">
-                      Your Score: {calculateScore()} out of {quizQuestions.length}
-                    </h3>
-                    {calculateScore() >= Math.ceil(quizQuestions.length * 0.7) ? (
-                      <p className="text-green-600 mb-4">Perfect score! Excellent understanding of the concepts.</p>
-                    ) : (
-                      <p className="text-blue-600 mb-4">Review the explanations above for any questions you missed.</p>
-                    )}
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                      <Button
-                        onClick={resetQuiz}
-                        variant="outline"
-                        className="gap-2"
-                      >
-                        <RefreshCw className="h-4 w-4" />
-                        Try Again
-                      </Button>
-
-                      {calculateScore() >= Math.ceil(quizQuestions.length * 0.7) && (
-                        <Link href="/modules/module3">
-                          <Button className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white gap-2">
-                            Continue to Module 3
-                            <ArrowRight className="h-4 w-4" />
-                          </Button>
-                        </Link>
-                      )}
-                    </div>
-                  </motion.div>
-                )}
-              </div>
+              <InteractiveQuiz onComplete={handleQuizComplete} />
             )}
           </CardContent>
         </Card>
