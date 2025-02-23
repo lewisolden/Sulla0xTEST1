@@ -69,7 +69,6 @@ export default function BitcoinFundamentalsQuiz() {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
-  const [showExplanation, setShowExplanation] = useState(false);
   const { updateProgress } = useProgress();
   const [, setLocation] = useLocation();
 
@@ -77,28 +76,19 @@ export default function BitcoinFundamentalsQuiz() {
     // Prevent multiple selections
     if (selectedAnswer !== null) return;
 
-    // Record answer and show explanation
     setSelectedAnswer(answerIndex);
-    setShowExplanation(true);
 
-    // Update score if correct
+    // Check if answer is correct and update score
     const isCorrect = answerIndex === questions[currentQuestion].correctAnswer;
     if (isCorrect) {
       setScore(prev => prev + 1);
     }
 
-    // Set timer for next question or completion
-    const timer = setTimeout(() => {
-      if (currentQuestion < questions.length - 1) {
-        // Move to next question
-        setCurrentQuestion(prev => prev + 1);
-        setSelectedAnswer(null);
-        setShowExplanation(false);
-      } else {
-        // Quiz complete - calculate final score
+    // Wait 3 seconds to show explanation, then proceed
+    setTimeout(() => {
+      if (currentQuestion === questions.length - 1) {
+        // Last question - show results
         const finalScore = ((score + (isCorrect ? 1 : 0)) / questions.length) * 100;
-
-        // Show results
         setShowResult(true);
 
         // Update progress
@@ -114,17 +104,16 @@ export default function BitcoinFundamentalsQuiz() {
           'Module 2 Quiz'
         );
 
-        // Navigate to next module if passed
+        // Redirect after 5 seconds if passed
         if (finalScore >= 60) {
-          const navigationTimer = setTimeout(() => {
-            setLocation('/modules/module3');
-          }, 5000);
-          return () => clearTimeout(navigationTimer);
+          setTimeout(() => setLocation('/modules/module3'), 5000);
         }
+      } else {
+        // Move to next question
+        setCurrentQuestion(currentQuestion + 1);
+        setSelectedAnswer(null);
       }
     }, 3000);
-
-    return () => clearTimeout(timer);
   };
 
   const restartQuiz = () => {
@@ -132,7 +121,6 @@ export default function BitcoinFundamentalsQuiz() {
     setSelectedAnswer(null);
     setShowResult(false);
     setScore(0);
-    setShowExplanation(false);
   };
 
   if (showResult) {
@@ -143,9 +131,7 @@ export default function BitcoinFundamentalsQuiz() {
           <div className="flex items-center justify-center gap-4">
             <Award className={`h-10 w-10 ${percentage >= 60 ? 'text-green-500' : 'text-red-500'}`} />
             <div>
-              <h2 className="text-xl font-bold text-orange-800">
-                Quiz Complete!
-              </h2>
+              <h2 className="text-xl font-bold text-orange-800">Quiz Complete!</h2>
               <div className="text-lg">
                 <span className="font-semibold">Your Score: </span>
                 <span className={`font-bold ${percentage >= 60 ? 'text-green-600' : 'text-red-600'}`}>
@@ -244,7 +230,7 @@ export default function BitcoinFundamentalsQuiz() {
                       : selectedAnswer === index
                         ? 'bg-red-100 border-2 border-red-500'
                         : 'bg-white border border-gray-200'}
-                  whitespace-normal break-words hover:shadow-md
+                  whitespace-normal break-words hover-shadow-md
                 `}
                 disabled={selectedAnswer !== null}
                 whileHover={{ scale: selectedAnswer === null ? 1.01 : 1 }}
@@ -256,7 +242,7 @@ export default function BitcoinFundamentalsQuiz() {
           </div>
         </div>
 
-        {showExplanation && (
+        {selectedAnswer !== null && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
