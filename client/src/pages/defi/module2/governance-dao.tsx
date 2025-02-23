@@ -16,7 +16,8 @@ import {
   LightbulbIcon,
   ChartBarIcon,
   ApertureIcon,
-  ShieldCheckIcon
+  ShieldCheckIcon,
+  X
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Link, useLocation } from "wouter";
@@ -151,77 +152,87 @@ const OracleNetworks = () => {
 const GovernanceQuiz = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
-  const [userAnswer, setUserAnswer] = useState<string | null>(null);
+  const [userAnswer, setUserAnswer] = useState<number | null>(null);
   const [score, setScore] = useState(0);
   const [quizStarted, setQuizStarted] = useState(false);
-  const { toast } = useToast();
+  const [showResults, setShowResults] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
+  const { updateProgress } = useProgress();
   const [, setLocation] = useLocation();
 
   const questions = [
     {
       id: 1,
       question: "What is the primary purpose of a DAO?",
-      options: {
-        a: "To centralize decision making",
-        b: "To automate all blockchain operations",
-        c: "To enable decentralized community governance",
-        d: "To maximize token prices"
-      },
-      correct: "c",
+      options: [
+        "To centralize decision making",
+        "To automate all blockchain operations",
+        "To enable decentralized community governance",
+        "To maximize token prices"
+      ],
+      correctAnswer: 2,
       explanation: "DAOs (Decentralized Autonomous Organizations) are designed to enable community-driven governance where token holders can participate in decision-making processes transparently and democratically."
     },
     {
       id: 2,
       question: "What role do oracles play in DeFi protocols?",
-      options: {
-        a: "They store all blockchain data",
-        b: "They connect smart contracts with external data",
-        c: "They mine new blocks",
-        d: "They manage user accounts"
-      },
-      correct: "b",
+      options: [
+        "They store all blockchain data",
+        "They connect smart contracts with external data",
+        "They mine new blocks",
+        "They manage user accounts"
+      ],
+      correctAnswer: 1,
       explanation: "Oracles serve as bridges between blockchain smart contracts and external data sources, enabling DeFi protocols to access real-world information like price feeds and market data."
     },
     {
       id: 3,
       question: "Which of these is a key feature of Chainlink's oracle network?",
-      options: {
-        a: "Centralized data feeds",
-        b: "Single node architecture",
-        c: "Decentralized node operators",
-        d: "Manual data updates"
-      },
-      correct: "c",
+      options: [
+        "Centralized data feeds",
+        "Single node architecture",
+        "Decentralized node operators",
+        "Manual data updates"
+      ],
+      correctAnswer: 2,
       explanation: "Chainlink uses a network of decentralized node operators to ensure reliable and manipulation-resistant data feeds, making it more secure and robust than centralized alternatives."
     }
   ];
 
-  const handleAnswer = (answer: string) => {
-    setUserAnswer(answer);
-    setShowExplanation(true);
+  const handleAnswer = (answerIndex: number) => {
+    if (showExplanation) return;
 
-    const isCorrect = answer === questions[currentQuestion].correct;
-    if (isCorrect) {
+    setUserAnswer(answerIndex);
+    const correct = answerIndex === questions[currentQuestion].correctAnswer;
+    setIsCorrect(correct);
+    setShowNotification(true);
+
+    if (correct) {
       setScore(score + 1);
-      toast({
-        title: "Correct! 🎉",
-        description: "Great job! Moving to next question...",
-        variant: "default",
-      });
-    } else {
-      toast({
-        title: "Incorrect",
-        description: "Let's understand why before moving on.",
-        variant: "destructive",
-      });
     }
 
-    // Auto advance after 3 seconds
+    // Show notification briefly
+    setTimeout(() => {
+      setShowNotification(false);
+      setShowExplanation(true);
+    }, 1500);
+
+    // Auto advance after showing explanation
     setTimeout(() => {
       if (currentQuestion < questions.length - 1) {
-        setShowExplanation(false);
-        setUserAnswer(null);
         setCurrentQuestion(currentQuestion + 1);
+        setUserAnswer(null);
+        setShowExplanation(false);
+      } else {
+        setShowResults(true);
+        const finalScore = Math.round(((score + (correct ? 1 : 0)) / questions.length) * 100);
+        updateProgress(
+          3,
+          'governance-dao',
+          finalScore >= 70,
+          finalScore
+        );
       }
     }, 3000);
   };
@@ -256,7 +267,7 @@ const GovernanceQuiz = () => {
         <div className="flex justify-between items-center">
           <CardTitle className="text-2xl">Question {currentQuestion + 1}/{questions.length}</CardTitle>
           <span className="text-sm font-medium text-blue-600">
-            Score: {score}/{questions.length}
+            Score: {Math.round((score / questions.length) * 100)}%
           </span>
         </div>
         <Progress
@@ -269,56 +280,77 @@ const GovernanceQuiz = () => {
           <div className="space-y-4">
             <h3 className="text-xl font-medium">{questions[currentQuestion].question}</h3>
             <div className="space-y-2">
-              {Object.entries(questions[currentQuestion].options).map(([key, value]) => (
+              {questions[currentQuestion].options.map((option, index) => (
                 <Button
-                  key={key}
-                  onClick={() => !showExplanation && handleAnswer(key)}
-                  variant={userAnswer === key ?
-                    (key === questions[currentQuestion].correct ? "default" : "destructive")
+                  key={index}
+                  onClick={() => !showExplanation && handleAnswer(index)}
+                  variant={userAnswer === index ?
+                    (index === questions[currentQuestion].correctAnswer ? "default" : "destructive")
                     : "outline"}
                   disabled={showExplanation}
                   className="w-full justify-start text-left"
                 >
-                  {value}
+                  {option}
                 </Button>
               ))}
             </div>
           </div>
 
+          {/* Answer Notification - Below questions */}
+          <AnimatePresence>
+            {showNotification && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                className={`${
+                  isCorrect ? 'bg-green-500' : 'bg-red-500'
+                } text-white px-6 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 mt-4`}
+              >
+                {isCorrect ? (
+                  <>
+                    <CheckCircle2 className="h-5 w-5" />
+                    <span className="font-medium">Correct!</span>
+                  </>
+                ) : (
+                  <>
+                    <X className="h-5 w-5" />
+                    <span className="font-medium">Incorrect</span>
+                  </>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           {showExplanation && (
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-blue-50 p-4 rounded-lg"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className={`mt-4 p-4 rounded-lg ${
+                isCorrect ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
+              }`}
             >
-              <h4 className="font-medium text-blue-800 mb-2">Explanation</h4>
-              <p className="text-blue-700">{questions[currentQuestion].explanation}</p>
+              <p>
+                <span className="font-semibold">Explanation: </span>
+                {questions[currentQuestion].explanation}
+              </p>
               {currentQuestion === questions.length - 1 && (
                 <div className="mt-4 space-y-4">
                   <h3 className="text-xl font-bold">Quiz Complete!</h3>
                   <p className="text-gray-600">
-                    Final Score: {score}/{questions.length}
+                    Final Score: {score}/{questions.length} ({Math.round((score / questions.length) * 100)}%)
                   </p>
                   <p className="text-gray-600">
                     {score === questions.length
                       ? "Perfect score! Excellent understanding!"
                       : "Good effort! Review the material and try again!"}
                   </p>
-                  <div className="flex flex-col gap-4">
-                    <Button
-                      onClick={() => setLocation("/defi/module2/quiz")}
-                      className="w-full bg-green-600 hover:bg-green-700 text-white"
-                    >
+                  <Link href="/defi/module2/quiz">
+                    <Button className="w-full">
                       Take Module Quiz
                     </Button>
-                    <Button
-                      onClick={() => setLocation("/defi/module2")}
-                      variant="outline"
-                      className="w-full"
-                    >
-                      Return to Module 2
-                    </Button>
-                  </div>
+                  </Link>
                 </div>
               )}
             </motion.div>
