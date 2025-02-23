@@ -73,7 +73,7 @@ const Module1Quiz = () => {
     if (showExplanation && currentQuestion < quizQuestions.length - 1) {
       timer = setTimeout(() => {
         moveToNextQuestion();
-      }, 3000); // 3 seconds delay before advancing
+      }, 5000); // 5 seconds delay before advancing
     }
     return () => clearTimeout(timer);
   }, [showExplanation, currentQuestion]);

@@ -169,7 +169,7 @@ export default function DefiModule2Quiz() {
           score: Math.round((score / questions.length) * 100)
         });
       }
-    }, 3000);
+    }, 5000);
   };
 
   const progressPercentage = ((currentQuestion + 1) / questions.length) * 100;

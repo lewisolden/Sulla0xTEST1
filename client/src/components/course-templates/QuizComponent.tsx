@@ -22,7 +22,7 @@ interface QuizProps {
 export const QuizComponent: React.FC<QuizProps> = ({
   questions,
   onComplete,
-  autoAdvanceDelay = 3000,
+  autoAdvanceDelay = 5000,
 }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);

@@ -391,7 +391,10 @@ const InteractiveQuiz: React.FC<QuizProps> = ({ onComplete }) => {
   const [showExplanation, setShowExplanation] = useState(false);
   const [answers, setAnswers] = useState({});
   const [score, setScore] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null); // Added state for selected answer
   const { toast } = useToast();
+  const questions = quiz.questions;
+
 
   const handleAnswer = (selectedIndex: number) => {
     const currentQuestion = quiz.questions[currentQuestionIndex];
@@ -402,6 +405,8 @@ const InteractiveQuiz: React.FC<QuizProps> = ({ onComplete }) => {
       [currentQuestion.id]: selectedIndex
     }));
 
+    setSelectedAnswer(selectedIndex); // Update selected answer state
+
     // Show explanation
     setShowExplanation(true);
 
@@ -410,22 +415,24 @@ const InteractiveQuiz: React.FC<QuizProps> = ({ onComplete }) => {
     }
 
     // Auto advance after showing the explanation
-    setTimeout(() => {
-      if (currentQuestionIndex < quiz.questions.length - 1) {
-        setCurrentQuestionIndex(prev => prev + 1);
-        setShowExplanation(false);
-      } else {
-        // Calculate final score
-        const correctAnswers = Object.entries(answers).filter(
-          ([questionId, answer]) =>
-            answer === quiz.questions.find(q => q.id === parseInt(questionId)).correctAnswer
-        ).length;
-        const finalScore = (correctAnswers / quiz.questions.length) * 100;
-        setScore(finalScore);
-        onComplete(finalScore);
-      }
-    }, 2000);
+
   };
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (showExplanation) {
+      timer = setTimeout(() => {
+        if (currentQuestionIndex < questions.length - 1) {
+          setCurrentQuestionIndex(prev => prev + 1);
+          setShowExplanation(false);
+          setSelectedAnswer(null);
+        } else {
+          onComplete(Math.round((score / questions.length) * 100));
+        }
+      }, 5000);
+    }
+    return () => clearTimeout(timer);
+  }, [showExplanation, currentQuestionIndex, questions.length, score, onComplete]);
 
   return (
     <div className="space-y-6">
