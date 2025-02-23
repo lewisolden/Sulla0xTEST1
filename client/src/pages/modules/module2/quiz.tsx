@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useProgress } from "@/context/progress-context";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowLeft, ArrowRight, CheckCircle, XCircle, RefreshCw } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle, XCircle, RefreshCw, CheckCircle2, X } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 
 const quizQuestions = [
@@ -76,7 +76,7 @@ const Module2Quiz = () => {
   const [userAnswers, setUserAnswers] = useState({});
   const [showResults, setShowResults] = useState(false);
   const [quizStarted, setQuizStarted] = useState(false);
-  const [showPopup, setShowPopup] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const { updateProgress } = useProgress();
 
@@ -84,16 +84,16 @@ const Module2Quiz = () => {
     if (!showResults) {
       const correct = selectedOption === quizQuestions[questionId].correct;
       setIsCorrect(correct);
-      setShowPopup(true);
+      setShowNotification(true);
 
       setUserAnswers(prev => ({
         ...prev,
         [questionId]: selectedOption
       }));
 
-      // Hide popup after 1.5 seconds
+      // Hide notification after 1.5 seconds
       setTimeout(() => {
-        setShowPopup(false);
+        setShowNotification(false);
       }, 1500);
 
       // Auto advance after a brief delay to show the explanation
@@ -214,9 +214,9 @@ const Module2Quiz = () => {
               </div>
             ) : (
               <div className="space-y-4 relative">
-                {/* Answer Popup */}
+                {/* Answer Notification */}
                 <AnimatePresence>
-                  {showPopup && (
+                  {showNotification && (
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -226,12 +226,12 @@ const Module2Quiz = () => {
                     >
                       {isCorrect ? (
                         <>
-                          <CheckCircle className="h-6 w-6" />
+                          <CheckCircle2 className="h-6 w-6" />
                           <span className="text-xl font-bold">Correct!</span>
                         </>
                       ) : (
                         <>
-                          <XCircle className="h-6 w-6" />
+                          <X className="h-6 w-6" />
                           <span className="text-xl font-bold">Incorrect</span>
                         </>
                       )}
