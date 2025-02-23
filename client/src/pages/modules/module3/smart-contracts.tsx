@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ModuleNavigation } from "@/components/layout/ModuleNavigation";
 import { Code, Shield, Workflow, GitBranch, User } from "lucide-react";
@@ -13,7 +13,7 @@ import { useScrollTop } from "@/hooks/useScrollTop";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 
-// Default images should be imported from public directory
+
 const cryptoPunkImage = "/Screenshot 2025-02-16 at 23.23.28.png";
 
 const SimpleSmartContractExercise = () => {
@@ -233,8 +233,13 @@ const SmartContractsSection = () => {
   useScrollTop();
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [showQuiz, setShowQuiz] = useState(false);
   const { updateProgress } = useProgress();
+  const [quizCompleted, setQuizCompleted] = useState(false);
+
+  const handleQuizComplete = (score: number) => {
+    setQuizCompleted(true);
+    console.log(`Quiz completed with score: ${score}`);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -270,25 +275,6 @@ const SmartContractsSection = () => {
     visible: { opacity: 1, x: 0 }
   };
 
-  const startQuiz = () => {
-    setShowQuiz(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  if (showQuiz) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <Button 
-          onClick={() => setShowQuiz(false)}
-          className="mb-6"
-          variant="outline"
-        >
-          ← Back to Content
-        </Button>
-        <SmartContractsQuiz />
-      </div>
-    );
-  }
 
   return (
     <motion.div 
@@ -553,12 +539,7 @@ const SmartContractsSection = () => {
                 <p className="text-green-700 mb-4">
                   🎉 Congratulations! You've completed the Smart Contract Development section!
                 </p>
-                <Button
-                  onClick={startQuiz}
-                  className="bg-green-600 hover:bg-green-700 text-white"
-                >
-                  Take Section Quiz
-                </Button>
+                {/*Quiz button removed */}
               </div>
             </Card>
           </motion.div>
@@ -575,6 +556,26 @@ const SmartContractsSection = () => {
         <h2 className="text-3xl font-bold text-blue-700 mb-6">Interactive Exercises</h2>
         <SimpleSmartContractExercise />
         <NFTMintingExercise />
+      </motion.section>
+
+      {/* Add Quiz Section */}
+      <motion.section
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="mt-12"
+      >
+        <Card className="bg-gradient-to-br from-gray-800 to-gray-900 p-6 border border-gray-700">
+          <div className="bg-gradient-to-r from-gray-700 to-gray-800 p-6 rounded-lg mb-6 border border-gray-600">
+            <h2 className="text-2xl font-bold text-white mb-4">
+              Test Your Knowledge
+            </h2>
+            <p className="text-gray-300 mb-6">
+              Let's verify your understanding of Smart Contract Development with a quick quiz.
+            </p>
+          </div>
+          <SmartContractsQuiz onComplete={handleQuizComplete} />
+        </Card>
       </motion.section>
 
       <ModuleNavigation
