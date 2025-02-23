@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useProgress } from "@/context/progress-context";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowLeft, CheckCircle, XCircle, RefreshCw } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle, XCircle, RefreshCw } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 
 const quizQuestions = [
@@ -76,14 +76,25 @@ const Module2Quiz = () => {
   const [userAnswers, setUserAnswers] = useState({});
   const [showResults, setShowResults] = useState(false);
   const [quizStarted, setQuizStarted] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
   const { updateProgress } = useProgress();
 
   const handleAnswer = (questionId: number, selectedOption: number) => {
     if (!showResults) {
+      const correct = selectedOption === quizQuestions[questionId].correct;
+      setIsCorrect(correct);
+      setShowPopup(true);
+
       setUserAnswers(prev => ({
         ...prev,
         [questionId]: selectedOption
       }));
+
+      // Hide popup after 1.5 seconds
+      setTimeout(() => {
+        setShowPopup(false);
+      }, 1500);
 
       // Auto advance after a brief delay to show the explanation
       setTimeout(() => {
@@ -202,7 +213,33 @@ const Module2Quiz = () => {
                 </Button>
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-4 relative">
+                {/* Answer Popup */}
+                <AnimatePresence>
+                  {showPopup && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.3 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.3 }}
+                      className={`fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+                        ${isCorrect ? 'bg-green-500' : 'bg-red-500'} 
+                        text-white px-8 py-4 rounded-lg shadow-lg z-50 flex items-center gap-2`}
+                    >
+                      {isCorrect ? (
+                        <>
+                          <CheckCircle className="h-6 w-6" />
+                          <span className="text-xl font-bold">Correct!</span>
+                        </>
+                      ) : (
+                        <>
+                          <XCircle className="h-6 w-6" />
+                          <span className="text-xl font-bold">Incorrect</span>
+                        </>
+                      )}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
                 {!showResults ? (
                   <div>
                     <div className="mb-4 flex justify-between items-center">
@@ -243,7 +280,7 @@ const Module2Quiz = () => {
                         <Link href="/modules/module3">
                           <Button className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white gap-2">
                             Continue to Module 3
-                            <ArrowLeft className="h-4 w-4" />
+                            <ArrowRight className="h-4 w-4" />
                           </Button>
                         </Link>
                       )}
