@@ -295,9 +295,9 @@ const SmartContractsSection = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="container mx-auto px-4 py-8"
+      className="container mx-auto px-4 py-8 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 min-h-screen"
     >
-      <div className="fixed top-0 left-0 w-full h-1 bg-gray-300 z-50">
+      <div className="fixed top-0 left-0 w-full h-1 bg-gray-800 z-50">
         <div 
           className="h-full bg-blue-600" 
           style={{ width: `${scrollProgress}%` }}
@@ -305,14 +305,25 @@ const SmartContractsSection = () => {
       </div>
 
       <div className="max-w-4xl mx-auto">
-        <motion.h1 
+        <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="text-4xl font-bold text-blue-800 mb-6"
+          className="mb-8 rounded-xl overflow-hidden shadow-lg"
         >
-          3.2 Smart Contract Development
-        </motion.h1>
+          <div className="bg-gradient-to-r from-gray-700 to-gray-800 p-8 border-b border-gray-600">
+            <motion.h1
+              className="text-4xl font-bold text-gray-100 mb-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              3.2 Smart Contract Development
+            </motion.h1>
+            <p className="text-lg text-gray-300 mt-2">
+              Understanding the revolutionary smart contract platform that powers the future of decentralized applications
+            </p>
+          </div>
+        </motion.div>
 
         <Card className="mb-6">
           <div className="p-6 prose max-w-none">
