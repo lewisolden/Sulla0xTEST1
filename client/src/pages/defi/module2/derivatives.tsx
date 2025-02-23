@@ -314,89 +314,6 @@ const TradingSimulator: React.FC<TradingSimulatorProps> = ({ onPositionChange })
 };
 
 
-const HyperliquidOverview: React.FC = () => {
-  return (
-    <Card className="mt-8">
-      <CardHeader className="bg-gradient-to-r from-purple-50 to-blue-50">
-        <CardTitle className="text-2xl">Understanding Hyperliquid: Next-Gen Decentralized Exchange</CardTitle>
-      </CardHeader>
-      <CardContent className="pt-6">
-        <div className="space-y-6">
-          <div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Key Differences from Centralized Exchanges</h3>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-white p-4 rounded-lg border border-gray-200">
-                <h4 className="font-medium text-blue-700 mb-2">Decentralized Order Book</h4>
-                <p className="text-gray-600">
-                  Unlike centralized exchanges that maintain private order books, Hyperliquid operates a fully on-chain order book,
-                  ensuring complete transparency and preventing market manipulation.
-                </p>
-              </div>
-              <div className="bg-white p-4 rounded-lg border border-gray-200">
-                <h4 className="font-medium text-blue-700 mb-2">Self-Custody</h4>
-                <p className="text-gray-600">
-                  Traders maintain control of their assets through smart contracts, eliminating counterparty risk
-                  associated with centralized exchanges holding user funds.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-3">Advanced Features</h3>
-            <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <CheckCircle2 className="h-6 w-6 text-green-500 flex-shrink-0" />
-                <div>
-                  <h4 className="font-medium text-gray-800">Cross-Collateralization</h4>
-                  <p className="text-gray-600">Efficient capital utilization by using a single margin account for multiple positions</p>
-                </div>
-              </li>
-              <li className="flex items-start gap-3">
-                <CheckCircle2 className="h-6 w-6 text-green-500 flex-shrink-0" />
-                <div>
-                  <h4 className="font-medium text-gray-800">Universal Oracle Integration</h4>
-                  <p className="text-gray-600">Robust price feeds from multiple oracle providers ensuring accurate and manipulation-resistant pricing</p>
-                </div>
-              </li>
-              <li className="flex items-start gap-3">
-                <CheckCircle2 className="h-6 w-6 text-green-500 flex-shrink-0" />
-                <div>
-                  <h4 className="font-medium text-gray-800">Automated Risk Management</h4>
-                  <p className="text-gray-600">Smart contract-based liquidations and dynamic margin requirements</p>
-                </div>
-              </li>
-            </ul>
-          </div>
-
-          <div className="bg-blue-50 p-6 rounded-xl">
-            <h3 className="text-xl font-semibold text-blue-800 mb-3">How Hyperliquid Works</h3>
-            <div className="space-y-4">
-              <p className="text-blue-700">
-                Hyperliquid utilizes a unique hybrid architecture combining the best of centralized and decentralized systems:
-              </p>
-              <ol className="space-y-3">
-                <li className="flex items-start gap-2">
-                  <span className="bg-blue-200 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0">1</span>
-                  <p className="text-blue-700">Orders are matched off-chain for speed but settled on-chain for security</p>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="bg-blue-200 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0">2</span>
-                  <p className="text-blue-700">Zero-knowledge proofs verify trade execution without compromising performance</p>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="bg-blue-200 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0">3</span>
-                  <p className="text-blue-700">Multi-collateral system supports various assets for margin</p>
-                </li>
-              </ol>
-            </div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-};
-
 interface QuestionProps {
   question: {
     id: number;
@@ -508,50 +425,51 @@ const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplana
 };
 
 const DerivativesQuiz: React.FC = () => {
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [showExplanation, setShowExplanation] = useState(false);
-  const [userAnswer, setUserAnswer] = useState<number | null>(null);
-  const [score, setScore] = useState(0);
-  const [quizStarted, setQuizStarted] = useState(false);
-  //const { toast } = useToast();
+    const [currentQuestion, setCurrentQuestion] = useState(0);
+    const [showExplanation, setShowExplanation] = useState(false);
+    const [userAnswer, setUserAnswer] = useState<number | null>(null);
+    const [score, setScore] = useState(0);
+    const [quizStarted, setQuizStarted] = useState(false);
+    const [showResults, setShowResults] = useState(false);
+    //const { toast } = useToast();
 
+    const questions = [
+        {
+          id: 1,
+          question: "What is leverage trading?",
+          options: ["Trading with borrowed money to amplify potential returns", "Trading only with your own capital", "Trading without any risk", "Trading physical assets only"],
+          correctAnswer: 0,
+          explanation: "Leverage trading allows traders to open positions larger than their capital by borrowing funds. This amplifies both potential profits and losses."
+        },
+        {
+          id: 2,
+          question: "What happens at the liquidation price?",
+          options: ["You make maximum profit", "Nothing happens", "You lose your collateral and position is closed", "The trade is automatically extended"],
+          correctAnswer: 2,
+          explanation: "When the price reaches the liquidation level, the position is automatically closed and the trader loses their collateral. This is a risk management mechanism to prevent further losses."
+        },
+        {
+          id: 3,
+          question: "How does Hyperliquid differ from centralized exchanges?",
+          options: ["It's more expensive", "It uses fully on-chain order books and self-custody", "It's slower", "It requires KYC"],
+          correctAnswer: 1,
+          explanation: "Hyperliquid combines the benefits of decentralization with the speed of centralized exchanges. It maintains order books on-chain and allows users to retain custody of their assets, enhancing transparency and security."
+        }
+      ];
 
-  const questions = [
-    {
-      id: 1,
-      question: "What is leverage trading?",
-      options: ["Trading with borrowed money to amplify potential returns", "Trading only with your own capital", "Trading without any risk", "Trading physical assets only"],
-      correctAnswer: 0,
-      explanation: "Leverage trading allows traders to open positions larger than their capital by borrowing funds. This amplifies both potential profits and losses."
-    },
-    {
-      id: 2,
-      question: "What happens at the liquidation price?",
-      options: ["You make maximum profit", "Nothing happens", "You lose your collateral and position is closed", "The trade is automatically extended"],
-      correctAnswer: 2,
-      explanation: "When the price reaches the liquidation level, the position is automatically closed and the trader loses their collateral. This is a risk management mechanism to prevent further losses."
-    },
-    {
-      id: 3,
-      question: "How does Hyperliquid differ from centralized exchanges?",
-      options: ["It's more expensive", "It uses fully on-chain order books and self-custody", "It's slower", "It requires KYC"],
-      correctAnswer: 1,
-      explanation: "Hyperliquid combines the benefits of decentralization with the speed of centralized exchanges. It maintains order books on-chain and allows users to retain custody of their assets, enhancing transparency and security."
-    }
-  ];
-
-  const handleAnswer = (answer: number) => {
-    setUserAnswer(answer);
-    setShowExplanation(true);
-    if (answer === questions[currentQuestion].correctAnswer) {
-      setScore(score + 1);
-    }
-    setTimeout(() => {
-      if (currentQuestion < questions.length - 1) {
-        setShowExplanation(false);
-        setUserAnswer(null);
-        setCurrentQuestion(currentQuestion + 1);
-      } else {
+    const handleAnswer = (answer: number) => {
+      setUserAnswer(answer);
+      setShowExplanation(true);
+      if (answer === questions[currentQuestion].correctAnswer) {
+        setScore(score + 1);
+      }
+      setTimeout(() => {
+        if (currentQuestion < questions.length - 1) {
+          setShowExplanation(false);
+          setUserAnswer(null);
+          setCurrentQuestion(currentQuestion + 1);
+        } else {
+          setShowResults(true);
           const finalScore = Math.round((score / questions.length) * 100);
           const { toast } = useToast();
           if (finalScore >= 70) {
@@ -565,68 +483,189 @@ const DerivativesQuiz: React.FC = () => {
               description: `You scored ${finalScore}%. Review the material and try again!`,
             });
           }
-      }
-    }, 2000);
-  };
+        }
+      }, 2000);
+    };
 
-  if (!quizStarted) {
+    if (showResults) {
+      const finalScore = Math.round((score / questions.length) * 100);
+      return (
+        <Card>
+          <CardContent className="p-6">
+            <div className="text-center">
+              <h3 className="text-2xl font-bold mb-4">Quiz Complete!</h3>
+              <p className="text-xl mb-4">
+                Your score: {score}/{questions.length} ({finalScore}%)
+              </p>
+              <Progress value={finalScore} className="mb-6" />
+              {finalScore === 100 ? (
+                <p className="text-green-500 font-semibold mb-6">Perfect score! You've mastered DeFi derivatives concepts!</p>
+              ) : finalScore >= 70 ? (
+                <p className="text-blue-500 font-semibold mb-6">Great job! You have a strong understanding of DeFi derivatives.</p>
+              ) : (
+                <p className="text-yellow-500 font-semibold mb-6">Keep learning! Review the material and try again to improve your score.</p>
+              )}
+              <Link href="/defi/module2/governance-dao">
+                <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white transition duration-300 ease-in-out transform hover:scale-105">
+                  Continue to Governance & DAO
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+      );
+    }
+
+    if (!quizStarted) {
+      return (
+        <Card className="mt-8">
+          <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
+            <CardTitle className="text-2xl">Test Your Knowledge</CardTitle>
+            <p className="text-blue-100 mt-2">
+              Ready to test your understanding of DeFi derivatives and leverage trading?
+            </p>
+          </CardHeader>
+          <CardContent className="pt-6">
+            <div className="text-center space-y-4">
+              <p className="text-gray-600">
+                This quiz will test your knowledge of leverage trading, liquidation mechanics,
+                and decentralized derivatives platforms.
+              </p>
+              <Button onClick={() => setQuizStarted(true)} className="w-full md:w-auto">
+                Start Quiz
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      );
+    }
+
     return (
       <Card className="mt-8">
-        <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-500 text-white">
-          <CardTitle className="text-2xl">Test Your Knowledge</CardTitle>
-          <p className="text-blue-100 mt-2">
-            Ready to test your understanding of DeFi derivatives and leverage trading?
-          </p>
+        <CardHeader className="bg-gradient-to-r from-blue-50 to-purple-50">
+          <div className="flex justify-between items-center">
+            <CardTitle className="text-2xl">Question {currentQuestion + 1}/{questions.length}</CardTitle>
+            <span className="text-sm font-medium text-blue-600">
+              Score: {Math.round((score / questions.length) * 100)}%
+            </span>
+          </div>
+          <Progress
+            value={(currentQuestion / questions.length) * 100}
+            className="mt-4"
+          />
         </CardHeader>
         <CardContent className="pt-6">
-          <div className="text-center space-y-4">
-            <p className="text-gray-600">
-              This quiz will test your knowledge of leverage trading, liquidation mechanics,
-              and decentralized derivatives platforms.
-            </p>
-            <Button onClick={() => setQuizStarted(true)} className="w-full md:w-auto">
-              Start Quiz
-            </Button>
+          <div className="space-y-6">
+            <QuizQuestion
+              question={questions[currentQuestion]}
+              onAnswer={handleAnswer}
+              showExplanation={showExplanation}
+            />
           </div>
         </CardContent>
       </Card>
     );
-  }
+  };
 
+const HyperliquidOverview: React.FC = () => {
   return (
     <Card className="mt-8">
-      <CardHeader className="bg-gradient-to-r from-blue-50 to-purple-50">
-        <div className="flex justify-between items-center">
-          <CardTitle className="text-2xl">Question {currentQuestion + 1}/{questions.length}</CardTitle>
-          <span className="text-sm font-medium text-blue-600">
-            Score: {Math.round((score / questions.length) * 100)}%
-          </span>
-        </div>
-        <Progress
-          value={(currentQuestion / questions.length) * 100}
-          className="mt-4"
-        />
+      <CardHeader className="bg-gradient-to-r from-purple-50 to-blue-50">
+        <CardTitle className="text-2xl">Understanding Hyperliquid: Next-Gen Decentralized Exchange</CardTitle>
       </CardHeader>
       <CardContent className="pt-6">
         <div className="space-y-6">
-          <QuizQuestion
-            question={questions[currentQuestion]}
-            onAnswer={handleAnswer}
-            showExplanation={showExplanation}
-          />
+          <div>
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Key Differences from Centralized Exchanges</h3>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-white p-4 rounded-lg border border-gray-200">
+                <h4 className="font-medium text-blue-700 mb-2">Decentralized Order Book</h4>
+                <p className="text-gray-600">
+                  Unlike centralized exchanges that maintain private order books, Hyperliquid operates a fully on-chain order book,
+                  ensuring complete transparency and preventing market manipulation.
+                </p>
+              </div>
+              <div className="bg-white p-4 rounded-lg border border-gray-200">
+                <h4 className="font-medium text-blue-700 mb-2">Self-Custody</h4>
+                <p className="text-gray-600">
+                  Traders maintain control of their assets through smart contracts, eliminating counterparty risk
+                  associated with centralized exchanges holding user funds.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-xl font-semibold text-gray-800 mb-3">Advanced Features</h3>
+            <ul className="space-y-4">
+              <li className="flex items-start gap-3">
+                <CheckCircle2 className="h-6 w-6 text-green-500 flex-shrink-0" />
+                <div>
+                  <h4 className="font-medium text-gray-800">Cross-Collateralization</h4>
+                  <p className="text-gray-600">Efficient capital utilization by using a single margin account for multiple positions</p>
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <CheckCircle2 className="h-6 w-6 text-green-500 flex-shrink-0" />
+                <div>
+                  <h4 className="font-medium text-gray-800">Universal Oracle Integration</h4>
+                  <p className="text-gray-600">Robust price feeds from multiple oracle providers ensuring accurate and manipulation-resistant pricing</p>
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <CheckCircle2 className="h-6 w-6 text-green-500 flex-shrink-0" />
+                <div>
+                  <h4 className="font-medium text-gray-800">Automated Risk Management</h4>
+                  <p className="text-gray-600">Smart contract-based liquidations and dynamic margin requirements</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div className="bg-blue-50 p-6 rounded-xl">
+            <h3 className="text-xl font-semibold text-blue-800 mb-3">How Hyperliquid Works</h3>
+            <div className="space-y-4">
+              <p className="text-blue-700">
+                Hyperliquid utilizes a unique hybrid architecture combining the best of centralized and decentralized systems:
+              </p>
+              <ol className="space-y-3">
+                <li className="flex items-start gap-2">
+                  <span className="bg-blue-200 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0">1</span>
+                  <p className="text-blue-700">Orders are matched off-chain for speed but settled on-chain for security</p>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="bg-blue-200 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0">2</span>
+                  <p className="text-blue-700">Zero-knowledge proofs verify trade execution without compromising performance</p>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="bg-blue-200 text-blue-800 rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0">3</span>
+                  <p className="text-blue-700">Multi-collateral system supports various assets for margin</p>
+                </li>
+              </ol>
+            </div>
+          </div>
         </div>
       </CardContent>
     </Card>
   );
 };
 
-const DerivativesSection = () => {
+interface SectionProps {
+  id: string;
+  title: string;
+  icon: any;
+  content: React.ReactNode;
+}
+
+
+const DerivativesSection:React.FC = () => {
   useScrollTop();
   const { progress, updateProgress } = useProgress();
   const { toast } = useToast();
   const [currentSection, setCurrentSection] = useState(0);
 
-  const sections = [
+  const sections:SectionProps[] = [
     {
       id: "overview",
       title: "Understanding DeFi Derivatives",
