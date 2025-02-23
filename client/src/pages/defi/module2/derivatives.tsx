@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, BookOpen, CheckCircle2, ArrowRight, TrendingUp, Lock, DollarSign, AlertTriangle, LineChart, Zap, CandlestickChart, Wallet } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCircle2, ArrowRight, TrendingUp, Lock, DollarSign, AlertTriangle, LineChart, Zap, CandlestickChart, Wallet, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "wouter";
 
@@ -397,81 +397,176 @@ const HyperliquidOverview: React.FC = () => {
   );
 };
 
+interface QuestionProps {
+  question: {
+    id: number;
+    question: string;
+    options: string[];
+    correctAnswer: number;
+    explanation: string;
+  };
+  onAnswer: (answer: number) => void;
+  showExplanation: boolean;
+}
+
+const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplanation }) => {
+  const [showNotification, setShowNotification] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
+
+  const handleOptionClick = (idx: number) => {
+    const correct = idx === question.correctAnswer;
+    setIsCorrect(correct);
+    setShowNotification(true);
+    onAnswer(idx);
+
+    // Hide notification after 2 seconds
+    setTimeout(() => {
+      setShowNotification(false);
+    }, 2000);
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className="space-y-4"
+    >
+      <h3 className="text-xl font-medium text-gray-800 mb-4">
+        {question.question}
+      </h3>
+
+      <div className="space-y-3">
+        {question.options.map((option, idx) => (
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: idx * 0.1 }}
+          >
+            <Button
+              variant="outline"
+              className={`w-full justify-start text-left ${
+                showExplanation && idx === question.correctAnswer
+                  ? 'bg-green-50 border-green-500 text-green-700'
+                  : ''
+              }`}
+              onClick={() => !showExplanation && handleOptionClick(idx)}
+              disabled={showExplanation}
+            >
+              {option}
+            </Button>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Answer Notification - Below questions */}
+      <AnimatePresence>
+        {showNotification && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className={`${
+              isCorrect ? 'bg-green-500' : 'bg-red-500'
+            } text-white px-6 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 mt-4`}
+          >
+            {isCorrect ? (
+              <>
+                <CheckCircle2 className="h-5 w-5" />
+                <span className="font-medium">Correct!</span>
+              </>
+            ) : (
+              <>
+                <X className="h-5 w-5" />
+                <span className="font-medium">Incorrect</span>
+              </>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showExplanation && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className={`mt-4 p-4 rounded-lg ${
+              isCorrect ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
+            }`}
+          >
+            <p>
+              <span className="font-semibold">Explanation: </span>
+              {question.explanation}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+};
+
 const DerivativesQuiz: React.FC = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
-  const [userAnswer, setUserAnswer] = useState<string | null>(null);
+  const [userAnswer, setUserAnswer] = useState<number | null>(null);
   const [score, setScore] = useState(0);
   const [quizStarted, setQuizStarted] = useState(false);
-  const { toast } = useToast();
+  //const { toast } = useToast();
+
 
   const questions = [
     {
       id: 1,
       question: "What is leverage trading?",
-      options: {
-        a: "Trading with borrowed money to amplify potential returns",
-        b: "Trading only with your own capital",
-        c: "Trading without any risk",
-        d: "Trading physical assets only"
-      },
-      correct: "a",
+      options: ["Trading with borrowed money to amplify potential returns", "Trading only with your own capital", "Trading without any risk", "Trading physical assets only"],
+      correctAnswer: 0,
       explanation: "Leverage trading allows traders to open positions larger than their capital by borrowing funds. This amplifies both potential profits and losses."
     },
     {
       id: 2,
       question: "What happens at the liquidation price?",
-      options: {
-        a: "You make maximum profit",
-        b: "Nothing happens",
-        c: "You lose your collateral and position is closed",
-        d: "The trade is automatically extended"
-      },
-      correct: "c",
+      options: ["You make maximum profit", "Nothing happens", "You lose your collateral and position is closed", "The trade is automatically extended"],
+      correctAnswer: 2,
       explanation: "When the price reaches the liquidation level, the position is automatically closed and the trader loses their collateral. This is a risk management mechanism to prevent further losses."
     },
     {
       id: 3,
       question: "How does Hyperliquid differ from centralized exchanges?",
-      options: {
-        a: "It's more expensive",
-        b: "It uses fully on-chain order books and self-custody",
-        c: "It's slower",
-        d: "It requires KYC"
-      },
-      correct: "b",
+      options: ["It's more expensive", "It uses fully on-chain order books and self-custody", "It's slower", "It requires KYC"],
+      correctAnswer: 1,
       explanation: "Hyperliquid combines the benefits of decentralization with the speed of centralized exchanges. It maintains order books on-chain and allows users to retain custody of their assets, enhancing transparency and security."
     }
   ];
 
-  const handleAnswer = (answer: string) => {
+  const handleAnswer = (answer: number) => {
     setUserAnswer(answer);
     setShowExplanation(true);
-
-    const isCorrect = answer === questions[currentQuestion].correct;
-    if (isCorrect) {
+    if (answer === questions[currentQuestion].correctAnswer) {
       setScore(score + 1);
-      toast({
-        title: "Correct! 🎉",
-        description: "Great job! Moving to next question...",
-        variant: "default",
-      });
-    } else {
-      toast({
-        title: "Incorrect",
-        description: "Let's understand why before moving on.",
-        variant: "destructive",
-      });
     }
-
-    // Auto advance after 3 seconds
     setTimeout(() => {
       if (currentQuestion < questions.length - 1) {
         setShowExplanation(false);
         setUserAnswer(null);
         setCurrentQuestion(currentQuestion + 1);
+      } else {
+          const finalScore = Math.round((score / questions.length) * 100);
+          const { toast } = useToast();
+          if (finalScore >= 70) {
+            toast({
+              title: "Quiz Complete! 🎉",
+              description: `You scored ${finalScore}%! Great understanding of DeFi derivatives!`,
+            });
+          } else {
+            toast({
+              title: "Quiz Complete",
+              description: `You scored ${finalScore}%. Review the material and try again!`,
+            });
+          }
       }
-    }, 3000);
+    }, 2000);
   };
 
   if (!quizStarted) {
@@ -504,7 +599,7 @@ const DerivativesQuiz: React.FC = () => {
         <div className="flex justify-between items-center">
           <CardTitle className="text-2xl">Question {currentQuestion + 1}/{questions.length}</CardTitle>
           <span className="text-sm font-medium text-blue-600">
-            Score: {score}/{questions.length}
+            Score: {Math.round((score / questions.length) * 100)}%
           </span>
         </div>
         <Progress
@@ -514,53 +609,11 @@ const DerivativesQuiz: React.FC = () => {
       </CardHeader>
       <CardContent className="pt-6">
         <div className="space-y-6">
-          <div className="space-y-4">
-            <h3 className="text-xl font-medium">{questions[currentQuestion].question}</h3>
-            <div className="space-y-2">
-              {Object.entries(questions[currentQuestion].options).map(([key, value]) => (
-                <Button
-                  key={key}
-                  onClick={() => !showExplanation && handleAnswer(key)}
-                  variant={userAnswer === key ?
-                    (key === questions[currentQuestion].correct ? "default" : "destructive")
-                    : "outline"}
-                  disabled={showExplanation}
-                  className="w-full justify-start text-left"
-                >
-                  {value}
-                </Button>
-              ))}
-            </div>
-          </div>
-
-          {showExplanation && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-blue-50 p-4 rounded-lg"
-            >
-              <h4 className="font-medium text-blue-800 mb-2">Explanation</h4>
-              <p className="text-blue-700">{questions[currentQuestion].explanation}</p>
-              {currentQuestion === questions.length - 1 && (
-                <div className="mt-4 space-y-4">
-                  <h3 className="text-xl font-bold">Quiz Complete!</h3>
-                  <p className="text-gray-600">
-                    Final Score: {score}/{questions.length}
-                  </p>
-                  <p className="text-gray-600">
-                    {score === questions.length
-                      ? "Perfect score! Excellent understanding!"
-                      : "Good effort! Review the material and try again!"}
-                  </p>
-                  <Link href="/defi/module2/governance-dao">
-                    <Button className="w-full">
-                      Continue to Governance & DAO
-                    </Button>
-                  </Link>
-                </div>
-              )}
-            </motion.div>
-          )}
+          <QuizQuestion
+            question={questions[currentQuestion]}
+            onAnswer={handleAnswer}
+            showExplanation={showExplanation}
+          />
         </div>
       </CardContent>
     </Card>
