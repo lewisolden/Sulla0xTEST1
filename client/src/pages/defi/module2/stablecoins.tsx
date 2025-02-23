@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, BookOpen, CheckCircle2, ArrowRight, Shield, TrendingUp, Lock, Coins, DollarSign, AlertTriangle, Building2, ChartLine } from "lucide-react";
+import { ArrowLeft, BookOpen, CheckCircle2, ArrowRight, Shield, TrendingUp, Lock, Coins, DollarSign, AlertTriangle, Building2, ChartLine, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "wouter";
 
@@ -376,6 +376,21 @@ const quiz: { questions: QuizQuestion[] } = {
 };
 
 const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplanation }) => {
+  const [showNotification, setShowNotification] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
+
+  const handleOptionClick = (idx: number) => {
+    const correct = idx === question.correctAnswer;
+    setIsCorrect(correct);
+    setShowNotification(true);
+    onAnswer(idx);
+
+    // Hide notification after 2 seconds
+    setTimeout(() => {
+      setShowNotification(false);
+    }, 2000);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -386,6 +401,7 @@ const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplana
       <h3 className="text-xl font-medium text-gray-800 mb-4">
         {question.question}
       </h3>
+
       <div className="space-y-3">
         {question.options.map((option, idx) => (
           <motion.div
@@ -401,7 +417,8 @@ const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplana
                   ? 'bg-green-50 border-green-500 text-green-700'
                   : ''
               }`}
-              onClick={() => onAnswer(idx)}
+              onClick={() => !showExplanation && handleOptionClick(idx)}
+              disabled={showExplanation}
             >
               {option}
             </Button>
@@ -409,15 +426,43 @@ const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplana
         ))}
       </div>
 
+      {/* Answer Notification - Below questions */}
+      <AnimatePresence>
+        {showNotification && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className={`${
+              isCorrect ? 'bg-green-500' : 'bg-red-500'
+            } text-white px-6 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 mt-4`}
+          >
+            {isCorrect ? (
+              <>
+                <CheckCircle2 className="h-5 w-5" />
+                <span className="font-medium">Correct!</span>
+              </>
+            ) : (
+              <>
+                <X className="h-5 w-5" />
+                <span className="font-medium">Incorrect</span>
+              </>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <AnimatePresence>
         {showExplanation && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="mt-4 p-4 bg-blue-50 rounded-lg"
+            className={`mt-4 p-4 rounded-lg ${
+              isCorrect ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
+            }`}
           >
-            <p className="text-blue-800">
+            <p>
               <span className="font-semibold">Explanation: </span>
               {question.explanation}
             </p>
@@ -748,8 +793,7 @@ export default function StablecoinsSection() {
         progress: 100,
         status: 'completed',
         timestamp: new Date().toISOString(),
-        type: 'quiz',
-        courseId: 3,
+        type: 'quiz',        courseId: 3,
         data: {
           score,
           passingThreshold: 70
