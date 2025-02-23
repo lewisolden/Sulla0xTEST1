@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { useProgress } from "@/context/progress-context";
-import { Link } from "wouter";
-import { ArrowRight, CheckCircle, XCircle } from "lucide-react";
+import { CheckCircle, XCircle } from "lucide-react";
 
 interface DigitalCurrenciesQuizProps {
   onComplete: () => void;
@@ -82,6 +81,7 @@ const DigitalCurrenciesQuiz: React.FC<DigitalCurrenciesQuizProps> = ({ onComplet
 
     setTimeout(() => {
       const isCorrect = optionIndex === quizQuestions[currentQuestion].correctAnswer;
+
       if (isCorrect) {
         setScore(prev => prev + 1);
       }
@@ -108,36 +108,10 @@ const DigitalCurrenciesQuiz: React.FC<DigitalCurrenciesQuizProps> = ({ onComplet
         if (finalScore >= 60) {
           setTimeout(() => {
             onComplete();
-          }, 8000);
+          }, 8000); 
         }
       }
-    }, 8000);
-  };
-
-  const moveToNextQuestion = () => {
-    const isCorrect = selectedAnswer === quizQuestions[currentQuestion].correctAnswer;
-
-    if (isCorrect) {
-      setScore(prev => prev + 1);
-    }
-
-    if (currentQuestion < quizQuestions.length - 1) {
-      setCurrentQuestion(prev => prev + 1);
-      setSelectedAnswer(null);
-      setShowExplanation(false);
-    } else {
-      setShowResult(true);
-      const passThreshold = quizQuestions.length * 0.6;
-      updateProgress(1, 'digital-currencies-quiz', score >= passThreshold);
-    }
-  };
-
-  const restartQuiz = () => {
-    setCurrentQuestion(0);
-    setSelectedAnswer(null);
-    setShowResult(false);
-    setScore(0);
-    setShowExplanation(false);
+    }, 8000); 
   };
 
   if (showResult) {
@@ -153,29 +127,23 @@ const DigitalCurrenciesQuiz: React.FC<DigitalCurrenciesQuizProps> = ({ onComplet
           {score >= quizQuestions.length * 0.6 ? (
             <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-4">
               <p className="text-green-700">
-                🎉 Congratulations! You've passed the Digital Currencies quiz!
+                🎉 Congratulations! You've passed!
+              </p>
+              <p className="text-sm text-green-600 mt-1">
+                Moving to next section in 8 seconds... 
               </p>
             </div>
           ) : (
             <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4">
               <p className="text-red-700">
-                You didn't pass this time. Review the content and try again.
+                Review the content and try again to improve your score.
               </p>
             </div>
           )}
-          <Button
-            onClick={restartQuiz}
-            variant="outline"
-            className="mt-4"
-          >
-            Restart Quiz
-          </Button>
         </CardContent>
       </Card>
     );
   }
-
-  const currentQuizQuestion = quizQuestions[currentQuestion];
 
   return (
     <Card>
@@ -190,12 +158,12 @@ const DigitalCurrenciesQuiz: React.FC<DigitalCurrenciesQuizProps> = ({ onComplet
 
           <div className="bg-blue-50 rounded-lg p-4 mb-6">
             <p className="text-lg text-gray-700">
-              {currentQuizQuestion.question}
+              {quizQuestions[currentQuestion].question}
             </p>
           </div>
 
           <div className="grid gap-4">
-            {currentQuizQuestion.options.map((option, index) => (
+            {quizQuestions[currentQuestion].options.map((option, index) => (
               <Button
                 key={index}
                 onClick={() => handleAnswerSelect(index)}
@@ -203,7 +171,7 @@ const DigitalCurrenciesQuiz: React.FC<DigitalCurrenciesQuizProps> = ({ onComplet
                   w-full p-4 h-auto whitespace-normal text-left justify-start
                   ${selectedAnswer === null
                     ? 'bg-gray-100 hover:bg-blue-100 text-gray-700'
-                    : index === currentQuizQuestion.correctAnswer
+                    : index === quizQuestions[currentQuestion].correctAnswer
                       ? 'bg-green-200 text-gray-700'
                       : selectedAnswer === index
                         ? 'bg-red-200 text-gray-700'
@@ -223,30 +191,19 @@ const DigitalCurrenciesQuiz: React.FC<DigitalCurrenciesQuizProps> = ({ onComplet
               animate={{ opacity: 1, y: 0 }}
               className={`
                 mt-4 p-3 rounded-lg text-sm
-                ${selectedAnswer === currentQuizQuestion.correctAnswer
+                ${selectedAnswer === quizQuestions[currentQuestion].correctAnswer
                   ? 'bg-green-100 border-l-4 border-green-500'
                   : 'bg-red-100 border-l-4 border-red-500'}
               `}
             >
               <h3 className="font-bold mb-2 flex items-center gap-2">
-                {selectedAnswer === currentQuizQuestion.correctAnswer
+                {selectedAnswer === quizQuestions[currentQuestion].correctAnswer
                   ? <><CheckCircle className="h-4 w-4 text-green-600" /> Correct!</>
                   : <><XCircle className="h-4 w-4 text-red-600" /> Incorrect</>}
               </h3>
-              <p className="leading-relaxed">{currentQuizQuestion.explanation}</p>
-              <p className="text-xs mt-2 text-gray-600">Next question in 8 seconds...</p>
+              <p className="leading-relaxed">{quizQuestions[currentQuestion].explanation}</p>
+              <p className="text-xs mt-2 text-gray-600">Next question in 8 seconds...</p> 
             </motion.div>
-          )}
-
-          {selectedAnswer !== null && (
-            <Button
-              onClick={moveToNextQuestion}
-              className="mt-6 w-full"
-            >
-              {currentQuestion < quizQuestions.length - 1
-                ? 'Next Question'
-                : 'Finish Quiz'}
-            </Button>
           )}
         </div>
       </CardContent>
