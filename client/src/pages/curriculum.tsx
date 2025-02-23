@@ -53,6 +53,7 @@ const courses = [
           "2.2 Bitcoin as an Investment",
           "2.3 Security and Risk Management",
           "2.4 Practical Exercises",
+          "Exchange & Wallet Recommendations",
           "Module Assessment"
         ],
         path: "/modules/module2"
