@@ -306,7 +306,7 @@ export default function DefiGovernance() {
           'DeFi'
         );
       }
-    }, 3000);
+    }, 7000); // Changed from 3000 to 7000 ms
   };
 
   return (
@@ -478,6 +478,9 @@ export default function DefiGovernance() {
                           >
                             <h4 className="font-medium text-blue-800 mb-2">Explanation</h4>
                             <p className="text-blue-700">{quizQuestions[currentQuestion].explanation}</p>
+                            <p className="text-sm text-blue-600 italic mt-2">
+                              Next question in 7 seconds...
+                            </p>
                           </motion.div>
                         )}
                       </div>

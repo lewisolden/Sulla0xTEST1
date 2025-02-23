@@ -302,7 +302,7 @@ export default function InstitutionalDefi() {
           'DeFi'
         );
       }
-    }, 3000); // Show explanation for 3 seconds before advancing
+    }, 7000); // Changed from 3000 to 7000 ms
   };
 
   return (
@@ -455,7 +455,7 @@ export default function InstitutionalDefi() {
                             <Button
                               key={index}
                               onClick={() => handleAnswer(index)}
-                              variant={selectedAnswer === index ? 
+                              variant={selectedAnswer === index ?
                                 (index === quizQuestions[currentQuestion].correctAnswer ? "default" : "destructive")
                                 : "outline"}
                               disabled={showExplanation}
@@ -473,6 +473,9 @@ export default function InstitutionalDefi() {
                           >
                             <h4 className="font-medium text-blue-800 mb-2">Explanation</h4>
                             <p className="text-blue-700">{quizQuestions[currentQuestion].explanation}</p>
+                            <p className="text-sm text-blue-600 italic mt-2">
+                              Next question in 7 seconds...
+                            </p>
                           </motion.div>
                         )}
                       </div>

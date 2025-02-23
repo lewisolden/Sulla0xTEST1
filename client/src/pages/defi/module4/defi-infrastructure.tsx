@@ -298,7 +298,7 @@ export default function DefiInfrastructure() {
           '/defi/module4/quiz'
         );
       }
-    }, 3000);
+    }, 7000); 
   };
 
   return (
@@ -450,7 +450,7 @@ export default function DefiInfrastructure() {
                             <Button
                               key={index}
                               onClick={() => handleAnswer(index)}
-                              variant={selectedAnswer === index ? 
+                              variant={selectedAnswer === index ?
                                 (index === quizQuestions[currentQuestion].correctAnswer ? "default" : "destructive")
                                 : "outline"}
                               disabled={showExplanation}
@@ -468,6 +468,9 @@ export default function DefiInfrastructure() {
                           >
                             <h4 className="font-medium text-blue-800 mb-2">Explanation</h4>
                             <p className="text-blue-700">{quizQuestions[currentQuestion].explanation}</p>
+                            <p className="text-sm text-blue-600 italic mt-2">
+                              Next question in 7 seconds...
+                            </p>
                           </motion.div>
                         )}
                       </div>
