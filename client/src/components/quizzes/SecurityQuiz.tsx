@@ -4,6 +4,8 @@ import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { useProgress } from "@/context/progress-context";
 import { useToast } from "@/hooks/use-toast";
+import { ArrowRight, CheckCircle, XCircle } from "lucide-react";
+import { Link } from "wouter";
 
 interface Question {
   question: string;
@@ -70,6 +72,17 @@ const questions: Question[] = [
   }
 ];
 
+const Award = ({ className }: { className: string }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    viewBox="0 0 20 20"
+    fill="currentColor"
+  >
+    <path d="M2 11a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-1 1H3a1 1 0 01-1-1v-2zM6 10a1 1 0 00-1 1v2a1 1 0 001 1h8a1 1 0 001-1v-2a1 1 0 00-1-1H7z" />
+  </svg>
+);
+
 export const SecurityQuiz = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
@@ -79,139 +92,141 @@ export const SecurityQuiz = () => {
   const { updateProgress } = useProgress();
   const { toast } = useToast();
 
-  const submitQuizProgress = async (finalScore: number) => {
-    try {
-      const response = await fetch('/api/learning-path/progress', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({
-          moduleId: 1, // Security module ID
-          courseId: 1, // Course 1: Introduction to Cryptocurrency
-          sectionId: 'security',
-          timeSpent: 0, // Add actual time tracking if needed
-          quizScore: (finalScore / questions.length) * 100
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to update progress');
-      }
-
-      const result = await response.json();
-
-      if (result.success) {
-        toast({
-          title: "Quiz Progress Saved",
-          description: result.message || "Your quiz progress has been recorded",
-        });
-      }
-    } catch (error) {
-      console.error('Failed to submit quiz progress:', error);
-      toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to save quiz progress",
-        variant: "destructive",
-      });
-    }
-  };
-
   const handleAnswerSelect = (answerIndex: number) => {
     setSelectedAnswer(answerIndex);
     setShowExplanation(true);
-  };
 
-  const handleNextQuestion = async () => {
-    const isCorrect = selectedAnswer === questions[currentQuestion].correctAnswer;
-    const newScore = score + (isCorrect ? 1 : 0);
-
-    if (currentQuestion < questions.length - 1) {
-      setScore(newScore);
-      setCurrentQuestion(currentQuestion + 1);
-      setSelectedAnswer(null);
-      setShowExplanation(false);
-    } else {
-      setScore(newScore);
-      setShowResult(true);
-      const passThreshold = questions.length * 0.7; // 70% to pass
-      updateProgress(1, 'security', newScore >= passThreshold);
-
-      // Submit quiz progress
-      await submitQuizProgress(newScore);
+    const isCorrect = answerIndex === questions[currentQuestion].correctAnswer;
+    if (isCorrect) {
+      setScore(prev => prev + 1);
     }
+
+    setTimeout(() => {
+      if (currentQuestion < questions.length - 1) {
+        setCurrentQuestion(prev => prev + 1);
+        setSelectedAnswer(null);
+        setShowExplanation(false);
+      } else {
+        setShowResult(true);
+        const finalScore = ((score + (isCorrect ? 1 : 0)) / questions.length) * 100;
+        updateProgress(
+          1,
+          'security',
+          finalScore >= 60,
+          1,
+          undefined,
+          finalScore,
+          '/modules/module1/security',
+          undefined,
+          'Blockchain Security'
+        );
+      }
+    }, 3000);
   };
 
   const restartQuiz = () => {
     setCurrentQuestion(0);
     setSelectedAnswer(null);
-    setShowExplanation(false);
-    setScore(0);
     setShowResult(false);
+    setScore(0);
+    setShowExplanation(false);
   };
 
   if (showResult) {
+    const percentage = (score / questions.length) * 100;
     return (
-      <Card className="p-8">
-        <h2 className="text-2xl font-bold text-blue-800 mb-4">Quiz Complete!</h2>
-        <p className="text-lg mb-4">
-          You scored {score} out of {questions.length}
-        </p>
-        {score >= questions.length * 0.7 ? (
-          <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-4">
-            <p className="text-green-700">
-              🎉 Congratulations! You've passed the Security quiz!
+      <div className="container mx-auto px-4 py-6 max-w-xl">
+        <Card className="p-6 text-center bg-gradient-to-br from-blue-50 to-indigo-50">
+          <div className="flex items-center justify-center mb-4">
+            <Award className={`h-12 w-12 ${percentage >= 60 ? 'text-green-500' : 'text-red-500'}`} />
+          </div>
+          <h2 className="text-xl font-bold mb-3 text-blue-800">
+            Quiz Complete!
+          </h2>
+          <div className="text-lg mb-4">
+            <p className="font-semibold">Your Score:</p>
+            <p className={`text-2xl font-bold ${percentage >= 60 ? 'text-green-600' : 'text-red-600'}`}>
+              {percentage}%
+            </p>
+            <p className="text-gray-600 mt-1 text-sm">
+              ({score} out of {questions.length} correct)
             </p>
           </div>
-        ) : (
-          <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4">
-            <p className="text-red-700">
-              Keep learning! Review the security concepts and try again.
-            </p>
+          {percentage >= 60 ? (
+            <div className="bg-green-100 border-l-4 border-green-500 p-3 mb-4 text-sm">
+              <p className="text-green-700 flex items-center gap-2 justify-center">
+                <CheckCircle className="h-4 w-4" />
+                Congratulations! You've passed!
+              </p>
+              <p className="text-sm text-green-600 mt-1">Moving to next section in 5 seconds...</p>
+            </div>
+          ) : (
+            <div className="bg-red-100 border-l-4 border-red-500 p-3 mb-4 text-sm">
+              <p className="text-red-700 flex items-center gap-2 justify-center">
+                <XCircle className="h-4 w-4" />
+                Keep learning and try again
+              </p>
+            </div>
+          )}
+          <div className="flex flex-col space-y-3">
+            <Button 
+              onClick={restartQuiz}
+              className="w-full bg-blue-500 hover:bg-blue-600 text-sm"
+            >
+              Retry Quiz
+            </Button>
+            {percentage >= 60 && (
+              <Link href="/modules/module1/smart-contracts">
+                <Button 
+                  className="w-full bg-green-600 hover:bg-green-700 text-sm"
+                >
+                  Continue to Smart Contracts <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            )}
           </div>
-        )}
-        <Button onClick={restartQuiz} className="w-full">
-          Restart Quiz
-        </Button>
-      </Card>
+        </Card>
+      </div>
     );
   }
 
   return (
-    <Card className="p-8">
-      <div className="mb-6">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-bold text-blue-800">
-            Question {currentQuestion + 1} of {questions.length}
-          </h2>
-          <span className="text-sm text-gray-500">
-            Score: {score}/{currentQuestion +1}
+    <div className="container mx-auto px-4 py-3 max-w-xl">
+      <div className="mb-4">
+        <h3 className="text-lg font-semibold text-blue-800 mb-3 flex items-center justify-between">
+          Question {currentQuestion + 1} of {questions.length}
+          <span className="text-sm text-gray-600 bg-white px-2 py-1 rounded-full">
+            Score: {score}
           </span>
+        </h3>
+
+        <div className="bg-white rounded-lg p-3 mb-3 shadow-sm">
+          <p className="text-base text-gray-700">
+            {questions[currentQuestion].question}
+          </p>
         </div>
 
-        <p className="text-lg mb-4">{questions[currentQuestion].question}</p>
-
-        <div className="space-y-3">
+        <div className="grid gap-2">
           {questions[currentQuestion].options.map((option, index) => (
             <motion.button
               key={index}
               onClick={() => handleAnswerSelect(index)}
-              className={`w-full p-3 text-left rounded-lg transition-colors ${
-                selectedAnswer === null
-                  ? 'bg-gray-100 hover:bg-blue-50'
-                  : index === questions[currentQuestion].correctAnswer
-                  ? 'bg-green-100 border-green-500'
-                  : selectedAnswer === index
-                  ? 'bg-red-100 border-red-500'
-                  : 'bg-gray-100'
-              }`}
+              className={`
+                w-full p-3 rounded-lg text-left transition-all duration-300 text-sm
+                ${selectedAnswer === null 
+                  ? 'bg-white hover:bg-blue-50 border border-gray-200' 
+                  : index === questions[currentQuestion].correctAnswer 
+                    ? 'bg-green-100 border-2 border-green-500' 
+                    : selectedAnswer === index 
+                      ? 'bg-red-100 border-2 border-red-500' 
+                      : 'bg-white border border-gray-200'}
+                whitespace-normal break-words hover:shadow-md
+              `}
               disabled={selectedAnswer !== null}
-              whileHover={selectedAnswer === null ? { scale: 1.02 } : {}}
-              whileTap={selectedAnswer === null ? { scale: 0.98 } : {}}
+              whileHover={{ scale: selectedAnswer === null ? 1.01 : 1 }}
+              whileTap={{ scale: selectedAnswer === null ? 0.99 : 1 }}
             >
-              {option}
+              <span className="text-gray-700">{option}</span>
             </motion.button>
           ))}
         </div>
@@ -220,29 +235,23 @@ export const SecurityQuiz = () => {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-4 p-4 bg-blue-50 rounded-lg"
+            className={`
+              mt-4 p-3 rounded-lg text-sm
+              ${selectedAnswer === questions[currentQuestion].correctAnswer 
+                ? 'bg-white border-l-4 border-green-500' 
+                : 'bg-white border-l-4 border-red-500'}
+            `}
           >
-            <p className="text-blue-800">
-              {questions[currentQuestion].explanation}
-            </p>
-          </motion.div>
-        )}
-
-        {selectedAnswer !== null && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="mt-4"
-          >
-            <Button
-              onClick={handleNextQuestion}
-              className="w-full"
-            >
-              {currentQuestion === questions.length - 1 ? 'Finish Quiz' : 'Next Question'}
-            </Button>
+            <h3 className="font-bold mb-2 flex items-center gap-2 text-gray-900">
+              {selectedAnswer === questions[currentQuestion].correctAnswer 
+                ? <><CheckCircle className="h-4 w-4 text-green-600" /> Correct!</>
+                : <><XCircle className="h-4 w-4 text-red-600" /> Incorrect</>}
+            </h3>
+            <p className="leading-relaxed text-gray-700">{questions[currentQuestion].explanation}</p>
+            <p className="text-xs mt-2 text-gray-600">Next question in 3 seconds...</p>
           </motion.div>
         )}
       </div>
-    </Card>
+    </div>
   );
 };
