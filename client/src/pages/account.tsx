@@ -114,7 +114,7 @@ export default function AccountPage() {
         case 1:
           return '/modules/module1';
         case 2:
-          return '/ai/module1';
+          return '/ai/module1';  // Fixed: Now correctly routes to AI course
         case 3:
           return '/defi/module1';
         default:
