@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { useProgress } from "@/context/progress-context";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowLeft, ArrowRight, CheckCircle2, X } from "lucide-react";
+import { ArrowLeft, CheckCircle2, X } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
+import { Progress } from "@/components/ui/progress";
 
 interface QuestionProps {
   question: {
@@ -17,10 +18,6 @@ interface QuestionProps {
   };
   onAnswer: (selectedIndex: number) => void;
   showExplanation: boolean;
-}
-
-interface QuizProps {
-  onComplete: (score: number) => void;
 }
 
 const quiz = {
@@ -181,11 +178,11 @@ const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplana
   );
 };
 
-const InteractiveQuiz: React.FC<QuizProps> = ({ onComplete }) => {
+const InteractiveQuiz = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
   const [answers, setAnswers] = useState({});
-  const [score, setScore] = useState(0);
+  const { updateProgress } = useProgress();
 
   const handleAnswer = (selectedIndex: number) => {
     const currentQuestion = quiz.questions[currentQuestionIndex];
@@ -211,8 +208,10 @@ const InteractiveQuiz: React.FC<QuizProps> = ({ onComplete }) => {
           }
         ).length;
         const finalScore = (correctAnswers / quiz.questions.length) * 100;
-        setScore(finalScore);
-        onComplete(finalScore);
+
+        if (finalScore >= 70) {
+          updateProgress("module2", "quiz", true, "completed", new Date().toISOString(), finalScore, quiz.questions.length);
+        }
       }
     }, 3000);
   };
@@ -221,7 +220,7 @@ const InteractiveQuiz: React.FC<QuizProps> = ({ onComplete }) => {
     <div className="space-y-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold text-purple-800">
-          Topic Quiz: Stablecoins
+          Module 2 Quiz: Blockchain Fundamentals
         </h2>
         <span className="text-sm text-gray-600">
           Question {currentQuestionIndex + 1} of {quiz.questions.length}
@@ -242,18 +241,9 @@ const InteractiveQuiz: React.FC<QuizProps> = ({ onComplete }) => {
   );
 };
 
-
 const Module2Quiz = () => {
   useScrollTop();
   const [quizStarted, setQuizStarted] = useState(false);
-  const { updateProgress } = useProgress();
-
-  const handleQuizComplete = (score: number) => {
-    const passThreshold = Math.ceil(quiz.questions.length * 0.7);
-    if (score >= passThreshold) {
-      updateProgress("module2", "quiz", true, "completed", new Date().toISOString(), score, quiz.questions.length);
-    }
-  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -289,7 +279,7 @@ const Module2Quiz = () => {
                 </Button>
               </div>
             ) : (
-              <InteractiveQuiz onComplete={handleQuizComplete} />
+              <InteractiveQuiz />
             )}
           </CardContent>
         </Card>
