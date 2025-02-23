@@ -10,6 +10,7 @@ import {
   Zap, Globe, Lock, ChevronRight
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useScrollTop } from "@/hooks/useScrollTop";
 
 // Quiz questions with explanations
 const quizQuestions = [
@@ -59,6 +60,13 @@ const BlockchainContracts = () => {
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showExplanation, setShowExplanation] = useState(false);
+
+  useScrollTop(); // Keep existing hook
+
+  // Add explicit scroll behavior
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [currentQuestion]); // Scroll to top when question changes
 
   // Smart Contract Exercise State
   const [contractState, setContractState] = useState({
