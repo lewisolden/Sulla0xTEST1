@@ -8,6 +8,61 @@ import { ArrowRight, CheckCircle, XCircle, Award, PencilLine } from "lucide-reac
 
 const questions = [
   {
+    question: "What is the primary innovation introduced by Bitcoin?",
+    options: [
+      "A new type of bank account",
+      "A social media platform for finance",
+      "A decentralized digital currency without intermediaries",
+      "A government-backed digital payment system"
+    ],
+    correctAnswer: 2,
+    explanation: "Bitcoin's revolutionary innovation is creating a decentralized digital currency that operates without intermediaries like banks or governments, fundamentally changing how we think about money and value transfer."
+  },
+  {
+    question: "What is the role of the blockchain in Bitcoin's system?",
+    options: [
+      "To store user passwords",
+      "To process credit card payments",
+      "To record and verify all transactions in a public ledger",
+      "To generate random numbers for encryption"
+    ],
+    correctAnswer: 2,
+    explanation: "The blockchain serves as a public, distributed ledger that records all Bitcoin transactions, ensuring transparency and preventing double-spending while maintaining the network's integrity."
+  },
+  {
+    question: "How does Bitcoin achieve decentralization?",
+    options: [
+      "Through government regulation",
+      "Using a network of computers worldwide to verify transactions",
+      "By having a central authority control all transactions",
+      "Through traditional banking systems"
+    ],
+    correctAnswer: 1,
+    explanation: "Bitcoin achieves decentralization through its distributed network of computers worldwide that collectively verify and validate transactions, eliminating the need for a central authority."
+  },
+  {
+    question: "What is Bitcoin's monetary policy regarding supply?",
+    options: [
+      "Unlimited supply",
+      "Fixed supply of 21 million coins",
+      "Supply controlled by central banks",
+      "Random supply generation"
+    ],
+    correctAnswer: 1,
+    explanation: "Bitcoin has a fixed maximum supply of 21 million coins, making it a deflationary currency. This scarcity is a fundamental aspect of its economic model."
+  },
+  {
+    question: "What is the purpose of Bitcoin mining?",
+    options: [
+      "To create digital wallets",
+      "To secure the network and validate transactions",
+      "To hack other users' accounts",
+      "To convert bitcoin to traditional currency"
+    ],
+    correctAnswer: 1,
+    explanation: "Bitcoin mining serves to secure the network and validate transactions through computational work, while also being the mechanism through which new bitcoins are created and distributed."
+  },
+    {
     question: "Which risk level is associated with Bitcoin ETFs and regulated investment products?",
     options: [
       "High Risk",
@@ -72,22 +127,17 @@ export default function BitcoinFundamentalsQuiz() {
   const { updateProgress } = useProgress();
   const [, setLocation] = useLocation();
 
-  const handleAnswer = (answerIndex: number) => {
-    // Prevent answering if already selected
+  const handleAnswerSelect = (answerIndex: number) => {
     if (selectedAnswer !== null) return;
 
-    // Record the answer
     setSelectedAnswer(answerIndex);
 
-    // Auto advance after 5 seconds
     setTimeout(() => {
-      // Check if correct and update score
       const isCorrect = answerIndex === questions[currentQuestion].correctAnswer;
       if (isCorrect) {
         setScore(prev => prev + 1);
       }
 
-      // Move to next question or show results
       if (currentQuestion < questions.length - 1) {
         setCurrentQuestion(prev => prev + 1);
         setSelectedAnswer(null);
@@ -95,7 +145,6 @@ export default function BitcoinFundamentalsQuiz() {
         setShowResult(true);
         const finalScore = ((score + (isCorrect ? 1 : 0)) / questions.length) * 100;
 
-        // Update progress
         updateProgress(
           2,
           'bitcoin-fundamentals',
@@ -104,11 +153,17 @@ export default function BitcoinFundamentalsQuiz() {
           undefined,
           finalScore,
           '/modules/module2/bitcoin-fundamentals',
-          undefined,
+          '/modules/module2/bitcoin-investment',
           'Bitcoin Fundamentals'
         );
+
+        if (finalScore >= 60) {
+          setTimeout(() => {
+            setLocation('/modules/module2/bitcoin-investment');
+          }, 8000);
+        }
       }
-    }, 8000); 
+    }, 8000);
   };
 
   const restartQuiz = () => {
@@ -213,7 +268,7 @@ export default function BitcoinFundamentalsQuiz() {
             {questions[currentQuestion].options.map((option, index) => (
               <motion.button
                 key={index}
-                onClick={() => handleAnswer(index)}
+                onClick={() => handleAnswerSelect(index)}
                 className={`
                   w-full p-2.5 rounded-lg text-left transition-all duration-300
                   ${selectedAnswer === null
