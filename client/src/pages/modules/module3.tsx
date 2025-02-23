@@ -137,7 +137,7 @@ export default function Module3() {
         >
           <Card className="overflow-hidden mb-8">
             <div className="bg-gradient-to-r from-gray-400 to-blue-400 p-8 text-white">
-              <motion.div 
+              <motion.div
                 className="flex items-center gap-4"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -285,7 +285,7 @@ export default function Module3() {
                               ))}
                             </div>
                             <Link href={topic.path} className="block mt-auto">
-                              <Button 
+                              <Button
                                 className="w-full bg-black hover:bg-gray-900 text-white"
                               >
                                 {topic.completed ? "Review Topic" : "Start Topic"}
@@ -322,7 +322,7 @@ export default function Module3() {
                           <Link href="/modules/module3/exercises">
                             <Button
                               size="lg"
-                              className="bg-gradient-to-r from-gray-400 to-blue-400 hover:from-gray-500 hover:to-blue-500 text-white"
+                              className="bg-black hover:bg-gray-900 text-white"
                             >
                               Start Exercises
                             </Button>
