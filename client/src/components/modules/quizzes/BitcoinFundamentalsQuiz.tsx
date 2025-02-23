@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { useProgress } from "@/context/progress-context";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { ArrowRight, CheckCircle, XCircle, Award, PencilLine } from "lucide-react";
 
 const questions = [
@@ -11,7 +11,7 @@ const questions = [
     question: "Which risk level is associated with Bitcoin ETFs and regulated investment products?",
     options: [
       "High Risk",
-      "Medium Risk",
+      "Medium Risk", 
       "Low Risk",
       "No Risk"
     ],
@@ -69,48 +69,50 @@ export default function BitcoinFundamentalsQuiz() {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
+  const [showExplanation, setShowExplanation] = useState(false);
   const { updateProgress } = useProgress();
+  const [, setLocation] = useLocation();
 
-  const handleAnswer = (answerIndex: number) => {
+  const handleAnswer = async (answerIndex: number) => {
+    if (selectedAnswer !== null || showExplanation) return;
+
     setSelectedAnswer(answerIndex);
-    const isCorrect = answerIndex === questions[currentQuestion].correctAnswer;
+    setShowExplanation(true);
 
-    // Update score immediately if correct
+    const isCorrect = answerIndex === questions[currentQuestion].correctAnswer;
     if (isCorrect) {
       setScore(prev => prev + 1);
     }
 
-    // Wait to show explanation
-    setTimeout(() => {
-      if (currentQuestion < questions.length - 1) {
-        setCurrentQuestion(prev => prev + 1);
-        setSelectedAnswer(null);
-      } else {
-        // Calculate final score including the last question
-        const finalScore = ((score + (isCorrect ? 1 : 0)) / questions.length) * 100;
+    // Wait for 3 seconds to show explanation
+    await new Promise(resolve => setTimeout(resolve, 3000));
 
-        // Update progress and show results
-        setShowResult(true);
-        updateProgress(
-          2,
-          'quiz',
-          finalScore >= 60,
-          2,
-          undefined,
-          finalScore,
-          '/modules/module3',
-          undefined,
-          'Module 2 Quiz'
-        );
+    if (currentQuestion < questions.length - 1) {
+      setCurrentQuestion(prev => prev + 1);
+      setSelectedAnswer(null);
+      setShowExplanation(false);
+    } else {
+      const finalScore = ((score + (isCorrect ? 1 : 0)) / questions.length) * 100;
+      setShowResult(true);
 
-        // Navigate to Module 3 if passed
-        if (finalScore >= 60) {
-          setTimeout(() => {
-            window.location.href = '/modules/module3';
-          }, 5000);
-        }
+      updateProgress(
+        2,
+        'quiz',
+        finalScore >= 60,
+        2,
+        undefined,
+        finalScore,
+        '/modules/module3',
+        undefined,
+        'Module 2 Quiz'
+      );
+
+      if (finalScore >= 60) {
+        setTimeout(() => {
+          setLocation('/modules/module3');
+        }, 5000);
       }
-    }, 3000);
+    }
   };
 
   const restartQuiz = () => {
@@ -118,6 +120,7 @@ export default function BitcoinFundamentalsQuiz() {
     setSelectedAnswer(null);
     setShowResult(false);
     setScore(0);
+    setShowExplanation(false);
   };
 
   if (showResult) {
@@ -219,7 +222,7 @@ export default function BitcoinFundamentalsQuiz() {
             {questions[currentQuestion].options.map((option, index) => (
               <motion.button
                 key={index}
-                onClick={() => selectedAnswer === null && handleAnswer(index)}
+                onClick={() => handleAnswer(index)}
                 className={`
                   w-full p-2.5 rounded-lg text-left transition-all duration-300
                   ${selectedAnswer === null
@@ -241,7 +244,7 @@ export default function BitcoinFundamentalsQuiz() {
           </div>
         </div>
 
-        {selectedAnswer !== null && (
+        {showExplanation && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
