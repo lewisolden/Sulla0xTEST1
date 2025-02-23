@@ -12,59 +12,59 @@ interface BitcoinQuizProps {
 
 const quizQuestions = [
   {
-    question: "When was the first Bitcoin block (genesis block) mined?",
+    question: "What significant event marked the beginning of Bitcoin?",
     options: [
-      "December 25, 2008",
-      "January 3, 2009",
-      "March 15, 2010",
-      "October 31, 2008"
+      "The launch of the first cryptocurrency exchange",
+      "The mining of the genesis block",
+      "The first Bitcoin whitepaper publication",
+      "The first Bitcoin transaction"
     ],
     correctAnswer: 1,
-    explanation: "The genesis block of Bitcoin was mined on January 3, 2009, marking the official beginning of the Bitcoin blockchain."
+    explanation: "The mining of the genesis block on January 3, 2009, marked the official beginning of the Bitcoin blockchain, creating the first 50 bitcoins."
   },
   {
-    question: "What is the maximum number of bitcoins that will ever exist?",
+    question: "What is the primary purpose of Bitcoin's block size limit?",
     options: [
-      "100 million",
-      "1 billion",
-      "21 million",
-      "Unlimited"
-    ],
-    correctAnswer: 2,
-    explanation: "Bitcoin has a fixed supply cap of 21 million coins, which is one of its key features as a deflationary currency."
-  },
-  {
-    question: "What was the first real-world transaction using Bitcoin?",
-    options: [
-      "Buying a car",
-      "Purchasing two pizzas",
-      "Paying rent",
-      "Buying a computer"
+      "To make transactions faster",
+      "To reduce network congestion and maintain decentralization",
+      "To increase mining rewards",
+      "To make Bitcoin more valuable"
     ],
     correctAnswer: 1,
-    explanation: "The first real-world Bitcoin transaction was the purchase of two pizzas for 10,000 BTC in May 2010, now celebrated as 'Bitcoin Pizza Day'."
+    explanation: "The block size limit helps maintain decentralization by ensuring nodes can process blocks without requiring excessive computational resources."
   },
   {
-    question: "Which consensus mechanism does Bitcoin use?",
+    question: "What is the significance of Bitcoin's halving event?",
     options: [
-      "Proof of Stake",
-      "Proof of Authority",
-      "Proof of Work",
-      "Delegated Proof of Stake"
+      "It doubles transaction speed",
+      "It reduces the block size",
+      "It cuts the mining reward in half",
+      "It increases network security"
     ],
     correctAnswer: 2,
-    explanation: "Bitcoin uses Proof of Work (PoW) as its consensus mechanism, where miners compete to solve complex mathematical problems to add new blocks."
+    explanation: "The halving event reduces the mining reward by 50% approximately every four years, controlling Bitcoin's supply and maintaining its deflationary nature."
   },
   {
-    question: "What is the main innovation that Bitcoin introduced?",
+    question: "What role do nodes play in the Bitcoin network?",
     options: [
-      "Online banking",
-      "Digital payments",
-      "Social networking",
-      "Decentralized digital currency without intermediaries"
+      "They only mine new blocks",
+      "They verify transactions and maintain the blockchain",
+      "They only process payments",
+      "They create new Bitcoin addresses"
     ],
-    correctAnswer: 3,
-    explanation: "Bitcoin's main innovation was creating a decentralized digital currency that could operate without intermediaries like banks or governments."
+    correctAnswer: 1,
+    explanation: "Nodes maintain and verify the entire blockchain, ensuring the network's integrity by validating all transactions and blocks."
+  },
+  {
+    question: "What makes Bitcoin transactions irreversible?",
+    options: [
+      "Government regulations",
+      "Exchange policies",
+      "The blockchain's immutable nature",
+      "User agreements"
+    ],
+    correctAnswer: 2,
+    explanation: "Once confirmed, Bitcoin transactions cannot be reversed due to the blockchain's immutable nature and cryptographic security."
   }
 ];
 
@@ -101,17 +101,17 @@ const BitcoinQuiz: React.FC<BitcoinQuizProps> = ({ onComplete }) => {
           undefined,
           finalScore,
           '/modules/module2/bitcoin-fundamentals',
-          undefined,
+          '/modules/module2/bitcoin-investment',
           'Bitcoin Fundamentals'
         );
 
         if (finalScore >= 60) {
           setTimeout(() => {
             onComplete();
-          }, 8000); 
+          }, 8000);
         }
       }
-    }, 8000); 
+    }, 8000);
   };
 
   const restartQuiz = () => {
@@ -159,7 +159,7 @@ const BitcoinQuiz: React.FC<BitcoinQuizProps> = ({ onComplete }) => {
             </div>
           )}
           <div className="flex flex-col space-y-3">
-            <Button 
+            <Button
               onClick={restartQuiz}
               className="w-full bg-blue-500 hover:bg-blue-600 text-sm"
             >
@@ -167,7 +167,7 @@ const BitcoinQuiz: React.FC<BitcoinQuizProps> = ({ onComplete }) => {
             </Button>
             {percentage >= 60 && (
               <Link href="/modules/module2/crypto-market">
-                <Button 
+                <Button
                   className="w-full bg-green-600 hover:bg-green-700 text-sm"
                 >
                   Continue to Next Section <ArrowRight className="ml-2 h-4 w-4" />
@@ -207,12 +207,12 @@ const BitcoinQuiz: React.FC<BitcoinQuizProps> = ({ onComplete }) => {
               onClick={() => handleAnswerSelect(index)}
               className={`
                 w-full p-3 rounded-lg text-left transition-all duration-300 text-sm
-                ${selectedAnswer === null 
-                  ? 'bg-white hover:bg-blue-50 border border-gray-200' 
-                  : index === quizQuestions[currentQuestion].correctAnswer 
-                    ? 'bg-green-100 border-2 border-green-500' 
-                    : selectedAnswer === index 
-                      ? 'bg-red-100 border-2 border-red-500' 
+                ${selectedAnswer === null
+                  ? 'bg-white hover:bg-blue-50 border border-gray-200'
+                  : index === quizQuestions[currentQuestion].correctAnswer
+                    ? 'bg-green-100 border-2 border-green-500'
+                    : selectedAnswer === index
+                      ? 'bg-red-100 border-2 border-red-500'
                       : 'bg-white border border-gray-200'}
                 whitespace-normal break-words hover:shadow-md
               `}
@@ -231,13 +231,13 @@ const BitcoinQuiz: React.FC<BitcoinQuizProps> = ({ onComplete }) => {
             animate={{ opacity: 1, y: 0 }}
             className={`
               mt-4 p-3 rounded-lg text-sm
-              ${selectedAnswer === quizQuestions[currentQuestion].correctAnswer 
-                ? 'bg-green-100 border-l-4 border-green-500' 
+              ${selectedAnswer === quizQuestions[currentQuestion].correctAnswer
+                ? 'bg-green-100 border-l-4 border-green-500'
                 : 'bg-red-100 border-l-4 border-red-500'}
             `}
           >
             <h3 className="font-bold mb-2 flex items-center gap-2">
-              {selectedAnswer === quizQuestions[currentQuestion].correctAnswer 
+              {selectedAnswer === quizQuestions[currentQuestion].correctAnswer
                 ? <><CheckCircle className="h-4 w-4 text-green-600" /> Correct!</>
                 : <><XCircle className="h-4 w-4 text-red-600" /> Incorrect</>}
             </h3>

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useProgress } from "@/context/progress-context";
 import { motion } from "framer-motion";
 import { CheckCircle, XCircle } from "lucide-react";
+import { Link } from "wouter";
 
 const questions = [
   {
@@ -68,7 +69,6 @@ export default function BitcoinInvestmentQuiz() {
     setSelectedAnswer(optionIndex);
     setShowExplanation(true);
 
-    // Wait 8 seconds before moving to next question
     setTimeout(() => {
       const isCorrect = optionIndex === questions[currentQuestion].correct;
 
@@ -91,11 +91,11 @@ export default function BitcoinInvestmentQuiz() {
           undefined, // timeSpent
           finalScore, // quizScore
           '/modules/module2/bitcoin-investment', // pageUrl
-          '/modules/module2/security-risk', // nextUrl - Updated this to point to security-risk
+          '/modules/module2/security-risk', // nextUrl
           'Bitcoin Investment' // sectionName
         );
       }
-    }, 8000); // Changed from 5000 to 8000
+    }, 8000);
   };
 
   const restartQuiz = () => {
@@ -121,21 +121,27 @@ export default function BitcoinInvestmentQuiz() {
               <p className="text-green-700">
                 🎉 Congratulations! You've passed the Bitcoin Investment quiz!
               </p>
+              <p className="text-sm text-green-600 mt-1">Moving to next section in 8 seconds...</p>
+              <Link href="/modules/module2/security-risk">
+                <Button className="mt-4 bg-green-500 hover:bg-green-600 text-white">
+                  Continue to Security & Risk Management
+                </Button>
+              </Link>
             </div>
           ) : (
             <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4">
               <p className="text-red-700">
                 You didn't pass this time. Review the content and try again.
               </p>
+              <Button 
+                onClick={restartQuiz}
+                variant="outline"
+                className="mt-4"
+              >
+                Restart Quiz
+              </Button>
             </div>
           )}
-          <Button 
-            onClick={restartQuiz}
-            variant="outline"
-            className="mt-4"
-          >
-            Restart Quiz
-          </Button>
         </CardContent>
       </Card>
     );
