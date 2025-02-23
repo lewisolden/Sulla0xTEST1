@@ -8,59 +8,59 @@ import { ArrowRight, CheckCircle, XCircle, Award, PencilLine } from "lucide-reac
 
 const questions = [
   {
-    question: "What is the main innovation that Bitcoin introduced?",
+    question: "Which risk level is associated with Bitcoin ETFs and regulated investment products?",
     options: [
-      "A digital payment system with central control",
-      "A decentralized digital currency without intermediaries",
-      "A new type of bank account",
-      "A government-backed cryptocurrency"
-    ],
-    correctAnswer: 1,
-    explanation: "Bitcoin's revolutionary innovation was creating the first decentralized digital currency that operates without any central authority or intermediaries. This solved the 'double-spending problem' without requiring a trusted third party."
-  },
-  {
-    question: "What is the function of Bitcoin mining?",
-    options: [
-      "To create physical coins",
-      "To hack other cryptocurrencies",
-      "To secure the network and process transactions",
-      "To store Bitcoin in digital wallets"
+      "High Risk",
+      "Medium Risk",
+      "Low Risk",
+      "No Risk"
     ],
     correctAnswer: 2,
-    explanation: "Bitcoin mining serves multiple purposes: it secures the network through proof-of-work, processes and validates transactions, and introduces new bitcoins into circulation according to a predetermined schedule."
+    explanation: "Bitcoin ETFs and regulated investment products are considered Low Risk investment options because they offer exposure to Bitcoin through traditional, regulated financial instruments with institutional oversight."
   },
   {
-    question: "When was the Bitcoin whitepaper published?",
+    question: "Which of the following is a key store of value property of Bitcoin?",
     options: [
-      "October 31, 2008",
-      "January 3, 2009",
-      "May 22, 2010",
-      "December 25, 2008"
-    ],
-    correctAnswer: 0,
-    explanation: "Satoshi Nakamoto published the Bitcoin whitepaper titled 'Bitcoin: A Peer-to-Peer Electronic Cash System' on October 31, 2008. This date marks the theoretical foundation of Bitcoin, though the network wouldn't launch until January 2009."
-  },
-  {
-    question: "What is the Bitcoin blockchain?",
-    options: [
-      "A private database owned by banks",
-      "A public ledger that records all transactions",
-      "A type of cryptocurrency wallet",
-      "A mining software"
-    ],
-    correctAnswer: 1,
-    explanation: "The blockchain is a public, distributed ledger that permanently records all Bitcoin transactions. It's called a 'chain' because each block of transactions links to the previous one, creating an immutable history."
-  },
-  {
-    question: "What was significant about the 'Pizza Transaction' in Bitcoin's history?",
-    options: [
-      "It was the first Bitcoin transaction ever",
-      "It proved Bitcoin was a scam",
-      "It was the first real-world purchase using Bitcoin",
-      "It crashed the Bitcoin network"
+      "Unlimited supply",
+      "Central bank control",
+      "Fixed supply of 21 million coins",
+      "Variable issuance schedule"
     ],
     correctAnswer: 2,
-    explanation: "On May 22, 2010, Laszlo Hanyecz paid 10,000 BTC for two pizzas, marking the first documented real-world purchase using Bitcoin. This transaction helped establish Bitcoin's potential as a medium of exchange and is now celebrated as 'Bitcoin Pizza Day'."
+    explanation: "Bitcoin's fixed supply of 21 million coins is a crucial store of value property, making it scarce and resistant to inflation, similar to precious metals like gold."
+  },
+  {
+    question: "How does Metcalfe's Law apply to Bitcoin's network value?",
+    options: [
+      "The value decreases with more users",
+      "The value is proportional to the square of connected users",
+      "The value remains constant regardless of users",
+      "The value is determined by mining difficulty"
+    ],
+    correctAnswer: 1,
+    explanation: "According to Metcalfe's Law, the value of a network is proportional to the square of the number of connected users. This principle explains Bitcoin's increasing utility and value as more users join the network."
+  },
+  {
+    question: "Which of the following is NOT a recommended risk mitigation strategy for Bitcoin investment?",
+    options: [
+      "Using reputable exchanges and wallets",
+      "Keeping large amounts on exchanges",
+      "Only investing what you can afford to lose",
+      "Implementing robust security measures"
+    ],
+    correctAnswer: 1,
+    explanation: "Keeping large amounts of Bitcoin on exchanges is NOT recommended as it increases security risks. Instead, users should use secure personal wallets for significant holdings and only keep necessary amounts on exchanges for trading."
+  },
+  {
+    question: "What distinguishes Bitcoin from traditional investment vehicles like real estate?",
+    options: [
+      "Bitcoin requires no down payment",
+      "Bitcoin is completely risk-free",
+      "Bitcoin is purely digital and globally transferable",
+      "Bitcoin is backed by physical assets"
+    ],
+    correctAnswer: 2,
+    explanation: "Bitcoin's unique characteristic is its digital nature and global transferability, unlike traditional investments like real estate which are physical, location-dependent, and require significant down payments and paperwork."
   }
 ];
 
@@ -88,14 +88,14 @@ export default function BitcoinFundamentalsQuiz() {
         const finalScore = ((score + (isCorrect ? 1 : 0)) / questions.length) * 100;
         updateProgress(
           2,
-          'bitcoin-fundamentals',
+          'bitcoin-investment',
           finalScore >= 60,
-          1,
+          2,
           undefined,
           finalScore,
-          '/modules/module2/bitcoin-fundamentals',
+          '/modules/module2/bitcoin-investment',
           undefined,
-          'Bitcoin Fundamentals'
+          'Bitcoin Investment'
         );
       }
     }, 3000);
@@ -178,7 +178,7 @@ export default function BitcoinFundamentalsQuiz() {
         <PencilLine className="h-6 w-6" />
         <div>
           <h2 className="text-xl font-bold">Test Your Knowledge</h2>
-          <p className="text-white/90 text-sm">Complete the quiz to test your understanding of Bitcoin</p>
+          <p className="text-white/90 text-sm">Complete the quiz to test your understanding of Bitcoin Investment</p>
         </div>
       </div>
 
