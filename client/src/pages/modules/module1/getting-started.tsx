@@ -819,7 +819,7 @@ const GettingStartedSection = () => {
                         </div>
                         <div>
                           <span className="font-medium">Coinbase</span>
-                          <p className="text-sm text-gray-600">Perfect for beginners with a user-friendly interface, strong security measures, and excellent customer support. Available in most countries.</p>
+                          <p className="text-sm text-gray-600">Perfect for beginners with a user-friendly interface and strong security measures. Available in most countries.</p>
                         </div>
                       </li>
                       <li className="flex items-start gap-2">
