@@ -9,51 +9,63 @@ import { Link, useLocation } from "wouter";
 const questions = [
   {
     id: "q1",
-    question: "What is considered a 'low-risk' way to invest in Bitcoin?",
+    question: "Which investment option is considered the lowest risk way to gain Bitcoin exposure?",
     options: {
-      0: "Trading with high leverage",
-      1: "Bitcoin ETFs and regulated investment products",
-      2: "Day trading on unregulated exchanges",
-      3: "Lending Bitcoin to anonymous borrowers"
+      0: "Direct Bitcoin purchases on unregulated exchanges",
+      1: "Bitcoin ETFs through regulated brokers",
+      2: "Trading Bitcoin with leverage",
+      3: "Lending Bitcoin on DeFi platforms"
     },
     correct: 1,
-    explanation: "Bitcoin ETFs and regulated investment products are considered lower risk because they're overseen by financial regulators and often come with institutional-grade security measures."
+    explanation: "Bitcoin ETFs through regulated brokers are considered the lowest risk option as they provide exposure to Bitcoin through familiar, regulated investment structures without the need to manage private keys or deal with cryptocurrency exchanges directly."
   },
   {
     id: "q2",
-    question: "Which of the following is a key characteristic that makes Bitcoin valuable as a store of value?",
+    question: "What is a key characteristic that makes Bitcoin valuable as a store of value?",
     options: {
-      0: "Unlimited supply",
-      1: "Centralized control",
+      0: "Unlimited supply potential",
+      1: "Government backing",
       2: "Fixed maximum supply of 21 million coins",
-      3: "Ability to be created at will"
+      3: "Central bank control"
     },
     correct: 2,
-    explanation: "Bitcoin's fixed maximum supply of 21 million coins is a key characteristic that makes it valuable as a store of value, similar to precious metals like gold."
+    explanation: "Bitcoin's fixed maximum supply of 21 million coins is a key characteristic that makes it valuable as a store of value, similar to precious metals, as it ensures scarcity and prevents artificial inflation."
   },
   {
     id: "q3",
-    question: "Before investing in Bitcoin, what's the most important financial consideration?",
+    question: "How does Metcalfe's Law apply to Bitcoin's network value?",
     options: {
-      0: "Only invest what you can afford to lose",
-      1: "Borrow money to buy more Bitcoin",
-      2: "Invest all your savings",
-      3: "Ignore your current financial situation"
+      0: "The value is proportional to the square of connected users",
+      1: "The value decreases with more users",
+      2: "The value is fixed regardless of users",
+      3: "The value is determined by mining difficulty"
     },
     correct: 0,
-    explanation: "It's crucial to only invest what you can afford to lose in Bitcoin due to its volatile nature. This helps manage risk and protect your financial wellbeing."
+    explanation: "According to Metcalfe's Law, the value of a network is proportional to the square of the number of connected users. This applies to Bitcoin, where increased adoption leads to exponentially greater utility and network value."
   },
   {
     id: "q4",
-    question: "What advantage do Bitcoin ETFs offer to traditional investors?",
+    question: "Which of the following is NOT a recommended risk mitigation strategy for Bitcoin investment?",
     options: {
-      0: "Complete anonymity",
-      1: "Zero fees",
-      2: "Guaranteed returns",
+      0: "Using regulated exchanges",
+      1: "Diversifying investment portfolio",
+      2: "Investing with borrowed money",
+      3: "Implementing strong security measures"
+    },
+    correct: 2,
+    explanation: "Investing with borrowed money is explicitly warned against in risk mitigation strategies. It's important to only invest what you can afford to lose and avoid using borrowed funds, which can lead to significant financial risks."
+  },
+  {
+    id: "q5",
+    question: "What is the primary advantage of Bitcoin ETFs for traditional investors?",
+    options: {
+      0: "Complete anonymity in transactions",
+      1: "Direct ownership of Bitcoin",
+      2: "Higher potential returns",
       3: "Familiar investment structure through regular brokerage accounts"
     },
     correct: 3,
-    explanation: "Bitcoin ETFs offer a familiar investment structure through regular brokerage accounts, making it easier for traditional investors to gain exposure to Bitcoin without managing private keys or dealing with cryptocurrency exchanges."
+    explanation: "Bitcoin ETFs offer a familiar investment structure through regular brokerage accounts, making it easier for traditional investors to gain exposure to Bitcoin without managing private keys or dealing with cryptocurrency exchanges directly."
   }
 ];
 
