@@ -11,10 +11,63 @@ import {
   Fingerprint, HardDrive, SmartphoneCharging, Info, AlertCircle,
   Landmark, History
 } from "lucide-react";
+import { LucideIcon } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "@/hooks/use-toast";
 
-const SecurityIcon = ({ icon: Icon, title, description, className = "" }) => (
+// Define interfaces for component props
+interface IconProps {
+  icon: LucideIcon;
+  title: string;
+  description: string;
+  className?: string;
+}
+
+interface SecurityCardProps {
+  title: string;
+  icon: LucideIcon;
+  children: React.ReactNode;
+  className?: string;
+}
+
+interface WalletCardProps {
+  name: string;
+  description: string;
+  features: string[];
+  price: string;
+  link: string;
+  recommendedFor: string;
+  icon: LucideIcon;
+}
+
+interface ExchangeCardProps {
+  name: string;
+  description: string;
+  features: string[];
+  setupSteps: string[];
+  fees: string;
+  link: string;
+  recommendedFor: string;
+  icon: LucideIcon;
+}
+
+interface DisasterCardProps {
+  title: string;
+  date: string;
+  description: string;
+  impact: string;
+  lessons: string[];
+}
+
+interface QuizQuestion {
+  question: string;
+  options: string[];
+  answer: number;
+  explanation: string;
+}
+
+// Component implementations with proper type annotations
+const SecurityIcon = ({ icon: Icon, title, description, className = "" }: IconProps) => (
   <motion.div
     whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
@@ -28,7 +81,7 @@ const SecurityIcon = ({ icon: Icon, title, description, className = "" }) => (
   </motion.div>
 );
 
-const SecurityCard = ({ title, icon: Icon, children, className = "" }) => (
+const SecurityCard = ({ title, icon: Icon, children, className = "" }: SecurityCardProps) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
@@ -45,7 +98,7 @@ const SecurityCard = ({ title, icon: Icon, children, className = "" }) => (
   </motion.div>
 );
 
-const WalletCard = ({ name, description, features, price, link, recommendedFor, icon: Icon }) => (
+const WalletCard = ({ name, description, features, price, link, recommendedFor, icon: Icon }: WalletCardProps) => (
   <motion.div
     whileHover={{ scale: 1.02 }}
     className="p-6 rounded-lg bg-white shadow-sm border border-gray-100"
@@ -80,7 +133,7 @@ const WalletCard = ({ name, description, features, price, link, recommendedFor, 
   </motion.div>
 );
 
-const ExchangeCard = ({ name, description, features, setupSteps, fees, link, recommendedFor, icon: Icon }) => (
+const ExchangeCard = ({ name, description, features, setupSteps, fees, link, recommendedFor, icon: Icon }: ExchangeCardProps) => (
   <motion.div
     whileHover={{ scale: 1.02 }}
     className="p-6 rounded-lg bg-white shadow-sm border border-gray-100"
@@ -125,7 +178,7 @@ const ExchangeCard = ({ name, description, features, setupSteps, fees, link, rec
   </motion.div>
 );
 
-const DisasterCard = ({ title, date, description, impact, lessons }) => (
+const DisasterCard = ({ title, date, description, impact, lessons }: DisasterCardProps) => (
   <motion.div
     whileHover={{ scale: 1.02 }}
     className="p-6 rounded-lg bg-white shadow-sm border border-gray-100"
@@ -153,6 +206,7 @@ const DisasterCard = ({ title, date, description, impact, lessons }) => (
   </motion.div>
 );
 
+// Main component implementation
 const SecurityRiskSection = () => {
   useScrollTop();
   const [isFullyRead, setIsFullyRead] = useState(false);
@@ -705,6 +759,75 @@ const SecurityRiskSection = () => {
           )}
         </div>
       </div>
+    </div>
+  );
+};
+
+// Quiz component with proper type annotations
+const QuizComponent = () => {
+  const [showExplanation, setShowExplanation] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [score, setScore] = useState(0);
+
+  const questions: QuizQuestion[] = [
+    {
+      question: "What is a private key?",
+      options: ["A public key", "A secret code to access your crypto", "A type of wallet", "An exchange"],
+      answer: 1,
+      explanation: "Your private key is a secret code that gives you access to your cryptocurrency. Keep it safe and secure!"
+    }
+    // Add more questions here...
+  ];
+
+  const handleAnswer = (selectedOption: number) => {
+    if (selectedOption === questions[currentQuestion].answer) {
+      setScore(score + 1);
+    }
+    setShowExplanation(true);
+  };
+
+  return (
+    <div>
+      {showExplanation ? (
+        <div>
+          {showExplanation && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white p-6 rounded-lg border border-blue-200 shadow-sm"
+            >
+              <h4 className="font-semibold text-gray-900 mb-2">Explanation</h4>
+              <p className="text-gray-700">{questions[currentQuestion].explanation}</p>
+              {currentQuestion === questions.length - 1 && (
+                <div className="mt-4 space-y-4">
+                  <h3 className="text-xl font-bold text-gray-900">Quiz Complete!</h3>
+                  <p className="text-gray-700">
+                    Final Score: {score}/{questions.length}
+                  </p>
+                  <p className="text-gray-700">
+                    {score === questions.length
+                      ? "Perfect score! Excellent understanding!"
+                      : "Good effort! Review the material and try again!"}
+                  </p>
+                  <Link href="/defi/module3/defi-security">
+                    <Button className="w-full bg-green-600 hover:bg-green-700 text-white">
+                      Continue to DeFi Security
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </Link>
+                </div>
+              )}
+            </motion.div>
+          )}
+        </div>
+      ) : (
+        <div>
+          <p>{questions[currentQuestion].question}</p>
+          {questions[currentQuestion].options.map((option, index) => (
+            <Button key={index} onClick={() => handleAnswer(index)}>{option}</Button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
