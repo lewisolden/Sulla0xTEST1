@@ -309,34 +309,8 @@ const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplana
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className="space-y-4 relative"
+      className="space-y-4"
     >
-      {/* Answer Notification */}
-      <AnimatePresence>
-        {showNotification && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className={`absolute top-0 left-0 right-0 z-10 ${
-              isCorrect ? 'bg-green-500' : 'bg-red-500'
-            } text-white px-6 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2`}
-          >
-            {isCorrect ? (
-              <>
-                <CheckCircle2 className="h-5 w-5" />
-                <span className="font-medium">Correct!</span>
-              </>
-            ) : (
-              <>
-                <X className="h-5 w-5" />
-                <span className="font-medium">Incorrect</span>
-              </>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       <h3 className="text-xl font-medium text-gray-800 mb-4">
         {question.question}
       </h3>
@@ -364,6 +338,32 @@ const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplana
           </motion.div>
         ))}
       </div>
+
+      {/* Answer Notification - Now below questions */}
+      <AnimatePresence>
+        {showNotification && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className={`${
+              isCorrect ? 'bg-green-500' : 'bg-red-500'
+            } text-white px-6 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 mt-4`}
+          >
+            {isCorrect ? (
+              <>
+                <CheckCircle2 className="h-5 w-5" />
+                <span className="font-medium">Correct!</span>
+              </>
+            ) : (
+              <>
+                <X className="h-5 w-5" />
+                <span className="font-medium">Incorrect</span>
+              </>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {showExplanation && (
