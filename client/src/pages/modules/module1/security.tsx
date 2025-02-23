@@ -361,8 +361,8 @@ export default function SecurityPage() {
                 </h3>
                 <div className="bg-white/80 p-6 rounded-lg">
                   <p className="text-gray-700 mb-4">
-                    In July 2020, hackers compromised high-profile Twitter accounts to promote a cryptocurrency scam. 
-                    The incident highlighted the importance of verifying transactions and being skeptical of 
+                    In July 2020, hackers compromised high-profile Twitter accounts to promote a cryptocurrency scam.
+                    The incident highlighted the importance of verifying transactions and being skeptical of
                     "too good to be true" offers, even when they appear to come from trusted sources.
                   </p>
                   <div className="mt-4">
@@ -400,16 +400,20 @@ export default function SecurityPage() {
               className="mt-12"
             >
               <QuizContainer>
-                <SecurityQuiz onComplete={handleQuizComplete} />
-                {quizCompleted && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="text-center my-4 text-green-600"
-                  >
-                    Quiz completed! Moving to next section in 5 seconds...
-                  </motion.div>
-                )}
+                <div className="bg-white rounded-lg shadow-sm">
+                  <div className="p-6">
+                    <SecurityQuiz onComplete={handleQuizComplete} />
+                    {quizCompleted && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="text-center my-4 text-gray-700"
+                      >
+                        Quiz completed! Moving to next section in 5 seconds...
+                      </motion.div>
+                    )}
+                  </div>
+                </div>
               </QuizContainer>
 
               {!quizCompleted && (

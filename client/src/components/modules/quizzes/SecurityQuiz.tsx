@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
@@ -10,61 +10,61 @@ interface SecurityQuizProps {
   onComplete: () => void;
 }
 
-const quizQuestions = [
+const questions = [
   {
-    question: "What is the most secure way to store large amounts of cryptocurrency?",
+    question: "Which of the following is NOT a recommended security practice for cryptocurrency?",
     options: [
-      "In an online exchange wallet",
-      "Using a hardware wallet",
-      "In a mobile wallet app",
-      "Writing down private keys on paper"
+      "Using hardware wallets",
+      "Storing private keys online",
+      "Enabling 2FA",
+      "Regular software updates"
     ],
     correctAnswer: 1,
-    explanation: "Hardware wallets are the most secure option as they store private keys offline, protecting them from online threats and hackers."
+    explanation: "Storing private keys online makes them vulnerable to hacking. Always keep private keys offline in secure physical locations."
   },
   {
-    question: "Which of these is NOT a recommended security practice?",
+    question: "What is the most secure type of cryptocurrency wallet?",
     options: [
-      "Using 2FA on all accounts",
-      "Storing recovery phrases digitally",
-      "Regular wallet backups",
-      "Using hardware security keys"
+      "Hardware wallet",
+      "Mobile wallet",
+      "Web wallet",
+      "Exchange wallet"
     ],
-    correctAnswer: 1,
-    explanation: "Storing recovery phrases digitally (on computers or phones) makes them vulnerable to hacking. Always store them physically in secure locations."
-  },
-  {
-    question: "What is a private key used for in cryptocurrency?",
-    options: [
-      "To share with others for receiving funds",
-      "To log into cryptocurrency exchanges",
-      "To prove ownership and control funds",
-      "To verify other users' transactions"
-    ],
-    correctAnswer: 2,
-    explanation: "Private keys are used to prove ownership of cryptocurrency and authorize transactions. They should never be shared with anyone."
+    correctAnswer: 0,
+    explanation: "Hardware wallets provide the highest level of security by keeping private keys offline and protected from online threats."
   },
   {
     question: "Which 2FA method is generally considered most secure?",
     options: [
-      "SMS verification codes",
-      "Email verification codes",
-      "Hardware security keys",
-      "Recovery questions"
+      "SMS verification",
+      "Email verification",
+      "Hardware security key",
+      "Phone call verification"
     ],
     correctAnswer: 2,
-    explanation: "Hardware security keys provide the strongest security as they can't be intercepted or duplicated like SMS or email codes."
+    explanation: "Hardware security keys provide the strongest protection as they can't be intercepted or duplicated like SMS or email codes."
   },
   {
-    question: "What is the best practice for protecting against phishing attacks?",
+    question: "What should you do if you receive an urgent request to transfer cryptocurrency?",
     options: [
-      "Only use mobile wallets",
-      "Share keys across multiple devices",
-      "Click links from trusted emails",
-      "Verify website URLs carefully"
+      "Transfer immediately to avoid delays",
+      "Share your private key for faster processing",
+      "Verify through official channels first",
+      "Click provided links to confirm"
     ],
-    correctAnswer: 3,
-    explanation: "Always verify website URLs carefully before entering any sensitive information, as phishing sites often mimic legitimate cryptocurrency services."
+    correctAnswer: 2,
+    explanation: "Always verify urgent requests through official channels, as cryptocurrency transfers are irreversible and scammers often create false urgency."
+  },
+  {
+    question: "How should you store your recovery phrase?",
+    options: [
+      "In a password manager",
+      "In multiple physical locations",
+      "In cloud storage",
+      "In your email drafts"
+    ],
+    correctAnswer: 1,
+    explanation: "Storing your recovery phrase in multiple secure physical locations provides redundancy while keeping it offline and safe from digital threats."
   }
 ];
 
@@ -80,27 +80,20 @@ const SecurityQuiz: React.FC<SecurityQuizProps> = ({ onComplete }) => {
     setSelectedAnswer(optionIndex);
     setShowExplanation(true);
 
-    const isCorrect = optionIndex === quizQuestions[currentQuestion].correctAnswer;
+    const isCorrect = optionIndex === questions[currentQuestion].correctAnswer;
     if (isCorrect) {
       setScore(prev => prev + 1);
     }
 
     setTimeout(() => {
-      if (currentQuestion < quizQuestions.length - 1) {
+      if (currentQuestion < questions.length - 1) {
         setCurrentQuestion(prev => prev + 1);
         setSelectedAnswer(null);
         setShowExplanation(false);
       } else {
         setShowResult(true);
-        const finalScore = ((score + (isCorrect ? 1 : 0)) / quizQuestions.length) * 100;
-        updateProgress(
-          3,
-          'security',
-          finalScore >= 60,
-          1,
-          undefined,
-          finalScore
-        );
+        const finalScore = ((score + (isCorrect ? 1 : 0)) / questions.length) * 100;
+        updateProgress(1, 'security', finalScore >= 60);
 
         if (finalScore >= 60) {
           setTimeout(() => {
@@ -112,36 +105,38 @@ const SecurityQuiz: React.FC<SecurityQuizProps> = ({ onComplete }) => {
   };
 
   if (showResult) {
-    const percentage = (score / quizQuestions.length) * 100;
+    const percentage = (score / questions.length) * 100;
     return (
-      <div className="container mx-auto px-4 py-6 max-w-xl">
-        <Card className="p-6 text-center bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700">
+      <div className="max-w-2xl mx-auto">
+        <Card className="p-6 bg-white">
           <div className="flex items-center justify-center mb-4">
             <Award className={`h-12 w-12 ${percentage >= 60 ? 'text-green-500' : 'text-red-500'}`} />
           </div>
-          <h2 className="text-xl font-bold mb-3 text-gray-100">
+          <h2 className="text-xl font-bold text-gray-900 mb-3 text-center">
             Quiz Complete!
           </h2>
-          <div className="text-lg mb-4">
-            <p className="font-semibold text-gray-200">Your Score:</p>
-            <p className={`text-2xl font-bold ${percentage >= 60 ? 'text-green-400' : 'text-red-400'}`}>
+          <div className="text-lg mb-4 text-center">
+            <p className="font-semibold text-gray-700">Your Score:</p>
+            <p className={`text-2xl font-bold ${percentage >= 60 ? 'text-green-600' : 'text-red-600'}`}>
               {percentage}%
             </p>
-            <p className="text-gray-400 mt-1 text-sm">
-              ({score} out of {quizQuestions.length} correct)
+            <p className="text-gray-600 mt-1 text-sm">
+              ({score} out of {questions.length} correct)
             </p>
           </div>
           {percentage >= 60 ? (
-            <div className="bg-green-900/20 border-l-4 border-green-500 p-3 mb-4 text-sm">
-              <p className="text-green-400 flex items-center gap-2 justify-center">
+            <div className="bg-green-50 border-l-4 border-green-500 p-4 mb-4">
+              <p className="text-green-700 flex items-center gap-2 justify-center">
                 <CheckCircle className="h-4 w-4" />
                 Congratulations! You've passed!
               </p>
-              <p className="text-sm text-green-400/80 mt-1">Continue to next section in 3 seconds...</p>
+              <p className="text-sm text-green-600 mt-1 text-center">
+                Moving to next section in 3 seconds...
+              </p>
             </div>
           ) : (
-            <div className="bg-red-900/20 border-l-4 border-red-500 p-3 mb-4 text-sm">
-              <p className="text-red-400 flex items-center gap-2 justify-center">
+            <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
+              <p className="text-red-700 flex items-center gap-2 justify-center">
                 <XCircle className="h-4 w-4" />
                 Keep learning and try again
               </p>
@@ -152,45 +147,45 @@ const SecurityQuiz: React.FC<SecurityQuizProps> = ({ onComplete }) => {
     );
   }
 
-  const currentQuizQuestion = quizQuestions[currentQuestion];
-
   return (
-    <div className="container mx-auto px-4 py-3 max-w-xl">
-      <div className="mb-4">
-        <h3 className="text-lg font-semibold text-gray-200 mb-3 flex items-center justify-between">
-          Question {currentQuestion + 1} of {quizQuestions.length}
-          <span className="text-sm text-gray-400 bg-gray-800 px-2 py-1 rounded-full">
+    <div className="max-w-2xl mx-auto">
+      <div className="mb-6">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold text-gray-900">
+            Question {currentQuestion + 1} of {questions.length}
+          </h2>
+          <span className="text-sm font-medium text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
             Score: {score}
           </span>
-        </h3>
+        </div>
 
-        <div className="bg-gray-800 rounded-lg p-3 mb-3">
-          <p className="text-base text-gray-200">
-            {currentQuizQuestion.question}
+        <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200 mb-6">
+          <p className="text-gray-800 text-lg">
+            {questions[currentQuestion].question}
           </p>
         </div>
 
-        <div className="grid gap-2">
-          {currentQuizQuestion.options.map((option, index) => (
+        <div className="space-y-3">
+          {questions[currentQuestion].options.map((option, index) => (
             <motion.button
               key={index}
               onClick={() => selectedAnswer === null && handleAnswerSelect(index)}
               className={`
-                w-full p-3 rounded-lg text-left transition-all duration-300 text-sm
+                w-full p-4 rounded-lg text-left transition-all duration-200
                 ${selectedAnswer === null 
-                  ? 'bg-gray-800 hover:bg-gray-700 border border-gray-700 text-gray-200' 
-                  : index === currentQuizQuestion.correctAnswer 
-                    ? 'bg-green-900/20 border-2 border-green-500 text-green-400' 
+                  ? 'bg-white hover:bg-gray-50 border border-gray-200 text-gray-700' 
+                  : index === questions[currentQuestion].correctAnswer 
+                    ? 'bg-green-50 border-2 border-green-500 text-green-700' 
                     : selectedAnswer === index 
-                      ? 'bg-red-900/20 border-2 border-red-500 text-red-400' 
-                      : 'bg-gray-800 border border-gray-700 text-gray-400'}
-                whitespace-normal break-words hover:shadow-md
+                      ? 'bg-red-50 border-2 border-red-500 text-red-700' 
+                      : 'bg-white border border-gray-200 text-gray-600'
+                }
               `}
               disabled={selectedAnswer !== null}
               whileHover={{ scale: selectedAnswer === null ? 1.01 : 1 }}
               whileTap={{ scale: selectedAnswer === null ? 0.99 : 1 }}
             >
-              <span>{option}</span>
+              {option}
             </motion.button>
           ))}
         </div>
@@ -200,19 +195,25 @@ const SecurityQuiz: React.FC<SecurityQuizProps> = ({ onComplete }) => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             className={`
-              mt-4 p-3 rounded-lg text-sm
-              ${selectedAnswer === currentQuizQuestion.correctAnswer 
-                ? 'bg-green-900/20 border-l-4 border-green-500' 
-                : 'bg-red-900/20 border-l-4 border-red-500'}
+              mt-6 p-4 rounded-lg bg-white border-l-4
+              ${selectedAnswer === questions[currentQuestion].correctAnswer 
+                ? 'border-green-500 text-gray-800' 
+                : 'border-red-500 text-gray-800'
+              }
             `}
           >
             <h3 className="font-bold mb-2 flex items-center gap-2">
-              {selectedAnswer === currentQuizQuestion.correctAnswer 
-                ? <><CheckCircle className="h-4 w-4 text-green-400" /> Correct!</>
-                : <><XCircle className="h-4 w-4 text-red-400" /> Incorrect</>}
+              {selectedAnswer === questions[currentQuestion].correctAnswer 
+                ? <><CheckCircle className="h-4 w-4 text-green-500" /> Correct!</>
+                : <><XCircle className="h-4 w-4 text-red-500" /> Incorrect</>
+              }
             </h3>
-            <p className="leading-relaxed text-gray-300">{currentQuizQuestion.explanation}</p>
-            <p className="text-xs mt-2 text-gray-400">Next question in 3 seconds...</p>
+            <p className="text-gray-700">
+              {questions[currentQuestion].explanation}
+            </p>
+            <p className="text-sm text-gray-500 mt-2">
+              Next question in 3 seconds...
+            </p>
           </motion.div>
         )}
       </div>
