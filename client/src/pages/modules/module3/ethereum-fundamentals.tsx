@@ -71,9 +71,9 @@ const EthereumFundamentalsSection = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="container mx-auto px-4 py-8"
+      className="container mx-auto px-4 py-8 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 min-h-screen"
     >
-      <div className="fixed top-0 left-0 w-full h-1 bg-gray-300 z-50">
+      <div className="fixed top-0 left-0 w-full h-1 bg-gray-800 z-50">
         <div 
           className="h-full bg-blue-600" 
           style={{ width: `${scrollProgress}%` }}
@@ -85,9 +85,9 @@ const EthereumFundamentalsSection = () => {
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="mb-8 rounded-xl overflow-hidden shadow-sm"
+          className="mb-8 rounded-xl overflow-hidden shadow-lg"
         >
-          <div className="bg-gradient-to-r from-gray-700 to-gray-800 p-8">
+          <div className="bg-gradient-to-r from-gray-700 to-gray-800 p-8 border-b border-gray-600">
             <div className="flex items-center mb-2">
               <EthereumLogo />
               <div>
@@ -105,40 +105,40 @@ const EthereumFundamentalsSection = () => {
           </div>
         </motion.div>
 
-        <Card className="mb-6">
-          <div className="p-6 prose max-w-none">
+        <Card className="mb-6 bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700">
+          <div className="p-6 prose max-w-none text-gray-200">
             <motion.section
               variants={containerVariants}
               initial="hidden"
               animate="visible"
             >
-              <h2 className="text-2xl font-bold text-blue-700 mb-4">What Makes Ethereum Different?</h2>
+              <h2 className="text-2xl font-bold text-blue-400 mb-4">What Makes Ethereum Different?</h2>
 
-              <div className="bg-blue-50 p-4 rounded-lg mb-6">
-                <p className="text-gray-700">
-                  <strong>🎯 Think of it this way:</strong> If Bitcoin is like digital gold that you can send 
+              <div className="bg-gradient-to-br from-gray-700 to-gray-800 p-6 rounded-lg mb-6 border border-gray-600">
+                <p className="text-gray-300">
+                  <strong className="text-blue-400">🎯 Think of it this way:</strong> If Bitcoin is like digital gold that you can send 
                   and receive, Ethereum is like a global computer that can run programs (called smart contracts) 
                   and store data. It's not just for sending money - it's for building entire applications that 
                   run on the blockchain!
                 </p>
               </div>
 
-              <p className="text-gray-700 mb-4">
+              <p className="text-gray-300 mb-4">
                 Unlike Bitcoin's focus on being digital money, Ethereum gives you the power to:
               </p>
 
-              <ul className="list-disc pl-6 mb-6 space-y-2">
+              <ul className="list-disc pl-6 mb-6 space-y-2 text-gray-300">
                 <li>Create and run applications that can't be shut down</li>
                 <li>Build financial services without banks</li>
                 <li>Make digital art and collectibles (NFTs)</li>
                 <li>Form online organizations (DAOs) that run by code</li>
               </ul>
 
-              <div className="my-8 p-4 bg-gray-50 rounded-lg shadow-inner">
-                <h3 className="text-xl font-semibold text-blue-700 mb-4">Bitcoin vs Ethereum: A Simple Comparison</h3>
+              <div className="my-8 p-4 bg-gradient-to-br from-gray-700 to-gray-800 rounded-lg shadow-xl border border-gray-600">
+                <h3 className="text-xl font-semibold text-blue-400 mb-4">Bitcoin vs Ethereum: A Simple Comparison</h3>
                 <BitcoinEthereumComparison />
-                <p className="text-sm text-gray-600 mt-4">
-                  <strong>💡 Key Difference:</strong> Bitcoin focuses on doing one thing well (being digital money), 
+                <p className="text-sm text-gray-400 mt-4">
+                  <strong className="text-blue-400">💡 Key Difference:</strong> Bitcoin focuses on doing one thing well (being digital money), 
                   while Ethereum can do many things because it's programmable!
                 </p>
               </div>
@@ -149,27 +149,27 @@ const EthereumFundamentalsSection = () => {
               >
                 <motion.div
                   variants={itemVariants}
-                  className="bg-blue-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                  className="bg-gradient-to-br from-gray-700 to-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow text-gray-200 border border-gray-600"
                 >
-                  <h4 className="font-semibold text-blue-700 mb-3">📱 dApps (Decentralized Apps)</h4>
+                  <h4 className="font-semibold text-blue-400 mb-3">📱 dApps (Decentralized Apps)</h4>
                   <p className="text-sm">Just like the apps on your phone, but they run on Ethereum instead of 
                   Apple or Google's servers. This means they're always available and can't be shut down!</p>
                 </motion.div>
 
                 <motion.div
                   variants={itemVariants}
-                  className="bg-blue-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                  className="bg-gradient-to-br from-gray-700 to-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow text-gray-200 border border-gray-600"
                 >
-                  <h4 className="font-semibold text-blue-700 mb-3">📝 Smart Contracts</h4>
+                  <h4 className="font-semibold text-blue-400 mb-3">📝 Smart Contracts</h4>
                   <p className="text-sm">These are like digital vending machines - they automatically run when 
                   you interact with them. No person needs to approve or process your request!</p>
                 </motion.div>
 
                 <motion.div
                   variants={itemVariants}
-                  className="bg-blue-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                  className="bg-gradient-to-br from-gray-700 to-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow text-gray-200 border border-gray-600"
                 >
-                  <h4 className="font-semibold text-blue-700 mb-3">🎨 Digital Assets</h4>
+                  <h4 className="font-semibold text-blue-400 mb-3">🎨 Digital Assets</h4>
                   <p className="text-sm">Create your own tokens, digital art, or virtual items that can be 
                   bought, sold, and collected.</p>
                 </motion.div>
@@ -181,13 +181,13 @@ const EthereumFundamentalsSection = () => {
               initial="hidden"
               animate="visible"
             >
-              <h2 className="text-2xl font-bold text-blue-700 mb-4">The Ethereum Virtual Machine (EVM)</h2>
+              <h2 className="text-2xl font-bold text-blue-400 mb-4">The Ethereum Virtual Machine (EVM)</h2>
 
-              <div className="bg-blue-50 p-4 rounded-lg mb-6">
-                <p className="text-gray-700">
-                  <strong>🤔 Think of the EVM as:</strong> A giant, global computer that everyone can use. 
+              <div className="bg-gradient-to-br from-gray-700 to-gray-800 p-6 rounded-lg mb-6 border border-gray-600">
+                <p className="text-gray-300">
+                  <strong className="text-blue-400">🤔 Think of the EVM as:</strong> A giant, global computer that everyone can use. 
                   It's like having a computer that:
-                  <ul className="list-disc pl-6 mt-2">
+                  <ul className="list-disc pl-6 mt-2 text-gray-300">
                     <li>Never turns off</li>
                     <li>Can't be hacked or changed</li>
                     <li>Runs exactly the same for everyone</li>
@@ -196,11 +196,11 @@ const EthereumFundamentalsSection = () => {
                 </p>
               </div>
 
-              <div className="my-8 p-4 bg-gray-50 rounded-lg shadow-inner">
-                <h3 className="text-xl font-semibold text-blue-700 mb-4">How the EVM Works</h3>
+              <div className="my-8 p-4 bg-gradient-to-br from-gray-700 to-gray-800 rounded-lg shadow-xl border border-gray-600">
+                <h3 className="text-xl font-semibold text-blue-400 mb-4">How the EVM Works</h3>
                 <EVMWorkflow />
-                <p className="text-sm text-gray-600 mt-4">
-                  <strong>💡 Important:</strong> Every action on Ethereum costs a small fee called "gas". 
+                <p className="text-sm text-gray-400 mt-4">
+                  <strong className="text-blue-400">💡 Important:</strong> Every action on Ethereum costs a small fee called "gas". 
                   This is like paying for computer processing time!
                 </p>
               </div>
@@ -208,10 +208,10 @@ const EthereumFundamentalsSection = () => {
               <motion.div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <motion.div
                   variants={itemVariants}
-                  className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                  className="bg-gradient-to-br from-gray-700 to-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow text-gray-200 border border-gray-600"
                 >
-                  <h4 className="font-semibold text-blue-700 mb-3">🖥️ How It Runs Programs</h4>
-                  <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                  <h4 className="font-semibold text-blue-400 mb-3">🖥️ How It Runs Programs</h4>
+                  <ul className="list-disc pl-5 space-y-2 text-gray-300">
                     <li>Every computer in the network runs the same code</li>
                     <li>Results are verified by everyone</li>
                     <li>Can't be tampered with or cheated</li>
@@ -222,10 +222,10 @@ const EthereumFundamentalsSection = () => {
 
                 <motion.div
                   variants={itemVariants}
-                  className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                  className="bg-gradient-to-br from-gray-700 to-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow text-gray-200 border border-gray-600"
                 >
-                  <h4 className="font-semibold text-blue-700 mb-3">⛽ Understanding Gas</h4>
-                  <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                  <h4 className="font-semibold text-blue-400 mb-3">⛽ Understanding Gas</h4>
+                  <ul className="list-disc pl-5 space-y-2 text-gray-300">
                     <li>Gas is like fuel for Ethereum operations</li>
                     <li>More complex actions cost more gas</li>
                     <li>Prevents spam and infinite loops</li>
@@ -241,21 +241,21 @@ const EthereumFundamentalsSection = () => {
               initial="hidden"
               animate="visible"
             >
-              <h2 className="text-2xl font-bold text-blue-700 mb-4">Understanding Proof of Stake (PoS)</h2>
+              <h2 className="text-2xl font-bold text-blue-400 mb-4">Understanding Proof of Stake (PoS)</h2>
 
-              <div className="bg-blue-50 p-4 rounded-lg mb-6">
-                <p className="text-gray-700">
-                  <strong>🎯 Think of Proof of Stake like this:</strong> Instead of using powerful computers to solve puzzles (like in Bitcoin's Proof of Work), 
+              <div className="bg-gradient-to-br from-gray-700 to-gray-800 p-6 rounded-lg mb-6 border border-gray-600">
+                <p className="text-gray-300">
+                  <strong className="text-blue-400">🎯 Think of Proof of Stake like this:</strong> Instead of using powerful computers to solve puzzles (like in Bitcoin's Proof of Work), 
                   Ethereum now uses a system where people put their ETH as a security deposit to help verify transactions. It's like putting down a deposit 
                   when you rent an apartment - if you damage the place, you lose your deposit!
                 </p>
               </div>
 
-              <div className="my-8 p-4 bg-gray-50 rounded-lg shadow-inner">
-                <h3 className="text-xl font-semibold text-blue-700 mb-4">Proof of Work vs Proof of Stake: A Simple Comparison</h3>
+              <div className="my-8 p-4 bg-gradient-to-br from-gray-700 to-gray-800 rounded-lg shadow-xl border border-gray-600">
+                <h3 className="text-xl font-semibold text-blue-400 mb-4">Proof of Work vs Proof of Stake: A Simple Comparison</h3>
                 <PosVsPowDiagram />
-                <p className="text-sm text-gray-600 mt-4">
-                  <strong>💡 Key Difference:</strong> While Proof of Work uses massive computing power and electricity, 
+                <p className="text-sm text-gray-400 mt-4">
+                  <strong className="text-blue-400">💡 Key Difference:</strong> While Proof of Work uses massive computing power and electricity, 
                   Proof of Stake uses financial stakes to keep the network secure and running.
                 </p>
               </div>
@@ -266,10 +266,10 @@ const EthereumFundamentalsSection = () => {
               >
                 <motion.div
                   variants={itemVariants}
-                  className="bg-blue-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                  className="bg-gradient-to-br from-gray-700 to-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow text-gray-200 border border-gray-600"
                 >
-                  <h4 className="font-semibold text-blue-700 mb-3">🌱 How PoS Works</h4>
-                  <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                  <h4 className="font-semibold text-blue-400 mb-3">🌱 How PoS Works</h4>
+                  <ul className="list-disc pl-5 space-y-2 text-gray-300">
                     <li>You need 32 ETH to become a validator</li>
                     <li>Validators are chosen to create new blocks</li>
                     <li>Good behavior earns rewards</li>
@@ -280,10 +280,10 @@ const EthereumFundamentalsSection = () => {
 
                 <motion.div
                   variants={itemVariants}
-                  className="bg-blue-50 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                  className="bg-gradient-to-br from-gray-700 to-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow text-gray-200 border border-gray-600"
                 >
-                  <h4 className="font-semibold text-blue-700 mb-3">🌍 Benefits for Everyone</h4>
-                  <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                  <h4 className="font-semibold text-blue-400 mb-3">🌍 Benefits for Everyone</h4>
+                  <ul className="list-disc pl-5 space-y-2 text-gray-300">
                     <li>Uses 99.95% less energy than PoW</li>
                     <li>Faster transaction processing</li>
                     <li>Lower fees possible</li>
@@ -293,9 +293,9 @@ const EthereumFundamentalsSection = () => {
                 </motion.div>
               </motion.div>
 
-              <div className="bg-green-50 p-4 rounded-lg mb-6">
-                <h4 className="font-semibold text-green-700 mb-2">🤔 What if I don't have 32 ETH?</h4>
-                <p className="text-gray-700">
+              <div className="bg-gradient-to-br from-gray-700 to-gray-800 p-6 rounded-lg mb-6 border border-gray-600">
+                <h4 className="font-semibold text-blue-400 mb-2">🤔 What if I don't have 32 ETH?</h4>
+                <p className="text-gray-300">
                   Don't worry! You can join a staking pool where you combine your ETH with others. 
                   It's like a group of friends pooling money together to buy something expensive - 
                   everyone contributes what they can and shares the rewards!
@@ -312,8 +312,8 @@ const EthereumFundamentalsSection = () => {
             transition={{ delay: 0.3 }}
             className="mt-8"
           >
-            <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6">
-              <div className="bg-gradient-to-r from-gray-700 to-gray-900 p-6 rounded-lg mb-6">
+            <Card className="bg-gradient-to-br from-gray-800 to-gray-900 p-6 border border-gray-700">
+              <div className="bg-gradient-to-r from-gray-700 to-gray-800 p-6 rounded-lg mb-6 border border-gray-600">
                 <h2 className="text-2xl font-bold text-white mb-4">
                   Test Your Knowledge
                 </h2>
