@@ -173,11 +173,16 @@ export default function ModuleExercises() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
             <ExercisePreview
               icon={Wallet}
               title="Interactive Wallet Simulation"
               description="Practice creating and managing a Bitcoin wallet in a safe environment. Learn about key management, transactions, and security best practices."
+            />
+            <ExercisePreview
+              icon={Shield}
+              title="Security Workshop"
+              description="Essential security measures to protect your cryptocurrency assets."
             />
             <ExercisePreview
               icon={Brain}
