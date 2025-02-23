@@ -92,7 +92,7 @@ export default function Home() {
             >
               Join thousands of learners on Sulla's comprehensive platform designed to 
               demystify the complex world of digital currencies, artificial intelligence, 
-              and emerging blockchain technologies.
+              and emerging technologies.
             </motion.p>
 
             <motion.div 
