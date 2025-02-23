@@ -5,7 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { ArrowLeft, ArrowRight, Wallet, LucideIcon, Shield, Key, Lock, CheckCircle2, XCircle, TrendingUp, CreditCard, Building2, AlertTriangle } from "lucide-react";
+import { ArrowLeft, ArrowRight, Wallet, LucideIcon, Shield, Key, Lock, CheckCircle2, XCircle, TrendingUp, CreditCard, Building2, AlertTriangle, CheckCircle } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { GettingStartedQuiz } from "@/components/quizzes/GettingStartedQuiz";
@@ -433,9 +433,9 @@ const GettingStartedSection = () => {
         setQuizCompleted(true);
         setTimeout(() => {
           window.location.href = '/modules/module1/quiz';
-        }, 5000);
+        }, 5000); // Changed from 3000 to 5000
       }
-    }, 3000);
+    }, 5000); // Changed from 3000 to 5000
   };
 
   return (
@@ -1026,6 +1026,7 @@ const GettingStartedSection = () => {
                         <p className="text-gray-700">
                           {questions[currentQuestionIndex].explanation}
                         </p>
+                        <p className="text-xs mt-2 text-gray-600">Next question in 5 seconds...</p>
                       </motion.div>
                     )}
                   </div>

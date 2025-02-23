@@ -84,7 +84,7 @@ export default function DigitalCurrenciesSection() {
   const handleQuizComplete = () => {
     setTimeout(() => {
       navigate('/modules/module1/security');
-    }, 5000); // Show score for 5 seconds before navigating
+    }, 5000); // Changed from 3000 to 5000 to match quiz timing
   };
 
   return (

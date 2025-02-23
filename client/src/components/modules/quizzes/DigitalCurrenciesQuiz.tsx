@@ -102,7 +102,7 @@ const DigitalCurrenciesQuiz: React.FC<DigitalCurrenciesQuizProps> = ({ onComplet
           finalScore,
           '/modules/module1/digital-currencies',
           undefined,
-          'Blockchain Fundamentals'
+          'Digital Currencies'
         );
 
         if (finalScore >= 60) {

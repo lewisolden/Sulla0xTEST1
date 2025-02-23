@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Brain, ArrowLeft, CheckCircle, XCircle } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { useProgress } from "@/context/progress-context";
+import { useToast } from "@/hooks/use-toast";  // Updated import path
+
 
 const questions = [
   {
@@ -63,22 +65,36 @@ export default function AIModule3QuizPage() {
   const [showExplanation, setShowExplanation] = useState(false);
   const { updateProgress } = useProgress();
   const [, setLocation] = useLocation();
+  const [userAnswer, setUserAnswer] = useState<number | null>(null); // Added state for user's answer
+
 
   const handleAnswerSelect = (answerIndex: number) => {
     setSelectedAnswer(answerIndex);
     setShowExplanation(true);
+    setUserAnswer(answerIndex); // Store user's answer
 
     setTimeout(() => {
       const isCorrect = answerIndex === questions[currentQuestion].correctAnswer;
 
       if (isCorrect) {
         setScore(prev => prev + 1);
+        useToast({ // Using useToast here
+          title: "Correct! 🎉",
+          description: "Great job! Moving to next question...",
+          variant: "default",
+        });
+      } else {
+        useToast({ // Using useToast here
+          title: "Incorrect",
+          description: "Let's understand why before moving on.",
+          variant: "destructive",
+        });
       }
 
       if (currentQuestion < questions.length - 1) {
-        setCurrentQuestion(prev => prev + 1);
-        setSelectedAnswer(null);
         setShowExplanation(false);
+        setUserAnswer(null);
+        setCurrentQuestion(currentQuestion + 1);
       } else {
         setShowResult(true);
         const finalScore = ((score + (isCorrect ? 1 : 0)) / questions.length) * 100;
@@ -97,7 +113,7 @@ export default function AIModule3QuizPage() {
         if (finalScore >= 60) {
           setTimeout(() => {
             setLocation('/modules/completed');
-          }, 5000);
+          }, 5000); // Changed from 3000 to 5000
         }
       }
     }, 5000); // Changed from 3000 to 5000
@@ -109,6 +125,7 @@ export default function AIModule3QuizPage() {
     setShowResult(false);
     setScore(0);
     setShowExplanation(false);
+    setUserAnswer(null); // Reset user's answer
   };
 
   return (
@@ -178,12 +195,12 @@ export default function AIModule3QuizPage() {
                         onClick={() => handleAnswerSelect(index)}
                         className={`
                           w-full p-4 h-auto whitespace-normal text-left justify-start
-                          ${selectedAnswer === null 
-                            ? 'bg-gray-100 hover:bg-blue-100 text-gray-700' 
-                            : index === questions[currentQuestion].correctAnswer 
-                              ? 'bg-green-200 text-gray-700' 
-                              : selectedAnswer === index 
-                                ? 'bg-red-200 text-gray-700' 
+                          ${selectedAnswer === null
+                            ? 'bg-gray-100 hover:bg-blue-100 text-gray-700'
+                            : index === questions[currentQuestion].correctAnswer
+                              ? 'bg-green-200 text-gray-700'
+                              : selectedAnswer === index
+                                ? 'bg-red-200 text-gray-700'
                                 : 'bg-gray-100 text-gray-700'}
                         `}
                         disabled={selectedAnswer !== null}

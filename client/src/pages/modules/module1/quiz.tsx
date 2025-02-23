@@ -34,7 +34,7 @@ const questions: Question[] = [
     question: "What is the purpose of public key cryptography in cryptocurrency systems?",
     options: [
       "To make transactions faster",
-      "To reduce transaction fees", 
+      "To reduce transaction fees",
       "To secure and verify transactions without central authority",
       "To connect to the internet"
     ],
@@ -95,7 +95,7 @@ const QuizPage = () => {
     if (showExplanation && currentQuestion < questions.length - 1) {
       timer = setTimeout(() => {
         moveToNextQuestion();
-      }, 3000); // Auto advance after 3 seconds
+      }, 5000); // Changed from 3000 to 5000
     }
     return () => clearTimeout(timer);
   }, [showExplanation, currentQuestion]);
@@ -130,7 +130,22 @@ const QuizPage = () => {
       setShowResults(true);
       const passThreshold = questions.length * 0.7; // 70% to pass
       if (score >= passThreshold) {
-        updateProgress(1, 'module1-quiz', true);
+        updateProgress(
+          1, // moduleId
+          'module1-quiz', // sectionId
+          true, // completed
+          5, // order
+          undefined, // timeSpent
+          (score / questions.length) * 100, // quizScore
+          '/modules/module1/quiz', // pageUrl
+          undefined, // nextUrl
+          'Module 1 Quiz' // sectionName
+        );
+
+        // Navigate to next module after delay
+        setTimeout(() => {
+          window.location.href = '/modules/module2';
+        }, 5000); // Changed from 3000 to 5000
       }
     }
   };
@@ -298,12 +313,13 @@ const QuizPage = () => {
                   : 'bg-red-100 border-l-4 border-red-500'}
               `}
             >
-              <h3 className="font-bold mb-2">
+              <h3 className="font-bold mb-2 flex items-center gap-2">
                 {userAnswers[currentQuestion] === currentQuizQuestion.correct
-                  ? '✅ Correct!'
-                  : '❌ Incorrect'}
+                  ? <><CheckCircle className="h-4 w-4 text-green-600" /> Correct!</>
+                  : <><XCircle className="h-4 w-4 text-red-600" /> Incorrect</>}
               </h3>
               <p>{currentQuizQuestion.explanation}</p>
+              <p className="text-xs mt-2 text-gray-600">Next question in 5 seconds...</p>
             </motion.div>
           )}
 

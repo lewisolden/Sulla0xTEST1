@@ -72,7 +72,7 @@ const quizQuestions = [
 ];
 
 const Module3Quiz = () => {
-  useScrollTop(); // Ensure it scrolls to top on load
+  useScrollTop();
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
@@ -90,13 +90,23 @@ const Module3Quiz = () => {
       setShowResult(true);
       const passThreshold = Math.ceil(quizQuestions.length * 0.7);
       if (score >= passThreshold) {
-        updateProgress(3, 'module-quiz', true);
+        updateProgress(
+          3, // moduleId
+          'module3-quiz', // sectionId
+          true, // completed
+          5, // order
+          undefined, // timeSpent
+          (score / quizQuestions.length) * 100, // quizScore
+          '/modules/module3/quiz', // pageUrl
+          undefined, // nextUrl
+          'Module 3 Quiz' // sectionName
+        );
       }
     }
   };
 
   const handleAnswerSelect = (optionIndex: number) => {
-    if (selectedAnswer !== null) return; // Prevent multiple selections
+    if (selectedAnswer !== null) return;
 
     setSelectedAnswer(optionIndex);
     setShowExplanation(true);
@@ -106,10 +116,9 @@ const Module3Quiz = () => {
       setScore(prev => prev + 1);
     }
 
-    // Auto advance after 3 seconds
     setTimeout(() => {
       moveToNextQuestion();
-    }, 3000);
+    }, 5000);
   };
 
   const restartQuiz = () => {
@@ -167,7 +176,7 @@ const Module3Quiz = () => {
           </div>
 
           {showExplanation && (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               className={`
@@ -186,7 +195,7 @@ const Module3Quiz = () => {
                 {quizQuestions[currentQuestion].explanation}
               </p>
               <p className="text-gray-400 mt-2 text-sm">
-                Next question in 3 seconds...
+                Next question in 5 seconds...
               </p>
             </motion.div>
           )}
