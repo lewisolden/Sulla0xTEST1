@@ -83,6 +83,29 @@ export function DeepLearningQuiz({ onComplete }: DeepLearningQuizProps) {
   const handleAnswerSelect = (optionIndex: number) => {
     setSelectedAnswer(optionIndex);
     setShowExplanation(true);
+
+    // Wait 5 seconds before moving to next question
+    setTimeout(() => {
+      const isCorrect = optionIndex === quizQuestions[currentQuestion].correctAnswer;
+
+      if (isCorrect) {
+        setScore(prev => prev + 1);
+      }
+
+      if (currentQuestion < quizQuestions.length - 1) {
+        setCurrentQuestion(prev => prev + 1);
+        setSelectedAnswer(null);
+        setShowExplanation(false);
+      } else {
+        setShowResult(true);
+        const passThreshold = quizQuestions.length * 0.6;
+        const passed = score >= passThreshold;
+        updateProgress(3, 'deep-learning-quiz', passed);
+        if (passed && onComplete) {
+          setTimeout(onComplete, 2000);
+        }
+      }
+    }, 5000);
   };
 
   const moveToNextQuestion = () => {
@@ -202,6 +225,7 @@ export function DeepLearningQuiz({ onComplete }: DeepLearningQuizProps) {
                 : '❌ Incorrect'}
             </h3>
             <p>{currentQuizQuestion.explanation}</p>
+            <p className="text-sm text-gray-600 mt-2">Next question in 5 seconds...</p>
           </div>
         )}
 

@@ -19,10 +19,11 @@ const cardVariants = {
   hover: { scale: 1.02, transition: { duration: 0.2 } }
 };
 
-export default function SecurityPage() {
+const SecurityPage = () => {
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [quizCompleted, setQuizCompleted] = useState(false);
+  const [countdown, setCountdown] = useState<number | null>(null);
   const { updateProgress } = useProgress();
 
   useEffect(() => {
@@ -46,11 +47,21 @@ export default function SecurityPage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [updateProgress]);
 
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (countdown !== null && countdown > 0) {
+      timer = setTimeout(() => {
+        setCountdown(countdown - 1);
+      }, 1000);
+    } else if (countdown === 0) {
+      window.location.href = '/modules/module1/applications';
+    }
+    return () => clearTimeout(timer);
+  }, [countdown]);
+
   const handleQuizComplete = (score: number) => {
     setQuizCompleted(true);
-    setTimeout(() => {
-      window.location.href = '/modules/module1/applications';
-    }, 5000);
+    setCountdown(5);
   };
 
   return (
@@ -409,7 +420,7 @@ export default function SecurityPage() {
                         animate={{ opacity: 1 }}
                         className="text-center my-4 text-gray-700"
                       >
-                        Quiz completed! Moving to next section in 5 seconds...
+                        Quiz completed! Next section in {countdown} seconds...
                       </motion.div>
                     )}
                   </div>
@@ -438,4 +449,6 @@ export default function SecurityPage() {
       </div>
     </CourseSection>
   );
-}
+};
+
+export default SecurityPage;

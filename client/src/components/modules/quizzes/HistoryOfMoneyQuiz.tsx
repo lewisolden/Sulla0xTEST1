@@ -79,11 +79,30 @@ export default function HistoryOfMoneyQuiz() {
   const handleAnswerSelect = (optionIndex: number) => {
     setSelectedAnswer(optionIndex);
     setShowExplanation(true);
+
+    // Wait 5 seconds before moving to next question
+    setTimeout(() => {
+      const isCorrect = optionIndex === quizQuestions[currentQuestion].correctAnswer;
+
+      if (isCorrect) {
+        setScore(prev => prev + 1);
+      }
+
+      if (currentQuestion < quizQuestions.length - 1) {
+        setCurrentQuestion(prev => prev + 1);
+        setSelectedAnswer(null);
+        setShowExplanation(false);
+      } else {
+        setShowResult(true);
+        const passThreshold = quizQuestions.length * 0.6;
+        updateProgress(1, 'history-of-money-quiz', score >= passThreshold);
+      }
+    }, 5000);
   };
 
   const moveToNextQuestion = () => {
     const isCorrect = selectedAnswer === quizQuestions[currentQuestion].correctAnswer;
-    
+
     if (isCorrect) {
       setScore(prev => prev + 1);
     }
@@ -130,7 +149,7 @@ export default function HistoryOfMoneyQuiz() {
               </p>
             </div>
           )}
-          <Button 
+          <Button
             onClick={restartQuiz}
             variant="outline"
             className="mt-4"
@@ -154,7 +173,7 @@ export default function HistoryOfMoneyQuiz() {
               Question {currentQuestion + 1} of {quizQuestions.length}
             </span>
           </h2>
-          
+
           <div className="bg-blue-50 rounded-lg p-4 mb-6">
             <p className="text-lg text-gray-700">
               {currentQuizQuestion.question}
@@ -168,12 +187,12 @@ export default function HistoryOfMoneyQuiz() {
                 onClick={() => handleAnswerSelect(index)}
                 className={`
                   w-full p-4 h-auto whitespace-normal text-left justify-start
-                  ${selectedAnswer === null 
-                    ? 'bg-gray-100 hover:bg-blue-100 text-gray-700' 
-                    : index === currentQuizQuestion.correctAnswer 
-                      ? 'bg-green-200 text-gray-700' 
-                      : selectedAnswer === index 
-                        ? 'bg-red-200 text-gray-700' 
+                  ${selectedAnswer === null
+                    ? 'bg-gray-100 hover:bg-blue-100 text-gray-700'
+                    : index === currentQuizQuestion.correctAnswer
+                      ? 'bg-green-200 text-gray-700'
+                      : selectedAnswer === index
+                        ? 'bg-red-200 text-gray-700'
                         : 'bg-gray-100 text-gray-700'}
                 `}
                 disabled={selectedAnswer !== null}
@@ -187,16 +206,17 @@ export default function HistoryOfMoneyQuiz() {
           {showExplanation && (
             <div className={`
               mt-6 p-4 rounded-lg
-              ${selectedAnswer === currentQuizQuestion.correctAnswer 
-                ? 'bg-green-100 border-l-4 border-green-500' 
+              ${selectedAnswer === currentQuizQuestion.correctAnswer
+                ? 'bg-green-100 border-l-4 border-green-500'
                 : 'bg-red-100 border-l-4 border-red-500'}
             `}>
               <h3 className="font-bold mb-2">
-                {selectedAnswer === currentQuizQuestion.correctAnswer 
-                  ? '✅ Correct!' 
+                {selectedAnswer === currentQuizQuestion.correctAnswer
+                  ? '✅ Correct!'
                   : '❌ Incorrect'}
               </h3>
               <p>{currentQuizQuestion.explanation}</p>
+              <p className="text-sm text-gray-600 mt-2">Next question in 5 seconds...</p>
             </div>
           )}
 
@@ -205,8 +225,8 @@ export default function HistoryOfMoneyQuiz() {
               onClick={moveToNextQuestion}
               className="mt-6 w-full"
             >
-              {currentQuestion < quizQuestions.length - 1 
-                ? 'Next Question' 
+              {currentQuestion < quizQuestions.length - 1
+                ? 'Next Question'
                 : 'Finish Quiz'}
             </Button>
           )}

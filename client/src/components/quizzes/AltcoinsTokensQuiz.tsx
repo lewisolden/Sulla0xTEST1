@@ -73,6 +73,25 @@ export default function AltcoinsTokensQuiz() {
   const handleAnswerSelect = (optionIndex: number) => {
     setSelectedAnswer(optionIndex);
     setShowExplanation(true);
+
+    // Wait 5 seconds before moving to next question
+    setTimeout(() => {
+      const isCorrect = optionIndex === quizQuestions[currentQuestion].correctAnswer;
+
+      if (isCorrect) {
+        setScore(prev => prev + 1);
+      }
+
+      if (currentQuestion < quizQuestions.length - 1) {
+        setCurrentQuestion(prev => prev + 1);
+        setSelectedAnswer(null);
+        setShowExplanation(false);
+      } else {
+        setShowResult(true);
+        const passThreshold = quizQuestions.length * 0.6;
+        updateProgress(1, 'altcoins-tokens-quiz', score >= passThreshold);
+      }
+    }, 5000);
   };
 
   const moveToNextQuestion = () => {
@@ -189,6 +208,7 @@ export default function AltcoinsTokensQuiz() {
                   : '❌ Incorrect'}
               </h3>
               <p>{currentQuizQuestion.explanation}</p>
+              <p className="text-sm text-gray-600 mt-2">Next question in 5 seconds...</p>
             </div>
           )}
 
