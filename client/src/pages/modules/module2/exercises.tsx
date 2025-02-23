@@ -196,6 +196,14 @@ export default function ModuleExercises() {
             </ExerciseSection>
 
             <ExerciseSection
+              title="Security Workshop"
+              description="Learn and practice essential security measures to protect your cryptocurrency assets."
+              icon={Shield}
+            >
+              <SecurityWorkshop />
+            </ExerciseSection>
+
+            <ExerciseSection
               title="Knowledge Check"
               description="Test your understanding of key Bitcoin concepts"
               icon={Brain}
@@ -318,7 +326,7 @@ export default function ModuleExercises() {
             </Link>
             <div className="space-x-4">
               <Link href="/modules/module2/quiz">
-                <Button 
+                <Button
                   className="gap-2 bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white"
                 >
                   Take Module Quiz
