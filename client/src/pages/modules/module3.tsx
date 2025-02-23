@@ -164,6 +164,18 @@ export default function Module3() {
                 <Progress value={progressPercentage} className="bg-gray-100" />
               </div>
 
+              {/* Added Start Topic button here */}
+              <div className="flex justify-center mb-8">
+                <Link href="/modules/module3/ethereum-fundamentals">
+                  <Button
+                    size="lg"
+                    className="bg-gradient-to-r from-gray-400 to-blue-400 hover:from-gray-500 hover:to-blue-500 text-white px-8 py-3 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                  >
+                    Start First Topic
+                  </Button>
+                </Link>
+              </div>
+
               <Tabs defaultValue="overview" className="space-y-4">
                 <TabsList className="bg-gray-100">
                   <TabsTrigger value="overview">Overview</TabsTrigger>
