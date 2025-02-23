@@ -1,16 +1,212 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, ArrowRight, BookOpen, Network, Database, Code, Lightbulb, ArrowUpRight, History, LucideIcon, Coins, ArrowRightCircle, ChevronsRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, X } from "lucide-react";
 import BitcoinBasicsDiagram from "@/components/diagrams/BitcoinBasicsDiagram";
 import ProofOfWorkDiagram from "@/components/diagrams/ProofOfWorkDiagram";
 import { UTXOExercise } from "@/components/exercises/UTXOExercise";
-import QuizQuestion from "@/components/modules/quizzes/QuizQuestion"; // Assumed import
-import QuizResults from "@/components/modules/quizzes/QuizResults"; // Assumed import
+
+interface QuestionProps {
+  question: {
+    id: number;
+    question: string;
+    options: string[];
+    correctAnswer: number;
+    explanation: string;
+  };
+  onAnswer: (selectedIndex: number) => void;
+  showExplanation: boolean;
+}
+
+const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplanation }) => {
+  const [showNotification, setShowNotification] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
+
+  const handleOptionClick = (idx: number) => {
+    const correct = idx === question.correctAnswer;
+    setIsCorrect(correct);
+    setShowNotification(true);
+    onAnswer(idx);
+
+    setTimeout(() => {
+      setShowNotification(false);
+    }, 2000);
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className="space-y-4"
+    >
+      <h3 className="text-xl font-medium text-gray-800 mb-4">
+        {question.question}
+      </h3>
+
+      <div className="space-y-3">
+        {question.options.map((option, idx) => (
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: idx * 0.1 }}
+          >
+            <Button
+              variant="outline"
+              className={`w-full justify-start text-left p-4 ${
+                showExplanation && idx === question.correctAnswer
+                  ? 'bg-green-50 border-green-500 text-green-700'
+                  : ''
+              }`}
+              onClick={() => !showExplanation && handleOptionClick(idx)}
+              disabled={showExplanation}
+            >
+              {option}
+            </Button>
+          </motion.div>
+        ))}
+      </div>
+
+      <AnimatePresence>
+        {showNotification && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className={`${
+              isCorrect ? 'bg-green-500' : 'bg-red-500'
+            } text-white px-6 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 mt-4`}
+          >
+            {isCorrect ? (
+              <>
+                <CheckCircle2 className="h-5 w-5" />
+                <span className="font-medium">Correct!</span>
+              </>
+            ) : (
+              <>
+                <X className="h-5 w-5" />
+                <span className="font-medium">Incorrect</span>
+              </>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+};
+
+const QuizResults = ({ score, totalQuestions }: { score: number; totalQuestions: number }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -20 }}
+    className="space-y-6"
+  >
+    <h2 className="text-2xl font-bold text-center text-purple-800">
+      Quiz Complete!
+    </h2>
+    <div className="p-6 bg-white rounded-lg shadow-lg text-center">
+      <div className="mb-6">
+        <div className="text-4xl font-bold text-purple-600 mb-2">
+          {Math.round((score / totalQuestions) * 100)}%
+        </div>
+        <p className="text-gray-600">
+          You got {score} out of {totalQuestions} questions correct
+        </p>
+      </div>
+    </div>
+  </motion.div>
+);
+
+interface BitcoinFundamentalsQuizProps {
+  onComplete: () => void;
+}
+
+const BitcoinFundamentalsQuiz: React.FC<BitcoinFundamentalsQuizProps> = ({ onComplete }) => {
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [showExplanation, setShowExplanation] = useState(false);
+  const [answers, setAnswers] = useState<Record<number, { selected: number; correct: boolean }>>({});
+  const [showResults, setShowResults] = useState(false);
+
+  const quizQuestions = [
+    {
+      id: 1,
+      question: "What is Bitcoin?",
+      correctAnswer: 0,
+      options: ["A cryptocurrency", "A stock", "A bond"],
+      explanation: "Bitcoin is a decentralized digital currency."
+    },
+    {
+      id: 2,
+      question: "Who invented Bitcoin?",
+      correctAnswer: 2,
+      options: ["Vitalik Buterin", "Charlie Lee", "Satoshi Nakamoto"],
+      explanation: "Satoshi Nakamoto is the pseudonymous creator of Bitcoin."
+    }
+  ];
+
+  const handleAnswer = (selectedIndex: number) => {
+    const currentQuestion = quizQuestions[currentQuestionIndex];
+    const isCorrect = selectedIndex === currentQuestion.correctAnswer;
+
+    setAnswers(prev => ({
+      ...prev,
+      [currentQuestion.id]: {
+        selected: selectedIndex,
+        correct: isCorrect
+      }
+    }));
+
+    setShowExplanation(true);
+
+    setTimeout(() => {
+      if (currentQuestionIndex < quizQuestions.length - 1) {
+        setCurrentQuestionIndex(prev => prev + 1);
+        setShowExplanation(false);
+      } else {
+        setShowResults(true);
+        if (onComplete) {
+          onComplete();
+        }
+      }
+    }, 8000); // Changed to 8 seconds
+  };
+
+  return (
+    <div className="space-y-6">
+      {!showResults ? (
+        <>
+          <QuizQuestion
+            question={quizQuestions[currentQuestionIndex]}
+            onAnswer={handleAnswer}
+            showExplanation={showExplanation}
+          />
+          {showExplanation && (
+            <div className="mt-4 p-4 rounded-lg bg-blue-50 text-blue-800">
+              <p>
+                <span className="font-semibold">Explanation: </span>
+                {quizQuestions[currentQuestionIndex].explanation}
+              </p>
+              <p className="text-sm text-gray-600 mt-2">
+                Next question in 8 seconds...
+              </p>
+            </div>
+          )}
+        </>
+      ) : (
+        <QuizResults
+          score={Object.values(answers).filter(a => a.correct).length}
+          totalQuestions={quizQuestions.length}
+        />
+      )}
+    </div>
+  );
+};
 
 interface FeatureCardProps {
   title: string;
@@ -73,10 +269,6 @@ export default function BitcoinFundamentalsSection() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [updateProgress]);
 
-  const quizQuestions = [ // Example quiz questions - REPLACE WITH YOUR ACTUAL DATA
-    { id: 1, question: "What is Bitcoin?", correctAnswer: 0, options: ["A cryptocurrency", "A stock", "A bond"], explanation: "Bitcoin is a decentralized digital currency." },
-    { id: 2, question: "Who invented Bitcoin?", correctAnswer: 2, options: ["Vitalik Buterin", "Charlie Lee", "Satoshi Nakamoto"], explanation: "Satoshi Nakamoto is the pseudonymous creator of Bitcoin."}
-  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-orange-50 via-white to-orange-50">
@@ -123,7 +315,7 @@ export default function BitcoinFundamentalsSection() {
           </div>
 
           <div className="prose lg:prose-xl text-gray-700 space-y-12">
-            {/* ...rest of the content... */}
+            {/* Content remains here */}
             {isFullyRead && (
               <motion.div
                 className="space-y-6"
@@ -164,70 +356,4 @@ export default function BitcoinFundamentalsSection() {
 const contentVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0 }
-};
-
-
-const BitcoinFundamentalsQuiz = ({ onComplete }) => {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [showExplanation, setShowExplanation] = useState(false);
-  const [answers, setAnswers] = useState({});
-  const [showResults, setShowResults] = useState(false);
-  const { updateProgress } = useProgress();
-
-  const handleAnswer = (selectedIndex) => {
-    const currentQuestion = quizQuestions[currentQuestionIndex];
-    const isCorrect = selectedIndex === currentQuestion.correctAnswer;
-
-    setAnswers(prev => ({
-      ...prev,
-      [currentQuestion.id]: {
-        selected: selectedIndex,
-        correct: isCorrect
-      }
-    }));
-
-    setShowExplanation(true);
-
-    setTimeout(() => {
-      if (currentQuestionIndex < quizQuestions.length - 1) {
-        setCurrentQuestionIndex(prev => prev + 1);
-        setShowExplanation(false);
-      } else {
-        setShowResults(true);
-        if (onComplete) {
-          onComplete();
-        }
-      }
-    }, 8000); // Changed to 8 seconds
-  };
-
-  return (
-    <div className="space-y-6">
-      {!showResults ? (
-        <>
-          <QuizQuestion
-            question={quizQuestions[currentQuestionIndex]}
-            onAnswer={handleAnswer}
-            showExplanation={showExplanation}
-          />
-          {showExplanation && (
-            <div className="mt-4 p-4 rounded-lg bg-blue-50 text-blue-800">
-              <p>
-                <span className="font-semibold">Explanation: </span>
-                {quizQuestions[currentQuestionIndex].explanation}
-              </p>
-              <p className="text-sm text-gray-600 mt-2">
-                Next question in 8 seconds...
-              </p>
-            </div>
-          )}
-        </>
-      ) : (
-        <QuizResults
-          score={Object.values(answers).filter(a => a.correct).length}
-          totalQuestions={quizQuestions.length}
-        />
-      )}
-    </div>
-  );
 };

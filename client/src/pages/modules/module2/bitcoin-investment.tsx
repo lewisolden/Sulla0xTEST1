@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
@@ -9,11 +9,213 @@ import {
   ArrowLeft, ArrowRight, TrendingUp, ShieldCheck, PieChart,
   Shield, Key, Lock, Eye, ExternalLink, AlertOctagon,
   AlertTriangle, CheckCircle2, XCircle, Info, History,
-  Landmark
+  Landmark, X
 } from "lucide-react";
 import { SecurityDiagram } from "@/components/diagrams/SecurityDiagram";
 import BitcoinInvestmentExercise from "@/components/modules/exercises/BitcoinInvestmentExercise";
-import BitcoinFundamentalsQuiz from "@/components/modules/quizzes/BitcoinFundamentalsQuiz";
+
+interface QuestionProps {
+  question: {
+    id: number;
+    question: string;
+    options: string[];
+    correctAnswer: number;
+    explanation: string;
+  };
+  onAnswer: (selectedIndex: number) => void;
+  showExplanation: boolean;
+}
+
+const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplanation }) => {
+  const [showNotification, setShowNotification] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
+
+  const handleOptionClick = (idx: number) => {
+    const correct = idx === question.correctAnswer;
+    setIsCorrect(correct);
+    setShowNotification(true);
+    onAnswer(idx);
+
+    setTimeout(() => {
+      setShowNotification(false);
+    }, 2000);
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className="space-y-4"
+    >
+      <h3 className="text-xl font-medium text-gray-800 mb-4">
+        {question.question}
+      </h3>
+
+      <div className="space-y-3">
+        {question.options.map((option, idx) => (
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: idx * 0.1 }}
+          >
+            <Button
+              variant="outline"
+              className={`w-full justify-start text-left p-4 ${
+                showExplanation && idx === question.correctAnswer
+                  ? 'bg-green-50 border-green-500 text-green-700'
+                  : ''
+              }`}
+              onClick={() => !showExplanation && handleOptionClick(idx)}
+              disabled={showExplanation}
+            >
+              {option}
+            </Button>
+          </motion.div>
+        ))}
+      </div>
+
+      <AnimatePresence>
+        {showNotification && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className={`${
+              isCorrect ? 'bg-green-500' : 'bg-red-500'
+            } text-white px-6 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2 mt-4`}
+          >
+            {isCorrect ? (
+              <>
+                <CheckCircle2 className="h-5 w-5" />
+                <span className="font-medium">Correct!</span>
+              </>
+            ) : (
+              <>
+                <X className="h-5 w-5" />
+                <span className="font-medium">Incorrect</span>
+              </>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+};
+
+const QuizResults = ({ score, totalQuestions }: { score: number; totalQuestions: number }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -20 }}
+    className="space-y-6"
+  >
+    <h2 className="text-2xl font-bold text-center text-purple-800">
+      Quiz Complete!
+    </h2>
+    <div className="p-6 bg-white rounded-lg shadow-lg text-center">
+      <div className="mb-6">
+        <div className="text-4xl font-bold text-purple-600 mb-2">
+          {Math.round((score / totalQuestions) * 100)}%
+        </div>
+        <p className="text-gray-600">
+          You got {score} out of {totalQuestions} questions correct
+        </p>
+      </div>
+    </div>
+  </motion.div>
+);
+
+const investmentQuizQuestions = [
+  {
+    id: 1,
+    question: "What is the primary risk associated with Bitcoin investment?",
+    correctAnswer: 0,
+    options: ["Market Volatility", "Security Risks", "Regulatory Risks", "Technical Risks"],
+    explanation: "Bitcoin's price is highly volatile, subject to significant fluctuations."
+  },
+  {
+    id: 2,
+    question: "What is Metcalfe's Law?",
+    correctAnswer: 2,
+    options: [
+      "A law governing the speed of light.",
+      "A law governing the flow of electricity.",
+      "A law stating the value of a network is proportional to the square of its users.",
+      "A law related to quantum physics."
+    ],
+    explanation: "Metcalfe's law describes the exponential growth of network value with increased users."
+  }
+];
+
+interface BitcoinInvestmentQuizProps {
+  onComplete: () => void;
+}
+
+const BitcoinInvestmentQuiz: React.FC<BitcoinInvestmentQuizProps> = ({ onComplete }) => {
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [showExplanation, setShowExplanation] = useState(false);
+  const [answers, setAnswers] = useState<Record<number, { selected: number; correct: boolean }>>({});
+  const [showResults, setShowResults] = useState(false);
+
+  const handleAnswer = (selectedIndex: number) => {
+    const currentQuestion = investmentQuizQuestions[currentQuestionIndex];
+    const isCorrect = selectedIndex === currentQuestion.correctAnswer;
+
+    setAnswers(prev => ({
+      ...prev,
+      [currentQuestion.id]: {
+        selected: selectedIndex,
+        correct: isCorrect
+      }
+    }));
+
+    setShowExplanation(true);
+
+    setTimeout(() => {
+      if (currentQuestionIndex < investmentQuizQuestions.length - 1) {
+        setCurrentQuestionIndex(prev => prev + 1);
+        setShowExplanation(false);
+      } else {
+        setShowResults(true);
+        if (onComplete) {
+          onComplete();
+        }
+      }
+    }, 8000); // Changed to 8 seconds
+  };
+
+  return (
+    <div className="space-y-6">
+      {!showResults ? (
+        <>
+          <QuizQuestion
+            question={investmentQuizQuestions[currentQuestionIndex]}
+            onAnswer={handleAnswer}
+            showExplanation={showExplanation}
+          />
+          {showExplanation && (
+            <div className="mt-4 p-4 rounded-lg bg-blue-50 text-blue-800">
+              <p>
+                <span className="font-semibold">Explanation: </span>
+                {investmentQuizQuestions[currentQuestionIndex].explanation}
+              </p>
+              <p className="text-sm text-gray-600 mt-2">
+                Next question in 8 seconds...
+              </p>
+            </div>
+          )}
+        </>
+      ) : (
+        <QuizResults
+          score={Object.values(answers).filter(a => a.correct).length}
+          totalQuestions={investmentQuizQuestions.length}
+        />
+      )}
+    </div>
+  );
+};
 
 const BitcoinLogo = () => (
   <svg
@@ -31,6 +233,30 @@ const BitcoinLogo = () => (
   </svg>
 );
 
+const riskLevels = [
+  {
+    title: "Low Risk",
+    description: "Bitcoin ETFs and regulated investment products",
+    color: "from-green-100 via-white to-green-50",
+    borderColor: "border-green-400",
+    textColor: "text-green-700"
+  },
+  {
+    title: "Medium Risk",
+    description: "Direct Bitcoin purchases through established exchanges",
+    color: "from-yellow-100 via-white to-yellow-50",
+    borderColor: "border-yellow-400",
+    textColor: "text-yellow-700"
+  },
+  {
+    title: "High Risk",
+    description: "Trading with leverage or new crypto assets",
+    color: "from-red-100 via-white to-red-50",
+    borderColor: "border-red-400",
+    textColor: "text-red-700"
+  }
+];
+
 export default function BitcoinInvestmentSection() {
   useScrollTop();
   const [isFullyRead, setIsFullyRead] = useState(false);
@@ -47,7 +273,7 @@ export default function BitcoinInvestmentSection() {
 
       if (scrollPercent > 95) {
         setIsFullyRead(true);
-        updateProgress(2, 'bitcoin-investment', true);
+        updateProgress(2, 'bitcoin-investment', true, 1);
       }
     };
 
@@ -66,30 +292,6 @@ export default function BitcoinInvestmentSection() {
       }
     }
   };
-
-  const riskLevels = [
-    {
-      title: "Low Risk",
-      description: "Bitcoin ETFs and regulated investment products",
-      color: "from-green-100 via-white to-green-50",
-      borderColor: "border-green-400",
-      textColor: "text-green-700"
-    },
-    {
-      title: "Medium Risk",
-      description: "Direct Bitcoin purchases through established exchanges",
-      color: "from-yellow-100 via-white to-yellow-50",
-      borderColor: "border-yellow-400",
-      textColor: "text-yellow-700"
-    },
-    {
-      title: "High Risk",
-      description: "Trading with leverage or new crypto assets",
-      color: "from-red-100 via-white to-red-50",
-      borderColor: "border-red-400",
-      textColor: "text-red-700"
-    }
-  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -491,12 +693,12 @@ export default function BitcoinInvestmentSection() {
 
           {isFullyRead && (
             <motion.div
-              className="mt-8 space-y-6"
+              className="space-y-6"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
             >
-              <BitcoinFundamentalsQuiz />
+              <BitcoinInvestmentQuiz onComplete={() => updateProgress(2, 'bitcoin-investment-quiz', true, 1)} />
 
               <div className="flex flex-col md:flex-row items-center gap-4 justify-between mt-8">
                 <Link href="/modules/module2/bitcoin-fundamentals">
@@ -505,9 +707,9 @@ export default function BitcoinInvestmentSection() {
                   </Button>
                 </Link>
 
-                <Link href="/modules/module2/security-risk">
-                  <Button className="w-full md:w-auto bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700">
-                    Next: Security and Risk Management <ArrowRight className="ml-2 h-4 w-4" />
+                <Link href="/modules/module2/quiz">
+                  <Button className="w-full md:w-auto bg-orange-600 hover:bg-orange-700">
+                    Next: Final Quiz <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
               </div>
