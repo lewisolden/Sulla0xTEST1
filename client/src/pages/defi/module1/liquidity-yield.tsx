@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
+import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -261,6 +262,29 @@ const YieldFarmingExamples = () => (
   </motion.div>
 );
 
+const yieldFarmingStrategies = [
+  {
+    icon: FaWater,
+    title: "Liquidity Provision",
+    description: "Supply token pairs to AMM pools and earn trading fees plus additional token rewards."
+  },
+  {
+    icon: FaChartLine,
+    title: "Lending Markets",
+    description: "Lend assets on DeFi platforms to earn interest and platform tokens."
+  },
+  {
+    icon: FaLayerGroup,
+    title: "Yield Aggregation",
+    description: "Automatically move assets between protocols to maximize returns."
+  },
+  {
+    icon: FaShieldAlt,
+    title: "Risk Management",
+    description: "Diversify across multiple protocols and token pairs to minimize risk."
+  }
+];
+
 export default function LiquidityYield() {
   useScrollTop();
   const { updateProgress } = useProgress();
@@ -338,28 +362,6 @@ export default function LiquidityYield() {
     }
   };
 
-  const yieldFarmingStrategies = [
-    {
-      icon: FaWater,
-      title: "Liquidity Provision",
-      description: "Supply token pairs to AMM pools and earn trading fees plus additional token rewards."
-    },
-    {
-      icon: FaChartLine,
-      title: "Lending Markets",
-      description: "Lend assets on DeFi platforms to earn interest and platform tokens."
-    },
-    {
-      icon: FaLayerGroup,
-      title: "Yield Aggregation",
-      description: "Automatically move assets between protocols to maximize returns."
-    },
-    {
-      icon: FaShieldAlt,
-      title: "Risk Management",
-      description: "Diversify across multiple protocols and token pairs to minimize risk."
-    }
-  ];
 
   // Add auto-advance functionality for quiz
   useEffect(() => {
@@ -657,7 +659,6 @@ export default function LiquidityYield() {
                                           initial={{ scale: 0 }}
                                           animate={{ scale: 1 }}
                                           transition={{ type: "spring", stiffness: 200, damping: 10 }}
-                                          className="ml-2"
                                         >
                                           {isCorrect ? (
                                             <Check className="h-5 w-5 text-green-500" />
@@ -748,7 +749,7 @@ export default function LiquidityYield() {
                               <motion.div
                                 initial={{ scale: 0 }}
                                 animate={{ scale: 1 }}
-                                transition={{ type: "spring", stiffness: 200, damping: 10 }}
+                                transition={{ type: "spring", stiffness: 200, damping: 10}}
                               >
                                 <Trophy className="h-16 w-16 text-yellow-500 mx-auto" />
                               </motion.div>
