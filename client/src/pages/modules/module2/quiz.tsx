@@ -1,13 +1,15 @@
 import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useProgress } from "@/context/progress-context";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowLeft, ArrowRight, CheckCircle2, XCircle } from "lucide-react";
+import { ArrowLeft, CheckCircle, XCircle, RefreshCw } from "lucide-react";
+import { useScrollTop } from "@/hooks/useScrollTop";
 
 const quizQuestions = [
   {
+    id: 0,
     question: "What is the maximum number of Bitcoins that will ever exist?",
     options: [
       "18 million",
@@ -15,10 +17,11 @@ const quizQuestions = [
       "25 million",
       "There is no maximum"
     ],
-    correctAnswer: 1,
+    correct: 1,
     explanation: "Bitcoin's code limits the total supply to 21 million coins. This scarcity is a fundamental feature of Bitcoin's economic model."
   },
   {
+    id: 1,
     question: "Which of these best describes a Bitcoin wallet?",
     options: [
       "A physical device that stores Bitcoin",
@@ -26,10 +29,11 @@ const quizQuestions = [
       "An online account where you keep Bitcoin",
       "A bank account for cryptocurrency"
     ],
-    correctAnswer: 1,
+    correct: 1,
     explanation: "A Bitcoin wallet is software that manages your private keys and helps you interact with the Bitcoin network. It doesn't actually 'store' Bitcoins, as they exist on the blockchain."
   },
   {
+    id: 2,
     question: "What happens if you lose your Bitcoin wallet's recovery phrase?",
     options: [
       "Contact Bitcoin support to recover it",
@@ -37,10 +41,11 @@ const quizQuestions = [
       "Your Bitcoin is permanently lost",
       "Wait 30 days for automatic reset"
     ],
-    correctAnswer: 2,
+    correct: 2,
     explanation: "If you lose your recovery phrase, there is no way to recover your Bitcoin. There is no central authority or support team that can help - this highlights the importance of securing your recovery phrase."
   },
   {
+    id: 3,
     question: "What is the main advantage of a Bitcoin ETF over direct Bitcoin ownership?",
     options: [
       "Higher returns guaranteed",
@@ -48,10 +53,11 @@ const quizQuestions = [
       "Investment through traditional brokerage accounts",
       "Faster transactions"
     ],
-    correctAnswer: 2,
+    correct: 2,
     explanation: "Bitcoin ETFs allow investors to gain Bitcoin exposure through traditional brokerage accounts without needing to manage private keys or deal with cryptocurrency exchanges."
   },
   {
+    id: 4,
     question: "Which statement about Bitcoin transactions is correct?",
     options: [
       "They can be reversed by contacting support",
@@ -59,206 +65,168 @@ const quizQuestions = [
       "They are confirmed by network consensus",
       "They are free of charge"
     ],
-    correctAnswer: 2,
+    correct: 2,
     explanation: "Bitcoin transactions are confirmed through network consensus (mining). Once confirmed, they cannot be reversed, and while they're public on the blockchain, they're not free (they require mining fees)."
   }
 ];
 
 const Module2Quiz = () => {
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-  const [showResult, setShowResult] = useState(false);
-  const [score, setScore] = useState(0);
-  const [showExplanation, setShowExplanation] = useState(false);
+  useScrollTop();
+  const [userAnswers, setUserAnswers] = useState({});
+  const [showResults, setShowResults] = useState(false);
+  const [quizStarted, setQuizStarted] = useState(false);
   const { updateProgress } = useProgress();
 
-  const handleAnswerSelect = (optionIndex: number) => {
-    if (!showExplanation) {
-      setSelectedAnswer(optionIndex);
-      setShowExplanation(true);
+  const handleAnswer = (questionId, selectedOption) => {
+    if (!showResults) {
+      setUserAnswers({
+        ...userAnswers,
+        [questionId]: selectedOption
+      });
     }
   };
 
-  const moveToNextQuestion = () => {
-    const isCorrect = selectedAnswer === quizQuestions[currentQuestion].correctAnswer;
-    if (isCorrect) {
-      setScore(prev => prev + 1);
-    }
+  const calculateScore = () => {
+    let correct = 0;
+    quizQuestions.forEach(q => {
+      if (userAnswers[q.id] === q.correct) correct++;
+    });
+    return correct;
+  };
 
-    if (currentQuestion < quizQuestions.length - 1) {
-      setCurrentQuestion(prev => prev + 1);
-      setSelectedAnswer(null);
-      setShowExplanation(false);
-    } else {
-      setShowResult(true);
-      const passThreshold = quizQuestions.length * 0.7; // 70% to pass
-      if (score >= passThreshold) {
-        updateProgress(2, 'module2-quiz', true);
-      }
+  const resetQuiz = () => {
+    setUserAnswers({});
+    setShowResults(false);
+    setQuizStarted(false);
+  };
+
+  const handleQuizSubmit = () => {
+    setShowResults(true);
+    const score = calculateScore();
+    const passThreshold = Math.ceil(quizQuestions.length * 0.7);
+    if (score >= passThreshold) {
+      updateProgress("module2", "quiz", true, "completed", new Date().toISOString(), score, quizQuestions.length);
     }
   };
 
-  const restartQuiz = () => {
-    setCurrentQuestion(0);
-    setSelectedAnswer(null);
-    setShowResult(false);
-    setScore(0);
-    setShowExplanation(false);
-  };
-
-  if (showResult) {
-    const passThreshold = quizQuestions.length * 0.7;
-    const passed = score >= passThreshold;
+  const renderQuestion = (question) => {
+    const isAnswered = userAnswers[question.id] !== undefined;
+    const isCorrect = userAnswers[question.id] === question.correct;
 
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          <Card className="p-8">
-            <CardContent>
-              <div className="text-center">
-                <h2 className="text-3xl font-bold text-blue-800 mb-6">
-                  Module 2 Quiz Results
-                </h2>
-                <p className="text-xl mb-4">
-                  You scored {score} out of {quizQuestions.length}
-                </p>
-
-                {passed ? (
-                  <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-6">
-                    <p className="text-green-700">
-                      🎉 Congratulations! You've passed the Bitcoin Module Quiz!
-                    </p>
-                    <p className="text-green-600 text-sm mt-2">
-                      You've demonstrated a strong understanding of Bitcoin fundamentals.
-                    </p>
-                  </div>
-                ) : (
-                  <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-6">
-                    <p className="text-red-700">
-                      You didn't pass this time. Review the topics and try again.
-                    </p>
-                    <p className="text-red-600 text-sm mt-2">
-                      You need {Math.ceil(passThreshold)} correct answers to pass.
-                    </p>
-                  </div>
-                )}
-
-                <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-                  <Link href="/modules/module2">
-                    <Button 
-                      variant="outline"
-                      size="lg"
-                      className="w-full sm:w-auto"
-                    >
-                      <ArrowLeft className="mr-2 h-4 w-4" /> Back to Module 2
-                    </Button>
-                  </Link>
-                  <Button 
-                    onClick={restartQuiz}
-                    className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700"
-                  >
-                    Try Again
-                  </Button>
-                  {passed && (
-                    <Link href="/modules/module3">
-                      <Button 
-                        size="lg"
-                        className="w-full sm:w-auto bg-green-600 hover:bg-green-700"
-                      >
-                        Module 3 <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </Link>
-                  )}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+      <div key={question.id} className="mb-8 p-4 border rounded-lg bg-white shadow-sm">
+        <h3 className="text-lg font-semibold mb-4">{question.id + 1}. {question.question}</h3>
+        <div className="space-y-2">
+          {question.options.map((option, index) => (
+            <div 
+              key={index}
+              onClick={() => handleAnswer(question.id, index)}
+              className={`p-3 rounded cursor-pointer transition-colors
+                ${!showResults && !isAnswered ? 'hover:bg-gray-100' : ''}
+                ${showResults && index === question.correct ? 'bg-green-100' : ''}
+                ${showResults && userAnswers[question.id] === index && index !== question.correct ? 'bg-red-100' : ''}
+                ${!showResults && userAnswers[question.id] === index ? 'bg-blue-100' : ''}
+                border`}
+            >
+              {option}
+              {showResults && index === question.correct && (
+                <CheckCircle className="inline ml-2 text-green-500" size={20} />
+              )}
+              {showResults && userAnswers[question.id] === index && index !== question.correct && (
+                <XCircle className="inline ml-2 text-red-500" size={20} />
+              )}
+            </div>
+          ))}
         </div>
+        {showResults && (
+          <div className="mt-4 text-sm text-gray-600 bg-gray-50 p-3 rounded">
+            <strong>Explanation:</strong> {question.explanation}
+          </div>
+        )}
       </div>
     );
-  }
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
-        <Card className="p-8">
+        <div className="mb-6">
+          <Link href="/modules/module2">
+            <Button variant="ghost" className="gap-2">
+              <ArrowLeft className="h-4 w-4" /> Back to Module Overview
+            </Button>
+          </Link>
+        </div>
+
+        <Card className="p-6">
+          <CardHeader>
+            <CardTitle>Module 2 Final Quiz</CardTitle>
+          </CardHeader>
           <CardContent>
-            <div className="mb-6 flex justify-between items-center">
-              <Link href="/modules/module2">
-                <Button variant="ghost" className="gap-2">
-                  <ArrowLeft className="h-4 w-4" /> Back to Module Overview
-                </Button>
-              </Link>
-            </div>
-
-            <div className="mb-6">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-blue-800">
-                  Module 2 Final Quiz
-                </h2>
-                <span className="text-sm text-gray-600">
-                  Question {currentQuestion + 1} of {quizQuestions.length}
-                </span>
-              </div>
-
-              <div className="bg-blue-50 rounded-lg p-6 mb-6">
-                <p className="text-lg text-gray-700">
-                  {quizQuestions[currentQuestion].question}
+            {!quizStarted ? (
+              <div className="text-center">
+                <h3 className="text-lg font-semibold mb-4">Ready to test your Bitcoin knowledge?</h3>
+                <p className="text-gray-600 mb-6">
+                  This quiz will test your understanding of key concepts covered in Module 2.
+                  You need to score at least 70% to pass.
                 </p>
-              </div>
-
-              <div className="grid gap-4">
-                {quizQuestions[currentQuestion].options.map((option, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handleAnswerSelect(index)}
-                    className={`
-                      w-full p-4 rounded-lg text-left transition-all duration-300
-                      ${selectedAnswer === null 
-                        ? 'bg-gray-100 hover:bg-blue-100' 
-                        : index === quizQuestions[currentQuestion].correctAnswer 
-                          ? 'bg-green-100 border-green-500' 
-                          : selectedAnswer === index 
-                            ? 'bg-red-100 border-red-500' 
-                            : 'bg-gray-100'}
-                    `}
-                    disabled={selectedAnswer !== null}
-                  >
-                    <span className="text-lg">{option}</span>
-                  </button>
-                ))}
-              </div>
-
-              {showExplanation && (
-                <div className={`
-                  mt-8 p-6 rounded-lg
-                  ${selectedAnswer === quizQuestions[currentQuestion].correctAnswer 
-                    ? 'bg-green-100 border-l-4 border-green-500' 
-                    : 'bg-red-100 border-l-4 border-red-500'}
-                `}>
-                  <h3 className="font-bold mb-2">
-                    {selectedAnswer === quizQuestions[currentQuestion].correctAnswer 
-                      ? '✅ Correct!' 
-                      : '❌ Incorrect'}
-                  </h3>
-                  <p className="text-gray-700">
-                    {quizQuestions[currentQuestion].explanation}
-                  </p>
-                </div>
-              )}
-
-              {selectedAnswer !== null && (
-                <Button
-                  onClick={moveToNextQuestion}
-                  className="mt-8 w-full bg-blue-600 hover:bg-blue-700"
-                  size="lg"
+                <Button 
+                  onClick={() => setQuizStarted(true)}
+                  className="bg-blue-500 hover:bg-blue-600 text-white"
                 >
-                  {currentQuestion < quizQuestions.length - 1 
-                    ? 'Next Question' 
-                    : 'Finish Quiz'}
+                  Start Quiz
                 </Button>
-              )}
-            </div>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {quizQuestions.map(q => renderQuestion(q))}
+
+                {!showResults && Object.keys(userAnswers).length === quizQuestions.length && (
+                  <Button
+                    onClick={handleQuizSubmit}
+                    className="w-full bg-green-500 hover:bg-green-600 text-white"
+                  >
+                    Submit Answers
+                  </Button>
+                )}
+
+                {showResults && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-center p-6 bg-gray-50 rounded-lg"
+                  >
+                    <h3 className="text-xl font-bold mb-2">
+                      Your Score: {calculateScore()} out of {quizQuestions.length}
+                    </h3>
+                    {calculateScore() >= Math.ceil(quizQuestions.length * 0.7) ? (
+                      <p className="text-green-600 mb-4">Perfect score! Excellent understanding of Bitcoin concepts.</p>
+                    ) : (
+                      <p className="text-blue-600 mb-4">Review the explanations above for any questions you missed.</p>
+                    )}
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                      <Button 
+                        onClick={resetQuiz}
+                        variant="outline"
+                        className="gap-2"
+                      >
+                        <RefreshCw className="h-4 w-4" />
+                        Try Again
+                      </Button>
+
+                      {calculateScore() >= Math.ceil(quizQuestions.length * 0.7) && (
+                        <Link href="/modules/module3">
+                          <Button className="bg-blue-500 hover:bg-blue-600 text-white gap-2">
+                            Continue to Module 3
+                            <ArrowLeft className="h-4 w-4" />
+                          </Button>
+                        </Link>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
