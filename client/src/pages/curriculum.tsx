@@ -45,15 +45,17 @@ const courses = [
       },
       {
         id: 2,
-        icon: Network,
-        title: "Module 2: What is a Blockchain?",
-        description: "Explore the revolutionary technology powering the future of digital transactions.",
+        icon: Wallet,
+        title: "Module 2: Bitcoin Deep Dive",
+        description: "Comprehensive exploration of Bitcoin's technology, protocol architecture, and real-world impact.",
         sections: [
-          "2.1 Blockchain Basics",
-          "2.2 Distributed Ledger Technology",
-          "2.3 Consensus Mechanisms",
-          "2.4 Smart Contracts",
-          "Hands-on Practice",
+          "Bitcoin Fundamentals",
+          "Blockchain Fundamentals",
+          "Security & Risk Management",
+          "Decentralization",
+          "Future Applications",
+          "Bitcoin Investment Strategies",
+          "Practical Exercises",
           "Module Assessment"
         ],
         path: "/modules/module2"
