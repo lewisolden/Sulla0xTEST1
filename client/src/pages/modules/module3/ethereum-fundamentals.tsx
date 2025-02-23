@@ -106,12 +106,19 @@ const EthereumFundamentalsSection = () => {
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="flex items-center mb-6"
+          className="mb-8 rounded-xl overflow-hidden"
         >
-          <EthereumLogo />
-          <h1 className="text-4xl font-bold text-blue-800">
-            3.1 Ethereum Fundamentals
-          </h1>
+          <div className="bg-gradient-to-r from-gray-50 to-blue-50 p-8">
+            <div className="flex items-center mb-2">
+              <EthereumLogo />
+              <h1 className="text-4xl font-bold text-blue-800">
+                Ethereum Fundamentals
+              </h1>
+            </div>
+            <p className="text-gray-600 text-lg ml-16 pl-2">
+              Understanding the revolutionary smart contract platform that powers the future of decentralized applications
+            </p>
+          </div>
         </motion.div>
 
         <Card className="mb-6">
