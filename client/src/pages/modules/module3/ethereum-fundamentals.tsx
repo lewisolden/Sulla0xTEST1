@@ -87,19 +87,19 @@ const EthereumFundamentalsSection = () => {
           transition={{ delay: 0.2 }}
           className="mb-8 rounded-xl overflow-hidden bg-gray-50 shadow-sm"
         >
-          <div className="bg-gradient-to-r from-gray-50 to-blue-50 p-8">
+          <div className="bg-gradient-to-r from-gray-50 to-gray-800 p-8">
             <div className="flex items-center mb-2">
               <EthereumLogo />
               <div>
-                <h1 className="text-4xl font-bold text-blue-800">
+                <h1 className="text-4xl font-bold text-gray-100">
                   Ethereum Fundamentals
                 </h1>
-                <p className="text-lg text-gray-600 mt-2">
+                <p className="text-lg text-gray-300 mt-2">
                   A Deep Dive into the World's Most Popular Smart Contract Platform
                 </p>
               </div>
             </div>
-            <p className="text-gray-600 text-lg mt-4 ml-16 pl-2">
+            <p className="text-gray-400 text-lg mt-4 ml-16 pl-2">
               Understanding the revolutionary smart contract platform that powers the future of decentralized applications
             </p>
           </div>
