@@ -5,7 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { ArrowLeft, ArrowRight, Wallet, LucideIcon, Shield, Key, Lock, CheckCircle2, XCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, Wallet, LucideIcon, Shield, Key, Lock, CheckCircle2, XCircle, CreditCard, Eye, EyeOff, Brain } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { GettingStartedQuiz } from "@/components/quizzes/GettingStartedQuiz";
@@ -13,8 +13,8 @@ import { SecurityIcon, WalletIcon } from "@/components/icons/CryptoIcons";
 import { GettingStartedDiagram } from "@/components/diagrams/GettingStartedDiagram";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { Eye, EyeOff } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
+import { SiCoinbase, SiKraken } from "react-icons/si";
 
 // Add seed word list
 const SEED_WORD_LIST = [
@@ -334,7 +334,7 @@ const GettingStartedSection = () => {
   const ResourceCard = ({ icon: Icon, title, description, tags, color }: ResourceCardProps) => (
     <motion.div
       whileHover={{ scale: 1.02 }}
-      className={`bg-white roundedxl shadow-lg p-6 border-l-4 ${color}`}
+      className={`bg-white roundedxl shadowlg p-6 border-l-4 ${color}`}
     >
       <div className="flex items-start space-x-4">
         <div className={`p-3 rounded-lg ${color.replace('border-', 'bg-').replace('-500', '-100')}`}>
@@ -793,6 +793,80 @@ const GettingStartedSection = () => {
                       Always send a small test amount first when using a new wallet or address - think of it
                       like trying a new route before making a long journey.
                     </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section className="mt-8">
+              <h2 className="text-2xl font-bold text-blue-700 mb-6 flex items-center gap-2">
+                <CreditCard className="w-6 h-6" />
+                Getting Your First Cryptocurrency
+              </h2>
+
+              <div className="bg-white p-6 rounded-lg border border-gray-200 mb-6">
+                <p className="text-gray-700 mb-4">
+                  The easiest and safest way to acquire your first cryptocurrency is through a reputable centralized exchange. 
+                  These platforms act like traditional banks, allowing you to convert your regular money (fiat currency) into cryptocurrency.
+                </p>
+
+                <div className="space-y-4">
+                  <div className="bg-blue-50 p-4 rounded-lg">
+                    <h3 className="font-semibold text-blue-800 mb-2">How to Buy Your First Crypto</h3>
+                    <ol className="list-decimal pl-5 space-y-2 text-gray-700">
+                      <li>Choose a reputable exchange (see recommendations below)</li>
+                      <li>Create and verify your account (you'll need ID verification)</li>
+                      <li>Add funds using your preferred payment method:
+                        <ul className="list-disc pl-5 mt-1 space-y-1">
+                          <li>Debit card (faster but may have higher fees)</li>
+                          <li>Bank transfer (lower fees but takes 1-3 business days)</li>
+                        </ul>
+                      </li>
+                      <li>Select the cryptocurrency you want to buy</li>
+                      <li>Review the fees and confirm your purchase</li>
+                      <li>Consider moving your crypto to a personal wallet for better security</li>
+                    </ol>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="bg-green-50 p-4 rounded-lg border-l-4 border-green-500">
+                      <div className="flex items-center gap-2 mb-2">
+                        <SiCoinbase className="w-6 h-6 text-green-600" />
+                        <h4 className="font-semibold text-green-800">Coinbase</h4>
+                      </div>
+                      <ul className="space-y-2 text-gray-700">
+                        <li>✓ Perfect for beginners</li>
+                        <li>✓ User-friendly interface</li>
+                        <li>✓ Strong security measures</li>
+                        <li>✓ Educational rewards program</li>
+                        <li>✓ Available in 100+ countries</li>
+                      </ul>
+                    </div>
+
+                    <div className="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-500">
+                      <div className="flex items-center gap-2 mb-2">
+                        <SiKraken className="w-6 h-6 text-purple-600" />
+                        <h4 className="font-semibold text-purple-800">Kraken</h4>
+                      </div>
+                      <ul className="space-y-2 text-gray-700">
+                        <li>✓ Lower trading fees</li>
+                        <li>✓ Advanced security features</li>
+                        <li>✓ Excellent customer support</li>
+                        <li>✓ Wide range of cryptocurrencies</li>
+                        <li>✓ Strong regulatory compliance</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="bg-yellow-50 p-4 rounded-lg">
+                    <h4 className="font-semibold text-yellow-800 mb-2">Important Tips</h4>
+                    <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                      <li>Start with a small amount while learning</li>
+                      <li>Enable all available security features on your exchange account</li>
+                      <li>Keep records of your purchases for tax purposes</li>
+                      <li>Be patient with the verification process - it's for your security</li>
+                      <li>Never share your exchange account credentials with anyone</li>
+                    </ul>
                   </div>
                 </div>
               </div>
