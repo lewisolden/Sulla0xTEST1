@@ -10,6 +10,8 @@ import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import { ArrowLeft, BookOpen, CheckCircle2, ArrowRight, Shield, TrendingUp, Lock, Coins, Calculator, AlertTriangle, Building2, Check, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useState as useState2 } from "react";
+
 
 // Types for the quiz
 interface QuizQuestion {
@@ -287,16 +289,58 @@ const quiz: { questions: QuizQuestion[] } = {
 };
 
 const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplanation }) => {
+  const [showNotification, setShowNotification] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
+
+  const handleOptionClick = (idx: number) => {
+    const correct = idx === question.correctAnswer;
+    setIsCorrect(correct);
+    setShowNotification(true);
+    onAnswer(idx);
+
+    // Hide notification after 2 seconds
+    setTimeout(() => {
+      setShowNotification(false);
+    }, 2000);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className="space-y-4"
+      className="space-y-4 relative"
     >
+      {/* Answer Notification */}
+      <AnimatePresence>
+        {showNotification && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className={`absolute top-0 left-0 right-0 z-10 ${
+              isCorrect ? 'bg-green-500' : 'bg-red-500'
+            } text-white px-6 py-3 rounded-lg shadow-lg flex items-center justify-center gap-2`}
+          >
+            {isCorrect ? (
+              <>
+                <CheckCircle2 className="h-5 w-5" />
+                <span className="font-medium">Correct!</span>
+              </>
+            ) : (
+              <>
+                <X className="h-5 w-5" />
+                <span className="font-medium">Incorrect</span>
+              </>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <h3 className="text-xl font-medium text-gray-800 mb-4">
         {question.question}
       </h3>
+
       <div className="space-y-3">
         {question.options.map((option, idx) => (
           <motion.div
@@ -312,7 +356,8 @@ const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplana
                   ? 'bg-green-50 border-green-500 text-green-700'
                   : ''
               }`}
-              onClick={() => onAnswer(idx)}
+              onClick={() => !showExplanation && handleOptionClick(idx)}
+              disabled={showExplanation}
             >
               {option}
             </Button>
@@ -326,9 +371,11 @@ const QuizQuestion: React.FC<QuestionProps> = ({ question, onAnswer, showExplana
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="mt-4 p-4 bg-blue-50 rounded-lg"
+            className={`mt-4 p-4 rounded-lg ${
+              isCorrect ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
+            }`}
           >
-            <p className="text-blue-800">
+            <p>
               <span className="font-semibold">Explanation: </span>
               {question.explanation}
             </p>
@@ -355,17 +402,14 @@ const InteractiveQuiz: React.FC<QuizProps> = ({ onComplete }) => {
       [currentQuestion.id]: selectedIndex
     }));
 
-    // Show correct/incorrect toast
-    toast({
-      title: isCorrect ? "Correct!" : "Incorrect",
-      description: isCorrect ? "Great job! Let's see why." : "Not quite. Let's learn why.",
-      variant: isCorrect ? "default" : "destructive",
-    });
-
     // Show explanation
     setShowExplanation(true);
 
-    // Auto advance after 3 seconds
+    if (isCorrect) {
+      setScore(prev => prev + 1);
+    }
+
+    // Auto advance after showing the explanation
     setTimeout(() => {
       if (currentQuestionIndex < quiz.questions.length - 1) {
         setCurrentQuestionIndex(prev => prev + 1);
@@ -380,7 +424,7 @@ const InteractiveQuiz: React.FC<QuizProps> = ({ onComplete }) => {
         setScore(finalScore);
         onComplete(finalScore);
       }
-    }, 3000);
+    }, 2000);
   };
 
   return (
