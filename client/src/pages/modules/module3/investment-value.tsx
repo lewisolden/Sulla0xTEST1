@@ -14,7 +14,6 @@ const InvestmentValueSection = () => {
   useScrollTop();
   const [isFullyRead, setIsFullyRead] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [showQuiz, setShowQuiz] = useState(false);
   const { updateProgress } = useProgress();
 
   useEffect(() => {
@@ -33,26 +32,6 @@ const InvestmentValueSection = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [updateProgress]);
-
-  const startQuiz = () => {
-    setShowQuiz(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  if (showQuiz) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <Button 
-          onClick={() => setShowQuiz(false)}
-          className="mb-6"
-          variant="outline"
-        >
-          ← Back to Content
-        </Button>
-        <InvestmentValueQuiz />
-      </div>
-    );
-  }
 
   return (
     <motion.div 
@@ -73,31 +52,31 @@ const InvestmentValueSection = () => {
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="text-4xl font-bold text-blue-800 mb-6"
+          className="text-4xl font-bold text-gray-800 mb-6"
         >
           3.3 Investment and Value Proposition
         </motion.h1>
 
-        <Card className="mb-6">
-          <div className="p-6 prose max-w-none">
+        <Card className="mb-6 bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-700">
+          <div className="p-6 prose max-w-none text-gray-200">
             <motion.section
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.4 }}
             >
-              <h2 className="text-2xl font-bold text-blue-700 mb-4">Understanding Ethereum's Value</h2>
+              <h2 className="text-2xl font-bold text-blue-400 mb-4">Understanding Ethereum's Value</h2>
 
-              <div className="bg-blue-50 p-6 rounded-lg mb-6">
-                <h3 className="text-xl font-semibold text-blue-700 mb-3">What Makes Ethereum Valuable?</h3>
-                <p className="text-gray-700 mb-4">
+              <div className="bg-gray-700 p-6 rounded-lg mb-6">
+                <h3 className="text-xl font-semibold text-gray-100 mb-3">What Makes Ethereum Valuable?</h3>
+                <p className="text-gray-300 mb-4">
                   Think of Ethereum like a global computer that anyone can use. Just as the internet 
                   revolutionized information sharing, Ethereum is revolutionizing how we handle digital 
                   value and agreements. Its value comes from its utility and growing network of users 
                   and developers.
                 </p>
-                <div className="bg-white p-4 rounded-lg">
-                  <h4 className="font-semibold text-blue-600 mb-2">Real-World Analogy:</h4>
-                  <p className="text-gray-600">
+                <div className="bg-gray-600 p-4 rounded-lg">
+                  <h4 className="font-semibold text-gray-100 mb-2">Real-World Analogy:</h4>
+                  <p className="text-gray-300">
                     Imagine a city where buildings are smart contracts, roads are blockchain networks, 
                     and ETH is the electricity powering everything. The more businesses (applications) 
                     and people (users) move into the city, the more valuable the entire ecosystem becomes.
@@ -110,28 +89,28 @@ const InvestmentValueSection = () => {
                   initial={{ x: -20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: 0.6 }}
-                  className="bg-blue-50 p-6 rounded-lg"
+                  className="bg-gray-700 p-6 rounded-lg"
                 >
                   <div className="flex items-center gap-2 mb-4">
-                    <Code className="w-6 h-6 text-blue-600" />
-                    <h3 className="text-xl font-semibold text-blue-700">Developer Ecosystem</h3>
+                    <Code className="w-6 h-6 text-blue-400" />
+                    <h3 className="text-xl font-semibold text-gray-100">Developer Ecosystem</h3>
                   </div>
                   <div className="space-y-3">
-                    <div className="bg-white p-3 rounded">
-                      <span className="font-semibold">Active Developers:</span>
-                      <p className="text-sm mt-1">Largest blockchain developer community building new applications daily</p>
+                    <div className="bg-gray-600 p-3 rounded">
+                      <span className="font-semibold text-gray-200">Active Developers:</span>
+                      <p className="text-sm mt-1 text-gray-300">Largest blockchain developer community building new applications daily</p>
                     </div>
-                    <div className="bg-white p-3 rounded">
-                      <span className="font-semibold">Development Tools:</span>
-                      <p className="text-sm mt-1">Rich set of tools and frameworks making development easier</p>
+                    <div className="bg-gray-600 p-3 rounded">
+                      <span className="font-semibold text-gray-200">Development Tools:</span>
+                      <p className="text-sm mt-1 text-gray-300">Rich set of tools and frameworks making development easier</p>
                     </div>
-                    <div className="bg-white p-3 rounded">
-                      <span className="font-semibold">Innovation:</span>
-                      <p className="text-sm mt-1">Continuous improvements and new features being added</p>
+                    <div className="bg-gray-600 p-3 rounded">
+                      <span className="font-semibold text-gray-200">Innovation:</span>
+                      <p className="text-sm mt-1 text-gray-300">Continuous improvements and new features being added</p>
                     </div>
-                    <div className="bg-white p-3 rounded">
-                      <span className="font-semibold">Documentation:</span>
-                      <p className="text-sm mt-1">Extensive resources and community support</p>
+                    <div className="bg-gray-600 p-3 rounded">
+                      <span className="font-semibold text-gray-200">Documentation:</span>
+                      <p className="text-sm mt-1 text-gray-300">Extensive resources and community support</p>
                     </div>
                   </div>
                 </motion.div>
@@ -140,28 +119,28 @@ const InvestmentValueSection = () => {
                   initial={{ x: 20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: 0.7 }}
-                  className="bg-blue-50 p-6 rounded-lg"
+                  className="bg-gray-700 p-6 rounded-lg"
                 >
                   <div className="flex items-center gap-2 mb-4">
-                    <Users className="w-6 h-6 text-blue-600" />
-                    <h3 className="text-xl font-semibold text-blue-700">Network Effects</h3>
+                    <Users className="w-6 h-6 text-blue-400" />
+                    <h3 className="text-xl font-semibold text-gray-100">Network Effects</h3>
                   </div>
                   <div className="space-y-3">
-                    <div className="bg-white p-3 rounded">
-                      <span className="font-semibold">User Growth:</span>
-                      <p className="text-sm mt-1">More users mean more valuable applications and services</p>
+                    <div className="bg-gray-600 p-3 rounded">
+                      <span className="font-semibold text-gray-200">User Growth:</span>
+                      <p className="text-sm mt-1 text-gray-300">More users mean more valuable applications and services</p>
                     </div>
-                    <div className="bg-white p-3 rounded">
-                      <span className="font-semibold">Application Diversity:</span>
-                      <p className="text-sm mt-1">From finance to gaming, increasing use cases</p>
+                    <div className="bg-gray-600 p-3 rounded">
+                      <span className="font-semibold text-gray-200">Application Diversity:</span>
+                      <p className="text-sm mt-1 text-gray-300">From finance to gaming, increasing use cases</p>
                     </div>
-                    <div className="bg-white p-3 rounded">
-                      <span className="font-semibold">Network Security:</span>
-                      <p className="text-sm mt-1">More participants strengthen the network's security</p>
+                    <div className="bg-gray-600 p-3 rounded">
+                      <span className="font-semibold text-gray-200">Network Security:</span>
+                      <p className="text-sm mt-1 text-gray-300">More participants strengthen the network's security</p>
                     </div>
-                    <div className="bg-white p-3 rounded">
-                      <span className="font-semibold">Market Liquidity:</span>
-                      <p className="text-sm mt-1">Easier to buy and sell with more trading activity</p>
+                    <div className="bg-gray-600 p-3 rounded">
+                      <span className="font-semibold text-gray-200">Market Liquidity:</span>
+                      <p className="text-sm mt-1 text-gray-300">Easier to buy and sell with more trading activity</p>
                     </div>
                   </div>
                 </motion.div>
@@ -173,21 +152,21 @@ const InvestmentValueSection = () => {
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.8 }}
             >
-              <h2 className="text-2xl font-bold text-blue-700 mb-4">Economic Model</h2>
+              <h2 className="text-2xl font-bold text-blue-400 mb-4">Economic Model</h2>
 
               <div className="space-y-6">
-                <div className="bg-white p-6 rounded-lg shadow-sm">
+                <div className="bg-gray-700 p-6 rounded-lg">
                   <div className="flex items-center gap-2 mb-4">
-                    <Coins className="w-6 h-6 text-blue-600" />
-                    <h3 className="text-xl font-semibold text-blue-700">Understanding ETH Supply</h3>
+                    <Coins className="w-6 h-6 text-blue-400" />
+                    <h3 className="text-xl font-semibold text-gray-100">Understanding ETH Supply</h3>
                   </div>
                   <div className="space-y-4">
-                    <div className="bg-blue-50 p-4 rounded-lg">
-                      <h4 className="font-semibold text-blue-700 mb-2">How New ETH is Created</h4>
-                      <p className="text-gray-700 mb-2">
+                    <div className="bg-gray-600 p-4 rounded-lg">
+                      <h4 className="font-semibold text-gray-100 mb-2">How New ETH is Created</h4>
+                      <p className="text-gray-300 mb-2">
                         Unlike Bitcoin's fixed supply, Ethereum's supply model is dynamic:
                       </p>
-                      <ul className="list-disc pl-5 space-y-2 text-gray-700">
+                      <ul className="list-disc pl-5 space-y-2 text-gray-300">
                         <li>
                           <span className="font-semibold">Staking Rewards:</span>
                           <p className="text-sm mt-1">Validators earn new ETH for helping secure the network</p>
@@ -205,51 +184,51 @@ const InvestmentValueSection = () => {
                   </div>
                 </div>
 
-                <div className="bg-white p-6 rounded-lg shadow-sm">
+                <div className="bg-gray-700 p-6 rounded-lg">
                   <div className="flex items-center gap-2 mb-4">
-                    <Lock className="w-6 h-6 text-blue-600" />
-                    <h3 className="text-xl font-semibold text-blue-700">Staking: Earning from Your ETH</h3>
+                    <Lock className="w-6 h-6 text-blue-400" />
+                    <h3 className="text-xl font-semibold text-gray-100">Staking: Earning from Your ETH</h3>
                   </div>
                   <div className="space-y-4">
-                    <div className="bg-blue-50 p-4 rounded-lg">
-                      <h4 className="font-semibold text-blue-700 mb-2">How Staking Works</h4>
-                      <p className="text-gray-700 mb-2">
+                    <div className="bg-gray-600 p-4 rounded-lg">
+                      <h4 className="font-semibold text-gray-100 mb-2">How Staking Works</h4>
+                      <p className="text-gray-300 mb-2">
                         Staking is like putting your money in a savings account that helps secure the network:
                       </p>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                        <div className="bg-white p-3 rounded">
-                          <span className="font-semibold">Solo Staking:</span>
-                          <p className="text-sm mt-1">Run your own validator with 32 ETH minimum</p>
+                        <div className="bg-gray-700 p-3 rounded">
+                          <span className="font-semibold text-gray-200">Solo Staking:</span>
+                          <p className="text-sm mt-1 text-gray-300">Run your own validator with 32 ETH minimum</p>
                         </div>
-                        <div className="bg-white p-3 rounded">
-                          <span className="font-semibold">Pooled Staking:</span>
-                          <p className="text-sm mt-1">Join others to stake with any amount</p>
+                        <div className="bg-gray-700 p-3 rounded">
+                          <span className="font-semibold text-gray-200">Pooled Staking:</span>
+                          <p className="text-sm mt-1 text-gray-300">Join others to stake with any amount</p>
                         </div>
-                        <div className="bg-white p-3 rounded">
-                          <span className="font-semibold">Rewards:</span>
-                          <p className="text-sm mt-1">Earn regular ETH rewards for participation</p>
+                        <div className="bg-gray-700 p-3 rounded">
+                          <span className="font-semibold text-gray-200">Rewards:</span>
+                          <p className="text-sm mt-1 text-gray-300">Earn regular ETH rewards for participation</p>
                         </div>
-                        <div className="bg-white p-3 rounded">
-                          <span className="font-semibold">Security:</span>
-                          <p className="text-sm mt-1">Your stake helps protect the network</p>
+                        <div className="bg-gray-700 p-3 rounded">
+                          <span className="font-semibold text-gray-200">Security:</span>
+                          <p className="text-sm mt-1 text-gray-300">Your stake helps protect the network</p>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Add ETH Staking Exercise */}
+                {/* ETH Staking Exercise */}
                 <motion.div
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.9 }}
                   className="mt-8"
                 >
-                  <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-lg">
-                    <h3 className="text-2xl font-semibold text-blue-700 mb-4">
+                  <div className="bg-gradient-to-r from-gray-700 to-gray-800 p-6 rounded-lg">
+                    <h3 className="text-2xl font-semibold text-gray-100 mb-4">
                       Try It Yourself: ETH Staking Simulator
                     </h3>
-                    <p className="text-gray-600 mb-6">
+                    <p className="text-gray-300 mb-6">
                       Get hands-on experience with ETH staking through our interactive simulator. 
                       Learn about different staking options, calculate potential rewards, and 
                       understand the requirements and risks involved.
@@ -258,30 +237,30 @@ const InvestmentValueSection = () => {
                   </div>
                 </motion.div>
 
-                <div className="bg-white p-6 rounded-lg shadow-sm">
+                <div className="bg-gray-700 p-6 rounded-lg">
                   <div className="flex items-center gap-2 mb-4">
-                    <Shield className="w-6 h-6 text-blue-600" />
-                    <h3 className="text-xl font-semibold text-blue-700">Investment Considerations</h3>
+                    <Shield className="w-6 h-6 text-blue-400" />
+                    <h3 className="text-xl font-semibold text-gray-100">Investment Considerations</h3>
                   </div>
                   <div className="space-y-4">
-                    <div className="bg-blue-50 p-4 rounded-lg">
-                      <h4 className="font-semibold text-blue-700 mb-2">What to Consider Before Investing</h4>
+                    <div className="bg-gray-600 p-4 rounded-lg">
+                      <h4 className="font-semibold text-gray-100 mb-2">What to Consider Before Investing</h4>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                        <div className="bg-white p-3 rounded">
-                          <span className="font-semibold">Market Volatility:</span>
-                          <p className="text-sm mt-1">Prices can change significantly in short periods</p>
+                        <div className="bg-gray-700 p-3 rounded">
+                          <span className="font-semibold text-gray-200">Market Volatility:</span>
+                          <p className="text-sm mt-1 text-gray-300">Prices can change significantly in short periods</p>
                         </div>
-                        <div className="bg-white p-3 rounded">
-                          <span className="font-semibold">Technology Risk:</span>
-                          <p className="text-sm mt-1">New upgrades and changes can affect value</p>
+                        <div className="bg-gray-700 p-3 rounded">
+                          <span className="font-semibold text-gray-200">Technology Risk:</span>
+                          <p className="text-sm mt-1 text-gray-300">New upgrades and changes can affect value</p>
                         </div>
-                        <div className="bg-white p-3 rounded">
-                          <span className="font-semibold">Regulatory Environment:</span>
-                          <p className="text-sm mt-1">Government policies can impact adoption</p>
+                        <div className="bg-gray-700 p-3 rounded">
+                          <span className="font-semibold text-gray-200">Regulatory Environment:</span>
+                          <p className="text-sm mt-1 text-gray-300">Government policies can impact adoption</p>
                         </div>
-                        <div className="bg-white p-3 rounded">
-                          <span className="font-semibold">Long-term Potential:</span>
-                          <p className="text-sm mt-1">Consider the growing ecosystem and adoption</p>
+                        <div className="bg-gray-700 p-3 rounded">
+                          <span className="font-semibold text-gray-200">Long-term Potential:</span>
+                          <p className="text-sm mt-1 text-gray-300">Consider the growing ecosystem and adoption</p>
                         </div>
                       </div>
                     </div>
@@ -298,19 +277,7 @@ const InvestmentValueSection = () => {
             animate={{ opacity: 1, y: 0 }}
             className="mt-8"
           >
-            <Card className="bg-green-100 border-l-4 border-green-500 p-4">
-              <div className="flex flex-col items-center">
-                <p className="text-green-700 mb-4">
-                  🎉 Congratulations! You've completed the Investment and Value Proposition section!
-                </p>
-                <Button
-                  onClick={startQuiz}
-                  className="bg-green-600 hover:bg-green-700 text-white"
-                >
-                  Take Section Quiz
-                </Button>
-              </div>
-            </Card>
+            <InvestmentValueQuiz onComplete={() => {}} />
           </motion.div>
         )}
 
