@@ -21,7 +21,7 @@ const subjects = [
 const courses = [
   {
     id: 1,
-    title: "Course 1: Cryptocurrency Fundamentals",
+    title: "Course 1: Introduction to Cryptocurrency",
     description: "Master the foundations of blockchain technology, digital currencies, and crypto markets through interactive learning experiences.",
     subject: "crypto",
     level: "beginner",
@@ -77,7 +77,7 @@ const courses = [
   },
   {
     id: 2,
-    title: "Course 2: AI & Machine Learning",
+    title: "Course 2: Introduction to AI & Machine Learning",
     description: "Explore the fascinating world of artificial intelligence, machine learning, and neural networks.",
     subject: "ai",
     level: "beginner",
@@ -133,7 +133,7 @@ const courses = [
   },
   {
     id: 3,
-    title: "Course 3: DeFi Mastery",
+    title: "Course 3: Mastering DeFi",
     description: "Master decentralized finance concepts, protocols, and advanced trading strategies.",
     subject: "crypto",
     level: "intermediate",
