@@ -72,17 +72,27 @@ const quizQuestions = [
 
 const Module2Quiz = () => {
   useScrollTop();
+  const [currentQuestion, setCurrentQuestion] = useState(0);
   const [userAnswers, setUserAnswers] = useState({});
   const [showResults, setShowResults] = useState(false);
   const [quizStarted, setQuizStarted] = useState(false);
   const { updateProgress } = useProgress();
 
-  const handleAnswer = (questionId, selectedOption) => {
+  const handleAnswer = (questionId: number, selectedOption: number) => {
     if (!showResults) {
-      setUserAnswers({
-        ...userAnswers,
+      setUserAnswers(prev => ({
+        ...prev,
         [questionId]: selectedOption
-      });
+      }));
+
+      // Auto advance after a brief delay to show the explanation
+      setTimeout(() => {
+        if (questionId < quizQuestions.length - 1) {
+          setCurrentQuestion(questionId + 1);
+        } else {
+          handleQuizSubmit();
+        }
+      }, 2000);
     }
   };
 
@@ -98,6 +108,7 @@ const Module2Quiz = () => {
     setUserAnswers({});
     setShowResults(false);
     setQuizStarted(false);
+    setCurrentQuestion(0);
   };
 
   const handleQuizSubmit = () => {
@@ -114,36 +125,46 @@ const Module2Quiz = () => {
     const isCorrect = userAnswers[question.id] === question.correct;
 
     return (
-      <div key={question.id} className="mb-8 p-4 border rounded-lg bg-white shadow-sm">
+      <motion.div
+        key={question.id}
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: -20 }}
+        className="mb-8 p-4 border rounded-lg bg-white shadow-sm"
+      >
         <h3 className="text-lg font-semibold mb-4">{question.id + 1}. {question.question}</h3>
         <div className="space-y-2">
           {question.options.map((option, index) => (
             <div 
               key={index}
-              onClick={() => handleAnswer(question.id, index)}
+              onClick={() => !isAnswered && handleAnswer(question.id, index)}
               className={`p-3 rounded cursor-pointer transition-colors
-                ${!showResults && !isAnswered ? 'hover:bg-gray-100' : ''}
-                ${showResults && index === question.correct ? 'bg-green-100' : ''}
-                ${showResults && userAnswers[question.id] === index && index !== question.correct ? 'bg-red-100' : ''}
-                ${!showResults && userAnswers[question.id] === index ? 'bg-blue-100' : ''}
+                ${!isAnswered ? 'hover:bg-gray-100' : ''}
+                ${isAnswered && index === question.correct ? 'bg-green-100' : ''}
+                ${isAnswered && userAnswers[question.id] === index && index !== question.correct ? 'bg-red-100' : ''}
+                ${!isAnswered && userAnswers[question.id] === index ? 'bg-blue-100' : ''}
                 border`}
             >
               {option}
-              {showResults && index === question.correct && (
+              {isAnswered && index === question.correct && (
                 <CheckCircle className="inline ml-2 text-green-500" size={20} />
               )}
-              {showResults && userAnswers[question.id] === index && index !== question.correct && (
+              {isAnswered && userAnswers[question.id] === index && index !== question.correct && (
                 <XCircle className="inline ml-2 text-red-500" size={20} />
               )}
             </div>
           ))}
         </div>
-        {showResults && (
-          <div className="mt-4 text-sm text-gray-600 bg-gray-50 p-3 rounded">
+        {isAnswered && (
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-4 text-sm text-gray-600 bg-gray-50 p-3 rounded"
+          >
             <strong>Explanation:</strong> {question.explanation}
-          </div>
+          </motion.div>
         )}
-      </div>
+      </motion.div>
     );
   };
 
@@ -159,38 +180,42 @@ const Module2Quiz = () => {
         </div>
 
         <Card className="p-6">
-          <CardHeader>
-            <CardTitle>Module 2 Final Quiz</CardTitle>
+          <CardHeader className="bg-gradient-to-r from-orange-500 to-red-600 text-white rounded-t-lg p-6">
+            <CardTitle className="text-2xl font-bold">Module 2 Final Quiz</CardTitle>
+            <p className="text-gray-100 mt-2">
+              Test your understanding of blockchain fundamentals and Bitcoin concepts
+            </p>
           </CardHeader>
           <CardContent>
             {!quizStarted ? (
               <div className="text-center">
-                <h3 className="text-lg font-semibold mb-4">Ready to test your Bitcoin knowledge?</h3>
+                <h3 className="text-lg font-semibold mb-4">Ready to test your knowledge?</h3>
                 <p className="text-gray-600 mb-6">
                   This quiz will test your understanding of key concepts covered in Module 2.
                   You need to score at least 70% to pass.
                 </p>
                 <Button 
                   onClick={() => setQuizStarted(true)}
-                  className="bg-blue-500 hover:bg-blue-600 text-white"
+                  className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white"
                 >
                   Start Quiz
                 </Button>
               </div>
             ) : (
               <div className="space-y-4">
-                {quizQuestions.map(q => renderQuestion(q))}
-
-                {!showResults && Object.keys(userAnswers).length === quizQuestions.length && (
-                  <Button
-                    onClick={handleQuizSubmit}
-                    className="w-full bg-green-500 hover:bg-green-600 text-white"
-                  >
-                    Submit Answers
-                  </Button>
-                )}
-
-                {showResults && (
+                {!showResults ? (
+                  <div>
+                    <div className="mb-4 flex justify-between items-center">
+                      <span className="text-sm text-gray-600">
+                        Question {currentQuestion + 1} of {quizQuestions.length}
+                      </span>
+                      <span className="text-sm text-gray-600">
+                        Progress: {Object.keys(userAnswers).length} / {quizQuestions.length}
+                      </span>
+                    </div>
+                    {renderQuestion(quizQuestions[currentQuestion])}
+                  </div>
+                ) : (
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -200,7 +225,7 @@ const Module2Quiz = () => {
                       Your Score: {calculateScore()} out of {quizQuestions.length}
                     </h3>
                     {calculateScore() >= Math.ceil(quizQuestions.length * 0.7) ? (
-                      <p className="text-green-600 mb-4">Perfect score! Excellent understanding of Bitcoin concepts.</p>
+                      <p className="text-green-600 mb-4">Perfect score! Excellent understanding of the concepts.</p>
                     ) : (
                       <p className="text-blue-600 mb-4">Review the explanations above for any questions you missed.</p>
                     )}
@@ -216,7 +241,7 @@ const Module2Quiz = () => {
 
                       {calculateScore() >= Math.ceil(quizQuestions.length * 0.7) && (
                         <Link href="/modules/module3">
-                          <Button className="bg-blue-500 hover:bg-blue-600 text-white gap-2">
+                          <Button className="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white gap-2">
                             Continue to Module 3
                             <ArrowLeft className="h-4 w-4" />
                           </Button>
