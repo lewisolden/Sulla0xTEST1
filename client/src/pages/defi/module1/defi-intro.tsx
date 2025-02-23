@@ -80,6 +80,8 @@ export default function DefiIntro() {
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showExplanation, setShowExplanation] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(false);
   const { toast } = useToast();
 
   const handleComplete = async () => {
@@ -95,21 +97,20 @@ export default function DefiIntro() {
     setSelectedAnswer(selectedOption);
     setShowExplanation(true);
 
-    if (selectedOption === quizQuestions[currentQuestion].correctAnswer) {
+    const correct = selectedOption === quizQuestions[currentQuestion].correctAnswer;
+    setIsCorrect(correct);
+    setShowPopup(true);
+
+    if (correct) {
       setScore(prev => prev + 1);
-      toast({
-        title: "Correct!",
-        description: "Great job! Let's see why.",
-        variant: "default",
-      });
-    } else {
-      toast({
-        title: "Incorrect",
-        description: "Not quite. Let's learn why.",
-        variant: "destructive",
-      });
     }
 
+    // Hide popup after 1.5 seconds
+    setTimeout(() => {
+      setShowPopup(false);
+    }, 1500);
+
+    // Auto advance after showing the explanation
     setTimeout(() => {
       if (currentQuestion < quizQuestions.length - 1) {
         setCurrentQuestion(prev => prev + 1);
@@ -118,7 +119,7 @@ export default function DefiIntro() {
       } else {
         setQuizCompleted(true);
       }
-    }, 3000);
+    }, 2000);
   };
 
   return (
@@ -259,7 +260,6 @@ export default function DefiIntro() {
                   </div>
                 </section>
 
-                {/* Quiz Section */}
                 {!showQuiz ? (
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -291,7 +291,33 @@ export default function DefiIntro() {
                       Topic Quiz
                     </h2>
                     {!quizCompleted ? (
-                      <div>
+                      <div className="relative">
+                        {/* Answer Popup */}
+                        <AnimatePresence>
+                          {showPopup && (
+                            <motion.div
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -20 }}
+                              className={`absolute top-0 left-0 right-0 z-10 ${
+                                isCorrect ? 'bg-green-500' : 'bg-red-500'
+                              } text-white px-8 py-4 rounded-lg shadow-lg flex items-center justify-center gap-2`}
+                            >
+                              {isCorrect ? (
+                                <>
+                                  <CheckCircle2 className="h-6 w-6" />
+                                  <span className="text-xl font-bold">Correct!</span>
+                                </>
+                              ) : (
+                                <>
+                                  <X className="h-6 w-6" />
+                                  <span className="text-xl font-bold">Incorrect</span>
+                                </>
+                              )}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+
                         <div className="mb-6">
                           <div className="flex justify-between items-center mb-2">
                             <p className="text-sm text-gray-500">Question {currentQuestion + 1} of {quizQuestions.length}</p>
