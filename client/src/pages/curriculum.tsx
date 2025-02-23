@@ -1,5 +1,5 @@
 import { Link, useLocation, useLocation as useLocationHook } from "wouter";
-import { BookOpen, GraduationCap, Zap, Gamepad2, CreditCard, Dumbbell, Lightbulb, Brain, Code, Globe, CheckCircle2, ArrowRight, Wallet, Shield, Rocket } from "lucide-react";
+import { BookOpen, GraduationCap, Zap, Gamepad2, CreditCard, Dumbbell, Lightbulb, Brain, Code, Globe, CheckCircle2, ArrowRight, Wallet, Shield, Rocket, Terminal, Database, Network } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PersonalizedPath } from "@/components/learning/personalized-path";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -21,22 +21,23 @@ const subjects = [
 const courses = [
   {
     id: 1,
-    title: "Course 1: Introduction to Cryptocurrency",
-    description: "A comprehensive introduction to cryptocurrency, blockchain technology, and digital finance through interactive learning experiences.",
+    title: "Course 1: Cryptocurrency Fundamentals",
+    description: "Master the foundations of blockchain technology, digital currencies, and crypto markets through interactive learning experiences.",
     subject: "crypto",
     level: "beginner",
     defaultPath: "/modules/module1",
+    duration: "4 weeks",
     modules: [
       {
         id: 1,
         icon: BookOpen,
-        title: "Module 1: Understanding Cryptocurrency",
-        description: "Master the fundamentals of cryptocurrency through interactive learning and practical exercises.",
+        title: "Module 1: Understanding Digital Currencies",
+        description: "Explore the evolution of money and the emergence of digital currencies.",
         sections: [
-          "Topic 1 - Introduction to Digital Currency",
-          "Topic 2 - Understanding Cryptocurrency Security",
-          "Topic 3 - Practical Applications",
-          "Topic 4 - Getting Started Safely",
+          "Digital Currencies Overview",
+          "History and Evolution of Money",
+          "Blockchain Technology Basics",
+          "Cryptocurrency Fundamentals",
           "Interactive Exercises",
           "Module Quiz"
         ],
@@ -44,30 +45,30 @@ const courses = [
       },
       {
         id: 2,
-        icon: Wallet,
-        title: "Module 2: Bitcoin Deep Dive",
-        description: "Comprehensive exploration of Bitcoin's technology, protocol architecture, and real-world impact.",
+        icon: Shield,
+        title: "Module 2: Cryptography & Security",
+        description: "Learn about cryptographic principles and blockchain security.",
         sections: [
-          "Bitcoin Protocol Architecture",
-          "Mining and Consensus",
-          "Transaction Mechanics",
-          "Network Security",
-          "Real-world Applications",
+          "Cryptography Basics",
+          "Public Key Infrastructure",
+          "Blockchain Security",
+          "Wallet Security",
+          "Hands-on Security Lab",
           "Module Quiz"
         ],
         path: "/modules/module2"
       },
       {
         id: 3,
-        icon: Code,
-        title: "Module 3: Ethereum and Smart Contracts",
-        description: "Learn about Ethereum, smart contracts, and decentralized applications (dApps).",
+        icon: Terminal,
+        title: "Module 3: Blockchain Architecture",
+        description: "Deep dive into blockchain technology and consensus mechanisms.",
         sections: [
-          "Ethereum Fundamentals",
-          "Smart Contract Basics",
-          "Decentralized Applications",
-          "Gas and Network Economics",
-          "Development Tools",
+          "Blockchain Structure",
+          "Consensus Mechanisms",
+          "Network Types",
+          "Smart Contracts Intro",
+          "Technical Workshop",
           "Module Quiz"
         ],
         path: "/modules/module3"
@@ -76,48 +77,55 @@ const courses = [
   },
   {
     id: 2,
-    title: "Course 2: Introduction to AI",
-    description: "A comprehensive introduction to artificial intelligence, machine learning, and their real-world applications.",
+    title: "Course 2: AI & Machine Learning",
+    description: "Explore the fascinating world of artificial intelligence, machine learning, and neural networks.",
     subject: "ai",
     level: "beginner",
     defaultPath: "/ai/module1",
+    duration: "6 weeks",
     modules: [
       {
         id: 1,
         icon: Brain,
         title: "Module 1: AI Fundamentals",
-        description: "Learn the fundamental concepts of AI, machine learning, and neural networks.",
+        description: "Introduction to artificial intelligence and its core concepts.",
         sections: [
-          "Topic 1.1 - Introduction to Artificial Intelligence",
-          "Topic 1.2 - How AI Works",
-          "Topic 1.3 - Machine Learning Basics",
-          "Topic 1.4 - Neural Networks and Deep Learning"
+          "What is Artificial Intelligence?",
+          "Types of AI Systems",
+          "Machine Learning Basics",
+          "Neural Networks Foundation",
+          "Practical AI Applications",
+          "Module Quiz"
         ],
         path: "/ai/module1"
       },
       {
         id: 2,
-        icon: Code,
-        title: "Module 2: AI Technologies and Applications",
-        description: "Explore practical AI applications and implementation strategies.",
+        icon: Network,
+        title: "Module 2: Machine Learning Deep Dive",
+        description: "Comprehensive exploration of machine learning algorithms and applications.",
         sections: [
-          "Topic 2.1 - Natural Language Processing",
-          "Topic 2.2 - Computer Vision",
-          "Topic 2.3 - AI Tools and Platforms",
-          "Topic 2.4 - Practical AI Implementation"
+          "Supervised Learning",
+          "Unsupervised Learning",
+          "Reinforcement Learning",
+          "Model Training & Evaluation",
+          "ML Projects Workshop",
+          "Module Quiz"
         ],
         path: "/ai/module2"
       },
       {
         id: 3,
-        icon: Globe,
-        title: "Module 3: Advanced AI Concepts",
-        description: "Understand advanced AI concepts and their applications.",
+        icon: Database,
+        title: "Module 3: Advanced AI Applications",
+        description: "Explore practical applications and implementations of AI technology.",
         sections: [
-          "Topic 3.1 - Deep Learning",
-          "Topic 3.2 - Reinforcement Learning",
-          "Topic 3.3 - Generative AI",
-          "Topic 3.4 - Future of AI"
+          "Natural Language Processing",
+          "Computer Vision",
+          "AI in Blockchain",
+          "Future of AI",
+          "Case Studies",
+          "Module Quiz"
         ],
         path: "/ai/module3"
       }
@@ -125,62 +133,70 @@ const courses = [
   },
   {
     id: 3,
-    title: "Course 3: Mastering DeFi",
-    description: "A comprehensive exploration of decentralized finance, from fundamentals to advanced trading strategies and risk management.",
+    title: "Course 3: DeFi Mastery",
+    description: "Master decentralized finance concepts, protocols, and advanced trading strategies.",
     subject: "crypto",
     level: "intermediate",
     defaultPath: "/defi/module1",
+    duration: "8 weeks",
     modules: [
       {
         id: 1,
         icon: Wallet,
         title: "Module 1: DeFi Fundamentals",
-        description: "Learn the core concepts behind decentralized finance and how it transforms traditional financial systems.",
+        description: "Understanding the basics of decentralized finance and its ecosystem.",
         sections: [
-          "1.1 What is DeFi?",
-          "1.2 Blockchain & Smart Contracts",
-          "1.3 Decentralized Exchanges (DEXs) & AMMs",
-          "1.4 Liquidity & Yield Farming"
+          "Introduction to DeFi",
+          "DeFi Protocols Overview",
+          "Lending & Borrowing",
+          "Yield Farming Basics",
+          "Risk Management",
+          "Module Quiz"
         ],
         path: "/defi/module1"
       },
       {
         id: 2,
         icon: CreditCard,
-        title: "Module 2: Advanced DeFi Trading & Strategies",
-        description: "Dive deeper into perpetual futures, options, cross-chain swaps, and advanced DeFi mechanisms.",
+        title: "Module 2: Advanced Trading",
+        description: "Learn advanced DeFi trading strategies and mechanisms.",
         sections: [
-          "2.1 Perpetual Futures & Hyperliquid",
-          "2.2 Options Trading in DeFi",
-          "2.3 Cross-Chain Liquidity & Jupiter Exchange",
-          "2.4 Flash Loans & Arbitrage",
-          "2.5 DeFi Lending & Borrowing"
+          "DEX Trading Strategies",
+          "Automated Market Makers",
+          "Perpetual Futures",
+          "Options Trading",
+          "Trading Workshop",
+          "Module Quiz"
         ],
         path: "/defi/module2"
       },
       {
         id: 3,
         icon: Shield,
-        title: "Module 3: Practical DeFi & Risk Management",
-        description: "Learn how to build a DeFi portfolio, protect assets, and understand regulations.",
+        title: "Module 3: DeFi Security",
+        description: "Master DeFi security practices and risk management.",
         sections: [
-          "3.1 Building a DeFi Portfolio",
-          "3.2 Security & Avoiding Scams",
-          "3.3 Regulatory Landscape & Compliance",
-          "3.4 The Future of DeFi"
+          "Security Best Practices",
+          "Smart Contract Auditing",
+          "Risk Assessment",
+          "Security Tools",
+          "Case Studies",
+          "Module Quiz"
         ],
         path: "/defi/module3"
       },
       {
         id: 4,
         icon: Rocket,
-        title: "Module 4: Advanced DeFi Concepts",
-        description: "Explore governance, institutional adoption, and advanced DeFi integrations.",
+        title: "Module 4: Future of DeFi",
+        description: "Explore emerging trends and the future of decentralized finance.",
         sections: [
-          "4.1 DeFi Governance",
-          "4.2 Institutional DeFi",
-          "4.3 DeFi Integrations",
-          "4.4 Future of DeFi Infrastructure"
+          "DeFi Innovation Trends",
+          "Cross-chain DeFi",
+          "Institutional DeFi",
+          "Regulatory Landscape",
+          "Future Projects",
+          "Final Assessment"
         ],
         path: "/defi/module4"
       }
@@ -375,19 +391,22 @@ export default function Curriculum() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-800 mb-6">
-            Your Learning Journey
+          <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 mb-6">
+            Begin Your Learning Journey
           </h1>
+          <p className="text-xl text-blue-700 max-w-3xl mx-auto mb-8">
+            Choose from our comprehensive curriculum designed to take you from beginner to expert in blockchain, AI, and DeFi.
+          </p>
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2 }}
           >
-            <Card className="p-6 bg-gradient-to-br from-blue-600 to-blue-700 shadow-lg hover:shadow-xl transition-all duration-300">
+            <Card className="p-6 bg-gradient-to-br from-blue-600 to-purple-600 shadow-lg hover:shadow-xl transition-all duration-300">
               <div className="text-center">
                 <div className="flex items-center justify-center gap-3 text-xl font-bold text-white">
                   <Lightbulb className="h-8 w-8" />
-                  <p>Discover Your Path to Mastery</p>
+                  <p>Transform Your Understanding of Emerging Technologies</p>
                 </div>
               </div>
             </Card>
@@ -451,11 +470,19 @@ export default function Curriculum() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
-            className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-8 mb-8"
+            className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-8 mb-8 border border-blue-100 hover:border-blue-200 transition-all duration-300"
           >
-            <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-800 mb-4">
-              {currentCourse.title}
-            </h2>
+            <div className="flex items-center gap-4 mb-6">
+              <div className="bg-gradient-to-br from-blue-500 to-purple-500 p-4 rounded-xl">
+                <GraduationCap className="h-8 w-8 text-white" />
+              </div>
+              <div>
+                <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
+                  {currentCourse.title}
+                </h2>
+                <p className="text-blue-600">Duration: {currentCourse.duration}</p>
+              </div>
+            </div>
 
             <p className="text-xl text-blue-700 mb-6">
               {currentCourse.description}
@@ -481,11 +508,12 @@ export default function Curriculum() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
+                  whileHover={{ y: -5 }}
                 >
-                  <Card className="group p-6 bg-gradient-to-br from-white to-blue-50 hover:from-blue-50 hover:to-blue-100 transition-all duration-300 border border-blue-100 hover:border-blue-200 hover:shadow-lg">
+                  <Card className="group h-full p-6 bg-gradient-to-br from-white to-blue-50 hover:from-blue-50 hover:to-blue-100 transition-all duration-300 border border-blue-100 hover:border-blue-200 hover:shadow-lg">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="bg-blue-100 p-3 rounded-lg group-hover:bg-blue-200 transition-colors">
-                        <module.icon className="h-6 w-6 text-blue-600" />
+                      <div className="bg-gradient-to-br from-blue-500 to-purple-500 p-3 rounded-lg transform group-hover:scale-110 transition-all duration-300">
+                        <module.icon className="h-6 w-6 text-white" />
                       </div>
                       <h3 className="font-semibold text-blue-800 group-hover:text-blue-900">
                         {module.title.split(':')[1]}
@@ -494,10 +522,22 @@ export default function Curriculum() {
                     <p className="text-blue-600 text-sm mb-4 group-hover:text-blue-700">
                       {module.description}
                     </p>
-                    <div className="text-blue-500 text-sm flex items-center gap-2">
-                      <BookOpen className="h-4 w-4" />
-                      {module.sections.length} lessons
-                    </div>
+                    <motion.div 
+                      className="space-y-2"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      {module.sections.map((section, sIndex) => (
+                        <div 
+                          key={sIndex}
+                          className="flex items-center gap-2 text-sm text-blue-600"
+                        >
+                          <CheckCircle2 className="h-4 w-4" />
+                          <span>{section}</span>
+                        </div>
+                      ))}
+                    </motion.div>
                   </Card>
                 </motion.div>
               ))}
@@ -506,7 +546,7 @@ export default function Curriculum() {
             <div className="text-center mt-6">
               <Button 
                 onClick={user ? handleEnroll : () => setLocation("/login")}
-                className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-lg px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-lg px-8 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
                 disabled={enrollMutation.isPending || isEnrolled}
               >
                 {enrollMutation.isPending ? (
@@ -541,17 +581,18 @@ export default function Curriculum() {
               {currentCourse.modules.map((module) => (
                 <motion.div
                   key={module.id}
-                  className="bg-white shadow-lg rounded-lg p-8 hover:shadow-xl transition-all duration-300"
+                  className="bg-white shadow-lg rounded-lg p-8 hover:shadow-xl transition-all duration-300 border border-blue-100 hover:border-blue-200"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: module.id * 0.2 }}
+                  whileHover={{ scale: 1.02 }}
                 >
                   <div className="flex items-start space-x-4">
-                    <div className="bg-blue-100 p-3 rounded-lg">
-                      <module.icon className="h-8 w-8 text-blue-600" />
+                    <div className="bg-gradient-to-br from-blue-500 to-purple-500 p-3 rounded-lg">
+                      <module.icon className="h-8 w-8 text-white" />
                     </div>
                     <div className="flex-1">
-                      <h2 className="text-2xl font-semibold text-blue-800 mb-2">
+                      <h2 className="text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 mb-2">
                         {module.title}
                       </h2>
                       <p className="text-blue-700 mb-6">
@@ -564,19 +605,28 @@ export default function Curriculum() {
                         </h3>
                         <div className="grid md:grid-cols-2 gap-4">
                           {module.sections.map((section, index) => (
-                            <div
+                            <motion.div
                               key={index}
-                              className="bg-blue-50 p-4 rounded-lg text-blue-700 hover:bg-blue-100 transition-colors"
+                              className="bg-blue-50 p-4 rounded-lg text-blue-700 hover:bg-blue-100 transition-colors flex items-center gap-2"
+                              whileHover={{ scale: 1.02 }}
                             >
+                              <CheckCircle2 className="h-5 w-5 text-blue-500" />
                               {section}
-                            </div>
+                            </motion.div>
                           ))}
                         </div>
 
                         <div className="mt-6 text-center">
                           <Link href={user ? module.path : "/login"}>
-                            <Button className="w-full bg-blue-600 hover:bg-blue-700">
-                              {user ? "Continue Learning" : "Log in to Start"}
+                            <Button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
+                              {user ? (
+                                <div className="flex items-center gap-2">
+                                  <span>Continue Learning</span>
+                                  <ArrowRight className="h-5 w-5" />
+                                </div>
+                              ) : (
+                                "Log in to Start"
+                              )}
                             </Button>
                           </Link>
                         </div>
@@ -595,12 +645,12 @@ export default function Curriculum() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
         >
-          <Card className="bg-gradient-to-br from-white to-blue-50 shadow-lg hover:shadow-xl transition-all duration-300 p-8">
+          <Card className="bg-gradient-to-br from-white to-blue-50 shadow-lg hover:shadow-xl transition-all duration-300 p-8 border border-blue-100">
             <div className="flex items-center gap-4 mb-6">
-              <div className="bg-blue-100 p-3 rounded-lg">
-                <Dumbbell className="h-8 w-8 text-blue-600" />
+              <div className="bg-gradient-to-br from-blue-500 to-purple-500 p-3 rounded-lg">
+                <Dumbbell className="h-8 w-8 text-white" />
               </div>
-              <h2 className="text-2xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-800">
+              <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
                 Learning Tools
               </h2>
             </div>
@@ -615,10 +665,10 @@ export default function Curriculum() {
                     <Card className="h-full bg-gradient-to-br from-blue-50 to-white hover:from-blue-100 hover:to-blue-50 transition-all duration-300 p-6 border border-blue-100 hover:border-blue-200 hover:shadow-lg">
                       <div className="flex flex-col h-full">
                         <div className="flex items-center gap-3 mb-4">
-                          <div className="bg-blue-100 p-3 rounded-lg group-hover:bg-blue-200 transition-colors">
-                            <tool.icon className="h-6 w-6 text-blue-600" />
+                          <div className="bg-gradient-to-br from-blue-500 to-purple-500 p-3 rounded-lg group-hover:scale-110 transition-all duration-300">
+                            <tool.icon className="h-6 w-6 text-white" />
                           </div>
-                          <h3 className="text-xl font-semibold text-blue-800 group-hover:text-blue-900">
+                          <h3 className="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">
                             {tool.title}
                           </h3>
                         </div>
