@@ -73,29 +73,26 @@ export default function BitcoinFundamentalsQuiz() {
   const [, setLocation] = useLocation();
 
   const handleAnswer = (answerIndex: number) => {
+    // Prevent answering if already selected
     if (selectedAnswer !== null) return;
 
+    // Record the answer
     setSelectedAnswer(answerIndex);
 
+    // Check if correct and update score
     const isCorrect = answerIndex === questions[currentQuestion].correctAnswer;
     if (isCorrect) {
       setScore(prev => prev + 1);
     }
 
-    // Log current state
-    console.log('Current question:', currentQuestion);
-    console.log('Questions length:', questions.length);
-    console.log('Current score:', score);
-    console.log('Is correct:', isCorrect);
+    // Wait for explanation to be shown, then proceed
+    const timer = setTimeout(() => {
+      // Check if this was the last question
+      if (currentQuestion === questions.length - 1) {
+        // Calculate final score including the last answer
+        const finalScore = ((score + (isCorrect ? 1 : 0)) / questions.length) * 100;
 
-    setTimeout(() => {
-      // Handle last question
-      if (currentQuestion >= questions.length - 1) {
-        console.log('Completing quiz...');
-        const finalScore = ((isCorrect ? score + 1 : score) / questions.length) * 100;
-        console.log('Final score:', finalScore);
-
-        setShowResult(true);
+        // Update progress and show results
         updateProgress(
           2,
           'quiz',
@@ -108,20 +105,23 @@ export default function BitcoinFundamentalsQuiz() {
           'Module 2 Quiz'
         );
 
-        // Handle navigation after completion
+        // Show results screen
+        setShowResult(true);
+
+        // If passed, navigate after delay
         if (finalScore >= 60) {
           setTimeout(() => {
-            console.log('Navigating to next module...');
             setLocation('/modules/module3');
           }, 5000);
         }
       } else {
         // Move to next question
-        console.log('Moving to next question...');
         setCurrentQuestion(prev => prev + 1);
         setSelectedAnswer(null);
       }
     }, 3000);
+
+    return () => clearTimeout(timer);
   };
 
   const restartQuiz = () => {
@@ -143,7 +143,7 @@ export default function BitcoinFundamentalsQuiz() {
               <div className="text-lg">
                 <span className="font-semibold">Your Score: </span>
                 <span className={`font-bold ${percentage >= 60 ? 'text-green-600' : 'text-red-600'}`}>
-                  {percentage}%
+                  {percentage.toFixed(0)}%
                 </span>
                 <span className="text-gray-600 text-sm ml-2">
                   ({score} out of {questions.length} correct)
@@ -246,30 +246,30 @@ export default function BitcoinFundamentalsQuiz() {
               </motion.button>
             ))}
           </div>
-        </div>
 
-        {selectedAnswer !== null && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className={`
-              mt-3 p-2 rounded-lg text-sm
-              ${selectedAnswer === questions[currentQuestion].correctAnswer
-                ? 'bg-green-100 border-l-4 border-green-500'
-                : 'bg-red-100 border-l-4 border-red-500'}
-            `}
-          >
-            <h3 className="text-sm font-bold mb-1 flex items-center gap-2">
-              {selectedAnswer === questions[currentQuestion].correctAnswer
-                ? <><CheckCircle className="h-4 w-4 text-green-600" /> Correct!</>
-                : <><XCircle className="h-4 w-4 text-red-600" /> Incorrect</>}
-            </h3>
-            <p className="text-sm leading-snug text-gray-700">{questions[currentQuestion].explanation}</p>
-            <p className="text-xs mt-1 text-gray-500">
-              {currentQuestion < questions.length - 1 ? "Next question in 3 seconds..." : "Calculating final results..."}
-            </p>
-          </motion.div>
-        )}
+          {selectedAnswer !== null && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`
+                mt-3 p-2 rounded-lg text-sm
+                ${selectedAnswer === questions[currentQuestion].correctAnswer
+                  ? 'bg-green-100 border-l-4 border-green-500'
+                  : 'bg-red-100 border-l-4 border-red-500'}
+              `}
+            >
+              <h3 className="text-sm font-bold mb-1 flex items-center gap-2">
+                {selectedAnswer === questions[currentQuestion].correctAnswer
+                  ? <><CheckCircle className="h-4 w-4 text-green-600" /> Correct!</>
+                  : <><XCircle className="h-4 w-4 text-red-600" /> Incorrect</>}
+              </h3>
+              <p className="text-sm leading-snug text-gray-700">{questions[currentQuestion].explanation}</p>
+              <p className="text-xs mt-1 text-gray-500">
+                {currentQuestion < questions.length - 1 ? "Next question in 3 seconds..." : "Calculating final results..."}
+              </p>
+            </motion.div>
+          )}
+        </div>
       </div>
     </div>
   );
