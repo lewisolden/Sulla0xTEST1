@@ -246,7 +246,7 @@ const AdvancedDefiQuiz = () => {
         setUserAnswer(null);
         setCurrentQuestion(currentQuestion + 1);
       }
-    }, 3000);
+    }, 7000); // Changed from 3000 to 7000
   };
 
   return (
@@ -307,25 +307,7 @@ const AdvancedDefiQuiz = () => {
               >
                 <h4 className="font-medium text-blue-800 mb-2">Explanation</h4>
                 <p className="text-blue-700">{questions[currentQuestion].explanation}</p>
-                {currentQuestion === questions.length - 1 && (
-                  <div className="mt-4 space-y-4">
-                    <h3 className="text-xl font-bold">Quiz Complete!</h3>
-                    <p className="text-gray-600">
-                      Final Score: {score}/{questions.length}
-                    </p>
-                    <p className="text-gray-600">
-                      {score === questions.length
-                        ? "Perfect score! Excellent understanding!"
-                        : "Good effort! Review the material and try again!"}
-                    </p>
-                    <Link href="/defi/module3/defi-security">
-                      <Button className="w-full bg-green-600 hover:bg-green-700">
-                        Continue to DeFi Security
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </Link>
-                  </div>
-                )}
+                <p className="text-sm text-gray-600 mt-2">Next question in 7 seconds...</p>
               </motion.div>
             )}
           </div>

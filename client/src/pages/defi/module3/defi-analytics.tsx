@@ -203,7 +203,7 @@ const AnalyticsQuiz = () => {
         setUserAnswer(null);
         setCurrentQuestion(currentQuestion + 1);
       }
-    }, 3000);
+    }, 7000); // Changed from 3000 to 7000
   };
 
   return (
@@ -264,25 +264,7 @@ const AnalyticsQuiz = () => {
               >
                 <h4 className="font-medium text-blue-800 mb-2">Explanation</h4>
                 <p className="text-blue-700">{questions[currentQuestion].explanation}</p>
-                {currentQuestion === questions.length - 1 && (
-                  <div className="mt-4 space-y-4">
-                    <h3 className="text-xl font-bold">Quiz Complete!</h3>
-                    <p className="text-gray-600">
-                      Final Score: {score}/{questions.length}
-                    </p>
-                    <p className="text-gray-600">
-                      {score === questions.length
-                        ? "Perfect score! You're well-versed in DeFi analytics!"
-                        : "Good effort! Review the analytics concepts and try again!"}
-                    </p>
-                    <Link href="/defi/module3/defi-innovation">
-                      <Button className="w-full bg-green-600 hover:bg-green-700">
-                        Continue to DeFi Innovation
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </Link>
-                  </div>
-                )}
+                <p className="text-sm text-gray-600 mt-2">Next question in 7 seconds...</p>
               </motion.div>
             )}
           </div>

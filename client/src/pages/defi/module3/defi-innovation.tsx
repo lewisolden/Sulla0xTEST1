@@ -199,7 +199,7 @@ const InnovationQuiz = () => {
         setUserAnswer(null);
         setCurrentQuestion(currentQuestion + 1);
       }
-    }, 3000);
+    }, 7000); // Changed from 3000 to 7000
   };
 
   return (
@@ -260,6 +260,7 @@ const InnovationQuiz = () => {
               >
                 <h4 className="font-medium text-purple-800 mb-2">Explanation</h4>
                 <p className="text-purple-700">{questions[currentQuestion].explanation}</p>
+                <p className="text-sm text-gray-600 mt-2">Next question in 7 seconds...</p>
                 {currentQuestion === questions.length - 1 && (
                   <div className="mt-4 space-y-4">
                     <h3 className="text-xl font-bold">Quiz Complete!</h3>
