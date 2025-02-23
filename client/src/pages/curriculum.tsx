@@ -34,30 +34,26 @@ const courses = [
         title: "Module 1: Understanding Cryptocurrency",
         description: "Master the fundamentals of cryptocurrency through interactive learning and practical exercises.",
         sections: [
-          "Digital Currencies Overview",
-          "History and Evolution of Money",
-          "Introduction to Cryptocurrency",
-          "Blockchain Technology Basics",
-          "Crypto Market Dynamics",
-          "Cryptography Fundamentals",
+          "Topic 1 - Introduction to Digital Currency",
+          "Topic 2 - Understanding Cryptocurrency Security",
+          "Topic 3 - Practical Applications",
+          "Topic 4 - Getting Started Safely",
+          "Interactive Exercises",
           "Module Assessment"
         ],
         path: "/modules/module1"
       },
       {
         id: 2,
-        icon: Wallet,
-        title: "Module 2: Bitcoin Deep Dive",
-        description: "Comprehensive exploration of Bitcoin's technology, protocol architecture, and real-world impact.",
+        icon: Network,
+        title: "Module 2: What is a Blockchain?",
+        description: "Explore the revolutionary technology powering the future of digital transactions.",
         sections: [
-          "Bitcoin Protocol Architecture",
-          "Mining and Consensus",
-          "Bitcoin Scripting",
-          "Network and Transactions",
-          "Lightning Network",
-          "SegWit and Taproot",
-          "Bitcoin Economics",
-          "Security Model",
+          "2.1 Blockchain Basics",
+          "2.2 Distributed Ledger Technology",
+          "2.3 Consensus Mechanisms",
+          "2.4 Smart Contracts",
+          "Hands-on Practice",
           "Module Assessment"
         ],
         path: "/modules/module2"
