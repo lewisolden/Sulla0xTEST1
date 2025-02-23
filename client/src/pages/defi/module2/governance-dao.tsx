@@ -288,7 +288,13 @@ const GovernanceQuiz = () => {
                     (index === questions[currentQuestion].correctAnswer ? "default" : "destructive")
                     : "outline"}
                   disabled={showExplanation}
-                  className="w-full justify-start text-left"
+                  className={`w-full justify-start text-left transition-colors duration-200 ${
+                    userAnswer === index && !showExplanation
+                      ? index === questions[currentQuestion].correctAnswer
+                        ? 'bg-green-100/50'
+                        : 'bg-red-100/50'
+                      : ''
+                  }`}
                 >
                   {option}
                 </Button>
