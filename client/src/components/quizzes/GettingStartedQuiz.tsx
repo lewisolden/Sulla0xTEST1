@@ -76,7 +76,7 @@ export const GettingStartedQuiz = () => {
       setSelectedAnswer(optionIndex);
       setShowExplanation(true);
 
-      // Auto advance after 5 seconds
+      // Auto advance after 8 seconds (changed from 5)
       setTimeout(() => {
         const isCorrect = optionIndex === questions[currentQuestion].correctAnswer;
         if (isCorrect) {
@@ -94,7 +94,7 @@ export const GettingStartedQuiz = () => {
             updateProgress(1, 'getting-started-quiz', true);
           }
         }
-      }, 5000);
+      }, 8000); // Changed from 5000 to 8000
     }
   };
 
@@ -234,7 +234,7 @@ export const GettingStartedQuiz = () => {
                 {questions[currentQuestion].explanation}
               </p>
               <p className="text-sm text-gray-600 mt-2">
-                Next question in 5 seconds...
+                Next question in 8 seconds... {/* Updated from 5 to 8 seconds */}
               </p>
             </motion.div>
           )}

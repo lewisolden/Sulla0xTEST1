@@ -80,7 +80,7 @@ export const SecurityQuiz: React.FC<SecurityQuizProps> = ({ onComplete }) => {
     setSelectedAnswer(optionIndex);
     setShowExplanation(true);
 
-    // Wait 5 seconds before moving to next question
+    // Wait 8 seconds before moving to next question
     setTimeout(() => {
       const isCorrect = optionIndex === questions[currentQuestion].correctAnswer;
 
@@ -100,10 +100,10 @@ export const SecurityQuiz: React.FC<SecurityQuizProps> = ({ onComplete }) => {
         if (finalScore >= 60 && onComplete) {
           setTimeout(() => {
             onComplete();
-          }, 5000);
+          }, 8000); // Updated to 8 seconds
         }
       }
-    }, 5000); // Changed from 3000 to 5000
+    }, 8000); // Updated to 8 seconds
   };
 
   if (showResult) {
@@ -133,7 +133,7 @@ export const SecurityQuiz: React.FC<SecurityQuizProps> = ({ onComplete }) => {
                 Congratulations! You've passed!
               </p>
               <p className="text-sm text-green-600 mt-1 text-center">
-                Moving to next section in 5 seconds...
+                Moving to next section in 8 seconds... {/* Updated message */}
               </p>
             </div>
           ) : (
@@ -214,7 +214,7 @@ export const SecurityQuiz: React.FC<SecurityQuizProps> = ({ onComplete }) => {
               {questions[currentQuestion].explanation}
             </p>
             <p className="text-xs text-gray-500 mt-2">
-              Next question in 5 seconds...
+              Next question in 8 seconds... {/* Updated message */}
             </p>
           </motion.div>
         )}

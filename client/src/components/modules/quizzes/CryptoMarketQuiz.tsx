@@ -80,7 +80,7 @@ export default function CryptoMarketQuiz() {
   const handleAnswerSelect = (optionIndex: number) => {
     setSelectedAnswer(optionIndex);
     setShowExplanation(true);
-    setCountdown(5); // Start 5 second countdown
+    setCountdown(8); // Updated from 5 to 8 seconds
   };
 
   useEffect(() => {
@@ -214,7 +214,7 @@ export default function CryptoMarketQuiz() {
               <p>{currentQuizQuestion.explanation}</p>
               {countdown !== null && (
                 <p className="mt-2 text-gray-600">
-                  Next question in {countdown} seconds...
+                  Next question in 8 seconds... {/* Updated message */}
                 </p>
               )}
             </div>

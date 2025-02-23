@@ -108,10 +108,10 @@ const DigitalCurrenciesQuiz: React.FC<DigitalCurrenciesQuizProps> = ({ onComplet
         if (finalScore >= 60) {
           setTimeout(() => {
             onComplete();
-          }, 5000); // Show score for 5 seconds before completing
+          }, 8000); 
         }
       }
-    }, 5000); // Changed from 3000 to 5000
+    }, 8000); 
   };
 
   const moveToNextQuestion = () => {
@@ -234,7 +234,7 @@ const DigitalCurrenciesQuiz: React.FC<DigitalCurrenciesQuizProps> = ({ onComplet
                   : <><XCircle className="h-4 w-4 text-red-600" /> Incorrect</>}
               </h3>
               <p className="leading-relaxed">{currentQuizQuestion.explanation}</p>
-              <p className="text-xs mt-2 text-gray-600">Next question in 5 seconds...</p>
+              <p className="text-xs mt-2 text-gray-600">Next question in 8 seconds...</p>
             </motion.div>
           )}
 
