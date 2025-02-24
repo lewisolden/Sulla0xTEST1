@@ -39,7 +39,14 @@ const SecurityPage = () => {
 
       if (scrollPercent > 95) {
         setIsFullyRead(true);
-        updateProgress(1, 'security', true, scrollPercent);
+        updateProgress({
+          moduleId: 'module1',
+          sectionId: 'security',
+          completed: true,
+          score: scrollPercent,
+          totalSections: 4,
+          currentSection: 2
+        });
       }
     };
 
@@ -59,7 +66,7 @@ const SecurityPage = () => {
     return () => clearTimeout(timer);
   }, [countdown]);
 
-  const handleQuizComplete = (score: number) => {
+  const handleQuizComplete = () => {
     setQuizCompleted(true);
     setCountdown(5);
   };
@@ -74,6 +81,7 @@ const SecurityPage = () => {
       totalSections={4}
       nextLink="/modules/module1/applications"
       nextText="Next: Applications"
+      variant="blue"
     >
       <div className="container mx-auto px-4">
         <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
@@ -428,17 +436,11 @@ const SecurityPage = () => {
               </QuizContainer>
 
               {!quizCompleted && (
-                <div className="flex justify-between mt-8">
+                <div className="flex justify-start mt-8">
                   <Link href="/modules/module1/digital-currencies">
                     <Button variant="outline" className="gap-2">
                       <ArrowLeft className="h-4 w-4" />
                       Previous Topic
-                    </Button>
-                  </Link>
-                  <Link href="/modules/module1/applications">
-                    <Button variant="outline" className="gap-2">
-                      Next: Applications
-                      <ArrowRight className="h-4 w-4" />
                     </Button>
                   </Link>
                 </div>
