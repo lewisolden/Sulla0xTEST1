@@ -8,7 +8,8 @@ import { Link } from "wouter";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useScrollTop } from "@/hooks/useScrollTop";
 import BitcoinQuiz from "@/components/modules/quizzes/BitcoinQuiz";
-import BlockchainDiagram from "@/components/diagrams/BlockchainDiagram";
+import BitcoinTimelineDiagram from "@/components/diagrams/BitcoinTimelineDiagram";
+import HowBitcoinWorksDiagram from "@/components/diagrams/HowBitcoinWorksDiagram";
 
 export default function BitcoinSection() {
   useScrollTop();
@@ -26,7 +27,15 @@ export default function BitcoinSection() {
 
       if (scrollPercent > 95) {
         setIsFullyRead(true);
-        updateProgress(1, 'bitcoin', true);
+        updateProgress(
+          1, // moduleId
+          1, // sectionId
+          true, // completed
+          1, // currentStep
+          'Bitcoin', // sectionTitle
+          1, // totalSteps
+          '/modules/module1/bitcoin' // path
+        );
       }
     };
 
@@ -53,7 +62,7 @@ export default function BitcoinSection() {
         animate={{ scaleX: scrollProgress / 100 }}
         style={{ transformOrigin: "left" }}
       >
-        <div className="h-full bg-blue-600" />
+        <div className="h-full bg-orange-600" />
       </motion.div>
 
       <div className="max-w-4xl mx-auto">
@@ -69,15 +78,55 @@ export default function BitcoinSection() {
           </Link>
         </motion.div>
 
-        <motion.h1
-          className="text-4xl font-bold text-blue-800 mb-6"
+        <motion.div
+          className="mb-12 p-8 rounded-xl bg-gradient-to-br from-orange-100 via-yellow-50 to-orange-100 border border-orange-200"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
         >
-          Bitcoin: The First Cryptocurrency
-        </motion.h1>
+          <h1 className="text-4xl font-bold text-orange-800 mb-4">
+            Bitcoin: The First Cryptocurrency
+          </h1>
+          <p className="text-lg text-gray-700">
+            Embark on a journey to understand Bitcoin, the revolutionary digital currency that started it all. 
+            From its mysterious origins to its current status as a global financial phenomenon, discover how 
+            Bitcoin is changing the future of money.
+          </p>
+        </motion.div>
 
-        <div className="prose lg:prose-xl text-gray-700 space-y-6">
+        <div className="prose lg:prose-xl text-gray-700 space-y-8">
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
+            className="mb-12"
+          >
+            <Card className="p-6 bg-white/90 shadow-lg">
+              <h2 className="text-3xl font-bold text-orange-800 mb-6">The Journey of Bitcoin</h2>
+              <p className="text-gray-700 mb-8">
+                From its enigmatic beginnings to becoming a global financial phenomenon, Bitcoin's journey 
+                has been nothing short of revolutionary. Let's explore the key moments that shaped its history:
+              </p>
+              <BitcoinTimelineDiagram />
+            </Card>
+          </motion.section>
+
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
+            className="mb-12"
+          >
+            <Card className="p-6 bg-white/90 shadow-lg">
+              <h2 className="text-3xl font-bold text-orange-800 mb-6">How Bitcoin Works</h2>
+              <p className="text-gray-700 mb-8">
+                Bitcoin might seem complex, but its core concept is simple: it's a digital payment system that 
+                lets people exchange value directly with each other, without needing banks or other intermediaries. 
+                Let's break down how it actually works:
+              </p>
+              <HowBitcoinWorksDiagram />
+            </Card>
+          </motion.section>
+
           <motion.section
             variants={contentVariants}
             initial="hidden"
@@ -120,7 +169,7 @@ export default function BitcoinSection() {
             </ul>
 
             <h3 className="text-2xl font-semibold text-blue-600 mt-6">2. Blockchain Technology</h3>
-            <BlockchainDiagram />
+            {/*BlockchainDiagram removed*/}
             <ul className="list-disc pl-5 space-y-3">
               <li>A public, distributed ledger that records all transactions</li>
               <li>Ensures transparency and prevents double-spending</li>
@@ -238,7 +287,7 @@ export default function BitcoinSection() {
             >
               <Card className="bg-green-100 border-l-4 border-green-500 p-4">
                 <p className="text-green-700">
-                  🎉 You've completed the Bitcoin section! You now understand the fundamental 
+                  🎉 Congratulations! You've completed the Bitcoin section! You now understand the fundamental 
                   concepts behind Bitcoin, its innovations, and its impact on the financial world.
                 </p>
               </Card>
@@ -246,10 +295,10 @@ export default function BitcoinSection() {
               <div className="flex flex-col space-y-4">
                 <Button
                   onClick={() => setShowQuiz(!showQuiz)}
-                  className="w-full bg-purple-600 hover:bg-purple-700"
+                  className="w-full bg-orange-600 hover:bg-orange-700"
                   size="lg"
                 >
-                  {showQuiz ? "Hide Quiz" : "Take Topic Quiz"}
+                  {showQuiz ? "Hide Quiz" : "Test Your Knowledge"}
                 </Button>
 
                 <div className="flex flex-col md:flex-row items-center gap-4 justify-between">
@@ -280,8 +329,8 @@ export default function BitcoinSection() {
                   animate={{ opacity: 1, y: 0 }}
                   className="mt-8"
                 >
-                  <h2 className="text-2xl font-bold text-blue-800 mb-4">Topic Quiz</h2>
-                  <BitcoinQuiz />
+                  <h2 className="text-2xl font-bold text-orange-800 mb-4">Test Your Knowledge</h2>
+                  <BitcoinQuiz onComplete={() => {}} />
                 </motion.div>
               )}
             </motion.div>

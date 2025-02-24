@@ -1,5 +1,30 @@
 import { motion } from "framer-motion";
-import { Database, Blocks, Network, Key, Lock, Coins } from "lucide-react";
+import { Database, Key, Shield, Coins, Network, Lock, Cpu, UserCircle, Blocks } from "lucide-react";
+
+interface TimelineEventProps {
+  year: string;
+  title: string;
+  description: string;
+  delay: number;
+}
+
+const TimelineEvent = ({ year, title, description, delay }: TimelineEventProps) => (
+  <motion.div
+    className="relative flex items-center mb-8"
+    initial={{ opacity: 0, x: -50 }}
+    animate={{ opacity: 1, x: 0 }}
+    transition={{ delay }}
+  >
+    <div className="absolute left-1/2 -ml-2.5 w-5 h-5 rounded-full bg-blue-500 border-4 border-white shadow-lg"></div>
+    <div className="w-1/2 pr-8 text-right">
+      <span className="text-blue-600 font-bold">{year}</span>
+    </div>
+    <div className="w-1/2 pl-8">
+      <h4 className="font-semibold text-gray-900">{title}</h4>
+      <p className="text-gray-600">{description}</p>
+    </div>
+  </motion.div>
+);
 
 const BitcoinBasicsDiagram = () => {
   const containerVariants = {
@@ -110,23 +135,5 @@ const BitcoinBasicsDiagram = () => {
     </div>
   );
 };
-
-const TimelineEvent = ({ year, title, description, delay }) => (
-  <motion.div
-    className="relative flex items-center mb-8"
-    initial={{ opacity: 0, x: -50 }}
-    animate={{ opacity: 1, x: 0 }}
-    transition={{ delay }}
-  >
-    <div className="absolute left-1/2 -ml-2.5 w-5 h-5 rounded-full bg-blue-500"></div>
-    <div className="w-1/2 pr-8 text-right">
-      <span className="text-blue-600 font-bold">{year}</span>
-    </div>
-    <div className="w-1/2 pl-8">
-      <h4 className="font-semibold text-gray-900">{title}</h4>
-      <p className="text-gray-600">{description}</p>
-    </div>
-  </motion.div>
-);
 
 export default BitcoinBasicsDiagram;
