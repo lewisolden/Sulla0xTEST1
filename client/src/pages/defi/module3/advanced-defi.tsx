@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
@@ -180,6 +180,7 @@ const AdvancedDefiQuiz = () => {
   const [score, setScore] = useState(0);
   const [quizStarted, setQuizStarted] = useState(false);
   const { toast } = useToast();
+  const [, setLocation] = useLocation();
 
   const questions = [
     {
@@ -240,13 +241,23 @@ const AdvancedDefiQuiz = () => {
       });
     }
 
-    setTimeout(() => {
-      if (currentQuestion < questions.length - 1) {
+    // Handle navigation after the last question
+    if (currentQuestion === questions.length - 1) {
+      setTimeout(() => {
+        toast({
+          title: "Quiz Completed!",
+          description: "Redirecting to the next section...",
+          variant: "default",
+        });
+        setLocation("/defi/module3/defi-security");
+      }, 7000);
+    } else {
+      setTimeout(() => {
         setShowExplanation(false);
         setUserAnswer(null);
         setCurrentQuestion(currentQuestion + 1);
-      }
-    }, 7000); // Changed from 3000 to 7000
+      }, 7000);
+    }
   };
 
   return (

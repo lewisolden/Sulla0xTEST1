@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
@@ -25,8 +25,7 @@ import {
   Wallet,
   Code
 } from "lucide-react";
-import { useScrollTop } from "@/hooks/useScrollTop"; //This line was already present in the original
-
+import { useScrollTop } from "@/hooks/useScrollTop"; 
 
 // Security Audit Simulator Interface
 interface SecurityAuditResult {
@@ -213,6 +212,7 @@ const SecurityQuiz = () => {
   const [score, setScore] = useState(0);
   const [quizStarted, setQuizStarted] = useState(false);
   const { toast } = useToast();
+  const [, setLocation] = useLocation();
 
   const questions = [
     {
@@ -273,13 +273,23 @@ const SecurityQuiz = () => {
       });
     }
 
-    setTimeout(() => {
-      if (currentQuestion < questions.length - 1) {
+    // Handle navigation after the last question
+    if (currentQuestion === questions.length - 1) {
+      setTimeout(() => {
+        toast({
+          title: "Quiz Completed!",
+          description: "Redirecting to the next section...",
+          variant: "default",
+        });
+        setLocation("/defi/module3/defi-analytics");
+      }, 7000);
+    } else {
+      setTimeout(() => {
         setShowExplanation(false);
         setUserAnswer(null);
         setCurrentQuestion(currentQuestion + 1);
-      }
-    }, 7000); // Changed from 3000 to 7000
+      }, 7000);
+    }
   };
 
   return (
@@ -351,7 +361,7 @@ const SecurityQuiz = () => {
 };
 
 const DefiSecurity = () => {
-  useScrollTop(); // Add hook call at the beginning
+  useScrollTop(); 
   const { updateProgress } = useProgress();
   const { toast } = useToast();
 
