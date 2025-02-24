@@ -120,7 +120,7 @@ export const UTXOExercise = () => {
   };
 
   const toggleUTXO = (id: string) => {
-    setUtxos(utxos.map(utxo => 
+    setUtxos(utxos.map(utxo =>
       utxo.id === id ? { ...utxo, selected: !utxo.selected } : utxo
     ));
   };
@@ -174,7 +174,7 @@ export const UTXOExercise = () => {
     newUtxos.push(...additionalUtxos);
 
     setUtxos(newUtxos);
-    setScore(prev => prev + Math.floor(100 * (1 - change/totalInput))); // Higher score for efficient use
+    setScore(prev => prev + Math.floor(100 * (1 - change / totalInput))); // Higher score for efficient use
     setFeedback('Transaction created successfully!');
     setSpendAmount(0);
     setRecipientAddress('');
@@ -215,22 +215,36 @@ export const UTXOExercise = () => {
           exit={{ opacity: 0, y: -20 }}
         >
           <Card className="p-6 bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
-            <h4 className="text-xl font-semibold text-blue-800 mb-4">Quick Guide: How UTXOs Work</h4>
-            <div className="space-y-4">
-              <p className="text-gray-700">UTXOs (Unspent Transaction Outputs) work like digital cash:</p>
-              <ol className="list-decimal pl-5 space-y-2 text-gray-700">
-                <li>Select one or more UTXOs as inputs (like choosing bills from your wallet)</li>
-                <li>Enter how much you want to send</li>
-                <li>Paste the recipient's address (or use our sample address below)</li>
-                <li>If your selected UTXOs exceed the amount you want to send, you'll get change back as a new UTXO</li>
-              </ol>
-              <Button 
-                variant="outline" 
-                className="mt-4"
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="text-xl font-semibold text-blue-800">How to Create a Bitcoin Transaction</h4>
+              <Button
+                variant="outline"
                 onClick={() => setShowGuide(false)}
               >
-                Got it!
+                Hide Guide
               </Button>
+            </div>
+            <div className="space-y-4">
+              <p className="text-gray-700">Follow these steps to create your transaction:</p>
+              <ol className="list-decimal pl-5 space-y-3 text-gray-700">
+                <li className="bg-white/50 p-3 rounded-lg">
+                  <strong className="text-blue-700">Select UTXOs:</strong> Click on one or more blue UTXO boxes below to choose your input funds
+                </li>
+                <li className="bg-white/50 p-3 rounded-lg">
+                  <strong className="text-blue-700">Enter Amount:</strong> Type how much BTC you want to send
+                </li>
+                <li className="bg-white/50 p-3 rounded-lg">
+                  <strong className="text-blue-700">Add Recipient:</strong> Copy the sample address below by clicking the copy icon, then paste it into the recipient field
+                </li>
+                <li className="bg-white/50 p-3 rounded-lg">
+                  <strong className="text-blue-700">Create Transaction:</strong> Click the "Create Transaction" button to complete
+                </li>
+              </ol>
+              <div className="mt-4 bg-blue-100 p-4 rounded-lg">
+                <p className="text-sm text-blue-800">
+                  💡 Tip: Try to use UTXOs efficiently! The closer your selected amount is to your spending amount, the higher your score will be.
+                </p>
+              </div>
             </div>
           </Card>
         </motion.div>
@@ -249,8 +263,8 @@ export const UTXOExercise = () => {
                   exit={{ opacity: 0, x: 20 }}
                   whileHover={{ scale: 1.02 }}
                   className={`p-4 border rounded-lg cursor-pointer transition-all duration-200 ${
-                    utxo.selected 
-                      ? 'bg-gradient-to-r from-blue-100 to-purple-100 border-blue-500 shadow-md' 
+                    utxo.selected
+                      ? 'bg-gradient-to-r from-blue-100 to-purple-100 border-blue-500 shadow-md'
                       : 'hover:bg-gray-50'
                   }`}
                   onClick={() => toggleUTXO(utxo.id)}
@@ -279,7 +293,7 @@ export const UTXOExercise = () => {
             <h4 className="text-lg font-semibold mb-4">Create Transaction</h4>
             <div className="space-y-4">
               <div>
-                <Label htmlFor="amount">Amount to Send (BTC)</Label>
+                <Label htmlFor="amount">Step 2: Enter Amount to Send (BTC)</Label>
                 <Input
                   id="amount"
                   type="number"
@@ -293,35 +307,40 @@ export const UTXOExercise = () => {
               </div>
 
               <div>
-                <Label htmlFor="address">Recipient Address</Label>
+                <Label htmlFor="address">Step 3: Enter Recipient Address</Label>
                 <div className="flex gap-2 mt-1">
                   <Input
                     id="address"
                     value={recipientAddress}
                     onChange={(e) => setRecipientAddress(e.target.value)}
-                    placeholder="Enter recipient address"
+                    placeholder="Paste the sample address here..."
                   />
                 </div>
-                <div className="mt-2 flex items-center gap-2 text-sm text-gray-500">
-                  <span>Sample address:</span>
-                  <code className="bg-gray-100 px-2 py-1 rounded text-xs">{SAMPLE_ADDRESS}</code>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={copyAddress}
-                    className="h-6 w-6 p-0"
-                  >
-                    <Copy className="h-4 w-4" />
-                  </Button>
+                <div className="mt-2 bg-blue-50 p-3 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-blue-700">Sample address (click to copy):</span>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={copyAddress}
+                      className="h-8 px-3 flex items-center gap-2 bg-blue-100 hover:bg-blue-200"
+                    >
+                      <Copy className="h-4 w-4" />
+                      Copy Address
+                    </Button>
+                  </div>
+                  <code className="block mt-2 text-xs bg-white/80 p-2 rounded border border-blue-200 break-all">
+                    {SAMPLE_ADDRESS}
+                  </code>
                 </div>
               </div>
 
-              <Button 
+              <Button
                 onClick={createTransaction}
                 disabled={!spendAmount || !recipientAddress || !utxos.some(u => u.selected)}
                 className="w-full mt-4 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
               >
-                Create Transaction
+                Step 4: Create Transaction
               </Button>
             </div>
           </Card>
