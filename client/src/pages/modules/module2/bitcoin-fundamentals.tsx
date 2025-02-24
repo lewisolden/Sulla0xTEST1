@@ -132,7 +132,7 @@ export default function BitcoinFundamentalsSection() {
             </div>
           </div>
 
-          <div className="prose lg:prose-xl text-gray-700 space-y-8">
+          <div className="prose lg:prose-xl text-gray-700 space-y-12">
             <motion.section
               variants={contentVariants}
               initial="hidden"
@@ -174,6 +174,27 @@ export default function BitcoinFundamentalsSection() {
               variants={contentVariants}
               initial="hidden"
               animate="visible"
+              className="bg-white rounded-lg shadow-lg p-8 mb-12"
+            >
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-orange-100 rounded-xl">
+                  <History className="h-8 w-8 text-orange-600" />
+                </div>
+                <div>
+                  <h2 className="text-3xl font-bold text-orange-800">Bitcoin Timeline</h2>
+                  <h3 className="text-xl text-orange-600">Key Milestones in Bitcoin's Journey</h3>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-orange-50 to-red-50 p-6 rounded-xl">
+                <BitcoinTimeline />
+              </div>
+            </motion.section>
+
+            <motion.section
+              variants={contentVariants}
+              initial="hidden"
+              animate="visible"
               className="bg-white rounded-lg shadow-lg p-8"
             >
               <div className="flex items-center gap-4 mb-6">
@@ -195,6 +216,7 @@ export default function BitcoinFundamentalsSection() {
                 <HowBitcoinWorksNew />
               </div>
             </motion.section>
+
 
             <motion.section
               variants={contentVariants}
