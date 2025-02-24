@@ -169,13 +169,26 @@ export default function BitcoinFundamentalsSection() {
               </div>
             </motion.section>
 
+
             <motion.section
               variants={contentVariants}
               initial="hidden"
               animate="visible"
-              className="bg-white rounded-lg shadow-lg p-8"
+              className="bg-white rounded-lg shadow-lg p-8 mb-12"
             >
-              <BitcoinTimeline />
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-orange-100 rounded-xl">
+                  <History className="h-8 w-8 text-orange-600" />
+                </div>
+                <div>
+                  <h2 className="text-3xl font-bold text-orange-800">Bitcoin Timeline</h2>
+                  <h3 className="text-xl text-orange-600">Key Milestones in Bitcoin's Journey</h3>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-orange-50 to-red-50 p-6 rounded-xl">
+                <BitcoinTimeline />
+              </div>
             </motion.section>
 
             <motion.section
@@ -209,28 +222,14 @@ export default function BitcoinFundamentalsSection() {
               variants={contentVariants}
               initial="hidden"
               animate="visible"
-              className="bg-gradient-to-br from-purple-50 to-pink-50 p-8 rounded-2xl shadow-lg"
+              className="bg-gradient-to-br from-purple-50 to-indigo-50 p-8 rounded-2xl shadow-lg"
             >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="p-3 bg-purple-100 rounded-xl">
-                  <Book className="h-8 w-8 text-purple-600" />
-                </div>
-                <div>
-                  <h2 className="text-3xl font-bold text-purple-800">How Bitcoin Works</h2>
-                  <p className="text-lg text-purple-600">Understanding the Fundamentals</p>
-                </div>
-              </div>
-
-              <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md">
-                <h3 className="text-2xl font-semibold text-purple-700 mb-4">Simple Explanation</h3>
-                <p className="mb-4">Think of Bitcoin as a digital ledger that:</p>
-                <ul className="list-disc pl-5 space-y-2">
-                  <li>Records all transactions</li>
-                  <li>Is maintained by thousands of computers</li>
-                  <li>Cannot be changed once written</li>
-                  <li>Is visible to everyone</li>
-                </ul>
-              </div>
+              <h3 className="text-2xl font-bold text-purple-800 mb-4">Interactive UTXO Exercise</h3>
+              <p className="text-gray-700 mb-6">
+                Now that you understand how UTXOs work, let's practice with an interactive exercise.
+                Try to complete transactions by selecting the right combination of UTXOs!
+              </p>
+              <UTXOExercise />
             </motion.section>
 
             <motion.section
