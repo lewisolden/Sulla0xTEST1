@@ -11,11 +11,12 @@ import {
   Fingerprint, HardDrive, SmartphoneCharging, Info, AlertCircle,
   Landmark, History
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 // Define interfaces for component props
 interface IconProps {
-  icon: React.ReactNode;
+  icon: LucideIcon;
   title: string;
   description: string;
   className?: string;
@@ -23,7 +24,7 @@ interface IconProps {
 
 interface SecurityCardProps {
   title: string;
-  icon: React.ReactNode;
+  icon: LucideIcon;
   children: React.ReactNode;
   className?: string;
 }
@@ -35,7 +36,7 @@ interface WalletCardProps {
   price: string;
   link: string;
   recommendedFor: string;
-  icon: React.ReactNode;
+  icon: LucideIcon;
 }
 
 interface ExchangeCardProps {
@@ -46,7 +47,7 @@ interface ExchangeCardProps {
   fees: string;
   link: string;
   recommendedFor: string;
-  icon: React.ReactNode;
+  icon: LucideIcon;
 }
 
 interface DisasterCardProps {
@@ -57,15 +58,8 @@ interface DisasterCardProps {
   lessons: string[];
 }
 
-interface QuizQuestion {
-  question: string;
-  options: string[];
-  answer: number;
-  explanation: string;
-}
-
 // Component implementations with proper type annotations
-const SecurityIcon = ({ icon: Icon, title, description, className = "" }: IconProps) => (
+const SecurityIcon: React.FC<IconProps> = ({ icon: Icon, title, description, className = "" }) => (
   <motion.div
     whileHover={{ scale: 1.05 }}
     whileTap={{ scale: 0.95 }}
@@ -79,7 +73,7 @@ const SecurityIcon = ({ icon: Icon, title, description, className = "" }: IconPr
   </motion.div>
 );
 
-const SecurityCard = ({ title, icon: Icon, children, className = "" }: SecurityCardProps) => (
+const SecurityCard: React.FC<SecurityCardProps> = ({ title, icon: Icon, children, className = "" }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
@@ -96,7 +90,7 @@ const SecurityCard = ({ title, icon: Icon, children, className = "" }: SecurityC
   </motion.div>
 );
 
-const WalletCard = ({ name, description, features, price, link, recommendedFor, icon: Icon }: WalletCardProps) => (
+const WalletCard: React.FC<WalletCardProps> = ({ name, description, features, price, link, recommendedFor, icon: Icon }) => (
   <motion.div
     whileHover={{ scale: 1.02 }}
     className="p-6 rounded-lg bg-white shadow-sm border border-gray-100"
@@ -131,7 +125,7 @@ const WalletCard = ({ name, description, features, price, link, recommendedFor, 
   </motion.div>
 );
 
-const ExchangeCard = ({ name, description, features, setupSteps, fees, link, recommendedFor, icon: Icon }: ExchangeCardProps) => (
+const ExchangeCard: React.FC<ExchangeCardProps> = ({ name, description, features, setupSteps, fees, link, recommendedFor, icon: Icon }) => (
   <motion.div
     whileHover={{ scale: 1.02 }}
     className="p-6 rounded-lg bg-white shadow-sm border border-gray-100"
@@ -176,7 +170,7 @@ const ExchangeCard = ({ name, description, features, setupSteps, fees, link, rec
   </motion.div>
 );
 
-const DisasterCard = ({ title, date, description, impact, lessons }: DisasterCardProps) => (
+const DisasterCard: React.FC<DisasterCardProps> = ({ title, date, description, impact, lessons }) => (
   <motion.div
     whileHover={{ scale: 1.02 }}
     className="p-6 rounded-lg bg-white shadow-sm border border-gray-100"
@@ -204,7 +198,6 @@ const DisasterCard = ({ title, date, description, impact, lessons }: DisasterCar
   </motion.div>
 );
 
-// Main component implementation
 const SecurityRiskSection = () => {
   useScrollTop();
   const [isFullyRead, setIsFullyRead] = useState(false);
@@ -229,38 +222,24 @@ const SecurityRiskSection = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [updateProgress]);
 
-  const handleCheckItem = (id: string) => {
-    setCheckedItems(prev => {
-      const newItems = { ...prev, [id]: !prev[id] };
-      if (!prev[id]) {
-        toast({
-          title: "Security Step Completed! 🔒",
-          description: "Keep going with your security checklist!",
-          duration: 2000
-        });
-      }
-      return newItems;
-    });
-  };
-
   const securityTips = [
     {
-      icon: <Lock />,
+      icon: Lock,
       title: "Strong Password Practices",
       description: "Use unique, complex passwords for each account"
     },
     {
-      icon: <Fingerprint />,
+      icon: Fingerprint,
       title: "Two-Factor Authentication",
       description: "Enable 2FA on all important accounts"
     },
     {
-      icon: <HardDrive />,
+      icon: HardDrive,
       title: "Backup Solutions",
       description: "Keep secure backups of your wallet information"
     },
     {
-      icon: <SmartphoneCharging />,
+      icon: SmartphoneCharging,
       title: "Mobile Security",
       description: "Secure your mobile wallet with biometric authentication"
     }
@@ -279,7 +258,7 @@ const SecurityRiskSection = () => {
         price: "$79",
         link: "https://shop.ledger.com/",
         recommendedFor: "Long-term storage",
-        icon: <HardDrive />
+        icon: HardDrive
       },
       {
         name: "Trezor Model T",
@@ -292,7 +271,7 @@ const SecurityRiskSection = () => {
         price: "$219",
         link: "https://trezor.io/",
         recommendedFor: "Advanced users",
-        icon: <HardDrive />
+        icon: HardDrive
       }
     ],
     software: [
@@ -307,7 +286,7 @@ const SecurityRiskSection = () => {
         price: "Free",
         link: "https://bluewallet.io/",
         recommendedFor: "Beginners",
-        icon: <Wallet />
+        icon: Wallet
       },
       {
         name: "Exodus",
@@ -320,7 +299,7 @@ const SecurityRiskSection = () => {
         price: "Free",
         link: "https://exodus.com/",
         recommendedFor: "Multi-coin users",
-        icon: <Wallet />
+        icon: Wallet
       }
     ]
   };
@@ -345,7 +324,7 @@ const SecurityRiskSection = () => {
       fees: "Variable, typically 0.5% - 1.5% per trade",
       link: "https://www.coinbase.com/",
       recommendedFor: "Beginners",
-      icon: <Landmark />
+      icon: Landmark
     },
     {
       name: "Kraken",
@@ -366,7 +345,7 @@ const SecurityRiskSection = () => {
       fees: "0.16% - 0.26% maker-taker fees",
       link: "https://www.kraken.com/",
       recommendedFor: "Advanced users",
-      icon: <Landmark />
+      icon: Landmark
     }
   ];
 
@@ -412,9 +391,8 @@ const SecurityRiskSection = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <motion.div
-        className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50"
+        className="fixed top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 to-blue-400 z-50"
         style={{
-          background: "linear-gradient(to right, #3b82f6, #60a5fa)",
           scaleX: scrollProgress / 100,
           transformOrigin: "left"
         }}
@@ -459,7 +437,7 @@ const SecurityRiskSection = () => {
               <Shield className="h-6 w-6" />
               Security Fundamentals
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {securityTips.map((tip, index) => (
                 <SecurityIcon
                   key={index}
@@ -562,12 +540,12 @@ const SecurityRiskSection = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {[
                 {
-                  icon: <AlertOctagon />,
+                  icon: AlertOctagon,
                   title: "Phishing Attacks",
                   description: "Fake websites and emails that try to steal your credentials"
                 },
                 {
-                  icon: <Key />,
+                  icon: Key,
                   title: "Private Key Theft",
                   description: "Malware designed to steal your private keys"
                 }
@@ -602,12 +580,12 @@ const SecurityRiskSection = () => {
                 {
                   title: "Hardware Wallets",
                   description: "Use hardware wallets for large amounts",
-                  icon: <HardDrive />
+                  icon: HardDrive
                 },
                 {
                   title: "2FA Security",
                   description: "Enable two-factor authentication everywhere",
-                  icon: <Fingerprint />
+                  icon: Fingerprint
                 }
               ].map((strategy, index) => (
                 <motion.div
