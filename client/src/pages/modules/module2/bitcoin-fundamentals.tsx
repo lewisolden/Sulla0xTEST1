@@ -1,15 +1,31 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { useScrollTop } from "@/hooks/useScrollTop";
-import { ArrowLeft, ArrowRight, BookOpen, Network, Database, Code, Lightbulb, ArrowUpRight, History, LucideIcon, Coins, ArrowRightCircle, ChevronsRight } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Network,
+  Database,
+  Code,
+  Lightbulb,
+  ArrowUpRight,
+  History,
+  LucideIcon,
+  Coins,
+  ArrowRightCircle,
+  ChevronsRight,
+  Book
+} from "lucide-react";
 import BitcoinBasicsDiagram from "@/components/diagrams/BitcoinBasicsDiagram";
 import BitcoinFundamentalsQuiz from "@/components/modules/quizzes/BitcoinFundamentalsQuiz";
 import ProofOfWorkDiagram from "@/components/diagrams/ProofOfWorkDiagram";
 import { UTXOExercise } from "@/components/exercises/UTXOExercise";
+import BitcoinTimeline from "@/components/diagrams/BitcoinTimeline";
+import HowBitcoinWorksNew from "@/components/diagrams/HowBitcoinWorksNew";
 
 interface FeatureCardProps {
   title: string;
@@ -41,7 +57,7 @@ const BitcoinLogo = () => (
     fill="none"
     className="inline-block mr-4"
   >
-    <circle cx="12" cy="12" r="12" fill="#F7931A"/>
+    <circle cx="12" cy="12" r="12" fill="#F7931A" />
     <path
       d="M16.662 10.661c.235-1.57-0.962-2.412-2.596-2.974l.53-2.126-1.295-.323-.517 2.072c-.34-.085-.69-.165-1.039-.244l.52-2.083-1.294-.323-.53 2.126c-.282-.064-.559-.128-.827-.194l.001-.006-1.785-.446-.344 1.382s.962.22.942.234c.525.131.62.48.604.756l-.606 2.432c.036.009.083.022.135.043l-.137-.034-.85 3.41c-.064.16-.228.4-.595.308.013.019-.942-.235-.942-.235l-.644 1.487 1.684.42c.313.079.62.161.922.238l-.536 2.15 1.293.323.53-2.127c.354.096.698.184 1.034.268l-.528 2.117 1.294.323.536-2.148c2.211.419 3.873.25 4.572-1.75.564-1.61-.028-2.538-1.191-3.144.847-.195 1.485-.752 1.655-1.903zm-2.961 4.153c-.4 1.61-3.11.74-3.99.522l.712-2.854c.879.22 3.697.654 3.278 2.332zm.401-4.176c-.366 1.465-2.621.72-3.353.538l.645-2.587c.731.182 3.089.522 2.708 2.049z"
       fill="white"
@@ -157,31 +173,47 @@ export default function BitcoinFundamentalsSection() {
               variants={contentVariants}
               initial="hidden"
               animate="visible"
-              className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl shadow-lg"
+              className="bg-white rounded-lg shadow-lg p-8"
             >
               <div className="flex items-center gap-4 mb-6">
-                <div className="p-3 bg-blue-100 rounded-xl">
-                  <History className="h-8 w-8 text-blue-600" />
+                <div className="p-3 bg-orange-100 rounded-xl">
+                  <History className="h-8 w-8 text-orange-600" />
                 </div>
                 <div>
-                  <h2 className="text-3xl font-bold text-blue-800">The Birth of Bitcoin</h2>
-                  <h3 className="text-xl text-blue-600">Historical Context and Significance</h3>
+                  <h2 className="text-3xl font-bold text-orange-800">Bitcoin Timeline</h2>
+                  <h3 className="text-xl text-orange-600">Key Milestones in Bitcoin's Journey</h3>
                 </div>
               </div>
 
-              <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md">
-                <p className="mb-4">
-                  The 2008 financial crisis revealed fundamental problems in our financial system. During this turbulent time:
+              <BitcoinTimeline />
+            </motion.section>
+
+            <motion.section
+              variants={contentVariants}
+              initial="hidden"
+              animate="visible"
+              className="bg-white rounded-lg shadow-lg p-8"
+            >
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-blue-100 rounded-xl">
+                  <Network className="h-8 w-8 text-blue-600" />
+                </div>
+                <div>
+                  <h2 className="text-3xl font-bold text-blue-800">How Bitcoin Works</h2>
+                  <h3 className="text-xl text-blue-600">A Simple Guide to Bitcoin's Technology</h3>
+                </div>
+              </div>
+
+              <div className="mb-8">
+                <p className="text-lg text-gray-700 mb-6">
+                  Bitcoin operates on a revolutionary technology that allows for secure,
+                  peer-to-peer transactions without the need for intermediaries like banks.
+                  Let's break down how it works in simple terms:
                 </p>
-                <ul className="list-disc pl-5 space-y-2 mb-4">
-                  <li>Banks were failing</li>
-                  <li>Governments were implementing massive bailouts</li>
-                  <li>Public trust in financial institutions was eroding</li>
-                  <li>The need for financial innovation became clear</li>
-                </ul>
-                <p>This environment gave birth to Bitcoin, introduced through a whitepaper by the mysterious Satoshi Nakamoto.</p>
+                <HowBitcoinWorksNew />
               </div>
             </motion.section>
+
 
             <motion.section
               variants={contentVariants}
@@ -191,7 +223,7 @@ export default function BitcoinFundamentalsSection() {
             >
               <div className="flex items-center gap-4 mb-6">
                 <div className="p-3 bg-purple-100 rounded-xl">
-                  <BookOpen className="h-8 w-8 text-purple-600" />
+                  <Book className="h-8 w-8 text-purple-600" />
                 </div>
                 <div>
                   <h2 className="text-3xl font-bold text-purple-800">How Bitcoin Works</h2>
@@ -430,7 +462,7 @@ export default function BitcoinFundamentalsSection() {
             >
               <h3 className="text-2xl font-bold text-purple-800 mb-4">Interactive UTXO Exercise</h3>
               <p className="text-gray-700 mb-6">
-                Now that you understand how UTXOs work, let's practice with an interactive exercise. 
+                Now that you understand how UTXOs work, let's practice with an interactive exercise.
                 Try to complete transactions by selecting the right combination of UTXOs!
               </p>
               <UTXOExercise />
