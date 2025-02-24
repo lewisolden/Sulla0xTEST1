@@ -8,59 +8,59 @@ import { ArrowRight, CheckCircle, XCircle, Award, PencilLine } from "lucide-reac
 
 const questions = [
   {
-    question: "What is the primary innovation introduced by Bitcoin?",
+    question: "According to Metcalfe's Law, how does Bitcoin's network value grow?",
     options: [
-      "A new type of bank account",
-      "A social media platform for finance",
-      "A decentralized digital currency without intermediaries",
-      "A government-backed digital payment system"
-    ],
-    correctAnswer: 2,
-    explanation: "Bitcoin's revolutionary innovation is creating a decentralized digital currency that operates without intermediaries like banks or governments, fundamentally changing how we think about money and value transfer."
-  },
-  {
-    question: "What is the role of the blockchain in Bitcoin's system?",
-    options: [
-      "To store user passwords",
-      "To process credit card payments",
-      "To record and verify all transactions in a public ledger",
-      "To generate random numbers for encryption"
-    ],
-    correctAnswer: 2,
-    explanation: "The blockchain serves as a public, distributed ledger that records all Bitcoin transactions, ensuring transparency and preventing double-spending while maintaining the network's integrity."
-  },
-  {
-    question: "How does Bitcoin achieve decentralization?",
-    options: [
-      "Through government regulation",
-      "Using a network of computers worldwide to verify transactions",
-      "By having a central authority control all transactions",
-      "Through traditional banking systems"
+      "Linearly with the number of users",
+      "Proportional to the square of connected users",
+      "At a fixed rate regardless of users",
+      "Inversely to the number of users"
     ],
     correctAnswer: 1,
-    explanation: "Bitcoin achieves decentralization through its distributed network of computers worldwide that collectively verify and validate transactions, eliminating the need for a central authority."
+    explanation: "Metcalfe's law states that Bitcoin's network value grows proportionally to the square of connected users, similar to early internet and mobile phone adoption patterns."
   },
   {
-    question: "What is Bitcoin's monetary policy regarding supply?",
+    question: "Which of these is a key property that makes Bitcoin valuable as a store of value?",
     options: [
-      "Unlimited supply",
+      "Unlimited supply potential",
+      "Government backing",
       "Fixed supply of 21 million coins",
-      "Supply controlled by central banks",
-      "Random supply generation"
+      "Central bank control"
     ],
-    correctAnswer: 1,
-    explanation: "Bitcoin has a fixed maximum supply of 21 million coins, making it a deflationary currency. This scarcity is a fundamental aspect of its economic model."
+    correctAnswer: 2,
+    explanation: "Bitcoin's fixed supply of 21 million coins is a key property that makes it valuable as a store of value, as it ensures scarcity and prevents artificial inflation."
   },
   {
-    question: "What is the purpose of Bitcoin mining?",
+    question: "What is considered a 'low risk' Bitcoin investment option?",
     options: [
-      "To create digital wallets",
-      "To secure the network and validate transactions",
-      "To hack other users' accounts",
-      "To convert bitcoin to traditional currency"
+      "Trading with leverage",
+      "Bitcoin ETFs and regulated products",
+      "Direct exchange purchases",
+      "Crypto lending platforms"
     ],
     correctAnswer: 1,
-    explanation: "Bitcoin mining serves to secure the network and validate transactions through computational work, while also being the mechanism through which new bitcoins are created and distributed."
+    explanation: "Bitcoin ETFs and regulated investment products are considered low risk as they operate within established regulatory frameworks and don't require direct cryptocurrency management."
+  },
+  {
+    question: "Which risk mitigation strategy is recommended for Bitcoin investors?",
+    options: [
+      "Keeping large amounts on exchanges",
+      "Investing with borrowed money",
+      "Only investing what you can afford to lose",
+      "Sharing private keys for backup"
+    ],
+    correctAnswer: 2,
+    explanation: "A key risk mitigation strategy is to only invest what you can afford to lose, helping maintain financial stability while managing Bitcoin's inherent volatility."
+  },
+  {
+    question: "What distinguishes Bitcoin ETFs from direct Bitcoin purchases?",
+    options: [
+      "Higher guaranteed returns",
+      "No need for private key management",
+      "Instant liquidity",
+      "Zero transaction fees"
+    ],
+    correctAnswer: 1,
+    explanation: "Bitcoin ETFs eliminate the need for private key management, offering a familiar and regulated investment structure through traditional brokerage accounts."
   }
 ];
 
@@ -92,19 +92,19 @@ export default function BitcoinFundamentalsQuiz() {
 
         updateProgress(
           2,
-          'bitcoin-fundamentals',
+          'bitcoin-investment',
           finalScore >= 60,
           2,
           undefined,
           finalScore,
-          '/modules/module2/bitcoin-fundamentals',
           '/modules/module2/bitcoin-investment',
-          'Bitcoin Fundamentals'
+          '/modules/module2/security-risk',
+          'Bitcoin Investment'
         );
 
         if (finalScore >= 60) {
           setTimeout(() => {
-            setLocation('/modules/module2/bitcoin-investment');
+            setLocation('/modules/module2/security-risk');
           }, 8000);
         }
       }
@@ -147,7 +147,7 @@ export default function BitcoinFundamentalsQuiz() {
                   Congratulations! You've passed!
                 </p>
                 <p className="text-sm text-green-600 mt-1">
-                  Moving to Bitcoin Investment in 8 seconds...
+                  Moving to Security & Risk Management in 8 seconds...
                 </p>
               </div>
             ) : (
@@ -168,9 +168,9 @@ export default function BitcoinFundamentalsQuiz() {
               Retry Quiz
             </Button>
             {percentage >= 60 && (
-              <Link href="/modules/module2/bitcoin-investment" className="flex-1">
+              <Link href="/modules/module2/security-risk" className="flex-1">
                 <Button className="w-full bg-orange-600 hover:bg-orange-700 text-sm">
-                  Continue to Bitcoin Investment <ArrowRight className="ml-2 h-4 w-4" />
+                  Continue to Security & Risk Management <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
             )}
@@ -186,7 +186,7 @@ export default function BitcoinFundamentalsQuiz() {
         <PencilLine className="h-6 w-6" />
         <div>
           <h2 className="text-xl font-bold">Test Your Knowledge</h2>
-          <p className="text-white/90 text-sm">Complete the quiz to test your understanding of Module 2</p>
+          <p className="text-white/90 text-sm">Complete the quiz to test your understanding of Bitcoin Investment</p>
         </div>
       </div>
 
