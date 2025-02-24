@@ -205,12 +205,6 @@ export default function BitcoinFundamentalsSection() {
                   </ul>
                 </motion.div>
               </div>
-
-              <div className="bg-orange-100/50 p-4 rounded-lg">
-                <p className="text-orange-800 italic">
-                  "Bitcoin is a technological tour de force." - Bill Gates
-                </p>
-              </div>
             </div>
           </motion.section>
 
