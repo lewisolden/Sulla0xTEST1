@@ -47,3 +47,8 @@ vite.config.ts.*
 
 # Drizzle
 drizzle
+
+# Large files
+project_backup.zip
+project_export.zip
+*.zip
