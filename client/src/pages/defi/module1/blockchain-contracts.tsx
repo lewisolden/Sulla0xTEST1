@@ -124,6 +124,7 @@ const BlockchainContracts = () => {
 
   // Smart Contract Exercise Functions
   const executeSmartContract = () => {
+    console.log("Execute smart contract called with amount:", transferAmount);
     const amount = parseFloat(transferAmount);
 
     // Input validation
@@ -164,14 +165,11 @@ const BlockchainContracts = () => {
     }
 
     // Execute transfer with proper state updates
-    setContractState(prev => {
-      const newBalance = Number((prev.balance - amount).toFixed(2));
-      return {
-        ...prev,
-        balance: newBalance,
-        lastTransaction: amount
-      };
-    });
+    setContractState(prev => ({
+      ...prev,
+      balance: Number((prev.balance - amount).toFixed(2)),
+      lastTransaction: amount
+    }));
 
     // Add success message with timestamp
     setExerciseOutput(prev => [{
@@ -185,6 +183,7 @@ const BlockchainContracts = () => {
   };
 
   const resetExercise = () => {
+    console.log("Reset exercise called");
     setContractState({
       balance: 100,
       threshold: 50,
@@ -352,22 +351,16 @@ const BlockchainContracts = () => {
                             <Input
                               type="number"
                               value={transferAmount}
-                              onChange={(e) => {
-                                const value = e.target.value;
-                                if (value === "" || (!isNaN(parseFloat(value)) && parseFloat(value) >= 0)) {
-                                  setTransferAmount(value);
-                                }
-                              }}
+                              onChange={(e) => setTransferAmount(e.target.value)}
                               placeholder="Enter amount"
                               className="flex-1"
-                              step="0.01"
+                              step="any"
                               min="0"
-                              max={contractState.balance}
                             />
                             <Button
                               onClick={executeSmartContract}
                               className="bg-blue-600 hover:bg-blue-700 transform hover:scale-105 transition-all duration-300"
-                              disabled={!transferAmount || parseFloat(transferAmount) <= 0}
+                              disabled={!transferAmount}
                             >
                               Execute
                             </Button>
