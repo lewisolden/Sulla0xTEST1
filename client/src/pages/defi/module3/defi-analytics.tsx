@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useProgress } from "@/context/progress-context";
-import { useScrollTop } from "@/hooks/useScrollTop"; // Added import
+import { useScrollTop } from "@/hooks/useScrollTop";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -137,6 +137,7 @@ const AnalyticsQuiz = () => {
   const [score, setScore] = useState(0);
   const [quizStarted, setQuizStarted] = useState(false);
   const { toast } = useToast();
+  const [, setLocation] = useLocation();
 
   const questions = [
     {
@@ -197,13 +198,23 @@ const AnalyticsQuiz = () => {
       });
     }
 
-    setTimeout(() => {
-      if (currentQuestion < questions.length - 1) {
+    // Handle navigation after the last question
+    if (currentQuestion === questions.length - 1) {
+      setTimeout(() => {
+        toast({
+          title: "Quiz Completed!",
+          description: "Redirecting to DeFi Innovation section...",
+          variant: "default",
+        });
+        setLocation("/defi/module3/defi-innovation");
+      }, 7000);
+    } else {
+      setTimeout(() => {
         setShowExplanation(false);
         setUserAnswer(null);
         setCurrentQuestion(currentQuestion + 1);
-      }
-    }, 7000); // Changed from 3000 to 7000
+      }, 7000);
+    }
   };
 
   return (
@@ -264,7 +275,11 @@ const AnalyticsQuiz = () => {
               >
                 <h4 className="font-medium text-blue-800 mb-2">Explanation</h4>
                 <p className="text-blue-700">{questions[currentQuestion].explanation}</p>
-                <p className="text-sm text-gray-600 mt-2">Next question in 7 seconds...</p>
+                <p className="text-sm text-gray-600 mt-2">
+                  {currentQuestion === questions.length - 1
+                    ? "Quiz complete! Redirecting to next section in 7 seconds..."
+                    : "Next question in 7 seconds..."}
+                </p>
               </motion.div>
             )}
           </div>
@@ -275,7 +290,7 @@ const AnalyticsQuiz = () => {
 };
 
 const DefiAnalytics = () => {
-  useScrollTop(); // Added hook call
+  useScrollTop();
   const { updateProgress } = useProgress();
   const { toast } = useToast();
 
