@@ -24,7 +24,6 @@ import BitcoinBasicsDiagram from "@/components/diagrams/BitcoinBasicsDiagram";
 import BitcoinFundamentalsQuiz from "@/components/modules/quizzes/BitcoinFundamentalsQuiz";
 import ProofOfWorkDiagram from "@/components/diagrams/ProofOfWorkDiagram";
 import { UTXOExercise } from "@/components/exercises/UTXOExercise";
-import BitcoinTimeline from "@/components/diagrams/BitcoinTimeline";
 import HowBitcoinWorksNew from "@/components/diagrams/HowBitcoinWorksNew";
 
 interface FeatureCardProps {
@@ -211,7 +210,6 @@ export default function BitcoinFundamentalsSection() {
                   From its enigmatic beginnings to becoming a global financial phenomenon, Bitcoin's journey
                   has been nothing short of revolutionary. Let's explore the major milestones:
                 </p>
-                <BitcoinTimeline />
               </Card>
             </motion.section>
 
