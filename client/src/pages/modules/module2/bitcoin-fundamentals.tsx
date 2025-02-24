@@ -132,7 +132,73 @@ export default function BitcoinFundamentalsSection() {
             </div>
           </div>
 
-          <div className="prose lg:prose-xl text-gray-700 space-y-8">
+          <div className="prose lg:prose-xl text-gray-700 space-y-12">
+            <motion.section
+              variants={contentVariants}
+              initial="hidden"
+              animate="visible"
+              className="relative"
+            >
+              <BitcoinBasicsDiagram />
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+                <FeatureCard
+                  title="Decentralized Network"
+                  description="A global network of computers maintaining the Bitcoin blockchain without central authority."
+                  icon={Network}
+                  gradient="bg-gradient-to-br from-blue-500 to-purple-600"
+                />
+                <FeatureCard
+                  title="Digital Scarcity"
+                  description="Limited supply of 21 million coins, creating true digital scarcity for the first time."
+                  icon={Database}
+                  gradient="bg-gradient-to-br from-purple-500 to-pink-600"
+                />
+                <FeatureCard
+                  title="Secure Transactions"
+                  description="Cryptographic security ensuring safe and immutable transactions."
+                  icon={Code}
+                  gradient="bg-gradient-to-br from-pink-500 to-red-600"
+                />
+                <FeatureCard
+                  title="Financial Innovation"
+                  description="Revolutionary technology changing how we think about money and value transfer."
+                  icon={Lightbulb}
+                  gradient="bg-gradient-to-br from-red-500 to-orange-600"
+                />
+              </div>
+            </motion.section>
+
+            <motion.section
+              variants={contentVariants}
+              initial="hidden"
+              animate="visible"
+              className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl shadow-lg"
+            >
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-blue-100 rounded-xl">
+                  <History className="h-8 w-8 text-blue-600" />
+                </div>
+                <div>
+                  <h2 className="text-3xl font-bold text-blue-800">The Birth of Bitcoin</h2>
+                  <h3 className="text-xl text-blue-600">Historical Context and Significance</h3>
+                </div>
+              </div>
+
+              <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md">
+                <p className="mb-4">
+                  The 2008 financial crisis revealed fundamental problems in our financial system. During this turbulent time:
+                </p>
+                <ul className="list-disc pl-5 space-y-2 mb-4">
+                  <li>Banks were failing</li>
+                  <li>Governments were implementing massive bailouts</li>
+                  <li>Public trust in financial institutions was eroding</li>
+                  <li>The need for financial innovation became clear</li>
+                </ul>
+                <p>This environment gave birth to Bitcoin, introduced through a whitepaper by the mysterious Satoshi Nakamoto.</p>
+              </div>
+            </motion.section>
+
             <motion.section
               variants={contentVariants}
               initial="hidden"
@@ -142,7 +208,7 @@ export default function BitcoinFundamentalsSection() {
               <Card className="p-6 bg-white/90 shadow-lg">
                 <h2 className="text-3xl font-bold text-orange-800 mb-6">The Journey of Bitcoin</h2>
                 <p className="text-gray-700 mb-8">
-                  From its enigmatic beginnings to becoming a global financial phenomenon, Bitcoin's journey 
+                  From its enigmatic beginnings to becoming a global financial phenomenon, Bitcoin's journey
                   has been nothing short of revolutionary. Let's explore the major milestones:
                 </p>
                 <BitcoinTimeline />
@@ -153,11 +219,11 @@ export default function BitcoinFundamentalsSection() {
               variants={contentVariants}
               initial="hidden"
               animate="visible"
-              className="bg-white rounded-lg shadow-lg p-8 mb-12"
+              className="bg-white rounded-lg shadow-lg p-8"
             >
               <div className="flex items-center gap-4 mb-6">
                 <div className="p-3 bg-orange-100 rounded-xl">
-                  <History className="h-8 w-8 text-orange-600" />
+                  <Network className="h-8 w-8 text-orange-600" />
                 </div>
                 <div>
                   <h2 className="text-3xl font-bold text-orange-800">How Bitcoin Works</h2>
@@ -166,87 +232,20 @@ export default function BitcoinFundamentalsSection() {
               </div>
 
               <div className="mb-8">
-                <p className="text-lg text-gray-700 mb-6">
-                  Bitcoin operates on a revolutionary technology that allows for secure,
-                  peer-to-peer transactions without the need for intermediaries like banks.
-                  Let's break down how it works in simple terms:
-                </p>
+                <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md mb-8">
+                  <h3 className="text-2xl font-semibold text-orange-700 mb-4">Simple Explanation</h3>
+                  <p className="mb-4">Think of Bitcoin as a digital ledger that:</p>
+                  <ul className="list-disc pl-5 space-y-2">
+                    <li>Records all transactions</li>
+                    <li>Is maintained by thousands of computers</li>
+                    <li>Cannot be changed once written</li>
+                    <li>Is visible to everyone</li>
+                  </ul>
+                </div>
                 <HowBitcoinWorksNew />
               </div>
             </motion.section>
 
-
-            <motion.section
-              variants={contentVariants}
-              initial="hidden"
-              animate="visible"
-              className="bg-gradient-to-br from-purple-50 to-indigo-50 p-8 rounded-2xl shadow-lg"
-            >
-              <h3 className="text-2xl font-bold text-purple-800 mb-4">Interactive UTXO Exercise</h3>
-              <p className="text-gray-700 mb-6">
-                Now that you understand how UTXOs work, let's practice with an interactive exercise.
-                Try to complete transactions by selecting the right combination of UTXOs!
-              </p>
-              <UTXOExercise />
-            </motion.section>
-
-            <motion.section
-              variants={contentVariants}
-              initial="hidden"
-              animate="visible"
-              className="bg-gradient-to-br from-orange-50 to-red-50 p-8 rounded-2xl shadow-lg"
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="p-3 bg-orange-100 rounded-xl">
-                  <ArrowUpRight className="h-8 w-8 text-orange-600" />
-                </div>
-                <div>
-                  <h2 className="text-3xl font-bold text-orange-800">Understanding Proof of Work</h2>
-                  <p className="text-lg text-orange-600">The Engine Behind Bitcoin</p>
-                </div>
-              </div>
-
-              <div className="space-y-6">
-                <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md">
-                  <h3 className="text-2xl font-semibold text-orange-700 mb-4">What is Proof of Work?</h3>
-                  <p className="text-gray-700 mb-4">
-                    Think of Proof of Work like a complex puzzle competition where:
-                  </p>
-                  <ul className="list-disc pl-5 space-y-2 text-gray-700 mb-6">
-                    <li>Many computers (miners) compete to solve a mathematical puzzle</li>
-                    <li>The first one to solve it gets to add a new block to the blockchain</li>
-                    <li>The winner receives newly created bitcoins as a reward</li>
-                    <li>The puzzle is hard to solve but easy to verify - like a Sudoku puzzle</li>
-                  </ul>
-                </div>
-
-                <ProofOfWorkDiagram />
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md"
-                  >
-                    <h4 className="font-semibold text-orange-800 mb-2">Why So Much Energy?</h4>
-                    <p className="text-gray-700">
-                      The high energy use is actually a feature, not a bug. It makes it extremely expensive
-                      to attack the network, ensuring its security through real-world costs.
-                    </p>
-                  </motion.div>
-
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md"
-                  >
-                    <h4 className="font-semibold text-orange-800 mb-2">Mining Today</h4>
-                    <p className="text-gray-700">
-                      Today most mining is done by specialized computers in large facilities.
-                      Individual miners often join mining pools to share resources and rewards.
-                    </p>
-                  </motion.div>
-                </div>
-              </div>
-            </motion.section>
 
             <motion.section
               variants={contentVariants}
@@ -405,7 +404,7 @@ export default function BitcoinFundamentalsSection() {
               variants={contentVariants}
               initial="hidden"
               animate="visible"
-              className="bg-gradient-to-br from-purple-50 to-indigo-50 p-8 rounded-2xl shadow-lg"
+              className="bg-gradient-to-br from-purple-50 to-indigo-50 p-8 rounded-2xl shadow-lg mt-8"
             >
               <h3 className="text-2xl font-bold text-purple-800 mb-4">Interactive UTXO Exercise</h3>
               <p className="text-gray-700 mb-6">
@@ -413,6 +412,64 @@ export default function BitcoinFundamentalsSection() {
                 Try to complete transactions by selecting the right combination of UTXOs!
               </p>
               <UTXOExercise />
+            </motion.section>
+
+            <motion.section
+              variants={contentVariants}
+              initial="hidden"
+              animate="visible"
+              className="bg-gradient-to-br from-orange-50 to-red-50 p-8 rounded-2xl shadow-lg"
+            >
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-orange-100 rounded-xl">
+                  <ArrowUpRight className="h-8 w-8 text-orange-600" />
+                </div>
+                <div>
+                  <h2 className="text-3xl font-bold text-orange-800">Understanding Proof of Work</h2>
+                  <p className="text-lg text-orange-600">The Engine Behind Bitcoin</p>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md">
+                  <h3 className="text-2xl font-semibold text-orange-700 mb-4">What is Proof of Work?</h3>
+                  <p className="text-gray-700 mb-4">
+                    Think of Proof of Work like a complex puzzle competition where:
+                  </p>
+                  <ul className="list-disc pl-5 space-y-2 text-gray-700 mb-6">
+                    <li>Many computers (miners) compete to solve a mathematical puzzle</li>
+                    <li>The first one to solve it gets to add a new block to the blockchain</li>
+                    <li>The winner receives newly created bitcoins as a reward</li>
+                    <li>The puzzle is hard to solve but easy to verify - like a Sudoku puzzle</li>
+                  </ul>
+                </div>
+
+                <ProofOfWorkDiagram />
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md"
+                  >
+                    <h4 className="font-semibold text-orange-800 mb-2">Why So Much Energy?</h4>
+                    <p className="text-gray-700">
+                      The high energy use is actually a feature, not a bug. It makes it extremely expensive
+                      to attack the network, ensuring its security through real-world costs.
+                    </p>
+                  </motion.div>
+
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md"
+                  >
+                    <h4 className="font-semibold text-orange-800 mb-2">Mining Today</h4>
+                    <p className="text-gray-700">
+                      Today most mining is done by specialized computers in large facilities.
+                      Individual miners often join mining pools to share resources and rewards.
+                    </p>
+                  </motion.div>
+                </div>
+              </div>
             </motion.section>
 
             {isFullyRead && (
