@@ -8,9 +8,6 @@ import { useScrollTop } from "@/hooks/useScrollTop";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
 import {
   BarChart3,
   LineChart,
@@ -136,6 +133,7 @@ const AnalyticsQuiz = () => {
   const [userAnswer, setUserAnswer] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [quizStarted, setQuizStarted] = useState(false);
+  const [quizCompleted, setQuizCompleted] = useState(false);
   const { toast } = useToast();
   const [, setLocation] = useLocation();
 
@@ -178,42 +176,57 @@ const AnalyticsQuiz = () => {
     }
   ];
 
+  // Effect to handle quiz completion and navigation
+  useEffect(() => {
+    if (quizCompleted) {
+      console.log("Quiz completed, preparing for navigation");
+      const timer = setTimeout(() => {
+        console.log("Navigating to defi-innovation");
+        toast({
+          title: "Module Complete! 🎉",
+          description: "Moving to DeFi Innovation section...",
+          variant: "default",
+        });
+        setLocation("/defi/module3/defi-innovation");
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [quizCompleted, setLocation, toast]);
+
   const handleAnswer = (answer: string) => {
+    if (showExplanation) return;
+
     setUserAnswer(answer);
     setShowExplanation(true);
 
     const isCorrect = answer === questions[currentQuestion].correct;
     if (isCorrect) {
-      setScore(score + 1);
+      setScore(prev => prev + 1);
       toast({
         title: "Correct! 🎉",
-        description: "Great job! Moving to next question...",
+        description: "Well done!",
         variant: "default",
       });
     } else {
       toast({
         title: "Incorrect",
-        description: "Let's understand why before moving on.",
+        description: "Let's review the explanation.",
         variant: "destructive",
       });
     }
 
-    // Handle navigation after the last question
+    // Handle quiz completion
     if (currentQuestion === questions.length - 1) {
-      setTimeout(() => {
-        toast({
-          title: "Quiz Completed!",
-          description: "Redirecting to DeFi Innovation section...",
-          variant: "default",
-        });
-        setLocation("/defi/module3/defi-innovation");
-      }, 7000);
+      console.log("Final question answered, marking quiz as completed");
+      setQuizCompleted(true);
     } else {
+      // Move to next question
       setTimeout(() => {
         setShowExplanation(false);
         setUserAnswer(null);
-        setCurrentQuestion(currentQuestion + 1);
-      }, 7000);
+        setCurrentQuestion(prev => prev + 1);
+      }, 3000);
     }
   };
 
@@ -229,8 +242,7 @@ const AnalyticsQuiz = () => {
         {!quizStarted ? (
           <div className="text-center space-y-4">
             <p className="text-gray-600">
-              Ready to test your knowledge of DeFi analytics, metrics interpretation,
-              and data analysis?
+              Ready to test your knowledge of DeFi analytics and metrics?
             </p>
             <Button onClick={() => setQuizStarted(true)} className="w-full md:w-auto">
               Start Quiz
@@ -239,7 +251,9 @@ const AnalyticsQuiz = () => {
         ) : (
           <div className="space-y-6">
             <div className="flex justify-between items-center">
-              <h3 className="text-xl font-medium">Question {currentQuestion + 1}/{questions.length}</h3>
+              <h3 className="text-xl font-medium">
+                Question {currentQuestion + 1}/{questions.length}
+              </h3>
               <span className="text-sm font-medium text-blue-600">
                 Score: {score}/{questions.length}
               </span>
@@ -258,7 +272,7 @@ const AnalyticsQuiz = () => {
                     variant={userAnswer === key ?
                       (key === questions[currentQuestion].correct ? "default" : "destructive")
                       : "outline"}
-                    disabled={showExplanation}
+                    disabled={showExplanation || quizCompleted}
                     className="w-full justify-start text-left"
                   >
                     {value}
@@ -277,8 +291,8 @@ const AnalyticsQuiz = () => {
                 <p className="text-blue-700">{questions[currentQuestion].explanation}</p>
                 <p className="text-sm text-gray-600 mt-2">
                   {currentQuestion === questions.length - 1
-                    ? "Quiz complete! Redirecting to next section in 7 seconds..."
-                    : "Next question in 7 seconds..."}
+                    ? "Quiz complete! Moving to DeFi Innovation section..."
+                    : "Next question in 3 seconds..."}
                 </p>
               </motion.div>
             )}
