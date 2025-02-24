@@ -7,47 +7,53 @@ import { useProgress } from "@/context/progress-context";
 import {
   ArrowLeft, ArrowRight, Code2, Database, FileCode,
   LockIcon, RefreshCw, Settings, CheckCircle2, X, Check,
-  Zap, Globe, Lock, ChevronRight
+  Zap, Globe, Lock, ChevronRight, AlertCircle, Info
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useScrollTop } from "@/hooks/useScrollTop";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
-// Quiz questions with explanations
-const quizQuestions = [
-  {
-    question: "What is the primary function of a smart contract in DeFi?",
-    options: [
-      "Automatically execute predefined conditions without intermediaries",
-      "Store cryptocurrency in a digital wallet",
-      "Connect to traditional banking systems",
-      "Process credit card payments"
-    ],
-    correctAnswer: 0,
-    explanation: "Smart contracts are self-executing contracts with the terms directly written into code. They automatically enforce and execute agreements when predefined conditions are met, eliminating the need for intermediaries in financial transactions."
-  },
-  {
-    question: "Which property of blockchain technology makes smart contracts trustless?",
-    options: [
-      "High transaction speed",
-      "Low transaction fees",
-      "Immutable and transparent code execution",
-      "Colorful user interface"
-    ],
-    correctAnswer: 2,
-    explanation: "The immutable and transparent nature of blockchain ensures that smart contract code cannot be altered once deployed, and its execution is visible to all participants, creating a trustless environment where users don't need to rely on third parties."
-  },
-  {
-    question: "How do smart contracts handle token transfers in DeFi?",
-    options: [
-      "Through manual bank transfers",
-      "Using paper contracts",
-      "Via automated code execution based on predefined rules",
-      "By contacting customer support"
-    ],
-    correctAnswer: 2,
-    explanation: "Smart contracts automatically handle token transfers based on predefined rules in their code. When conditions are met (like receiving payment), the contract automatically executes the transfer without requiring manual intervention."
-  }
-];
+// Component for displaying transaction animation
+const TransactionAnimation = ({ isActive, success }) => {
+  return (
+    <motion.div
+      className={`absolute inset-0 bg-gradient-to-r ${
+        success ? 'from-green-500/20 to-blue-500/20' : 'from-red-500/20 to-orange-500/20'
+      }`}
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={isActive ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.5 }}
+    />
+  );
+};
+
+// Smart Contract Rules Component
+const ContractRules = ({ rules }) => {
+  return (
+    <div className="space-y-2">
+      {rules.map((rule, index) => (
+        <TooltipProvider key={index}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="flex items-center gap-2 p-2 rounded-lg hover:bg-blue-50 transition-colors cursor-help">
+                <Info className="h-4 w-4 text-blue-500" />
+                <span className="text-sm text-gray-700">{rule.title}</span>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent className="max-w-xs">
+              <p>{rule.description}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      ))}
+    </div>
+  );
+};
 
 const BlockchainContracts = () => {
   const { updateProgress } = useProgress();
@@ -61,22 +67,61 @@ const BlockchainContracts = () => {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showExplanation, setShowExplanation] = useState(false);
 
-  useScrollTop(); // Keep existing hook
+  useScrollTop();
 
-  // Add explicit scroll behavior
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [currentQuestion]); // Scroll to top when question changes
+  }, [currentQuestion]);
 
-  // Smart Contract Exercise State
   const [contractState, setContractState] = useState({
     balance: 100,
     threshold: 50,
-    lastTransaction: null as number | null,
+    lastTransaction: null,
+    transactionCount: 0,
+    successfulTransactions: 0,
+    failedTransactions: 0
   });
   const [transferAmount, setTransferAmount] = useState("");
   const [exerciseOutput, setExerciseOutput] = useState<Array<{ type: 'success' | 'error', message: string }>>([]);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [showAnimation, setShowAnimation] = useState(false);
+  const [animationSuccess, setAnimationSuccess] = useState(true);
+  const [activeStep, setActiveStep] = useState(0);
+  const [showHelp, setShowHelp] = useState(true);
+
+  const contractRules = [
+    {
+      title: "Positive Balance Rule",
+      description: "Transfers must be positive numbers and cannot exceed your current balance."
+    },
+    {
+      title: "Transfer Threshold",
+      description: "The smart contract has a built-in safety feature that rejects transfers above 50 tokens."
+    },
+    {
+      title: "Automatic Execution",
+      description: "Once conditions are met, the contract automatically executes without intermediaries."
+    },
+    {
+      title: "Transaction Logging",
+      description: "All transaction attempts are recorded, whether successful or failed, ensuring transparency."
+    }
+  ];
+
+  const steps = [
+    {
+      title: "Understanding Smart Contracts",
+      description: "Smart contracts are self-executing programs that automatically enforce rules when conditions are met."
+    },
+    {
+      title: "Contract Rules",
+      description: "Explore the rules that govern this smart contract's behavior."
+    },
+    {
+      title: "Making Transactions",
+      description: "Try different transaction amounts to see how the contract behaves."
+    }
+  ];
 
   const handleComplete = async () => {
     await updateProgress(3, "blockchain-contracts", true, 3);
@@ -107,41 +152,50 @@ const BlockchainContracts = () => {
       } else {
         setQuizCompleted(true);
       }
-    }, 8000); // Changed from 5000 to 8000
+    }, 8000);
   };
 
-  // Smart Contract Exercise Functions
   const executeSmartContract = () => {
     const amount = parseFloat(transferAmount);
+    setShowAnimation(true);
+
     if (isNaN(amount) || amount <= 0) {
+      setAnimationSuccess(false);
       setExerciseOutput(prev => [...prev, {
         type: 'error',
         message: 'Invalid amount. Please enter a positive number.'
       }]);
+      setTimeout(() => setShowAnimation(false), 1000);
       return;
     }
 
     if (amount > contractState.balance) {
+      setAnimationSuccess(false);
       setExerciseOutput(prev => [...prev, {
         type: 'error',
         message: 'Insufficient balance for transfer.'
       }]);
+      setTimeout(() => setShowAnimation(false), 1000);
       return;
     }
 
     if (amount > contractState.threshold) {
+      setAnimationSuccess(false);
       setExerciseOutput(prev => [...prev, {
         type: 'error',
         message: `Transfer amount exceeds threshold (${contractState.threshold} tokens). Transaction rejected.`
       }]);
+      setTimeout(() => setShowAnimation(false), 1000);
       return;
     }
 
-    // Execute transfer
+    setAnimationSuccess(true);
     setContractState(prev => ({
       ...prev,
       balance: prev.balance - amount,
-      lastTransaction: amount
+      lastTransaction: amount,
+      transactionCount: prev.transactionCount + 1,
+      successfulTransactions: prev.successfulTransactions + 1
     }));
 
     setExerciseOutput(prev => [...prev, {
@@ -149,25 +203,56 @@ const BlockchainContracts = () => {
       message: `Successfully transferred ${amount} tokens. New balance: ${contractState.balance - amount} tokens.`
     }]);
     setTransferAmount("");
+
+    setTimeout(() => {
+      setShowAnimation(false);
+      if (activeStep === 2) setActiveStep(3);
+    }, 1000);
   };
 
-  const resetExercise = () => {
-    setContractState({
-      balance: 100,
-      threshold: 50,
-      lastTransaction: null,
-    });
-    setTransferAmount("");
-    setExerciseOutput([]);
-  };
+  // Quiz questions with explanations (remains unchanged)
+  const quizQuestions = [
+    {
+      question: "What is the primary function of a smart contract in DeFi?",
+      options: [
+        "Automatically execute predefined conditions without intermediaries",
+        "Store cryptocurrency in a digital wallet",
+        "Connect to traditional banking systems",
+        "Process credit card payments"
+      ],
+      correctAnswer: 0,
+      explanation: "Smart contracts are self-executing contracts with the terms directly written into code. They automatically enforce and execute agreements when predefined conditions are met, eliminating the need for intermediaries in financial transactions."
+    },
+    {
+      question: "Which property of blockchain technology makes smart contracts trustless?",
+      options: [
+        "High transaction speed",
+        "Low transaction fees",
+        "Immutable and transparent code execution",
+        "Colorful user interface"
+      ],
+      correctAnswer: 2,
+      explanation: "The immutable and transparent nature of blockchain ensures that smart contract code cannot be altered once deployed, and its execution is visible to all participants, creating a trustless environment where users don't need to rely on third parties."
+    },
+    {
+      question: "How do smart contracts handle token transfers in DeFi?",
+      options: [
+        "Through manual bank transfers",
+        "Using paper contracts",
+        "Via automated code execution based on predefined rules",
+        "By contacting customer support"
+      ],
+      correctAnswer: 2,
+      explanation: "Smart contracts automatically handle token transfers based on predefined rules in their code. When conditions are met (like receiving payment), the contract automatically executes the transfer without requiring manual intervention."
+    }
+  ];
 
-  // Simplified performance monitoring
+
   useEffect(() => {
     const mountDuration = Date.now() - mountTimeRef.current;
     console.log(`[Performance] Initial mount took: ${mountDuration}ms`);
     renderCountRef.current += 1;
   }, []);
-
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -193,125 +278,96 @@ const BlockchainContracts = () => {
             <CardHeader className="relative overflow-hidden bg-gradient-to-r from-purple-500 to-indigo-500 pb-8">
               <div className="absolute inset-0 bg-grid-white/20" />
               <CardTitle className="text-3xl font-bold text-white z-10">
-                Blockchain & Smart Contracts in DeFi
+                Interactive Smart Contract Simulator
               </CardTitle>
               <p className="text-purple-100 mt-2 z-10">
-                Discover the foundational technology powering modern decentralized finance
+                Experience how smart contracts work in a safe, educational environment
               </p>
             </CardHeader>
+
             <CardContent className="pt-6">
-              <section className="mb-12">
-                <motion.h2
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: 0.3 }}
-                  className="text-2xl font-semibold text-blue-800 mb-6 flex items-center gap-2"
-                >
-                  <Globe className="h-6 w-6" />
-                  The Role of Blockchain in DeFi
-                </motion.h2>
-
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 0.4 }}
-                  className="text-gray-700 leading-relaxed mb-6"
-                >
-                  Blockchain technology serves as the foundation for DeFi applications, providing a secure, transparent, and decentralized infrastructure. In DeFi, blockchains like Ethereum enable trustless execution of financial services through smart contracts and provide a reliable way to track ownership of digital assets.
-                </motion.p>
-
-                <div className="grid md:grid-cols-2 gap-6 my-8">
-                  {[
-                    {
-                      icon: Database,
-                      title: "Decentralized Ledger",
-                      description: "Distributed record-keeping eliminates single points of failure"
-                    },
-                    {
-                      icon: Lock,
-                      title: "Cryptographic Security",
-                      description: "Advanced encryption protects transactions and data"
-                    },
-                    {
-                      icon: RefreshCw,
-                      title: "Consensus Mechanisms",
-                      description: "Network participants agree on system state"
-                    },
-                    {
-                      icon: Zap,
-                      title: "Smart Contracts",
-                      description: "Self-executing code powers DeFi applications"
-                    }
-                  ].map((feature, index) => (
+              <div className="mb-8">
+                <div className="flex justify-between mb-4">
+                  {steps.map((step, index) => (
                     <motion.div
                       key={index}
+                      className={`flex-1 ${index !== steps.length - 1 ? 'border-r' : ''} px-4`}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                      className="bg-gradient-to-br from-white to-blue-50 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                      transition={{ delay: index * 0.1 }}
                     >
-                      <div className="bg-blue-100 rounded-full w-12 h-12 flex items-center justify-center mb-4">
-                        <feature.icon className="h-6 w-6 text-blue-600" />
-                      </div>
-                      <h3 className="text-lg font-semibold text-blue-800 mb-2">{feature.title}</h3>
-                      <p className="text-gray-600">{feature.description}</p>
+                      <div className={`h-2 rounded-full ${
+                        index <= activeStep ? 'bg-blue-600' : 'bg-gray-200'
+                      }`} />
+                      <h3 className="text-sm font-medium mt-2">{step.title}</h3>
+                      <p className="text-xs text-gray-500">{step.description}</p>
                     </motion.div>
                   ))}
                 </div>
-              </section>
+              </div>
 
-              <section className="mb-12">
+              <div className="grid md:grid-cols-2 gap-8">
                 <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5 }}
-                  className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-8 relative overflow-hidden"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="relative"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-indigo-500/5" />
+                  <TransactionAnimation 
+                    isActive={showAnimation} 
+                    success={animationSuccess} 
+                  />
 
-                  <motion.h2
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="text-2xl font-semibold text-blue-800 mb-6 flex items-center gap-2 relative z-10"
-                  >
-                    <Code2 className="h-6 w-6" />
-                    Interactive Smart Contract Simulator
-                  </motion.h2>
-
-                  <div className="grid md:grid-cols-2 gap-8">
-                    {/* Contract Interface */}
-                    <motion.div
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: 0.2 }}
-                      className="bg-white rounded-xl p-6 shadow-lg"
-                    >
-                      <h3 className="text-lg font-semibold text-blue-700 mb-4 flex items-center gap-2">
+                  <Card className="bg-white shadow-xl">
+                    <CardHeader>
+                      <CardTitle className="text-lg text-blue-700 flex items-center gap-2">
                         <Settings className="h-5 w-5" />
-                        Contract Interface
-                      </h3>
-
-                      <div className="space-y-4">
-                        <div className="bg-gradient-to-br from-gray-50 to-blue-50 p-4 rounded-lg">
-                          <div className="flex justify-between items-center mb-2">
-                            <span className="text-sm text-gray-600">Balance:</span>
-                            <motion.span
+                        Smart Contract Dashboard
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-6">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 p-4 rounded-lg">
+                            <p className="text-sm text-gray-600">Balance</p>
+                            <motion.p
                               key={contractState.balance}
-                              initial={{ scale: 1.2, color: "#2563EB" }}
-                              animate={{ scale: 1, color: "#1E40AF" }}
-                              className="font-medium"
+                              className="text-xl font-semibold text-blue-700"
+                              initial={{ scale: 1.1 }}
+                              animate={{ scale: 1 }}
                             >
                               {contractState.balance} tokens
-                            </motion.span>
+                            </motion.p>
                           </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm text-gray-600">Transfer Limit:</span>
-                            <span className="font-medium text-blue-800">{contractState.threshold} tokens</span>
+                          <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-4 rounded-lg">
+                            <p className="text-sm text-gray-600">Threshold</p>
+                            <p className="text-xl font-semibold text-purple-700">
+                              {contractState.threshold} tokens
+                            </p>
                           </div>
                         </div>
 
-                        <div className="space-y-2">
+                        <div className="grid grid-cols-3 gap-2 text-center">
+                          <div>
+                            <p className="text-sm text-gray-600">Total Transactions</p>
+                            <p className="text-lg font-medium text-gray-800">
+                              {contractState.transactionCount}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-600">Successful</p>
+                            <p className="text-lg font-medium text-green-600">
+                              {contractState.successfulTransactions}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-gray-600">Failed</p>
+                            <p className="text-lg font-medium text-red-600">
+                              {contractState.failedTransactions}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="space-y-3">
                           <label className="block text-sm font-medium text-gray-700">
                             Transfer Amount
                           </label>
@@ -323,46 +379,69 @@ const BlockchainContracts = () => {
                               placeholder="Enter amount"
                               className="flex-1"
                             />
-                            <Button
-                              onClick={executeSmartContract}
-                              className="bg-blue-600 hover:bg-blue-700 transform hover:scale-105 transition-all duration-300"
-                            >
-                              Execute
-                            </Button>
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <Button
+                                    onClick={executeSmartContract}
+                                    className="bg-blue-600 hover:bg-blue-700 transform hover:scale-105 transition-all duration-300"
+                                  >
+                                    Execute Contract
+                                  </Button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <p>Execute the smart contract with the specified amount</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
                           </div>
                         </div>
 
                         <Button
-                          onClick={resetExercise}
+                          onClick={() => {
+                            setContractState({
+                              balance: 100,
+                              threshold: 50,
+                              lastTransaction: null,
+                              transactionCount: 0,
+                              successfulTransactions: 0,
+                              failedTransactions: 0
+                            });
+                            setExerciseOutput([]);
+                            setTransferAmount("");
+                          }}
                           variant="outline"
                           className="w-full hover:bg-blue-50"
                         >
                           Reset Contract
                         </Button>
                       </div>
-                    </motion.div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
 
-                    {/* Transaction Log */}
-                    <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: 0.3 }}
-                      className="bg-white rounded-xl p-6 shadow-lg"
-                    >
-                      <h3 className="text-lg font-semibold text-blue-700 mb-4 flex items-center gap-2">
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  className="space-y-4"
+                >
+                  <Card className="bg-white shadow-xl">
+                    <CardHeader>
+                      <CardTitle className="text-lg text-blue-700 flex items-center gap-2">
                         <FileCode className="h-5 w-5" />
-                        Transaction Log
-                      </h3>
-
-                      <div className="bg-gradient-to-br from-gray-50 to-blue-50 p-4 rounded-lg h-[200px] overflow-y-auto">
+                        Transaction History
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="h-[300px] overflow-y-auto space-y-2">
                         <AnimatePresence mode="popLayout">
                           {exerciseOutput.length === 0 ? (
                             <motion.p
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
-                              className="text-center text-gray-500 italic"
+                              className="text-center text-gray-500 italic p-4"
                             >
-                              No transactions yet. Try executing a transfer!
+                              No transactions yet. Start by executing a transfer!
                             </motion.p>
                           ) : (
                             exerciseOutput.map((output, index) => (
@@ -372,7 +451,7 @@ const BlockchainContracts = () => {
                                 animate={{ opacity: 1, x: 0 }}
                                 exit={{ opacity: 0, x: 20 }}
                                 transition={{ duration: 0.3 }}
-                                className={`mb-2 p-3 rounded-lg flex items-start gap-2 ${
+                                className={`p-3 rounded-lg flex items-start gap-2 ${
                                   output.type === 'success'
                                     ? 'bg-green-50 border border-green-200'
                                     : 'bg-red-50 border border-red-200'
@@ -383,9 +462,7 @@ const BlockchainContracts = () => {
                                 ) : (
                                   <X className="h-5 w-5 text-red-500 flex-shrink-0" />
                                 )}
-                                <span className={`text-sm ${
-                                  output.type === 'success' ? 'text-green-700' : 'text-red-700'
-                                }`}>
+                                <span className={output.type === 'success' ? 'text-green-700' : 'text-red-700'}>
                                   {output.message}
                                 </span>
                               </motion.div>
@@ -393,41 +470,63 @@ const BlockchainContracts = () => {
                           )}
                         </AnimatePresence>
                       </div>
-                    </motion.div>
-                  </div>
+                    </CardContent>
+                  </Card>
 
-                  {/* Smart Contract Rules */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.4 }}
-                    className="mt-6 bg-white/80 backdrop-blur-sm rounded-lg p-6"
-                  >
-                    <h4 className="font-semibold text-blue-800 mb-4">Contract Rules:</h4>
-                    <ul className="grid md:grid-cols-2 gap-4">
-                      {[
-                        "Transfer amount must be positive and less than current balance",
-                        "Transfers exceeding 50 tokens will be rejected (transfer threshold)",
-                        "Contract state updates automatically after successful transfers",
-                        "Failed transactions are logged but don't affect contract state"
-                      ].map((rule, index) => (
-                        <motion.li
-                          key={index}
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                          className="flex items-center gap-2 text-sm text-gray-700"
-                        >
-                          <ChevronRight className="h-4 w-4 text-blue-500 flex-shrink-0" />
-                          {rule}
-                        </motion.li>
-                      ))}
-                    </ul>
-                  </motion.div>
+                  <Card className="bg-white shadow-xl">
+                    <CardHeader>
+                      <CardTitle className="text-lg text-blue-700 flex items-center gap-2">
+                        <LockIcon className="h-5 w-5" />
+                        Contract Rules
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <ContractRules rules={contractRules} />
+                    </CardContent>
+                  </Card>
                 </motion.div>
-              </section>
+              </div>
 
-              {/* Quiz Banner */}
+              {showHelp && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-8 bg-blue-50 p-6 rounded-lg"
+                >
+                  <div className="flex justify-between items-start">
+                    <div className="flex items-center gap-3">
+                      <AlertCircle className="h-6 w-6 text-blue-600" />
+                      <div>
+                        <h3 className="font-semibold text-blue-800">How to Use This Simulator</h3>
+                        <p className="text-sm text-blue-600">Follow these steps to learn about smart contracts:</p>
+                      </div>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setShowHelp(false)}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  <div className="mt-4 space-y-2">
+                    <p className="text-sm text-blue-700">
+                      1. Start with small transfers (e.g., 10-20 tokens) to understand basic execution
+                    </p>
+                    <p className="text-sm text-blue-700">
+                      2. Try amounts above the threshold (50 tokens) to see how contract rules work
+                    </p>
+                    <p className="text-sm text-blue-700">
+                      3. Watch the transaction history to understand contract behavior
+                    </p>
+                    <p className="text-sm text-blue-700">
+                      4. Hover over rules to learn more about smart contract principles
+                    </p>
+                  </div>
+                </motion.div>
+              )}
+
+
               {!showQuiz ? (
                 <div className="my-8 relative overflow-hidden rounded-lg bg-gradient-to-r from-purple-500 to-indigo-500 p-6">
                   <div className="absolute inset-0 bg-grid-white/20" />
