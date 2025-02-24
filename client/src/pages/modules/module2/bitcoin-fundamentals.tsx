@@ -216,30 +216,65 @@ export default function BitcoinFundamentalsSection() {
               className="relative"
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
-                <FeatureCard
-                  title="Decentralized Network"
-                  description="A global network of computers maintaining the Bitcoin blockchain without central authority."
-                  icon={Network}
-                  gradient="bg-gradient-to-br from-blue-500 to-purple-600"
-                />
-                <FeatureCard
-                  title="Digital Scarcity"
-                  description="Limited supply of 21 million coins, creating true digital scarcity for the first time."
-                  icon={Database}
-                  gradient="bg-gradient-to-br from-purple-500 to-pink-600"
-                />
-                <FeatureCard
-                  title="Secure Transactions"
-                  description="Cryptographic security ensuring safe and immutable transactions."
-                  icon={Code}
-                  gradient="bg-gradient-to-br from-pink-500 to-red-600"
-                />
-                <FeatureCard
-                  title="Financial Innovation"
-                  description="Revolutionary technology changing how we think about money and value transfer."
-                  icon={Lightbulb}
-                  gradient="bg-gradient-to-br from-red-500 to-orange-600"
-                />
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  className="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-xl shadow-md border-l-4 border-orange-400"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="p-3 bg-white rounded-lg">
+                      <Network className="h-6 w-6 text-orange-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-orange-800 mb-2">Decentralized Network</h3>
+                      <p className="text-gray-700">A global network of computers maintaining the Bitcoin blockchain without central authority.</p>
+                    </div>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl shadow-md border-l-4 border-blue-400"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="p-3 bg-white rounded-lg">
+                      <Database className="h-6 w-6 text-blue-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-blue-800 mb-2">Digital Scarcity</h3>
+                      <p className="text-gray-700">Limited supply of 21 million coins, creating true digital scarcity for the first time.</p>
+                    </div>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  className="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-xl shadow-md border-l-4 border-orange-400"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="p-3 bg-white rounded-lg">
+                      <Code className="h-6 w-6 text-orange-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-orange-800 mb-2">Secure Transactions</h3>
+                      <p className="text-gray-700">Cryptographic security ensuring safe and immutable transactions.</p>
+                    </div>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl shadow-md border-l-4 border-blue-400"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="p-3 bg-white rounded-lg">
+                      <Lightbulb className="h-6 w-6 text-blue-600" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-blue-800 mb-2">Financial Innovation</h3>
+                      <p className="text-gray-700">Revolutionary technology changing how we think about money and value transfer.</p>
+                    </div>
+                  </div>
+                </motion.div>
               </div>
             </motion.section>
 
@@ -584,6 +619,5 @@ export default function BitcoinFundamentalsSection() {
 }
 
 const contentVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 }
+  hidden: { opacity: 0, y: 20 },  visible: { opacity: 1, y: 0 }
 };
