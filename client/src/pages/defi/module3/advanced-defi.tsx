@@ -5,7 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useProgress } from "@/context/progress-context";
 import { useScrollTop } from "@/hooks/useScrollTop"; // Added import
-import { useLocation } from "wouter"; // Added import
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -174,11 +173,7 @@ const FlashLoanSimulator = () => {
   );
 };
 
-interface AdvancedDefiQuizProps {
-  onQuizComplete?: () => void;
-}
-
-const AdvancedDefiQuiz = ({ onQuizComplete }: AdvancedDefiQuizProps) => {
+const AdvancedDefiQuiz = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
   const [userAnswer, setUserAnswer] = useState<string | null>(null);
@@ -250,18 +245,8 @@ const AdvancedDefiQuiz = ({ onQuizComplete }: AdvancedDefiQuizProps) => {
         setShowExplanation(false);
         setUserAnswer(null);
         setCurrentQuestion(currentQuestion + 1);
-      } else {
-        // Quiz complete, show final score and navigate
-        toast({
-          title: "Quiz Complete! 🎉",
-          description: `Final Score: ${score + (isCorrect ? 1 : 0)}/${questions.length}`,
-          variant: "default",
-        });
-        if (onQuizComplete) {
-          setTimeout(() => onQuizComplete(), 2000); // Give time for the user to see their score
-        }
       }
-    }, 7000);
+    }, 7000); // Changed from 3000 to 7000
   };
 
   return (
@@ -333,10 +318,9 @@ const AdvancedDefiQuiz = ({ onQuizComplete }: AdvancedDefiQuizProps) => {
 };
 
 const AdvancedDefi = () => {
-  useScrollTop();
+  useScrollTop(); // Added hook call
   const { updateProgress } = useProgress();
   const { toast } = useToast();
-  const [, setLocation] = useLocation();
 
   // Enrollment handling with proper error states
   const { data: enrollments, isLoading: loadingEnrollments, error: enrollmentError } = useQuery({
@@ -402,15 +386,6 @@ const AdvancedDefi = () => {
       </div>
     );
   }
-
-  const handleQuizComplete = () => {
-    toast({
-      title: "Topic Complete!",
-      description: "Moving to the next topic: DeFi Security",
-      variant: "default",
-    });
-    setLocation("/defi/module3/defi-security");
-  };
 
   return (
     <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-purple-50 to-white">
@@ -659,7 +634,7 @@ const AdvancedDefi = () => {
           </Card>
 
           {/* Quiz Section */}
-          <AdvancedDefiQuiz onQuizComplete={handleQuizComplete} />
+          <AdvancedDefiQuiz />
         </motion.div>
       </div>
     </div>
