@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { SecurityDiagram } from "@/components/diagrams/SecurityDiagram";
 import BitcoinInvestmentExercise from "@/components/modules/exercises/BitcoinInvestmentExercise";
-import BitcoinFundamentalsQuiz from "@/components/modules/quizzes/BitcoinFundamentalsQuiz";
+import BitcoinInvestmentQuiz from "@/components/modules/quizzes/BitcoinInvestmentQuiz";
 
 const BitcoinLogo = () => (
   <svg
@@ -496,7 +496,7 @@ export default function BitcoinInvestmentSection() {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
             >
-              <BitcoinFundamentalsQuiz />
+              <BitcoinInvestmentQuiz />
 
               <div className="flex flex-col md:flex-row items-center gap-4 justify-between mt-8">
                 <Link href="/modules/module2/bitcoin-fundamentals">

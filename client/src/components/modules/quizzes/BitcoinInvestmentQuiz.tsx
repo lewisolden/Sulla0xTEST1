@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { useProgress } from "@/context/progress-context";
 import { Link, useLocation } from "wouter";
@@ -8,59 +8,59 @@ import { ArrowRight, CheckCircle, XCircle, Award, PencilLine } from "lucide-reac
 
 const questions = [
   {
-    question: "According to Metcalfe's Law, how does Bitcoin's network value increase?",
+    question: "According to Metcalfe's Law, how does Bitcoin's network growth impact its value?",
     options: [
-      "Linearly with user adoption",
-      "Proportional to the square of connected users",
-      "At a fixed rate annually",
-      "Based on mining difficulty"
+      "Network value grows linearly with user adoption",
+      "Network value is proportional to the square of connected users",
+      "Network value decreases with more users",
+      "Network value remains constant regardless of users"
     ],
     correctAnswer: 1,
-    explanation: "According to Metcalfe's Law, Bitcoin's network value grows proportionally to the square of connected users, similar to how the Internet and mobile phones grew in adoption and value."
+    explanation: "According to Metcalfe's Law, Bitcoin's network value grows proportionally to the square of connected users, creating a powerful positive feedback loop similar to how the Internet and mobile phones grew in adoption and value."
   },
   {
-    question: "Which characteristic makes Bitcoin valuable as a store of value?",
+    question: "Which property makes Bitcoin particularly valuable as a store of value?",
     options: [
-      "Government backing",
+      "Digital durability through network redundancy",
+      "Government backing and regulation",
       "Unlimited supply potential",
-      "Fixed supply of 21 million coins",
-      "Central bank control"
+      "Centralized control mechanisms"
+    ],
+    correctAnswer: 0,
+    explanation: "Bitcoin's digital durability through network redundancy is a key store of value property, ensuring the asset cannot degrade and remains recoverable through backups while maintaining network availability."
+  },
+  {
+    question: "What is one of the key technical risks when investing in Bitcoin?",
+    options: [
+      "Network upgrades and forks",
+      "Website downtime",
+      "Email server issues",
+      "Social media presence"
+    ],
+    correctAnswer: 0,
+    explanation: "Network upgrades and forks represent a significant technical risk for Bitcoin investors, as they can affect the network's functionality and potentially impact the value of holdings."
+  },
+  {
+    question: "Which risk mitigation strategy is explicitly recommended in the investment guide?",
+    options: [
+      "Using unregulated exchanges",
+      "Keeping all Bitcoin on exchanges",
+      "Implementing strong security measures",
+      "Sharing private keys with friends"
     ],
     correctAnswer: 2,
-    explanation: "Bitcoin's fixed supply of 21 million coins is a key characteristic that makes it valuable as a store of value, ensuring scarcity and preventing artificial inflation."
+    explanation: "Implementing strong security measures is a key recommended risk mitigation strategy, helping protect investments from various security threats while maintaining control of assets."
   },
   {
-    question: "What is considered the lowest-risk way to invest in Bitcoin?",
+    question: "What advantage do Bitcoin ETFs offer over direct Bitcoin purchases?",
     options: [
-      "Direct purchases from unregulated exchanges",
-      "Bitcoin ETFs and regulated investment products",
-      "Trading with leverage",
-      "Lending Bitcoin on DeFi platforms"
-    ],
-    correctAnswer: 1,
-    explanation: "Bitcoin ETFs and regulated investment products are considered lower risk as they operate within established regulatory frameworks and don't require direct cryptocurrency management."
-  },
-  {
-    question: "Which risk mitigation strategy is most recommended for Bitcoin investors?",
-    options: [
-      "Investing with borrowed money",
-      "Keeping large amounts on exchanges",
-      "Only investing what you can afford to lose",
-      "Sharing private keys for backup"
-    ],
-    correctAnswer: 2,
-    explanation: "A fundamental risk mitigation strategy is to only invest what you can afford to lose, helping maintain financial stability while managing Bitcoin's inherent volatility."
-  },
-  {
-    question: "What is the primary advantage of Bitcoin ETFs for traditional investors?",
-    options: [
-      "Higher guaranteed returns",
+      "Guaranteed higher returns",
       "Complete anonymity",
-      "Zero transaction fees",
-      "Trading through familiar brokerage accounts"
+      "No transaction fees",
+      "Investment through traditional brokerage accounts"
     ],
     correctAnswer: 3,
-    explanation: "Bitcoin ETFs offer the advantage of trading through familiar brokerage accounts, making it easier for traditional investors to gain exposure without managing private keys or dealing directly with cryptocurrency exchanges."
+    explanation: "Bitcoin ETFs allow investors to gain exposure through traditional brokerage accounts, providing a familiar and regulated investment structure without the need to manage private keys or deal with cryptocurrency exchanges."
   }
 ];
 
