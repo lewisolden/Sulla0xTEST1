@@ -1,71 +1,66 @@
-import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { useProgress } from "@/context/progress-context";
+import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
-import { CheckCircle, XCircle } from "lucide-react";
+import { useProgress } from "@/context/progress-context";
 import { Link, useLocation } from "wouter";
+import { ArrowRight, CheckCircle, XCircle, Award, PencilLine } from "lucide-react";
 
 const questions = [
   {
-    id: "q1",
-    question: "What is one of the key market volatility risks when investing in Bitcoin?",
-    options: {
-      0: "Guaranteed stable prices",
-      1: "Price fluctuations limited to business hours",
-      2: "Extreme price fluctuations within short periods",
-      3: "Price changes only during weekdays"
-    },
-    correct: 2,
-    explanation: "Bitcoin experiences extreme price fluctuations within short periods, with historical drops of over 50% in value. The market operates 24/7, leading to potential overnight price changes."
+    question: "According to Metcalfe's Law, how does Bitcoin's network value increase?",
+    options: [
+      "Linearly with user adoption",
+      "Proportional to the square of connected users",
+      "At a fixed rate annually",
+      "Based on mining difficulty"
+    ],
+    correctAnswer: 1,
+    explanation: "According to Metcalfe's Law, Bitcoin's network value grows proportionally to the square of connected users, similar to how the Internet and mobile phones grew in adoption and value."
   },
   {
-    id: "q2",
-    question: "Which of the following is a critical security risk in Bitcoin investment?",
-    options: {
-      0: "Banks guaranteeing all losses",
-      1: "Government insurance for stolen funds",
-      2: "Automatic recovery of lost keys",
-      3: "No recourse for lost or stolen funds"
-    },
-    correct: 3,
-    explanation: "One of the main security risks in Bitcoin investment is that there is no recourse for lost or stolen funds. This makes proper security measures and private key management crucial."
+    question: "Which characteristic makes Bitcoin valuable as a store of value?",
+    options: [
+      "Government backing",
+      "Unlimited supply potential",
+      "Fixed supply of 21 million coins",
+      "Central bank control"
+    ],
+    correctAnswer: 2,
+    explanation: "Bitcoin's fixed supply of 21 million coins is a key characteristic that makes it valuable as a store of value, ensuring scarcity and preventing artificial inflation."
   },
   {
-    id: "q3",
-    question: "What is a significant regulatory risk for Bitcoin investors?",
-    options: {
-      0: "Uniform global regulations",
-      1: "Varying regulations across jurisdictions",
-      2: "No tax implications",
-      3: "Guaranteed legal status"
-    },
-    correct: 1,
-    explanation: "A major regulatory risk is that Bitcoin regulations vary across jurisdictions, with potential for restrictive government policies and varying tax implications and reporting requirements."
+    question: "What is considered the lowest-risk way to invest in Bitcoin?",
+    options: [
+      "Direct purchases from unregulated exchanges",
+      "Bitcoin ETFs and regulated investment products",
+      "Trading with leverage",
+      "Lending Bitcoin on DeFi platforms"
+    ],
+    correctAnswer: 1,
+    explanation: "Bitcoin ETFs and regulated investment products are considered lower risk as they operate within established regulatory frameworks and don't require direct cryptocurrency management."
   },
   {
-    id: "q4",
-    question: "Which of the following is a recommended practice for Bitcoin investment?",
-    options: {
-      0: "Investing with borrowed money",
-      1: "Keeping large amounts on exchanges",
-      2: "Only investing what you can afford to lose",
-      3: "Sharing private keys for backup"
-    },
-    correct: 2,
-    explanation: "A key recommended practice is to only invest what you can afford to lose. This is crucial for risk management and maintaining financial stability."
+    question: "Which risk mitigation strategy is most recommended for Bitcoin investors?",
+    options: [
+      "Investing with borrowed money",
+      "Keeping large amounts on exchanges",
+      "Only investing what you can afford to lose",
+      "Sharing private keys for backup"
+    ],
+    correctAnswer: 2,
+    explanation: "A fundamental risk mitigation strategy is to only invest what you can afford to lose, helping maintain financial stability while managing Bitcoin's inherent volatility."
   },
   {
-    id: "q5",
-    question: "What should investors avoid when managing their Bitcoin investments?",
-    options: {
-      0: "Using regulated exchanges",
-      1: "Implementing security measures",
-      2: "Emotional trading decisions",
-      3: "Portfolio diversification"
-    },
-    correct: 2,
-    explanation: "Investors should avoid emotional investment decisions. Trading based on emotions rather than strategy can lead to poor investment choices and potential losses."
+    question: "What is the primary advantage of Bitcoin ETFs for traditional investors?",
+    options: [
+      "Higher guaranteed returns",
+      "Complete anonymity",
+      "Zero transaction fees",
+      "Trading through familiar brokerage accounts"
+    ],
+    correctAnswer: 3,
+    explanation: "Bitcoin ETFs offer the advantage of trading through familiar brokerage accounts, making it easier for traditional investors to gain exposure without managing private keys or dealing directly with cryptocurrency exchanges."
   }
 ];
 
@@ -74,17 +69,16 @@ export default function BitcoinInvestmentQuiz() {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [score, setScore] = useState(0);
-  const [showExplanation, setShowExplanation] = useState(false);
   const { updateProgress } = useProgress();
   const [, setLocation] = useLocation();
 
-  const handleAnswerSelect = (optionIndex: number) => {
-    setSelectedAnswer(optionIndex);
-    setShowExplanation(true);
+  const handleAnswerSelect = (answerIndex: number) => {
+    if (selectedAnswer !== null) return;
+
+    setSelectedAnswer(answerIndex);
 
     setTimeout(() => {
-      const isCorrect = optionIndex === questions[currentQuestion].correct;
-
+      const isCorrect = answerIndex === questions[currentQuestion].correctAnswer;
       if (isCorrect) {
         setScore(prev => prev + 1);
       }
@@ -92,20 +86,20 @@ export default function BitcoinInvestmentQuiz() {
       if (currentQuestion < questions.length - 1) {
         setCurrentQuestion(prev => prev + 1);
         setSelectedAnswer(null);
-        setShowExplanation(false);
       } else {
         setShowResult(true);
         const finalScore = ((score + (isCorrect ? 1 : 0)) / questions.length) * 100;
+
         updateProgress(
-          2, // moduleId
-          'bitcoin-investment', // sectionId
-          finalScore >= 60, // completed
-          2, // order
-          undefined, // timeSpent
-          finalScore, // quizScore
-          '/modules/module2/bitcoin-investment', // pageUrl
-          '/modules/module2/security-risk', // nextUrl
-          'Bitcoin Investment' // sectionName
+          2,
+          'bitcoin-investment',
+          finalScore >= 60,
+          2,
+          undefined,
+          finalScore,
+          '/modules/module2/bitcoin-investment',
+          '/modules/module2/security-risk',
+          'Bitcoin Investment'
         );
 
         if (finalScore >= 60) {
@@ -122,115 +116,148 @@ export default function BitcoinInvestmentQuiz() {
     setSelectedAnswer(null);
     setShowResult(false);
     setScore(0);
-    setShowExplanation(false);
   };
 
   if (showResult) {
     const percentage = (score / questions.length) * 100;
     return (
-      <Card>
-        <CardContent className="p-8 text-center">
-          <h2 className="text-3xl font-bold mb-4 text-blue-800">
-            Quiz Completed!
-          </h2>
-          <p className="text-xl mb-4">
-            You scored {score} out of {questions.length}
-          </p>
-          {percentage >= 60 ? (
-            <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-4">
-              <p className="text-green-700">
-                🎉 Congratulations! You've passed the Bitcoin Investment quiz!
-              </p>
-              <p className="text-sm text-green-600 mt-1">Moving to Security & Risk Management in 8 seconds...</p>
-              <Link href="/modules/module2/security-risk">
-                <Button className="mt-4 bg-green-500 hover:bg-green-600 text-white">
-                  Continue to Security & Risk Management
+      <div className="container mx-auto px-6 py-4 max-w-6xl">
+        <Card className="p-6 text-center bg-gradient-to-br from-orange-50 to-red-50">
+          <div className="flex items-center justify-center gap-4">
+            <Award className={`h-10 w-10 ${percentage >= 60 ? 'text-green-500' : 'text-red-500'}`} />
+            <div>
+              <h2 className="text-xl font-bold text-orange-800">Quiz Complete!</h2>
+              <div className="text-lg">
+                <span className="font-semibold">Your Score: </span>
+                <span className={`font-bold ${percentage >= 60 ? 'text-green-600' : 'text-red-600'}`}>
+                  {percentage.toFixed(0)}%
+                </span>
+                <span className="text-gray-600 text-sm ml-2">
+                  ({score} out of {questions.length} correct)
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4">
+            {percentage >= 60 ? (
+              <div className="bg-green-100 border-l-4 border-green-500 p-3 text-sm">
+                <p className="text-green-700 flex items-center gap-2 justify-center">
+                  <CheckCircle className="h-4 w-4" />
+                  Congratulations! You've passed!
+                </p>
+                <p className="text-sm text-green-600 mt-1">
+                  Moving to Security & Risk Management in 8 seconds...
+                </p>
+              </div>
+            ) : (
+              <div className="bg-red-100 border-l-4 border-red-500 p-3 text-sm">
+                <p className="text-red-700 flex items-center gap-2 justify-center">
+                  <XCircle className="h-4 w-4" />
+                  Keep learning and try again
+                </p>
+              </div>
+            )}
+          </div>
+
+          <div className="flex gap-3 mt-4">
+            <Button
+              onClick={restartQuiz}
+              className="flex-1 bg-orange-500 hover:bg-orange-600 text-sm"
+            >
+              Retry Quiz
+            </Button>
+            {percentage >= 60 && (
+              <Link href="/modules/module2/security-risk" className="flex-1">
+                <Button className="w-full bg-orange-600 hover:bg-orange-700 text-sm">
+                  Continue to Security & Risk Management <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
-            </div>
-          ) : (
-            <div className="bg-red-100 border-l-4 border-red-500 p-4 mb-4">
-              <p className="text-red-700">
-                You didn't pass this time. Review the content and try again.
-              </p>
-              <Button
-                onClick={restartQuiz}
-                variant="outline"
-                className="mt-4"
-              >
-                Restart Quiz
-              </Button>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+            )}
+          </div>
+        </Card>
+      </div>
     );
   }
 
-  const currentQuizQuestion = questions[currentQuestion];
-
   return (
-    <Card>
-      <CardContent className="p-8">
-        <div className="mb-6">
-          <h2 className="text-2xl font-bold text-blue-800 mb-4">
-            Bitcoin Investment Quiz
-            <span className="text-sm ml-4 text-gray-600">
-              Question {currentQuestion + 1} of {questions.length}
-            </span>
-          </h2>
+    <div className="container mx-auto px-6 py-4 max-w-6xl">
+      <div className="bg-gradient-to-r from-orange-500 to-red-600 p-4 rounded-lg mb-4 text-white flex items-center gap-4">
+        <PencilLine className="h-6 w-6" />
+        <div>
+          <h2 className="text-xl font-bold">Test Your Knowledge</h2>
+          <p className="text-white/90 text-sm">Complete the quiz to test your understanding of Bitcoin Investment</p>
+        </div>
+      </div>
 
-          <div className="bg-blue-50 rounded-lg p-4 mb-6">
-            <p className="text-lg text-gray-700">
-              {currentQuizQuestion.question}
+      <div className="bg-white rounded-lg p-4 shadow-sm">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <span className="text-lg font-semibold text-orange-600">Question {currentQuestion + 1}</span>
+            <span className="text-gray-400">/</span>
+            <span className="text-gray-600">{questions.length}</span>
+          </div>
+          <span className="text-sm bg-orange-50 text-orange-600 px-3 py-1 rounded-full font-medium">
+            Score: {score}
+          </span>
+        </div>
+
+        <div className="space-y-4">
+          <div>
+            <p className="text-gray-700 text-lg mb-4">
+              {questions[currentQuestion].question}
             </p>
           </div>
 
-          <div className="grid gap-4">
-            {Object.entries(currentQuizQuestion.options).map(([key, value]) => (
-              <Button
-                key={key}
-                onClick={() => handleAnswerSelect(parseInt(key))}
+          <div className="grid gap-2">
+            {questions[currentQuestion].options.map((option, index) => (
+              <motion.button
+                key={index}
+                onClick={() => handleAnswerSelect(index)}
                 className={`
-                  w-full p-4 h-auto whitespace-normal text-left justify-start
+                  w-full p-2.5 rounded-lg text-left transition-all duration-300
                   ${selectedAnswer === null
-                    ? 'bg-gray-100 hover:bg-blue-100 text-gray-700'
-                    : parseInt(key) === currentQuizQuestion.correct
-                      ? 'bg-green-200 text-gray-700'
-                      : selectedAnswer === parseInt(key)
-                        ? 'bg-red-200 text-gray-700'
-                        : 'bg-gray-100 text-gray-700'}
+                    ? 'bg-white hover:bg-orange-50 border border-gray-200'
+                    : index === questions[currentQuestion].correctAnswer
+                      ? 'bg-green-100 border-2 border-green-500'
+                      : selectedAnswer === index
+                        ? 'bg-red-100 border-2 border-red-500'
+                        : 'bg-white border border-gray-200'}
+                  whitespace-normal break-words hover:shadow-md
                 `}
                 disabled={selectedAnswer !== null}
-                variant="ghost"
+                whileHover={{ scale: selectedAnswer === null ? 1.01 : 1 }}
+                whileTap={{ scale: selectedAnswer === null ? 0.99 : 1 }}
               >
-                {value}
-              </Button>
+                <span className="text-base">{option}</span>
+              </motion.button>
             ))}
           </div>
 
-          {showExplanation && (
+          {selectedAnswer !== null && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               className={`
-                mt-4 p-3 rounded-lg text-sm
-                ${selectedAnswer === currentQuizQuestion.correct
+                mt-3 p-2 rounded-lg text-sm
+                ${selectedAnswer === questions[currentQuestion].correctAnswer
                   ? 'bg-green-100 border-l-4 border-green-500'
                   : 'bg-red-100 border-l-4 border-red-500'}
               `}
             >
-              <h3 className="font-bold mb-2 flex items-center gap-2">
-                {selectedAnswer === currentQuizQuestion.correct
+              <h3 className="text-sm font-bold mb-1 flex items-center gap-2">
+                {selectedAnswer === questions[currentQuestion].correctAnswer
                   ? <><CheckCircle className="h-4 w-4 text-green-600" /> Correct!</>
                   : <><XCircle className="h-4 w-4 text-red-600" /> Incorrect</>}
               </h3>
-              <p className="leading-relaxed">{currentQuizQuestion.explanation}</p>
-              <p className="text-xs mt-2 text-gray-600">Next question in 8 seconds...</p>
+              <p className="text-sm leading-snug text-gray-700">{questions[currentQuestion].explanation}</p>
+              <p className="text-xs mt-1 text-gray-500">
+                Next question in 8 seconds...
+              </p>
             </motion.div>
           )}
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
