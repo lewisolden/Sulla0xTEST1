@@ -293,7 +293,7 @@ export default function BitcoinInvestmentSection() {
                 <ul className="text-sm space-y-1">
                   <li>1995: 16 million users</li>
                   <li>2000: 400 million users</li>
-                  <li>2023: 5.3 billion users</li>
+                  <li>2025: 5.8 billion users</li>
                 </ul>
               </Card>
 
@@ -305,7 +305,7 @@ export default function BitcoinInvestmentSection() {
                 <ul className="text-sm space-y-1">
                   <li>1990: 11 million users</li>
                   <li>2000: 740 million users</li>
-                  <li>2023: 7.3 billion users</li>
+                  <li>2025: 7.7 billion users</li>
                 </ul>
               </Card>
 
@@ -317,7 +317,7 @@ export default function BitcoinInvestmentSection() {
                 <ul className="text-sm space-y-1">
                   <li>2013: 3 million users</li>
                   <li>2018: 32 million users</li>
-                  <li>2023: 425+ million users</li>
+                  <li>2025: 875+ million users</li>
                 </ul>
               </Card>
             </div>
@@ -471,34 +471,37 @@ export default function BitcoinInvestmentSection() {
                   icon: TrendingUp,
                   color: "red",
                   risks: [
-                    "Extreme price fluctuations within short periods",
-                    "Historical drops of over 50% in value",
-                    "Susceptibility to market sentiment",
-                    "24/7 trading leading to overnight changes"
+                    "Extreme price swings of 20-30% in days",
+                    "Historical drawdowns exceeding 80%",
+                    "High sensitivity to market sentiment",
+                    "Global 24/7 trading impacts",
+                    "Correlation with macro events"
                   ]
                 },
                 {
                   title: "Security Risks",
-                  description: "Protecting your investment",
+                  description: "Protecting your digital assets",
                   icon: Shield,
                   color: "yellow",
                   risks: [
-                    "Exchange hacks and theft potential",
-                    "Private key management",
-                    "Phishing attacks and scams",
-                    "No recourse for lost funds"
+                    "Exchange hacks and potential theft",
+                    "Complex private key management",
+                    "Sophisticated phishing attacks",
+                    "No FDIC insurance protection",
+                    "Social engineering threats"
                   ]
                 },
                 {
                   title: "Regulatory Risks",
-                  description: "Government and legal considerations",
+                  description: "Government and legal landscape",
                   icon: Scale,
                   color: "orange",
                   risks: [
-                    "Varying jurisdictional regulations",
-                    "Potential restrictive policies",
-                    "Tax implications",
-                    "Legal status changes"
+                    "Evolving global regulations",
+                    "Tax reporting complexities",
+                    "Cross-border transaction rules",
+                    "Central bank digital currencies impact",
+                    "Potential trading restrictions"
                   ]
                 },
                 {
@@ -507,10 +510,11 @@ export default function BitcoinInvestmentSection() {
                   icon: Code,
                   color: "purple",
                   risks: [
-                    "Network upgrades and forks",
-                    "Software vulnerabilities",
-                    "Infrastructure failures",
-                    "Technological obsolescence"
+                    "Network upgrades and hard forks",
+                    "Protocol vulnerabilities",
+                    "Quantum computing threats",
+                    "Mining centralization risks",
+                    "Infrastructure outages"
                   ]
                 }
               ].map((risk) => (
@@ -534,6 +538,23 @@ export default function BitcoinInvestmentSection() {
                   </div>
                 </Card>
               ))}
+            </div>
+
+            <div className="bg-yellow-50 p-6 rounded-lg mt-4">
+              <h4 className="text-lg font-semibold text-yellow-800 mb-3 flex items-center gap-2">
+                <AlertTriangle className="h-5 w-5" />
+                Risk Management Essentials
+              </h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-white p-4 rounded-lg shadow-sm">
+                  <h5 className="font-medium text-gray-800 mb-2">Position Sizing</h5>
+                  <p className="text-sm text-gray-600">Only invest what you can afford to lose. Consider Bitcoin as a high-risk portion of a diversified portfolio.</p>
+                </div>
+                <div className="bg-white p-4 rounded-lg shadow-sm">
+                  <h5 className="font-medium text-gray-800 mb-2">Security Measures</h5>
+                  <p className="text-sm text-gray-600">Use hardware wallets for large holdings, enable 2FA, and maintain secure backups of private keys.</p>
+                </div>
+              </div>
             </div>
           </motion.section>
 
@@ -582,6 +603,35 @@ export default function BitcoinInvestmentSection() {
                     ))}
                   </ul>
                 </div>
+
+                <div className="bg-red-50 p-6 rounded-lg">
+                  <h4 className="font-semibold text-red-800 mb-4">ETF-Specific Risks</h4>
+                  <ul className="space-y-3">
+                    {[
+                      {
+                        icon: Key,
+                        text: "No direct Bitcoin ownership or private key control"
+                      },
+                      {
+                        icon: TrendingUp,
+                        text: "May trade at premium/discount to actual Bitcoin price"
+                      },
+                      {
+                        icon: CircleDollarSign,
+                        text: "Management fees impact long-term returns"
+                      },
+                      {
+                        icon: AlertTriangle,
+                        text: "Potential tracking error vs. Bitcoin price"
+                      }
+                    ].map((risk, index) => (
+                      <li key={index} className="flex items-center gap-3 text-red-700">
+                        <risk.icon className="h-5 w-5" />
+                        <span className="text-sm">{risk.text}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
 
               <div className="space-y-4">
@@ -592,28 +642,28 @@ export default function BitcoinInvestmentSection() {
                     name: "BlackRock",
                     ticker: "IBIT",
                     description: "World's largest asset manager",
-                    aum: "$21.5B",
+                    aum: "$45.2B",
                     icon: Building
                   },
                   {
                     name: "Fidelity",
                     ticker: "FBTC",
                     description: "Leading investment firm",
-                    aum: "$19.8B",
+                    aum: "$38.7B",
                     icon: Landmark
                   },
                   {
                     name: "Grayscale",
                     ticker: "GBTC",
                     description: "Cryptocurrency investment pioneer",
-                    aum: "$18.2B",
+                    aum: "$28.5B",
                     icon: Building2
                   },
                   {
                     name: "ARK Invest",
                     ticker: "ARKB",
                     description: "Innovation-focused fund manager",
-                    aum: "$12.7B",
+                    aum: "$22.3B",
                     icon: Landmark
                   }
                 ].map((issuer) => (
@@ -637,7 +687,7 @@ export default function BitcoinInvestmentSection() {
 
                 <div className="bg-yellow-50 p-4 rounded-lg mt-6">
                   <p className="text-sm text-yellow-800">
-                    <strong>Note:</strong> AUM (Assets Under Management) values are as of February 2025. These figures can change significantly over time.
+                    <strong>Note:</strong> AUM (Assets Under Management) values are as of February 2025. These figures can change significantly over time due to market conditions and investor flows.
                   </p>
                 </div>
               </div>
