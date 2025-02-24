@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useProgress } from "@/context/progress-context";
@@ -133,7 +133,6 @@ const AnalyticsQuiz = () => {
   const [userAnswer, setUserAnswer] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [quizStarted, setQuizStarted] = useState(false);
-  const [quizCompleted, setQuizCompleted] = useState(false);
   const { toast } = useToast();
   const [, setLocation] = useLocation();
 
@@ -176,24 +175,6 @@ const AnalyticsQuiz = () => {
     }
   ];
 
-  // Effect to handle quiz completion and navigation
-  useEffect(() => {
-    if (quizCompleted) {
-      console.log("Quiz completed, preparing for navigation");
-      const timer = setTimeout(() => {
-        console.log("Navigating to defi-innovation");
-        toast({
-          title: "Module Complete! 🎉",
-          description: "Moving to DeFi Innovation section...",
-          variant: "default",
-        });
-        setLocation("/defi/module3/defi-innovation");
-      }, 3000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [quizCompleted, setLocation, toast]);
-
   const handleAnswer = (answer: string) => {
     if (showExplanation) return;
 
@@ -205,8 +186,8 @@ const AnalyticsQuiz = () => {
       setScore(prev => prev + 1);
       toast({
         title: "Correct! 🎉",
-        description: "Well done!",
-        variant: "default",
+        description: isCorrect ? "Well done!" : "Let's review the explanation.",
+        variant: isCorrect ? "default" : "destructive",
       });
     } else {
       toast({
@@ -218,10 +199,39 @@ const AnalyticsQuiz = () => {
 
     // Handle quiz completion
     if (currentQuestion === questions.length - 1) {
-      console.log("Final question answered, marking quiz as completed");
-      setQuizCompleted(true);
+      // Show completion message immediately
+      toast({
+        title: "Quiz Complete! 🎉",
+        description: "Get ready to move to DeFi Innovation section...",
+        variant: "default",
+      });
+
+      // Set a longer delay for navigation to ensure explanation is visible
+      setTimeout(() => {
+        // Show final navigation message
+        toast({
+          title: "Moving to Next Section",
+          description: "Redirecting to DeFi Innovation...",
+          variant: "default",
+        });
+
+        // Add a small delay after the toast before actual navigation
+        setTimeout(() => {
+          try {
+            console.log("Navigating to defi-innovation");
+            setLocation("/defi/module3/defi-innovation");
+          } catch (error) {
+            console.error("Navigation failed:", error);
+            toast({
+              title: "Navigation Error",
+              description: "Please click 'Continue' to proceed",
+              variant: "destructive",
+            });
+          }
+        }, 1000);
+      }, 5000);
     } else {
-      // Move to next question
+      // Move to next question after showing explanation
       setTimeout(() => {
         setShowExplanation(false);
         setUserAnswer(null);
@@ -272,7 +282,7 @@ const AnalyticsQuiz = () => {
                     variant={userAnswer === key ?
                       (key === questions[currentQuestion].correct ? "default" : "destructive")
                       : "outline"}
-                    disabled={showExplanation || quizCompleted}
+                    disabled={showExplanation}
                     className="w-full justify-start text-left"
                   >
                     {value}
@@ -291,9 +301,16 @@ const AnalyticsQuiz = () => {
                 <p className="text-blue-700">{questions[currentQuestion].explanation}</p>
                 <p className="text-sm text-gray-600 mt-2">
                   {currentQuestion === questions.length - 1
-                    ? "Quiz complete! Moving to DeFi Innovation section..."
+                    ? "Quiz complete! Moving to DeFi Innovation section in 5 seconds..."
                     : "Next question in 3 seconds..."}
                 </p>
+                {currentQuestion === questions.length - 1 && (
+                  <Link href="/defi/module3/defi-innovation">
+                    <Button className="mt-4 w-full bg-green-600 hover:bg-green-700">
+                      Continue to DeFi Innovation
+                    </Button>
+                  </Link>
+                )}
               </motion.div>
             )}
           </div>
