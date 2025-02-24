@@ -49,6 +49,18 @@ const quizQuestions = [
   }
 ];
 
+interface ContractState {
+  balance: number;
+  threshold: number;
+  lastTransaction: number | null;
+}
+
+interface OutputMessage {
+  type: 'success' | 'error';
+  message: string;
+  timestamp: number;
+}
+
 const BlockchainContracts = () => {
   const { updateProgress } = useProgress();
   const mountTimeRef = useRef(Date.now());
@@ -69,13 +81,13 @@ const BlockchainContracts = () => {
   }, [currentQuestion]); // Scroll to top when question changes
 
   // Smart Contract Exercise State
-  const [contractState, setContractState] = useState({
+  const [contractState, setContractState] = useState<ContractState>({
     balance: 100,
     threshold: 50,
-    lastTransaction: null as number | null,
+    lastTransaction: null,
   });
   const [transferAmount, setTransferAmount] = useState("");
-  const [exerciseOutput, setExerciseOutput] = useState<Array<{ type: 'success' | 'error', message: string }>>([]);
+  const [exerciseOutput, setExerciseOutput] = useState<OutputMessage[]>([]);
   const [showConfetti, setShowConfetti] = useState(false);
 
   const handleComplete = async () => {
@@ -113,41 +125,62 @@ const BlockchainContracts = () => {
   // Smart Contract Exercise Functions
   const executeSmartContract = () => {
     const amount = parseFloat(transferAmount);
-    if (isNaN(amount) || amount <= 0) {
-      setExerciseOutput(prev => [...prev, {
+
+    // Input validation
+    if (isNaN(amount)) {
+      setExerciseOutput(prev => [{
         type: 'error',
-        message: 'Invalid amount. Please enter a positive number.'
-      }]);
+        message: 'Please enter a valid number',
+        timestamp: Date.now()
+      }, ...prev]);
+      return;
+    }
+
+    if (amount <= 0) {
+      setExerciseOutput(prev => [{
+        type: 'error',
+        message: 'Amount must be greater than 0',
+        timestamp: Date.now()
+      }, ...prev]);
       return;
     }
 
     if (amount > contractState.balance) {
-      setExerciseOutput(prev => [...prev, {
+      setExerciseOutput(prev => [{
         type: 'error',
-        message: 'Insufficient balance for transfer.'
-      }]);
+        message: `Insufficient balance. Available: ${contractState.balance} tokens`,
+        timestamp: Date.now()
+      }, ...prev]);
       return;
     }
 
     if (amount > contractState.threshold) {
-      setExerciseOutput(prev => [...prev, {
+      setExerciseOutput(prev => [{
         type: 'error',
-        message: `Transfer amount exceeds threshold (${contractState.threshold} tokens). Transaction rejected.`
-      }]);
+        message: `Transfer exceeds threshold limit of ${contractState.threshold} tokens`,
+        timestamp: Date.now()
+      }, ...prev]);
       return;
     }
 
-    // Execute transfer
-    setContractState(prev => ({
-      ...prev,
-      balance: prev.balance - amount,
-      lastTransaction: amount
-    }));
+    // Execute transfer with proper state updates
+    setContractState(prev => {
+      const newBalance = Number((prev.balance - amount).toFixed(2));
+      return {
+        ...prev,
+        balance: newBalance,
+        lastTransaction: amount
+      };
+    });
 
-    setExerciseOutput(prev => [...prev, {
+    // Add success message with timestamp
+    setExerciseOutput(prev => [{
       type: 'success',
-      message: `Successfully transferred ${amount} tokens. New balance: ${contractState.balance - amount} tokens.`
-    }]);
+      message: `Successfully transferred ${amount} tokens. New balance: ${(contractState.balance - amount).toFixed(2)} tokens`,
+      timestamp: Date.now()
+    }, ...prev]);
+
+    // Reset input field
     setTransferAmount("");
   };
 
@@ -302,7 +335,7 @@ const BlockchainContracts = () => {
                               animate={{ scale: 1, color: "#1E40AF" }}
                               className="font-medium"
                             >
-                              {contractState.balance} tokens
+                              {contractState.balance.toFixed(2)} tokens
                             </motion.span>
                           </div>
                           <div className="flex justify-between items-center">
@@ -319,13 +352,22 @@ const BlockchainContracts = () => {
                             <Input
                               type="number"
                               value={transferAmount}
-                              onChange={(e) => setTransferAmount(e.target.value)}
+                              onChange={(e) => {
+                                const value = e.target.value;
+                                if (value === "" || (!isNaN(parseFloat(value)) && parseFloat(value) >= 0)) {
+                                  setTransferAmount(value);
+                                }
+                              }}
                               placeholder="Enter amount"
                               className="flex-1"
+                              step="0.01"
+                              min="0"
+                              max={contractState.balance}
                             />
                             <Button
                               onClick={executeSmartContract}
                               className="bg-blue-600 hover:bg-blue-700 transform hover:scale-105 transition-all duration-300"
+                              disabled={!transferAmount || parseFloat(transferAmount) <= 0}
                             >
                               Execute
                             </Button>
@@ -367,7 +409,7 @@ const BlockchainContracts = () => {
                           ) : (
                             exerciseOutput.map((output, index) => (
                               <motion.div
-                                key={index}
+                                key={output.timestamp}
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 exit={{ opacity: 0, x: 20 }}
