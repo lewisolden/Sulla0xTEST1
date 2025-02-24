@@ -471,11 +471,11 @@ export default function BitcoinInvestmentSection() {
                   icon: TrendingUp,
                   color: "red",
                   risks: [
-                    "• Extreme price swings of 20-30% in days",
-                    "• Historical drawdowns exceeding 80%",
-                    "• High sensitivity to market sentiment",
-                    "• Global 24/7 trading impacts",
-                    "• Correlation with macro events"
+                    "Extreme price swings of 20-30% in days",
+                    "Historical drawdowns exceeding 80%",
+                    "High sensitivity to market sentiment",
+                    "Global 24/7 trading impacts",
+                    "Correlation with macro events"
                   ]
                 },
                 {
@@ -484,11 +484,11 @@ export default function BitcoinInvestmentSection() {
                   icon: Shield,
                   color: "yellow",
                   risks: [
-                    "• Exchange hacks and potential theft",
-                    "• Complex private key management",
-                    "• Sophisticated phishing attacks",
-                    "• No FDIC insurance protection",
-                    "• Social engineering threats"
+                    "Exchange hacks and potential theft",
+                    "Complex private key management",
+                    "Sophisticated phishing attacks",
+                    "No FDIC insurance protection",
+                    "Social engineering threats"
                   ]
                 },
                 {
@@ -497,11 +497,11 @@ export default function BitcoinInvestmentSection() {
                   icon: Scale,
                   color: "orange",
                   risks: [
-                    "• Evolving global regulations",
-                    "• Tax reporting complexities",
-                    "• Cross-border transaction rules",
-                    "• Central bank digital currencies impact",
-                    "• Potential trading restrictions"
+                    "Evolving global regulations",
+                    "Tax reporting complexities",
+                    "Cross-border transaction rules",
+                    "Central bank digital currencies impact",
+                    "Potential trading restrictions"
                   ]
                 },
                 {
@@ -510,11 +510,11 @@ export default function BitcoinInvestmentSection() {
                   icon: Code,
                   color: "purple",
                   risks: [
-                    "• Network upgrades and hard forks",
-                    "• Protocol vulnerabilities",
-                    "• Quantum computing threats",
-                    "• Mining centralization risks",
-                    "• Infrastructure outages"
+                    "Network upgrades and hard forks",
+                    "Protocol vulnerabilities",
+                    "Quantum computing threats",
+                    "Mining centralization risks",
+                    "Infrastructure outages"
                   ]
                 }
               ].map((risk) => (
@@ -635,7 +635,7 @@ export default function BitcoinInvestmentSection() {
               </div>
 
               <div className="space-y-4">
-                <h3 className="text-xlfont-semibold text-teal-800 mb-4">Major Bitcoin ETF Issuers</h3>
+                <h3 className="text-xl font-semibold text-teal-800 mb-4">Major Bitcoin ETF Issuers</h3>
 
                 {[
                   {
