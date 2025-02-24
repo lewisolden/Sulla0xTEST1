@@ -1,15 +1,11 @@
 import { useState, useEffect } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useProgress } from "@/context/progress-context";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
 import {
   Shield,
   AlertTriangle,
@@ -25,8 +21,7 @@ import {
   Wallet,
   Code
 } from "lucide-react";
-import { useScrollTop } from "@/hooks/useScrollTop"; //This line was already present in the original
-
+import { useScrollTop } from "@/hooks/useScrollTop";
 
 // Security Audit Simulator Interface
 interface SecurityAuditResult {
@@ -206,7 +201,11 @@ contract VulnerableVault {
   );
 };
 
-const SecurityQuiz = () => {
+interface SecurityQuizProps {
+  onQuizComplete?: () => void;
+}
+
+const SecurityQuiz = ({ onQuizComplete }: SecurityQuizProps) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
   const [userAnswer, setUserAnswer] = useState<string | null>(null);
@@ -278,8 +277,18 @@ const SecurityQuiz = () => {
         setShowExplanation(false);
         setUserAnswer(null);
         setCurrentQuestion(currentQuestion + 1);
+      } else {
+        // Quiz complete, show final score and navigate
+        toast({
+          title: "Quiz Complete! 🎉",
+          description: `Final Score: ${score + (isCorrect ? 1 : 0)}/${questions.length}`,
+          variant: "default",
+        });
+        if (onQuizComplete) {
+          setTimeout(() => onQuizComplete(), 2000);
+        }
       }
-    }, 7000); // Changed from 3000 to 7000
+    }, 7000);
   };
 
   return (
@@ -351,9 +360,10 @@ const SecurityQuiz = () => {
 };
 
 const DefiSecurity = () => {
-  useScrollTop(); // Add hook call at the beginning
+  useScrollTop();
   const { updateProgress } = useProgress();
   const { toast } = useToast();
+  const [, setLocation] = useLocation();
 
   // Enrollment handling with proper error states
   const { data: enrollments, isLoading: loadingEnrollments, error: enrollmentError } = useQuery({
@@ -419,6 +429,15 @@ const DefiSecurity = () => {
       </div>
     );
   }
+
+  const handleQuizComplete = () => {
+    toast({
+      title: "Topic Complete!",
+      description: "Moving to the next topic: DeFi Analytics",
+      variant: "default",
+    });
+    setLocation("/defi/module3/defi-analytics");
+  };
 
   return (
     <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-purple-50 to-white">
@@ -670,7 +689,7 @@ const DefiSecurity = () => {
           </Card>
 
           {/* Quiz Section */}
-          <SecurityQuiz />
+          <SecurityQuiz onQuizComplete={handleQuizComplete} />
         </motion.div>
       </div>
     </div>

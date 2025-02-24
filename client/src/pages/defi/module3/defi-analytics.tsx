@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useProgress } from "@/context/progress-context";
-import { useScrollTop } from "@/hooks/useScrollTop"; // Added import
+import { useScrollTop } from "@/hooks/useScrollTop";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -33,6 +33,10 @@ interface AnalyticsData {
   volume24h: number;
   transactions: number;
   users: number;
+}
+
+interface AnalyticsQuizProps {
+  onQuizComplete?: () => void;
 }
 
 const AnalyticsDashboard = () => {
@@ -130,7 +134,7 @@ const AnalyticsDashboard = () => {
   );
 };
 
-const AnalyticsQuiz = () => {
+const AnalyticsQuiz = ({ onQuizComplete }: AnalyticsQuizProps) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
   const [userAnswer, setUserAnswer] = useState<string | null>(null);
@@ -202,8 +206,18 @@ const AnalyticsQuiz = () => {
         setShowExplanation(false);
         setUserAnswer(null);
         setCurrentQuestion(currentQuestion + 1);
+      } else {
+        // Quiz complete, show final score and navigate
+        toast({
+          title: "Quiz Complete! 🎉",
+          description: `Final Score: ${score + (isCorrect ? 1 : 0)}/${questions.length}`,
+          variant: "default",
+        });
+        if (onQuizComplete) {
+          setTimeout(() => onQuizComplete(), 2000);
+        }
       }
-    }, 7000); // Changed from 3000 to 7000
+    }, 7000);
   };
 
   return (
@@ -275,9 +289,19 @@ const AnalyticsQuiz = () => {
 };
 
 const DefiAnalytics = () => {
-  useScrollTop(); // Added hook call
+  useScrollTop();
   const { updateProgress } = useProgress();
   const { toast } = useToast();
+  const [, setLocation] = useLocation();
+
+  const handleQuizComplete = () => {
+    toast({
+      title: "Topic Complete!",
+      description: "Moving to the next topic: DeFi Innovation",
+      variant: "default",
+    });
+    setLocation("/defi/module3/defi-innovation");
+  };
 
   const { data: enrollments, isLoading: loadingEnrollments, error: enrollmentError } = useQuery({
     queryKey: ['enrollments'],
@@ -523,7 +547,7 @@ const DefiAnalytics = () => {
           </Card>
 
           {/* Quiz Section */}
-          <AnalyticsQuiz />
+          <AnalyticsQuiz onQuizComplete={handleQuizComplete} />
         </motion.div>
       </div>
     </div>
