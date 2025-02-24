@@ -3,7 +3,9 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { motion } from 'framer-motion';
-import { Copy } from 'lucide-react';
+import { Coins, Copy, AlertTriangle } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 interface UTXO {
   id: string;
@@ -47,6 +49,16 @@ export const UTXOExercise = () => {
     const selectedUTXOs = utxos.filter(utxo => utxo.selected);
     const totalInput = selectedUTXOs.reduce((sum, utxo) => sum + utxo.amount, 0);
 
+    if (!spendAmount || spendAmount <= 0) {
+      setFeedback('Please enter a valid amount to spend.');
+      return;
+    }
+
+    if (!recipientAddress) {
+      setFeedback('Please enter a recipient address.');
+      return;
+    }
+
     if (totalInput < spendAmount) {
       setFeedback('Insufficient funds! Select more UTXOs.');
       return;
@@ -62,19 +74,16 @@ export const UTXOExercise = () => {
     setTransactions([...transactions, newTransaction]);
 
     // Create new UTXOs from change
+    const remainingUtxos = utxos.filter(utxo => !utxo.selected);
     if (change > 0) {
       const changeUTXO: UTXO = {
-        id: `utxo${utxos.length + 1}`,
+        id: `utxo${Date.now()}`,
         amount: change,
         selected: false
       };
-
-      setUtxos([
-        ...utxos.filter(utxo => !utxo.selected),
-        changeUTXO
-      ]);
+      setUtxos([...remainingUtxos, changeUTXO]);
     } else {
-      setUtxos(utxos.filter(utxo => !utxo.selected));
+      setUtxos(remainingUtxos);
     }
 
     setFeedback('Transaction created successfully!');
@@ -83,13 +92,13 @@ export const UTXOExercise = () => {
   };
 
   return (
-    <div className="space-y-6 p-4">
+    <div className="space-y-6 bg-white rounded-lg p-6 shadow-lg">
       {showGuide && (
-        <Card className="p-6 bg-blue-50">
+        <Card className="p-6 bg-blue-50 border-blue-200">
           <h4 className="text-xl font-semibold text-blue-800 mb-4">Quick Guide: How UTXOs Work</h4>
           <div className="space-y-4">
-            <p>UTXOs (Unspent Transaction Outputs) work like digital cash:</p>
-            <ol className="list-decimal pl-5 space-y-2">
+            <p className="text-gray-700">UTXOs (Unspent Transaction Outputs) work like digital cash:</p>
+            <ol className="list-decimal pl-5 space-y-2 text-gray-700">
               <li>Select one or more UTXOs as inputs (like choosing bills from your wallet)</li>
               <li>Enter how much you want to send</li>
               <li>Paste the recipient's address (or use our sample address below)</li>
@@ -106,64 +115,67 @@ export const UTXOExercise = () => {
         </Card>
       )}
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <Card className="p-4">
+      <div className="grid gap-6 md:grid-cols-2">
+        <Card className="p-6">
           <h4 className="text-lg font-semibold mb-4">Available UTXOs</h4>
-          <div className="space-y-2">
+          <div className="space-y-3">
             {utxos.map(utxo => (
               <motion.div
                 key={utxo.id}
                 whileHover={{ scale: 1.02 }}
-                className={`p-3 border rounded-lg cursor-pointer transition-colors ${
-                  utxo.selected ? 'bg-primary/20 border-primary' : 'bg-background'
+                className={`p-4 border rounded-lg cursor-pointer transition-all duration-200 ${
+                  utxo.selected ? 'bg-blue-50 border-blue-500' : 'hover:bg-gray-50'
                 }`}
                 onClick={() => toggleUTXO(utxo.id)}
               >
                 <div className="flex justify-between items-center">
-                  <span>{utxo.id}</span>
-                  <span className="font-semibold">{utxo.amount} BTC</span>
+                  <div className="flex items-center gap-2">
+                    <Coins className="h-5 w-5 text-blue-500" />
+                    <span className="font-medium">{utxo.id}</span>
+                  </div>
+                  <span className="font-semibold text-blue-700">{utxo.amount} BTC</span>
                 </div>
               </motion.div>
             ))}
           </div>
 
-          <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+          <div className="mt-4 p-4 bg-gray-50 rounded-lg">
             <p className="text-sm text-gray-600">
               Total Selected: {utxos.filter(u => u.selected).reduce((sum, utxo) => sum + utxo.amount, 0)} BTC
             </p>
           </div>
         </Card>
 
-        <Card className="p-4">
+        <Card className="p-6">
           <h4 className="text-lg font-semibold mb-4">Create Transaction</h4>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm mb-1">Amount to Send (BTC)</label>
-              <input
+              <Label htmlFor="amount">Amount to Send (BTC)</Label>
+              <Input
+                id="amount"
                 type="number"
-                value={spendAmount}
+                value={spendAmount || ''}
                 onChange={(e) => setSpendAmount(Number(e.target.value))}
-                className="w-full p-2 border rounded"
                 min="0"
                 step="0.1"
                 placeholder="Enter amount..."
+                className="mt-1"
               />
             </div>
 
             <div>
-              <label className="block text-sm mb-1">Recipient Address</label>
-              <div className="flex gap-2">
-                <input
-                  type="text"
+              <Label htmlFor="address">Recipient Address</Label>
+              <div className="flex gap-2 mt-1">
+                <Input
+                  id="address"
                   value={recipientAddress}
                   onChange={(e) => setRecipientAddress(e.target.value)}
-                  className="w-full p-2 border rounded"
                   placeholder="Enter recipient address"
                 />
               </div>
               <div className="mt-2 flex items-center gap-2 text-sm text-gray-500">
                 <span>Sample address:</span>
-                <code className="bg-gray-100 px-2 py-1 rounded">{SAMPLE_ADDRESS}</code>
+                <code className="bg-gray-100 px-2 py-1 rounded text-xs">{SAMPLE_ADDRESS}</code>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -178,7 +190,7 @@ export const UTXOExercise = () => {
             <Button 
               onClick={createTransaction}
               disabled={!spendAmount || !recipientAddress || !utxos.some(u => u.selected)}
-              className="w-full"
+              className="w-full mt-4"
             >
               Create Transaction
             </Button>
@@ -187,21 +199,32 @@ export const UTXOExercise = () => {
       </div>
 
       {feedback && (
-        <Alert>
-          <AlertDescription>{feedback}</AlertDescription>
+        <Alert className={feedback.includes('successfully') ? 'bg-green-50 border-green-200' : 'bg-yellow-50 border-yellow-200'}>
+          <AlertDescription className="flex items-center gap-2">
+            {feedback.includes('successfully') ? (
+              <Coins className="h-4 w-4" />
+            ) : (
+              <AlertTriangle className="h-4 w-4" />
+            )}
+            {feedback}
+          </AlertDescription>
         </Alert>
       )}
 
       {transactions.length > 0 && (
-        <Card className="p-4">
+        <Card className="p-6">
           <h4 className="text-lg font-semibold mb-4">Transaction History</h4>
           <div className="space-y-4">
             {transactions.map((tx, index) => (
-              <div key={index} className="border-b pb-4">
-                <p className="font-medium">Transaction {index + 1}</p>
-                <p>Inputs: {tx.inputs.map(i => `${i.id} (${i.amount} BTC)`).join(', ')}</p>
-                <p>Output: {tx.outputs[0].amount} BTC to {tx.outputs[0].address}</p>
-                <p>Change: {tx.change} BTC</p>
+              <div key={index} className="border-b pb-4 last:border-b-0">
+                <p className="font-medium text-blue-700">Transaction {index + 1}</p>
+                <p className="text-sm text-gray-600">
+                  Inputs: {tx.inputs.map(i => `${i.id} (${i.amount} BTC)`).join(', ')}
+                </p>
+                <p className="text-sm text-gray-600">
+                  Output: {tx.outputs[0].amount} BTC to {tx.outputs[0].address}
+                </p>
+                <p className="text-sm text-gray-600">Change: {tx.change} BTC</p>
               </div>
             ))}
           </div>
@@ -210,3 +233,5 @@ export const UTXOExercise = () => {
     </div>
   );
 };
+
+export default UTXOExercise;
