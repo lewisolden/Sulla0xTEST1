@@ -132,6 +132,88 @@ export default function BitcoinFundamentalsSection() {
             </div>
           </div>
 
+          {/* New Introduction Section */}
+          <motion.section
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
+            className="mb-12 bg-gradient-to-br from-orange-50 to-yellow-50 p-8 rounded-xl shadow-lg"
+          >
+            <h2 className="text-3xl font-bold text-orange-800 mb-6 flex items-center gap-3">
+              <Book className="h-8 w-8 text-orange-600" />
+              Introducing Bitcoin
+            </h2>
+
+            <div className="space-y-6">
+              <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md">
+                <h3 className="text-xl font-semibold text-orange-700 mb-4">What is Bitcoin?</h3>
+                <p className="text-gray-700 leading-relaxed">
+                  Bitcoin is a revolutionary form of digital money that works without banks or governments. 
+                  Think of it as digital cash that you can send to anyone in the world, instantly and securely, 
+                  without needing permission from any institution.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md border-l-4 border-green-500"
+                >
+                  <h4 className="font-semibold text-gray-800 mb-3">Key Features</h4>
+                  <ul className="space-y-2 text-gray-700">
+                    <li className="flex items-center gap-2">
+                      <div className="h-2 w-2 rounded-full bg-green-500"></div>
+                      <span>Send money anywhere, anytime</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <div className="h-2 w-2 rounded-full bg-green-500"></div>
+                      <span>No banks or middlemen needed</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <div className="h-2 w-2 rounded-full bg-green-500"></div>
+                      <span>Secure and transparent</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <div className="h-2 w-2 rounded-full bg-green-500"></div>
+                      <span>Limited supply (only 21 million ever)</span>
+                    </li>
+                  </ul>
+                </motion.div>
+
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-md border-l-4 border-blue-500"
+                >
+                  <h4 className="font-semibold text-gray-800 mb-3">Why It's Important</h4>
+                  <ul className="space-y-2 text-gray-700">
+                    <li className="flex items-center gap-2">
+                      <div className="h-2 w-2 rounded-full bg-blue-500"></div>
+                      <span>First successful digital currency</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <div className="h-2 w-2 rounded-full bg-blue-500"></div>
+                      <span>Protection against inflation</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <div className="h-2 w-2 rounded-full bg-blue-500"></div>
+                      <span>Financial freedom and control</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <div className="h-2 w-2 rounded-full bg-blue-500"></div>
+                      <span>Growing global adoption</span>
+                    </li>
+                  </ul>
+                </motion.div>
+              </div>
+
+              <div className="bg-orange-100/50 p-4 rounded-lg">
+                <p className="text-orange-800 italic">
+                  "Bitcoin is a technological tour de force." - Bill Gates
+                </p>
+              </div>
+            </div>
+          </motion.section>
+
           <div className="prose lg:prose-xl text-gray-700 space-y-12">
             <motion.section
               variants={contentVariants}
