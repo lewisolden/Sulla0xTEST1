@@ -153,7 +153,7 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="bg-gradient-to-br from-white via-orange-50 to-white rounded-lg shadow-lg p-8 border border-orange-100 transition-all duration-300 hover:shadow-xl"
+            className="bg-gradient-to-br from-white via-orange-50 to-white rounded-lg shadow-lg p-8 border border-orange-100 transition-all duration-300 hover:shadow-xl section-card"
           >
             <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600 mb-6">Investment Security</h2>
             <SecurityDiagram />
@@ -170,7 +170,7 @@ export default function BitcoinInvestmentSection() {
               {riskLevels.map((level) => (
                 <motion.div
                   key={level.title}
-                  className={`bg-gradient-to-br ${level.color} p-6 rounded-lg cursor-pointer border-2 ${level.borderColor} shadow-md backdrop-blur-sm transition-all duration-300 hover:shadow-xl`}
+                  className={`bg-gradient-to-br ${level.color} p-6 rounded-lg cursor-pointer border-2 ${level.borderColor} shadow-md backdrop-blur-sm transition-all duration-300 hover:shadow-xl risk-card`}
                   whileHover={{ scale: 1.02, shadow: "0 8px 30px rgba(0,0,0,0.12)" }}
                   onClick={() => setSelectedRisk(level.title)}
                   animate={{
@@ -191,7 +191,7 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="bg-gradient-to-br from-white via-blue-50 to-white rounded-lg shadow-lg p-8 border border-blue-100 transition-all duration-300 hover:shadow-xl"
+            className="bg-gradient-to-br from-white via-blue-50 to-white rounded-lg shadow-lg p-8 border border-blue-100 transition-all duration-300 hover:shadow-xl section-card"
           >
             <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 mb-6">Bitcoin's Value</h2>
             <h3 className="text-2xl font-semibold text-blue-600">Store of Value Properties</h3>
@@ -222,7 +222,7 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="bg-gradient-to-br from-white via-green-50 to-white rounded-lg shadow-lg p-8 mt-8 border border-green-100 transition-all duration-300 hover:shadow-xl"
+            className="bg-gradient-to-br from-white via-green-50 to-white rounded-lg shadow-lg p-8 mt-8 border border-green-100 transition-all duration-300 hover:shadow-xl section-card"
           >
             <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-teal-600 mb-6">Metcalfe's Law and Bitcoin</h2>
 
@@ -359,7 +359,7 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="bg-gradient-to-br from-white via-purple-50 to-white rounded-lg shadow-lg p-8 mt-8 border border-purple-100 transition-all duration-300 hover:shadow-xl"
+            className="bg-gradient-to-br from-white via-purple-50 to-white rounded-lg shadow-lg p-8 mt-8 border border-purple-100 transition-all duration-300 hover:shadow-xl section-card"
           >
             <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 mb-6">Value Comparisons</h2>
 
@@ -459,7 +459,7 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="bg-gradient-to-br from-white via-pink-50 to-white rounded-lg shadow-lg p-8 mt-8 border border-pink-100 transition-all duration-300 hover:shadow-xl"
+            className="bg-gradient-to-br from-white via-pink-50 to-white rounded-lg shadow-lg p-8 mt-8 border border-pink-100 transition-all duration-300 hover:shadow-xl section-card"
           >
             <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-purple-600 mb-6">Understanding Bitcoin Investment Risks</h2>
 
@@ -471,11 +471,11 @@ export default function BitcoinInvestmentSection() {
                   icon: TrendingUp,
                   color: "red",
                   risks: [
-                    "Extreme price swings of 20-30% in days",
-                    "Historical drawdowns exceeding 80%",
-                    "High sensitivity to market sentiment",
-                    "Global 24/7 trading impacts",
-                    "Correlation with macro events"
+                    "• Extreme price swings of 20-30% in days",
+                    "• Historical drawdowns exceeding 80%",
+                    "• High sensitivity to market sentiment",
+                    "• Global 24/7 trading impacts",
+                    "• Correlation with macro events"
                   ]
                 },
                 {
@@ -484,11 +484,11 @@ export default function BitcoinInvestmentSection() {
                   icon: Shield,
                   color: "yellow",
                   risks: [
-                    "Exchange hacks and potential theft",
-                    "Complex private key management",
-                    "Sophisticated phishing attacks",
-                    "No FDIC insurance protection",
-                    "Social engineering threats"
+                    "• Exchange hacks and potential theft",
+                    "• Complex private key management",
+                    "• Sophisticated phishing attacks",
+                    "• No FDIC insurance protection",
+                    "• Social engineering threats"
                   ]
                 },
                 {
@@ -497,11 +497,11 @@ export default function BitcoinInvestmentSection() {
                   icon: Scale,
                   color: "orange",
                   risks: [
-                    "Evolving global regulations",
-                    "Tax reporting complexities",
-                    "Cross-border transaction rules",
-                    "Central bank digital currencies impact",
-                    "Potential trading restrictions"
+                    "• Evolving global regulations",
+                    "• Tax reporting complexities",
+                    "• Cross-border transaction rules",
+                    "• Central bank digital currencies impact",
+                    "• Potential trading restrictions"
                   ]
                 },
                 {
@@ -510,11 +510,11 @@ export default function BitcoinInvestmentSection() {
                   icon: Code,
                   color: "purple",
                   risks: [
-                    "Network upgrades and hard forks",
-                    "Protocol vulnerabilities",
-                    "Quantum computing threats",
-                    "Mining centralization risks",
-                    "Infrastructure outages"
+                    "• Network upgrades and hard forks",
+                    "• Protocol vulnerabilities",
+                    "• Quantum computing threats",
+                    "• Mining centralization risks",
+                    "• Infrastructure outages"
                   ]
                 }
               ].map((risk) => (
@@ -562,7 +562,7 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="bg-gradient-to-br from-white via-teal-50 to-white rounded-lg shadow-lg p-8 mt-8 border border-teal-100 transition-all duration-300 hover:shadow-xl"
+            className="bg-gradient-to-br from-white via-teal-50 to-white rounded-lg shadow-lg p-8 mt-8 border border-teal-100 transition-all duration-300 hover:shadow-xl section-card"
           >
             <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-cyan-600 mb-6">Bitcoin ETFs Explained</h2>
 
@@ -635,35 +635,35 @@ export default function BitcoinInvestmentSection() {
               </div>
 
               <div className="space-y-4">
-                <h3 className="text-xl font-semibold text-teal-800 mb-4">Major Bitcoin ETF Issuers</h3>
+                <h3 className="text-xlfont-semibold text-teal-800 mb-4">Major Bitcoin ETF Issuers</h3>
 
                 {[
                   {
                     name: "BlackRock",
                     ticker: "IBIT",
                     description: "World's largest asset manager",
-                    aum: "$45.2B",
+                    aum: "$10.1T",
                     icon: Building
                   },
                   {
                     name: "Fidelity",
                     ticker: "FBTC",
                     description: "Leading investment firm",
-                    aum: "$38.7B",
+                    aum: "$4.9T",
                     icon: Landmark
                   },
                   {
                     name: "Grayscale",
                     ticker: "GBTC",
                     description: "Cryptocurrency investment pioneer",
-                    aum: "$28.5B",
+                    aum: "$50B",
                     icon: Building2
                   },
                   {
                     name: "ARK Invest",
                     ticker: "ARKB",
                     description: "Innovation-focused fund manager",
-                    aum: "$22.3B",
+                    aum: "$5B",
                     icon: Landmark
                   }
                 ].map((issuer) => (
@@ -698,9 +698,10 @@ export default function BitcoinInvestmentSection() {
             variants={contentVariants}
             initial="hidden"
             animate="visible"
-            className="bg-gradient-to-br from-white via-orange-50 to-white rounded-lg shadow-lg p-8 mt-8 border border-orange-100 transition-all duration-300 hover:shadow-xl"
+            className="bg-gradient-to-br from-white via-orange-50 to-white rounded-lg shadow-lg p-8 mt-8 border border-orange-100 transition-all duration-300 hover:shadow-xl section-card"
           >
-            <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600 mb-6">Practice Investment Strategies</h2>            <p className="text-gray-700 mb-6">
+            <h2 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600 mb-6">Practice Investment Strategies</h2>
+            <p className="text-gray-700 mb-6">
               Now that you understand the different investment options, try out our interactive
               investment simulator to practice making investment decisions in a risk-free environment.
             </p>
@@ -736,24 +737,23 @@ export default function BitcoinInvestmentSection() {
         </div>
       </div>
 
-      <style>
-        {`
+      <style jsx>{`
         .section-card {
           background: linear-gradient(135deg, #fff 0%, #fff8f6 100%);
           box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
           border-radius: 0.5rem;
           transition: all 0.3s ease;
         }
+
         .section-card:hover {
           transform: translateY(-2px);
-          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
-        .value-card {
+
+        .risk-card {
           background: linear-gradient(135deg, #fff5f5 0%, #fff 100%);
           border-left: 4px solid #f56565;
         }
-        `}
-      </style>
+      `}</style>
     </div>
   );
 }
