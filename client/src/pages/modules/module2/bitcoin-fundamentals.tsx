@@ -139,16 +139,57 @@ export default function BitcoinFundamentalsSection() {
               animate="visible"
               className="relative"
             >
-              <Card className="p-6 bg-white/90 shadow-lg">
-                <h2 className="text-3xl font-bold text-orange-800 mb-6">What is Bitcoin?</h2>
-                <p className="text-gray-700 mb-8">
-                  Bitcoin represents a revolutionary approach to money and value transfer in the digital age. 
-                  Let's explore its key features and understand what makes it unique:
-                </p>
-                <BitcoinBasicsDiagram />
-              </Card>
+              <BitcoinBasicsDiagram />
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+                <FeatureCard
+                  title="Decentralized Network"
+                  description="A global network of computers maintaining the Bitcoin blockchain without central authority."
+                  icon={Network}
+                  gradient="bg-gradient-to-br from-blue-500 to-purple-600"
+                />
+                <FeatureCard
+                  title="Digital Scarcity"
+                  description="Limited supply of 21 million coins, creating true digital scarcity for the first time."
+                  icon={Database}
+                  gradient="bg-gradient-to-br from-purple-500 to-pink-600"
+                />
+                <FeatureCard
+                  title="Secure Transactions"
+                  description="Cryptographic security ensuring safe and immutable transactions."
+                  icon={Code}
+                  gradient="bg-gradient-to-br from-pink-500 to-red-600"
+                />
+                <FeatureCard
+                  title="Financial Innovation"
+                  description="Revolutionary technology changing how we think about money and value transfer."
+                  icon={Lightbulb}
+                  gradient="bg-gradient-to-br from-red-500 to-orange-600"
+                />
+              </div>
             </motion.section>
 
+
+            <motion.section
+              variants={contentVariants}
+              initial="hidden"
+              animate="visible"
+              className="bg-white rounded-lg shadow-lg p-8 mb-12"
+            >
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-orange-100 rounded-xl">
+                  <History className="h-8 w-8 text-orange-600" />
+                </div>
+                <div>
+                  <h2 className="text-3xl font-bold text-orange-800">Bitcoin Timeline</h2>
+                  <h3 className="text-xl text-orange-600">Key Milestones in Bitcoin's Journey</h3>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-br from-orange-50 to-red-50 p-6 rounded-xl">
+                <BitcoinTimeline />
+              </div>
+            </motion.section>
 
             <motion.section
               variants={contentVariants}
@@ -175,6 +216,7 @@ export default function BitcoinFundamentalsSection() {
                 <HowBitcoinWorksNew />
               </div>
             </motion.section>
+
 
             <motion.section
               variants={contentVariants}
