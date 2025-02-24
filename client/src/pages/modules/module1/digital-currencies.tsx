@@ -9,7 +9,6 @@ import { CourseContentSection, KeyConceptBox, QuizContainer } from "@/components
 import DoubleSpendDiagram from "@/components/diagrams/DoubleSpendDiagram";
 import DigitalCurrenciesQuiz from "@/components/quizzes/DigitalCurrenciesQuiz";
 import { BlockchainIcon, DecentralizationIcon, WalletIcon, SecurityIcon } from "@/components/icons/CryptoIcons";
-import TransactionFlowDiagram from "@/components/diagrams/TransactionFlowDiagram";
 import { useNavigate } from "@/hooks/useNavigate";
 import MoneyEvolutionTimeline from "@/components/diagrams/MoneyEvolutionTimeline";
 import DigitalCurrencyFeatures from "@/components/diagrams/DigitalCurrencyFeatures";
@@ -84,7 +83,7 @@ export default function DigitalCurrenciesSection() {
   const handleQuizComplete = () => {
     setTimeout(() => {
       navigate('/modules/module1/security');
-    }, 8000); // Changed from 5000 to 8000 to match quiz timing
+    }, 8000); 
   };
 
   return (
@@ -239,34 +238,28 @@ export default function DigitalCurrenciesSection() {
                 When you make a cryptocurrency transaction, it goes through several important steps to ensure security and validity:
               </motion.p>
 
-              <div className="grid md:grid-cols-2 gap-6 mt-6">
-                <motion.div className="space-y-4">
-                  {[
-                    ["Broadcast", "Transaction is announced to the network", <ArrowUpRight />],
-                    ["Verify", "Network nodes check transaction validity", <ShieldCheck />],
-                    ["Consensus", "Multiple nodes work together to confirm", <Users />],
-                    ["Validate", "Transaction is added to the blockchain", <CheckCircle2 />],
-                    ["Complete", "Recipient receives confirmed funds", <CheckCircle />]
-                  ].map(([title, desc, icon], index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="flex items-start gap-4 bg-gradient-to-r from-amber-50 to-yellow-50 p-4 rounded-lg shadow-sm"
-                    >
-                      <div className="text-amber-600 mt-1">{icon}</div>
-                      <div>
-                        <h4 className="font-semibold text-amber-900">{title}</h4>
-                        <p className="text-sm text-amber-700">{desc}</p>
-                      </div>
-                    </motion.div>
-                  ))}
-                </motion.div>
-
-                <div className="relative">
-                  <TransactionFlowDiagram />
-                </div>
+              <div className="space-y-4 mt-6">
+                {[
+                  ["Broadcast", "Transaction is announced to the network", <ArrowUpRight />],
+                  ["Verify", "Network nodes check transaction validity", <ShieldCheck />],
+                  ["Consensus", "Multiple nodes work together to confirm", <Users />],
+                  ["Validate", "Transaction is added to the blockchain", <CheckCircle2 />],
+                  ["Complete", "Recipient receives confirmed funds", <CheckCircle />]
+                ].map(([title, desc, icon], index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="flex items-start gap-4 bg-gradient-to-r from-amber-50 to-yellow-50 p-4 rounded-lg shadow-sm"
+                  >
+                    <div className="text-amber-600 mt-1">{icon}</div>
+                    <div>
+                      <h4 className="font-semibold text-amber-900">{title}</h4>
+                      <p className="text-sm text-amber-700">{desc}</p>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
             </motion.div>
           </CourseContentSection>
