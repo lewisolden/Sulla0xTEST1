@@ -428,17 +428,11 @@ const SecurityPage = () => {
               </QuizContainer>
 
               {!quizCompleted && (
-                <div className="flex justify-between mt-8">
+                <div className="flex justify-start mt-8">
                   <Link href="/modules/module1/digital-currencies">
                     <Button variant="outline" className="gap-2">
                       <ArrowLeft className="h-4 w-4" />
                       Previous Topic
-                    </Button>
-                  </Link>
-                  <Link href="/modules/module1/applications">
-                    <Button className="bg-blue-600 hover:bg-blue-700 gap-2">
-                      Next Topic
-                      <ArrowRight className="h-4 w-4" />
                     </Button>
                   </Link>
                 </div>
