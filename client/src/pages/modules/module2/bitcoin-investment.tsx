@@ -471,11 +471,11 @@ export default function BitcoinInvestmentSection() {
                   icon: TrendingUp,
                   color: "red",
                   risks: [
-                    "Extreme price swings of 20-30% in days",
-                    "Historical drawdowns exceeding 80%",
-                    "High sensitivity to market sentiment",
-                    "Global 24/7 trading impacts",
-                    "Correlation with macro events"
+                    { icon: LineChart, text: "Extreme price swings of 20-30% in days" },
+                    { icon: History, text: "Historical drawdowns exceeding 80%" },
+                    { icon: Brain, text: "High sensitivity to market sentiment" },
+                    { icon: RefreshCw, text: "Global 24/7 trading impacts" },
+                    { icon: GitBranch, text: "Correlation with macro events" }
                   ]
                 },
                 {
@@ -484,11 +484,11 @@ export default function BitcoinInvestmentSection() {
                   icon: Shield,
                   color: "yellow",
                   risks: [
-                    "Exchange hacks and potential theft",
-                    "Complex private key management",
-                    "Sophisticated phishing attacks",
-                    "No FDIC insurance protection",
-                    "Social engineering threats"
+                    { icon: AlertOctagon, text: "Exchange hacks and potential theft" },
+                    { icon: Key, text: "Complex private key management" },
+                    { icon: AlertTriangle, text: "Sophisticated phishing attacks" },
+                    { icon: XCircle, text: "No FDIC insurance protection" },
+                    { icon: Shield, text: "Social engineering threats" }
                   ]
                 },
                 {
@@ -497,11 +497,11 @@ export default function BitcoinInvestmentSection() {
                   icon: Scale,
                   color: "orange",
                   risks: [
-                    "Evolving global regulations",
-                    "Tax reporting complexities",
-                    "Cross-border transaction rules",
-                    "Central bank digital currencies impact",
-                    "Potential trading restrictions"
+                    { icon: Building2, text: "Evolving global regulations" },
+                    { icon: CircleDollarSign, text: "Tax reporting complexities" },
+                    { icon: LinkIcon, text: "Cross-border transaction rules" },
+                    { icon: Landmark, text: "Central bank digital currencies impact" },
+                    { icon: Lock, text: "Potential trading restrictions" }
                   ]
                 },
                 {
@@ -510,11 +510,11 @@ export default function BitcoinInvestmentSection() {
                   icon: Code,
                   color: "purple",
                   risks: [
-                    "Network upgrades and hard forks",
-                    "Protocol vulnerabilities",
-                    "Quantum computing threats",
-                    "Mining centralization risks",
-                    "Infrastructure outages"
+                    { icon: GitBranch, text: "Network upgrades and hard forks" },
+                    { icon: AlertTriangle, text: "Protocol vulnerabilities" },
+                    { icon: Database, text: "Quantum computing threats" },
+                    { icon: Network, text: "Mining centralization risks" },
+                    { icon: Blocks, text: "Infrastructure outages" }
                   ]
                 }
               ].map((risk) => (
@@ -529,8 +529,8 @@ export default function BitcoinInvestmentSection() {
                       <ul className="space-y-2">
                         {risk.risks.map((item, index) => (
                           <li key={index} className="flex items-center gap-2 text-sm">
-                            <div className={`h-1.5 w-1.5 rounded-full bg-${risk.color}-400`} />
-                            {item}
+                            <item.icon className={`h-4 w-4 text-${risk.color}-500`} />
+                            <span className="text-gray-700">{item.text}</span>
                           </li>
                         ))}
                       </ul>
@@ -547,11 +547,17 @@ export default function BitcoinInvestmentSection() {
               </h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-white p-4 rounded-lg shadow-sm">
-                  <h5 className="font-medium text-gray-800 mb-2">Position Sizing</h5>
+                  <h5 className="font-medium text-gray-800 mb-2 flex items-center gap-2">
+                    <Scale className="h-4 w-4 text-yellow-600" />
+                    Position Sizing
+                  </h5>
                   <p className="text-sm text-gray-600">Only invest what you can afford to lose. Consider Bitcoin as a high-risk portion of a diversified portfolio.</p>
                 </div>
                 <div className="bg-white p-4 rounded-lg shadow-sm">
-                  <h5 className="font-medium text-gray-800 mb-2">Security Measures</h5>
+                  <h5 className="font-medium text-gray-800 mb-2 flex items-center gap-2">
+                    <Shield className="h-4 w-4 text-yellow-600" />
+                    Security Measures
+                  </h5>
                   <p className="text-sm text-gray-600">Use hardware wallets for large holdings, enable 2FA, and maintain secure backups of private keys.</p>
                 </div>
               </div>
