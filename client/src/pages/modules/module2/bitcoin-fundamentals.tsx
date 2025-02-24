@@ -175,16 +175,6 @@ export default function BitcoinFundamentalsSection() {
               animate="visible"
               className="bg-white rounded-lg shadow-lg p-8"
             >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="p-3 bg-orange-100 rounded-xl">
-                  <History className="h-8 w-8 text-orange-600" />
-                </div>
-                <div>
-                  <h2 className="text-3xl font-bold text-orange-800">Bitcoin Timeline</h2>
-                  <h3 className="text-xl text-orange-600">Key Milestones in Bitcoin's Journey</h3>
-                </div>
-              </div>
-
               <BitcoinTimeline />
             </motion.section>
 
