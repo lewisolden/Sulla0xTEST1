@@ -11,15 +11,6 @@ process.env.VITE_DEV_SERVER_FORCE_ALLOW_ALL_HOSTS = 'true';
 
 const app = express();
 
-// Host header middleware - must be first
-app.use((req, res, next) => {
-  // Force localhost:5000 as host for Vite in development
-  if (process.env.NODE_ENV !== 'production') {
-    req.headers.host = 'localhost:5000';
-  }
-  next();
-});
-
 // Add middleware for parsing JSON and URL-encoded bodies
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -43,16 +34,6 @@ app.use((req, res, next) => {
   const start = Date.now();
   log(`${req.method} ${req.path} - Starting request`);
 
-  // Add detailed logging for API routes
-  if (req.path.startsWith('/api/')) {
-    console.log('[API Request]', {
-      method: req.method,
-      path: req.path,
-      headers: req.headers,
-      body: req.body
-    });
-  }
-
   res.on('finish', () => {
     const duration = Date.now() - start;
     log(`${req.method} ${req.path} ${res.statusCode} - ${duration}ms`);
@@ -61,118 +42,42 @@ app.use((req, res, next) => {
   next();
 });
 
-let server: any = null;
+// Create server instance
+const server = app.listen(5000, "0.0.0.0", () => {
+  log(`Server started on port 5000`);
 
-// Try to start server on a specific port
-async function startServer(port: number): Promise<boolean> {
-  return new Promise((resolve) => {
-    try {
-      // Create server instance
-      const newServer = app.listen(port, "0.0.0.0", () => {
-        server = newServer;
-        log(`Server successfully started on port ${port}`);
-        resolve(true);
-      });
+  // Register routes first
+  registerRoutes(app);
 
-      // Handle server errors
-      newServer.once('error', (error: any) => {
-        if (error.code === 'EADDRINUSE') {
-          log(`Port ${port} is in use`);
-          newServer.close();
-          resolve(false);
-        } else {
-          log(`Unexpected error on port ${port}: ${error}`);
-          newServer.close();
-          resolve(false);
-        }
-      });
+  const isProduction = process.env.NODE_ENV === 'production';
 
-      // Add cleanup handler
-      newServer.once('close', () => {
-        if (server === newServer) {
-          server = null;
-        }
-      });
-
-    } catch (error) {
-      log(`Error starting server on port ${port}: ${error}`);
-      resolve(false);
-    }
-  });
-}
-
-// Main startup function
-(async () => {
-  try {
-    log("Starting server initialization...");
-
-    // Register routes first - this is lightweight
-    registerRoutes(app);
-
-    const isProduction = process.env.NODE_ENV === 'production';
-
-    // Try ports sequentially
-    const tryPorts = [5000, 5001, 5002, 5003];
-    let started = false;
-    let boundPort = null;
-
-    for (const port of tryPorts) {
-      log(`Attempting to start server on port ${port}...`);
-      started = await startServer(port);
-      if (started) {
-        boundPort = port;
-        break;
-      }
-    }
-
-    if (!started || !server) {
-      throw new Error('Failed to start server on any available port');
-    }
-
-    // Now that we have a bound port, set up the rest of the application
-    if (!isProduction) {
-      log("Setting up Vite middleware...");
-      await setupVite(app, server);
-      log("Vite middleware setup complete");
-    } else {
-      log("Setting up static file serving...");
-      serveStatic(app);
-      log("Static file serving setup complete");
-    }
-
-    // Initialize background services
-    Promise.all([
-      // Verify email service
-      verifyEmailService().catch(error => {
-        log(`Email service initialization warning: ${error.message}`);
-      }),
-      // Check database connection
-      db.select().from(users).limit(1).then(() => {
-        log("Database connection verified");
-      }).catch(error => {
-        log("Database connection warning:", error instanceof Error ? error.message : String(error));
-      })
-    ]).catch(error => {
-      // Log but don't crash the server
-      log(`Background service initialization warning: ${error.message}`);
+  // Set up Vite or static file serving based on environment
+  if (!isProduction) {
+    setupVite(app, server).catch(error => {
+      log(`Failed to setup Vite: ${error}`);
+      process.exit(1);
     });
-
-    log(`Server initialization complete on port ${boundPort}`);
-
-  } catch (error) {
-    log(`Failed to start server: ${error instanceof Error ? error.message : String(error)}`);
-    console.error(error);
-    process.exit(1);
+  } else {
+    serveStatic(app);
   }
-})();
+
+  // Initialize background services
+  Promise.all([
+    verifyEmailService().catch(error => {
+      log(`Email service initialization warning: ${error.message}`);
+    }),
+    db.select().from(users).limit(1).then(() => {
+      log("Database connection verified");
+    }).catch(error => {
+      log("Database connection warning:", error instanceof Error ? error.message : String(error));
+    })
+  ]).catch(error => {
+    log(`Background service initialization warning: ${error.message}`);
+  });
+});
 
 // Add catch-all handler for API routes that aren't found
 app.use('/api/*', (req, res) => {
-  console.log('[API 404]', {
-    method: req.method,
-    path: req.path,
-    headers: req.headers
-  });
   res.status(404).json({ error: 'API endpoint not found' });
 });
 
@@ -189,4 +94,15 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     res.status(status).send(message);
   }
   console.error(err);
+});
+
+// Handle server errors
+server.on('error', (error: any) => {
+  if (error.code === 'EADDRINUSE') {
+    log(`Port 5000 is in use`);
+    process.exit(1);
+  } else {
+    log(`Unexpected server error: ${error}`);
+    process.exit(1);
+  }
 });
