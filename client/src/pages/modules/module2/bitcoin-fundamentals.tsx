@@ -24,6 +24,7 @@ import BitcoinBasicsDiagram from "@/components/diagrams/BitcoinBasicsDiagram";
 import BitcoinFundamentalsQuiz from "@/components/modules/quizzes/BitcoinFundamentalsQuiz";
 import ProofOfWorkDiagram from "@/components/diagrams/ProofOfWorkDiagram";
 import { UTXOExercise } from "@/components/exercises/UTXOExercise";
+import BitcoinTimeline from "@/components/diagrams/BitcoinTimeline";
 import HowBitcoinWorksNew from "@/components/diagrams/HowBitcoinWorksNew";
 
 interface FeatureCardProps {
@@ -138,8 +139,6 @@ export default function BitcoinFundamentalsSection() {
               animate="visible"
               className="relative"
             >
-              <BitcoinBasicsDiagram />
-
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
                 <FeatureCard
                   title="Decentralized Network"
@@ -172,6 +171,22 @@ export default function BitcoinFundamentalsSection() {
               variants={contentVariants}
               initial="hidden"
               animate="visible"
+              className="mb-12"
+            >
+              <Card className="p-6 bg-white/90 shadow-lg">
+                <h2 className="text-3xl font-bold text-orange-800 mb-6">The Journey of Bitcoin</h2>
+                <p className="text-gray-700 mb-8">
+                  From its enigmatic beginnings to becoming a global financial phenomenon, Bitcoin's journey
+                  has been nothing short of revolutionary. Let's explore the major milestones:
+                </p>
+                <BitcoinTimeline />
+              </Card>
+            </motion.section>
+
+            <motion.section
+              variants={contentVariants}
+              initial="hidden"
+              animate="visible"
               className="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl shadow-lg"
             >
               <div className="flex items-center gap-4 mb-6">
@@ -196,21 +211,6 @@ export default function BitcoinFundamentalsSection() {
                 </ul>
                 <p>This environment gave birth to Bitcoin, introduced through a whitepaper by the mysterious Satoshi Nakamoto.</p>
               </div>
-            </motion.section>
-
-            <motion.section
-              variants={contentVariants}
-              initial="hidden"
-              animate="visible"
-              className="mb-12"
-            >
-              <Card className="p-6 bg-white/90 shadow-lg">
-                <h2 className="text-3xl font-bold text-orange-800 mb-6">The Journey of Bitcoin</h2>
-                <p className="text-gray-700 mb-8">
-                  From its enigmatic beginnings to becoming a global financial phenomenon, Bitcoin's journey
-                  has been nothing short of revolutionary. Let's explore the major milestones:
-                </p>
-              </Card>
             </motion.section>
 
             <motion.section
